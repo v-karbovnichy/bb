@@ -294,6 +294,11 @@ for the command surface.
 | `language`                                                                 | `en`                                | Settings → General → Language. Interface language: `en` or `ru`. Set it with `bb settings general language ru`. Older clients that omit it preserve the saved value.                                                                                                                                                                                                                                                                                                                                                                           |
 | `machineServerUrl`, `defaultMachineAccess`, `machineGitCredentialsEnabled` | See [Multi-machine](#multi-machine) | Machine access and credential forwarding.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
+The sidebar footer has a `RU`/`EN` button that switches the saved interface
+language immediately. Settings → General → Language and
+`bb settings general language ru` change the same setting. Use
+`bb settings general language en` to switch back.
+
 **Terminal clipboard.** Settings → General → Terminals → Copy on select
 (`terminalCopyOnSelect`, default `true`) copies completed terminal selections
 exactly and shows a "Selection copied" notification. Selections in messages,

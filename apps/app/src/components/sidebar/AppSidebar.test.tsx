@@ -18,6 +18,10 @@ import {
   useResolvedSidebarNavigation,
 } from "./sidebarNavigationProvider";
 
+vi.mock("@/components/layout/LanguageToggleButton", () => ({
+  LanguageToggleButton: () => <button type="button">RU</button>,
+}));
+
 vi.mock("@/components/commands/AppCommandProvider", () => ({
   useAppCommandHandler: () => {},
   useAppCommandRunner: () => ({

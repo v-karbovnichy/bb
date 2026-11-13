@@ -78,11 +78,11 @@ msgstr "Appearance"
 msgid "Archived threads"
 msgstr "Archived threads"
 
-#: src/views/SettingsView.tsx:1000
+#: src/views/SettingsView.tsx:1006
 msgid "Ask before archiving a thread with unarchived child threads."
 msgstr "Ask before archiving a thread with unarchived child threads."
 
-#: src/views/SettingsView.tsx:1087
+#: src/views/SettingsView.tsx:1093
 msgid "Automatically copy selected terminal text and show a notification. Does not affect text elsewhere in the app. Linux middle-click paste uses the primary selection independently."
 msgstr "Automatically copy selected terminal text and show a notification. Does not affect text elsewhere in the app. Linux middle-click paste uses the primary selection independently."
 
@@ -98,7 +98,7 @@ msgstr "BB asks before opening links like linear:// in another app. Approvals st
 msgid "bb CLI skills"
 msgstr "bb CLI skills"
 
-#: src/views/SettingsView.tsx:658
+#: src/views/SettingsView.tsx:664
 msgid "bb puts this in front of every branch it creates for a worktree, such as {draft}{MANAGED_BRANCH_PREFIX_EXAMPLE_SLUG}. Leave it empty for no prefix."
 msgstr "bb puts this in front of every branch it creates for a worktree, such as {draft}{MANAGED_BRANCH_PREFIX_EXAMPLE_SLUG}. Leave it empty for no prefix."
 
@@ -151,7 +151,7 @@ msgstr "confirm"
 msgid "Connect a machine to install them into ~/.agents/skills and ~/.claude/skills."
 msgstr "Connect a machine to install them into ~/.agents/skills and ~/.claude/skills."
 
-#: src/views/SettingsView.tsx:901
+#: src/views/SettingsView.tsx:907
 msgid "Copy on select"
 msgstr "Copy on select"
 
@@ -172,7 +172,7 @@ msgid "Default shortcut left unbound: also used by {defaultConflictNames}."
 msgstr "Default shortcut left unbound: also used by {defaultConflictNames}."
 
 #: src/components/settings/settings-search.ts:57
-#: src/views/SettingsView.tsx:895
+#: src/views/SettingsView.tsx:901
 msgid "Default thread followup behavior"
 msgstr "Default thread followup behavior"
 
@@ -185,11 +185,11 @@ msgstr "Desktop"
 msgid "Disconnected"
 msgstr "Disconnected"
 
-#: src/views/SettingsView.tsx:1012
+#: src/views/SettingsView.tsx:1018
 msgid "Earlier messages stay in the thread for you to read. The agent doesn't see them."
 msgstr "Earlier messages stay in the thread for you to read. The agent doesn't see them."
 
-#: src/views/SettingsView.tsx:613
+#: src/views/SettingsView.tsx:619
 msgid "English"
 msgstr "English"
 
@@ -197,11 +197,11 @@ msgstr "English"
 msgid "enter"
 msgstr "enter"
 
-#: src/views/SettingsView.tsx:604
+#: src/views/SettingsView.tsx:610
 msgid "Enter adds a follow-up. It runs when the agent stops. Command+Enter (Ctrl+Enter on Windows and Linux) steers the run."
 msgstr "Enter adds a follow-up. It runs when the agent stops. Command+Enter (Ctrl+Enter on Windows and Linux) steers the run."
 
-#: src/views/SettingsView.tsx:609
+#: src/views/SettingsView.tsx:615
 msgid "Enter steers the run now. Command+Enter (Ctrl+Enter on Windows and Linux) adds a follow-up for later."
 msgstr "Enter steers the run now. Command+Enter (Ctrl+Enter on Windows and Linux) adds a follow-up for later."
 
@@ -237,7 +237,7 @@ msgstr "git"
 msgid "hide models"
 msgstr "hide models"
 
-#: src/views/SettingsView.tsx:1128
+#: src/views/SettingsView.tsx:1134
 msgid "Hide the custom models from config.json in every model picker, so a screen share does not show them."
 msgstr "Hide the custom models from config.json in every model picker, so a screen share does not show them."
 
@@ -310,7 +310,7 @@ msgstr "Installing…"
 msgid "interface"
 msgstr "interface"
 
-#: src/views/SettingsView.tsx:917
+#: src/views/SettingsView.tsx:923
 msgid "Interface"
 msgstr "Interface"
 
@@ -323,15 +323,15 @@ msgid "Keyboard shortcuts"
 msgstr "Keyboard shortcuts"
 
 #: src/components/settings/settings-search.ts:49
-#: src/views/SettingsView.tsx:902
+#: src/views/SettingsView.tsx:908
 msgid "Language"
 msgstr "Language"
 
-#: src/views/SettingsView.tsx:920
+#: src/views/SettingsView.tsx:926
 msgid "Language of the bb interface."
 msgstr "Language of the bb interface."
 
-#: src/views/SettingsView.tsx:1050
+#: src/views/SettingsView.tsx:1056
 msgid "Links"
 msgstr "Links"
 
@@ -377,12 +377,12 @@ msgid "Mobile"
 msgstr "Mobile"
 
 #: src/components/settings/settings-search.ts:53
-#: src/views/SettingsView.tsx:894
+#: src/views/SettingsView.tsx:900
 msgid "Navigate to threads on creation"
 msgstr "Navigate to threads on creation"
 
 #: src/components/settings/settings-search.ts:98
-#: src/views/SettingsView.tsx:634
+#: src/views/SettingsView.tsx:640
 msgid "New branch prefix"
 msgstr "New branch prefix"
 
@@ -394,7 +394,7 @@ msgstr "new thread"
 msgid "No apps are always allowed."
 msgstr "No apps are always allowed."
 
-#: src/views/SettingsView.tsx:672
+#: src/views/SettingsView.tsx:678
 msgid "No prefix"
 msgstr "No prefix"
 
@@ -416,11 +416,11 @@ msgid "open"
 msgstr "open"
 
 #: src/components/settings/settings-search.ts:88
-#: src/views/SettingsView.tsx:899
+#: src/views/SettingsView.tsx:905
 msgid "Open links in the in-app browser"
 msgstr "Open links in the in-app browser"
 
-#: src/views/SettingsView.tsx:1055
+#: src/views/SettingsView.tsx:1061
 msgid "Open web links inside bb."
 msgstr "Open web links inside bb."
 
@@ -466,7 +466,7 @@ msgstr "Press keys"
 msgid "privacy"
 msgstr "privacy"
 
-#: src/views/SettingsView.tsx:1124
+#: src/views/SettingsView.tsx:1130
 msgid "Privacy & diagnostics"
 msgstr "Privacy & diagnostics"
 
@@ -482,8 +482,8 @@ msgstr "Providers"
 msgid "queue"
 msgstr "queue"
 
-#: src/views/SettingsView.tsx:603
-#: src/views/SettingsView.tsx:958
+#: src/views/SettingsView.tsx:609
+#: src/views/SettingsView.tsx:964
 msgid "Queue"
 msgstr "Queue"
 
@@ -524,11 +524,11 @@ msgid "Reset shortcut for {commandLabel}"
 msgstr "Reset shortcut for {commandLabel}"
 
 #: src/components/settings/settings-search.ts:93
-#: src/views/SettingsView.tsx:900
+#: src/views/SettingsView.tsx:906
 msgid "Rewrite localhost links"
 msgstr "Rewrite localhost links"
 
-#: src/views/SettingsView.tsx:614
+#: src/views/SettingsView.tsx:620
 msgid "Russian"
 msgstr "Russian"
 
@@ -548,24 +548,24 @@ msgstr "Search results"
 msgid "Search shortcuts"
 msgstr "Search shortcuts"
 
-#: src/views/SettingsView.tsx:1140
+#: src/views/SettingsView.tsx:1146
 msgid "Send anonymous usage data, such as app starts, setup progress and feature use, to help improve bb. Turning this off takes effect immediately for this server."
 msgstr "Send anonymous usage data, such as app starts, setup progress and feature use, to help improve bb. Turning this off takes effect immediately for this server."
 
-#: src/components/layout/AppLayout.tsx:682
-#: src/components/layout/AppLayout.tsx:713
+#: src/components/layout/AppLayout.tsx:686
+#: src/components/layout/AppLayout.tsx:717
 #: src/components/settings/LazySettingsSidebar.tsx:13
 #: src/components/settings/SettingsSidebar.tsx:382
 msgid "Settings"
 msgstr "Settings"
 
 #: src/components/settings/settings-search.ts:69
-#: src/views/SettingsView.tsx:1035
+#: src/views/SettingsView.tsx:1041
 msgid "Setup guide"
 msgstr "Setup guide"
 
 #: src/components/settings/settings-search.ts:116
-#: src/views/SettingsView.tsx:1121
+#: src/views/SettingsView.tsx:1127
 msgid "Share anonymous usage data"
 msgstr "Share anonymous usage data"
 
@@ -574,7 +574,7 @@ msgid "Shortcut already used by {pendingConflictNames}. Replace it with {pending
 msgstr "Shortcut already used by {pendingConflictNames}. Replace it with {pendingCommandName}?"
 
 #: src/components/settings/settings-search.ts:120
-#: src/views/SettingsView.tsx:1122
+#: src/views/SettingsView.tsx:1128
 msgid "Show diagnostic events"
 msgstr "Show diagnostic events"
 
@@ -584,19 +584,19 @@ msgid "Show keyboard hints when holding CMD / Control"
 msgstr "Show keyboard hints when holding CMD / Control"
 
 #: src/components/settings/settings-search.ts:65
-#: src/views/SettingsView.tsx:897
+#: src/views/SettingsView.tsx:903
 msgid "Show messages from before a context clear"
 msgstr "Show messages from before a context clear"
 
-#: src/views/SettingsView.tsx:1152
+#: src/views/SettingsView.tsx:1158
 msgid "Show provider environment resolution and unhandled provider events for troubleshooting."
 msgstr "Show provider environment resolution and unhandled provider events for troubleshooting."
 
-#: src/views/SettingsView.tsx:1045
+#: src/views/SettingsView.tsx:1051
 msgid "Show setup guide"
 msgstr "Show setup guide"
 
-#: src/views/SettingsView.tsx:1024
+#: src/views/SettingsView.tsx:1030
 msgid "Show short summaries for commands that read, list, or search files. Turn off to show command text and let you expand each command to view its output."
 msgstr "Show short summaries for commands that read, list, or search files. Turn off to show command text and let you expand each command to view its output."
 
@@ -612,19 +612,27 @@ msgstr "Skills"
 msgid "steer"
 msgstr "steer"
 
-#: src/views/SettingsView.tsx:608
-#: src/views/SettingsView.tsx:958
+#: src/views/SettingsView.tsx:614
+#: src/views/SettingsView.tsx:964
 msgid "Steer"
 msgstr "Steer"
 
 #: src/components/settings/settings-search.ts:112
-#: src/views/SettingsView.tsx:1120
+#: src/views/SettingsView.tsx:1126
 msgid "Streamer mode"
 msgstr "Streamer mode"
 
-#: src/views/SettingsView.tsx:898
+#: src/views/SettingsView.tsx:904
 msgid "Summarize shell commands"
 msgstr "Summarize shell commands"
+
+#: src/components/layout/LanguageToggleButton.tsx:15
+msgid "Switch interface to English"
+msgstr "Switch interface to English"
+
+#: src/components/layout/LanguageToggleButton.tsx:14
+msgid "Switch interface to Russian"
+msgstr "Switch interface to Russian"
 
 #: src/components/settings/VoiceInputSettingsSection.tsx:48
 #: src/components/settings/VoiceInputSettingsSection.tsx:52
@@ -635,7 +643,7 @@ msgstr "System default"
 msgid "telemetry"
 msgstr "telemetry"
 
-#: src/views/SettingsView.tsx:1084
+#: src/views/SettingsView.tsx:1090
 msgid "Terminals"
 msgstr "Terminals"
 
@@ -651,16 +659,16 @@ msgstr "The skills go in ~/.agents/skills and ~/.claude/skills on {singleHostNam
 msgid "This browser does not expose microphone devices."
 msgstr "This browser does not expose microphone devices."
 
-#: src/views/SettingsView.tsx:661
+#: src/views/SettingsView.tsx:667
 msgid "This prefix cannot start a valid git branch name."
 msgstr "This prefix cannot start a valid git branch name."
 
 #: src/components/settings/settings-search.ts:61
-#: src/views/SettingsView.tsx:896
+#: src/views/SettingsView.tsx:902
 msgid "Thread archive confirmation"
 msgstr "Thread archive confirmation"
 
-#: src/views/SettingsView.tsx:935
+#: src/views/SettingsView.tsx:941
 msgid "Threads & editing"
 msgstr "Threads & editing"
 
@@ -709,7 +717,7 @@ msgstr "Used for prompt voice input."
 msgid "Voice Input"
 msgstr "Voice Input"
 
-#: src/views/SettingsView.tsx:1036
+#: src/views/SettingsView.tsx:1042
 msgid "Walk through connecting an agent, adding projects, plugins, and devices again."
 msgstr "Walk through connecting an agent, adding projects, plugins, and devices again."
 
@@ -725,11 +733,11 @@ msgstr "Web"
 msgid "welcome"
 msgstr "welcome"
 
-#: src/views/SettingsView.tsx:947
+#: src/views/SettingsView.tsx:953
 msgid "What Enter does in the prompt box while the thread runs."
 msgstr "What Enter does in the prompt box while the thread runs."
 
-#: src/views/SettingsView.tsx:911
+#: src/views/SettingsView.tsx:917
 msgid "When enabled, localhost URLs are rewritten to use the same host or IP address you use to open BB. For example: {exampleHref} → {rewrittenHref}"
 msgstr "When enabled, localhost URLs are rewritten to use the same host or IP address you use to open BB. For example: {exampleHref} → {rewrittenHref}"
 

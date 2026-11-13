@@ -16,6 +16,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarMenu,
+  SidebarMenuItem,
   useCloseMobileSidebar,
   useSidebar,
   useIsSidebarFramed,
@@ -60,6 +61,7 @@ import {
   shouldUseMacosDesktopChrome,
 } from "@/lib/bb-desktop";
 import { NavRailSettingsButton } from "./NavRailSettingsButton";
+import { LanguageToggleButton } from "@/components/layout/LanguageToggleButton";
 import { SidebarNavigationHeader } from "./SidebarNavigationHeader";
 import {
   SidebarNavigationProviderMount,
@@ -270,6 +272,9 @@ export function AppSidebar({
           isFooterCustomizing && "hidden",
         )}
       >
+        <SidebarMenuItem className="w-8 shrink-0">
+          <LanguageToggleButton />
+        </SidebarMenuItem>
         <PluginSidebarFooterItems
           onCustomize={() => {
             pluginSidebarFooter.dismiss();
