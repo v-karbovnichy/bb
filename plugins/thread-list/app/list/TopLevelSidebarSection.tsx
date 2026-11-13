@@ -225,8 +225,8 @@ export function TopLevelSidebarSection({
               }
               aria-label={
                 collapseControl.isCollapsed
-                  ? `Expand ${label} section`
-                  : `Collapse ${label} section`
+                  ? `Развернуть раздел ${label}`
+                  : `Свернуть раздел ${label}`
               }
               className={cn(
                 !collapseControl.isCollapsed && SIDEBAR_HOVER_ACTIONS_CLASS,

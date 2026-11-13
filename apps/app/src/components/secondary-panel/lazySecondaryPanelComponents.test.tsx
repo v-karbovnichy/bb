@@ -108,6 +108,6 @@ describe("LazyBrowserTabDeck", () => {
     expect(screen.queryByRole("alert")).toBeNull();
 
     view.rerender(renderDeck(browserTab.id));
-    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Повторить" })).toBeTruthy();
   });
 });

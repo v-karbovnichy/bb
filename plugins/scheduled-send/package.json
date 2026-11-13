@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Schedule the current composer draft to send at a later time.",
+  "description": "Запланируйте отправку текущего черновика на более позднее время.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.6.0"
   },
   "bb": {
-    "name": "Send later",
-    "description": "Schedule the current composer draft to send at a later time.",
+    "name": "Отправить позже",
+    "description": "Запланируйте отправку текущего черновика на более позднее время.",
     "branding": {
       "icon": "Calendar"
     },

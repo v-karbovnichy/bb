@@ -62,14 +62,14 @@ describe("GitHub Star prompt", () => {
 
     await idle(1_000);
     expect(slot.rpcCalls).toEqual([{ method: "claim", input: null }]);
-    expect(screen.getByText("Enjoying bb?")).toBeTruthy();
+    expect(screen.getByText("Нравится bb?")).toBeTruthy();
   });
 
   it("shows only the star link and a close button, and opens the repository", async () => {
     const slot = mountPrompt(["show"]);
     await idle();
 
-    const toast = screen.getByText("Enjoying bb?").closest("[data-bb-plugin]");
+    const toast = screen.getByText("Нравится bb?").closest("[data-bb-plugin]");
     expect(toast?.getAttribute("data-bb-plugin")).toBe("test-plugin");
     expect(toast?.querySelector("[data-icon]")?.getAttribute("data-icon")).toBe(
       "GithubLogo",
@@ -80,9 +80,9 @@ describe("GitHub Star prompt", () => {
         .map(
           (button) => button.getAttribute("aria-label") ?? button.textContent,
         ),
-    ).toEqual(["Star on GitHub", "Dismiss"]);
+    ).toEqual(["Поставить звезду на GitHub", "Закрыть"]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Star on GitHub" }));
+    fireEvent.click(screen.getByRole("button", { name: "Поставить звезду на GitHub" }));
     expect(slot.navigateCalls).toEqual([
       { method: "openUrl", url: REPOSITORY_URL },
     ]);
@@ -97,7 +97,7 @@ describe("GitHub Star prompt", () => {
     fireEvent.pointerDown(window);
     await idle();
     expect(slot.rpcCalls).toHaveLength(2);
-    expect(screen.getByText("Enjoying bb?")).toBeTruthy();
+    expect(screen.getByText("Нравится bb?")).toBeTruthy();
   });
 
   it("stops for good once the server says it already asked", async () => {
@@ -107,6 +107,6 @@ describe("GitHub Star prompt", () => {
     await idle(IDLE_MS * 3);
 
     expect(slot.rpcCalls).toHaveLength(1);
-    expect(screen.queryByText("Enjoying bb?")).toBeNull();
+    expect(screen.queryByText("Нравится bb?")).toBeNull();
   });
 });

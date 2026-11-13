@@ -214,7 +214,7 @@ describe("host session lifetime", () => {
                 waitMs: 0,
                 size: "full",
               });
-        await expect(operation).rejects.toThrow("expired");
+        await expect(operation).rejects.toThrow("истёк");
         expect(run).not.toHaveBeenCalled();
         expect(next).not.toHaveBeenCalled();
         expect(close).toHaveBeenCalledOnce();
@@ -336,7 +336,7 @@ describe("host session lifetime", () => {
         script: "1",
         timeoutMs: 1000,
       }),
-    ).rejects.toThrow("stopped");
+    ).rejects.toThrow("остановлен");
     await harness.experimental_dispose();
   });
   it("close shares a cleanup failure between concurrent callers and retries it on the next close", async () => {
@@ -365,7 +365,7 @@ describe("host session lifetime", () => {
     await harness.experimental_call("close", { sessionId: id });
     expect(close).toHaveBeenCalledTimes(2);
     await expect(harness.experimental_call("open", open(id))).rejects.toThrow(
-      "already closed",
+      "уже закрыт",
     );
     expect(harness.experimental_getRetainedWorkerLeaseCount()).toBe(0);
     await harness.experimental_dispose();
@@ -393,13 +393,13 @@ describe("host session lifetime", () => {
     await rejected;
     expect(close).toHaveBeenCalledOnce();
     await expect(harness.experimental_call("open", open(id))).rejects.toThrow(
-      "already closed",
+      "уже закрыт",
     );
     const neverOpened = randomUUID();
     await harness.experimental_call("close", { sessionId: neverOpened });
     await expect(
       harness.experimental_call("open", open(neverOpened)),
-    ).rejects.toThrow("already closed");
+    ).rejects.toThrow("уже закрыт");
     expect(factory).toHaveBeenCalledOnce();
     expect(harness.experimental_getRetainedWorkerLeaseCount()).toBe(0);
     await harness.experimental_dispose();
@@ -474,7 +474,7 @@ describe("host live preview", () => {
         waitMs: 0,
         size: "thumbnail",
       }),
-    ).rejects.toThrow("stopped");
+    ).rejects.toThrow("остановлен");
     await harness.experimental_dispose();
   });
   it("refuses sessions attached to a desktop browser and cancels waits on close", async () => {
@@ -510,7 +510,7 @@ describe("host live preview", () => {
         waitMs: 0,
         size: "thumbnail",
       }),
-    ).rejects.toThrow("local headless");
+    ).rejects.toThrow("локальных сеансов без интерфейса");
     const pending = harness.experimental_call("preview", {
       sessionId: local,
       afterSequence: 0,

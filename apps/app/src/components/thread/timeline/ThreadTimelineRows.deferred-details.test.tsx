@@ -96,7 +96,7 @@ describe("deferred timeline details", () => {
       threadId: "thr_main",
       turnId: "turn_1",
     });
-    expect(screen.queryByText("Load earlier activity")).toBeNull();
+    expect(screen.queryByText("Загрузить предыдущие действия")).toBeNull();
   });
 
   it("loads earlier turn activity only when asked", async () => {
@@ -134,7 +134,7 @@ describe("deferred timeline details", () => {
     expect(timelineTurnSummaryDetails).toHaveBeenCalledTimes(1);
     expect(screen.queryByText("Earlier turn activity.")).toBeNull();
 
-    fireEvent.click(screen.getByText("Load earlier activity"));
+    fireEvent.click(screen.getByText("Загрузить предыдущие действия"));
 
     expect(await screen.findByText("Earlier turn activity.")).toBeTruthy();
     expect(timelineTurnSummaryDetails).toHaveBeenCalledTimes(2);
@@ -142,7 +142,7 @@ describe("deferred timeline details", () => {
       beforeCursor: "older-page",
       turnId: "turn_1",
     });
-    expect(screen.queryByText("Load earlier activity")).toBeNull();
+    expect(screen.queryByText("Загрузить предыдущие действия")).toBeNull();
   });
 
   it.each([

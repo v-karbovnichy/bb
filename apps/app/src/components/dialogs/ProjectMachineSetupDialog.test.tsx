@@ -81,15 +81,15 @@ describe("ProjectMachineSetupDialog", () => {
     vi.mocked(sdk.projects.sources.add).mockResolvedValue(createdSource);
     const { onComplete } = renderDialog(gitTarget);
 
-    expect(screen.getByText("Set up bb on Mac Studio")).toBeTruthy();
+    expect(screen.getByText("Настроить bb на Mac Studio")).toBeTruthy();
     expect(screen.getByText(gitTarget.gitRemoteUrl!)).toBeTruthy();
     expect(
-      screen.getByText("Use an existing folder on Mac Studio"),
+      screen.getByText("Использовать существующую папку на Mac Studio"),
     ).toBeTruthy();
     expect(await screen.findByText(DEFAULT_CLONE_PATH)).toBeTruthy();
 
     fireEvent.submit(
-      screen.getByRole("button", { name: "Clone & continue" }).closest("form")!,
+      screen.getByRole("button", { name: "Клонировать и продолжить" }).closest("form")!,
     );
 
     await waitFor(() => expect(onComplete).toHaveBeenCalledTimes(1));
@@ -112,14 +112,14 @@ describe("ProjectMachineSetupDialog", () => {
     renderDialog(gitTarget);
     await screen.findByText(DEFAULT_CLONE_PATH);
 
-    fireEvent.click(screen.getByRole("button", { name: "change" }));
-    fireEvent.change(screen.getByLabelText("Clone destination"), {
+    fireEvent.click(screen.getByRole("button", { name: "изменить" }));
+    fireEvent.change(screen.getByLabelText("Папка для клонирования"), {
       target: { value: "/Users/me/elsewhere/bb" },
     });
-    fireEvent.keyDown(screen.getByLabelText("Clone destination"), {
+    fireEvent.keyDown(screen.getByLabelText("Папка для клонирования"), {
       key: "Enter",
     });
-    fireEvent.click(screen.getByRole("button", { name: "Clone & continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Клонировать и продолжить" }));
 
     await waitFor(() => expect(sdk.projects.sources.add).toHaveBeenCalled());
     expect(sdk.projects.sources.add).toHaveBeenCalledWith({
@@ -147,10 +147,10 @@ describe("ProjectMachineSetupDialog", () => {
     renderDialog(gitTarget);
     await screen.findByText(DEFAULT_CLONE_PATH);
 
-    fireEvent.click(screen.getByRole("button", { name: "Clone & continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Клонировать и продолжить" }));
 
     expect(await screen.findByText(gitStderr)).toBeTruthy();
-    const submit = screen.getByRole("button", { name: "Clone & continue" });
+    const submit = screen.getByRole("button", { name: "Клонировать и продолжить" });
     expect(submit.hasAttribute("disabled")).toBe(false);
   });
 
@@ -172,12 +172,12 @@ describe("ProjectMachineSetupDialog", () => {
     renderDialog(gitTarget);
     await screen.findByText(DEFAULT_CLONE_PATH);
 
-    fireEvent.click(screen.getByRole("button", { name: "Clone & continue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Клонировать и продолжить" }));
 
     expect(
       await screen.findByText("Target directory is not empty"),
     ).toBeTruthy();
-    expect(screen.getByText(/use the existing-folder option/u)).toBeTruthy();
+    expect(screen.getByText(/укажите существующую с помощью соответствующего варианта/u)).toBeTruthy();
   });
 
   it("submits an existing browsed folder as a local_path source", async () => {
@@ -199,10 +199,10 @@ describe("ProjectMachineSetupDialog", () => {
     });
     const { onComplete } = renderDialog(gitTarget);
 
-    fireEvent.click(screen.getByText("Use an existing folder on Mac Studio"));
-    await screen.findByText("This folder is empty.");
+    fireEvent.click(screen.getByText("Использовать существующую папку на Mac Studio"));
+    await screen.findByText("Эта папка пуста.");
     const submit = await screen.findByRole("button", {
-      name: "Use folder & continue",
+      name: "Использовать папку и продолжить",
     });
     await waitFor(() => expect(submit.hasAttribute("disabled")).toBe(false));
 
@@ -226,10 +226,10 @@ describe("ProjectMachineSetupDialog", () => {
     });
     renderDialog({ ...gitTarget, gitRemoteUrl: null });
 
-    expect(screen.queryByText("Clone from the project remote")).toBeNull();
+    expect(screen.queryByText("Клонировать из удалённого репозитория проекта")).toBeNull();
     expect(screen.queryByRole("radio")).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Use folder & continue" }),
+      screen.getByRole("button", { name: "Использовать папку и продолжить" }),
     ).toBeTruthy();
   });
 });

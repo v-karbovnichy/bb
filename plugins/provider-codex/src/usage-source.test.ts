@@ -80,9 +80,9 @@ it("publishes only its own maintenance providers without a display and only meas
     expect((await list()).resources).toHaveLength(2);
     expect(collect).not.toHaveBeenCalled();
     await expect(read("missing", "foreign")).rejects.toThrow(
-      "Usage resource no longer exists.",
+      "Источник данных об использовании больше не существует.",
     );
-    await expect(read("online", "foreign")).rejects.toThrow("no longer exists");
+    await expect(read("online", "foreign")).rejects.toThrow("больше не существует");
     expect(await read("online", "codex")).toMatchObject({
       accountKey: null,
       usage: {
@@ -112,7 +112,7 @@ it("publishes only its own maintenance providers without a display and only meas
     expect(collect).toHaveBeenCalledTimes(2);
     removed = true;
     expect((await list()).resources).toEqual([]);
-    await expect(read("online", "codex")).rejects.toThrow("no longer exists");
+    await expect(read("online", "codex")).rejects.toThrow("больше не существует");
   } finally {
     await harness.lifecycle.dispose();
   }

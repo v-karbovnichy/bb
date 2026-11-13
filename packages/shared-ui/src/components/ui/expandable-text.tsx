@@ -10,7 +10,7 @@ import { cn } from "../../lib/utils";
 export function ExpandableText({
   children,
   className,
-  expandLabel = "Show more",
+  expandLabel = "Показать больше",
 }: {
   children: ReactNode;
   className?: string;
@@ -55,7 +55,7 @@ export function ExpandableText({
             setExpanded((value) => !value);
           }}
         >
-          {expanded ? "Show less" : expandLabel}
+          {expanded ? "Показать меньше" : expandLabel}
         </button>
       ) : null}
     </span>

@@ -18,7 +18,7 @@ it.each([true, false])(
         onUninstall={uninstall}
       />,
     );
-    const button = screen.getByRole("button", { name: "Notes installed" });
+    const button = screen.getByRole("button", { name: "Notes установлен" });
     fireEvent.click(button);
     expect(button.getAttribute("aria-disabled")).toBe(String(included));
     expect(uninstall).toHaveBeenCalledTimes(included ? 0 : 1);
@@ -37,7 +37,7 @@ it("does not install incompatible catalog entries", () => {
       onCancelInstall={vi.fn()}
     />,
   );
-  const button = screen.getByRole("button", { name: "Install Notes" });
+  const button = screen.getByRole("button", { name: "Установить Notes" });
   expect(button.getAttribute("aria-disabled")).toBe("true");
   expect(button.hasAttribute("disabled")).toBe(false);
   fireEvent.click(button);

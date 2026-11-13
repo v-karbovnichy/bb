@@ -94,7 +94,7 @@ it.each(["darwin", "linux", "win32"] as const)(
         return pending > 0 ? String(pending) : unread ? "•" : "";
       if (pending === 1) return "1 thread needs your input";
       if (pending > 1) return `${pending} threads need your input`;
-      return unread ? "Unread threads" : "";
+      return unread ? "Непрочитанные чаты" : "";
     };
     report(0, attention(["a"], []));
     report(1, attention([], ["a"]));

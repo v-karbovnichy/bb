@@ -274,7 +274,7 @@ function rail(): HTMLElement {
 function railButton(name: string): HTMLElement {
   const button = Array.from(
     document.querySelectorAll<HTMLButtonElement>(
-      '[data-testid="app-nav-rail"] button, button[aria-label="Settings"]',
+      '[data-testid="app-nav-rail"] button, button[aria-label="Настройки"]',
     ),
   ).find((candidate) => candidate.getAttribute("aria-label") === name);
   if (!button) throw new Error(`Expected a rail button named ${name}`);
@@ -284,7 +284,7 @@ function railButton(name: string): HTMLElement {
 function railLabels(): (string | null)[] {
   return Array.from(
     document.querySelectorAll<HTMLButtonElement>(
-      '[data-testid="app-nav-rail"] button, button[aria-label="Settings"]',
+      '[data-testid="app-nav-rail"] button, button[aria-label="Настройки"]',
     ),
     (button) => button.getAttribute("aria-label"),
   );
@@ -293,7 +293,7 @@ function railLabels(): (string | null)[] {
 function currentRailLabels(): (string | null)[] {
   return Array.from(
     document.querySelectorAll<HTMLButtonElement>(
-      '[data-testid="app-nav-rail"] button[aria-current="page"], button[aria-label="Settings"][aria-current="page"]',
+      '[data-testid="app-nav-rail"] button[aria-current="page"], button[aria-label="Настройки"][aria-current="page"]',
     ),
     (button) => button.getAttribute("aria-label"),
   );
@@ -384,7 +384,7 @@ describe("Rail", () => {
       const open = vi.spyOn(window, "open").mockReturnValue(null);
       renderRail(SETTINGS_ROUTE_PATH);
 
-      fireEvent.click(railButton("Settings"), modifier);
+      fireEvent.click(railButton("Настройки"), modifier);
 
       expect(open).toHaveBeenCalledExactlyOnceWith(
         SETTINGS_ROUTE_PATH,
@@ -399,14 +399,14 @@ describe("Rail", () => {
     renderRail(THREAD_PATH);
 
     expect(railLabels()).toEqual([
-      "Home",
-      "Plugins",
-      "Skills",
+      "Главная",
+      "Плагины",
+      "Навыки",
       "Docs",
-      "More",
-      "Settings",
+      "Ещё",
+      "Настройки",
     ]);
-    expect(currentRailLabels()).toEqual(["Home"]);
+    expect(currentRailLabels()).toEqual(["Главная"]);
   });
 
   it("moves the highlight from Home to a plugin panel and to Settings as the route changes", () => {
@@ -416,12 +416,12 @@ describe("Rail", () => {
     expect(pathname()).toBe(DOCS_PATH);
     expect(currentRailLabels()).toEqual(["Docs"]);
 
-    fireEvent.click(railButton("Settings"));
+    fireEvent.click(railButton("Настройки"));
     expect(pathname()).toBe(SETTINGS_ROUTE_PATH);
-    expect(currentRailLabels()).toEqual(["Settings"]);
+    expect(currentRailLabels()).toEqual(["Настройки"]);
 
-    fireEvent.click(railButton("Plugins"));
-    expect(currentRailLabels()).toEqual(["Plugins"]);
+    fireEvent.click(railButton("Плагины"));
+    expect(currentRailLabels()).toEqual(["Плагины"]);
   });
 
   it("keeps a plugin panel highlighted on its nested routes", () => {
@@ -515,11 +515,11 @@ describe("Rail", () => {
     renderRail(THREAD_PATH);
 
     fireEvent.click(railButton("Docs"));
-    fireEvent.click(railButton("Settings"));
-    fireEvent.click(railButton("Home"));
+    fireEvent.click(railButton("Настройки"));
+    fireEvent.click(railButton("Главная"));
 
     expect(pathname()).toBe(THREAD_PATH);
-    expect(currentRailLabels()).toEqual(["Home"]);
+    expect(currentRailLabels()).toEqual(["Главная"]);
   });
 
   it("sends Home to a new thread after a cold load onto a plugin panel that registers late", () => {
@@ -550,11 +550,11 @@ describe("Rail", () => {
     });
     expect(currentRailLabels()).toEqual(["Automations"]);
 
-    fireEvent.click(railButton("Skills"));
-    fireEvent.click(railButton("Home"));
+    fireEvent.click(railButton("Навыки"));
+    fireEvent.click(railButton("Главная"));
 
     expect(pathname()).toBe(getRootComposeRoutePath());
-    expect(currentRailLabels()).toEqual(["Home"]);
+    expect(currentRailLabels()).toEqual(["Главная"]);
   });
 
   it.each([{ metaKey: true }, { ctrlKey: true }])(
@@ -563,8 +563,8 @@ describe("Rail", () => {
       const open = vi.spyOn(window, "open").mockReturnValue(null);
       renderRail(THREAD_PATH);
 
-      fireEvent.click(railButton("Settings"));
-      fireEvent.click(railButton("Home"), modifier);
+      fireEvent.click(railButton("Настройки"));
+      fireEvent.click(railButton("Главная"), modifier);
 
       expect(open).toHaveBeenCalledExactlyOnceWith(
         getRootComposeRoutePath(),
@@ -598,36 +598,38 @@ describe("Rail", () => {
   it("returns Home to the last thread after settings navigation closes the compact sidebar", () => {
     vi.useFakeTimers();
     renderRail(THREAD_PATH, { isCompactViewport: true, useLayout: true });
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     act(() => {
       vi.advanceTimersByTime(250);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "1 update available" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Доступно 1 обновление" }),
+    );
     act(() => {
       vi.advanceTimersByTime(250);
     });
-    fireEvent.click(screen.getByRole("link", { name: "Details" }));
+    fireEvent.click(screen.getByRole("link", { name: "Подробнее" }));
     expect(pathname()).toBe(`${SETTINGS_ROUTE_PATH}/updates`);
     act(() => {
       vi.advanceTimersByTime(250);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     act(() => {
       vi.advanceTimersByTime(250);
     });
-    fireEvent.click(railButton("Home"));
+    fireEvent.click(railButton("Главная"));
 
     expect(pathname()).toBe(THREAD_PATH);
-    expect(currentRailLabels()).toEqual(["Home"]);
+    expect(currentRailLabels()).toEqual(["Главная"]);
   });
 
   it("sends Home to a new thread when the session started outside the thread list", () => {
     renderRail(SETTINGS_ROUTE_PATH);
 
-    expect(currentRailLabels()).toEqual(["Settings"]);
-    fireEvent.click(railButton("Home"));
+    expect(currentRailLabels()).toEqual(["Настройки"]);
+    fireEvent.click(railButton("Главная"));
 
     expect(pathname()).toBe("/");
   });
@@ -635,10 +637,10 @@ describe("Rail", () => {
   it("dismisses the drawer for a plugin panel but not for destinations that swap the list beside the rail", () => {
     renderRail(THREAD_PATH);
 
-    fireEvent.click(railButton("Plugins"));
-    fireEvent.click(railButton("Skills"));
-    fireEvent.click(railButton("Settings"));
-    fireEvent.click(railButton("Home"));
+    fireEvent.click(railButton("Плагины"));
+    fireEvent.click(railButton("Навыки"));
+    fireEvent.click(railButton("Настройки"));
+    fireEvent.click(railButton("Главная"));
     expect(pathname()).toBe(THREAD_PATH);
     expect(mocks.onNavigate).not.toHaveBeenCalled();
 
@@ -681,7 +683,7 @@ describe("Rail", () => {
       visibleKeys: ["__bb__/new-thread", "__bb__/extensions"],
     });
 
-    const more = railButton("More, Docs: 2 open pages");
+    const more = railButton("Ещё, Docs: 2 open pages");
     expect(more.querySelector('[data-nav-rail-badge="dot"]')).not.toBeNull();
     fireEvent.keyDown(more, { key: "Enter" });
     const item = await screen.findByRole("menuitem", {
@@ -767,7 +769,7 @@ describe("Rail", () => {
 
     renderRail(THREAD_PATH, { visibleKeys: ["__bb__/extensions"] });
 
-    const more = railButton("More, Docs: 2 drafts, Alerts: 1 due today");
+    const more = railButton("Ещё, Docs: 2 drafts, Alerts: 1 due today");
     expect(
       more
         .querySelector("[data-nav-rail-badge]")
@@ -780,7 +782,7 @@ describe("Rail", () => {
       visibleKeys: ["__bb__/new-thread", "__bb__/extensions"],
     });
 
-    expect(railLabels()).toEqual(["Home", "Plugins", "More", "Settings"]);
+    expect(railLabels()).toEqual(["Главная", "Плагины", "Ещё", "Настройки"]);
   });
 
   it("leaves a panel hidden from navigation out of the rail, More, and the remembered chrome", async () => {
@@ -820,8 +822,8 @@ describe("Rail", () => {
     });
 
     expect(railLabels()).not.toContain("New chat here");
-    fireEvent.keyDown(railButton("More"), { key: "Enter" });
-    await screen.findByRole("menuitem", { name: "Search threads" });
+    fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
+    await screen.findByRole("menuitem", { name: "Поиск чатов" });
     expect(
       screen.queryByRole("menuitem", { name: "New chat here" }),
     ).toBeNull();
@@ -830,9 +832,9 @@ describe("Rail", () => {
   it("keeps hidden destinations reachable from More", async () => {
     renderRail(THREAD_PATH);
 
-    fireEvent.keyDown(railButton("More"), { key: "Enter" });
+    fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Search threads" }),
+      await screen.findByRole("menuitem", { name: "Поиск чатов" }),
     );
 
     expect(mocks.dispatch).toHaveBeenCalledWith("thread.search", null);
@@ -841,30 +843,30 @@ describe("Rail", () => {
   it("opens the customize sheet from More on a compact viewport", async () => {
     renderRail(THREAD_PATH, { isCompactViewport: true });
 
-    fireEvent.click(railButton("More"));
+    fireEvent.click(railButton("Ещё"));
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
 
     const editor = await screen.findByTestId("nav-rail-customize");
     const list = within(editor).getByRole("list", {
-      name: "Sidebar navigation",
+      name: "Навигация боковой панели",
     });
-    fireEvent.click(within(list).getByRole("checkbox", { name: /Skills/u }));
+    fireEvent.click(within(list).getByRole("checkbox", { name: /Навыки/u }));
     expect(railLabels()).toEqual([
-      "Home",
-      "Plugins",
+      "Главная",
+      "Плагины",
       "Docs",
-      "More",
-      "Settings",
+      "Ещё",
+      "Настройки",
     ]);
   });
 
   it.each([
     { name: "Docs", isCompactViewport: false },
-    { name: "Search threads", isCompactViewport: false },
+    { name: "Поиск чатов", isCompactViewport: false },
     { name: "Docs", isCompactViewport: true },
-    { name: "Search threads", isCompactViewport: true },
+    { name: "Поиск чатов", isCompactViewport: true },
   ])(
     "toggles $name visibility from its customization row (compact: $isCompactViewport) without activating it",
     async ({ name, isCompactViewport }) => {
@@ -872,15 +874,15 @@ describe("Rail", () => {
         visibleKeys: ["__bb__/skills"],
         isCompactViewport,
       });
-      if (isCompactViewport) fireEvent.click(railButton("More"));
-      else fireEvent.keyDown(railButton("More"), { key: "Enter" });
+      if (isCompactViewport) fireEvent.click(railButton("Ещё"));
+      else fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
       fireEvent.click(
-        await screen.findByRole("menuitem", { name: "Customize navigation" }),
+        await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
       );
 
       const editor = await screen.findByTestId("nav-rail-customize");
       const checkbox = within(editor).getByRole("checkbox", {
-        name: `Show ${name} in sidebar`,
+        name: `Показывать ${name} в боковой панели`,
       });
       expect(checkbox.getAttribute("aria-checked")).toBe("false");
 
@@ -900,46 +902,46 @@ describe("Rail", () => {
 
   it("customizes the rail from a popover beside it without leaving Settings", async () => {
     renderRail(THREAD_PATH);
-    fireEvent.click(railButton("Settings"));
+    fireEvent.click(railButton("Настройки"));
 
-    fireEvent.keyDown(railButton("More"), { key: "Enter" });
+    fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
 
     const editor = await screen.findByTestId("nav-rail-customize");
     expect(pathname()).toBe(SETTINGS_ROUTE_PATH);
-    expect(currentRailLabels()).toEqual(["Settings"]);
+    expect(currentRailLabels()).toEqual(["Настройки"]);
     expect(rail().contains(editor)).toBe(false);
 
     const list = within(editor).getByRole("list", {
-      name: "Sidebar navigation",
+      name: "Навигация боковой панели",
     });
-    fireEvent.click(within(list).getByRole("checkbox", { name: /Skills/u }));
+    fireEvent.click(within(list).getByRole("checkbox", { name: /Навыки/u }));
     expect(railLabels()).toEqual([
-      "Home",
-      "Plugins",
+      "Главная",
+      "Плагины",
       "Docs",
-      "More",
-      "Settings",
+      "Ещё",
+      "Настройки",
     ]);
     fireEvent.click(
-      within(list).getByRole("checkbox", { name: /Search threads/u }),
+      within(list).getByRole("checkbox", { name: /Поиск чатов/u }),
     );
     expect(railLabels()).toEqual([
-      "Home",
-      "Search threads",
-      "Plugins",
+      "Главная",
+      "Поиск чатов",
+      "Плагины",
       "Docs",
-      "More",
-      "Settings",
+      "Ещё",
+      "Настройки",
     ]);
 
-    fireEvent.click(within(editor).getByRole("button", { name: "Done" }));
+    fireEvent.click(within(editor).getByRole("button", { name: "Готово" }));
     await waitFor(() =>
       expect(screen.queryByTestId("nav-rail-customize")).toBeNull(),
     );
-    expect(document.activeElement).toBe(railButton("More"));
+    expect(document.activeElement).toBe(railButton("Ещё"));
     expect(pathname()).toBe(SETTINGS_ROUTE_PATH);
   });
 
@@ -950,13 +952,13 @@ describe("Rail", () => {
       screen.getByTestId("sidebar-navigation-rail"),
       "getBoundingClientRect",
     ).mockImplementation(() => new DOMRect(12, 40, 52, 600));
-    vi.spyOn(railButton("More"), "getBoundingClientRect").mockImplementation(
+    vi.spyOn(railButton("Ещё"), "getBoundingClientRect").mockImplementation(
       () => new DOMRect(12, moreTop, 28, 28),
     );
 
-    fireEvent.keyDown(railButton("More"), { key: "Enter" });
+    fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
     const editor = await screen.findByTestId("nav-rail-customize");
     const wrapper = editor.closest<HTMLElement>(
@@ -975,10 +977,10 @@ describe("Rail", () => {
 
   it("opens the More menu beside the More button instead of at the top of the rail", async () => {
     renderRail(THREAD_PATH);
-    vi.spyOn(railButton("Home"), "getBoundingClientRect").mockImplementation(
+    vi.spyOn(railButton("Главная"), "getBoundingClientRect").mockImplementation(
       () => new DOMRect(12, 40, 28, 28),
     );
-    vi.spyOn(railButton("More"), "getBoundingClientRect").mockImplementation(
+    vi.spyOn(railButton("Ещё"), "getBoundingClientRect").mockImplementation(
       () => new DOMRect(12, 200, 28, 28),
     );
 
@@ -992,7 +994,7 @@ describe("Rail", () => {
     ];
 
     try {
-      fireEvent.keyDown(railButton("More"), { key: "Enter" });
+      fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
       const menu = await screen.findByTestId("nav-rail-more-menu");
       const wrapper = menu.closest<HTMLElement>(
         "[data-radix-popper-content-wrapper]",
@@ -1010,32 +1012,32 @@ describe("Rail", () => {
   it("keeps the header New thread button when stored preferences leave New thread out", () => {
     renderRail(THREAD_PATH, { visibleKeys: ["__bb__/extensions"] });
 
-    fireEvent.click(screen.getByRole("button", { name: "New thread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Новый чат" }));
     expect(mocks.onNewChat).toHaveBeenCalledTimes(1);
   });
 
   it("offers no New thread row in Customize navigation", async () => {
     renderRail(THREAD_PATH);
 
-    fireEvent.keyDown(railButton("More"), { key: "Enter" });
+    fireEvent.keyDown(railButton("Ещё"), { key: "Enter" });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
 
     const editor = await screen.findByTestId("nav-rail-customize");
     const list = within(editor).getByRole("list", {
-      name: "Sidebar navigation",
+      name: "Навигация боковой панели",
     });
     expect(
       within(list)
         .getAllByRole("checkbox")
         .map((checkbox) => checkbox.getAttribute("aria-label")),
     ).toEqual([
-      "Show Search threads in sidebar",
-      "Show Plugins in sidebar",
-      "Show Skills in sidebar",
-      "Show Docs in sidebar",
+      "Показывать Поиск чатов в боковой панели",
+      "Показывать Плагины в боковой панели",
+      "Показывать Навыки в боковой панели",
+      "Показывать Docs в боковой панели",
     ]);
-    expect(screen.getByRole("button", { name: "New thread" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Новый чат" })).toBeDefined();
   });
 });

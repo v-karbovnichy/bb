@@ -166,7 +166,7 @@ export const LazyThreadTerminalPanel = defineSplit({
     );
   },
   loading: () => (
-    <div role="status" aria-label="Loading terminal">
+    <div role="status" aria-label="Загрузка терминала">
       <SecondaryPanelContentSkeleton />
     </div>
   ),
@@ -191,7 +191,7 @@ export const LazyNewTabPage = defineSplit({
   id: "new-tab-page",
   load: () => import("./NewTabPage").then((module) => module.NewTabPage),
   loading: () => (
-    <div role="status" aria-label="Loading new tab">
+    <div role="status" aria-label="Загрузка новой вкладки">
       <SecondaryPanelContentSkeleton />
     </div>
   ),

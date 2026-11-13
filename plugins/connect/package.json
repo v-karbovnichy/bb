@@ -3,14 +3,14 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "description": "Remote access via getbb.app — this bb becomes reachable at https://<handle>.getbb.app. Disable to cut off all remote access.",
+  "description": "Удалённый доступ через getbb.app — этот bb доступен по адресу https://<handle>.getbb.app. Выключите, чтобы закрыть удалённый доступ.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.6.131"
   },
   "bb": {
     "name": "bb connect",
-    "description": "Remote access via getbb.app — this bb becomes reachable at https://<handle>.getbb.app. Disable to cut off all remote access.",
+    "description": "Удалённый доступ через getbb.app — этот bb доступен по адресу https://<handle>.getbb.app. Выключите, чтобы закрыть удалённый доступ.",
     "branding": {
       "icon": "ComputerCloud"
     },

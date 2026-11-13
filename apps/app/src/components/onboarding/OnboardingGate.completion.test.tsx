@@ -69,7 +69,7 @@ vi.mock("./OnboardingFlow", async () => {
       }, []);
       return (
         <button type="button" onClick={() => onClose("devices")}>
-          Start using bb
+          Начать работу с bb
         </button>
       );
     },
@@ -95,7 +95,7 @@ function settle(replies: Array<() => void> = []): Promise<void> {
 }
 
 function guideButton(): HTMLElement | null {
-  return screen.queryByRole("button", { name: "Start using bb" });
+  return screen.queryByRole("button", { name: "Начать работу с bb" });
 }
 
 async function closeGuide(): Promise<void> {
@@ -202,7 +202,7 @@ describe.each(["control", "new"] as const)(
     it("keeps the guide closed when a config read from before the save lands while the save is in flight", async () => {
       const queryClient = createTestQueryClient();
       renderGate(queryClient);
-      await screen.findByText("Start using bb");
+      await screen.findByText("Начать работу с bb");
       markSystemConfigStale(queryClient);
 
       await closeGuide();
@@ -229,7 +229,7 @@ describe.each(["control", "new"] as const)(
     it("shows the guide again when Settings clears the completion after a close in the same session", async () => {
       const queryClient = createTestQueryClient();
       renderGate(queryClient);
-      await screen.findByText("Start using bb");
+      await screen.findByText("Начать работу с bb");
       await closeGuide();
       await settle(server.saveReplies);
       await settle(server.configReplies);
@@ -248,10 +248,10 @@ describe.each(["control", "new"] as const)(
       expect(guide.mounts).toBe(2);
     });
 
-    it("shows the guide again when its completion save fails, and Start using bb saves again", async () => {
+    it("shows the guide again when its completion save fails, and Начать работу с bb saves again", async () => {
       const queryClient = createTestQueryClient();
       renderGate(queryClient);
-      await screen.findByText("Start using bb");
+      await screen.findByText("Начать работу с bb");
       server.failSaves = true;
 
       await closeGuide();
@@ -278,7 +278,7 @@ describe.each(["control", "new"] as const)(
     it("records a failed completion save from the last step", async () => {
       const queryClient = createTestQueryClient();
       renderGate(queryClient);
-      await screen.findByText("Start using bb");
+      await screen.findByText("Начать работу с bb");
       server.failSaves = true;
 
       await closeGuide();

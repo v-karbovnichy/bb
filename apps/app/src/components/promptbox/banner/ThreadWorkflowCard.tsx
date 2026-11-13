@@ -27,7 +27,7 @@ function agentProgressLabel(workflow: TimelineWorkflowWorkRow): string | null {
   const settled = agents.filter((agent) =>
     isSettledWorkflowAgentState(agent.state),
   ).length;
-  return `${settled}/${agents.length} agents`;
+  return `Агентов: ${settled}/${agents.length}`;
 }
 
 interface ThreadWorkflowCardProps {
@@ -91,7 +91,7 @@ export function ThreadWorkflowCard({
   const name = workflow.workflowName ?? workflow.description;
   return (
     <PromptStackCard
-      ariaLabel="Workflow"
+      ariaLabel="Процесс"
       className="overflow-hidden"
       style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
     >
@@ -101,7 +101,7 @@ export function ThreadWorkflowCard({
         id={toggleId}
         aria-expanded={isExpanded}
         aria-controls={bodyId}
-        aria-label={`Workflow: ${name}`}
+        aria-label={`Процесс: ${name}`}
         onClick={focus.onTriggerClick}
         className={cn(
           PROMPT_STACK_CARD_HEADER_BUTTON_CLASS,
@@ -116,7 +116,7 @@ export function ThreadWorkflowCard({
         labelledBy={toggleId}
         isExpanded={isExpanded}
         collapsedBorder="none"
-        collapseLabel={`Collapse workflow ${name}`}
+        collapseLabel={`Свернуть сценарий ${name}`}
         collapseRef={focus.collapseRef}
         onCollapse={focus.onCollapseClick}
       >

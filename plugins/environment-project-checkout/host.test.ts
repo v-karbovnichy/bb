@@ -96,7 +96,7 @@ describe("checkout host entry", () => {
     expect((await git(repo, "rev-parse", "--abbrev-ref", "HEAD")).trim()).toBe(
       "release",
     );
-    expect(progressText(harness)).toContain("Switched to branch release");
+    expect(progressText(harness)).toContain("Переключились на ветку release");
 
     const created = await harness.experimental_call("attach", {
       operationId: "new",
@@ -111,7 +111,7 @@ describe("checkout host entry", () => {
     expect((await git(repo, "rev-parse", "--abbrev-ref", "HEAD")).trim()).toBe(
       "bb/feature-thr_1",
     );
-    expect(progressText(harness)).toContain("Created branch bb/feature-thr_1");
+    expect(progressText(harness)).toContain("Ветка создана: bb/feature-thr_1");
     await harness.experimental_dispose();
   });
 
@@ -202,7 +202,7 @@ describe("checkout host entry", () => {
     });
     expect(result).toMatchObject({
       status: "failed",
-      message: expect.stringContaining("uncommitted changes"),
+      message: expect.stringContaining("несохранённые изменения"),
     });
     expect((await git(repo, "rev-parse", "--abbrev-ref", "HEAD")).trim()).toBe(
       "main",
@@ -241,7 +241,7 @@ describe("checkout host entry", () => {
     expect(result).toEqual({
       status: "failed",
       message:
-        "Cannot checkout branch while the workspace is on a detached HEAD",
+        "Нельзя переключить ветку, пока HEAD рабочей копии отсоединён",
     });
     await expect(
       git(repo, "symbolic-ref", "--quiet", "HEAD"),
@@ -259,7 +259,7 @@ describe("checkout host entry", () => {
     });
     expect(result).toEqual({
       status: "failed",
-      message: "Cannot checkout branch while merge is in progress",
+      message: "Нельзя переключить ветку, пока выполняется merge",
     });
     expect((await git(repo, "rev-parse", "--abbrev-ref", "HEAD")).trim()).toBe(
       "main",
@@ -279,7 +279,7 @@ describe("checkout host entry", () => {
     });
     expect(result).toEqual({
       status: "failed",
-      message: "Cannot checkout branch while merge has unresolved conflicts",
+      message: "Нельзя переключить ветку: в операции merge есть неразрешённые конфликты",
     });
     expect((await git(repo, "rev-parse", "--abbrev-ref", "HEAD")).trim()).toBe(
       "main",
@@ -300,7 +300,7 @@ describe("checkout host entry", () => {
     expect(result).toEqual({
       status: "failed",
       message:
-        "Cannot checkout branch while the workspace is on a detached HEAD",
+        "Нельзя переключить ветку, пока HEAD рабочей копии отсоединён",
     });
     await expect(git(repo, "status")).resolves.toContain("rebase in progress");
   });

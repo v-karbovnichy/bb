@@ -106,7 +106,7 @@ it("labels built-in, new, and counted plugins", () => {
   const label = (entry: Parameters<typeof pluginInstallCountPresentation>[0]) =>
     pluginInstallCountPresentation(entry, now);
   expect(label({ installedByDefault: true, installs: 2 })?.display).toBe(
-    "Built in",
+    "Встроенный",
   );
   expect(
     label({
@@ -114,9 +114,9 @@ it("labels built-in, new, and counted plugins", () => {
       installs: 3,
       publishedAt: "2026-09-20T00:00:00Z",
     })?.display,
-  ).toBe("New");
+  ).toBe("Новый");
   expect(
     label({ installedByDefault: false, installs: 1 })?.accessibleLabel,
-  ).toBe("1 install");
+  ).toBe("Установок: 1");
   expect(label({ installedByDefault: false, installs: null })).toBeUndefined();
 });

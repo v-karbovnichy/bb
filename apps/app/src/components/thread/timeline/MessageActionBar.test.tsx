@@ -79,7 +79,7 @@ function mockMobileCoarsePointer() {
 
 function openDesktopMenu() {
   fireEvent.pointerDown(
-    screen.getByRole("button", { name: "Message actions" }),
+    screen.getByRole("button", { name: "Действия с сообщением" }),
   );
   return screen.getByRole("menu");
 }
@@ -146,8 +146,8 @@ describe("MessageActionBar", () => {
     expect(
       [...container.querySelectorAll<HTMLButtonElement>("button[aria-label]")]
         .map((button) => button.getAttribute("aria-label"))
-        .filter((label) => label !== "Message actions"),
-    ).toEqual(["Copy message", "Edit message", "Summarize"]);
+        .filter((label) => label !== "Действия с сообщением"),
+    ).toEqual(["Скопировать сообщение", "Редактировать сообщение", "Summarize"]);
     expect(
       screen
         .getByRole("button", { name: "Summarize" })
@@ -161,10 +161,10 @@ describe("MessageActionBar", () => {
       within(menu)
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
-    ).toEqual(["Copy link", "Add to chat", "Fork into new thread"]);
+    ).toEqual(["Скопировать ссылку", "Добавить в чат", "Ответвить в новый чат"]);
     expect(menu.getAttribute("data-side")).toBe("bottom");
     fireEvent.click(
-      within(menu).getByRole("menuitem", { name: "Copy link" }),
+      within(menu).getByRole("menuitem", { name: "Скопировать ссылку" }),
     );
     expect(onCopyLink).toHaveBeenCalledTimes(1);
   });
@@ -201,8 +201,8 @@ describe("MessageActionBar", () => {
     );
     resizeObserver.reportWidth(72);
 
-    expect(screen.getByRole("button", { name: "Copy message" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Edit message" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Скопировать сообщение" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Редактировать сообщение" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Summarize" })).toBeNull();
 
     expect(
@@ -210,11 +210,11 @@ describe("MessageActionBar", () => {
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
     ).toEqual([
-      "Copy link",
+      "Скопировать ссылку",
       "Summarize",
       "Translate",
-      "Add to chat",
-      "Fork into new thread",
+      "Добавить в чат",
+      "Ответвить в новый чат",
     ]);
   });
 
@@ -235,7 +235,7 @@ describe("MessageActionBar", () => {
     resizeObserver.reportWidth(400);
     const commitsAtRest = commits;
     const actionRow = screen
-      .getByRole("button", { name: "Edit message" })
+      .getByRole("button", { name: "Редактировать сообщение" })
       .closest<HTMLElement>("div");
 
     for (let width = 399; width >= 300; width -= 1) {
@@ -248,7 +248,7 @@ describe("MessageActionBar", () => {
     resizeObserver.reportWidth(30);
 
     expect(commits).toBeGreaterThan(commitsAtRest);
-    expect(screen.queryByRole("button", { name: "Edit message" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Редактировать сообщение" })).toBeNull();
   });
 
   it("puts every candidate in the menu when none fit", () => {
@@ -266,16 +266,16 @@ describe("MessageActionBar", () => {
     );
     resizeObserver.reportWidth(30);
 
-    expect(screen.queryByRole("button", { name: "Copy message" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Скопировать сообщение" })).toBeNull();
     expect(
       within(openDesktopMenu())
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
     ).toEqual([
-      "Copy message",
-      "Edit message",
-      "Add to chat",
-      "Fork into new thread",
+      "Скопировать сообщение",
+      "Редактировать сообщение",
+      "Добавить в чат",
+      "Ответвить в новый чат",
     ]);
   });
 
@@ -326,21 +326,21 @@ describe("MessageActionBar", () => {
     );
     resizeObserver.reportWidth(200);
 
-    expect(screen.getByRole("button", { name: "Copy message" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Edit message" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Скопировать сообщение" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Редактировать сообщение" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Summarize" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Message actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с сообщением" }));
 
     const drawer = await screen.findByRole("dialog", {
-      name: "Message actions",
+      name: "Действия с сообщением",
     });
     const menuItems = await within(drawer).findAllByRole("menuitem");
     expect(menuItems.map((item) => item.textContent)).toEqual([
-      "Copy message",
-      "Edit message",
+      "Скопировать сообщение",
+      "Редактировать сообщение",
       "Summarize",
-      "Add to chat",
-      "Fork into new thread",
+      "Добавить в чат",
+      "Ответвить в новый чат",
     ]);
     resizeObserver.reportWidth(60);
     expect(screen.queryByRole("button", { name: "Summarize" })).toBeNull();
@@ -349,11 +349,11 @@ describe("MessageActionBar", () => {
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
     ).toEqual([
-      "Copy message",
-      "Edit message",
+      "Скопировать сообщение",
+      "Редактировать сообщение",
       "Summarize",
-      "Add to chat",
-      "Fork into new thread",
+      "Добавить в чат",
+      "Ответвить в новый чат",
     ]);
     expect(document.body.querySelector('[data-side="top"]')).toBeNull();
     expect(screen.getByTestId("app-root").hasAttribute("inert")).toBe(false);
@@ -361,10 +361,10 @@ describe("MessageActionBar", () => {
       false,
     );
     fireEvent.click(
-      within(drawer).getByRole("menuitem", { name: "Fork into new thread" }),
+      within(drawer).getByRole("menuitem", { name: "Ответвить в новый чат" }),
     );
     expect(onFork).toHaveBeenCalledTimes(1);
-    fireEvent.click(screen.getByRole("button", { name: "Message actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с сообщением" }));
     fireEvent.click(
       await within(drawer).findByRole("menuitem", { name: "Summarize" }),
     );
@@ -387,23 +387,23 @@ describe("MessageActionBar", () => {
       />,
     );
 
-    expect(screen.queryByRole("button", { name: "Copy message" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Edit message" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Message actions" }));
+    expect(screen.queryByRole("button", { name: "Скопировать сообщение" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Редактировать сообщение" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Действия с сообщением" }));
 
     const drawer = await screen.findByRole("dialog", {
-      name: "Message actions",
+      name: "Действия с сообщением",
     });
     const menuItems = await within(drawer).findAllByRole("menuitem");
     expect(menuItems.map((item) => item.textContent)).toEqual([
-      "Copy link",
-      "Copy message",
-      "Edit message",
-      "Add to chat",
-      "Fork into new thread",
+      "Скопировать ссылку",
+      "Скопировать сообщение",
+      "Редактировать сообщение",
+      "Добавить в чат",
+      "Ответвить в новый чат",
     ]);
     fireEvent.click(
-      within(drawer).getByRole("menuitem", { name: "Copy link" }),
+      within(drawer).getByRole("menuitem", { name: "Скопировать ссылку" }),
     );
     expect(onCopyLink).toHaveBeenCalledTimes(1);
   });
@@ -417,7 +417,7 @@ describe("MessageActionBar", () => {
         mobileActionDisplay="inline"
       />,
     );
-    const trigger = screen.getByRole("button", { name: "Message actions" });
+    const trigger = screen.getByRole("button", { name: "Действия с сообщением" });
     const row = trigger.parentElement?.parentElement;
 
     expect(row?.hasAttribute("data-menu-open")).toBe(false);

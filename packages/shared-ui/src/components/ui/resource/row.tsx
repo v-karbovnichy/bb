@@ -414,7 +414,7 @@ export function ResourceListState({
         <span>{message}</span>
         {state === "error" && onRetry ? (
           <Button variant="outline" size="sm" onClick={onRetry}>
-            Retry
+            Повторить
           </Button>
         ) : null}
       </div>

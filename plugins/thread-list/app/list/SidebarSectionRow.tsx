@@ -171,8 +171,8 @@ function SidebarSectionRowComponent({
           disabled={Boolean(labelEditor)}
           className={labelEditor ? "hidden" : undefined}
           isCollapsed={isCollapsed}
-          expandLabel={`Expand ${label} section`}
-          collapseLabel={`Collapse ${label} section`}
+          expandLabel={`Развернуть раздел ${label}`}
+          collapseLabel={`Свернуть раздел ${label}`}
           onToggle={onToggleCollapsed}
         />
       </span>

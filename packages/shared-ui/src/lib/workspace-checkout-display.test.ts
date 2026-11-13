@@ -14,8 +14,8 @@ describe("formatWorkspaceCheckoutDisplay", () => {
     ).toMatchObject({
       copyValue: "bb/thread",
       label: "bb/thread",
-      rowLabel: "Branch",
-      title: "Copy branch name: bb/thread",
+      rowLabel: "Ветка",
+      title: "Скопировать название ветки: bb/thread",
     });
   });
 
@@ -29,9 +29,9 @@ describe("formatWorkspaceCheckoutDisplay", () => {
       }),
     ).toMatchObject({
       copyValue: "abcdef1234567890",
-      label: "detached abcdef1",
-      rowLabel: "Checkout",
-      title: "Detached HEAD: abcdef1234567890",
+      label: "отсоединённый abcdef1",
+      rowLabel: "Рабочая копия",
+      title: "Отсоединённый HEAD: abcdef1234567890",
     });
   });
 
@@ -45,9 +45,9 @@ describe("formatWorkspaceCheckoutDisplay", () => {
       }),
     ).toMatchObject({
       copyValue: null,
-      label: "detached HEAD",
-      rowLabel: "Checkout",
-      title: "Detached HEAD",
+      label: "отсоединённый HEAD",
+      rowLabel: "Рабочая копия",
+      title: "Отсоединённый HEAD",
     });
   });
 
@@ -61,9 +61,9 @@ describe("formatWorkspaceCheckoutDisplay", () => {
       }),
     ).toMatchObject({
       copyValue: null,
-      label: "main (empty)",
-      rowLabel: "Checkout",
-      title: "Empty branch: main",
+      label: "main (пустая)",
+      rowLabel: "Рабочая копия",
+      title: "Пустая ветка: main",
     });
   });
 
@@ -77,9 +77,9 @@ describe("formatWorkspaceCheckoutDisplay", () => {
       }),
     ).toMatchObject({
       copyValue: null,
-      label: "empty repo",
-      rowLabel: "Checkout",
-      title: "Empty repository",
+      label: "пустой репозиторий",
+      rowLabel: "Рабочая копия",
+      title: "Пустой репозиторий",
     });
   });
 
@@ -93,9 +93,9 @@ describe("formatWorkspaceCheckoutDisplay", () => {
       }),
     ).toMatchObject({
       copyValue: null,
-      label: "unknown checkout",
-      rowLabel: "Checkout",
-      title: "Unknown checkout: HEAD is missing",
+      label: "неизвестная рабочая копия",
+      rowLabel: "Рабочая копия",
+      title: "Неизвестная рабочая копия: HEAD is missing",
     });
   });
 });

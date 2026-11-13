@@ -68,7 +68,7 @@ export function updateThreadMutationOptions(
     ThreadListMutationTransaction | undefined
   >({
     meta: {
-      errorMessage: options?.errorMessage ?? "Failed to update thread.",
+      errorMessage: options?.errorMessage ?? "Не удалось обновить чат.",
       showErrorToast: options?.showErrorToast ?? true,
       ...(options?.lifecycleOperation
         ? { lifecycleOperation: options.lifecycleOperation }
@@ -148,11 +148,11 @@ function useThreadPinStateMutation(
 }
 
 export function usePinThread() {
-  return useThreadPinStateMutation("pin", "Failed to pin thread.");
+  return useThreadPinStateMutation("pin", "Не удалось закрепить чат.");
 }
 
 export function useUnpinThread() {
-  return useThreadPinStateMutation("unpin", "Failed to unpin thread.");
+  return useThreadPinStateMutation("unpin", "Не удалось открепить чат.");
 }
 
 export function useArchiveThreadAndChildren() {
@@ -160,7 +160,7 @@ export function useArchiveThreadAndChildren() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to archive thread and its child threads.",
+      errorMessage: "Не удалось архивировать чат и дочерние чаты.",
       lifecycleOperation: "archive_thread",
       showErrorToast: false,
     },
@@ -192,7 +192,7 @@ export function useUnarchiveThread() {
   return useMutation({
     mutationKey: ["unarchive-thread"],
     meta: {
-      errorMessage: "Failed to unarchive thread.",
+      errorMessage: "Не удалось вернуть чат из архива.",
     },
     mutationFn: async ({ id }: ThreadMutationRequest) => {
       await sdk.threads.unarchive({ threadId: id });
@@ -223,7 +223,7 @@ export function useRestoreThreadEnvironment() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to restore workspace.",
+      errorMessage: "Не удалось восстановить рабочую область.",
     },
     mutationFn: ({ id }: ThreadMutationRequest): Promise<ThreadResponse> =>
       sdk.threads.restoreEnvironment({ threadId: id }),
@@ -238,7 +238,7 @@ export function useDeleteThread() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to delete thread.",
+      errorMessage: "Не удалось удалить чат.",
     },
     mutationFn: async ({
       childThreadsConfirmed,
@@ -270,7 +270,7 @@ export function markThreadReadMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to mark thread read.",
+      errorMessage: "Не удалось отметить чат прочитанным.",
       showErrorToast: false,
     },
     mutationFn: (input: ThreadReadMutationInput) => threadSdk.markRead(input),
@@ -304,7 +304,7 @@ export function markThreadUnreadMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to mark thread unread.",
+      errorMessage: "Не удалось отметить чат непрочитанным.",
       showErrorToast: false,
     },
     mutationFn: (input: ThreadReadMutationInput) => threadSdk.markUnread(input),

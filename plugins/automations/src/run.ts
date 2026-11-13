@@ -285,7 +285,7 @@ async function runScript(
       closeAutomationRun(db, {
         runId: args.run.id,
         status: "failed",
-        error: "Script automation is missing a stored script file",
+        error: "У автоматизации скрипта отсутствует сохранённый файл",
         now: Date.now(),
       });
       return;
@@ -296,7 +296,7 @@ async function runScript(
     );
     if (workingDir === null) {
       throw new Error(
-        `Project ${args.automation.projectId} has no source on the bb server host`,
+        `У проекта ${args.automation.projectId} нет исходного каталога на хосте сервера bb`,
       );
     }
     const result = await executeStoredScript({
@@ -347,7 +347,7 @@ export function closeAutomationRunForSettledThread(
     const closed = closeAutomationRun(db, {
       runId: run.id,
       status: args.status === "idle" ? "succeeded" : "failed",
-      error: args.status === "idle" ? null : (args.error ?? "Turn failed"),
+      error: args.status === "idle" ? null : (args.error ?? "Ход завершился с ошибкой"),
       threadId: args.threadId,
       now,
     });
@@ -451,7 +451,7 @@ async function reconcileOutcome(
     case "error":
       return {
         status: "failed",
-        error: "Turn failed while the automations plugin was not running",
+        error: "Ход завершился с ошибкой, пока плагин автоматизаций не работал",
       };
     case "pending":
     case "starting":

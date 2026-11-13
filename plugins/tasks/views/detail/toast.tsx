@@ -52,7 +52,7 @@ export function DetailToasts({
           <span className="min-w-0 flex-1">{toast.message}</span>
           <button
             type="button"
-            aria-label="Dismiss"
+            aria-label="Закрыть"
             className="shrink-0 text-muted-foreground hover:text-foreground"
             onClick={() => onDismiss(toast.id)}
           >

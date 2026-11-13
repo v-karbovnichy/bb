@@ -6,9 +6,9 @@ export function SidebarThreadListSetting() {
   const { threadLists } = usePluginSlots();
   return (
     <ReplacementProviderSetting
-      label="Sidebar thread list"
-      triggerAriaLabel="Sidebar thread list"
-      description="Which plugin draws your threads in the sidebar."
+      label="Список чатов в боковой панели"
+      triggerAriaLabel="Список чатов в боковой панели"
+      description="Какой плагин отображает чаты в боковой панели."
       preferenceAtom={threadListProviderAtom}
       slots={threadLists}
     />

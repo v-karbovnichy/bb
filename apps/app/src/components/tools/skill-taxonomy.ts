@@ -8,12 +8,12 @@ const SKILL_ROOT_LABELS: Record<
   Exclude<SkillScope, "provider-user" | "provider-project">,
   string
 > = {
-  "bb-builtin": "Built-in",
-  "bb-user": "bb · user",
-  "bb-project": "bb · project",
-  "shared-user": "Shared · user",
-  "shared-project": "Shared · project",
-  plugin: "Plugin",
+  "bb-builtin": "Встроенный",
+  "bb-user": "bb · пользователь",
+  "bb-project": "bb · проект",
+  "shared-user": "Общий · пользователь",
+  "shared-project": "Общий · проект",
+  plugin: "Плагин",
 };
 
 export function skillScopeLabel(
@@ -21,10 +21,10 @@ export function skillScopeLabel(
   providerDisplayName?: string,
 ): string {
   if (skill.scope === "provider-user" || skill.scope === "provider-project") {
-    const root = skill.scope === "provider-user" ? "user" : "project";
+    const root = skill.scope === "provider-user" ? "пользователь" : "проект";
     const provider = skill.provider;
     const providerLabel =
-      providerDisplayName ?? (provider === null ? "Provider" : provider);
+      providerDisplayName ?? (provider === null ? "Провайдер" : provider);
     return `${providerLabel} · ${root}`;
   }
   return SKILL_ROOT_LABELS[skill.scope];

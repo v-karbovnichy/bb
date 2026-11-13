@@ -1293,10 +1293,10 @@ describe("application links", () => {
     fireEvent.click(screen.getByRole("link", { name: "Review note" }));
     await screen.findByRole("dialog");
     expect(screen.getByText("reflect://note/Project%20X")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     fireEvent.click(screen.getByRole("link", { name: "Review note" }));
     await screen.findByRole("dialog");
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
   });
 });

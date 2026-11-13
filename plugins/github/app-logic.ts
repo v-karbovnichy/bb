@@ -163,12 +163,12 @@ export interface Suggestion {
 }
 
 const QUALIFIER_KEYS: Array<{ key: string; hint: string }> = [
-  { key: "is:", hint: "state — open, closed, merged" },
-  { key: "assignee:", hint: "assigned user, or @me" },
-  { key: "author:", hint: "opened by" },
-  { key: "label:", hint: "has label" },
-  { key: "repo:", hint: "in repository" },
-  { key: "no:", hint: "missing — assignee, label" },
+  { key: "is:", hint: "состояние — open, closed, merged" },
+  { key: "assignee:", hint: "назначенный пользователь или @me" },
+  { key: "author:", hint: "автор" },
+  { key: "label:", hint: "с меткой" },
+  { key: "repo:", hint: "в репозитории" },
+  { key: "no:", hint: "отсутствует — assignee, label" },
 ];
 
 function quoteValue(value: string): string {
@@ -200,7 +200,7 @@ export function buildSuggestions(
       kind === "pr" ? ["open", "closed", "merged"] : ["open", "closed"];
     return states.filter(matches).map((state) => ({
       insert: `${key}:${state} `,
-      label: state,
+      label: state === "open" ? "открыто" : state === "closed" ? "закрыто" : "объединено",
       icon: {
         kind: "state",
         itemKind: kind,

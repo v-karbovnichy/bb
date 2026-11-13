@@ -39,15 +39,15 @@ export function ComposerPlusMenuSlot(
 
 const PROMPT_ACTION_PRESENTATION = {
   skills: {
-    label: "Skills",
+    label: "Навыки",
     icon: "Zap",
   },
   plan: {
-    label: "Plan",
+    label: "План",
     icon: "ListTodo",
   },
   goal: {
-    label: "Goal",
+    label: "Цель",
     icon: "Target",
   },
 } as const satisfies Record<
@@ -131,7 +131,7 @@ export function PromptBoxActionsMenu({
           type="button"
           size="icon"
           variant="ghost"
-          aria-label="Prompt actions"
+          aria-label="Действия с сообщением"
           className={cn(
             COARSE_POINTER_PROMPT_ICON_ACTION_BUTTON_CLASS,
             CHROME_SUBTLE_ICON_BUTTON_FOREGROUND_CLASS,
@@ -142,12 +142,12 @@ export function PromptBoxActionsMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        aria-label="Prompt actions"
+        aria-label="Действия с сообщением"
         align="start"
         side="bottom"
         sideOffset={4}
         className="w-36"
-        mobileTitle="Prompt actions"
+        mobileTitle="Действия с сообщением"
         onCloseAutoFocus={(event) => {
           if (selectedItemRef.current) {
             event.preventDefault();
@@ -171,7 +171,7 @@ export function PromptBoxActionsMenu({
                 className="size-4 text-muted-foreground"
                 aria-hidden
               />
-              Attach files
+              Прикрепить файлы
             </DropdownMenuItem>
             {visibleActions.length > 0 ? <DropdownMenuSeparator /> : null}
           </>

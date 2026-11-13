@@ -296,8 +296,8 @@ export function formatServerMovedNotice(
   move: DesktopServerMove,
 ): ServerMovedNotice {
   return {
-    detail: "bb now opens there. This computer stays connected.",
-    message: `Your bb server moved to ${move.toHostName}`,
+    detail: "Теперь bb открывается там. Этот компьютер остаётся подключённым.",
+    message: `Ваш сервер bb перенесён на ${move.toHostName}`,
   };
 }
 

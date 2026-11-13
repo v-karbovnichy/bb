@@ -664,7 +664,7 @@ function EnvironmentThreadGroupHeaderActions({
     <SidebarRowControls
       primaryAction={
         <SidebarControlButton
-          label="New thread in environment"
+          label="Новый чат в среде"
           icon="MessageSquarePlus"
           onClick={onCreateNewThread}
         />
@@ -676,7 +676,7 @@ function EnvironmentThreadGroupHeaderActions({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Environment actions"
+            aria-label="Действия со средой"
             data-sidebar-rename-anchor=""
             className={SIDEBAR_CONTROL_BUTTON_CLASS}
           >
@@ -690,7 +690,7 @@ function EnvironmentThreadGroupHeaderActions({
           side="right"
           align="start"
           sideOffset={8}
-          mobileTitle="Environment actions"
+          mobileTitle="Действия со средой"
           onCloseAutoFocus={onCloseAutoFocus}
         >
           <DropdownMenuItem
@@ -699,7 +699,7 @@ function EnvironmentThreadGroupHeaderActions({
             }}
           >
             <Icon name="Edit" aria-hidden="true" />
-            Rename
+            Переименовать
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={archiveThreadsPending}
@@ -712,7 +712,7 @@ function EnvironmentThreadGroupHeaderActions({
             }}
           >
             <Icon name="Archive" aria-hidden="true" />
-            Archive
+            Архивировать
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -763,7 +763,7 @@ function EnvironmentThreadGroupHeader({
     id: environmentId,
     ownerKey: `environment:${environmentId}:${representativeThread.id}`,
     name: representativeThread.environment?.name ?? "",
-    label: "Environment name",
+    label: "Название среды",
     placeholder:
       resolveEnvironmentDisplayName(
         {
@@ -837,8 +837,8 @@ function EnvironmentThreadGroupHeader({
           disabled={rename.isEditing}
           className={rename.isEditing ? "hidden" : undefined}
           isCollapsed={isCollapsed}
-          expandLabel={`Expand ${displayName} threads`}
-          collapseLabel={`Collapse ${displayName} threads`}
+          expandLabel={`Развернуть чаты ${displayName}`}
+          collapseLabel={`Свернуть чаты ${displayName}`}
           onToggle={() => onToggleCollapsed(environmentId)}
           revealOnHover={!isCollapsed}
         />
@@ -1267,7 +1267,7 @@ const SectionTreeItemRow = memo(function SectionTreeItemRow({
     id: section.id,
     ownerKey: `section:${section.id}:section:${depthOffset}`,
     name: sectionName,
-    label: "Section name",
+    label: "Название раздела",
     onSave: (name) => sdk.threadSections.update({ id: section.id, name }),
   });
   const [isTopLevelActionsOpen, setIsTopLevelActionsOpen] = useState(false);
@@ -1352,7 +1352,7 @@ const SectionTreeItemRow = memo(function SectionTreeItemRow({
   if (depthOffset === 0) {
     const topLevelActions = (
       <SidebarHeaderControls
-        label={`${sectionName} section`}
+        label={`Раздел ${sectionName}`}
         sectionId={buildSidebarEntitySectionId("section", section.id)}
         onNewThread={
           onCreateThreadInSection
@@ -1850,7 +1850,7 @@ export const ProjectThreadTree = memo(function ProjectThreadTree({
       <ThreadListEmptyState
         message={
           threadListState.status === "unavailable"
-            ? "Threads unavailable"
+            ? "Чаты недоступны"
             : undefined
         }
         className={PROJECT_THREAD_TREE_EMPTY_STATE_CLASS}
@@ -1973,7 +1973,7 @@ export const ChronologicalSectionThreadSections = memo(
       <ThreadListEmptyState
         message={
           threadListState.status === "unavailable"
-            ? "Threads unavailable"
+            ? "Чаты недоступны"
             : undefined
         }
         className={PROJECT_THREAD_TREE_EMPTY_STATE_CLASS}
@@ -2022,7 +2022,7 @@ export const ChronologicalSectionThreadSections = memo(
     const visibilityGroups: ThreadListVisibilityGroup[] = [
       {
         id: "threads",
-        title: "Threads",
+        title: "Чаты",
         threads: looseThreads,
         onNewThread: onCreateThread,
         renderContent: (close: () => void) => (
@@ -2110,7 +2110,7 @@ export const ChronologicalSectionThreadSections = memo(
         groups={visibilityGroups}
         order={fullSectionOrder}
         onOrderChange={onTopLevelSectionOrderChange}
-        label="Sections"
+        label="Разделы"
         selectedThreadId={selectedThreadId}
       >
         {sectionDnd ? (
@@ -2156,7 +2156,7 @@ function ProjectRowComponent({
     id: project.id,
     ownerKey: `project:${project.id}`,
     name: project.name,
-    label: "Project name",
+    label: "Название проекта",
     onSave: (name) => sdk.projects.update({ projectId: project.id, name }),
   });
   const [isDropdownActionsOpen, setIsDropdownActionsOpen] = useState(false);
@@ -2187,7 +2187,7 @@ function ProjectRowComponent({
         toast.error(
           getMutationErrorMessage({
             error,
-            fallbackMessage: "Failed to remove project.",
+            fallbackMessage: "Не удалось удалить проект.",
           }),
         );
       })
@@ -2269,9 +2269,9 @@ function ProjectRowComponent({
         onOpenChange={setIsRemoveDialogOpen}
       >
         <ConfirmDeleteDialogContent
-          title={`Remove ${project.name}?`}
-          description="The project and its threads are removed from bb. This cannot be undone."
-          confirmLabel="Remove project"
+          title={`Удалить ${project.name}?`}
+          description="Проект и его чаты будут удалены из bb. Это действие нельзя отменить."
+          confirmLabel="Удалить проект"
           pending={isRemovePending}
           onConfirm={confirmRemove}
           onCancel={() => setIsRemoveDialogOpen(false)}

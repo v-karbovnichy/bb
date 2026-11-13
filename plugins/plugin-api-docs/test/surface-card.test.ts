@@ -59,7 +59,7 @@ describe("SurfaceCard annotation navigation", () => {
     );
 
     expect(markup).toContain("<summary");
-    expect(markup).toContain("API behavior</summary>");
+    expect(markup).toContain("Поведение API</summary>");
     expect(markup).not.toContain("<details open");
     expect(markup).toContain("mutate, isPending and pendingInputs settle at write acknowledgement");
     expect(markup).toContain("while disconnected, focus/browser-online events recheck stale active reads");
@@ -80,10 +80,10 @@ describe("SurfaceCard annotation navigation", () => {
     );
 
     expect(markup).toContain(
-      `aria-label="Previous annotation: ${surfaces[0]!.title}"`,
+      `aria-label="Предыдущая аннотация: ${surfaces[0]!.title}"`,
     );
     expect(markup).toContain(
-      `aria-label="Next annotation: ${surfaces[2]!.title}"`,
+      `aria-label="Следующая аннотация: ${surfaces[2]!.title}"`,
     );
   });
 
@@ -102,7 +102,7 @@ describe("SurfaceCard annotation navigation", () => {
     );
 
     expect(markup).toMatch(
-      /<button[^>]*disabled=""[^>]*aria-label="No previous annotation"/,
+      /<button[^>]*disabled=""[^>]*aria-label="Предыдущей аннотации нет"/,
     );
   });
 
@@ -116,7 +116,7 @@ describe("SurfaceCard annotation navigation", () => {
       }),
     );
 
-    expect(markup).toContain("Copy for agent");
+    expect(markup).toContain("Скопировать для агента");
     expect(markup).not.toContain("bb-plugin-authoring skill");
   });
 });

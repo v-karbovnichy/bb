@@ -848,10 +848,10 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
     isQueuedMessageSendNowAllowed(queuedMessage);
   const sendAriaLabel =
     sendAction === "steer-when-ready"
-      ? `Steer queued message ${index + 1} when ready`
-      : `Send queued message ${index + 1} now`;
+      ? `Направить сообщение ${index + 1} из очереди, когда будет готово`
+      : `Отправить сообщение ${index + 1} из очереди сейчас`;
   const sendLabel =
-    sendAction === "steer-when-ready" ? "Steer when ready" : "Send now";
+    sendAction === "steer-when-ready" ? "Направить, когда будет готово" : "Отправить сейчас";
   const {
     attributes,
     isDragging,
@@ -893,7 +893,7 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
             !dragDisabled && "cursor-grab active:cursor-grabbing",
           )}
           disabled={dragDisabled}
-          aria-label={`Reorder queued message ${index + 1}`}
+          aria-label={`Изменить порядок сообщения ${index + 1} в очереди`}
           {...attributes}
           {...listeners}
         >
@@ -931,8 +931,8 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                 role="img"
                 aria-label={
                   attachmentCount === 1
-                    ? "1 attachment"
-                    : `${attachmentCount} attachments`
+                    ? "1 вложение"
+                    : `Вложений: ${attachmentCount}`
                 }
               >
                 <Icon name="FileAttachment" className="size-3.5" aria-hidden />
@@ -952,9 +952,9 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                     "inline-flex min-w-0 items-center gap-1",
                     (isProcessing || hasWaitLine) && "max-w-[40%] shrink-0",
                   )}
-                  title={`From ${senderLabel}`}
+                  title={`От ${senderLabel}`}
                 >
-                  <span className="shrink-0">From</span>
+                  <span className="shrink-0">От</span>
                   {queuedMessage.initiator === "agent" &&
                   queuedMessage.senderThreadId !== null ? (
                     <span className="flex min-w-0 [&>.prompt-mention-pill]:text-2xs">
@@ -1047,13 +1047,13 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                             queuedMessageIndex: index,
                           })
                         }
-                        aria-label={`Edit queued message ${index + 1}`}
+                        aria-label={`Редактировать сообщение ${index + 1} в очереди`}
                       >
                         <Icon name="Edit" className="size-4" aria-hidden />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="max-md:hidden">
-                      Edit
+                      Редактировать
                     </TooltipContent>
                   </Tooltip>
                 ) : null}
@@ -1071,13 +1071,13 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                         )}
                         disabled={actionDisabled}
                         onClick={() => onChangeSendTime(queuedMessage.id)}
-                        aria-label={`Change when queued message ${index + 1} sends`}
+                        aria-label={`Изменить время отправки сообщения ${index + 1} из очереди`}
                       >
                         <Icon name="Calendar" className="size-4" aria-hidden />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="max-md:hidden">
-                      Change send time
+                      Изменить время отправки
                     </TooltipContent>
                   </Tooltip>
                 ) : null}
@@ -1093,13 +1093,13 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                       )}
                       disabled={actionDisabled}
                       onClick={() => onDelete(queuedMessage.id)}
-                      aria-label={`Delete queued message ${index + 1}`}
+                      aria-label={`Удалить сообщение ${index + 1} из очереди`}
                     >
                       <Icon name="Trash2" className="size-4" aria-hidden />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="max-md:hidden">
-                    Delete
+                    Удалить
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -1118,7 +1118,7 @@ const QueuedMessageRow = memo(function QueuedMessageRow({
                 mobileActionsExpanded && "hidden",
               )}
               disabled={actionDisabled}
-              aria-label={`Queued message ${index + 1} actions`}
+              aria-label={`Действия с сообщением ${index + 1} в очереди`}
               aria-expanded={mobileActionsExpanded}
               onClick={(event) => {
                 focusActionsOnExpandRef.current = event.detail === 0;
@@ -1176,7 +1176,7 @@ function SortableGroupBoundaryHandle({ disabled }: { disabled: boolean }) {
                       "pointer-events-auto cursor-grabbing border-border bg-background text-foreground opacity-100 shadow-sm",
                   )}
                   disabled={disabled}
-                  aria-label="Messages above send together"
+                  aria-label="Сообщения выше отправятся вместе"
                   {...attributes}
                   {...listeners}
                 >
@@ -1188,7 +1188,7 @@ function SortableGroupBoundaryHandle({ disabled }: { disabled: boolean }) {
                 </button>
               </TooltipTrigger>
               <TooltipContent className="max-md:hidden">
-                Messages above send together
+                Сообщения выше отправятся вместе
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1245,8 +1245,8 @@ function QueuedMessageInlineEditorSlot({
     >
       <OverflowFade placement="above" tone="surface-raised" className="z-10" />
       <InlineMessageEditorFrame
-        cancelLabel="Stop editing queued message"
-        label={`Editing queued message ${editor.queuedMessageIndex + 1}`}
+        cancelLabel="Завершить редактирование сообщения в очереди"
+        label={`Редактирование сообщения ${editor.queuedMessageIndex + 1} в очереди`}
         onCancel={editor.onDismiss}
       >
         <QueuedEditorTypeaheadLayoutContext.Provider value={setTypeaheadLayout}>
@@ -1286,10 +1286,10 @@ export function QueuedMessagesList({
   const senderThreadMetadataById = useSenderThreadMetadataById();
   const processingLabel =
     processingAction === "edit"
-      ? "Editing…"
+      ? "Редактирование…"
       : processingAction === "delete"
-        ? "Deleting…"
-        : "Sending…";
+        ? "Удаление…"
+        : "Отправка…";
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 4 },
@@ -1714,7 +1714,7 @@ export function QueuedMessagesList({
   return (
     <PromptStackCard
       rootRef={surfaceRef}
-      ariaLabel="Queued messages"
+      ariaLabel="Сообщения в очереди"
       style={{ height: surfaceHeight }}
       className={cn(
         "relative z-10 flex min-h-0 flex-col overflow-hidden bg-surface-raised-solid shadow-lift",
@@ -1728,7 +1728,7 @@ export function QueuedMessagesList({
         <button
           ref={focus.triggerRef}
           type="button"
-          aria-label="Toggle queued messages"
+          aria-label="Показать или скрыть очередь сообщений"
           aria-expanded={isExpanded}
           aria-controls={listId}
           onClick={focus.onTriggerClick}
@@ -1738,7 +1738,7 @@ export function QueuedMessagesList({
             isExpanded && "border-b border-border/35",
           )}
         >
-          <span className="font-normal">Queue</span>
+          <span className="font-normal">Очередь</span>
           {isExpanded || systemNoticeCount === 0 ? null : (
             <span
               data-queued-messages-system-count=""
@@ -1813,7 +1813,7 @@ export function QueuedMessagesList({
               attachedToComposer && !inlineEditor && "-mb-3 min-h-7.5 pb-3",
             )}
             controlsId={listId}
-            label="Collapse queued messages"
+            label="Свернуть очередь сообщений"
             onCollapse={focus.onCollapseClick}
           />
         </div>

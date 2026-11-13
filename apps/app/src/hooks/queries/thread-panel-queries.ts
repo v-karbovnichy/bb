@@ -391,7 +391,7 @@ function threadTimelineTurnSummaryDetailsQueryOptions(
     getNextPageParam: (lastPage) => lastPage.olderCursor ?? undefined,
     select: mergeTimelineTurnSummaryDetailsPages,
     meta: {
-      errorMessage: "Failed to load turn summary details.",
+      errorMessage: "Не удалось загрузить подробности хода.",
       showErrorToast: false,
     },
     staleTime: Infinity,

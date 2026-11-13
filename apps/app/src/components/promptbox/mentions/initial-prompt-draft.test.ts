@@ -126,7 +126,7 @@ describe("initial prompt mentions", () => {
       lookup,
       new AbortController().signal,
     );
-    expect(result.mentions[0]?.resource.label).toBe("Thread");
+    expect(result.mentions[0]?.resource.label).toBe("Чат");
   });
 
   it("waits for sidebar metadata and discards a replaced seed's late lookup", async () => {

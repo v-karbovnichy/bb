@@ -62,7 +62,7 @@ async function runCommit(
 ): Promise<void> {
   try {
     const response = await sdk.environments.commit({ environmentId });
-    toast.success("Commit created", {
+    toast.success("Коммит создан", {
       id: toastId,
       description: createElement(CommitToastDescription, {
         commitSha: response.commitSha,
@@ -89,9 +89,9 @@ export function commit(
   queues.set(target.threadId, queue);
   const isQueued = queue.pending > 0;
   queue.pending += 1;
-  const toastId = toast.loading(isQueued ? "Commit queued" : "Creating commit");
+  const toastId = toast.loading(isQueued ? "Коммит в очереди" : "Создание коммита");
   const run = async (): Promise<void> => {
-    if (isQueued) toast.loading("Creating commit", { id: toastId });
+    if (isQueued) toast.loading("Создание коммита", { id: toastId });
     await runCommit(sdk, target.environmentId, toastId);
   };
   const queued = queue.tail.then(run, run);

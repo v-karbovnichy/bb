@@ -109,7 +109,7 @@ export const commitThreadAction: PluginThreadActionRegistration<CommitActionData
     id: "commit",
     placement: "header",
     group: "git",
-    title: "Commit",
+    title: "Создать коммит",
     icon: "GitBranch",
     useData: useCommitActionData,
     item: ({ thread, data }) => {
@@ -123,7 +123,7 @@ export const commitThreadAction: PluginThreadActionRegistration<CommitActionData
         return null;
       }
       return {
-        label: "Commit",
+        label: "Создать коммит",
         icon: "GitBranch",
         run: () =>
           openCommitDialog({

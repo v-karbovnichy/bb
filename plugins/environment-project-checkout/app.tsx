@@ -33,17 +33,17 @@ import {
 import type { CheckoutBranchSelection } from "./contract.js";
 import { PROJECT_CHECKOUT_ENVIRONMENT_PROVIDER_ID } from "./provider-id.js";
 
-const CREATE_NEW_BRANCH_LABEL = "New branch";
+const CREATE_NEW_BRANCH_LABEL = "Новая ветка";
 const CURRENT_ROW_VALUE = "intent:current";
 const NEW_BRANCH_ROW_VALUE = "intent:new";
 const CHECKOUT_ROW_VALUE = "intent:checkout";
 const USE_QUERY_ROW_VALUE = "use-query";
 const BRANCH_LABEL_PREFIXES = [
-  "Current:",
-  "Checkout:",
-  "New branch from:",
+  "Текущая:",
+  "Переключиться:",
+  "Новая ветка от:",
 ] as const;
-const CURRENT_PARENTHESES_LABEL_PREFIX = "Current (";
+const CURRENT_PARENTHESES_LABEL_PREFIX = "Текущая (";
 
 interface CheckoutInputsValue {
   path: string | null;
@@ -100,15 +100,15 @@ export function buildCheckoutInputs(inputs: CheckoutInputsValue): JsonValue {
 function operationName(state: CheckoutState): string {
   switch (state.operation.kind) {
     case "merge":
-      return "Merge";
+      return "Слияние";
     case "rebase":
-      return "Rebase";
+      return "Перебазирование";
     case "cherry-pick":
-      return "Cherry-pick";
+      return "Перенос коммита";
     case "revert":
-      return "Revert";
+      return "Отмена коммита";
     case "unknown":
-      return "Operation";
+      return "Операция";
     case "none":
       return "";
   }
@@ -117,74 +117,74 @@ function operationName(state: CheckoutState): string {
 export function checkoutBlocker(state: CheckoutState): CheckoutBlocker | null {
   if (state.isGit === null) {
     return {
-      label: "Checking",
-      reason: "Checking checkout state",
-      guidance: "Checking whether branch changes are available…",
+      label: "Проверка",
+      reason: "Проверка состояния рабочей копии",
+      guidance: "Проверяем, можно ли сменить ветку…",
     };
   }
   if (!state.isGit) {
     return {
-      label: "Unknown",
-      reason: "Checkout state is unavailable",
+      label: "Неизвестно",
+      reason: "Состояние рабочей копии недоступно",
       guidance:
-        "Branch changes are unavailable because this checkout could not be inspected.",
+        "Сменить ветку нельзя: не удалось проверить рабочую копию.",
     };
   }
   if (state.operation.kind !== "none") {
     if (state.operation.hasConflicts) {
       return {
-        label: "Conflicts",
-        reason: "Checkout blocked by unresolved conflicts",
+        label: "Конфликты",
+        reason: "Переключение заблокировано неразрешёнными конфликтами",
         guidance:
-          "Resolve the conflicts and finish or abort the Git operation to change branches.",
+          "Разрешите конфликты и завершите или отмените операцию Git, чтобы сменить ветку.",
       };
     }
     const name = operationName(state);
     return {
       label: name,
-      reason: `Checkout blocked by an in-progress ${name.toLowerCase()}`,
-      guidance: `Finish or abort the ${name.toLowerCase()} to change branches.`,
+      reason: `Переключение заблокировано: выполняется ${name.toLowerCase()}`,
+      guidance: `Завершите или отмените ${name.toLowerCase()}, чтобы сменить ветку.`,
     };
   }
   if (state.dirty) {
     return {
-      label: "Dirty",
-      reason: "Checkout blocked by uncommitted changes",
+      label: "Изменения",
+      reason: "Переключение заблокировано несохранёнными изменениями",
       guidance:
-        "Commit or stash the uncommitted changes in this checkout to create or switch branches.",
+        "Создайте коммит или спрячьте изменения, чтобы создать другую ветку или переключиться на неё.",
     };
   }
   if (state.detached) {
     return {
-      label: "Detached",
-      reason: "Checkout blocked while HEAD is detached",
+      label: "Отсоединённый HEAD",
+      reason: "Переключение заблокировано: HEAD отсоединён",
       guidance:
-        "Attach HEAD to a branch in this checkout to create or switch branches here.",
+        "Привяжите HEAD к ветке, чтобы создать другую ветку или переключиться на неё.",
     };
   }
   if (state.unborn) {
     return {
-      label: "Empty repo",
-      reason: "Checkout blocked before the first commit",
+      label: "Пустой репозиторий",
+      reason: "Переключение заблокировано до первого коммита",
       guidance:
-        "Create the first commit in this checkout to create or switch branches.",
+        "Создайте первый коммит, чтобы создать другую ветку или переключиться на неё.",
     };
   }
   return null;
 }
 
 function currentMenuLabel(state: CheckoutState): string {
-  if (state.currentBranch !== null) return `Current: ${state.currentBranch}`;
-  if (state.detached) return "Current (detached)";
-  if (state.unborn) return "Current (empty repo)";
-  if (state.isGit === null) return "Checking checkout";
-  return "Unknown checkout";
+  if (state.currentBranch !== null) return `Текущая: ${state.currentBranch}`;
+  if (state.detached) return "Текущая (HEAD отсоединён)";
+  if (state.unborn) return "Текущая (пустой репозиторий)";
+  if (state.isGit === null) return "Проверка рабочей копии";
+  return "Неизвестная рабочая копия";
 }
 
 function currentTriggerLabel(state: CheckoutState): string {
   return state.currentBranch === null
     ? currentMenuLabel(state)
-    : `Current (${state.currentBranch})`;
+    : `Текущая (${state.currentBranch})`;
 }
 
 function resolveCheckoutIntent(
@@ -202,7 +202,7 @@ function splitBranchLabel(label: string): BranchLabelParts {
   ) {
     return {
       kind: "parenthetical",
-      prefix: "Current",
+      prefix: "Текущая",
       value: label.slice(CURRENT_PARENTHESES_LABEL_PREFIX.length, -1),
     };
   }
@@ -239,9 +239,9 @@ function BranchPickerText({
   if (label === CREATE_NEW_BRANCH_LABEL) {
     return (
       <span className={cn("flex min-w-0 items-baseline gap-1", className)}>
-        <span className={valueClassName}>New</span>
+        <span className={valueClassName}>Новая</span>
         <span {...compactAffixProps} className="shrink-0 text-muted-foreground">
-          branch
+          ветка
         </span>
       </span>
     );
@@ -389,7 +389,7 @@ function CheckoutInputsControl({
     selectedBranchName,
   ]);
   const currentOptionLabel =
-    hostId === null ? "Default branch" : currentMenuLabel(checkout);
+    hostId === null ? "Ветка по умолчанию" : currentMenuLabel(checkout);
   const showBranchChooser = checkoutIntent !== "current";
   const showOptionsSearch = showBranchChooser && blocker === null;
   const searchHighlight =
@@ -400,20 +400,20 @@ function CheckoutInputsControl({
         : undefined;
   const triggerLabel =
     inputs.branch?.kind === "existing"
-      ? `Checkout: ${inputs.branch.name}`
+      ? `Переключиться: ${inputs.branch.name}`
       : inputs.branch?.kind === "new"
-        ? `New branch from: ${inputs.branch.baseBranch}`
+        ? `Новая ветка от: ${inputs.branch.baseBranch}`
         : hostId === null
-          ? "Default branch"
+          ? "Ветка по умолчанию"
           : currentTriggerLabel(checkout);
   const triggerTitle =
     blocker?.reason ??
     (inputs.branch?.kind === "existing"
-      ? `Checkout branch: ${inputs.branch.name}`
+      ? `Переключиться на ветку: ${inputs.branch.name}`
       : inputs.branch?.kind === "new"
-        ? `Create a new branch from ${inputs.branch.baseBranch}`
+        ? `Создать ветку от ${inputs.branch.baseBranch}`
         : hostId === null
-          ? "Use the repository’s default branch"
+          ? "Использовать ветку репозитория по умолчанию"
           : currentMenuLabel(checkout));
   const inputsDisabled = projectId === null;
   const updateBranch = (branch: CheckoutBranchSelection | null) => {
@@ -449,7 +449,7 @@ function CheckoutInputsControl({
           variant="ghost"
           size="sm"
           disabled={inputsDisabled}
-          aria-label="Branch"
+          aria-label="Ветка"
           role="combobox"
           aria-expanded={open}
           className={cn(
@@ -486,7 +486,7 @@ function CheckoutInputsControl({
         align="start"
         sideOffset={6}
         collisionPadding={16}
-        mobileTitle="Start from:"
+        mobileTitle="Исходная ветка:"
         autoFocusRef={showOptionsSearch ? inputRef : undefined}
         className={cn(
           BRANCH_PICKER_CONTENT_CLASS_NAME,
@@ -502,7 +502,7 @@ function CheckoutInputsControl({
               inputRef={inputRef}
               query={query}
               onQueryChange={setQuery}
-              ariaLabel="Search branches"
+              ariaLabel="Поиск веток"
             />
           ) : null}
           <div
@@ -510,7 +510,7 @@ function CheckoutInputsControl({
             className="min-h-0 max-h-[60vh] overflow-y-auto overscroll-contain px-1 pb-1 pt-0 md:max-h-80"
             onWheel={(event) => event.stopPropagation()}
           >
-            <BranchPickerSectionHeader label="Start from:" sticky={false} />
+            <BranchPickerSectionHeader label="Исходная ветка:" sticky={false} />
             <BranchPickerRow
               value={CURRENT_ROW_VALUE}
               icon="GitMerge"
@@ -553,10 +553,10 @@ function CheckoutInputsControl({
               disabled={blocker !== null}
               icon="GitMerge"
               selected={checkoutIntent === "checkout"}
-              title={blocker?.reason ?? "Checkout an existing branch"}
+              title={blocker?.reason ?? "Переключиться на существующую ветку"}
               onSelect={() => setCheckoutIntent("checkout")}
             >
-              <BranchPickerText label="Checkout" className="flex-1" wrap />
+              <BranchPickerText label="Переключиться" className="flex-1" wrap />
             </BranchPickerRow>
             {blocker !== null ? (
               <p
@@ -571,7 +571,7 @@ function CheckoutInputsControl({
                 <div className="my-1 h-px bg-border/60" />
                 <BranchPickerSectionHeader
                   label={
-                    checkoutIntent === "new" ? "Branch from:" : "Checkout:"
+                    checkoutIntent === "new" ? "Ветка от:" : "Переключиться:"
                   }
                 />
                 {blocker === null ? (
@@ -599,11 +599,11 @@ function CheckoutInputsControl({
                         value={USE_QUERY_ROW_VALUE}
                         icon="GitMerge"
                         selected={false}
-                        title={`Use ${query.trim()}`}
+                        title={`Использовать ${query.trim()}`}
                         onSelect={() => selectBranchAndClose(query.trim())}
                       >
                         <BranchPickerText
-                          label={`Use ${query.trim()}`}
+                          label={`Использовать ${query.trim()}`}
                           className="flex-1"
                           wrap
                         />
@@ -613,10 +613,10 @@ function CheckoutInputsControl({
                     !(hostId === null && query.trim()) ? (
                       <p className="px-2 py-3 text-center text-xs text-muted-foreground">
                         {branchState.isLoading
-                          ? "Loading branches..."
+                          ? "Загрузка веток..."
                           : checkoutIntent === "checkout"
-                            ? "No local branches found."
-                            : "No branches found."}
+                            ? "Локальные ветки не найдены."
+                            : "Ветки не найдены."}
                       </p>
                     ) : null}
                   </>

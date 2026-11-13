@@ -24,50 +24,50 @@ import type { ConnectTunnel } from "./tunnel.js";
 import type { ConnectStatus, ShareListing } from "./types.js";
 
 const DESCRIPTION = [
-  "Remote access via getbb.app — this bb becomes reachable at https://<handle>.getbb.app.",
-  "Share HTTP ports from any enrolled host (owner session only).",
+  "Удалённый доступ через getbb.app — этот bb доступен по адресу https://<handle>.getbb.app.",
+  "Открывайте HTTP-порты любой подключённой машины (только для сеанса владельца).",
   "",
-  "  1. Sign this bb in to your bb account:",
+  "  1. Войдите в аккаунт bb на этом сервере:",
   "       bb account login",
-  "     (or paste a dashboard code: bb connect --code <code>, which also turns",
-  "     remote access back on)",
-  "  2. Remote access starts on its own and stays up while bb is running.",
+  "     (или вставьте код из панели: bb connect --code <code>; это также включает",
+  "     удалённый доступ)",
+  "  2. Удалённый доступ запустится автоматически и будет работать, пока работает bb.",
   "",
-  "`bb connect off` turns remote access off and keeps the account signed in;",
-  "`bb connect on` turns it back on; `bb account logout` forgets the pairing.",
+  "`bb connect off` выключает удалённый доступ, сохраняя вход в аккаунт;",
+  "`bb connect on` включает его; `bb account logout` удаляет привязку.",
 ].join("\n");
 
 const HOST_OPTION = {
   type: "string",
-  placeholder: "name-or-id",
-  description: "Enrolled host to act on; defaults to the thread's host",
+  placeholder: "имя-или-id",
+  description: "Подключённая машина; по умолчанию машина чата",
 } as const;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для программной обработки",
 } as const;
 
 const PAIR_ERROR_TEXT: Record<string, string> = {
   invalid_code:
-    "that code is invalid or has expired — get a new one from the getbb.app dashboard",
+    "код недействителен или истёк — получите новый в панели getbb.app",
   expired_code:
-    "that code has expired — get a new one from the getbb.app dashboard",
+    "срок действия кода истёк — получите новый в панели getbb.app",
   already_used:
-    "that code was already used — get a new one from the getbb.app dashboard",
-  network: "couldn't reach getbb.app — check the connection and try again",
+    "код уже использован — получите новый в панели getbb.app",
+  network: "нет связи с getbb.app — проверьте подключение и повторите попытку",
   unauthorized:
-    "getbb.app rejected the new pairing — get a new code from the getbb.app dashboard and try again",
+    "getbb.app отклонил привязку — получите новый код в панели getbb.app и повторите попытку",
   profile_unavailable:
-    "this bb saved the pairing, but getbb.app didn't return your account yet — bb keeps retrying, and remote access starts once it does (see `bb account status`)",
+    "bb сохранил привязку, но getbb.app пока не вернул данные аккаунта — bb продолжает попытки; удалённый доступ заработает после получения данных (см. `bb account status`)",
   superseded:
-    "another sign-in or a sign-out replaced this one — run `bb account status` to see which account this bb uses",
+    "эту попытку сменил другой вход или выход — выполните `bb account status`, чтобы узнать используемый аккаунт",
 };
 
 function shareLine(share: ShareListing): string {
   const address =
     share.url === ""
-      ? `unavailable: ${share.unavailableReason ?? "unknown reason"}`
+      ? `недоступно: ${share.unavailableReason ?? "причина неизвестна"}`
       : share.nextUrl === undefined
         ? share.url
         : `${share.url}  ${share.nextUrl}`;
@@ -76,17 +76,17 @@ function shareLine(share: ShareListing): string {
 
 function formatStatus(status: ConnectStatus): string {
   if (!status.paired) {
-    return "Not signed in to a bb account\nRun `bb account status` to see why, or `bb account login` to sign in; remote access starts once the account is ready.";
+    return "Вход в аккаунт bb не выполнен\nВыполните `bb account status`, чтобы узнать причину, или `bb account login` для входа; затем удалённый доступ запустится.";
   }
   if (!status.enabled) {
-    return `${status.handle}  ${status.url}  off\nRemote access is off. Run \`bb connect on\` to turn it back on.`;
+    return `${status.handle}  ${status.url}  выключено\nУдалённый доступ выключен. Выполните \`bb connect on\`, чтобы включить его.`;
   }
   const lines = [`${status.handle}  ${status.url}  ${status.state}`];
   if (status.lastError !== null && status.state !== "connected") {
-    lines.push(`  last error: ${status.lastError}`);
+    lines.push(`  последняя ошибка: ${status.lastError}`);
   }
   if (status.shares.length > 0) {
-    lines.push("  shares:");
+    lines.push("  открытые порты:");
     for (const share of status.shares) {
       lines.push(`    ${shareLine(share)}`);
     }
@@ -100,7 +100,7 @@ function asJson(value: unknown): string {
 
 function notPairedError(): PluginCliError {
   return new PluginCliError(
-    "this bb isn't signed in to a bb account — run `bb account login`",
+    "этот bb не вошёл в аккаунт — выполните `bb account login`",
     { code: "not_paired" },
   );
 }
@@ -108,7 +108,7 @@ function notPairedError(): PluginCliError {
 function pairError(error: unknown): PluginCliError {
   if (error instanceof AccountUnavailableError) {
     return new PluginCliError(
-      "the bb account plugin isn't running — enable it in Settings → Plugins, then try again",
+      "плагин аккаунта bb не работает — включите его в «Настройки» → «Плагины» и повторите попытку",
       { code: "account_unavailable" },
     );
   }
@@ -125,12 +125,12 @@ function machineCodeError(
       return notPairedError();
     case "machine_limit":
       return new PluginCliError(
-        `this account has reached its connect machine limit — revoke a device you no longer use at ${dashboardUrl}, then try again`,
+        `для этого аккаунта достигнут лимит машин Connect — отзовите доступ у неиспользуемого устройства через ${dashboardUrl} и повторите попытку`,
         { code: "machine_limit" },
       );
     case "network":
       return new PluginCliError(
-        "could not reach the connect service to mint a machine code — check the connection and try again",
+        "не удалось связаться с сервисом Connect для создания кода машины — проверьте подключение и повторите попытку",
         { code: "network" },
       );
   }
@@ -142,15 +142,15 @@ function formatMachineCode(payload: MobilePairingPayload): string {
     Math.round((payload.expiresAt - Date.now()) / 60_000),
   );
   return [
-    `Code:       ${payload.code}`,
-    `Server:     ${payload.serverUrl}`,
-    `Apex:       ${payload.apex}`,
-    `Expires:    ${new Date(payload.expiresAt).toISOString()} (in about ${minutes} min)`,
+    `Код:        ${payload.code}`,
+    `Сервер:     ${payload.serverUrl}`,
+    `Основной домен: ${payload.apex}`,
+    `Истекает:   ${new Date(payload.expiresAt).toISOString()} (примерно через ${minutes} мин)`,
     "",
-    "Enter the code in the bb mobile app when it asks to pair over bb connect (or",
-    "scan the QR code from Settings → Mobile → Add mobile device). The phone",
-    "enrolls as a connect machine on this account — it appears in the getbb.app",
-    "dashboard's machine list, where you can revoke it. The code works once.",
+    "Введите код в мобильном приложении bb при привязке через bb connect (или",
+    "отсканируйте QR-код в «Настройки» → «Мобильное приложение» → «Добавить устройство»). Телефон",
+    "добавится как машина Connect в этом аккаунте и появится в списке машин",
+    "панели getbb.app, где можно отозвать доступ. Код действует один раз.",
   ].join("\n");
 }
 
@@ -181,29 +181,29 @@ export function registerConnectCli(args: {
     defineCli({
       name: "connect",
       summary:
-        "Expose this bb at https://<handle>.getbb.app once it is signed in to your bb account",
+        "Открыть доступ к bb по адресу https://<handle>.getbb.app после входа в аккаунт",
       description: DESCRIPTION,
       root: cliCommand({
         summary:
-          "Sign in with a dashboard code (bb account login --code) and turn remote access on",
+          "Войти с кодом из панели (bb account login --code) и включить удалённый доступ",
         options: {
           code: {
             type: "string",
             placeholder: "code",
             description:
-              "One-time pairing code from the getbb.app dashboard; signs this bb in to your bb account",
+              "Одноразовый код привязки из панели getbb.app; выполняет вход bb в аккаунт",
           },
           server: {
             type: "string",
             placeholder: "url",
             description:
-              "Server URL the dashboard printed, https://<handle>.getbb.app or https://<handle>.vibecodethis.site; only its apex origin is used",
+              "Адрес сервера из панели: https://<handle>.getbb.app или https://<handle>.vibecodethis.site; используется только основной домен",
           },
           "base-url": {
             type: "string",
             placeholder: "url",
             description:
-              "getbb.app origin: https://getbb.app or https://vibecodethis.site (development builds also accept http://bb.localhost:<port>)",
+              "Источник getbb.app: https://getbb.app или https://vibecodethis.site (сборки для разработки также принимают http://bb.localhost:<port>)",
           },
           json: JSON_OPTION,
         },
@@ -242,14 +242,14 @@ export function registerConnectCli(args: {
             return {
               exitCode: 0,
               stdout:
-                `Paired as ${status.handle} — reachable at ${status.url}\n` +
-                "This bb is signed in to your bb account (see `bb account status`); the server holds the tunnel while bb is running.\n",
+                `Привязан как ${status.handle} — доступен по адресу ${status.url}\n` +
+                "Этот bb вошёл в ваш аккаунт (см. `bb account status`); туннель работает, пока работает bb.\n",
             };
           }),
       }),
       commands: {
         status: cliCommand({
-          summary: "Show remote-access status",
+          summary: "Показать состояние удалённого доступа",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -263,9 +263,9 @@ export function registerConnectCli(args: {
             }),
         }),
         off: cliCommand({
-          summary: "Turn remote access off and stay signed in",
+          summary: "Выключить удалённый доступ, сохранив вход в аккаунт",
           description:
-            "Closes the tunnel until `bb connect on`. This bb stays signed in to your bb account; `bb account logout` forgets the pairing.",
+            "Закрывает туннель до выполнения `bb connect on`. Вход bb в аккаунт сохраняется; `bb account logout` удаляет привязку.",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -274,12 +274,12 @@ export function registerConnectCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? asJson(status)
-                  : "Remote access is off. This bb stays signed in to your bb account; run `bb connect on` to turn it back on, or `bb account logout` to forget the pairing.\n",
+                  : "Удалённый доступ выключен. Вход bb в аккаунт сохраняется; выполните `bb connect on`, чтобы включить доступ, или `bb account logout`, чтобы удалить привязку.\n",
               };
             }),
         }),
         on: cliCommand({
-          summary: "Turn remote access back on",
+          summary: "Снова включить удалённый доступ",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -290,17 +290,17 @@ export function registerConnectCli(args: {
               return {
                 exitCode: 0,
                 stdout: status.paired
-                  ? `Remote access is on — reachable at ${status.url}\n`
-                  : "Remote access is on. Run `bb account login` to sign in; the tunnel starts once you do.\n",
+                  ? `Удалённый доступ включён — bb доступен по адресу ${status.url}\n`
+                  : "Удалённый доступ включён. Выполните `bb account login`; после входа туннель запустится.\n",
               };
             }),
         }),
         expose: cliCommand({
-          summary: "Share an HTTP port from an enrolled host",
+          summary: "Открыть HTTP-порт подключённой машины",
           positionals: [
             {
               name: "port",
-              description: "TCP port to share, 1-65535",
+              description: "Открываемый TCP-порт, 1–65535",
               required: true,
             },
           ],
@@ -329,11 +329,11 @@ export function registerConnectCli(args: {
             }),
         }),
         unexpose: cliCommand({
-          summary: "Stop sharing an HTTP port from a host",
+          summary: "Закрыть HTTP-порт машины",
           positionals: [
             {
               name: "port",
-              description: "TCP port to stop sharing",
+              description: "Закрываемый TCP-порт",
               required: true,
             },
           ],
@@ -352,22 +352,22 @@ export function registerConnectCli(args: {
               if (!result.removed) {
                 return {
                   exitCode: 0,
-                  stdout: `Port ${result.port} was not shared on ${result.hostName} (${result.hostId}) (idempotent).\n`,
+                  stdout: `Порт ${result.port} не был открыт на ${result.hostName} (${result.hostId}); изменений нет.\n`,
                 };
               }
               return {
                 exitCode: 0,
-                stdout: `Stopped sharing port ${result.port} on ${result.hostName} (${result.hostId})\n`,
+                stdout: `Порт ${result.port} на ${result.hostName} (${result.hostId}) закрыт\n`,
               };
             }),
         }),
         "unexpose-all": cliCommand({
-          summary: "Stop sharing all HTTP ports on a machine",
+          summary: "Закрыть все HTTP-порты машины",
           options: {
             host: {
               type: "string",
               placeholder: "id",
-              description: "Machine ID; defaults to the thread's host",
+              description: "ID машины; по умолчанию машина чата",
             },
             json: JSON_OPTION,
           },
@@ -380,12 +380,12 @@ export function registerConnectCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? asJson(result)
-                  : `Stopped sharing ${result.removed} ports on ${hostId}\n`,
+                  : `На ${hostId} закрыто портов: ${result.removed}\n`,
               };
             }),
         }),
         shares: cliCommand({
-          summary: "List shared ports and their public URLs",
+          summary: "Показать открытые порты и их публичные адреса",
           suggestFor: ["list", "ls", "ports"],
           options: { host: HOST_OPTION, json: JSON_OPTION },
           run: (input, ctx) =>
@@ -402,14 +402,14 @@ export function registerConnectCli(args: {
                 };
               }
               if (shares.length === 0) {
-                return { exitCode: 0, stdout: "No shared ports\n" };
+                return { exitCode: 0, stdout: "Нет открытых портов\n" };
               }
               const lines = shares.map(shareLine);
               return { exitCode: 0, stdout: `${lines.join("\n")}\n` };
             }),
         }),
         servers: cliCommand({
-          summary: "List every bb server on this account",
+          summary: "Показать все серверы bb этого аккаунта",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -420,14 +420,14 @@ export function registerConnectCli(args: {
                 return { exitCode: 0, stdout: asJson(result) };
               }
               if (result.servers.length === 0) {
-                return { exitCode: 0, stdout: "No servers on this account\n" };
+                return { exitCode: 0, stdout: "У этого аккаунта нет серверов\n" };
               }
               const handleWidth = Math.max(
-                "HANDLE".length,
+                "ИМЯ".length,
                 ...result.servers.map((server) => server.handle.length),
               );
               const nameWidth = Math.max(
-                "NAME".length,
+                "НАЗВАНИЕ".length,
                 ...result.servers.map((server) => server.name.length),
               );
               const urlWidth = Math.max(
@@ -435,9 +435,9 @@ export function registerConnectCli(args: {
                 ...result.servers.map((server) => server.url.length),
               );
               const lines = [
-                `${"HANDLE".padEnd(handleWidth)}  ${"NAME".padEnd(nameWidth)}  ${"URL".padEnd(urlWidth)}  LIVE  SELF`,
+                `${"ИМЯ".padEnd(handleWidth)}  ${"НАЗВАНИЕ".padEnd(nameWidth)}  ${"URL".padEnd(urlWidth)}  В СЕТИ  ЭТОТ`,
                 ...result.servers.map((server) => {
-                  const live = server.live ? "yes" : "no";
+                  const live = server.live ? "да" : "нет";
                   const self = server.handle === result.selfHandle ? "*" : "";
                   return `${server.handle.padEnd(handleWidth)}  ${server.name.padEnd(nameWidth)}  ${server.url.padEnd(urlWidth)}  ${live.padEnd(4)}  ${self}`;
                 }),
@@ -447,7 +447,7 @@ export function registerConnectCli(args: {
         }),
         "machine-code": cliCommand({
           summary:
-            "Mint a one-time code that enrolls the bb mobile app as a connect machine",
+            "Создать одноразовый код для добавления мобильного приложения bb как машины Connect",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {

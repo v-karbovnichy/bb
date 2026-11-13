@@ -74,7 +74,7 @@ function PullRequestRowMenu({
         <button
           ref={triggerRef}
           type="button"
-          aria-label="Pull request actions"
+          aria-label="Действия с пул-реквестом"
           className={THREAD_CONTEXT_CARD_MENU_TRIGGER_CLASS}
         >
           <Icon name="MoreHorizontal" />
@@ -87,11 +87,11 @@ function PullRequestRowMenu({
         className={THREAD_CONTEXT_CARD_MENU_CONTENT_CLASS}
         mobileTitle={`PR #${pullRequest.number}`}
       >
-        <DropdownMenuItem textValue="Open on GitHub" onSelect={handlers.onOpen}>
+        <DropdownMenuItem textValue="Открыть на GitHub" onSelect={handlers.onOpen}>
           <Icon name="ExternalLink" />
           Open on GitHub
         </DropdownMenuItem>
-        <DropdownMenuItem textValue="Copy link" onSelect={handlers.onCopyLink}>
+        <DropdownMenuItem textValue="Скопировать ссылку" onSelect={handlers.onCopyLink}>
           <Icon name="Link" />
           Copy link
         </DropdownMenuItem>
@@ -116,7 +116,7 @@ function PullRequestRowMenu({
             <DropdownMenuSeparator />
             {pullRequest.state === "draft" ? (
               <DropdownMenuItem
-                textValue="Mark ready for review"
+                textValue="Отметить готовым к ревью"
                 disabled={handlers.isPending}
                 onSelect={handlers.onMarkReady}
               >
@@ -125,7 +125,7 @@ function PullRequestRowMenu({
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
-                textValue="Convert to draft"
+                textValue="Преобразовать в черновик"
                 disabled={handlers.isPending}
                 onSelect={handlers.onMarkDraft}
               >

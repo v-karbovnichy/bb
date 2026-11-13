@@ -55,7 +55,7 @@ describe("SidebarSectionRow", () => {
     const result = renderSectionRow({});
 
     const disclosure = screen.getByRole("button", {
-      name: "Collapse Nested work section",
+      name: "Свернуть раздел Nested work",
     });
     const icon = result.container.querySelector('[data-icon="ListView"]');
     const label = screen.getByText("Nested work");

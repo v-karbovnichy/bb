@@ -45,16 +45,16 @@ export function createConnectPlugin(options: ConnectPluginOptions = {}) {
     const settings = bb.settings.define({
       remoteAccess: {
         type: "boolean",
-        label: "Remote access",
+        label: "Удалённый доступ",
         description:
-          "Keep this bb reachable at its getbb.app address while it is signed in to your bb account. Turning it off keeps the account signed in.",
+          "Пока bb вошёл в ваш аккаунт, он доступен по адресу getbb.app. При выключении удалённого доступа вход в аккаунт сохраняется.",
         default: true,
       },
       sendRemoteInstructions: {
         type: "boolean",
-        label: "Tell agents about remote access",
+        label: "Сообщать агентам об удалённом доступе",
         description:
-          "When you use BB remotely, tell agents to share servers through Connect. Applies to new agent sessions.",
+          "При удалённой работе с BB сообщать агентам, что серверы можно открывать через Connect. Применяется к новым сеансам агентов.",
         default: true,
       },
     });

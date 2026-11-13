@@ -430,7 +430,7 @@ describe("UpdatesSettingsSection", () => {
 
     expect(
       await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     ).toBeDefined();
     expect(screen.queryByText(/updating shortly/i)).toBeNull();
@@ -483,20 +483,20 @@ describe("UpdatesSettingsSection", () => {
     renderSection();
 
     const bulkActions = screen.getByRole("toolbar", {
-      name: "Bulk update actions",
+      name: "Массовые действия с обновлениями",
     });
     const updateAll = bulkActions.querySelector(
-      '[aria-label="Update all 2 CLI tools"]',
+      '[aria-label="Обновить все инструменты CLI (2)"]',
     );
     expect(updateAll).not.toBeNull();
     expect(updateAll?.className).toContain("bg-foreground");
     expect(updateAll?.className).toContain("text-background");
-    expect(updateAll?.textContent).toBe("Update all");
+    expect(updateAll?.textContent).toBe("Обновить все");
     expect(updateAll?.firstElementChild?.getAttribute("data-icon")).toBe(
       "Download",
     );
     const fleetSection = screen
-      .getByRole("heading", { name: "Provider CLIs" })
+      .getByRole("heading", { name: "CLI провайдеров" })
       .closest("section");
     const fleetHeader = fleetSection?.firstElementChild;
     const fleetBody = fleetSection?.children.item(1);
@@ -539,13 +539,13 @@ describe("UpdatesSettingsSection", () => {
 
     function releaseNotesButton(version: string): HTMLElement {
       return screen.getByRole("button", {
-        name: `Changelog for bb ${version}`,
+        name: `Список изменений bb ${version}`,
       });
     }
 
     function releaseNotesPanel(version: string): HTMLElement | null {
       return screen.queryByRole("region", {
-        name: `bb ${version} changelog`,
+        name: `Список изменений bb ${version}`,
       });
     }
 
@@ -589,7 +589,7 @@ describe("UpdatesSettingsSection", () => {
         within(panel).getByText("bb 0.48.0 · October 28, 2026"),
       ).toBeDefined();
       expect(
-        within(panel).getByText("This build includes changes since 0.48.0"),
+        within(panel).getByText("Эта сборка включает изменения после версии 0.48.0"),
       ).toBeDefined();
       expect(recordTelemetryEvent).toHaveBeenCalledExactlyOnceWith({
         name: "release_notes_opened",
@@ -640,7 +640,7 @@ describe("UpdatesSettingsSection", () => {
       vi.mocked(recordTelemetryEvent).mockClear();
 
       const link = within(releaseNotesPanel("0.47.0")!).getByRole("link", {
-        name: /Full changelog/,
+        name: /Полный список изменений/,
       });
       expect(link.getAttribute("href")).toBe(
         "https://getbb.app/changelog#0-47-0",
@@ -714,10 +714,10 @@ The published lede.
 
       const panel = releaseNotesPanel("0.0.5")!;
       expect(
-        await within(panel).findByText("bb 0.0.5 has no changelog in the app."),
+        await within(panel).findByText("Для bb 0.0.5 нет списка изменений в приложении."),
       ).toBeDefined();
       expect(
-        within(panel).getByRole("heading", { name: "What's new in bb 0.0.5" }),
+        within(panel).getByRole("heading", { name: "Что нового в bb 0.0.5" }),
       ).toBeDefined();
     });
 
@@ -731,7 +731,7 @@ The published lede.
       fireEvent.click(releaseNotesButton("0.0.5"));
 
       const panel = releaseNotesPanel("0.0.5")!;
-      expect(within(panel).getByText("Loading the changelog…")).toBeDefined();
+      expect(within(panel).getByText("Загрузка списка изменений…")).toBeDefined();
       expect(within(panel).queryByText(/has no changelog/)).toBeNull();
     });
 
@@ -742,7 +742,7 @@ The published lede.
 
       const panel = releaseNotesPanel("0.0.5")!;
       expect(
-        await within(panel).findByText("Couldn't load the changelog."),
+        await within(panel).findByText("Не удалось загрузить список изменений."),
       ).toBeDefined();
       expect(within(panel).queryByText(/has no changelog/)).toBeNull();
     });
@@ -819,7 +819,7 @@ The published lede.
         const panel = releaseNotesPanel("0.48.0")!;
         expect(
           within(panel).getByRole("heading", {
-            name: "41 new commits on main",
+            name: "Новых коммитов в main: 41",
           }),
         ).toBeDefined();
         expect(within(panel).getByText("aaaaaaa → bbbbbbb")).toBeDefined();
@@ -831,13 +831,13 @@ The published lede.
             .getByRole("link", { name: "#6757" })
             .getAttribute("href"),
         ).toBe("https://github.com/get-bb/bb/pull/6757");
-        expect(within(panel).getByText("and 39 more")).toBeDefined();
+        expect(within(panel).getByText("и ещё 39")).toBeDefined();
         expect(
           within(panel).queryByRole("heading", { name: "Reliability" }),
         ).toBeNull();
 
         fireEvent.click(
-          within(panel).getByRole("link", { name: /Compare on GitHub/ }),
+          within(panel).getByRole("link", { name: /Сравнить на GitHub/ }),
         );
         expect(openUrlInExternalBrowserMock).toHaveBeenCalledExactlyOnceWith(
           `https://github.com/get-bb/bb/compare/${FROM}...${TO}`,
@@ -850,7 +850,7 @@ The published lede.
 
         await waitFor(() => expect(sdk.system.appUpdate).toHaveBeenCalled());
         expect(
-          screen.queryByRole("button", { name: /^Changelog for bb/ }),
+          screen.queryByRole("button", { name: /^Список изменений bb/ }),
         ).toBeNull();
       });
     });
@@ -882,29 +882,29 @@ The published lede.
     await waitFor(() => {
       expect(
         screen
-          .getAllByText("Up to date")
+          .getAllByText("Обновлено")
           .every((label) => label.className.includes("sr-only")),
       ).toBe(true);
     });
     expect(screen.queryByText("2 up to date")).toBeNull();
     expect(
-      screen.getByText("Nothing to update on all 2 machines."),
+      screen.getByText("Нет обновлений на всех машинах (2)."),
     ).toBeDefined();
     expect(document.querySelector("[data-updates-machine]")).toBeNull();
     expect(screen.queryByText("workstation")).toBeNull();
-    expect(screen.queryByText("This machine")).toBeNull();
+    expect(screen.queryByText("Эта машина")).toBeNull();
     expect(screen.queryByText("Codex")).toBeNull();
     expect(screen.queryByText(/Checked/)).toBeNull();
     expect(screen.queryByText(/ago$/)).toBeNull();
     expect(screen.queryByText(/^In sync$/)).toBeNull();
     expect(screen.queryByText("workstation, studio-mac")).toBeNull();
     expect(screen.queryByRole("button", { name: /check/i })).toBeNull();
-    expect(screen.queryByRole("heading", { name: "Updates" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Обновления" })).toBeNull();
     expect(
       document.querySelector('[data-updates-domain="changelog"]'),
     ).toBeNull();
 
-    const settledRows = screen.getAllByText(/^Up to date/);
+    const settledRows = screen.getAllByText(/^Обновлено/);
     expect(
       settledRows.every(
         (settled) =>
@@ -946,11 +946,11 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("Nothing to update on workstation.")).toBeDefined();
-    fireEvent.click(screen.getByRole("button", { name: "Show machines" }));
+    expect(screen.getByText("Нет обновлений на workstation.")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Показать машины" }));
     fireEvent.click(screen.getByRole("button", { name: "workstation" }));
     const codexRow = document.querySelector('[data-provider-row="codex"]');
-    expect(codexRow?.textContent).toContain("Latest unknown");
+    expect(codexRow?.textContent).toContain("Последняя версия неизвестна");
     expect(
       codexRow?.querySelector('[data-update-state="up-to-date"]'),
     ).toBeNull();
@@ -978,26 +978,26 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("homelab is offline.")).toBeDefined();
+    expect(screen.getByText("homelab не в сети.")).toBeDefined();
     expect(screen.queryByText(/Nothing to update/)).toBeNull();
     expect(screen.queryByText(/all in sync/)).toBeNull();
     expect(document.querySelector("[data-updates-machine]")).toBeNull();
     expect(
       document.querySelector('[data-bb-update-role="app"]'),
     ).not.toBeNull();
-    expect(screen.getByText("Server")).toBeDefined();
+    expect(screen.getByText("Сервер")).toBeDefined();
 
-    fireEvent.click(screen.getByRole("button", { name: "Show machines" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать машины" }));
     const row = document.querySelector<HTMLElement>(
       '[data-updates-machine="host_1"]',
     );
     expect(row).not.toBeNull();
-    expect(within(row as HTMLElement).getByText("Offline")).toBeDefined();
+    expect(within(row as HTMLElement).getByText("Не в сети")).toBeDefined();
     expect(
       within(row as HTMLElement).queryByRole("button", { name: "homelab" }),
     ).toBeNull();
     await waitFor(() => {
-      expect(screen.getByText(/^Up to date/)).toBeDefined();
+      expect(screen.getByText(/^Обновлено/)).toBeDefined();
     });
   });
 
@@ -1045,10 +1045,10 @@ The published lede.
       screen.getByText("2 other machines have nothing to update"),
     ).toBeDefined();
     expect(
-      screen.getByRole("button", { name: /^Failed · Retry on/ }),
+      screen.getByRole("button", { name: /^Ошибка · Повторить сейчас на/ }),
     ).toBeDefined();
 
-    const showAll = screen.getByRole("button", { name: "Show all" });
+    const showAll = screen.getByRole("button", { name: "Показать все" });
     expect(showAll.getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(showAll);
 
@@ -1057,8 +1057,8 @@ The published lede.
         row.getAttribute("data-updates-machine"),
       ),
     ).toEqual(["host_3", "host_1", "host_2"]);
-    expect(screen.getByText("Offline")).toBeDefined();
-    fireEvent.click(screen.getByRole("button", { name: "Hide" }));
+    expect(screen.getByText("Не в сети")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть" }));
     expect(document.querySelectorAll("[data-updates-machine]")).toHaveLength(1);
   });
 
@@ -1092,13 +1092,13 @@ The published lede.
     );
     expect(row).not.toBeNull();
     expect(within(row as HTMLElement).getByText("homelab")).toBeDefined();
-    expect(within(row as HTMLElement).getByText("Updating bb")).toBeDefined();
+    expect(within(row as HTMLElement).getByText("Обновление bb")).toBeDefined();
     expect(
       row?.querySelector('[data-update-state="in-progress"]'),
     ).not.toBeNull();
-    expect(screen.queryByRole("button", { name: /Retry/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Повторить/ })).toBeNull();
     expect(screen.queryByText(/can't connect/i)).toBeNull();
-    expect(screen.queryByText("Offline")).toBeNull();
+    expect(screen.queryByText("Не в сети")).toBeNull();
   });
 
   it("explains and retries a daemon update that has stalled", () => {
@@ -1130,20 +1130,20 @@ The published lede.
     expect(screen.getByText("homelab")).toBeDefined();
     expect(screen.queryByText("1 needs attention")).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Failed · Retry on homelab now" }),
+      screen.getByRole("button", { name: "Ошибка · Повторить сейчас на homelab" }),
     ).toBeDefined();
     expect(screen.queryByText("1 machine needs attention")).toBeNull();
     expect(screen.queryByText(/daemon protocol/)).toBeNull();
     expect(
       document.querySelector('[data-updates-machine="host_1"]')?.innerHTML,
     ).not.toContain("bg-surface-destructive");
-    expect(screen.queryByText(/^Up to date/)).toBeNull();
+    expect(screen.queryByText(/^Обновлено/)).toBeNull();
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(screen.getByText("Update didn't finish").className).toContain(
+    expect(screen.getByText("Обновление не завершилось").className).toContain(
       "text-destructive",
     );
     expect(
-      screen.getAllByRole("button", { name: /^Failed · Retry on/ }),
+      screen.getAllByRole("button", { name: /^Ошибка · Повторить сейчас на/ }),
     ).toHaveLength(1);
 
     expect(
@@ -1152,7 +1152,7 @@ The published lede.
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Failed · Retry on homelab now",
+        name: "Ошибка · Повторить сейчас на homelab",
       }),
     );
     expect(retryHostUpdateMutateMock).toHaveBeenCalledWith(
@@ -1185,7 +1185,7 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("Update this app to reconnect")).toBeDefined();
+    expect(screen.getByText("Обновите приложение, чтобы подключиться снова")).toBeDefined();
     expect(
       screen.queryByRole("button", { name: /Update homelab now/ }),
     ).toBeNull();
@@ -1217,10 +1217,10 @@ The published lede.
 
     renderSection();
 
-    expect(screen.queryByText(/^Up to date/)).toBeNull();
+    expect(screen.queryByText(/^Обновлено/)).toBeNull();
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Update all 3 machines now",
+        name: "Повторить обновление всех машин сейчас (3)",
       }),
     );
     expect(retryHostUpdateMutateMock).toHaveBeenCalledTimes(3);
@@ -1229,7 +1229,7 @@ The published lede.
     }
     expect(
       screen.getByRole("button", {
-        name: "Failed · Retry on studio-mac now",
+        name: "Ошибка · Повторить сейчас на studio-mac",
       }),
     ).toBeDefined();
   });
@@ -1265,7 +1265,7 @@ The published lede.
     ).toEqual(["codex"]);
     expect(row.querySelector("[data-updates-machine-detail]")).toBeNull();
     expect(screen.queryByText("Codex")).toBeNull();
-    expect(screen.queryByText(/^Update available/)).toBeNull();
+    expect(screen.queryByText(/^Доступно обновление/)).toBeNull();
     expect(
       screen.queryByRole("button", { name: /Update Codex on workstation/ }),
     ).toBeNull();
@@ -1294,7 +1294,7 @@ The published lede.
     const codexRow = detail.querySelector('[data-provider-row="codex"]');
     expect(
       codexRow?.querySelector("[data-provider-updater]")?.textContent,
-    ).toBe("Built-in updater");
+    ).toBe("Встроенный механизм обновления");
     await waitFor(() => {
       expect(
         codexRow?.querySelector(
@@ -1405,13 +1405,13 @@ The published lede.
     await waitFor(() => {
       expect(
         within(primaryHeading)
-          .getByText("Server")
+          .getByText("Сервер")
           .hasAttribute("data-machine-tag"),
       ).toBe(true);
     });
-    expect(primaryHeading.textContent).not.toContain("This machine");
-    expect(localHeading.textContent).toContain("This machine");
-    expect(within(localHeading).queryByText("Server")).toBeNull();
+    expect(primaryHeading.textContent).not.toContain("Эта машина");
+    expect(localHeading.textContent).toContain("Эта машина");
+    expect(within(localHeading).queryByText("Сервер")).toBeNull();
   });
 
   it("badges a lone server machine without marking it as this machine", async () => {
@@ -1442,11 +1442,11 @@ The published lede.
     await waitFor(() => {
       expect(
         within(primaryHeading)
-          .getByText("Server")
+          .getByText("Сервер")
           .hasAttribute("data-machine-tag"),
       ).toBe(true);
     });
-    expect(primaryHeading.textContent).not.toContain("This machine");
+    expect(primaryHeading.textContent).not.toContain("Эта машина");
   });
 
   it("lists Cursor updates with the other provider CLIs", async () => {
@@ -1536,7 +1536,7 @@ The published lede.
     renderSection();
 
     const summary = document.querySelector("[data-updates-summary]");
-    expect(summary?.textContent).toBe("Checking for updates…");
+    expect(summary?.textContent).toBe("Проверка обновлений…");
     expect(summary?.querySelector('[data-icon="Loading"]')).not.toBeNull();
     expect(screen.queryByText(/Nothing to update/)).toBeNull();
     expect(document.querySelector("[data-updates-machine]")).toBeNull();
@@ -1577,11 +1577,11 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("Couldn't check for updates").className).toContain(
+    expect(screen.getByText("Не удалось проверить обновления").className).toContain(
       "text-destructive",
     );
     const retry = screen.getByRole("button", {
-      name: /Check workstation's CLIs again/,
+      name: /Повторить проверку CLI на workstation/,
     });
     expect(retry.className).not.toContain("text-destructive");
     expect(retry.hasAttribute("disabled")).toBe(false);
@@ -1651,9 +1651,9 @@ The published lede.
 
     renderSection();
 
-    expect(screen.queryByRole("button", { name: /Update all/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Обновить все/ })).toBeNull();
     expect(document.querySelector("[data-updates-progress]")?.textContent).toBe(
-      "Updating 1 of 2",
+      "Обновление 1 из 2",
     );
     expect(
       document
@@ -1721,25 +1721,25 @@ The published lede.
       runner("host_1:codex", ["host_1:claude-code", "host_1:acp-cursor"]),
     );
     const view = render(tree());
-    expect(progress()).toBe("Updating 1 of 3");
+    expect(progress()).toBe("Обновление 1 из 3");
 
     useProviderCliInstallRunnerMock.mockReturnValue(
       runner("host_1:claude-code", ["host_1:acp-cursor"]),
     );
     view.rerender(tree());
-    expect(progress()).toBe("Updating 2 of 3");
+    expect(progress()).toBe("Обновление 2 из 3");
 
     useProviderCliInstallRunnerMock.mockReturnValue(
       runner("host_1:acp-cursor", []),
     );
     view.rerender(tree());
-    expect(progress()).toBe("Updating 3 of 3");
+    expect(progress()).toBe("Обновление 3 из 3");
 
     useProviderCliInstallRunnerMock.mockReturnValue(runner(null, []));
     view.rerender(tree());
     expect(progress()).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Update all 3 CLI tools" }),
+      screen.getByRole("button", { name: "Обновить все инструменты CLI (3)" }),
     ).toBeDefined();
   });
 
@@ -1780,7 +1780,7 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("Claude Code failed").className).toContain(
+    expect(screen.getByText("Ошибка: Claude Code").className).toContain(
       "text-destructive",
     );
     expect(
@@ -1790,7 +1790,7 @@ The published lede.
     ).toBe("failed");
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Failed · Retry failed updates on workstation",
+        name: "Ошибка · Повторить неудачные обновления на workstation",
       }),
     );
     expect(startInstallMock).toHaveBeenCalledWith({ hostId: "host_1", issue });
@@ -1802,11 +1802,11 @@ The published lede.
     expect(screen.queryByText("Command exited with code 1")).toBeNull();
     expect(
       screen.getByRole("button", {
-        name: "Failed · Retry Claude Code on workstation",
+        name: "Ошибка · Повторить обновление Claude Code на workstation",
       }),
     ).toBeDefined();
     fireEvent.click(
-      screen.getByRole("button", { name: "View Claude Code update log" }),
+      screen.getByRole("button", { name: "Посмотреть журнал обновления Claude Code" }),
     );
     expect(getProviderCliInstallSnapshot().logDialogState).toEqual(
       logDialogState,
@@ -1843,7 +1843,7 @@ The published lede.
     expect(screen.getByText("npx bb-app@latest")).toBeDefined();
     expect(screen.getByText("0.0.6")).toBeDefined();
     const copyButton = screen.getByRole("button", {
-      name: "Update available · Copy the upgrade command",
+      name: "Доступно обновление · Скопировать команду обновления",
     });
     expect(copyButton.textContent).toBe("");
     expect(copyButton.className).not.toContain("bg-secondary");
@@ -1851,9 +1851,9 @@ The published lede.
     expect(updateSurface?.querySelector(".bg-card")).not.toBeNull();
     expect(updateSurface?.querySelector(".divide-y")).not.toBeNull();
     expect(
-      within(updateSurface as HTMLElement).getByText("Server"),
+      within(updateSurface as HTMLElement).getByText("Сервер"),
     ).toBeDefined();
-    expect(screen.queryByText(/^Update available/)).toBeNull();
+    expect(screen.queryByText(/^Доступно обновление/)).toBeNull();
 
     await waitFor(() => {
       expect(sdk.system.version).toHaveBeenCalledWith({ force: true });
@@ -1889,7 +1889,7 @@ The published lede.
 
     renderSection();
     const relaunch = screen.getByRole("button", {
-      name: /Relaunch bb to finish updating/,
+      name: /Перезапустить bb для завершения обновления/,
     });
     expect(relaunch.querySelector("img")?.className).toContain("size-3");
     expect(relaunch.className).toContain("border");
@@ -1927,13 +1927,13 @@ The published lede.
       expect(
         (
           screen.getByRole("button", {
-            name: /Retry the desktop release check/,
+            name: /Повторить проверку выпусков приложения/,
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(false);
     });
     expect(
-      screen.getByText("Couldn't determine the latest desktop release."),
+      screen.getByText("Не удалось определить последний выпуск приложения."),
     ).toBeTruthy();
 
     let finishCheck: (() => void) | undefined;
@@ -1944,27 +1944,27 @@ The published lede.
         }),
     );
     fireEvent.click(
-      screen.getByRole("button", { name: /Retry the desktop release check/ }),
+      screen.getByRole("button", { name: /Повторить проверку выпусков приложения/ }),
     );
     await waitFor(() => {
       expect(checkForUpdates).toHaveBeenCalledTimes(2);
       expect(
         (
           screen.getByRole("button", {
-            name: /Retry the desktop release check/,
+            name: /Повторить проверку выпусков приложения/,
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(true);
     });
     expect(
-      screen.getByText("Checking for a newer desktop release…"),
+      screen.getByText("Проверка нового выпуска приложения…"),
     ).toBeTruthy();
     await act(async () => finishCheck?.());
     await waitFor(() => {
       expect(
         (
           screen.getByRole("button", {
-            name: /Retry the desktop release check/,
+            name: /Повторить проверку выпусков приложения/,
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(false);
@@ -1990,7 +1990,7 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("Update available")).toBeDefined();
+    expect(screen.getByText("Доступно обновление")).toBeDefined();
     expect(screen.queryByText("Downloading in the background…")).toBeNull();
   });
 
@@ -2018,7 +2018,7 @@ The published lede.
       expect(checkForUpdates).toHaveBeenCalledTimes(1);
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Failed · Retry the download" }),
+      screen.getByRole("button", { name: "Ошибка · Повторить загрузку" }),
     );
 
     await waitFor(() => {
@@ -2052,9 +2052,9 @@ The published lede.
     expect(screen.getByRole("button", { name: "laptop" })).toBeDefined();
     expect(screen.getByRole("button", { name: "homelab" })).toBeDefined();
     const updateAll = screen.getByRole("button", {
-      name: "Update all 2 CLI tools",
+      name: "Обновить все инструменты CLI (2)",
     });
-    expect(updateAll.textContent).toBe("Update all");
+    expect(updateAll.textContent).toBe("Обновить все");
     expect(updateAll.firstElementChild?.getAttribute("data-icon")).toBe(
       "Download",
     );
@@ -2133,14 +2133,14 @@ The published lede.
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Update available · Update Notes to 1.2.0",
+        name: "Доступно обновление · Обновить Notes до 1.2.0",
       }),
     );
     expect(startPluginUpdateMock).toHaveBeenCalledTimes(1);
     expect(startPluginUpdateMock).toHaveBeenLastCalledWith("notes");
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Update all 2 plugins" }),
+      screen.getByRole("button", { name: "Обновить все плагины (2)" }),
     );
     expect(startPluginUpdateMock.mock.calls.slice(1)).toEqual([
       ["linear"],
@@ -2208,20 +2208,20 @@ The published lede.
       job("gamma", "queued"),
     ];
     const view = render(tree());
-    expect(progress()).toBe("Updating 1 of 3");
+    expect(progress()).toBe("Обновление 1 из 3");
     expect(rowState("alpha")).toBe("in-progress");
     expect(rowState("gamma")).toBe("in-progress");
     expect(
-      within(section()).queryByRole("button", { name: /Update all/u }),
+      within(section()).queryByRole("button", { name: /Обновить все/u }),
     ).toBeNull();
 
     pluginUpdateJobs.current = [job("gamma", "running")];
     view.rerender(tree());
-    expect(progress()).toBe("Updating 3 of 3");
+    expect(progress()).toBe("Обновление 3 из 3");
     expect(rowState("alpha")).toBeNull();
     expect(
       within(section()).getByRole("button", {
-        name: "Update available · Update alpha to 1.1.0",
+        name: "Доступно обновление · Обновить alpha до 1.1.0",
       }),
     ).toBeDefined();
 
@@ -2229,7 +2229,7 @@ The published lede.
     view.rerender(tree());
     expect(progress()).toBeNull();
     expect(
-      within(section()).getByRole("button", { name: "Update all 3 plugins" }),
+      within(section()).getByRole("button", { name: "Обновить все плагины (3)" }),
     ).toBeDefined();
   });
 
@@ -2257,7 +2257,7 @@ The published lede.
 
     renderSection();
     fireEvent.click(
-      screen.getByRole("button", { name: "Update all 1 plugin" }),
+      screen.getByRole("button", { name: "Обновить все плагины (1)" }),
     );
 
     await waitFor(() => {
@@ -2285,22 +2285,22 @@ The published lede.
 
     renderSection();
 
-    expect(screen.getByText("1 manual")).toBeDefined();
+    expect(screen.getByText("Требуют ручного обновления: 1")).toBeDefined();
     expect(
       document
         .querySelector('[data-provider-avatar="claude-code"]')
         ?.hasAttribute("data-provider-manual"),
     ).toBe(true);
-    expect(screen.queryByRole("button", { name: /Update all/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Обновить все/ })).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "workstation" }));
     expect(
       document.querySelector('[data-provider-row="claude-code"]')?.textContent,
-    ).toContain("Update in terminal");
+    ).toContain("Обновить в терминале");
     expect(
       screen.queryByRole("button", { name: "Update workstation" }),
     ).toBeNull();
-    expect(screen.queryByRole("button", { name: "Update" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Обновить" })).toBeNull();
   });
 
   it("omits an empty machine container", async () => {
@@ -2315,7 +2315,7 @@ The published lede.
 
     expect(document.querySelector("[data-updates-machine]")).toBeNull();
     expect(screen.queryByText("No machines yet.")).toBeNull();
-    expect(screen.getByText("No machines available.")).toBeDefined();
+    expect(screen.getByText("Нет доступных машин.")).toBeDefined();
   });
 
   it("updates bb from the app when the launcher supports it", async () => {
@@ -2336,7 +2336,7 @@ The published lede.
     renderSection();
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     );
 
@@ -2361,7 +2361,7 @@ The published lede.
     renderSection();
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     );
 
@@ -2394,7 +2394,7 @@ The published lede.
     renderSection();
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     );
 
@@ -2425,11 +2425,11 @@ The published lede.
         screen
           .getAllByRole("button")
           .map((button) => button.textContent)
-          .filter((label) => label !== null && /^Update/.test(label)),
-      ).toEqual(["Update"]);
+          .filter((label) => label !== null && /^Обновить/.test(label)),
+      ).toEqual(["Обновить"]);
       expect(
         screen.queryByRole("switch", {
-          name: "Restart and update bb automatically",
+          name: "Автоматически перезапускать и обновлять bb",
         }) !== null,
       ).toBe(experiment);
     },
@@ -2455,7 +2455,7 @@ The published lede.
     renderSection();
     fireEvent.click(
       await screen.findByRole("switch", {
-        name: "Restart and update bb automatically",
+        name: "Автоматически перезапускать и обновлять bb",
       }),
     );
 
@@ -2493,22 +2493,22 @@ The published lede.
 
     renderSection();
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "More update options" }),
+      await screen.findByRole("button", { name: "Другие варианты обновления" }),
       { button: 0, ctrlKey: false },
     );
     fireEvent.click(
-      screen.getByRole("menuitem", { name: "Skip this version" }),
+      screen.getByRole("menuitem", { name: "Пропустить эту версию" }),
     );
 
     expect(
       await screen.findByText(
-        "Skipped until a newer version · 2 threads running",
+        "Пропущено до выхода новой версии · 2 threads running",
       ),
     ).toBeDefined();
     expect(sdk.system.experimental_cancelScheduledAppUpdate).toHaveBeenCalled();
     expect(
       screen.getByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     ).toBeDefined();
   });
@@ -2531,7 +2531,7 @@ The published lede.
     );
 
     renderSection();
-    fireEvent.click(await screen.findByRole("button", { name: "Update now" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Обновить сейчас" }));
 
     const dialog = await screen.findByRole("dialog");
     expect(within(dialog).getByText(/1 thread is running/)).toBeDefined();
@@ -2566,7 +2566,7 @@ The published lede.
     renderSection();
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     );
 
@@ -2590,7 +2590,7 @@ The published lede.
         available: null,
         blocked: {
           reason: "fetch-failed",
-          message: "Couldn't check npm for a newer release.",
+          message: "Не удалось проверить новый выпуск в npm.",
         },
       }),
     );
@@ -2610,17 +2610,17 @@ The published lede.
     );
     renderSection();
     const retry = await screen.findByRole("button", {
-      name: "Latest unknown · Retry the release check",
+      name: "Последняя версия неизвестна · Повторить проверку выпусков",
     });
     expect(
-      screen.getByText("Couldn't check npm for a newer release."),
+      screen.getByText("Не удалось проверить новый выпуск в npm."),
     ).toBeDefined();
     expect(retry.querySelector('[data-icon="CircleQuestion"]')).toBeNull();
     await waitFor(() =>
       expect(
         screen
           .getByRole("button", {
-            name: "Latest unknown · Retry the release check",
+            name: "Последняя версия неизвестна · Повторить проверку выпусков",
           })
           .hasAttribute("disabled"),
       ).toBe(false),
@@ -2631,7 +2631,7 @@ The published lede.
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Latest unknown · Retry the release check",
+        name: "Последняя версия неизвестна · Повторить проверку выпусков",
       }),
     );
     await waitFor(() =>
@@ -2640,7 +2640,7 @@ The published lede.
     await waitFor(() =>
       expect(
         screen.queryByRole("button", {
-          name: "Latest unknown · Retry the release check",
+          name: "Последняя версия неизвестна · Повторить проверку выпусков",
         }),
       ).toBeNull(),
     );
@@ -2690,13 +2690,13 @@ The published lede.
 
     renderSection();
 
-    expect(await screen.findByText("Last update failed")).toBeDefined();
+    expect(await screen.findByText("Последнее обновление не удалось")).toBeDefined();
     expect(
-      screen.getByRole("button", { name: "View the failed bb update" }),
+      screen.getByRole("button", { name: "Посмотреть неудачное обновление bb" }),
     ).toBeDefined();
     expect(
       screen.getByRole("button", {
-        name: "Failed · Download the update and restart bb",
+        name: "Ошибка · Загрузить обновление и перезапустить bb",
       }),
     ).toBeDefined();
   });
@@ -2723,7 +2723,7 @@ The published lede.
     renderSection();
 
     expect(
-      await screen.findByRole("button", { name: "View the failed bb update" }),
+      await screen.findByRole("button", { name: "Посмотреть неудачное обновление bb" }),
     ).toBeDefined();
     expect(document.querySelector('[data-update-state="failed"]')).toBeNull();
   });
@@ -2774,18 +2774,18 @@ The published lede.
 
       renderSection();
 
-      await screen.findByText("Server");
-      expect(screen.queryByText("Latest unknown")).toBeNull();
+      await screen.findByText("Сервер");
+      expect(screen.queryByText("Последняя версия неизвестна")).toBeNull();
       expect(document.querySelector('[data-icon="CircleQuestion"]')).toBeNull();
-      expect(screen.queryByText("Up to date")).toBeNull();
+      expect(screen.queryByText("Обновлено")).toBeNull();
       expect(
         screen.queryByRole("button", {
-          name: "Update available · Copy the upgrade command",
+          name: "Доступно обновление · Скопировать команду обновления",
         }),
       ).toBeNull();
       if (version.installKind === "npm") {
         expect(
-          await screen.findByText("Couldn't check npm for a newer release."),
+          await screen.findByText("Не удалось проверить новый выпуск в npm."),
         ).toBeDefined();
       }
       if (version.installKind === "source") {
@@ -2794,10 +2794,10 @@ The published lede.
             "Update this checkout with Git. Automatic update checks are off.",
           ),
         ).toBeNull();
-        expect(screen.getByText("Source checkout")).toBeDefined();
+        expect(screen.getByText("Локальная копия исходного кода")).toBeDefined();
         expect(
           screen.getByText(
-            version.currentCommit === null ? "Build 0.0.5" : "aaaaaaa",
+            version.currentCommit === null ? "Сборка 0.0.5" : "aaaaaaa",
           ),
         ).toBeDefined();
         expect(screen.queryByText(/9.9.9/)).toBeNull();
@@ -2859,10 +2859,10 @@ The published lede.
       expect(
         document.querySelector('[data-update-state="update-available"]'),
       ).toBeNull();
-      expect(screen.getByText("Source checkout")).toBeDefined();
+      expect(screen.getByText("Локальная копия исходного кода")).toBeDefined();
       expect(
         screen.queryByRole("button", {
-          name: "Update available · Download the update and restart bb",
+          name: "Доступно обновление · Загрузить обновление и перезапустить bb",
         }),
       ).toBeNull();
     },
@@ -2924,11 +2924,11 @@ The published lede.
     if (bbCard === null) throw new Error("expected the bb card");
     fireEvent.click(
       await within(bbCard).findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     );
-    expect(within(bbCard).getByText("Server")).toBeDefined();
-    expect(within(bbCard).queryByText("Desktop")).toBeNull();
+    expect(within(bbCard).getByText("Сервер")).toBeDefined();
+    expect(within(bbCard).queryByText("Приложение")).toBeNull();
     expect(bbCard.querySelectorAll('[data-bb-update-role="app"]')).toHaveLength(
       1,
     );
@@ -2973,8 +2973,8 @@ The published lede.
       '[data-updates-domain="bb"]',
     );
     if (bbCard === null) throw new Error("expected the bb card");
-    const desktopName = await within(bbCard).findByText("Desktop");
-    const serverName = within(bbCard).getByText("Server");
+    const desktopName = await within(bbCard).findByText("Приложение");
+    const serverName = within(bbCard).getByText("Сервер");
     expect(
       serverName.compareDocumentPosition(desktopName) &
         Node.DOCUMENT_POSITION_PRECEDING,
@@ -2983,13 +2983,13 @@ The published lede.
     expect(serverName.className).toContain("w-16");
     expect(
       await within(bbCard).findByRole("switch", {
-        name: "Restart and update the server automatically",
+        name: "Автоматически перезапускать и обновлять сервер",
       }),
     ).toBeDefined();
     expect(document.querySelector("[data-updates-device]")).toBeNull();
     fireEvent.click(
       within(bbCard).getByRole("button", {
-        name: /Relaunch bb to finish updating/,
+        name: /Перезапустить bb для завершения обновления/,
       }),
     );
     expect(installUpdate).toHaveBeenCalledOnce();
@@ -3023,13 +3023,13 @@ The published lede.
     async function renderBbCard(): Promise<HTMLElement> {
       renderSection();
       const bbCard = screen.getByRole("region", { name: "bb" });
-      await within(bbCard).findByText("Desktop");
+      await within(bbCard).findByText("Приложение");
       return bbCard;
     }
 
     function notesButton(bbCard: HTMLElement, version: string): HTMLElement {
       return within(bbCard).getByRole("button", {
-        name: `Changelog for bb ${version}`,
+        name: `Список изменений bb ${version}`,
       });
     }
 
@@ -3041,7 +3041,7 @@ The published lede.
       fireEvent.click(notesButton(bbCard, "0.47.0"));
 
       const panel = within(bbCard).getByRole("region", {
-        name: "bb 0.47.0 changelog",
+        name: "Список изменений bb 0.47.0",
       });
       expect(notesButton(bbCard, "0.47.0").getAttribute("aria-controls")).toBe(
         panel.id,
@@ -3080,14 +3080,14 @@ The published lede.
     renderSection();
 
     await waitFor(() => expect(sdk.system.appUpdate).toHaveBeenCalled());
-    expect(screen.getByText("Server")).toBeDefined();
-    expect(screen.queryByText("Desktop")).toBeNull();
+    expect(screen.getByText("Сервер")).toBeDefined();
+    expect(screen.queryByText("Приложение")).toBeNull();
     expect(
       document.querySelectorAll('[data-bb-update-role="app"]'),
     ).toHaveLength(1);
     expect(
       screen.queryByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       }),
     ).toBeNull();
   });
@@ -3119,15 +3119,15 @@ The published lede.
 
       const bbCard = screen.getByRole("region", { name: "bb" });
       await waitFor(() => expect(checkForUpdates).toHaveBeenCalledOnce());
-      expect(within(bbCard).getByText("Server")).toBeDefined();
+      expect(within(bbCard).getByText("Сервер")).toBeDefined();
       expect(within(bbCard).getByText("0.0.4")).toBeDefined();
-      expect(within(bbCard).queryByText("Desktop")).toBeNull();
+      expect(within(bbCard).queryByText("Приложение")).toBeNull();
       expect(
         within(bbCard).queryByText(/Update bb in the desktop app on/),
       ).toBeNull();
       expect(
         within(bbCard).queryByRole("button", {
-          name: /Copy the upgrade command|Relaunch bb|Download the update/,
+          name: /Скопировать команду обновления|Relaunch bb|Download the update/,
         }),
       ).toBeNull();
       expect(sdk.system.version).toHaveBeenCalledWith({ force: true });
@@ -3147,10 +3147,10 @@ The published lede.
       vi.mocked(sdk.system.applyAppUpdate).mockResolvedValue(status);
       renderSection();
       const update = await screen.findByRole("button", {
-        name: "Update available · Download the update and restart bb",
+        name: "Доступно обновление · Загрузить обновление и перезапустить bb",
       });
-      expect(screen.getByText("Server")).toBeDefined();
-      expect(screen.queryByText("Desktop")).toBeNull();
+      expect(screen.getByText("Сервер")).toBeDefined();
+      expect(screen.queryByText("Приложение")).toBeNull();
       expect(screen.queryByText(/Update bb in the desktop app on/)).toBeNull();
       fireEvent.click(update);
       await waitFor(() =>

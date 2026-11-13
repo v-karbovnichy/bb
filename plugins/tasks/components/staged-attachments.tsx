@@ -35,7 +35,7 @@ export function stageFiles(files: readonly File[]): StagedAttachment[] {
           id: nextStagedId++,
           file,
           status: "oversized" as const,
-          error: `Over the 25 MB attachment limit (${formatFileSize(file.size)})`,
+          error: `Превышен лимит вложения 25 МБ (${formatFileSize(file.size)})`,
         }
       : { id: nextStagedId++, file, status: "staged" as const },
   );
@@ -176,18 +176,18 @@ export function AttachmentChip({
       {entry.status === "failed" && onRetry ? (
         <button
           type="button"
-          aria-label={`Retry upload of ${entry.file.name}`}
+          aria-label={`Повторить загрузку ${entry.file.name}`}
           aria-busy={entry.busy === true}
           disabled={disabled || entry.busy === true}
           className="font-medium underline underline-offset-2 disabled:opacity-60"
           onClick={onRetry}
         >
-          {entry.busy ? "Retrying…" : "Retry"}
+          {entry.busy ? "Повторная попытка…" : "Повторить"}
         </button>
       ) : null}
       <button
         type="button"
-        aria-label={`Remove ${entry.file.name}`}
+        aria-label={`Удалить ${entry.file.name}`}
         disabled={disabled || entry.busy === true}
         className={cn(
           "disabled:opacity-60",

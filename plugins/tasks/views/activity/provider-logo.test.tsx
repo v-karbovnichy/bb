@@ -29,7 +29,7 @@ describe("CommentProviderAvatar", () => {
   it("falls back to the generic agent glyph when no provider resolves", () => {
     const { container } = render(<CommentProviderAvatar provider={null} />);
 
-    expect(screen.getByRole("img", { name: "Agent" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Агент" })).toBeTruthy();
     expect(container.querySelector("[data-provider-logo]")).toBeNull();
   });
 

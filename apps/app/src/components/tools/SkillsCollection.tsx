@@ -78,11 +78,11 @@ function skillSourceFilterId(skill: SkillSummary): ResourceSkillSourceFilter {
 function skillSourceFilterLabel(source: ResourceSkillSourceFilter): string {
   switch (source) {
     case "bb-official":
-      return "BB Official";
+      return "Официальный BB";
     case "included":
-      return "Included in plugin";
+      return "Входит в плагин";
     case "user":
-      return "User";
+      return "Пользователь";
   }
 }
 
@@ -211,21 +211,21 @@ function includedPluginDescription(
   skill: SkillSummary,
   providerRoster: ProviderRoster,
 ): string {
-  return `${providerPluginDisplayName(skill)} (${providerLabel(skill.provider, providerRoster)} plugin)`;
+  return `${providerPluginDisplayName(skill)} (плагин ${providerLabel(skill.provider, providerRoster)})`;
 }
 
 function skillMutationDisabledReason(
   skill: SkillSummary,
   providerRoster: ProviderRoster,
 ): string {
-  if (skill.scope === "bb-builtin") return "Built-in skill";
-  if (skill.scope === "plugin") return "Bundled with plugin";
-  return `Bundled with ${providerLabel(skill.provider, providerRoster)}`;
+  if (skill.scope === "bb-builtin") return "Встроенный навык";
+  if (skill.scope === "plugin") return "Входит в плагин";
+  return `Входит в комплект ${providerLabel(skill.provider, providerRoster)}`;
 }
 
 const SKILLS_BROWSE_DESCRIPTION = (
   <>
-    Trending agent skills from{" "}
+    Популярные навыки агентов с{" "}
     <a
       href="https://skills.sh"
       target="_blank"
@@ -234,11 +234,11 @@ const SKILLS_BROWSE_DESCRIPTION = (
     >
       skills.sh
     </a>
-    . Install one and every agent you use in bb can run it.
+    . Установите навык, и любой агент в bb сможет им пользоваться.
   </>
 );
 const SKILLS_LIBRARY_DESCRIPTION =
-  "The skills on this bb host — yours, your providers', and those bundled with plugins. They work with every agent you use in bb.";
+  "Навыки на этом хосте bb: ваши, навыки провайдеров и навыки из плагинов. Они доступны всем агентам, которых вы используете в bb.";
 
 const PREFETCH_HOVER_INTENT_MS = 150;
 
@@ -280,23 +280,23 @@ function SkillRow({
         title={skill.name}
         titleMeta={
           skill.scope === "bb-builtin" ? (
-            <ProvenancePill label="BB Official" />
+            <ProvenancePill label="Официальный BB" />
           ) : skill.scope === "plugin" ? (
             <ProvenancePill
-              label="Included"
+              label="Входит в комплект"
               tooltip={
                 <SkillProvenanceTooltip
-                  prefix="Included with"
+                  prefix="Входит в"
                   providerId={skill.provider}
                   provider={
                     skill.provider === null
                       ? undefined
                       : providerRoster.get(skill.provider)
                   }
-                  name={`${providerPluginDisplayName(skill)} plugin.`}
+                  name={`Плагин ${providerPluginDisplayName(skill)}.`}
                 />
               }
-              accessibleLabel={`${skill.name} is included with ${includedPluginDescription(skill, providerRoster)}`}
+              accessibleLabel={`Навык ${skill.name} входит в ${includedPluginDescription(skill, providerRoster)}`}
             />
           ) : undefined
         }
@@ -475,22 +475,22 @@ export function SkillsOverview({
   const libraryBody = hasError ? (
     <ResourceListState
       state="error"
-      message="Couldn't load skills."
+      message="Не удалось загрузить навыки."
       onRetry={onRetry}
     />
   ) : isLoading ? (
-    <ResourceListState state="loading" message="Loading skills" />
+    <ResourceListState state="loading" message="Загрузка навыков" />
   ) : visibleSkills.length === 0 ? (
     <ResourceListState
       state="empty"
       message={
         normalizedQuery === ""
           ? skills.length === 0
-            ? "No skills in your library."
-            : "No skills match these filters."
+            ? "В вашей библиотеке нет навыков."
+            : "По заданным фильтрам навыки не найдены."
           : sourceFilters.length > 0 || providerFilters.length > 0
-            ? `No skills match "${query}" with these filters.`
-            : `No skills match "${query}"`
+            ? `По запросу «${query}» и заданным фильтрам навыки не найдены.`
+            : `По запросу «${query}» навыки не найдены`
       }
     />
   ) : (
@@ -534,12 +534,12 @@ export function SkillsOverview({
           toolbar={
             <ResourceToolbar
               searchValue={query}
-              searchPlaceholder="Search skills"
+              searchPlaceholder="Поиск навыков"
               onSearchChange={onQueryChange}
               action={
                 <CreateWithTemplatesButton
                   kind="skill"
-                  label="New bb skill"
+                  label="Новый навык bb"
                   onCreate={onCreateSkill}
                 />
               }
@@ -550,7 +550,7 @@ export function SkillsOverview({
                     groups={[
                       {
                         id: "type",
-                        label: "Type",
+                        label: "Тип",
                         options: SOURCE_FILTER_OPTIONS,
                         selectedValues: sourceFilters,
                         onChange: (values) =>
@@ -560,7 +560,7 @@ export function SkillsOverview({
                       },
                       {
                         id: "provider",
-                        label: "Provider",
+                        label: "Провайдер",
                         options: providerOptions,
                         selectedValues: providerFilters,
                         onChange: (values) =>
@@ -577,10 +577,10 @@ export function SkillsOverview({
                     options={[
                       {
                         id: "provider",
-                        label: "Provider",
+                        label: "Провайдер",
                         disabled: providerBucketCount <= 1,
                       },
-                      { id: "alpha", label: "Skill name" },
+                      { id: "alpha", label: "Название навыка" },
                     ]}
                     onChange={handleSortChange}
                   />
@@ -651,23 +651,23 @@ export function SkillDetailDialogView({
     (canEdit || canDelete || canOpenInEditor) &&
     !confirmingDelete ? (
       <ResourceOverflowMenu
-        label={`${skill.name} actions`}
+        label={`Действия с навыком ${skill.name}`}
         items={[
           {
-            label: "Edit",
+            label: "Редактировать",
             icon: "Edit" as const,
             disabled: !canEditSelectedPath,
             disabledReason: !canEdit
               ? disabledReason
               : selectedPath !== "SKILL.md"
-                ? "Only SKILL.md can be edited"
+                ? "Редактировать можно только SKILL.md"
                 : undefined,
             onSelect: onEdit,
           },
           ...(canOpenInEditor
             ? [
                 {
-                  label: "Open source",
+                  label: "Открыть исходник",
                   icon: "ExternalLink" as const,
                   onSelect: onOpenInEditor,
                 },
@@ -675,7 +675,7 @@ export function SkillDetailDialogView({
             : []),
           { kind: "separator" as const },
           {
-            label: "Delete",
+            label: "Удалить",
             icon: "Trash2" as const,
             tone: "destructive" as const,
             disabled: !canDelete,
@@ -693,39 +693,39 @@ export function SkillDetailDialogView({
       titleBadge={
         skill.scope === "bb-builtin"
           ? {
-              label: "BB Official",
-              tooltip: "Ships with bb",
-              accessibleLabel: `${skill.name} is BB Official`,
+              label: "Официальный BB",
+              tooltip: "Входит в bb",
+              accessibleLabel: `Навык ${skill.name} — официальный навык BB`,
             }
           : bundledPluginName !== null
             ? {
-                label: "Included",
+                label: "Входит в комплект",
                 tooltip: (
                   <SkillProvenanceTooltip
-                    prefix="Included with"
+                    prefix="Входит в"
                     providerId={skill.provider}
                     provider={
                       skill.provider === null
                         ? undefined
                         : providerRoster.get(skill.provider)
                     }
-                    name={`${providerPluginDisplayName(skill)} plugin.`}
+                    name={`Плагин ${providerPluginDisplayName(skill)}.`}
                   />
                 ),
-                accessibleLabel: `${skill.name} is included with ${includedPluginDescription(skill, providerRoster)}`,
+                accessibleLabel: `Навык ${skill.name} входит в ${includedPluginDescription(skill, providerRoster)}`,
               }
             : skill.provider !== null
               ? {
-                  label: "Imported",
+                  label: "Импортирован",
                   tooltip: (
                     <SkillProvenanceTooltip
-                      prefix="Discovered from"
+                      prefix="Обнаружен у"
                       providerId={skill.provider}
                       provider={providerRoster.get(skill.provider)}
                       name={providerLabel(skill.provider, providerRoster)}
                     />
                   ),
-                  accessibleLabel: `${skill.name} is imported from ${providerLabel(skill.provider, providerRoster)}`,
+                  accessibleLabel: `Навык ${skill.name} импортирован из ${providerLabel(skill.provider, providerRoster)}`,
                 }
               : undefined
       }
@@ -737,7 +737,7 @@ export function SkillDetailDialogView({
         isContentError
           ? {
               kind: "error",
-              message: `Failed to load ${selectedPath}.`,
+              message: `Не удалось загрузить ${selectedPath}.`,
               onRetry,
             }
           : isLoadingContent
@@ -753,9 +753,9 @@ export function SkillDetailDialogView({
           }}
         >
           <ConfirmDeleteDialogContent
-            title="Delete skill?"
-            description={`Delete "${skill.name}" from its current location? This cannot be undone.`}
-            confirmLabel="Delete skill"
+            title="Удалить навык?"
+            description={`Удалить «${skill.name}» из текущей папки? Это действие нельзя отменить.`}
+            confirmLabel="Удалить навык"
             pending={isDeleting}
             onConfirm={onDelete}
             onCancel={() => setConfirmingDelete(false)}

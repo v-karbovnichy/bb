@@ -35,7 +35,7 @@ it("restores focus after a programmatically opened rename dialog closes", async 
   view.rerender(<RenameDialogHarness open />);
   await waitFor(() =>
     expect(document.activeElement).toBe(
-      screen.getByRole("textbox", { name: "Thread name" }),
+      screen.getByRole("textbox", { name: "Название чата" }),
     ),
   );
 

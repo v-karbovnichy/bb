@@ -25,7 +25,7 @@ export function useThreadSessionOptionChoices(args: {
 } {
   const { threadId, options } = args;
   const { mutate } = useUpdateThread({
-    errorMessage: "Failed to change the agent option.",
+    errorMessage: "Не удалось изменить параметр агента.",
   });
   const [optimistic, setOptimistic] = useState<OptimisticChoices>({
     threadId,

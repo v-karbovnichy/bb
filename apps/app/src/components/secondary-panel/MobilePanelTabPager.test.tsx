@@ -28,7 +28,7 @@ function createTabs(labels = ["README.md", "package.json", "AGENTS.md"]) {
 }
 
 function createFixedTabs() {
-  return ["Info", "Diff"].map((label) => ({
+  return ["Информация", "Diff"].map((label) => ({
     id: label,
     label,
     ariaLabel: label,
@@ -48,13 +48,13 @@ describe("MobilePanelTabPager", () => {
         newTabControl={<button>Add tab</button>}
       />,
     );
-    expect(screen.getByRole("button", { name: "Info" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Информация" })).toBeDefined();
     expect(screen.getByRole("button", { name: "Diff" })).toBeDefined();
     expect(screen.queryByRole("button", { name: "README.md" })).toBeNull();
     expect(screen.queryByRole("button", { name: "AGENTS.md" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Next tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующая вкладка" }));
     expect(tabs[2].onSelect).toHaveBeenCalledOnce();
-    fireEvent.click(screen.getByRole("button", { name: "Previous tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Предыдущая вкладка" }));
     expect(tabs[0].onSelect).toHaveBeenCalledOnce();
     rerender(
       <MobilePanelTabPager
@@ -66,7 +66,7 @@ describe("MobilePanelTabPager", () => {
     );
     expect(
       screen
-        .getByRole("button", { name: "Previous tab" })
+        .getByRole("button", { name: "Предыдущая вкладка" })
         .hasAttribute("disabled"),
     ).toBe(true);
     rerender(
@@ -78,7 +78,7 @@ describe("MobilePanelTabPager", () => {
       />,
     );
     expect(
-      screen.getByRole("button", { name: "Next tab" }).hasAttribute("disabled"),
+      screen.getByRole("button", { name: "Следующая вкладка" }).hasAttribute("disabled"),
     ).toBe(true);
   });
 
@@ -139,7 +139,7 @@ describe("MobilePanelTabPager", () => {
       expect(screen.getByRole("button", { name: tab.label })).toBeDefined();
     }
     expect(screen.queryByRole("button", { name: "README.md" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Next tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующая вкладка" }));
     expect(tabs[2].onSelect).toHaveBeenCalledOnce();
     expect(tabs[4].onSelect).not.toHaveBeenCalled();
 
@@ -207,11 +207,11 @@ describe("MobilePanelTabPager", () => {
       fireEvent.click(contentTab);
     }
     expect(tabs[1].onSelect).toHaveBeenCalledTimes(2);
-    fireEvent.click(screen.getByRole("button", { name: "Next tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующая вкладка" }));
     expect(tabs[2].onSelect).toHaveBeenCalledOnce();
     rerender(
       <MobilePanelTabPager
-        activeTabId="Info"
+        activeTabId="Информация"
         fixedTabs={fixedTabs}
         tabs={[tabs[0], tabs[2]]}
         newTabControl={null}
@@ -224,16 +224,16 @@ describe("MobilePanelTabPager", () => {
   it("leaves fixed views and add available when there are no content tabs", () => {
     render(
       <MobilePanelTabPager
-        activeTabId="Info"
+        activeTabId="Информация"
         fixedTabs={createFixedTabs()}
         tabs={[]}
         newTabControl={<button>Add tab</button>}
       />,
     );
-    expect(screen.getByRole("button", { name: "Info" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Информация" })).toBeDefined();
     expect(screen.getByRole("button", { name: "Diff" })).toBeDefined();
     expect(screen.getByRole("button", { name: "Add tab" })).toBeDefined();
-    for (const name of ["Previous tab", "Next tab"]) {
+    for (const name of ["Предыдущая вкладка", "Следующая вкладка"]) {
       expect(
         screen.getByRole("button", { name }).hasAttribute("disabled"),
       ).toBe(true);
@@ -250,7 +250,7 @@ describe("MobilePanelTabPager", () => {
         newTabControl={null}
       />,
     );
-    const close = screen.getByRole("button", { name: "Close package.json" });
+    const close = screen.getByRole("button", { name: "Закрыть package.json" });
     fireEvent.touchStart(close, { touches: [{ clientX: 160, clientY: 20 }] });
     fireEvent.touchEnd(close, {
       changedTouches: [{ clientX: 80, clientY: 25 }],

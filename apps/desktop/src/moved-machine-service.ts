@@ -54,11 +54,11 @@ async function fileSize(path: string): Promise<number> {
 
 function describeInstallerExit(exit: InstallerExit): string {
   if (exit.error !== null) {
-    return `The installer could not start: ${exit.error.message}.`;
+    return `Не удалось запустить установщик: ${exit.error.message}.`;
   }
   return exit.signal === null
-    ? `The installer exited with code ${String(exit.code)}.`
-    : `The installer stopped with ${exit.signal}.`;
+    ? `Установщик завершился с кодом ${String(exit.code)}.`
+    : `Установщик остановился по сигналу ${exit.signal}.`;
 }
 
 async function readInstallerFailure(args: {
@@ -122,8 +122,8 @@ export function formatMachineServiceFailureNotice(args: {
   reason: string;
 }): ServerMovedNotice {
   return {
-    detail: `bb couldn't install the background service that keeps this computer connected and up to date: ${args.reason} bb tries again the next time it opens. The installer log is ${args.logPath}.`,
-    message: `This computer stays connected to ${args.move.toHostName} only while bb is open`,
+    detail: `bb не удалось установить фоновую службу, которая поддерживает подключение и обновление этого компьютера: ${args.reason} bb повторит попытку при следующем запуске. Журнал установщика: ${args.logPath}.`,
+    message: `Этот компьютер остаётся подключённым к ${args.move.toHostName}, только пока открыт bb`,
   };
 }
 

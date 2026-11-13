@@ -1770,11 +1770,11 @@ describe("PluginPanelView routes", () => {
         </Routes>
       </MemoryRouter>,
     );
-    expect(screen.queryByText(/This plugin panel is not available/)).toBeNull();
+    expect(screen.queryByText(/Эта панель плагина недоступна/)).toBeNull();
 
     act(() => markPluginFrontendsSettled());
     expect(
-      screen.getByText(/This plugin panel is not available/),
+      screen.getByText(/Эта панель плагина недоступна/),
     ).toBeDefined();
   });
 });
@@ -2294,7 +2294,7 @@ describe("plugin thread panel actions", () => {
     }
 
     const root = render(<RootActionHarness />);
-    expect(screen.getByText("Start terminal")).toBeDefined();
+    expect(screen.getByText("Открыть терминал")).toBeDefined();
     expect(screen.getByText("Set up thread")).toBeDefined();
     expect(screen.queryByText("Thread issue")).toBeNull();
     fireEvent.click(screen.getByText("Set up thread"));
@@ -2321,11 +2321,11 @@ describe("plugin thread panel actions", () => {
         context={{ kind: "thread", threadId: "thr_9", environment: null }}
       />,
     );
-    expect(screen.queryByText(/This plugin tab is not available/)).toBeNull();
+    expect(screen.queryByText(/Эта вкладка плагина недоступна/)).toBeNull();
 
     act(() => markPluginFrontendsSettled());
 
-    expect(screen.getByText(/This plugin tab is not available/)).toBeDefined();
+    expect(screen.getByText(/Эта вкладка плагина недоступна/)).toBeDefined();
   });
 
   it("narrows invalid persisted params to null before rendering plugin code", () => {
@@ -2659,6 +2659,6 @@ describe("plugin file opener tabs", () => {
         fileOpenerOriginal={<div>must not render</div>}
       />,
     );
-    expect(screen.getByText(/file opener is not available/)).toBeDefined();
+    expect(screen.getByText(/Просмотр файла недоступен/)).toBeDefined();
   });
 });

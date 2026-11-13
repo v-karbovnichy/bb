@@ -36,31 +36,31 @@ const NOON = at(12);
 describe("listSchedulePresets", () => {
   it("offers relative and useful wall-clock choices", () => {
     expect(listSchedulePresets(NOON)).toEqual([
-      { id: "in-5-minutes", label: "In 5 minutes", at: NOON + 5 * 60 * 1000 },
+      { id: "in-5-minutes", label: "Через 5 минут", at: NOON + 5 * 60 * 1000 },
       {
         id: "in-10-minutes",
-        label: "In 10 minutes",
+        label: "Через 10 минут",
         at: NOON + 10 * 60 * 1000,
       },
       {
         id: "in-30-minutes",
-        label: "In 30 minutes",
+        label: "Через 30 минут",
         at: NOON + 30 * 60 * 1000,
       },
       {
         id: "in-1-hour",
-        label: "In 1 hour",
+        label: "Через 1 час",
         at: NOON + 60 * 60 * 1000,
       },
       {
         id: "in-2-hours",
-        label: "In 2 hours",
+        label: "Через 2 часа",
         at: NOON + 2 * 60 * 60 * 1000,
       },
-      { id: "this-evening", label: "This evening", at: at(18) },
+      { id: "this-evening", label: "Сегодня вечером", at: at(18) },
       {
         id: "tomorrow-morning",
-        label: "Tomorrow morning",
+        label: "Завтра утром",
         at: localTime(NOON, 1, 9),
       },
     ]);
@@ -105,20 +105,20 @@ describe("custom schedules", () => {
   it("rejects missing, impossible, and past choices", () => {
     expect(parseCustomScheduleTime({ date: "", time: "09:00" }, NOON)).toEqual({
       ok: false,
-      message: "Choose a date.",
+      message: "Выберите дату.",
     });
     expect(
       parseCustomScheduleTime({ date: "2026-08-26", time: "" }, NOON),
-    ).toEqual({ ok: false, message: "Choose a time." });
+    ).toEqual({ ok: false, message: "Выберите время." });
     expect(
       parseCustomScheduleTime({ date: "2026-02-30", time: "09:00" }, NOON),
-    ).toEqual({ ok: false, message: "Choose a real date and time." });
+    ).toEqual({ ok: false, message: "Укажите существующие дату и время." });
     expect(
       parseCustomScheduleTime(
         { date: formatDateInputValue(NOON), time: "09:00" },
         NOON,
       ),
-    ).toEqual({ ok: false, message: "Choose a future time." });
+    ).toEqual({ ok: false, message: "Выберите время в будущем." });
   });
 
   it("rejects a choice more than one year out", () => {
@@ -128,31 +128,34 @@ describe("custom schedules", () => {
         { date: formatDateInputValue(beyondLimit), time: "12:00" },
         NOON,
       ),
-    ).toEqual({ ok: false, message: "Pick a time within the next year." });
+    ).toEqual({
+      ok: false,
+      message: "Выберите время в пределах следующего года.",
+    });
   });
 });
 
 describe("schedule confirmation", () => {
   it("names today, tomorrow, and later dates unambiguously", () => {
-    expect(formatScheduleTime(at(18), NOON)).toMatch(/^today at /);
+    expect(formatScheduleTime(at(18), NOON)).toMatch(/^сегодня в /);
     expect(formatScheduleTime(localTime(NOON, 1, 9), NOON)).toMatch(
-      /^tomorrow at /,
+      /^завтра в /,
     );
     const later = formatScheduleTime(localTime(NOON, 5, 9), NOON);
-    expect(later).not.toMatch(/today|tomorrow/);
-    expect(later).toMatch(/ at /);
+    expect(later).not.toMatch(/сегодня|завтра/);
+    expect(later).toMatch(/ в /);
   });
 
   it("counts local calendar days instead of elapsed hours", () => {
     const lateNight = at(23);
     expect(formatScheduleTime(localTime(lateNight, 1, 1), lateNight)).toMatch(
-      /^tomorrow at /,
+      /^завтра в /,
     );
   });
 
   it("makes the browser timezone explicit", () => {
     const label = formatScheduleTimeZone(NOON);
-    expect(label).toContain("Local time");
+    expect(label).toContain("Местное время");
     expect(label).toContain(Intl.DateTimeFormat().resolvedOptions().timeZone);
   });
 });

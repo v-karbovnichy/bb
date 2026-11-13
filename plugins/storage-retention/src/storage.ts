@@ -245,7 +245,7 @@ const isStorageEntry = (name: string) =>
 class StorageLocationUnavailable extends Error {
   constructor() {
     super(
-      "Scan the machine to identify a unique storage location for this thread",
+      "Проверьте машину, чтобы определить единственное расположение файлов этого чата",
     );
   }
 }
@@ -343,14 +343,14 @@ export function createStorage(
     lifecycle.signal.throwIfAborted();
     const host = await bb.sdk.hosts.get({ hostId });
     if (host.type !== "persistent")
-      throw new Error("Storage is only tracked for persistent machines");
+      throw new Error("Хранилище отслеживается только для постоянных машин");
     if (online && host.status !== "connected")
-      throw new Error("The machine must be online");
+      throw new Error("Машина должна быть в сети");
   }
   async function storageRoot(hostId: string) {
     const host = await bb.sdk.hosts.get({ hostId });
     if (host.threadStorageRootPath === null)
-      throw new Error("The machine has not reported its filesystem locations");
+      throw new Error("Машина не сообщила расположение файловой системы");
     return host.threadStorageRootPath;
   }
   async function acquire(hostId: string, started?: () => void) {
@@ -1019,7 +1019,7 @@ export function createStorage(
       await requireHost(hostId, true);
       const cached = read(hostId);
       if (!cached)
-        throw new Error("Scan the machine before removing orphaned storage");
+        throw new Error("Проверьте машину перед удалением осиротевших файлов");
       const removed = await discard(
         hostId,
         await storageRoot(hostId),
@@ -1043,7 +1043,7 @@ export function createStorage(
       await requireHost(hostId, true);
       const cached = read(hostId);
       if (!cached)
-        throw new Error("Scan the machine before clearing large files");
+        throw new Error("Проверьте машину перед удалением больших файлов");
       const rootPath = await storageRoot(hostId);
       const names = cached.largeFiles.map((entry) => entry.name);
       let fileCount = 0;
@@ -1093,7 +1093,7 @@ export function createStorage(
   async function startClearArchivedFiles({ hostId }: { hostId: string }) {
     await requireHost(hostId, true);
     if (!read(hostId))
-      throw new Error("Scan the machine before clearing archived thread files");
+      throw new Error("Проверьте машину перед удалением файлов архивных чатов");
     const existing = archivedFileCleanups.get(hostId)?.state;
     if (existing === "queued" || existing === "running") return null;
     const reservation = acquire(hostId);
@@ -1153,7 +1153,7 @@ export function createStorage(
       const cached = read(hostId);
       if (!cached)
         throw new Error(
-          "Scan the machine before clearing archived thread files",
+          "Проверьте машину перед удалением файлов архивных чатов",
         );
       const removed = await discard(
         hostId,
@@ -1181,7 +1181,7 @@ export function createStorage(
       const developer = read(hostId)?.developerStorage;
       if (!developer)
         throw new Error(
-          "Scan the machine before removing development instances",
+          "Проверьте машину перед удалением экземпляров разработки",
         );
       const [environments, projects] = await Promise.all([
         readEnvironments(hostId),
@@ -1194,7 +1194,7 @@ export function createStorage(
       );
       if (names?.some((name) => isCurrentInstance(developer.path, name)))
         throw new Error(
-          "Cannot remove the development instance this BB is running from",
+          "Нельзя удалить экземпляр разработки, из которого запущен текущий BB",
         );
       const targets = developer.entries.filter(
         (entry) =>
@@ -1210,7 +1210,7 @@ export function createStorage(
       );
       if (unknown.length > 0)
         throw new Error(
-          `Not a development instance in the last scan: ${unknown.join(", ")}`,
+          `Не найдено среди экземпляров разработки при последней проверке: ${unknown.join(", ")}`,
         );
       const running: string[] = [];
       let removedCount = 0;
@@ -1282,7 +1282,7 @@ export function createStorage(
     for (const target of candidates) {
       await requireHost(target, true);
       if (!read(target))
-        throw new Error("Scan the machine before clearing large files");
+        throw new Error("Проверьте машину перед удалением больших файлов");
     }
     for (const target of targets) {
       const existing = largeFileCleanups.get(target)?.state;
@@ -1359,7 +1359,7 @@ export function createStorage(
           } catch (error) {
             if (!lifecycle.signal.aborted)
               bb.log.warn(
-                `Could not clean development storage on ${next}: ${error instanceof Error ? error.message : String(error)}`,
+                `Не удалось очистить данные разработки на ${next}: ${error instanceof Error ? error.message : String(error)}`,
               );
           }
         }
@@ -1412,7 +1412,7 @@ export function createStorage(
     } catch (error) {
       if (!lifecycle.signal.aborted)
         bb.log.warn(
-          `Could not reconcile development storage on ${hostId}: ${error instanceof Error ? error.message : String(error)}`,
+          `Не удалось сверить данные разработки на ${hostId}: ${error instanceof Error ? error.message : String(error)}`,
         );
     }
   }
@@ -1427,7 +1427,7 @@ export function createStorage(
       } catch (error) {
         if (!lifecycle.signal.aborted)
           bb.log.warn(
-            `Could not reconcile development storage: ${error instanceof Error ? error.message : String(error)}`,
+            `Не удалось сверить данные разработки: ${error instanceof Error ? error.message : String(error)}`,
           );
       } finally {
         reconcilingDevelopment = false;
@@ -1459,7 +1459,7 @@ export function createStorage(
     lifecycle.signal.throwIfAborted();
     const thread = await bb.sdk.threads.get({ threadId });
     if (["starting", "active", "stopping"].includes(thread.status))
-      throw new Error("Stop the thread before clearing its storage");
+      throw new Error("Остановите чат перед удалением его файлов");
     let hostId: string;
     if (thread.environmentId !== null) {
       hostId = (await bb.sdk.threads.storageLocation({ threadId })).hostId;
@@ -1488,7 +1488,7 @@ export function createStorage(
       const rootPath = await storageRoot(hostId);
       const current = await bb.sdk.threads.get({ threadId });
       if (["starting", "active", "stopping"].includes(current.status))
-        throw new Error("Stop the thread before clearing its storage");
+        throw new Error("Остановите чат перед удалением его файлов");
       if (archivedAt !== null) {
         if (
           current.archivedAt !== archivedAt ||
@@ -1498,7 +1498,7 @@ export function createStorage(
         )
           return { ok: true as const };
         if (["starting", "active", "stopping"].includes(current.status))
-          throw new Error("Stop the thread before clearing its storage");
+          throw new Error("Остановите чат перед удалением его файлов");
       }
       const workspace = (await workspaceEntries(hostId, rootPath)).get(
         threadId,
@@ -1506,7 +1506,7 @@ export function createStorage(
       if (workspace !== undefined) {
         if (archivedAt !== null) return { ok: true as const };
         throw new Error(
-          `This thread’s storage contains the workspace ${workspace}, which an environment still uses`,
+          `Файлы этого чата содержат рабочее пространство ${workspace}, которое ещё используется средой`,
         );
       }
       const removedBytes =
@@ -1625,7 +1625,7 @@ export function createStorage(
         );
         if (missingLocation) continue;
         bb.log.warn(
-          `Could not clear archived storage for ${entry.thread_id}: ${error instanceof Error ? error.message : String(error)}`,
+          `Не удалось очистить файлы архивного чата ${entry.thread_id}: ${error instanceof Error ? error.message : String(error)}`,
         );
       }
     }
@@ -1660,7 +1660,7 @@ export function createStorage(
   ) {
     await requireHost(hostId, true);
     const scanned = read(hostId)?.externalWorktrees;
-    if (!scanned) throw new Error("Scan the machine before removing worktrees");
+    if (!scanned) throw new Error("Проверьте машину перед удалением рабочих деревьев");
     const targets = scanned.filter(
       (worktree) => paths === null || paths.includes(worktree.path),
     );
@@ -1671,7 +1671,7 @@ export function createStorage(
     );
     if (unknown.length > 0)
       throw new Error(
-        `Not a worktree created outside BB in the last scan: ${unknown.join(", ")}`,
+        `При последней проверке не найдено среди рабочих деревьев, созданных вне BB: ${unknown.join(", ")}`,
       );
     const [environments, projects] = await Promise.all([
       readEnvironments(hostId),
@@ -1864,7 +1864,7 @@ export function createStorage(
   }) {
     await requireHost(hostId, true);
     if (!read(hostId))
-      throw new Error("Scan the machine before cleaning up storage");
+      throw new Error("Проверьте машину перед очисткой хранилища");
     const existing = maintenanceJobs.get(hostId)?.get(kind)?.state;
     if (existing === "queued" || existing === "running") return null;
     const reservation = acquire(hostId);
@@ -1877,22 +1877,22 @@ export function createStorage(
         let message: string;
         if (kind === "orphans") {
           const result = await removeOrphans({ hostId }, release);
-          message = `Removed ${result.removedCount} orphaned storage folders`;
+          message = `Удалено осиротевших папок: ${result.removedCount}`;
         } else if (kind === "development") {
           const result = await removeDevInstances(
             { hostId, names: null },
             release,
           );
-          message = `Removed ${result.removedCount} development instances; ${result.skippedCount} skipped`;
+          message = `Удалено экземпляров разработки: ${result.removedCount}; пропущено: ${result.skippedCount}`;
         } else if (kind === "externalWorktrees") {
           const result = await removeExternalWorktrees(
             { hostId, paths: null },
             release,
           );
-          message = `Removed ${result.removedCount} worktrees created outside BB; ${result.skipped.length + result.failed.length} kept`;
+          message = `Удалено рабочих деревьев, созданных вне BB: ${result.removedCount}; сохранено: ${result.skipped.length + result.failed.length}`;
         } else {
           const result = await retryWorktreeCleanup({ hostId }, release);
-          message = `Retried cleanup for ${result.retriedCount} worktrees`;
+          message = `Повторена очистка рабочих деревьев: ${result.retriedCount}`;
         }
         setMaintenance(hostId, { state: "completed", kind, message });
       } catch (error) {
@@ -1915,7 +1915,7 @@ export function createStorage(
   function entryCleanup({ id }: { id: string }) {
     const status = entryJobs.get(id);
     if (!status)
-      throw new Error("Cleanup is no longer available; refresh Storage");
+      throw new Error("Очистка больше недоступна; обновите раздел «Хранилище»");
     return status;
   }
   function startEntryCleanup(input: EntryCleanupInput) {

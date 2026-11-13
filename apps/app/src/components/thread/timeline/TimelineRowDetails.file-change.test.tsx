@@ -21,7 +21,7 @@ describe("file-change row body", () => {
     );
 
     expect(screen.getByText(EDIT_ERROR)).toBeTruthy();
-    expect(screen.queryByText("No diff available.")).toBeNull();
+    expect(screen.queryByText("Различия недоступны.")).toBeNull();
   });
 
   it("shows a failed change's error before its proposed diff", async () => {
@@ -51,6 +51,6 @@ describe("file-change row body", () => {
       />,
     );
 
-    expect(await screen.findByText("No diff available.")).toBeTruthy();
+    expect(await screen.findByText("Различия недоступны.")).toBeTruthy();
   });
 });

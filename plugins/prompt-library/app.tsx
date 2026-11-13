@@ -49,9 +49,9 @@ const SEARCH_TIMEOUT_MS = 5_000;
 const SLOW_SEARCH_MS = 300;
 
 const SCOPE_LABELS: Record<PromptScope, string> = {
-  thread: "Thread",
-  project: "Project",
-  global: "All",
+  thread: "Чат",
+  project: "Проект",
+  global: "Все",
 };
 
 function composerKind(scope: PluginComposerScope): ComposerKind {
@@ -193,9 +193,9 @@ function PromptTitleEditor({
         <div>
           <input
             autoFocus
-            aria-label="Prompt title"
+            aria-label="Название шаблона"
             maxLength={120}
-            placeholder="Add title"
+            placeholder="Добавить название"
             value={value}
             disabled={saving}
             onChange={(event) => setValue(event.target.value)}
@@ -218,7 +218,7 @@ function PromptTitleEditor({
               disabled={saving}
               className="rounded px-2 py-1 text-xs hover:bg-state-hover"
             >
-              {saving ? "Saving…" : "Save title"}
+              {saving ? "Сохранение…" : "Сохранить название"}
             </button>
             <button
               type="button"
@@ -238,7 +238,7 @@ function PromptTitleEditor({
       ) : (
         <button
           type="button"
-          aria-label="Edit title"
+          aria-label="Изменить название"
           onClick={() => onEditingChange(true)}
           className="flex w-full items-center gap-2 rounded text-left text-sm font-medium text-foreground hover:bg-state-hover"
         >
@@ -326,7 +326,7 @@ function PromptLibraryPopup() {
       setError(null);
       setIsSearching(true);
       timeout = window.setTimeout(
-        () => finish(() => setError("Loading prompts timed out. Try again.")),
+        () => finish(() => setError("Время загрузки шаблонов истекло. Попробуйте снова.")),
         SEARCH_TIMEOUT_MS,
       );
       try {
@@ -345,7 +345,7 @@ function PromptLibraryPopup() {
           pendingHistoryQueryRef.current = next.loading ? query : null;
           setResult({ ...next, query });
           if (next.historyError !== null)
-            setError(`History unavailable: ${next.historyError}`);
+          setError(`История недоступна: ${next.historyError}`);
           if (next.loading)
             poll = window.setTimeout(
               () => setReloadCount((count) => count + 1),
@@ -534,8 +534,8 @@ function PromptLibraryPopup() {
           .join(" · ")
       : row.kind === "starred"
         ? row.row.lastUsedAt === null
-          ? `Starred ${formatAge(row.row.createdAt, now)}`
-          : `Used ${formatAge(row.row.lastUsedAt, now)}`
+          ? `В избранном ${formatAge(row.row.createdAt, now)}`
+          : `Использовано ${formatAge(row.row.lastUsedAt, now)}`
         : null;
 
   const renderRow = (row: Row, index: number) => {
@@ -563,7 +563,7 @@ function PromptLibraryPopup() {
           {row.kind === "star-draft" ? (
             <span className="flex items-center gap-1.5 text-foreground">
               <Icon name="Star" className="size-3.5 text-subtle-foreground" />
-              Star current draft
+              Добавить текущий черновик в избранное
             </span>
           ) : (
             <>
@@ -584,9 +584,9 @@ function PromptLibraryPopup() {
         {row.kind === "star-draft" ? null : (
           <button
             type="button"
-            aria-label={starred ? "Unstar" : "Star prompt"}
+            aria-label={starred ? "Убрать из избранного" : "Добавить шаблон в избранное"}
             aria-pressed={starred}
-            title={starred ? "Unstar" : "Star prompt"}
+            title={starred ? "Убрать из избранного" : "Добавить шаблон в избранное"}
             className={cn(
               "relative flex size-6 shrink-0 items-center justify-center rounded text-subtle-foreground hover:text-foreground",
               !(selected || starred) && [
@@ -625,7 +625,7 @@ function PromptLibraryPopup() {
     return (
       <div
         className="flex min-h-0 min-w-0 flex-1 flex-col"
-        aria-label="Prompt preview"
+        aria-label="Предпросмотр шаблона"
         role="region"
       >
         {twoPane ? null : (
@@ -637,7 +637,7 @@ function PromptLibraryPopup() {
               onClick={() => setPreviewKey(null)}
             >
               <Icon name="ArrowLeft" className="size-3.5" />
-              Back
+              Назад
             </button>
           </div>
         )}
@@ -658,7 +658,7 @@ function PromptLibraryPopup() {
         </div>
         <div className="flex items-center gap-2 border-t border-border px-3 py-1.5">
           <span className="min-w-0 flex-1 truncate text-xs text-subtle-foreground">
-            {meta ?? `${content.length.toLocaleString()} characters`}
+            {meta ?? `${content.length.toLocaleString()} символов`}
           </span>
           {row.kind === "starred" && row.row.title === null && !editingTitle ? (
             <button
@@ -666,7 +666,7 @@ function PromptLibraryPopup() {
               className="shrink-0 rounded px-2 py-1 text-xs text-muted-foreground hover:bg-state-hover hover:text-foreground"
               onClick={() => setEditingTitleKey(titleKey)}
             >
-              Add title
+              Добавить название
             </button>
           ) : null}
           {row.kind === "star-draft" ? (
@@ -676,7 +676,7 @@ function PromptLibraryPopup() {
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => activate(row)}
             >
-              Star draft
+              Добавить черновик в избранное
             </button>
           ) : (
             <>
@@ -691,7 +691,7 @@ function PromptLibraryPopup() {
                   name="Star"
                   className={cn("size-3.5", starred && "fill-current")}
                 />
-                {starred ? "Starred" : "Star"}
+                {starred ? "В избранном" : "В избранное"}
               </button>
               <button
                 type="button"
@@ -699,7 +699,7 @@ function PromptLibraryPopup() {
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => activate(row)}
               >
-                Insert
+                Вставить
               </button>
             </>
           )}
@@ -715,7 +715,7 @@ function PromptLibraryPopup() {
       <div className="flex items-center gap-2 border-b border-border px-3 py-1.5">
         <Icon
           name={isSlowSearch ? "Spinner" : "Search"}
-          aria-label={isSlowSearch ? "Searching prompts" : undefined}
+          aria-label={isSlowSearch ? "Идёт поиск шаблонов…" : undefined}
           className={cn(
             "size-3.5 shrink-0 text-muted-foreground",
             isSlowSearch && "animate-spin",
@@ -723,9 +723,9 @@ function PromptLibraryPopup() {
         />
         <input
           autoFocus
-          aria-label="Search prompts"
+          aria-label="Поиск шаблонов"
           aria-controls="prompt-library-results"
-          placeholder="Search prompts"
+          placeholder="Поиск шаблонов"
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -736,7 +736,7 @@ function PromptLibraryPopup() {
         />
         <div
           role="radiogroup"
-          aria-label="Search scope"
+          aria-label="Область поиска"
           className="flex shrink-0 items-center gap-0.5"
         >
           {availableScopes.map((option) => (
@@ -771,7 +771,7 @@ function PromptLibraryPopup() {
               reload();
             }}
           >
-            Retry
+            Повторить
           </button>
         </div>
       ) : null}
@@ -780,7 +780,7 @@ function PromptLibraryPopup() {
           <div
             id="prompt-library-results"
             role="listbox"
-            aria-label="Prompts"
+            aria-label="Шаблоны"
             aria-busy={isLoading}
             className={cn(
               "min-h-0 overflow-y-auto p-1",
@@ -790,17 +790,17 @@ function PromptLibraryPopup() {
             {rows.length === 0 ? (
               result !== null && !isLoading && error === null ? (
                 <div className="px-3 py-2 text-xs text-muted-foreground">
-                  No prompts found
+                  Шаблоны не найдены
                 </div>
               ) : null
             ) : (
               rows.map((row, index) => (
                 <Fragment key={row.key}>
                   {index === starredStart ? (
-                    <SectionHeader>Starred</SectionHeader>
+                    <SectionHeader>Избранное</SectionHeader>
                   ) : null}
                   {index === recentStart ? (
-                    <SectionHeader>Recent</SectionHeader>
+                    <SectionHeader>Недавние</SectionHeader>
                   ) : null}
                   {renderRow(row, index)}
                 </Fragment>
@@ -818,12 +818,12 @@ export default definePluginApp((app) => {
   app.composer.customize({
     id: POPUP_ID,
     experimental_popups: [
-      { id: POPUP_ID, label: "Prompts…", component: PromptLibraryPopup },
+      { id: POPUP_ID, label: "Шаблоны…", component: PromptLibraryPopup },
     ],
     plusMenu: [
       {
         id: "open",
-        label: "Prompts…",
+        label: "Шаблоны…",
         icon: "Clock",
         run: ({ composer }) => {
           composer.experimental_openPopup(POPUP_ID);
@@ -833,7 +833,7 @@ export default definePluginApp((app) => {
   });
   app.composer.experimental_registerCommand({
     id: "search-prompts",
-    title: "Search prompts",
+    title: "Поиск шаблонов",
     defaultShortcut: { key: "r", control: true },
     run: ({ composer }) => {
       composer.experimental_openPopup(POPUP_ID);

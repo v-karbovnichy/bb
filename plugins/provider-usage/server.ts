@@ -85,7 +85,7 @@ function normalizedUsage(
     case "error":
       return {
         status: "error",
-        message: usage.message || "Usage could not be collected.",
+        message: usage.message || "Не удалось собрать данные об использовании.",
       };
   }
 }
@@ -111,12 +111,12 @@ function normalizedProvider(
     strings: { iconTint: normalizedTint(provider.strings?.iconTint) },
     signInHint:
       provider.strings?.signInHint ??
-      "Sign in to " + provider.displayName + ", then reload usage.",
+      "Войдите в " + provider.displayName + " и обновите данные об использовании.",
     expiredHint:
       provider.strings?.expiredHint ??
-      "Your " +
+      "Провайдер " +
         provider.displayName +
-        " session expired. Sign in again, then reload usage.",
+        ": срок действия сеанса истёк. Войдите снова и обновите данные об использовании.",
     usage: normalizedUsage(usage),
   };
 }
@@ -142,9 +142,9 @@ function resourceProvider(
     ...(resource.scope.kind === "shared"
       ? {
           signInHint:
-            "Sign in to this account in the source plugin’s settings, then reload usage.",
+            "Войдите в этот аккаунт в настройках исходного плагина и обновите данные об использовании.",
           expiredHint:
-            "This account’s session expired. Sign in again in the source plugin’s settings, then reload usage.",
+            "Срок действия сеанса этого аккаунта истёк. Войдите снова в настройках исходного плагина и обновите данные об использовании.",
         }
       : {}),
     id: `${pluginId}:${resource.id}`,
@@ -191,7 +191,7 @@ export default function providerUsagePlugin(bb: BbPluginApi): void {
       .then((raw) => {
         const value = normalizeUsageMeasurement(raw);
         if (value.usage.status === "error")
-          throw new Error("Usage could not be refreshed.");
+          throw new Error("Не удалось обновить данные об использовании.");
         measurements.set(key, { value, loadedAt: Date.now() });
         failures.delete(key);
         return value;
@@ -247,7 +247,7 @@ export default function providerUsagePlugin(bb: BbPluginApi): void {
               pluginId: source.pluginId,
               label: previous?.label ?? null,
               resources: previous?.resources ?? [],
-              error: "Usage resources could not be listed.",
+              error: "Не удалось получить список источников данных об использовании.",
             });
           }
         }),
@@ -358,7 +358,7 @@ export default function providerUsagePlugin(bb: BbPluginApi): void {
           resourceProvider(resource, cached?.value, source.pluginId, providers),
         );
         if (source.error !== null || failures.has(key))
-          machine.error = "Some usage could not be refreshed.";
+          machine.error = "Не удалось обновить часть данных об использовании.";
       }
     }
     const providerOrder = new Map(

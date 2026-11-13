@@ -58,7 +58,7 @@ describe("automations thread Info section", () => {
         { method: "automations_list", input: { targetThreadId: "thr_1" } },
       ]);
     });
-    expect(screen.queryByRole("region", { name: "Automations" })).toBeNull();
+    expect(screen.queryByRole("region", { name: "Автоматизации" })).toBeNull();
 
     await slot.behavior.emitRealtime("automations", {
       projectId: "proj_1",
@@ -86,10 +86,10 @@ describe("automations thread Info section", () => {
     });
 
     expect(
-      await screen.findByRole("region", { name: "Automations" }),
+      await screen.findByRole("region", { name: "Автоматизации" }),
     ).toBeTruthy();
-    expect(screen.getByText("Completed")).toBeTruthy();
-    expect(screen.getByText("Paused")).toBeTruthy();
+    expect(screen.getByText("Завершено")).toBeTruthy();
+    expect(screen.getByText("Приостановлено")).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Paused check" }));
     expect(slot.inspection.navigateCalls).toEqual([

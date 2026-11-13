@@ -40,7 +40,7 @@ function render(ui: ReactElement) {
 
 function openActions(name: string) {
   fireEvent.keyDown(
-    screen.getByRole("button", { name: `Actions for ${name}` }),
+    screen.getByRole("button", { name: `Действия с ${name}` }),
     { key: "Enter" },
   );
 }
@@ -82,7 +82,7 @@ describe("ProvidersSettingsSection", () => {
     );
 
     const control = screen.getByRole("switch", {
-      name: "Allow faster service tiers",
+      name: "Разрешить ускоренные уровни сервиса",
     });
     expect(control.getAttribute("aria-checked")).toBe("false");
     fireEvent.click(control);
@@ -108,7 +108,7 @@ describe("ProvidersSettingsSection", () => {
         />,
       );
       const trigger = screen.getByRole("button", {
-        name: "Release idle agent sessions",
+        name: "Завершать неактивные сеансы агентов",
       });
       expect(trigger.textContent).toBe("30 minutes");
       fireEvent.keyDown(trigger, { key: "Enter" });
@@ -138,7 +138,7 @@ describe("ProvidersSettingsSection", () => {
         />,
       );
       expect(
-        screen.getByRole("button", { name: "Release idle agent sessions" })
+        screen.getByRole("button", { name: "Завершать неактивные сеансы агентов" })
           .textContent,
       ).toContain(label);
     },
@@ -155,7 +155,7 @@ describe("ProvidersSettingsSection", () => {
     );
     expect(
       screen
-        .getByRole("button", { name: "Release idle agent sessions" })
+        .getByRole("button", { name: "Завершать неактивные сеансы агентов" })
         .hasAttribute("disabled"),
     ).toBe(true);
   });
@@ -176,7 +176,7 @@ describe("ProvidersSettingsSection", () => {
     );
 
     const providersSection = screen
-      .getByRole("heading", { name: "Providers" })
+      .getByRole("heading", { name: "Провайдеры" })
       .closest("section");
     if (providersSection === null) throw new Error("Providers section missing");
     const rows = within(providersSection).getAllByText(/Alpha|Beta|Gamma/);
@@ -185,10 +185,10 @@ describe("ProvidersSettingsSection", () => {
       "Beta",
       "Gamma",
     ]);
-    expect(screen.getAllByText("Default")).toHaveLength(1);
+    expect(screen.getAllByText("По умолчанию")).toHaveLength(1);
 
     const reorderHandles = screen.getAllByRole("button", {
-      name: /Reorder (Alpha|Beta|Gamma)/,
+      name: /Изменить порядок: (Alpha|Beta|Gamma)/,
     });
     expect(reorderHandles).toHaveLength(3);
     expect(reorderHandles[0]?.parentElement?.className).toContain(
@@ -196,7 +196,7 @@ describe("ProvidersSettingsSection", () => {
     );
 
     openActions("Gamma");
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Default" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "По умолчанию" }));
     expect(onChange).toHaveBeenLastCalledWith({
       defaultProviderId: "gamma",
     });
@@ -214,11 +214,11 @@ describe("ProvidersSettingsSection", () => {
         onGeneralSettingsChange={vi.fn()}
       />,
     );
-    expect(screen.getByText("Unavailable")).toBeTruthy();
+    expect(screen.getByText("Недоступен")).toBeTruthy();
     openActions("Beta");
     expect(
       screen
-        .getByRole("menuitemcheckbox", { name: "Default" })
+        .getByRole("menuitemcheckbox", { name: "По умолчанию" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
   });
@@ -245,27 +245,27 @@ describe("ProvidersSettingsSection", () => {
     );
 
     const claudeSwitch = screen.getByRole("switch", {
-      name: "Collapse finished Claude Code turns",
+      name: "Сворачивать завершённые ответы Claude Code",
     });
     const codexSwitch = screen.getByRole("switch", {
-      name: "Collapse finished Codex turns",
+      name: "Сворачивать завершённые ответы Codex",
     });
     const configuration = screen
-      .getByRole("heading", { name: "Configuration" })
+      .getByRole("heading", { name: "Настройка" })
       .closest("section");
     if (configuration === null)
       throw new Error("Configuration section missing");
     expect(
-      within(configuration).getByText("Collapse finished turns"),
+      within(configuration).getByText("Сворачивать завершённые ответы"),
     ).toBeTruthy();
     expect(
       within(configuration).getByRole("switch", {
-        name: "Allow faster service tiers",
+        name: "Разрешить ускоренные уровни сервиса",
       }),
     ).toBeTruthy();
     expect(
       within(configuration).getByRole("switch", {
-        name: "Collapse finished Codex turns",
+        name: "Сворачивать завершённые ответы Codex",
       }),
     ).toBe(codexSwitch);
     expect(claudeSwitch.getAttribute("aria-checked")).toBe("false");
@@ -308,7 +308,7 @@ describe("ProvidersSettingsSection", () => {
       />,
     );
     const section = screen
-      .getByRole("heading", { name: "Providers" })
+      .getByRole("heading", { name: "Провайдеры" })
       .closest("section")!;
     expect(
       within(section)
@@ -322,13 +322,13 @@ describe("ProvidersSettingsSection", () => {
       section.querySelector('[data-provider-logo="/claude.svg"]'),
     ).not.toBeNull();
     openActions("Claude Code");
-    fireEvent.click(screen.getByRole("menuitem", { name: "Enable" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Включить" }));
     expect(mocks.setEnabled).toHaveBeenCalledWith({
       providerId: "claude-code",
       enabled: true,
     });
     openActions("Codex");
-    fireEvent.click(screen.getByRole("menuitem", { name: "Disable" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Выключить" }));
     expect(mocks.setEnabled).toHaveBeenCalledWith({
       providerId: "codex",
       enabled: false,

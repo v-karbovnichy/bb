@@ -36,20 +36,20 @@ export function formatStartedAt(startedAt: string, now: Date): string {
     (now.getTime() - started.getTime()) / 60_000,
   );
   if (elapsedMinutes < 1) {
-    return "just now";
+    return "только что";
   }
   if (elapsedMinutes < 60) {
-    return `${elapsedMinutes} min ago`;
+    return `${elapsedMinutes} мин назад`;
   }
   const elapsedHours = Math.floor(elapsedMinutes / 60);
   if (elapsedHours < 24) {
-    return `${elapsedHours} h ago`;
+    return `${elapsedHours} ч назад`;
   }
-  return `${Math.floor(elapsedHours / 24)} d ago`;
+  return `${Math.floor(elapsedHours / 24)} дн назад`;
 }
 
 export function formatSurface(surface: string): string {
-  return surface === "desktop" ? "the bb desktop app" : "a terminal";
+  return surface === "desktop" ? "приложение bb" : "терминал";
 }
 
 function buildDetailRows(args: {
@@ -57,16 +57,16 @@ function buildDetailRows(args: {
   now: Date;
   serverUrl: string;
 }): DetailRow[] {
-  const rows: DetailRow[] = [{ label: "Address", value: args.serverUrl }];
+  const rows: DetailRow[] = [{ label: "Адрес", value: args.serverUrl }];
   if (args.details === null) {
     return rows;
   }
   rows.push(
-    { label: "Data", value: args.details.dataDir },
-    { label: "Version", value: args.details.version },
+    { label: "Данные", value: args.details.dataDir },
+    { label: "Версия", value: args.details.version },
     {
-      label: "Started",
-      value: `${formatStartedAt(args.details.startedAt, args.now)} by ${formatSurface(
+      label: "Запущен",
+      value: `${formatStartedAt(args.details.startedAt, args.now)} через ${formatSurface(
         args.details.surface,
       )} (pid ${String(args.details.pid)})`,
     },
@@ -98,17 +98,17 @@ export function renderExistingServerDialogHtml(
     .join("\n      ");
   const canReplace = args.details !== null;
   const replaceButtonHtml = canReplace
-    ? `<button type="button" data-choice="replace">Quit other bb</button>`
+    ? `<button type="button" data-choice="replace">Остановить другой bb</button>`
     : "";
   const replaceWarningHtml = canReplace
-    ? `<p class="warning">If you stop the running copy, its agent threads stop too.</p>`
+    ? `<p class="warning">Если остановить работающий экземпляр, его чаты с агентами тоже остановятся.</p>`
     : "";
   const introText = canReplace
-    ? "This app can use the copy that is already running, or you can stop it and start a new one."
-    : "This app can use the copy that is already running. bb cannot identify that copy, so it cannot stop it for you.";
+    ? "Приложение может использовать уже запущенный экземпляр либо остановить его и запустить новый."
+    : "Приложение может использовать уже запущенный экземпляр. bb не может определить его процесс и остановить его за вас.";
 
   return `<!doctype html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
@@ -159,16 +159,16 @@ ${DESKTOP_DIALOG_BASE_CSS}
   </style>
 </head>
 <body>
-  <h1>bb is already running on ${BUILTIN_SERVER_NAME}</h1>
+  <h1>bb уже запущен на ${BUILTIN_SERVER_NAME}</h1>
   <p>${introText}</p>
   <div class="details">
       ${detailHtml}
   </div>
   ${replaceWarningHtml}
   <div class="actions">
-    <button type="button" data-choice="quit">Quit this bb</button>
+    <button type="button" data-choice="quit">Закрыть это приложение bb</button>
     ${replaceButtonHtml}
-    <button type="button" data-choice="connect">Connect</button>
+    <button type="button" data-choice="connect">Подключиться</button>
   </div>
 </body>
 </html>`;
@@ -180,7 +180,7 @@ export function openExistingServerDialog(
   const dialogWindow = createDesktopDialogWindow({
     parentWindow: args.parentWindow,
     preloadPath: args.preloadPath,
-    title: "bb is already running",
+    title: "bb уже запущен",
     width: 460,
   });
 

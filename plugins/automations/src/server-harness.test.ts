@@ -112,7 +112,7 @@ it("rejects a script file path that names no file", async () => {
       { cwd: "/workspace" },
     );
     expect(result.exitCode).not.toBe(0);
-    expect(result.stderr).toContain("--script-file must name a file");
+    expect(result.stderr).toContain("--script-file должен указывать на файл");
     expect(host.harness.sdk.callsTo("files.read")).toEqual([]);
   } finally {
     await host.harness.lifecycle.dispose();
@@ -373,7 +373,7 @@ describe("automations server plugin harness", () => {
         execution: agentExecution(),
         origin: "human",
       }),
-    ).rejects.toThrow(`Project ${MISSING_PROJECT_ID} is not available`);
+    ).rejects.toThrow(`Проект ${MISSING_PROJECT_ID} недоступен`);
 
     await expect(
       harness.callRpc("automations_create", {
@@ -384,7 +384,7 @@ describe("automations server plugin harness", () => {
         execution: agentExecution(),
         origin: "human",
       }),
-    ).rejects.toThrow(`Project ${DELETED_PROJECT_ID} is not available`);
+    ).rejects.toThrow(`Проект ${DELETED_PROJECT_ID} недоступен`);
 
     await expect(
       harness.callRpc("automations_delete", {
@@ -608,7 +608,7 @@ describe("automations server plugin harness", () => {
     ]);
     expect(mixedResult.exitCode).toBe(1);
     expect(mixedResult.stderr).toContain(
-      "Cannot combine agent execution flags with script flags",
+      "Нельзя одновременно указывать параметры агента и скрипта",
     );
 
     const errorResult = await harness.runCli([
@@ -621,7 +621,7 @@ describe("automations server plugin harness", () => {
       "1h",
     ]);
     expect(errorResult.exitCode).toBe(1);
-    expect(errorResult.stderr).toContain("Provide an execution mode");
+    expect(errorResult.stderr).toContain("Укажите режим выполнения");
 
     await harness.dispose();
   });
@@ -738,7 +738,7 @@ describe("automations server plugin harness", () => {
 
     const noContext = await harness.runCli(["list"]);
     expect(noContext.exitCode).toBe(1);
-    expect(noContext.stderr).toContain("missing required option --project");
+    expect(noContext.stderr).toContain("отсутствует обязательный параметр --project");
     expect(noContext.stderr).toContain("bb project list");
 
     const withContext = await harness.runCli(["list"], {
@@ -746,7 +746,7 @@ describe("automations server plugin harness", () => {
     });
     expect(withContext.exitCode).toBe(1);
     expect(withContext.stderr).toContain(
-      `missing required option --project (This thread's project is ${PROJECT_ID}; re-run with --project ${PROJECT_ID})`,
+      `отсутствует обязательный параметр --project (Проект этого чата: ${PROJECT_ID}; повторите команду с --project ${PROJECT_ID})`,
     );
 
     const envelope = await harness.runCli(["list", "--json"], {
@@ -757,8 +757,8 @@ describe("automations server plugin harness", () => {
       ok: false,
       error: {
         code: "missing_required",
-        message: "missing required option --project",
-        hint: `This thread's project is ${PROJECT_ID}; re-run with --project ${PROJECT_ID}`,
+        message: "отсутствует обязательный параметр --project",
+        hint: `Проект этого чата: ${PROJECT_ID}; повторите команду с --project ${PROJECT_ID}`,
       },
     });
 
@@ -802,7 +802,7 @@ describe("automations server plugin harness", () => {
         projectId: PROJECT_ID,
         automationId: created.id,
       }),
-    ).rejects.toThrow("Script file was not found");
+    ).rejects.toThrow("Файл скрипта не найден");
 
     await harness.dispose();
   });
@@ -944,7 +944,7 @@ describe("automations server plugin harness", () => {
           execution: agentExecution(),
           origin: "agent",
         }),
-      ).rejects.toThrow("Automation-spawned threads cannot create automations");
+      ).rejects.toThrow("Чаты, созданные автоматизацией, не могут создавать автоматизации");
       expect(
         await harness.callRpc("automations_list", { projectId: PROJECT_ID }),
       ).toEqual([]);
@@ -1041,7 +1041,7 @@ describe("automations server plugin harness", () => {
 
     expect(result).toMatchObject({ exitCode: 1 });
     expect(result.stderr).toContain(
-      "Permission mode auto is not supported by provider codex",
+      "Режим разрешений auto не поддерживается провайдером codex",
     );
     await harness.dispose();
   });
@@ -1218,7 +1218,7 @@ describe("automations server plugin harness", () => {
         "echo ok",
       ]);
       expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("--at needs a time of day");
+      expect(result.stderr).toContain("Для --at требуется время суток");
     } finally {
       await harness.dispose();
     }
@@ -1358,13 +1358,13 @@ describe("automations server plugin harness", () => {
 
     const cliList = await harness.runCli(["list", "--project", PROJECT_ID]);
     expect(cliList).toMatchObject({ exitCode: 0 });
-    expect(cliList.stdout).toContain("Prompt required");
-    expect(cliList.stdout).toContain("Invalid data");
+    expect(cliList.stdout).toContain("Нужен запрос");
+    expect(cliList.stdout).toContain("Некорректные данные");
     const repairRow = cliList.stdout
       ?.split("\n")
       .find((line) => line.includes("Hidden legacy row"));
-    expect(repairRow).toContain("yes");
-    expect(repairRow).toContain("once at");
+    expect(repairRow).toContain("да");
+    expect(repairRow).toContain("однократно в");
     expect(repairRow).toContain("human");
 
     if (
@@ -1394,20 +1394,20 @@ describe("automations server plugin harness", () => {
       PROJECT_ID,
     ]);
     expect(cliShow).toMatchObject({ exitCode: 0 });
-    expect(cliShow.stdout).toContain("Status:    Prompt required");
-    expect(cliShow.stdout).toContain("Enabled:   yes");
-    expect(cliShow.stdout).toContain("Schedule:  once at");
+    expect(cliShow.stdout).toContain("Статус:   Нужен запрос");
+    expect(cliShow.stdout).toContain("Включено:  да");
+    expect(cliShow.stdout).toContain("Расписание: однократно в");
     expect(cliShow.stdout?.endsWith("\n\n")).toBe(true);
     const rejectedLifecycleWrites = [
-      ["automations_run", repairTarget.id, "it can run"],
-      ["automations_pause", repairTarget.id, "it can be paused"],
-      ["automations_resume", repairTarget.id, "it can be resumed"],
+      ["automations_run", repairTarget.id, "запуском"],
+      ["automations_pause", repairTarget.id, "приостановкой"],
+      ["automations_resume", repairTarget.id, "возобновлением"],
     ] as const;
     for (const [method, automationId, operation] of rejectedLifecycleWrites) {
       await expect(
         harness.callRpc(method, { projectId: PROJECT_ID, automationId }),
       ).rejects.toThrow(
-        `Automation "Hidden legacy row" requires a prompt before ${operation}. Edit it and add a prompt first.`,
+        `Для автоматизации «Hidden legacy row» требуется запрос перед ${operation}. Измените её и добавьте запрос.`,
       );
     }
     await expect(
@@ -1417,7 +1417,7 @@ describe("automations server plugin harness", () => {
         name: "Must not be persisted",
       }),
     ).rejects.toThrow(
-      'Automation "Hidden legacy row" requires a prompt before other fields can be updated. Edit it and add a prompt first.',
+      'Для автоматизации «Hidden legacy row» требуется запрос перед изменением других полей. Измените её и добавьте запрос.',
     );
     await expect(
       harness.callRpc("automations_pause", {
@@ -1425,7 +1425,7 @@ describe("automations server plugin harness", () => {
         automationId: invalidTarget.id,
       }),
     ).rejects.toThrow(
-      'Automation "Invalid stored row" has invalid stored data and cannot be paused. Delete it and recreate it.',
+      'Сохранённые данные автоматизации «Invalid stored row» некорректны; её нельзя приостановить. Удалите и создайте её заново.',
     );
     await expect(
       harness.callRpc("automations_update", {
@@ -1434,7 +1434,7 @@ describe("automations server plugin harness", () => {
         name: "Must not be persisted either",
       }),
     ).rejects.toThrow(
-      'Automation "Invalid stored row" has invalid stored data and cannot be updated. Delete it and recreate it.',
+      'Сохранённые данные автоматизации «Invalid stored row» некорректны; её нельзя изменить. Удалите и создайте её заново.',
     );
     expect(
       database
@@ -1542,7 +1542,7 @@ describe("automations server plugin harness", () => {
     ]);
     expect(conflictingTargets.exitCode).toBe(1);
     expect(conflictingTargets.stderr).toContain(
-      "Cannot combine target options",
+      "Нельзя одновременно указывать параметры цели",
     );
 
     const invalidPermissionMode = await harness.runCli([
@@ -1620,7 +1620,7 @@ describe("automations server plugin harness", () => {
         },
       }),
     ).rejects.toThrow(
-      "Permission mode auto is not supported by provider codex.",
+      "Режим разрешений auto не поддерживается провайдером codex.",
     );
 
     await expect(
@@ -1630,7 +1630,7 @@ describe("automations server plugin harness", () => {
         agent: { permissionMode: "auto" },
       }),
     ).rejects.toThrow(
-      "Permission mode auto is not supported by provider codex.",
+      "Режим разрешений auto не поддерживается провайдером codex.",
     );
 
     const cliResult = await harness.runCli([
@@ -1643,7 +1643,7 @@ describe("automations server plugin harness", () => {
     ]);
     expect(cliResult.exitCode).toBe(1);
     expect(cliResult.stderr).toContain(
-      "Permission mode auto is not supported by provider codex.",
+      "Режим разрешений auto не поддерживается провайдером codex.",
     );
 
     const unchanged = automationDetailResponseSchema.parse(

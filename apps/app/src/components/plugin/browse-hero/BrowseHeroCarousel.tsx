@@ -16,18 +16,18 @@ const PLUGIN_RAIL: readonly IconName[] = [
 ];
 
 const PLUGIN_HERO_COPY: ShowcaseHeroCopy = {
-  ariaLabel: "What you can build with bb plugins",
-  headlineLead: "Turn bb into",
-  composingNoun: "whatever you need",
+  ariaLabel: "Что можно создать с плагинами bb",
+  headlineLead: "Превратите bb в",
+  composingNoun: "то, что вам нужно",
   description: PLUGINS_BROWSE_DESCRIPTION,
-  tablistLabel: "Plugin examples",
+  tablistLabel: "Примеры плагинов",
   frameTitlePrefix: "bb — ",
-  frameBadge: "Plugin",
+  frameBadge: "Плагин",
 };
 
 const PLUGIN_HERO_COMPOSER: ShowcaseHeroComposerConfig = {
   promptPrefix: CREATE_PLUGIN_PROMPT,
-  placeholder: "Describe the plugin you want to build…",
+  placeholder: "Опишите плагин, который хотите создать…",
   draftKey: "plugins-browse-hero",
 };
 

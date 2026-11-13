@@ -32,14 +32,14 @@ export const FILE_STATUS_GLYPHS: Record<
   WorkspaceFileStatusKind,
   FileStatusGlyph
 > = {
-  M: { icon: "DiffModified", label: "Modified", className: "text-subtle-foreground" },
-  A: { icon: "DiffAdded", label: "Added", className: "text-diff-added" },
-  "??": { icon: "DiffAdded", label: "Added", className: "text-diff-added" },
-  D: { icon: "DiffRemoved", label: "Deleted", className: "text-diff-removed" },
-  R: { icon: "DiffRenamed", label: "Renamed", className: "text-subtle-foreground" },
-  C: { icon: "Copy", label: "Copied", className: "text-subtle-foreground" },
-  U: { icon: "DiffConflict", label: "Conflict", className: "text-destructive" },
-  "?": { icon: "CircleQuestion", label: "Unknown", className: "text-subtle-foreground" },
+  M: { icon: "DiffModified", label: "Изменён", className: "text-subtle-foreground" },
+  A: { icon: "DiffAdded", label: "Добавлен", className: "text-diff-added" },
+  "??": { icon: "DiffAdded", label: "Добавлен", className: "text-diff-added" },
+  D: { icon: "DiffRemoved", label: "Удалён", className: "text-diff-removed" },
+  R: { icon: "DiffRenamed", label: "Переименован", className: "text-subtle-foreground" },
+  C: { icon: "Copy", label: "Скопирован", className: "text-subtle-foreground" },
+  U: { icon: "DiffConflict", label: "Конфликт", className: "text-destructive" },
+  "?": { icon: "CircleQuestion", label: "Неизвестно", className: "text-subtle-foreground" },
 };
 
 function fileName(path: string): string {
@@ -194,7 +194,7 @@ function ChangedFileRow({
           ? [
               {
                 icon: "ExternalLink",
-                label: "Open file in tab",
+                label: "Открыть файл во вкладке",
                 onSelect: () => actions.onOpenChangedFile(file.path),
               },
             ]

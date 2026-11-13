@@ -51,7 +51,14 @@ export function toChangeTally(
 }
 
 function formatWorkspaceChangedFilesLabel(changedFiles: number): string {
-  return `${changedFiles} file${changedFiles === 1 ? "" : "s"}`;
+  const mod10 = changedFiles % 10;
+  const mod100 = changedFiles % 100;
+  const noun = mod10 === 1 && mod100 !== 11
+    ? "файл"
+    : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)
+      ? "файла"
+      : "файлов";
+  return `${changedFiles} ${noun}`;
 }
 
 export function formatOmittedChangedFilesLabel(
@@ -59,7 +66,7 @@ export function formatOmittedChangedFilesLabel(
 ): string | null {
   const omittedCount = stats.fileCount - stats.files.length;
   if (omittedCount <= 0) return null;
-  return `${omittedCount.toLocaleString()} more ${omittedCount === 1 ? "file" : "files"} not shown`;
+  return `Ещё не показано: ${formatWorkspaceChangedFilesLabel(omittedCount)}`;
 }
 
 function formatChangeSummaryWithoutLineStats(
@@ -70,7 +77,7 @@ function formatChangeSummaryWithoutLineStats(
     tally.insertions === 0 &&
     tally.deletions === 0
   ) {
-    return "No changes";
+    return "Нет изменений";
   }
   if (
     !tally.lineStatsComplete ||
@@ -116,9 +123,9 @@ export const CHANGED_FILES_KIND_PREFIX: Record<
   WorkspaceChangedFilesSectionKind,
   string
 > = {
-  uncommitted: "Uncommitted",
-  untracked: "Untracked",
-  committed: "Committed",
+  uncommitted: "Без коммита",
+  untracked: "Неотслеживаемые",
+  committed: "В коммитах",
 };
 
 export interface WorkspaceChangedFilesSection<
@@ -150,7 +157,7 @@ export function selectWorkspaceChangedFilesSections<
     const isUntrackedOnly = workingTree.state === "untracked";
     sections.push({
       kind: isUntrackedOnly ? "untracked" : "uncommitted",
-      label: isUntrackedOnly ? "Untracked" : "Uncommitted",
+      label: isUntrackedOnly ? "Неотслеживаемые" : "Без коммита",
       files: workingTree.files,
       mergeBaseRef: null,
       stats: workingTree,
@@ -160,7 +167,7 @@ export function selectWorkspaceChangedFilesSections<
   if (mergeBase && mergeBase.fileCount > 0) {
     sections.push({
       kind: "committed",
-      label: "Committed",
+      label: "В коммитах",
       files: mergeBase.files,
       mergeBaseRef: mergeBase.baseRef,
       stats: mergeBase,

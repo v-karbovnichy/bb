@@ -73,13 +73,13 @@ describe("previewed command output", () => {
     const view = renderExpandedRow(previewedCommandRow());
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /retry/i })).toBeTruthy();
+      expect(screen.getByRole("button", { name: /повторить/i })).toBeTruthy();
     });
     await waitFor(() => {
       expect(view.container.textContent).toContain("characters omitted");
     });
     expect(
       screen.getByTestId("timeline-output-preview-note").textContent,
-    ).toContain("Failed to load the full output");
+    ).toContain("Не удалось загрузить полный вывод");
   });
 });

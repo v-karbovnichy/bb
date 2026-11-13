@@ -132,7 +132,7 @@ export function ThreadRowActionsEditor({
     <div
       ref={groupRef}
       role="group"
-      aria-label="Row actions"
+      aria-label="Действия со строкой"
       {...{ [CUSTOMIZE_ATTRIBUTE]: "" }}
       className="relative z-10 flex shrink-0 items-center gap-1 pr-0.5"
       onClick={(event) => event.stopPropagation()}
@@ -168,7 +168,7 @@ export function ThreadRowActionsEditor({
       <Button
         type="button"
         size="sm"
-        aria-label="Done"
+        aria-label="Готово"
         className="ml-0.5 h-6 shrink-0 gap-0.5 rounded-md px-1.5 text-xs font-normal focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-background/60 max-md:pointer-coarse:size-8 max-md:pointer-coarse:px-0"
         onClick={() => onDone(true)}
       >
@@ -177,7 +177,7 @@ export function ThreadRowActionsEditor({
           className="size-3 max-md:pointer-coarse:size-4"
           aria-hidden
         />
-        <span className="max-md:pointer-coarse:hidden">Done</span>
+        <span className="max-md:pointer-coarse:hidden">Готово</span>
       </Button>
     </div>
   );
@@ -242,7 +242,7 @@ function RowActionSlotPicker({
     value === null
       ? undefined
       : registrations.find((candidate) => candidate.key === value);
-  const label = `Row action ${index + 1}: ${value === null ? "Empty" : (registration?.title ?? value)}`;
+  const label = `Действие в строке ${index + 1}: ${value === null ? "Пусто" : (registration?.title ?? value)}`;
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -310,7 +310,7 @@ function RowActionSlotPicker({
             <DropdownMenuSeparator />
             <RowActionOption
               icon="EyeOff"
-              label="Hide"
+              label="Скрыть"
               selected={false}
               onSelect={() => {
                 focusHandedOff.current = onChange(null);

@@ -24,17 +24,17 @@ describe("ThreadModelFallbackCard", () => {
       <ThreadModelFallbackCard fallback={fallback} threadId="thread-1" />,
     );
 
-    expect(screen.getByText("Model fallback")).toBeTruthy();
-    expect(screen.getByText("Switched from Fable 5 to Opus 4.8")).toBeTruthy();
+    expect(screen.getByText("Резервная модель")).toBeTruthy();
+    expect(screen.getByText("Переключено с Fable 5 на Opus 4.8")).toBeTruthy();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Dismiss model fallback" }),
+      screen.getByRole("button", { name: "Скрыть уведомление о резервной модели" }),
     );
-    expect(screen.queryByText("Model fallback")).toBeNull();
+    expect(screen.queryByText("Резервная модель")).toBeNull();
 
     first.unmount();
     render(<ThreadModelFallbackCard fallback={fallback} threadId="thread-1" />);
-    expect(screen.queryByText("Model fallback")).toBeNull();
+    expect(screen.queryByText("Резервная модель")).toBeNull();
   });
 
   it("shows a later fallback occurrence after an earlier one was dismissed", () => {
@@ -49,6 +49,6 @@ describe("ThreadModelFallbackCard", () => {
         threadId="thread-1"
       />,
     );
-    expect(screen.getByText("Model fallback")).toBeTruthy();
+    expect(screen.getByText("Резервная модель")).toBeTruthy();
   });
 });

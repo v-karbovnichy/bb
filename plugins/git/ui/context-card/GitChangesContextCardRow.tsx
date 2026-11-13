@@ -23,7 +23,7 @@ export function GitChangesContextCardRow({
   return (
     <ThreadContextCardRow
       icon="FileDiff"
-      label="Changes"
+      label="Изменения"
       title={`All changes: ${formatChangeSummary(tally)}`}
       trailing={
         <DiffStatsTally

@@ -68,17 +68,17 @@ function bytes(value: number) {
 }
 function ago(timestamp: number) {
   const minutes = Math.round((Date.now() - timestamp) / 60_000);
-  if (minutes < 1) return "just now";
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 1) return "только что";
+  if (minutes < 60) return `${minutes} мин назад`;
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.round(hours / 24)}d ago`;
+  if (hours < 24) return `${hours} ч назад`;
+  return `${Math.round(hours / 24)} дн назад`;
 }
 function duration(days: number) {
-  if (days % 365 === 0) return days === 365 ? "1 year" : `${days / 365} years`;
+  if (days % 365 === 0) return days === 365 ? "1 год" : `${days / 365} лет`;
   if (days % 7 === 0 && days <= 28)
-    return days === 7 ? "1 week" : `${days / 7} weeks`;
-  return days === 1 ? "1 day" : `${days} days`;
+    return days === 7 ? "1 неделя" : `${days / 7} нед.`;
+  return days === 1 ? "1 день" : `${days} дн.`;
 }
 function plural(count: number, noun: string, nouns = `${noun}s`) {
   return `${count.toLocaleString()} ${count === 1 ? noun : nouns}`;
@@ -147,8 +147,8 @@ function useStorageSuccessToast(): NotifySuccess {
         : batch.removedInstances + completion.removedInstances;
     toast.success(
       batch.removedInstances === null
-        ? `${plural(batch.count, "storage action")} completed`
-        : `${plural(batch.removedInstances, "instance")} deleted`,
+        ? `Действий с хранилищем выполнено: ${batch.count.toLocaleString()}`
+        : `Экземпляров удалено: ${batch.removedInstances.toLocaleString()}`,
       {
         id: batch.id,
         duration: 5000,
@@ -156,7 +156,7 @@ function useStorageSuccessToast(): NotifySuccess {
           ...(batch.removedInstances === null ? [...batch.titles] : []),
           ...(batch.freedBytes === null
             ? []
-            : [`${bytes(batch.freedBytes)} freed`]),
+            : [`Освобождено ${bytes(batch.freedBytes)}`]),
         ].join(" · "),
       },
     );
@@ -183,19 +183,19 @@ function cleanupFeedback(
 ): ActionFeedback {
   const titles = {
     development: [
-      "Development data deleted",
-      "Couldn’t delete development data",
+      "Данные разработки удалены",
+      "Не удалось удалить данные разработки",
     ],
-    orphans: ["Orphaned files deleted", "Couldn’t delete orphaned files"],
-    worktrees: ["Checkout cleanup retried", "Couldn’t clean up checkouts"],
-    externalWorktrees: ["Worktrees removed", "Couldn’t remove worktrees"],
+    orphans: ["Осиротевшие файлы удалены", "Не удалось удалить осиротевшие файлы"],
+    worktrees: ["Очистка рабочих деревьев повторена", "Не удалось очистить рабочие деревья"],
+    externalWorktrees: ["Рабочие деревья удалены", "Не удалось удалить рабочие деревья"],
     largeFileCleanup: [
-      "Large archived files deleted",
-      "Couldn’t delete large archived files",
+      "Большие архивные файлы удалены",
+      "Не удалось удалить большие архивные файлы",
     ],
     archivedFileCleanup: [
-      "Archived thread files deleted",
-      "Couldn’t delete archived thread files",
+      "Файлы архивных чатов удалены",
+      "Не удалось удалить файлы архивных чатов",
     ],
   } as const;
   const [completed, failed] = titles[kind];
@@ -263,7 +263,7 @@ function StoragePanel(props: PluginNavPanelProps) {
       if (previousScan) {
         const description = data?.machines[host.hostId]?.name ?? host.hostId;
         if (host.scan.state === "failed" && previousScan.status !== "failed")
-          toast.error("Storage scan failed", {
+          toast.error("Не удалось проверить хранилище", {
             description: `${description} · ${host.scan.message}`,
           });
         else if (
@@ -271,7 +271,7 @@ function StoragePanel(props: PluginNavPanelProps) {
           host.report &&
           previousScan.scannedAt !== host.report.scannedAt
         )
-          notifySuccess("Storage scan completed", description);
+          notifySuccess("Проверка хранилища завершена", description);
       }
       previousScans.current.set(host.hostId, {
         scannedAt: host.report?.scannedAt,
@@ -327,13 +327,13 @@ function StoragePanel(props: PluginNavPanelProps) {
           continue;
         const id = worktreeRemovalToastId(host.hostId, removal.path);
         if (removal.state === "completed")
-          notifySuccess("Worktree removed", {
-            description: `${removal.path} · ${bytes(removal.removedBytes)} freed`,
+          notifySuccess("Рабочее дерево удалено", {
+            description: `${removal.path} · освобождено ${bytes(removal.removedBytes)}`,
             freedBytes: removal.removedBytes,
             removedInstances: null,
           });
         else if (removal.state === "skipped" || removal.state === "failed")
-          toast.error("Couldn’t remove worktree", {
+          toast.error("Не удалось удалить рабочее дерево", {
             id,
             description: `${removal.path} · ${
               removal.state === "skipped"
@@ -352,7 +352,7 @@ function StoragePanel(props: PluginNavPanelProps) {
       const state = await rpc.call("state", null);
       if (revision === stateRevision.current) updateState(state);
     } catch (error) {
-      toast.error("Couldn’t refresh retention settings", {
+      toast.error("Не удалось обновить настройки хранения", {
         description: message(error),
       });
     }
@@ -463,11 +463,11 @@ function StoragePage({
       id: `scan:${hostId ?? "all"}`,
       background: true,
 
-      completed: "Storage scan started",
-      failed: "Couldn’t start storage scan",
+      completed: "Проверка хранилища началась",
+      failed: "Не удалось начать проверку хранилища",
       description: hostId
         ? (machines[hostId]?.name ?? hostId)
-        : "Online machines",
+        : "Машины в сети",
     },
     success?: (result: T) => string | CleanupCompletion,
   ) {
@@ -507,7 +507,7 @@ function StoragePage({
   }) {
     const result = await runEntryCleanup({ kind: "development", ...input });
     if (result.kind !== "development")
-      throw new Error("Unexpected cleanup result");
+      throw new Error("Неожиданный результат очистки");
     return result;
   }
   async function saveSetting<K extends keyof Policy>(key: K, value: Policy[K]) {
@@ -518,17 +518,17 @@ function StoragePage({
     setSavingSetting(true);
     updateState(next);
     const description = {
-      archiveAfterDays: "Archive inactive threads",
-      deleteAfterDays: "Delete archived threads",
-      deleteStorageOnArchive: "Delete thread storage on archive",
+      archiveAfterDays: "Архивировать неактивные чаты",
+      deleteAfterDays: "Удалять архивные чаты",
+      deleteStorageOnArchive: "Удалять файлы чата при архивировании",
       deleteDevDataOnCheckoutRemoval:
-        "Delete development data when its checkout is removed",
+        "Удалять данные разработки при удалении рабочего дерева",
     }[key];
     try {
       updateState(await rpc.call("configure", next.policy));
     } catch (error) {
       updateState(previous);
-      toast.error("Couldn’t save setting", {
+      toast.error("Не удалось сохранить настройку", {
         description: `${description} · ${message(error)}`,
       });
     } finally {
@@ -593,13 +593,13 @@ function StoragePage({
         target,
         machines[target]?.name ?? target,
       ),
-      action: "Remove instances",
-      title: `Remove ${plural(count, "development instance")} (${bytes(size)})?`,
+      action: "Удалить экземпляры",
+      title: `Удалить экземпляры разработки: ${count.toLocaleString()} (${bytes(size)})?`,
       detail:
-        "Delete the databases, logs, and thread files of development instances whose source checkout no longer exists. Development servers still running from those checkouts are stopped first. This can’t be undone.",
+        "Удалить базы данных, журналы и файлы чатов экземпляров разработки без исходного рабочего дерева. Работающие серверы разработки сначала будут остановлены. Это действие нельзя отменить.",
       run: async () => {
         await rpc.call("startCleanup", { hostId: target, kind: "development" });
-        return "Development storage cleanup started in the background.";
+        return "Очистка данных разработки началась в фоновом режиме.";
       },
     };
   }
@@ -609,14 +609,14 @@ function StoragePage({
       feedback: cleanupFeedback(
         "largeFileCleanup",
         target,
-        target ? (machines[target]?.name ?? target) : "All online machines",
+        target ? (machines[target]?.name ?? target) : "Все машины в сети",
       ),
-      action: "Delete large files",
-      title: `Delete ${totals.fileCount.toLocaleString()} large ${totals.fileCount === 1 ? "file" : "files"} (${bytes(totals.bytes)})?`,
-      detail: `Delete files of ${bytes(LARGE_FILE_MIN_BYTES)} or more from ${plural(totals.threadCount, "archived thread")}. Smaller files and conversation history will be kept. Pinned threads are skipped. This can’t be undone.`,
+      action: "Удалить большие файлы",
+      title: `Удалить большие файлы: ${totals.fileCount.toLocaleString()} (${bytes(totals.bytes)})?`,
+      detail: `Удалить файлы размером от ${bytes(LARGE_FILE_MIN_BYTES)} из архивных чатов (${totals.threadCount.toLocaleString()}). Меньшие файлы и история переписки сохранятся. Закреплённые чаты пропускаются. Это действие нельзя отменить.`,
       run: async () => {
         await rpc.call("startClearLargeFiles", { hostId: target });
-        return "Large-file cleanup started in the background.";
+        return "Очистка больших файлов началась в фоновом режиме.";
       },
     };
   }
@@ -642,9 +642,9 @@ function StoragePage({
     archivedLargeFiles.bytes >= LARGE_FILE_NUDGE_MIN_BYTES
       ? [
           {
-            title: `Free up ${bytes(archivedLargeFiles.bytes)} from archived threads`,
-            description: `${plural(archivedLargeFiles.fileCount, "file")} of ${bytes(LARGE_FILE_MIN_BYTES)} or more sit in the thread storage of ${plural(archivedLargeFiles.threadCount, "archived thread")}. Deleting them keeps smaller files like reports, and conversation history isn’t affected.`,
-            action: "Delete large files",
+            title: `Освободить ${bytes(archivedLargeFiles.bytes)} в архивных чатах`,
+            description: `Больших файлов: ${archivedLargeFiles.fileCount.toLocaleString()} (от ${bytes(LARGE_FILE_MIN_BYTES)}), архивных чатов: ${archivedLargeFiles.threadCount.toLocaleString()}. При удалении небольшие файлы, например отчёты, и история переписки сохранятся.`,
+            action: "Удалить большие файлы",
             cleanup: largeFilesCleanup(null, archivedLargeFiles),
           },
         ]
@@ -652,14 +652,14 @@ function StoragePage({
   const cleanupConfirmation = cleanup && (
     <div
       role="region"
-      aria-label="Confirm cleanup"
+      aria-label="Подтвердить очистку"
       className="flex flex-col gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-3"
     >
       <div className="flex flex-col gap-1">
         <p className="text-sm font-medium">{cleanup.title}</p>
         <p className="text-xs leading-snug text-subtle-foreground/75">
           {cleanup.key === "archived-files" && report
-            ? `Delete ${bytes(report.archivedFiles.bytes)} of stored files from ${plural(report.archivedFiles.threadCount, "archived thread")} on this machine. Conversations and uploaded attachments are kept. Pinned and running threads are skipped. This can’t be undone.`
+            ? `Удалить ${bytes(report.archivedFiles.bytes)} файлов архивных чатов на этой машине (${report.archivedFiles.threadCount.toLocaleString()}). История переписки и вложения сохранятся. Закреплённые и работающие чаты пропускаются. Это действие нельзя отменить.`
             : cleanup.detail}
         </p>
       </div>
@@ -670,7 +670,7 @@ function StoragePage({
           disabled={offline || busyActions.has(cleanup.feedback.id ?? "")}
           onClick={() => setCleanup(null)}
         >
-          Cancel
+          Отмена
         </Button>
         <Button
           variant="destructive"
@@ -698,12 +698,12 @@ function StoragePage({
   );
   const scanNotice = scanning && (
     <p role="status" className="text-xs leading-snug text-subtle-foreground/75">
-      Scanning in the background. Large directories may take a few minutes.
+      Идёт фоновая проверка. Обработка больших каталогов может занять несколько минут.
     </p>
   );
   const storageInfo = (
     <aside
-      aria-label="What is thread storage?"
+      aria-label="Что такое файлы чата?"
       className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 px-4 py-3"
     >
       <Icon
@@ -711,12 +711,11 @@ function StoragePage({
         className="mt-0.5 size-4 shrink-0 text-muted-foreground"
       />
       <div className="min-w-0 space-y-1">
-        <h2 className="text-sm font-medium">What is thread storage?</h2>
+        <h2 className="text-sm font-medium">Что такое файлы чата?</h2>
         <p className="text-xs leading-snug text-subtle-foreground/75">
-          A place for your agent to keep things that don’t belong in the repo,
-          like plans, reports, and scratch files you don’t want to commit.
-          Clearing it removes those files for good. Your conversation history
-          and uploaded attachments are kept separately.
+          Здесь агент хранит то, что не входит в репозиторий: планы, отчёты и
+          черновые файлы. Очистка удалит эти файлы безвозвратно. История
+          переписки и загруженные вложения хранятся отдельно.
         </p>
       </div>
     </aside>
@@ -736,21 +735,21 @@ function StoragePage({
               onClick={() => navigate.toPluginPanel(PANEL)}
             >
               <Icon name="ArrowLeft" className="size-4" />
-              All machines
+              Все машины
             </button>
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
               <div className="min-w-0 flex-1">
                 <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                   <h1 className="min-w-0 break-words text-base font-semibold">
-                    {machine?.name ?? "Machine storage"}
+                    {machine?.name ?? "Хранилище машины"}
                   </h1>
                   <div className="flex shrink-0 items-center gap-1.5">
-                    {hostId === primaryHostId && <Pill>server</Pill>}
+                    {hostId === primaryHostId && <Pill>сервер</Pill>}
                     {machine && <MachineStatus machine={machine} />}
                   </div>
                 </div>
                 <p className="mt-0.5 text-xs leading-snug text-subtle-foreground/75">
-                  Review stored files and free up space on this machine.
+                  Просмотрите сохранённые файлы и освободите место на этой машине.
                 </p>
               </div>
               <Button
@@ -767,10 +766,10 @@ function StoragePage({
                   className={scanning ? "animate-spin" : ""}
                 />
                 {scanning
-                  ? "Scanning…"
+                  ? "Проверка…"
                   : report
-                    ? "Rescan machine"
-                    : "Scan machine"}
+                    ? "Проверить машину повторно"
+                    : "Проверить машину"}
               </Button>
             </div>
           </header>
@@ -787,7 +786,7 @@ function StoragePage({
                 size="sm"
                 onClick={() => void refresh()}
               >
-                Try again
+                Повторить
               </Button>
             )}
           </div>
@@ -808,14 +807,14 @@ function StoragePage({
               >
                 <Icon name="CloudOff" className="mt-px size-3.5 shrink-0" />
                 <p>
-                  This machine is offline. Scanning and cleanup are available
-                  once it reconnects.
+                  Машина не в сети. Проверка и очистка станут доступны после
+                  подключения.
                 </p>
               </div>
             )}
             {detail?.scan.state === "failed" && (
               <p role="alert" className="text-sm text-destructive">
-                Scan failed: {detail.scan.message}
+                Не удалось проверить хранилище: {detail.scan.message}
               </p>
             )}
             {!report ? (
@@ -826,15 +825,14 @@ function StoragePage({
                 />
                 <h2 className="text-base font-medium">
                   {scanning
-                    ? "Scanning this machine"
-                    : "See what’s taking up space"}
+                    ? "Проверка этой машины"
+                    : "Посмотреть, что занимает место"}
                 </h2>
                 {scanning ? (
                   scanNotice
                 ) : (
                   <p className="max-w-sm text-xs leading-snug text-subtle-foreground/75">
-                    Scan this machine to measure thread files and find storage
-                    you can clean up. Nothing is removed during a scan.
+                    Проверьте машину, чтобы оценить объём файлов чатов и найти данные для очистки. Во время проверки ничего не удаляется.
                   </p>
                 )}
               </div>
@@ -842,11 +840,11 @@ function StoragePage({
               <>
                 <section
                   className="space-y-4 rounded-lg border border-border bg-card px-4 py-3.5"
-                  aria-label="Storage breakdown"
+                  aria-label="Состав хранилища"
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <p className="text-sm font-medium">
-                      {report.developerStorage ? "Total" : "Thread storage"}
+                      {report.developerStorage ? "Всего" : "Файлы чатов"}
                     </p>
                     <p className="text-lg font-semibold tabular-nums">
                       {bytes(
@@ -861,25 +859,25 @@ function StoragePage({
                   <div className="space-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
                     {report.disk && (
                       <p className="tabular-nums">
-                        Disk space: {bytes(report.disk.freeBytes)} free of{" "}
+                        Место на диске: свободно {bytes(report.disk.freeBytes)} из{" "}
                         {bytes(report.disk.totalBytes)}
                       </p>
                     )}
                     <p title={new Date(report.scannedAt).toLocaleString()}>
-                      Scanned {ago(report.scannedAt)}
+                      Проверено {ago(report.scannedAt)}
                     </p>
                     {scanNotice}
                   </div>
                 </section>
                 <ProjectWorktrees report={report} />
                 <section className="space-y-3">
-                  <SectionHeading title="Clean up" />
+                  <SectionHeading title="Очистка" />
                   <div className="divide-y divide-border rounded-lg border border-border bg-card">
                     <CleanupRow
-                      title="All files in archived threads"
+                      title="Все файлы архивных чатов"
                       size={report.archivedFiles.bytes}
-                      description={`Clear stored files of any size from ${plural(report.archivedFiles.threadCount, "archived thread")}. Pinned and running threads are skipped. Conversations and uploaded attachments are kept.`}
-                      action="Clear archived files"
+                      description={`Удалить файлы любого размера из архивных чатов (${report.archivedFiles.threadCount.toLocaleString()}). Закреплённые и работающие чаты пропускаются. История переписки и вложения сохранятся.`}
+                      action="Очистить архивные файлы"
                       busy={cleanupBusy("archivedFileCleanup")}
                       disabled={
                         locked || report.archivedFiles.threadCount === 0
@@ -892,14 +890,14 @@ function StoragePage({
                             report.hostId,
                             machine?.name ?? report.hostId,
                           ),
-                          title: "Clear all archived thread files?",
-                          action: "Clear archived files",
-                          detail: `Delete ${bytes(report.archivedFiles.bytes)} of stored files from ${plural(report.archivedFiles.threadCount, "archived thread")} on this machine. This includes small files. Conversations and uploaded attachments will be kept. Pinned and running threads are skipped. This can’t be undone.`,
+                          title: "Удалить все файлы архивных чатов?",
+                          action: "Очистить архивные файлы",
+                          detail: `Удалить ${bytes(report.archivedFiles.bytes)} файлов архивных чатов на этой машине (${report.archivedFiles.threadCount.toLocaleString()}), включая небольшие файлы. История переписки и вложения сохранятся. Закреплённые и работающие чаты пропускаются. Это действие нельзя отменить.`,
                           run: async () => {
                             await rpc.call("startClearArchivedFiles", {
                               hostId: report.hostId,
                             });
-                            return "Archived-file cleanup started in the background.";
+                            return "Очистка архивных файлов началась в фоновом режиме.";
                           },
                         })
                       }
@@ -907,14 +905,14 @@ function StoragePage({
                       {cleanup?.key === "archived-files" && cleanupConfirmation}
                     </CleanupRow>
                     <CleanupRow
-                      title="Large files in archived threads"
+                      title="Большие файлы архивных чатов"
                       size={report.archivedLargeFiles.bytes}
                       description={
                         report.archivedLargeFiles.fileCount
-                          ? `${plural(report.archivedLargeFiles.fileCount, "file")} of ${bytes(LARGE_FILE_MIN_BYTES)} or more across ${plural(report.archivedLargeFiles.threadCount, "archived thread")}. Smaller files and conversation history are kept.`
-                          : `No files of ${bytes(LARGE_FILE_MIN_BYTES)} or more in archived threads.`
+                          ? `Больших файлов: ${report.archivedLargeFiles.fileCount.toLocaleString()} (от ${bytes(LARGE_FILE_MIN_BYTES)}), архивных чатов: ${report.archivedLargeFiles.threadCount.toLocaleString()}. Меньшие файлы и история переписки сохранятся.`
+                          : `В архивных чатах нет файлов размером от ${bytes(LARGE_FILE_MIN_BYTES)}.`
                       }
-                      action="Delete large files"
+                      action="Удалить большие файлы"
                       busy={cleanupBusy("largeFileCleanup")}
                       disabled={
                         locked || report.archivedLargeFiles.fileCount === 0
@@ -931,10 +929,10 @@ function StoragePage({
                       {cleanup?.key === "large-files" && cleanupConfirmation}
                     </CleanupRow>
                     <CleanupRow
-                      title="Orphaned storage"
+                      title="Осиротевшие файлы"
                       size={report.orphanBytes}
-                      description="Files left behind by deleted threads. BB cleans these up automatically while idle."
-                      action="Remove orphans"
+                      description="Файлы удалённых чатов. BB автоматически очищает их во время простоя."
+                      action="Удалить осиротевшие файлы"
                       busy={cleanupBusy("orphans")}
                       disabled={locked || report.orphanCount === 0}
                       onAction={() =>
@@ -945,16 +943,16 @@ function StoragePage({
                             report.hostId,
                             machine?.name ?? report.hostId,
                           ),
-                          action: "Remove orphans",
-                          title: `Remove ${bytes(report.orphanBytes)} of orphaned storage?`,
+                          action: "Удалить осиротевшие файлы",
+                          title: `Удалить ${bytes(report.orphanBytes)} осиротевших файлов?`,
                           detail:
-                            "Delete folders no longer attached to a thread. Existing threads and their files will be kept. This can’t be undone.",
+                            "Удалить папки, больше не связанные с чатами. Существующие чаты и их файлы сохранятся. Это действие нельзя отменить.",
                           run: async () => {
                             await rpc.call("startCleanup", {
                               kind: "orphans",
                               hostId: report.hostId,
                             });
-                            return "Orphan cleanup started in the background.";
+                            return "Очистка осиротевших файлов началась в фоновом режиме.";
                           },
                         })
                       }
@@ -962,10 +960,10 @@ function StoragePage({
                       {cleanup?.key === "orphans" && cleanupConfirmation}
                     </CleanupRow>
                     <CleanupRow
-                      title="Leftover worktrees"
+                      title="Оставшиеся рабочие деревья"
                       size={report.leftoverWorktreeBytes}
-                      description="Checkouts BB could not remove after their threads were archived. BB retries automatically."
-                      action="Retry cleanup"
+                      description="Рабочие деревья, которые BB не смог удалить после архивирования чатов. BB автоматически повторяет попытку."
+                      action="Повторить очистку"
                       busy={cleanupBusy("worktrees")}
                       disabled={locked || report.leftoverWorktrees.length === 0}
                       onAction={() =>
@@ -979,7 +977,7 @@ function StoragePage({
                           cleanupFeedback(
                             "worktrees",
                             hostId,
-                            machine?.name ?? hostId ?? "Machine",
+                            machine?.name ?? hostId ?? "Машина",
                           ),
                         )
                       }
@@ -987,11 +985,7 @@ function StoragePage({
                       {report.leftoverWorktrees.length > 0 && (
                         <details className="text-xs text-muted-foreground">
                           <summary className="cursor-pointer">
-                            {plural(
-                              report.leftoverWorktrees.length,
-                              "checkout",
-                            )}{" "}
-                            awaiting removal
+                            Ожидают удаления: {report.leftoverWorktrees.length.toLocaleString()}
                           </summary>
                           <div className="mt-2 space-y-2">
                             {report.leftoverWorktrees.map((worktree) => (
@@ -1012,10 +1006,10 @@ function StoragePage({
                       )}
                     </CleanupRow>
                     <CleanupRow
-                      title="Worktrees created outside BB"
+                      title="Рабочие деревья, созданные вне BB"
                       size={externalBytes}
-                      description="Git worktrees of your projects that BB didn’t create, such as ones agents added with git worktree add. Removing them keeps their branches. Bulk removal keeps worktrees with uncommitted changes, locked worktrees, and detached worktrees with commits on no branch; remove those one at a time."
-                      action="Remove worktrees"
+                      description="Рабочие деревья Git ваших проектов, созданные вне BB, например агентами с помощью git worktree add. При удалении ветки сохраняются. Массовое удаление пропускает рабочие деревья с незакоммиченными изменениями, заблокированные деревья и отсоединённые деревья с коммитами вне веток; удаляйте их по одному."
+                      action="Удалить рабочие деревья"
                       busy={cleanupBusy("externalWorktrees")}
                       disabled={locked || report.externalWorktrees.length === 0}
                       onAction={() =>
@@ -1026,16 +1020,16 @@ function StoragePage({
                             report.hostId,
                             machine?.name ?? report.hostId,
                           ),
-                          action: "Remove worktrees",
-                          title: `Remove ${plural(report.externalWorktrees.length, "worktree")} created outside BB (${bytes(externalBytes)})?`,
+                          action: "Удалить рабочие деревья",
+                          title: `Удалить рабочие деревья, созданные вне BB (${report.externalWorktrees.length.toLocaleString()}) (${bytes(externalBytes)})?`,
                           detail:
-                            "Delete these checkouts, including ignored files such as dependencies, build output, and local env files. Branches and commits stay in the repository. Worktrees with uncommitted changes, locked worktrees, and detached worktrees with commits on no branch are kept; remove those one at a time. Make sure no agent is still working in them. This can’t be undone.",
+                            "Удалить рабочие деревья вместе с игнорируемыми файлами, включая зависимости, результаты сборки и локальные файлы окружения. Ветки и коммиты останутся в репозитории. Деревья с незакоммиченными изменениями, заблокированные деревья и отсоединённые деревья с коммитами вне веток сохранятся; удаляйте их по одному. Убедитесь, что агенты больше не работают в них. Это действие нельзя отменить.",
                           run: async () => {
                             await rpc.call("startCleanup", {
                               kind: "externalWorktrees",
                               hostId: report.hostId,
                             });
-                            return "Worktree removal started in the background.";
+                            return "Удаление рабочих деревьев началось в фоновом режиме.";
                           },
                         })
                       }
@@ -1063,8 +1057,8 @@ function StoragePage({
                           confirmation={cleanupConfirmation}
                           onRemove={(worktree, label) => {
                             const feedback = {
-                              completed: "Worktree removed",
-                              failed: "Couldn’t remove worktree",
+                              completed: "Рабочее дерево удалено",
+                              failed: "Не удалось удалить рабочее дерево",
                               description: worktree.path,
                               id: worktreeRemovalToastId(
                                 report.hostId,
@@ -1100,8 +1094,8 @@ function StoragePage({
                                 setCleanup({
                                   key: `external-worktree:${worktree.path}`,
                                   feedback,
-                                  action: "Remove anyway",
-                                  title: `Remove “${label}” anyway (${bytes(worktree.sizeBytes)})?`,
+                                  action: "Всё равно удалить",
+                                  title: `Всё равно удалить «${label}» (${bytes(worktree.sizeBytes)})?`,
                                   detail: [
                                     ...forceable.map(
                                       (reason) =>
@@ -1109,7 +1103,7 @@ function StoragePage({
                                           reason
                                         ],
                                     ),
-                                    "The checkout is deleted, including ignored files. Its branch is kept. This can’t be undone.",
+                                    "Рабочее дерево будет удалено вместе с игнорируемыми файлами. Ветка сохранится. Это действие нельзя отменить.",
                                   ].join(" "),
                                   run: async () => {
                                     const forced = await start(true);
@@ -1131,10 +1125,10 @@ function StoragePage({
                     </CleanupRow>
                     {report.developerStorage && (
                       <CleanupRow
-                        title="Development instances without a checkout"
+                        title="Экземпляры разработки без рабочего дерева"
                         size={missingDevBytes}
-                        description={`${plural(missingDev.length, "development instance")} in ~/.bb-dev whose source checkout no longer exists. Servers still running from them are stopped before removal.`}
-                        action="Remove instances"
+                        description={`Экземпляров в ~/.bb-dev без исходного рабочего дерева: ${missingDev.length.toLocaleString()}. Работающие серверы будут остановлены перед удалением.`}
+                        action="Удалить экземпляры"
                         busy={cleanupBusy("development")}
                         disabled={locked || missingDev.length === 0}
                         onAction={() =>
@@ -1155,13 +1149,13 @@ function StoragePage({
                 </section>
                 <section className="space-y-3">
                   <SectionHeading
-                    title="Threads using the most storage"
-                    description="Clear files permanently removes a stopped thread’s stored files, including small files. Conversation history is kept."
+                    title="Чаты, занимающие больше всего места"
+                    description="Удаление файлов остановленного чата необратимо и затрагивает даже небольшие файлы. История переписки сохраняется."
                   />
                   <div className="divide-y divide-border rounded-lg border border-border bg-card">
                     {report.largestThreads.length === 0 && (
                       <p className="p-6 text-center text-xs leading-snug text-subtle-foreground/75">
-                        No thread files found in the last scan.
+                        При последней проверке файлы чатов не найдены.
                       </p>
                     )}
                     {(threadsExpanded
@@ -1177,12 +1171,12 @@ function StoragePage({
                             <ThreadTitle
                               title={thread.title}
                               pills={[
-                                ...(thread.hidden ? ["hidden"] : []),
-                                ...(thread.pinned ? ["pinned"] : []),
+                                ...(thread.hidden ? ["скрыт"] : []),
+                                ...(thread.pinned ? ["закреплён"] : []),
                                 ...(thread.running
-                                  ? ["running"]
+                                  ? ["работает"]
                                   : thread.archivedAt !== null
-                                    ? ["archived"]
+                                    ? ["в архиве"]
                                     : []),
                               ]}
                               onOpen={() => navigate.toThread(thread.threadId)}
@@ -1196,7 +1190,7 @@ function StoragePage({
                               busy={busyActions.has(
                                 `storage:thread:${thread.threadId}`,
                               )}
-                              label="Clear files"
+                              label="Удалить файлы"
                               target={thread.title}
                               disabled={locked || thread.running}
                               onClick={() =>
@@ -1205,8 +1199,8 @@ function StoragePage({
                                   {
                                     id: `storage:thread:${thread.threadId}`,
 
-                                    completed: "Thread files deleted",
-                                    failed: "Couldn’t delete thread files",
+                                    completed: "Файлы чата удалены",
+                                    failed: "Не удалось удалить файлы чата",
                                     description: thread.title,
                                   },
                                   async () => {
@@ -1263,16 +1257,13 @@ function StoragePage({
                             entries.map((entry) => entry.name),
                           ),
 
-                          completed: "Development data deleted",
-                          failed: "Couldn’t delete development data",
-                          description: plural(
-                            entries.length,
-                            "development instance",
-                          ),
+                          completed: "Данные разработки удалены",
+                          failed: "Не удалось удалить данные разработки",
+                          description: `Экземпляров разработки: ${entries.length.toLocaleString()}`,
                         },
-                        action: "Remove instances",
-                        title: `Remove ${plural(entries.length, "development instance")} (${bytes(size)})?`,
-                        detail: `Delete their databases, logs, and thread files. Source checkouts are kept.${running > 0 ? ` ${plural(running, "dev server")} running at the last scan ${running === 1 ? "is" : "are"} stopped first.` : ""} This can’t be undone.`,
+                        action: "Удалить экземпляры",
+                        title: `Удалить экземпляры разработки (${entries.length.toLocaleString()}) (${bytes(size)})?`,
+                        detail: `Удалить базы данных, журналы и файлы чатов. Исходные рабочие деревья сохранятся.${running > 0 ? ` Работающие серверы разработки будут сначала остановлены: ${running.toLocaleString()}.` : ""} Это действие нельзя отменить.`,
                         run: async () => {
                           let removedCount = 0;
                           let removedBytes = 0;
@@ -1293,7 +1284,7 @@ function StoragePage({
                           }
 
                           return {
-                            description: `${plural(removedCount, "instance")} removed · ${bytes(removedBytes)} freed`,
+                            description: `Экземпляров удалено: ${removedCount.toLocaleString()} · освобождено ${bytes(removedBytes)}`,
                             freedBytes: removedBytes,
                             removedInstances: removedCount,
                           };
@@ -1306,8 +1297,8 @@ function StoragePage({
                         {
                           id: developmentToastId(report.hostId, [entry.name]),
 
-                          completed: "Development data deleted",
-                          failed: "Couldn’t delete development data",
+                          completed: "Данные разработки удалены",
+                          failed: "Не удалось удалить данные разработки",
                           description: `${report.developerStorage!.path}/${entry.name}`,
                         },
                         async () => {
@@ -1324,14 +1315,14 @@ function StoragePage({
                                   entry.name,
                                 ]),
 
-                                completed: "Development data deleted",
-                                failed: "Couldn’t delete development data",
+                                completed: "Данные разработки удалены",
+                                failed: "Не удалось удалить данные разработки",
                                 description: `${report.developerStorage!.path}/${entry.name}`,
                               },
-                              action: "Stop and remove",
-                              title: `Stop and remove “${label}” (${bytes(entry.sizeBytes)})?`,
+                              action: "Остановить и удалить",
+                              title: `Остановить и удалить «${label}» (${bytes(entry.sizeBytes)})?`,
                               detail:
-                                "Its dev server is running. BB will stop it, then delete its database, logs, and thread files. The source checkout is kept. This can’t be undone.",
+                                "Сервер разработки работает. BB остановит его, затем удалит базу данных, журналы и файлы чата. Исходное рабочее дерево сохранится. Это действие нельзя отменить.",
                               run: async () => {
                                 const stopped = await removeDevelopment({
                                   hostId: report.hostId,
@@ -1340,7 +1331,7 @@ function StoragePage({
                                 });
 
                                 return {
-                                  description: `${report.developerStorage!.path}/${entry.name} · ${bytes(stopped.removedBytes)} freed`,
+                                  description: `${report.developerStorage!.path}/${entry.name} · освобождено ${bytes(stopped.removedBytes)}`,
                                   freedBytes: stopped.removedBytes,
                                   removedInstances: stopped.removedCount,
                                 };
@@ -1348,7 +1339,7 @@ function StoragePage({
                             });
                           else
                             return {
-                              description: `${report.developerStorage!.path}/${entry.name} · ${bytes(result.removedBytes)} freed`,
+                              description: `${report.developerStorage!.path}/${entry.name} · освобождено ${bytes(result.removedBytes)}`,
                               freedBytes: result.removedBytes,
                               removedInstances: result.removedCount,
                             };
@@ -1401,7 +1392,7 @@ function StoragePage({
             ))}
             <section className="space-y-3">
               <SectionHeading
-                title="Machine storage"
+                title="Хранилище машины"
                 action={
                   <Button
                     variant="outline"
@@ -1415,7 +1406,7 @@ function StoragePage({
                       name="RotateCcw"
                       className={scanningAll ? "animate-spin" : ""}
                     />
-                    {scanningAll ? "Scanning…" : "Scan all"}
+                    {scanningAll ? "Проверка…" : "Проверить все"}
                   </Button>
                 }
               />
@@ -1423,11 +1414,11 @@ function StoragePage({
                 {hosts.length === 0 && (
                   <div className="space-y-2 p-6 text-center">
                     <p className="text-sm font-normal">
-                      No machines connected yet
+                      Пока нет подключённых машин
                     </p>
                     <p className="text-xs leading-snug text-subtle-foreground/75">
-                      Add a persistent machine in Settings → Machines to inspect
-                      its storage.
+                      Добавьте постоянную машину в разделе «Настройки → Машины»,
+                      чтобы проверить её хранилище.
                     </p>
                   </div>
                 )}
@@ -1451,8 +1442,8 @@ function StoragePage({
                           id: `scan:${host.hostId}`,
                           background: true,
 
-                          completed: "Storage scan started",
-                          failed: "Couldn’t start storage scan",
+                          completed: "Проверка хранилища началась",
+                          failed: "Не удалось начать проверку хранилища",
                           description:
                             machines[host.hostId]?.name ?? host.hostId,
                         },
@@ -1464,9 +1455,9 @@ function StoragePage({
             </section>
             <section className="space-y-3">
               <SectionHeading
-                title="Automatic retention"
-                description="Archive or delete inactive threads across all projects. Changes save automatically."
-                badge={retentionOn ? "Checks hourly" : "Off"}
+                title="Автоматическое хранение"
+                description="Архивируйте или удаляйте неактивные чаты во всех проектах. Изменения сохраняются автоматически."
+                badge={retentionOn ? "Проверка каждый час" : "Выключено"}
               />
               <div
                 role="note"
@@ -1475,17 +1466,17 @@ function StoragePage({
                 <Icon name="Pin" className="mt-px size-3.5 shrink-0" />
                 <p>
                   <span className="text-foreground">
-                    Pinned threads are never archived or deleted.
+                    Закреплённые чаты никогда не архивируются и не удаляются.
                   </span>{" "}
-                  Automation targets aren’t protected on their own, so pin the
-                  ones you want to keep.
+                  Чаты автоматизаций сами по себе не защищены. Закрепите те,
+                  которые хотите сохранить.
                 </p>
               </div>
               {policy && (
                 <div className="divide-y divide-border rounded-lg border border-border bg-card">
                   <RetentionField
-                    label="Archive inactive threads"
-                    description="After this long with no activity."
+                    label="Архивировать неактивные чаты"
+                    description="После этого срока без активности."
                     presets={ARCHIVE_PRESETS}
                     value={policy.archiveAfterDays}
                     disabled={savingSetting}
@@ -1494,8 +1485,8 @@ function StoragePage({
                     }
                   />
                   <RetentionField
-                    label="Delete archived threads"
-                    description="Permanently, after this long in the archive."
+                    label="Удалять архивные чаты"
+                    description="Безвозвратно после указанного срока в архиве."
                     presets={DELETE_PRESETS}
                     value={policy.deleteAfterDays}
                     disabled={savingSetting}
@@ -1506,16 +1497,16 @@ function StoragePage({
                   <label className="flex items-center justify-between gap-4 px-4 py-3">
                     <span>
                       <span className="block text-sm font-medium">
-                        Delete thread storage on archive
+                        Удалять файлы чата при архивировании
                       </span>
                       <span className="block text-xs text-muted-foreground">
-                        Permanently remove files after archiving. Conversations
-                        and uploaded attachments are kept. Pinned threads are
-                        skipped.
+                        Безвозвратно удалять файлы после архивирования.
+                        Переписка и вложения сохраняются. Закреплённые чаты
+                        пропускаются.
                       </span>
                     </span>
                     <Switch
-                      aria-label="Delete thread storage on archive"
+                      aria-label="Удалять файлы чата при архивировании"
                       checked={policy.deleteStorageOnArchive}
                       disabled={savingSetting}
                       onCheckedChange={(checked) =>
@@ -1526,16 +1517,16 @@ function StoragePage({
                   <label className="flex items-center justify-between gap-4 px-4 py-3">
                     <span>
                       <span className="block text-sm font-medium">
-                        Delete development data when its checkout is removed
+                        Удалять данные разработки при удалении рабочего дерева
                       </span>
                       <span className="block text-xs text-muted-foreground">
-                        After scans, remove ~/.bb-dev folders with missing
-                        checkouts and stop their servers. Checks run hourly,
-                        including for existing development data.
+                        После проверки удалять папки ~/.bb-dev без рабочих
+                        деревьев и останавливать их серверы. Проверки выполняются
+                        каждый час, включая существующие данные разработки.
                       </span>
                     </span>
                     <Switch
-                      aria-label="Delete development data when its checkout is removed"
+                      aria-label="Удалять данные разработки при удалении рабочего дерева"
                       checked={policy.deleteDevDataOnCheckoutRemoval}
                       disabled={savingSetting}
                       onCheckedChange={(checked) =>
@@ -1550,8 +1541,8 @@ function StoragePage({
                     <div className="px-4 py-2.5">
                       <p className="text-xs text-muted-foreground">
                         {state.lastRun
-                          ? `Last checked ${ago(state.lastRun.ranAt)} · ${state.lastRun.archivedCount} archived · ${state.lastRun.deletedCount} deleted${state.lastRun.failedCount ? ` · ${state.lastRun.failedCount} failed` : ""}`
-                          : "The first check runs within the hour."}
+                          ? `Последняя проверка ${ago(state.lastRun.ranAt)} · архивировано: ${state.lastRun.archivedCount} · удалено: ${state.lastRun.deletedCount}${state.lastRun.failedCount ? ` · ошибок: ${state.lastRun.failedCount}` : ""}`
+                          : "Первая проверка пройдёт в течение часа."}
                       </p>
                     </div>
                   )}
@@ -1577,7 +1568,7 @@ function StorageSkeleton({ detail }: { detail: boolean }) {
     </div>
   );
   return (
-    <div role="status" aria-label="Loading storage" className="space-y-10">
+    <div role="status" aria-label="Загрузка хранилища" className="space-y-10">
       {detail ? (
         <>
           <div className="space-y-3">
@@ -1758,10 +1749,10 @@ function MachineStatus({ machine }: { machine: Machine }) {
         )}
       />
       {online
-        ? "Online"
+        ? "В сети"
         : machine.lastSeenAt
-          ? `Offline · last seen ${ago(machine.lastSeenAt)}`
-          : "Offline"}
+          ? `Не в сети · последняя активность ${ago(machine.lastSeenAt)}`
+          : "Не в сети"}
     </span>
   );
 }
@@ -1785,21 +1776,21 @@ function MachineRow({
   const scanning = pendingScan || host.scan.state === "scanning";
   const name = machine?.name ?? host.hostId;
   const scanState = scanning
-    ? "scanning…"
+    ? "проверка…"
     : host.scan.state === "failed"
-      ? "scan failed"
+      ? "проверка не удалась"
       : report
-        ? `scanned ${ago(report.scannedAt)}`
-        : "not scanned";
+        ? `проверено ${ago(report.scannedAt)}`
+        : "не проверено";
   const usage = report
     ? [
-        `${bytes(threadStorageBytes(report))} in ${plural(report.threadsWithStorageCount, "thread")}`,
+        `${bytes(threadStorageBytes(report))} в чатах (${report.threadsWithStorageCount.toLocaleString()})`,
         ...(report.developerStorage
           ? [
-              `${bytes(report.developerStorage.sizeBytes)} in ${plural(report.developerStorage.entries.length, "dev instance")}`,
+              `${bytes(report.developerStorage.sizeBytes)} в экземплярах разработки (${report.developerStorage.entries.length.toLocaleString()})`,
             ]
           : []),
-        ...(report.disk ? [`${bytes(report.disk.freeBytes)} free`] : []),
+        ...(report.disk ? [`свободно ${bytes(report.disk.freeBytes)}`] : []),
       ]
     : [];
   return (
@@ -1826,7 +1817,7 @@ function MachineRow({
           >
             {name}
           </button>
-          {server && <Pill>server</Pill>}
+          {server && <Pill>сервер</Pill>}
         </span>
         <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 text-xs text-subtle-foreground/75">
           {machine && <MachineStatus machine={machine} />}
@@ -1860,7 +1851,7 @@ function MachineRow({
           variant="ghost"
           size="icon"
           className="size-7"
-          aria-label={`${report ? "Rescan" : "Scan"} ${name}`}
+          aria-label={`${report ? "Проверить повторно" : "Проверить"} ${name}`}
           disabled={scanning || machine?.status !== "connected"}
           onClick={onScan}
         >
@@ -1916,10 +1907,10 @@ function RetentionField({
           <SelectValue />
         </SelectTrigger>
         <SelectContent align="end">
-          <SelectItem value="never">Never</SelectItem>
+          <SelectItem value="never">Никогда</SelectItem>
           {options.map((days) => (
             <SelectItem key={days} value={String(days)}>
-              After {duration(days)}
+              Через {duration(days)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -1935,18 +1926,18 @@ function ProjectWorktrees({
   return (
     <section className="space-y-3">
       <SectionHeading
-        title="Worktrees by project"
-        description="BB worktrees are the managed checkouts BB tracks. Other worktrees were added to the same repositories outside BB, for example by agents running git worktree add. Projects with a source here are included even when they have no worktrees. These counts are separate from thread files."
+        title="Рабочие деревья по проектам"
+        description="Рабочие деревья BB — управляемые копии, которые отслеживает BB. Другие рабочие деревья добавлены вне BB, например агентами с помощью git worktree add. Проекты с исходным каталогом показаны даже без рабочих деревьев. Эти данные не включают файлы чатов."
       />
       <div className="overflow-x-auto rounded-lg border border-border bg-card px-4 py-2">
         {report.projectWorktrees.length === 0 ? (
           <p className="py-3 text-xs text-muted-foreground">
-            No projects with sources or managed worktrees on this machine.
+            На этой машине нет проектов с исходным каталогом или управляемыми рабочими деревьями.
           </p>
         ) : (
           <table className="w-full text-xs">
             <caption className="sr-only">
-              Project worktree counts on this machine
+              Число рабочих деревьев проектов на этой машине
             </caption>
             <thead>
               <tr className="text-muted-foreground">
@@ -1954,25 +1945,25 @@ function ProjectWorktrees({
                   scope="col"
                   className="w-full py-2 text-left align-bottom font-normal"
                 >
-                  Project
+                  Проект
                 </th>
                 <th
                   scope="col"
                   className="py-2 pl-3 text-right align-bottom font-normal sm:whitespace-nowrap sm:pl-6"
                 >
-                  BB worktrees
+                  Рабочие деревья BB
                 </th>
                 <th
                   scope="col"
                   className="py-2 pl-3 text-right align-bottom font-normal sm:whitespace-nowrap sm:pl-6"
                 >
-                  Other worktrees
+                  Другие рабочие деревья
                 </th>
                 <th
                   scope="col"
                   className="py-2 pl-3 text-right align-bottom font-normal sm:whitespace-nowrap sm:pl-6"
                 >
-                  Awaiting cleanup
+                  Ожидают очистки
                 </th>
               </tr>
             </thead>
@@ -2022,28 +2013,28 @@ function worktreeRemovalToastId(hostId: string, worktreePath: string) {
 }
 
 const EXTERNAL_WORKTREE_SKIP_REASONS = {
-  notWorktree: "It is no longer a worktree of this repository",
-  locked: "The worktree is locked",
-  uncommittedChanges: "The worktree has uncommitted changes",
-  unsavedCommits: "The worktree has commits that are not on any branch",
-  inUseByBb: "A BB environment now uses this worktree",
+  notWorktree: "Это больше не рабочее дерево данного репозитория",
+  locked: "Рабочее дерево заблокировано",
+  uncommittedChanges: "В рабочем дереве есть незакоммиченные изменения",
+  unsavedCommits: "В рабочем дереве есть коммиты вне веток",
+  inUseByBb: "Среда BB теперь использует это рабочее дерево",
 } as const;
 
 const EXTERNAL_WORKTREE_FORCE_WARNINGS = {
   locked:
-    "It is locked, which usually means a tool or agent still relies on it.",
-  uncommittedChanges: "Its uncommitted and untracked changes are deleted.",
+    "Рабочее дерево заблокировано: вероятно, оно ещё нужно инструменту или агенту.",
+  uncommittedChanges: "Незакоммиченные и неотслеживаемые изменения будут удалены.",
   unsavedCommits:
-    "Its commits that aren’t on any branch or tag become unreachable, and git deletes them in a later cleanup.",
+    "Коммиты вне веток и тегов станут недоступными, а git удалит их при следующей очистке.",
 } as const;
 
 function externalWorktreeWarnings(worktree: ExternalWorktree) {
   return [
     ...(worktree.changedFileCount
-      ? [plural(worktree.changedFileCount, "uncommitted change")]
+      ? [`Незакоммиченных изменений: ${worktree.changedFileCount.toLocaleString()}`]
       : []),
     ...(worktree.unsavedCommitCount
-      ? [`${plural(worktree.unsavedCommitCount, "commit")} on no branch`]
+      ? [`Коммитов вне веток: ${worktree.unsavedCommitCount.toLocaleString()}`]
       : []),
   ];
 }
@@ -2076,14 +2067,14 @@ function ExternalWorktrees({
   return (
     <details className="text-xs text-muted-foreground">
       <summary className="cursor-pointer">
-        {plural(worktrees.length, "worktree")} found
+        Найдено рабочих деревьев: {worktrees.length.toLocaleString()}
       </summary>
       <div className="mt-3 space-y-4">
         {[...groups].map(([repositoryPath, group]) => (
           <div key={repositoryPath} className="space-y-2">
             <h3 className="break-all">
               <span className="font-medium text-foreground">
-                {projectNames.get(group[0]!.projectId) ?? "Unknown project"}
+                {projectNames.get(group[0]!.projectId) ?? "Неизвестный проект"}
               </span>{" "}
               · {repositoryPath}{" "}
               <span className="tabular-nums">({group.length})</span>
@@ -2111,7 +2102,7 @@ function ExternalWorktrees({
                           <>
                             {" "}
                             <Pill className="inline-block align-middle">
-                              locked
+                              заблокировано
                             </Pill>
                           </>
                         )}
@@ -2125,7 +2116,7 @@ function ExternalWorktrees({
                       {(worktree.lastActivityAt !== null || thread) && (
                         <p>
                           {worktree.lastActivityAt !== null &&
-                            `Last git activity ${ago(worktree.lastActivityAt)}`}
+                            `Последняя активность git: ${ago(worktree.lastActivityAt)}`}
                           {worktree.lastActivityAt !== null && thread && " · "}
                           {thread && (
                             <button
@@ -2133,7 +2124,7 @@ function ExternalWorktrees({
                               onClick={() => navigate.toThread(thread.threadId)}
                             >
                               {thread.title}
-                              {thread.archived && " (archived)"}
+                              {thread.archived && " (в архиве)"}
                             </button>
                           )}
                         </p>
@@ -2145,7 +2136,7 @@ function ExternalWorktrees({
                       </span>
                       <RowActionButton
                         busy={isRemoving(worktree.path)}
-                        label="Remove worktree"
+                        label="Удалить рабочее дерево"
                         target={label}
                         disabled={rowDisabled}
                         onClick={() => onRemove(worktree, label)}
@@ -2252,8 +2243,8 @@ function ShowMoreToggle({
       onClick={onToggle}
     >
       {expanded
-        ? "Show fewer"
-        : `Show ${(total - PREVIEW_COUNT).toLocaleString()} more`}
+        ? "Показать меньше"
+        : `Показать ещё ${(total - PREVIEW_COUNT).toLocaleString()}`}
     </button>
   );
 }
@@ -2324,20 +2315,20 @@ function DeveloperStorage({
             : storage.entries;
   const groups = [
     {
-      title: "Linked threads",
+      title: "Связанные чаты",
       description: null,
       entries: filtered.filter((entry) => entry.threads.length > 0),
     },
     {
-      title: "Other instances",
-      description: "No matching thread in this BB",
+      title: "Другие экземпляры",
+      description: "В этом BB нет соответствующего чата",
       entries: filtered.filter(
         (entry) => entry.sourcePath !== null && entry.threads.length === 0,
       ),
     },
     {
-      title: "Unidentified sources",
-      description: "Source checkout could not be determined",
+      title: "Неизвестные источники",
+      description: "Не удалось определить исходное рабочее дерево",
       entries: filtered.filter((entry) => entry.sourcePath === null),
     },
   ];
@@ -2352,7 +2343,7 @@ function DeveloperStorage({
       setCopyStatus({ text: `${label} copied`, failed: false });
     } else {
       setCopyStatus({
-        text: `Could not copy ${label.toLowerCase()}`,
+        text: `Не удалось скопировать: ${label.toLowerCase()}`,
         failed: true,
       });
     }
@@ -2360,8 +2351,8 @@ function DeveloperStorage({
   return (
     <section className="space-y-3">
       <SectionHeading
-        title="BB development storage"
-        description="Databases, logs, and thread files from local development instances in ~/.bb-dev."
+        title="Хранилище разработки BB"
+        description="Базы данных, журналы и файлы чатов локальных экземпляров разработки в ~/.bb-dev."
       />
       <div className="space-y-3 rounded-lg border border-border bg-card px-4 py-3.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2377,26 +2368,26 @@ function DeveloperStorage({
             }}
           >
             <SelectTrigger
-              aria-label="Filter development storage"
+              aria-label="Фильтр хранилища разработки"
               className="h-8 w-56"
             >
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="end">
               <SelectItem value="all">
-                All entries ({storage.entries.length})
+                Все записи ({storage.entries.length})
               </SelectItem>
               <SelectItem value="missing">
-                Missing checkouts ({missing.length})
+                Отсутствующие рабочие деревья ({missing.length})
               </SelectItem>
               <SelectItem value="archived">
-                Archived threads only ({archived.length})
+                Только архивные чаты ({archived.length})
               </SelectItem>
               <SelectItem value="unlinked">
-                Other instances ({unlinked.length})
+                Другие экземпляры ({unlinked.length})
               </SelectItem>
               <SelectItem value="unresolved">
-                Unidentified source ({unresolved.length})
+                Неизвестный источник ({unresolved.length})
               </SelectItem>
             </SelectContent>
           </Select>
@@ -2408,7 +2399,7 @@ function DeveloperStorage({
               className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-muted/50 px-3 py-2"
             >
               <p className="text-xs tabular-nums">
-                {plural(selectedEntries.length, "instance")} selected ·{" "}
+                Выбрано экземпляров: {selectedEntries.length.toLocaleString()} ·{" "}
                 {bytes(
                   selectedEntries.reduce(
                     (total, entry) => total + entry.sizeBytes,
@@ -2422,7 +2413,7 @@ function DeveloperStorage({
                   size="sm"
                   onClick={() => setSelected(new Set())}
                 >
-                  Clear selection
+                  Снять выделение
                 </Button>
                 <Button
                   variant="outline"
@@ -2430,7 +2421,7 @@ function DeveloperStorage({
                   disabled={rowDisabled}
                   onClick={() => onRemoveSelected(selectedEntries)}
                 >
-                  Remove selected
+                  Удалить выбранные
                 </Button>
               </div>
             </div>
@@ -2444,7 +2435,7 @@ function DeveloperStorage({
               <div key={group.title} className="py-3">
                 <div className="flex items-center gap-3">
                   <Checkbox
-                    aria-label={`Select all ${group.title.toLowerCase()}`}
+                    aria-label={`Выбрать все: ${group.title.toLowerCase()}`}
                     checked={
                       selectable(group.entries).length > 0 &&
                       selectable(group.entries).every((entry) =>
@@ -2487,7 +2478,7 @@ function DeveloperStorage({
                         <div className="flex items-start justify-between gap-3">
                           <Checkbox
                             className="mt-0.5"
-                            aria-label={`Select ${label}`}
+                            aria-label={`Выбрать: ${label}`}
                             disabled={entry.current}
                             checked={selected.has(entry.name)}
                             onCheckedChange={(checked) =>
@@ -2498,7 +2489,7 @@ function DeveloperStorage({
                             {primary ? (
                               <ThreadTitle
                                 title={primary.title}
-                                pills={primary.archived ? ["archived"] : []}
+                                pills={primary.archived ? ["в архиве"] : []}
                                 onOpen={() =>
                                   navigate.toThread(primary.threadId)
                                 }
@@ -2508,33 +2499,29 @@ function DeveloperStorage({
                             )}
                             {entry.threads.length > 1 && (
                               <p className="text-xs text-muted-foreground">
-                                Also linked to{" "}
-                                {plural(
-                                  entry.threads.length - 1,
-                                  "other thread",
-                                )}
+                                Также связанных чатов: {entry.threads.length - 1}
                               </p>
                             )}
                             {entry.sourcePathState === "missing" && (
                               <p className="text-xs text-muted-foreground">
-                                Checkout no longer exists
+                                Рабочее дерево больше не существует
                               </p>
                             )}
                             {entry.sourcePath !== null &&
                               entry.sourcePathState === "unknown" && (
                                 <p className="text-xs text-muted-foreground">
-                                  Could not check whether the checkout exists
+                                  Не удалось проверить существование рабочего дерева
                                 </p>
                               )}
                             {entry.current ? (
                               <p className="text-xs text-muted-foreground">
-                                This BB is running from this instance
+                                Этот экземпляр используется текущим BB
                               </p>
                             ) : (
                               entry.running &&
                               entry.sourcePathState !== "missing" && (
                                 <p className="text-xs text-muted-foreground">
-                                  Dev server running at last scan
+                                  При последней проверке сервер разработки работал
                                 </p>
                               )
                             )}
@@ -2545,7 +2532,7 @@ function DeveloperStorage({
                             </span>
                             <RowActionButton
                               busy={isRemoving(entry.name)}
-                              label="Remove instance"
+                              label="Удалить экземпляр"
                               target={label}
                               disabled={rowDisabled || entry.current}
                               onClick={() => onRemove(entry, label)}
@@ -2556,7 +2543,7 @@ function DeveloperStorage({
                                   variant="ghost"
                                   size="icon"
                                   className="-my-1.5 size-7"
-                                  aria-label={`Actions for ${label}`}
+                                  aria-label={`Действия для ${label}`}
                                 >
                                   <Icon
                                     name="MoreHorizontal"
@@ -2572,7 +2559,7 @@ function DeveloperStorage({
                                       navigate.toThread(thread.threadId)
                                     }
                                   >
-                                    Open thread
+                                    Открыть чат
                                     {entry.threads.length > 1
                                       ? `: ${thread.title}`
                                       : ""}
@@ -2586,22 +2573,22 @@ function DeveloperStorage({
                                     onSelect={() =>
                                       void copyPath(
                                         entry.sourcePath!,
-                                        "Source checkout path",
+                                        "Путь к исходному рабочему дереву",
                                       )
                                     }
                                   >
-                                    Copy source checkout path
+                                    Скопировать путь к исходному рабочему дереву
                                   </DropdownMenuItem>
                                 )}
                                 <DropdownMenuItem
                                   onSelect={() =>
                                     void copyPath(
                                       `${storage.path}/${entry.name}`,
-                                      "Dev data path",
+                                      "Путь к данным разработки",
                                     )
                                   }
                                 >
-                                  Copy dev data path
+                                  Скопировать путь к данным разработки
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -2626,7 +2613,7 @@ function DeveloperStorage({
         </div>
         {filtered.length === 0 && (
           <p className="py-4 text-xs text-muted-foreground">
-            No entries in this category.
+            В этой категории нет записей.
           </p>
         )}
         {copyStatus && (
@@ -2654,19 +2641,19 @@ function categories(report: NonNullable<HostReport["report"]>) {
   const threads = report.developerStorage ? " threads" : "";
   return [
     {
-      label: `Active${threads}`,
+      label: `Активные${threads}`,
       value: report.activeThreadBytes,
       count: report.threadsWithStorageCount - report.archivedThreadCount,
     },
     {
-      label: `Archived${threads}`,
+      label: `Архивные${threads}`,
       value: report.archivedThreadBytes,
       count: report.archivedThreadCount,
     },
     ...(report.orphanBytes > 0
       ? [
           {
-            label: "Orphaned",
+            label: "Осиротевшие",
             value: report.orphanBytes,
             count: report.orphanCount,
           },
@@ -2675,7 +2662,7 @@ function categories(report: NonNullable<HostReport["report"]>) {
     ...(report.developerStorage
       ? [
           {
-            label: "BB development",
+            label: "Разработка BB",
             value: report.developerStorage.sizeBytes,
             count: report.developerStorage.entries.length,
           },
@@ -2691,17 +2678,17 @@ function StorageBreakdown({
 }) {
   return (
     <table className="w-full text-xs">
-      <caption className="sr-only">Storage by category</caption>
+      <caption className="sr-only">Хранилище по категориям</caption>
       <thead>
         <tr className="text-muted-foreground">
           <th scope="col" className="pb-2 text-left font-normal">
-            Category
+            Категория
           </th>
           <th scope="col" className="pb-2 pl-3 text-right font-normal">
-            Count
+            Количество
           </th>
           <th scope="col" className="pb-2 pl-3 text-right font-normal">
-            Size
+            Размер
           </th>
         </tr>
       </thead>
@@ -2731,7 +2718,7 @@ export default definePluginApp((app) => {
   });
   app.slots.navPanel({
     id: PANEL,
-    title: "Storage & retention",
+    title: "Хранилище и хранение",
     icon: "DatabaseRestore",
     path: PANEL,
     component: StoragePanel,

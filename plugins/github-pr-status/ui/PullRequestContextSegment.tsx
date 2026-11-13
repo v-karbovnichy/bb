@@ -108,7 +108,7 @@ export function PullRequestLink({
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      aria-label={`Pull request ${pullRequest.number}: ${describePullRequestStatus(pullRequest)}`}
+      aria-label={`Пул-реквест ${pullRequest.number}: ${describePullRequestStatus(pullRequest)}`}
       className={cn(
         "flex items-center gap-1.5 text-xs text-muted-foreground no-underline transition-colors hover:bg-state-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
         CONTEXT_CARD_SEGMENT_CLASS,
@@ -164,7 +164,7 @@ export function PullRequestSummaryLabel({
       {showAutoMerge ? (
         <>
           <span aria-hidden>·</span>
-          <span className="shrink-0">Auto-merge</span>
+          <span className="shrink-0">Автообъединение</span>
         </>
       ) : null}
     </>
@@ -175,9 +175,9 @@ export const MERGE_ACTIONS: readonly {
   method: PullRequestMergeMethod;
   label: string;
 }[] = [
-  { method: "merge", label: "Merge" },
-  { method: "squash", label: "Squash merge" },
-  { method: "rebase", label: "Rebase and merge" },
+  { method: "merge", label: "Объединить" },
+  { method: "squash", label: "Объединить со сжатием" },
+  { method: "rebase", label: "Перебазировать и объединить" },
 ];
 
 function ActionGroup({ children }: { children: ReactNode }) {
@@ -238,7 +238,7 @@ function MergeSplitButton({
           <ActionSegmentButton
             disabled={disabled}
             className="inline-flex items-center border-l border-border px-1 data-[state=open]:bg-state-active data-[state=open]:text-foreground"
-            aria-label="Choose pull request merge method"
+            aria-label="Выбрать способ объединения пул-реквеста"
           >
             <Icon name="ChevronDown" className="size-3" aria-hidden="true" />
           </ActionSegmentButton>
@@ -246,7 +246,7 @@ function MergeSplitButton({
         <DropdownMenuContent
           align="end"
           sideOffset={2}
-          mobileTitle="Merge pull request"
+          mobileTitle="Объединить пул-реквест"
         >
           {MERGE_ACTIONS.map((action) => (
             <DropdownMenuItem
@@ -260,7 +260,7 @@ function MergeSplitButton({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={onConvertToDraft}
-            textValue="Convert to draft"
+            textValue="Преобразовать в черновик"
           >
             Convert to draft
           </DropdownMenuItem>
@@ -289,7 +289,7 @@ export function PullRequestActionButtons({
     return (
       <BannerActionSlot>
         <PromptBannerActionButton onClick={onMarkReady} disabled={isPending}>
-          {isPending ? "Marking..." : "Mark ready"}
+          {isPending ? "Отмечаем..." : "Готов к ревью"}
         </PromptBannerActionButton>
       </BannerActionSlot>
     );

@@ -231,7 +231,7 @@ describe("ThreadPendingInteractionBanner tool-use approval", () => {
     expect(ask.querySelector("svg")?.getAttribute("style")).toMatch(
       /light-dark\(rgb\(18, 52, 86\), rgb\(171, 205, 239\)\)/,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Allow for session" }));
+    fireEvent.click(screen.getByRole("button", { name: "Разрешить на время сеанса" }));
     expect(mocks.resolveMutateAsync).toHaveBeenCalledWith(
       expect.objectContaining({
         interactionId: "pint_tool",
@@ -297,15 +297,15 @@ describe("ThreadPendingInteractionBanner tool-use approval", () => {
 describe("ThreadPendingInteractionBanner request family", () => {
   it("opens a plan review with visible plan-verdict actions without approving it automatically", () => {
     renderBanner(planReview);
-    expect(screen.getAllByText("Ready to code?").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Готовы перейти к коду?").length).toBeGreaterThan(0);
     expect(isHidden(screen.getByTestId("plan-review-request"))).toBe(false);
     expect(screen.getByTestId("plan-review-request").textContent).toContain(
       "Read labels from the declaration",
     );
     expect(screen.getByText("/tmp/plans/picker.md")).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Allow once" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Разрешить один раз" })).toBeNull();
     expect(mocks.resolveMutateAsync).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Approve plan" }));
+    fireEvent.click(screen.getByRole("button", { name: "Утвердить план" }));
     expect(mocks.resolveMutateAsync).toHaveBeenCalledWith(
       expect.objectContaining({
         threadId: "thr_1",
@@ -313,7 +313,7 @@ describe("ThreadPendingInteractionBanner request family", () => {
         resolution: expect.objectContaining({ decision: "allow_once" }),
       }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Keep planning" }));
+    fireEvent.click(screen.getByRole("button", { name: "Продолжить планирование" }));
     expect(mocks.resolveMutateAsync).toHaveBeenLastCalledWith(
       expect.objectContaining({
         resolution: expect.objectContaining({ decision: "deny" }),
@@ -328,8 +328,8 @@ describe("ThreadPendingInteractionBanner request family", () => {
         <MemoryRouter>{bannerElement(planReview)}</MemoryRouter>
       </QueryClientProvider>,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
-    expect(screen.queryByRole("button", { name: "Approve plan" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
+    expect(screen.queryByRole("button", { name: "Утвердить план" })).toBeNull();
     expect(mocks.resolveMutateAsync).not.toHaveBeenCalled();
     view.rerender(
       <QueryClientProvider client={client}>
@@ -338,7 +338,7 @@ describe("ThreadPendingInteractionBanner request family", () => {
         </MemoryRouter>
       </QueryClientProvider>,
     );
-    expect(screen.getByRole("button", { name: "Approve plan" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Утвердить план" })).toBeTruthy();
     expect(isHidden(screen.getByTestId("plan-review-request"))).toBe(false);
     expect(mocks.resolveMutateAsync).not.toHaveBeenCalled();
   });
@@ -546,12 +546,12 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
       "python3 -m unittest discover -s tests 2>&1 | tail -20",
     );
     expect(isHidden(screen.getByTestId("command-preview"))).toBe(false);
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
     expect(banner.hasAttribute("data-expanded")).toBe(false);
     expect(isHidden(screen.getByTestId("command-preview"))).toBe(true);
-    expect(screen.queryByRole("button", { name: "Allow once" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Show details" }));
-    fireEvent.click(screen.getByRole("button", { name: "Allow once" }));
+    expect(screen.queryByRole("button", { name: "Разрешить один раз" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Показать подробности" }));
+    fireEvent.click(screen.getByRole("button", { name: "Разрешить один раз" }));
     expect(mocks.resolveMutateAsync).toHaveBeenCalledWith(
       expect.objectContaining({
         interactionId: "pint_cmd",
@@ -564,7 +564,7 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
     renderBanner(commandApproval);
     const banner = screen.getByTestId("approval-banner");
     expect(banner.hasAttribute("data-expanded")).toBe(true);
-    expect(screen.getByText("Approval needed")).toBeTruthy();
+    expect(screen.getByText("Требуется разрешение")).toBeTruthy();
     const preview = screen.getByTestId("command-preview");
     const pre = preview.querySelector("pre");
     expect(pre?.textContent).toContain("bash -n install.sh && echo OK");
@@ -573,12 +573,12 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
     expect(preview.textContent).not.toContain("Action:");
     expect(preview.textContent).not.toContain("Command:");
     expect(preview.textContent).toContain("/home/user/immortal-agents");
-    fireEvent.click(screen.getByRole("button", { name: "Show 2 more lines" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать остальные строки (2)" }));
     expect(preview.querySelector("pre")?.textContent).toContain(
       "git diff --stat -- watcher.py",
     );
-    expect(screen.getByRole("button", { name: "Show less" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
+    expect(screen.getByRole("button", { name: "Показать меньше" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
     expect(banner.hasAttribute("data-expanded")).toBe(false);
   });
 
@@ -588,7 +588,7 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
     expect(preview.querySelector("pre")?.textContent).toBe(
       "$ cd apps/app &&\n  pnpm install &&\n  pnpm exec turbo run typecheck &&\n  pnpm exec turbo run test --filter=@bb/app &&",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Show 1 more line" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать ещё 1 строку" }));
     expect(preview.querySelector("pre")?.textContent).toBe(
       "$ cd apps/app &&\n  pnpm install &&\n  pnpm exec turbo run typecheck &&\n  pnpm exec turbo run test --filter=@bb/app &&\n  git status --short",
     );
@@ -597,19 +597,19 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
   it("toggles through the title without submitting an approval", () => {
     renderBanner(commandApproval);
     const title = screen.getByRole("button", {
-      name: "Approval needed",
+      name: "Требуется разрешение",
     });
     title.focus();
     fireEvent.click(title);
     const collapsedTitle = screen.getByRole("button", {
-      name: "Approval needed",
+      name: "Требуется разрешение",
     });
     expect(collapsedTitle.getAttribute("aria-expanded")).toBe("false");
     expect(document.activeElement).toBe(collapsedTitle);
     fireEvent.click(collapsedTitle);
     expect(
       screen
-        .getByRole("button", { name: "Approval needed" })
+        .getByRole("button", { name: "Требуется разрешение" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
     expect(mocks.resolveMutateAsync).not.toHaveBeenCalled();
@@ -617,18 +617,18 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
 
   it("keeps focus on the disclosure button across toggles so Escape works right after opening", () => {
     renderBanner(commandApproval);
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
-    const show = screen.getByRole("button", { name: "Show details" });
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
+    const show = screen.getByRole("button", { name: "Показать подробности" });
     show.focus();
     fireEvent.click(show);
-    const hide = screen.getByRole("button", { name: "Hide details" });
+    const hide = screen.getByRole("button", { name: "Скрыть подробности" });
     expect(document.activeElement).toBe(hide);
     fireEvent.keyDown(hide, { key: "Escape" });
     expect(
       screen.getByTestId("approval-banner").hasAttribute("data-expanded"),
     ).toBe(false);
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Show details" }),
+      screen.getByRole("button", { name: "Показать подробности" }),
     );
   });
 
@@ -639,7 +639,7 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
         <MemoryRouter>{bannerElement(commandApproval)}</MemoryRouter>
       </QueryClientProvider>,
     );
-    fireEvent.keyDown(screen.getByRole("button", { name: "Deny" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Отклонить" }), {
       key: "Escape",
     });
     expect(
@@ -712,19 +712,19 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
         .getByRole("button", { name: "AOption A" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
     expect(banner.hasAttribute("data-expanded")).toBe(false);
     expect(
       isHidden(screen.getByRole("button", { name: "AOption A", hidden: true })),
     ).toBe(true);
     expect(banner.textContent).toContain("Which path should I take?");
-    fireEvent.click(screen.getByRole("button", { name: "Show details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать подробности" }));
     expect(
       screen
         .getByRole("button", { name: "AOption A" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отправить ответ" }));
     expect(mocks.resolveMutateAsync).toHaveBeenCalledWith({
       threadId: "thr_1",
       interactionId: "pint_question",
@@ -733,7 +733,7 @@ describe("ThreadPendingInteractionBanner collapsed strip", () => {
         answers: { path: { selected: ["a"] } },
       },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
     expect(mocks.stopMutateAsync).toHaveBeenCalledWith("thr_1");
   });
 });

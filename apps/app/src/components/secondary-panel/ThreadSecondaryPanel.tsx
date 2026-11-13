@@ -166,7 +166,7 @@ export function resolveCollapsedPanelTrafficLightReserveClassName({
   );
 }
 
-const HIDE_PANEL_LABEL = "Hide right panel";
+const HIDE_PANEL_LABEL = "Скрыть правую панель";
 
 export interface SecondaryPanelFixedTab {
   ariaLabel: string;
@@ -469,7 +469,7 @@ function ThreadSecondaryPanelContent({
           "shrink-0",
           usesDesktopChrome && MACOS_WINDOW_NO_DRAG_CLASS,
         )}
-        aria-label="Remove split"
+        aria-label="Убрать разделение"
         onClick={onRemoveSplit}
       >
         <Icon name="CloseThreadPane" />
@@ -740,7 +740,7 @@ function ThreadSecondaryPanelContent({
               )}
               data-sidebar-split-tab-group={paneId ?? undefined}
               role="toolbar"
-              aria-label="Right panel views"
+              aria-label="Разделы правой панели"
             >
               {renderPanelTabGroup({
                 activeSurfaceFixedTab,
@@ -749,8 +749,8 @@ function ThreadSecondaryPanelContent({
                 fixedSurfaceTabs,
                 newTabAriaLabel:
                   onRemoveSplit === undefined
-                    ? "Open new tab"
-                    : "Open new tab in this pane",
+                    ? "Открыть вкладку"
+                    : "Открыть вкладку в этой области",
                 onBeginTabDrag,
                 onSurfaceTabReorder,
                 reserveNewTabButton: reserveNewTabControl,
@@ -810,7 +810,7 @@ function ThreadSecondaryPanelContent({
                 >
                   {surfaceContent ?? (
                     <EmptyStatePanel className="mx-4 rounded-lg">
-                      No file preview content provided.
+                      Нет содержимого для предпросмотра файла.
                     </EmptyStatePanel>
                   )}
                 </FilePreviewScrollPositionContext.Provider>
@@ -828,7 +828,7 @@ function ThreadSecondaryPanelContent({
               </div>
             ) : isLayoutOpen ? (
               <EmptyStatePanel className="m-4 rounded-lg">
-                This panel view is unavailable.
+                Этот раздел панели недоступен.
               </EmptyStatePanel>
             ) : null}
           </TabVisibleContext.Provider>
@@ -1070,7 +1070,7 @@ function PinnedIconTab({
     <Tooltip>
       <TooltipTrigger asChild>
         <div
-          data-testid={label === "Info" ? "thread-info-tab" : undefined}
+          data-testid={label === "Информация" ? "thread-info-tab" : undefined}
           className={cn(
             "shrink-0",
             usesDesktopChrome && MACOS_WINDOW_NO_DRAG_CLASS,
@@ -1168,7 +1168,7 @@ function SecondaryPanelResizeHandle({
               isResizing && "bg-accent/20",
             ],
       )}
-      aria-label="Resize thread and right panel"
+      aria-label="Изменить размер чата и правой панели"
     >
       <span
         aria-hidden

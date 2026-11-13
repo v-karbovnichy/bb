@@ -273,24 +273,24 @@ export function BrowserTabDeck({
 
 const BROWSER_TAB_ELSEWHERE_COPY = {
   "desktop-required": {
-    title: "Browser tabs need the desktop app",
-    body: "This tab is open in the bb desktop app.",
+    title: "Для вкладок браузера нужно настольное приложение",
+    body: "Эта вкладка открыта в настольном приложении bb.",
   },
   "other-window": {
-    title: "This tab is open in another bb window",
-    body: "Switch to that window to keep browsing.",
+    title: "Эта вкладка открыта в другом окне bb",
+    body: "Перейдите в то окно, чтобы продолжить просмотр.",
   },
   "other-computer": {
-    title: "This tab is open on another computer",
-    body: "It was opened in bb on a different computer.",
+    title: "Эта вкладка открыта на другом компьютере",
+    body: "Её открыли в bb на другом компьютере.",
   },
   reconnecting: {
-    title: "Reconnecting to this tab",
-    body: "The tab opens again as soon as bb reconnects.",
+    title: "Повторное подключение к вкладке",
+    body: "Вкладка снова откроется после подключения bb.",
   },
   unreachable: {
-    title: "Can't reach this tab",
-    body: "bb couldn't reconnect. Try again in a moment.",
+    title: "Не удаётся открыть вкладку",
+    body: "bb не удалось восстановить подключение. Попробуйте ещё раз через некоторое время.",
   },
 } as const;
 
@@ -336,7 +336,7 @@ function BrowserTabElsewhere({
         {onRetry !== null ? (
           <Button type="button" variant="outline" size="sm" onClick={onRetry}>
             <Icon name="RotateCcw" aria-hidden />
-            Try again
+            Попробовать ещё раз
           </Button>
         ) : null}
         {url.length > 0 ? (
@@ -349,7 +349,7 @@ function BrowserTabElsewhere({
                 onClick={() => openUrlInExternalBrowser(url)}
               >
                 <Icon name="ExternalLink" aria-hidden />
-                Open in browser
+                Открыть в браузере
               </Button>
             ) : null}
             <Button
@@ -358,12 +358,12 @@ function BrowserTabElsewhere({
               size="sm"
               onClick={() => {
                 void copyToClipboardWithToast(url, {
-                  successMessage: "Link copied",
+                  successMessage: "Ссылка скопирована",
                 });
               }}
             >
               <Icon name="Copy" aria-hidden />
-              Copy link
+              Скопировать ссылку
             </Button>
           </>
         ) : null}

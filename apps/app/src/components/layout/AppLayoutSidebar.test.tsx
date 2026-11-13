@@ -203,7 +203,7 @@ describe("AppLayoutSidebar", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
 
     const panel = getMobilePanel();
@@ -239,7 +239,7 @@ describe("AppLayoutSidebar", () => {
       "Settings sidebar",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
     expect(getMobilePanel().dataset.state).toBe("open");
 
@@ -252,7 +252,7 @@ describe("AppLayoutSidebar", () => {
     expect(screen.queryByTestId("skills-sidebar-body")).toBeNull();
     expect(getAppSidebarBody().hidden).toBe(true);
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
     fireEvent.click(
       screen.getByRole("button", { name: "Navigate back to app" }),
@@ -281,7 +281,7 @@ describe("AppLayoutSidebar", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
 
     const panel = getMobilePanel();
@@ -428,7 +428,7 @@ function NavigatingHomeNavigation() {
       <button onClick={() => navigation.toProject("proj_sidebar")}>
         Open project
       </button>
-      <button onClick={() => navigation.toCompose()}>New thread</button>
+      <button onClick={() => navigation.toCompose()}>Новый чат</button>
       <button onClick={() => setCount(count + 1)}>Local action {count}</button>
     </nav>
   );
@@ -486,7 +486,7 @@ describe("navigation panel sidebar composition", () => {
           compact: true,
         }),
       );
-      fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+      fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
       settleMobileToggle();
       const panel = getMobilePanel();
       fireEvent.click(screen.getByRole("button", { name: "Local action 0" }));
@@ -497,14 +497,14 @@ describe("navigation panel sidebar composition", () => {
         "/plugins/home/home/dashboard",
       );
       expect(panel.dataset.state).toBe("closed");
-      fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+      fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
       settleMobileToggle();
       fireEvent.click(screen.getByText(name));
       settleMobileToggle();
       expect(panel.dataset.state).toBe("closed");
     },
   );
-  it.each(["Open thread", "Open project", "New thread"])(
+  it.each(["Open thread", "Open project", "Новый чат"])(
     "closes the compact drawer through the existing SDK %s route",
     (name) => {
       vi.useFakeTimers();
@@ -514,7 +514,7 @@ describe("navigation panel sidebar composition", () => {
           compact: true,
         }),
       );
-      fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+      fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
       settleMobileToggle();
       fireEvent.click(screen.getByRole("button", { name }));
       settleMobileToggle();
@@ -544,18 +544,18 @@ describe("navigation panel sidebar composition", () => {
     expect(screen.getByTestId("plugin-sidebar-top-reserve-row")).toBeTruthy();
     expect(
       screen
-        .getByRole("button", { name: "Go back" })
+        .getByRole("button", { name: "Назад" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "Open dashboard" }));
     expect(screen.getByTestId("current-path").textContent).toBe(
       "/plugins/home/home/dashboard",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Go back" }));
+    fireEvent.click(screen.getByRole("button", { name: "Назад" }));
     expect(screen.getByTestId("current-path").textContent).toBe(
       "/plugins/home/home/inbox",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Go forward" }));
+    fireEvent.click(screen.getByRole("button", { name: "Вперёд" }));
     expect(screen.getByTestId("current-path").textContent).toBe(
       "/plugins/home/home/dashboard",
     );
@@ -571,7 +571,9 @@ describe("navigation panel sidebar composition", () => {
     );
     expect(getAppSidebarBody().hidden).toBe(true);
     expect(
-      screen.getByRole("link", { name: "Back to app" }).getAttribute("href"),
+      screen
+        .getByRole("link", { name: "Вернуться в приложение" })
+        .getAttribute("href"),
     ).toBe("/");
     expect(screen.getByText("Home")).toBeTruthy();
     expect(
@@ -583,12 +585,12 @@ describe("navigation panel sidebar composition", () => {
     const { rerender } = render(
       panelSidebarTree({ target: panelSidebar("inbox"), compact: true }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
     const panel = getMobilePanel();
     const rail = getRail();
     expect(panel.dataset.state).toBe("open");
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     rerender(panelSidebarTree({ compact: true }));
     expect(
       screen.getByRole("navigation", { name: "Home navigation" }),

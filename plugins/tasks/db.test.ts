@@ -176,7 +176,7 @@ describe("tasks storage", () => {
   it("reports what a folder delete unfiled and nothing for a missing folder", async () => {
     const { harness, store } = setup();
     try {
-      const parent = store.createFolder({ name: "Parent" });
+      const parent = store.createFolder({ name: "Родительская задача" });
       const child = store.createFolder({
         name: "Child",
         parentFolderId: parent.id,
@@ -253,7 +253,7 @@ describe("tasks storage", () => {
           title: "Grandchild",
           parentTaskId: child.id,
         }),
-      ).toThrow("Tasks support at most one level of sub-tasks");
+      ).toThrow("Поддерживается не более одного уровня подзадач");
 
       const secondRoot = store.createTask({
         projectId: project.id,
@@ -266,7 +266,7 @@ describe("tasks storage", () => {
       });
       expect(() =>
         store.updateTask(secondRoot.id, { parentTaskId: root.id }),
-      ).toThrow("A task with sub-tasks cannot itself become a sub-task");
+      ).toThrow("Задача с подзадачами сама не может стать подзадачей");
     } finally {
       await harness.dispose();
     }
@@ -474,7 +474,7 @@ describe("tasks storage", () => {
       expectStale(cursor);
 
       cursor = firstCursor();
-      store.updateTask(tasks[2]!.id, { title: "Updated" });
+      store.updateTask(tasks[2]!.id, { title: "Обновлено" });
       expectStale(cursor);
     } finally {
       await harness.dispose();
@@ -648,7 +648,7 @@ describe("tasks storage", () => {
     const { harness, store } = setup();
     try {
       const project = createProject(store, "ATT");
-      const task = store.createTask({ projectId: project.id, title: "Task" });
+      const task = store.createTask({ projectId: project.id, title: "Задача" });
       const otherTask = store.createTask({
         projectId: project.id,
         title: "Other",
@@ -695,11 +695,11 @@ describe("tasks storage", () => {
     const { db, harness, store } = setup();
     try {
       const project = createProject(store, "CMT");
-      const task = store.createTask({ projectId: project.id, title: "Task" });
+      const task = store.createTask({ projectId: project.id, title: "Задача" });
       const later = store.createComment({
         taskId: task.id,
         kind: "agent",
-        authorName: "Agent",
+        authorName: "Агент",
         body: "Later",
       });
       const earlier = store.createComment({
@@ -772,7 +772,7 @@ describe("tasks storage", () => {
     const { db, harness, store } = setup();
     try {
       const project = createProject(store, "LAR");
-      const task = store.createTask({ projectId: project.id, title: "Task" });
+      const task = store.createTask({ projectId: project.id, title: "Задача" });
       const latest = store.createComment({
         taskId: task.id,
         kind: "agent",
@@ -814,7 +814,7 @@ describe("tasks storage", () => {
     const { db, harness, store } = setup();
     try {
       const project = createProject(store, "TIE");
-      const task = store.createTask({ projectId: project.id, title: "Task" });
+      const task = store.createTask({ projectId: project.id, title: "Задача" });
       const earlier = store.createComment({
         taskId: task.id,
         kind: "agent",

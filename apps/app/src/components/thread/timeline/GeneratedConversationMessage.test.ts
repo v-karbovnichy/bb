@@ -40,29 +40,29 @@ describe("generatedConversationTitle — system source", () => {
   }> = [
     {
       kind: "ownership-assigned",
-      plain: "Fix auth bug assigned to you",
-      verb: "assigned to you",
+      plain: "Fix auth bug назначен вам",
+      verb: "назначен вам",
     },
     {
       kind: "ownership-removed",
-      plain: "Fix auth bug unassigned",
-      verb: "unassigned",
+      plain: "Fix auth bug снят с вас",
+      verb: "снят с вас",
     },
     {
       kind: "child-needs-attention",
-      plain: "Fix auth bug needs attention",
-      verb: "needs attention",
+      plain: "Fix auth bug требует внимания",
+      verb: "требует внимания",
     },
     {
       kind: "child-completed",
-      plain: "Fix auth bug finished",
-      verb: "finished",
+      plain: "Fix auth bug завершён",
+      verb: "завершён",
     },
-    { kind: "child-failed", plain: "Fix auth bug failed", verb: "failed" },
+    { kind: "child-failed", plain: "Fix auth bug завершился с ошибкой", verb: "завершился с ошибкой" },
     {
       kind: "child-interrupted",
-      plain: "Fix auth bug was interrupted",
-      verb: "was interrupted",
+      plain: "Fix auth bug был прерван",
+      verb: "был прерван",
     },
   ];
 
@@ -94,9 +94,9 @@ describe("generatedConversationTitle — system source", () => {
       systemMessageSubject: { kind: "thread-batch", count: 3 },
     });
 
-    expect(title.plain).toBe("3 threads updated");
+    expect(title.plain).toBe("Обновлено чатов: 3");
     expect(title.segments).toHaveLength(1);
-    expect(title.segments[0]?.text).toBe("3 threads updated");
+    expect(title.segments[0]?.text).toBe("Обновлено чатов: 3");
     expect(title.segments[0]?.link).toBeUndefined();
   });
 
@@ -110,34 +110,34 @@ describe("generatedConversationTitle — system source", () => {
       },
     });
 
-    expect(title.plain).toBe("Delivered grill_round result");
+    expect(title.plain).toBe("Доставлено grill_round результат");
     expect(title.segments).toHaveLength(3);
-    expect(title.segments[0]?.text).toBe("Delivered");
+    expect(title.segments[0]?.text).toBe("Доставлено");
     expect(title.segments[1]?.text).toBe("grill_round");
     expect(title.segments[1]?.em).toBe(true);
     expect(title.segments[1]?.link).toBeUndefined();
-    expect(title.segments[2]?.text).toBe("result");
+    expect(title.segments[2]?.text).toBe("результат");
   });
 
-  it("falls back to the generic System Message title for unlabeled rows", () => {
+  it("falls back to the generic Системное сообщение title for unlabeled rows", () => {
     const title = systemTitle({
       systemMessageKind: "unlabeled",
       systemMessageSubject: null,
     });
 
-    expect(title.plain).toBe("System Message");
+    expect(title.plain).toBe("Системное сообщение");
     expect(title.segments).toHaveLength(1);
-    expect(title.segments[0]?.text).toBe("System Message");
+    expect(title.segments[0]?.text).toBe("Системное сообщение");
     expect(title.segments[0]?.link).toBeUndefined();
   });
 
-  it("falls back to System Message when the subject shape mismatches the kind", () => {
+  it("falls back to Системное сообщение when the subject shape mismatches the kind", () => {
     const title = systemTitle({
       systemMessageKind: "child-completed",
       systemMessageSubject: { kind: "thread-batch", count: 2 },
     });
 
-    expect(title.plain).toBe("System Message");
+    expect(title.plain).toBe("Системное сообщение");
   });
 });
 
@@ -152,7 +152,7 @@ describe("generatedConversationTitle — agent source", () => {
       systemMessageSubject: null,
     });
 
-    expect(title.plain).toBe("Message from Worker 2");
+    expect(title.plain).toBe("Сообщение от Worker 2");
     expect(title.segments).toHaveLength(2);
     expect(title.segments[1]?.text).toBe("Worker 2");
     expect(title.segments[1]?.link).toEqual(threadLink("thr_sender"));
@@ -167,7 +167,7 @@ describe("generatedConversationTitle — agent source", () => {
       systemMessageSubject: null,
     });
 
-    expect(title.plain).toBe("Sent to Worker 2");
+    expect(title.plain).toBe("Отправлено для Worker 2");
     expect(title.segments[1]?.link).toEqual(threadLink("thr_recipient"));
   });
 });

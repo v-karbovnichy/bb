@@ -29,13 +29,13 @@ describe("formatScheduledTime", () => {
     const now = new Date(2026, month, day, 12).getTime();
     for (const [offset, hour, minute, prefix] of [
       [0, 23, 30, ""],
-      [1, 0, 0, "Tomorrow "],
-      [1, 0, 30, "Tomorrow "],
-      [1, 9, 0, "Tomorrow "],
-      [1, 23, 30, "Tomorrow "],
+      [1, 0, 0, "Завтра "],
+      [1, 0, 30, "Завтра "],
+      [1, 9, 0, "Завтра "],
+      [1, 23, 30, "Завтра "],
     ] as const) {
       const target = new Date(2026, month, day + offset, hour, minute);
-      const clock = target.toLocaleTimeString(undefined, {
+      const clock = target.toLocaleTimeString("ru", {
         hour: "numeric",
         minute: "2-digit",
       });
@@ -46,11 +46,11 @@ describe("formatScheduledTime", () => {
 
     for (const offset of [-1, 2]) {
       const target = new Date(2026, month, day + offset, 0, 30);
-      const date = target.toLocaleDateString(undefined, {
+      const date = target.toLocaleDateString("ru", {
         month: "short",
         day: "numeric",
       });
-      const clock = target.toLocaleTimeString(undefined, {
+      const clock = target.toLocaleTimeString("ru", {
         hour: "numeric",
         minute: "2-digit",
       });
@@ -63,46 +63,46 @@ describe("formatScheduledTime", () => {
 
 describe("formatRelativeTime", () => {
   it("collapses sub-minute and future gaps to 'just now'", () => {
-    expect(formatRelativeTime({ timestamp: NOW, now: NOW })).toBe("just now");
+    expect(formatRelativeTime({ timestamp: NOW, now: NOW })).toBe("только что");
     expect(formatRelativeTime({ timestamp: NOW - 30 * 1000, now: NOW })).toBe(
-      "just now",
+      "только что",
     );
     expect(formatRelativeTime({ timestamp: NOW + 5 * 1000, now: NOW })).toBe(
-      "just now",
+      "только что",
     );
   });
 
   it("renders minutes and hours", () => {
     expect(formatRelativeTime({ timestamp: NOW - 2 * MINUTE, now: NOW })).toBe(
-      "2m ago",
+      "2 мин. назад",
     );
     expect(formatRelativeTime({ timestamp: NOW - 59 * MINUTE, now: NOW })).toBe(
-      "59m ago",
+      "59 мин. назад",
     );
     expect(formatRelativeTime({ timestamp: NOW - 3 * HOUR, now: NOW })).toBe(
-      "3h ago",
+      "3 ч назад",
     );
   });
 
   it("renders Yesterday, days, and weeks", () => {
     expect(formatRelativeTime({ timestamp: NOW - 25 * HOUR, now: NOW })).toBe(
-      "Yesterday",
+      "Вчера",
     );
     expect(formatRelativeTime({ timestamp: NOW - 2 * DAY, now: NOW })).toBe(
-      "2d ago",
+      "2 дн. назад",
     );
     expect(formatRelativeTime({ timestamp: NOW - 6 * DAY, now: NOW })).toBe(
-      "6d ago",
+      "6 дн. назад",
     );
     expect(formatRelativeTime({ timestamp: NOW - 14 * DAY, now: NOW })).toBe(
-      "2w ago",
+      "2 нед. назад",
     );
   });
 
   it("falls back to a short absolute date beyond a few weeks", () => {
     const timestamp = NOW - 60 * DAY;
     expect(formatRelativeTime({ timestamp, now: NOW })).toBe(
-      new Date(timestamp).toLocaleDateString(undefined, {
+      new Date(timestamp).toLocaleDateString("ru", {
         month: "short",
         day: "numeric",
       }),

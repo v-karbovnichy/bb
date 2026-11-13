@@ -69,7 +69,7 @@ export function SidebarVisibilityActionContent({
   return (
     <>
       <Icon name={visible ? "EyeOff" : "Eye"} aria-hidden="true" />
-      {label ?? (visible ? "Hide from sidebar" : "Add to sidebar")}
+      {label ?? (visible ? "Скрыть с боковой панели" : "Добавить на боковую панель")}
     </>
   );
 }
@@ -125,7 +125,7 @@ export function SidebarMore({
                   data-testid={`${testIdPrefix}-more-trigger`}
                 >
                   <Icon name="MoreHorizontal" aria-hidden="true" />
-                  <span className="min-w-0 truncate text-left">More</span>
+                  <span className="min-w-0 truncate text-left">Ещё</span>
                   {activity ? (
                     <span
                       data-sidebar-more-activity=""
@@ -141,7 +141,7 @@ export function SidebarMore({
               </DropdownMenuTrigger>
             </div>
           </ContextMenuTrigger>
-          <ContextMenuContent aria-label={`${ariaLabel} options`}>
+          <ContextMenuContent aria-label={`Параметры: ${ariaLabel}`}>
             <ContextMenuItem onSelect={onCustomize}>
               <SidebarCustomizeActionContent label={customizeLabel} />
             </ContextMenuItem>
@@ -151,7 +151,7 @@ export function SidebarMore({
           side="right"
           align="start"
           sideOffset={8}
-          mobileTitle={compact && page ? page.title : "More"}
+          mobileTitle={compact && page ? page.title : "Ещё"}
           aria-label={ariaLabel}
           className="flex max-h-[min(var(--radix-dropdown-menu-content-available-height),calc(100dvh-0.5rem))] w-56 flex-col overflow-hidden p-1 max-md:min-h-0 max-md:flex-1"
         >
@@ -175,7 +175,7 @@ export function SidebarMore({
                   }}
                 >
                   <Icon name="ChevronLeft" aria-hidden="true" />
-                  Back
+                  Назад
                 </DropdownMenuItem>
                 <div
                   role="separator"
@@ -255,7 +255,7 @@ export function SidebarOverflowItem({
             }}
           >
             <Icon name="MessageSquarePlus" aria-hidden="true" />
-            New thread
+            Новый чат
           </Button>
         ) : null
       ) : (
@@ -278,7 +278,7 @@ export function SidebarOverflowItem({
           onAddToSidebar(item.id);
         }}
       >
-        <SidebarVisibilityActionContent visible={false} label="Add to list" />
+        <SidebarVisibilityActionContent visible={false} label="Добавить в список" />
       </Button>
     </div>
   );

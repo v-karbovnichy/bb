@@ -157,7 +157,7 @@ function pressFindChord(target: Element) {
 }
 
 function findInput(): HTMLInputElement {
-  return screen.getByRole("textbox", { name: /Find in page/ });
+  return screen.getByRole("textbox", { name: /Найти на странице/ });
 }
 
 describe("BrowserTabContent find in page", () => {
@@ -175,7 +175,7 @@ describe("BrowserTabContent find in page", () => {
     pressFindChord(screen.getByRole("button", { name: "Outside browser" }));
     expect(screen.queryByTestId("browser-find-bar")).toBeNull();
 
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     expect(screen.getByTestId("browser-find-bar")).not.toBeNull();
   });
 
@@ -183,14 +183,14 @@ describe("BrowserTabContent find in page", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "");
 
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     expect(screen.queryByTestId("browser-find-bar")).toBeNull();
   });
 
   it("searches as the query changes, steps with Enter/Shift+Enter, and shows the count", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "https://example.com/docs");
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
 
     fireEvent.change(findInput(), { target: { value: "needle" } });
     expect(harness.findInPage).toHaveBeenLastCalledWith({
@@ -236,7 +236,7 @@ describe("BrowserTabContent find in page", () => {
   it("closes on Escape, clears highlights, and re-runs the query when reopened", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "https://example.com/docs");
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     fireEvent.change(findInput(), { target: { value: "needle" } });
     act(() => harness.emitFindResult(findResult()));
     harness.findInPage.mockClear();
@@ -249,7 +249,7 @@ describe("BrowserTabContent find in page", () => {
       action: "clearSelection",
     });
 
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     expect(findInput().value).toBe("needle");
     expect(harness.findInPage).toHaveBeenCalledWith({
       tabId: "browser:test",
@@ -263,7 +263,7 @@ describe("BrowserTabContent find in page", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "https://example.com/docs");
     act(() => harness.emitState(browserState({ isLoading: false })));
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     fireEvent.change(findInput(), { target: { value: "needle" } });
     act(() => harness.emitFindResult(findResult()));
     expect(screen.getByTestId("browser-find-match-count").textContent).toBe(
@@ -278,7 +278,7 @@ describe("BrowserTabContent find in page", () => {
   it("ends the native find session when the component unmounts with the bar open", () => {
     const harness = createFindHarness();
     const view = renderBrowser(harness, "https://example.com/docs");
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     fireEvent.change(findInput(), { target: { value: "needle" } });
     harness.stopFindInPage.mockClear();
 
@@ -299,7 +299,7 @@ describe("BrowserTabContent find in page", () => {
   it("caps the query at the contract limit", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "https://example.com/docs");
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     expect(findInput().maxLength).toBe(BB_DESKTOP_BROWSER_MAX_FIND_TEXT_LENGTH);
 
     const oversized = "a".repeat(BB_DESKTOP_BROWSER_MAX_FIND_TEXT_LENGTH + 10);
@@ -315,7 +315,7 @@ describe("BrowserTabContent find in page", () => {
     const harness = createFindHarness();
     renderBrowser(harness, "https://example.com/docs");
     act(() => harness.emitState(browserState()));
-    pressFindChord(screen.getByLabelText(/Address and search bar/));
+    pressFindChord(screen.getByLabelText(/Адресная и поисковая строка/));
     fireEvent.change(findInput(), { target: { value: "needle" } });
     act(() => harness.emitFindResult(findResult()));
     expect(screen.getByTestId("browser-find-match-count").textContent).toBe(

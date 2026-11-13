@@ -193,13 +193,13 @@ describe("answering a single-select question", () => {
     const draftKey = "thr_quota:pint_quota";
     try {
       const slot = render(singleSelect, { draftKey });
-      fireEvent.click(getButtonByText(slot, "Other…"));
-      fireEvent.change(slot.getByLabelText("Database answer"), {
+      fireEvent.click(getButtonByText(slot, "Другое…"));
+      fireEvent.change(slot.getByLabelText("Ответ на вопрос «Database»"), {
         target: { value: "Keep this answer" },
       });
       slot.unmount();
       const restored = render(singleSelect, { draftKey });
-      expect(restored.getByLabelText("Database answer")).toHaveProperty(
+      expect(restored.getByLabelText("Ответ на вопрос «Database»")).toHaveProperty(
         "value",
         "Keep this answer",
       );
@@ -240,7 +240,7 @@ describe("answering a single-select question", () => {
     const submit = vi.fn(async () => undefined);
     const slot = render(singleSelect, { submit });
     fireEvent.keyDown(document.body, { key: "3" });
-    const textarea = slot.getByLabelText("Database answer");
+    const textarea = slot.getByLabelText("Ответ на вопрос «Database»");
     expect(document.activeElement).toBe(textarea);
     fireEvent.change(textarea, { target: { value: "Custom" } });
     expect(fireEvent.keyDown(textarea, { key: "Enter", shiftKey: true })).toBe(
@@ -260,7 +260,7 @@ describe("answering a single-select question", () => {
     const submit = vi.fn(async () => undefined);
     const slot = render(singleSelect, { submit });
     fireEvent.keyDown(document.body, { key: "3" });
-    const textarea = slot.getByLabelText("Database answer");
+    const textarea = slot.getByLabelText("Ответ на вопрос «Database»");
     fireEvent.change(textarea, { target: { value: "Custom" } });
     fireEvent.keyDown(textarea, { key: "Enter", ctrlKey: true });
     expect(submit).toHaveBeenCalledTimes(1);
@@ -282,8 +282,8 @@ describe("answering a single-select question", () => {
     );
     const submit = vi.fn(async () => undefined);
     const slot = render(singleSelect, { submit });
-    fireEvent.click(getButtonByText(slot, "Other…"));
-    const textarea = slot.getByLabelText("Database answer");
+    fireEvent.click(getButtonByText(slot, "Другое…"));
+    const textarea = slot.getByLabelText("Ответ на вопрос «Database»");
     fireEvent.change(textarea, { target: { value: "Custom" } });
     expect(fireEvent.keyDown(textarea, { key: "Enter" })).toBe(true);
     expect(submit).not.toHaveBeenCalled();
@@ -291,8 +291,8 @@ describe("answering a single-select question", () => {
 
   it("uses the compact labels when the host is compact", () => {
     const slot = render(singleSelect, { density: "compact" });
-    expect(getButtonByText(slot, "Submit")).toBeTruthy();
-    expect(slot.queryByText("Submit answer")).toBeNull();
+    expect(getButtonByText(slot, "Отправить")).toBeTruthy();
+    expect(slot.queryByText("Отправить ответ")).toBeNull();
   });
 
   it("closes the inline form on Cancel without cancelling the question", () => {
@@ -304,7 +304,7 @@ describe("answering a single-select question", () => {
       closeInline,
     });
 
-    fireEvent.click(getButtonByText(slot, "Cancel"));
+    fireEvent.click(getButtonByText(slot, "Отмена"));
 
     expect(closeInline).toHaveBeenCalledTimes(1);
     expect(cancel).not.toHaveBeenCalled();
@@ -334,7 +334,7 @@ describe("answering a single-select question", () => {
 
     expect(slot.getAllByText("Which database should we use?")).toHaveLength(2);
     fireEvent.click(getButtonByText(slot, "SQLite"));
-    fireEvent.click(getButtonByText(slot, "Submit answer"));
+    fireEvent.click(getButtonByText(slot, "Отправить ответ"));
 
     expect(submit).toHaveBeenCalledTimes(1);
     expect(submit.mock.calls[0]?.[0]).toEqual({
@@ -353,7 +353,7 @@ describe("answering a single-select question", () => {
 
   it("blocks submission until something is chosen", () => {
     const slot = render(singleSelect);
-    const submitButton = getButtonByText(slot, "Submit answer");
+    const submitButton = getButtonByText(slot, "Отправить ответ");
 
     expect(submitButton.disabled).toBe(true);
     fireEvent.click(getButtonByText(slot, "Postgres"));
@@ -379,10 +379,10 @@ describe("answering a single-select question", () => {
     const slot = render(singleSelect, { submit });
 
     fireEvent.click(getButtonByText(slot, "Postgres"));
-    fireEvent.click(getButtonByText(slot, "Other…"));
-    const textarea = slot.getByLabelText("Database answer");
+    fireEvent.click(getButtonByText(slot, "Другое…"));
+    const textarea = slot.getByLabelText("Ответ на вопрос «Database»");
     fireEvent.change(textarea, { target: { value: "DuckDB" } });
-    fireEvent.click(getButtonByText(slot, "Submit answer"));
+    fireEvent.click(getButtonByText(slot, "Отправить ответ"));
 
     expect(submit).toHaveBeenCalledTimes(1);
     expect(submit.mock.calls[0]?.[0]).toEqual({
@@ -392,8 +392,8 @@ describe("answering a single-select question", () => {
 
   it("ignores number keys typed into the free-text box", () => {
     const slot = render(singleSelect);
-    fireEvent.click(getButtonByText(slot, "Other…"));
-    const textarea = slot.getByLabelText("Database answer");
+    fireEvent.click(getButtonByText(slot, "Другое…"));
+    const textarea = slot.getByLabelText("Ответ на вопрос «Database»");
 
     fireEvent.keyDown(textarea, { key: "1" });
 
@@ -441,20 +441,20 @@ describe("multi-select and multi-question flows", () => {
       const slot = render(multi, { draftKey });
       fireEvent.click(getButtonByText(slot, "Metrics"));
       fireEvent.click(getButtonByText(slot, "Tracing"));
-      fireEvent.click(getButtonByText(slot, "Next"));
-      fireEvent.click(getButtonByText(slot, "Other…"));
-      fireEvent.change(slot.getByLabelText("Database answer"), {
+      fireEvent.click(getButtonByText(slot, "Далее"));
+      fireEvent.click(getButtonByText(slot, "Другое…"));
+      fireEvent.change(slot.getByLabelText("Ответ на вопрос «Database»"), {
         target: { value: "  DuckDB\nwith extensions  " },
       });
       slot.unmount();
 
       const restored = render(multi, { draftKey });
-      expect(restored.getByText("2 of 2")).toBeTruthy();
-      expect(restored.getByLabelText("Database answer")).toHaveProperty(
+      expect(restored.getByText("2 из 2")).toBeTruthy();
+      expect(restored.getByLabelText("Ответ на вопрос «Database»")).toHaveProperty(
         "value",
         "  DuckDB\nwith extensions  ",
       );
-      fireEvent.click(getButtonByText(restored, "Back"));
+      fireEvent.click(getButtonByText(restored, "Назад"));
       expect(
         getButtonByText(restored, "Metrics").getAttribute("aria-pressed"),
       ).toBe("true");
@@ -471,8 +471,8 @@ describe("multi-select and multi-question flows", () => {
       expect(
         getButtonByText(reloaded, "Metrics").getAttribute("aria-pressed"),
       ).toBe("true");
-      fireEvent.click(getButtonByText(reloaded, "Next"));
-      expect(reloaded.getByLabelText("Database answer")).toHaveProperty(
+      fireEvent.click(getButtonByText(reloaded, "Далее"));
+      expect(reloaded.getByLabelText("Ответ на вопрос «Database»")).toHaveProperty(
         "value",
         "  DuckDB\nwith extensions  ",
       );
@@ -496,7 +496,7 @@ describe("multi-select and multi-question flows", () => {
         });
         const slot = render(singleSelect, { draftKey, [action]: handler });
         fireEvent.click(getButtonByText(slot, "SQLite"));
-        const buttonLabel = action === "submit" ? "Submit answer" : "Cancel";
+        const buttonLabel = action === "submit" ? "Отправить ответ" : "Отмена";
         await act(async () =>
           fireEvent.click(getButtonByText(slot, buttonLabel)),
         );
@@ -540,7 +540,7 @@ describe("multi-select and multi-question flows", () => {
           [action]: async () => {},
         });
         fireEvent.click(getButtonByText(slot, "SQLite"));
-        const buttonLabel = action === "submit" ? "Submit answer" : "Cancel";
+        const buttonLabel = action === "submit" ? "Отправить ответ" : "Отмена";
         await act(async () =>
           fireEvent.click(getButtonByText(slot, buttonLabel)),
         );
@@ -548,8 +548,8 @@ describe("multi-select and multi-question flows", () => {
         expect(
           getButtonByText(slot, "SQLite").getAttribute("aria-pressed"),
         ).toBe("true");
-        expect(getButtonByText(slot, "Submit answer").disabled).toBe(true);
-        expect(getButtonByText(slot, "Cancel").disabled).toBe(true);
+        expect(getButtonByText(slot, "Отправить ответ").disabled).toBe(true);
+        expect(getButtonByText(slot, "Отмена").disabled).toBe(true);
       } finally {
         window.localStorage.removeItem(storageKey);
       }
@@ -562,7 +562,7 @@ describe("multi-select and multi-question flows", () => {
     fireEvent.keyDown(document.body, { key: "1" });
     fireEvent.keyDown(document.activeElement!, { key: "2" });
     fireEvent.keyDown(document.activeElement!, { key: "Enter" });
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     expect(submit).not.toHaveBeenCalled();
     fireEvent.keyDown(document.activeElement!, { key: "2" });
     fireEvent.keyDown(document.activeElement!, { key: "Enter" });
@@ -580,14 +580,14 @@ describe("multi-select and multi-question flows", () => {
     );
     const slot = render(multi, { submit });
 
-    expect(slot.getByText("1 of 2")).toBeTruthy();
+    expect(slot.getByText("1 из 2")).toBeTruthy();
     fireEvent.click(getButtonByText(slot, "Metrics"));
     fireEvent.click(getButtonByText(slot, "Tracing"));
-    fireEvent.click(getButtonByText(slot, "Next"));
+    fireEvent.click(getButtonByText(slot, "Далее"));
 
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     fireEvent.click(getButtonByText(slot, "Postgres"));
-    fireEvent.click(getButtonByText(slot, "Submit answer"));
+    fireEvent.click(getButtonByText(slot, "Отправить ответ"));
 
     expect(submit).toHaveBeenCalledTimes(1);
     expect(submit.mock.calls[0]?.[0]).toEqual({
@@ -618,13 +618,13 @@ describe("multi-select and multi-question flows", () => {
       { submit },
     );
 
-    fireEvent.click(getButtonByText(slot, "Next"));
-    expect(slot.getByText("Optional")).toBeTruthy();
-    expect(getButtonByText(slot, "Submit answer").disabled).toBe(true);
-    fireEvent.click(getButtonByText(slot, "Back"));
+    fireEvent.click(getButtonByText(slot, "Далее"));
+    expect(slot.getByText("Необязательно")).toBeTruthy();
+    expect(getButtonByText(slot, "Отправить ответ").disabled).toBe(true);
+    fireEvent.click(getButtonByText(slot, "Назад"));
     fireEvent.click(getButtonByText(slot, "SQLite"));
-    fireEvent.click(getButtonByText(slot, "Next"));
-    fireEvent.click(getButtonByText(slot, "Submit answer"));
+    fireEvent.click(getButtonByText(slot, "Далее"));
+    fireEvent.click(getButtonByText(slot, "Отправить ответ"));
 
     expect(submit).toHaveBeenCalledExactlyOnceWith({
       answers: { q1: { selected: ["q1o1"] } },
@@ -640,14 +640,14 @@ describe("multi-select and multi-question flows", () => {
     metrics.focus();
 
     fireEvent.keyDown(metrics, { key: "ArrowRight" });
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     fireEvent.keyDown(document.activeElement!, { key: "ArrowLeft" });
-    expect(slot.getByText("1 of 2")).toBeTruthy();
+    expect(slot.getByText("1 из 2")).toBeTruthy();
 
     fireEvent.keyDown(document.activeElement!, { key: "Enter", ctrlKey: true });
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     expect(
-      getButtonByText(slot, "Submit answer").getAttribute("aria-keyshortcuts"),
+      getButtonByText(slot, "Отправить ответ").getAttribute("aria-keyshortcuts"),
     ).toBe("Control+Enter");
     const sqlite = getButtonByText(slot, "SQLite");
     fireEvent.click(sqlite);
@@ -664,25 +664,25 @@ describe("multi-select and multi-question flows", () => {
 
   it("moves to the next question with Enter in a free-text field and keeps arrows for the text", () => {
     const slot = render(multi);
-    fireEvent.click(getButtonByText(slot, "Other…"));
-    const textarea = slot.getByLabelText("Extras answer");
+    fireEvent.click(getButtonByText(slot, "Другое…"));
+    const textarea = slot.getByLabelText("Ответ на вопрос «Extras»");
     fireEvent.change(textarea, { target: { value: "Logs" } });
     expect(fireEvent.keyDown(textarea, { key: "ArrowRight" })).toBe(true);
-    expect(slot.getByText("1 of 2")).toBeTruthy();
+    expect(slot.getByText("1 из 2")).toBeTruthy();
     fireEvent.keyDown(textarea, { key: "Enter" });
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     expect(document.activeElement?.hasAttribute("data-question-form")).toBe(
       true,
     );
     fireEvent.keyDown(document.activeElement!, { key: "ArrowLeft" });
-    expect(slot.getByText("1 of 2")).toBeTruthy();
+    expect(slot.getByText("1 из 2")).toBeTruthy();
   });
 
   it("cancels with the cancel shortcut from the card and from its free-text field", () => {
     const cancel = vi.fn(async () => undefined);
     const slot = render(multi, { cancel });
-    fireEvent.click(getButtonByText(slot, "Other…"));
-    fireEvent.keyDown(slot.getByLabelText("Extras answer"), {
+    fireEvent.click(getButtonByText(slot, "Другое…"));
+    fireEvent.keyDown(slot.getByLabelText("Ответ на вопрос «Extras»"), {
       key: ".",
       ctrlKey: true,
     });
@@ -702,10 +702,10 @@ describe("multi-select and multi-question flows", () => {
         expect(fireEvent.keyDown(composer, { key, ctrlKey: true })).toBe(true);
       }
       expect(fireEvent.keyDown(composer, { key: "ArrowRight" })).toBe(true);
-      expect(slot.getByText("1 of 2")).toBeTruthy();
+      expect(slot.getByText("1 из 2")).toBeTruthy();
       expect(cancel).not.toHaveBeenCalled();
       fireEvent.keyDown(document.body, { key: "Enter", ctrlKey: true });
-      expect(slot.getByText("2 of 2")).toBeTruthy();
+      expect(slot.getByText("2 из 2")).toBeTruthy();
     } finally {
       composer.remove();
     }
@@ -716,18 +716,18 @@ describe("question answer dictation", () => {
   it("appends a transcript to the latest edited answer without submitting", async () => {
     const submit = vi.fn(async () => undefined);
     const slot = render(singleSelect, { submit });
-    fireEvent.click(getButtonByText(slot, "Other…"));
+    fireEvent.click(getButtonByText(slot, "Другое…"));
     const input = slot.getByRole("textbox");
     fireEvent.change(input, { target: { value: "Initial" } });
     const recording = vi.mocked(useVoiceInput).mock.calls.at(-1)?.[0];
-    fireEvent.click(slot.getByRole("button", { name: "Start voice input" }));
+    fireEvent.click(slot.getByRole("button", { name: "Начать голосовой ввод" }));
     fireEvent.change(input, { target: { value: "Edited" } });
     await act(async () => {
       await recording?.onTranscript("dictated answer", "insert");
     });
     expect(input).toHaveProperty("value", "Edited dictated answer");
     expect(submit).not.toHaveBeenCalled();
-    fireEvent.click(getButtonByText(slot, "Submit answer"));
+    fireEvent.click(getButtonByText(slot, "Отправить ответ"));
     expect(submit).toHaveBeenCalledWith({
       answers: { q0: { selected: [], freeText: "Edited dictated answer" } },
     });
@@ -735,13 +735,13 @@ describe("question answer dictation", () => {
 
   it("ignores late transcripts after the custom answer is closed", async () => {
     const slot = render(singleSelect);
-    fireEvent.click(getButtonByText(slot, "Other…"));
+    fireEvent.click(getButtonByText(slot, "Другое…"));
     fireEvent.change(slot.getByRole("textbox"), {
       target: { value: "Keep this" },
     });
     const recording = vi.mocked(useVoiceInput).mock.calls.at(-1)?.[0];
     fireEvent.click(getButtonByText(slot, "Postgres"));
-    fireEvent.click(getButtonByText(slot, "Other…"));
+    fireEvent.click(getButtonByText(slot, "Другое…"));
     await act(async () => {
       await recording?.onTranscript("discard this", "insert");
     });
@@ -762,13 +762,13 @@ describe("question answer dictation", () => {
     });
     const submit = vi.fn(async () => undefined);
     const slot = render(singleSelect, { submit });
-    fireEvent.click(getButtonByText(slot, "Other…"));
+    fireEvent.click(getButtonByText(slot, "Другое…"));
     const input = slot.getByRole("textbox");
     fireEvent.change(input, { target: { value: "Typed answer" } });
-    expect(getButtonByText(slot, "Submit answer").disabled).toBe(true);
+    expect(getButtonByText(slot, "Отправить ответ").disabled).toBe(true);
     fireEvent.keyDown(input, { key: "Enter", metaKey: true });
     expect(submit).not.toHaveBeenCalled();
-    fireEvent.click(slot.getByRole("button", { name: "Cancel transcription" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отменить расшифровку" }));
     expect(idle.cancel).toHaveBeenCalledOnce();
   });
 });
@@ -884,9 +884,9 @@ describe("question tabs on a narrow card", () => {
     expect(viewport(slot).scrollLeft).toBe(8 * TAB_WIDTH + 24 - VIEWPORT_WIDTH);
     expect(fades(slot)).toEqual({ left: true, right: true });
 
-    fireEvent.click(getButtonByText(slot, "Next"));
-    fireEvent.click(getButtonByText(slot, "Next"));
-    expect(slot.getByText("10 of 10")).toBeTruthy();
+    fireEvent.click(getButtonByText(slot, "Далее"));
+    fireEvent.click(getButtonByText(slot, "Далее"));
+    expect(slot.getByText("10 из 10")).toBeTruthy();
     expect(viewport(slot).scrollLeft).toBe(10 * TAB_WIDTH - VIEWPORT_WIDTH);
     expect(fades(slot)).toEqual({ left: true, right: false });
 
@@ -898,8 +898,8 @@ describe("question tabs on a narrow card", () => {
   it("shows no fade when every tab fits", () => {
     stubGeometry(2);
     const slot = render(questionsFor(2));
-    fireEvent.click(getButtonByText(slot, "Next"));
-    expect(slot.getByText("2 of 2")).toBeTruthy();
+    fireEvent.click(getButtonByText(slot, "Далее"));
+    expect(slot.getByText("2 из 2")).toBeTruthy();
     expect(fades(slot)).toEqual({ left: false, right: false });
   });
 });

@@ -112,9 +112,9 @@ function embedAriaLabel(task: Task): string {
     STATUS_LABELS[task.status].toLowerCase(),
   ];
   if (task.priority !== "none") {
-    parts.push(`${PRIORITY_LABELS[task.priority].toLowerCase()} priority`);
+    parts.push(`приоритет: ${PRIORITY_LABELS[task.priority].toLowerCase()}`);
   }
-  return `${parts.join(", ")} — open in side panel`;
+  return `${parts.join(", ")} — открыть в боковой панели`;
 }
 
 export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
@@ -128,7 +128,7 @@ export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
   if (!validKey) {
     return (
       <div className="my-3 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-        Invalid task link. Expected a task key like TSK-4.
+        Некорректная ссылка на задачу. Ожидается ключ задачи, например TSK-4.
       </div>
     );
   }
@@ -138,7 +138,7 @@ export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
       <CardShell>
         <div
           role="status"
-          aria-label={`Loading task ${taskKey}`}
+          aria-label={`Загрузка задачи ${taskKey}`}
           className="flex min-w-0 flex-1 items-center gap-2 px-1"
         >
           <Skeleton className="size-3.5 shrink-0 rounded-full" />
@@ -167,11 +167,11 @@ export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
           </span>
           <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground">
             {fallbackTitle
-              ? `${fallbackTitle} · not found`
-              : "Task not found — deleted, or its key changed"}
+              ? `${fallbackTitle} · не найдена`
+              : "Задача не найдена: она удалена или её ключ изменился"}
           </span>
         </div>
-        <OpenInTasksButton label="Open Tasks" />
+        <OpenInTasksButton label="Открыть задачи" />
       </CardShell>
     );
   }
@@ -188,11 +188,11 @@ export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
             {taskKey}
           </span>
           <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground">
-            Couldn't load this task
+            Не удалось загрузить задачу
           </span>
         </div>
         <Button variant="ghost" size="sm" className="shrink-0" onClick={retry}>
-          Retry
+          Повторить
         </Button>
       </CardShell>
     );
@@ -242,7 +242,7 @@ export function TaskDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
         ) : null}
       </button>
       <OpenInTasksButton
-        label={`Open ${task.key} in Tasks`}
+        label={`Открыть ${task.key} в задачах`}
         subPath={taskDetailSubPath(task.key)}
       />
     </CardShell>
@@ -257,7 +257,7 @@ function TaskEmbedPanelContent({ params }: ExperimentalThreadActionTabProps) {
   if (taskKey === null || !TASK_KEY_PATTERN.test(taskKey.trim())) {
     return (
       <div className="p-3 text-sm text-muted-foreground">
-        Open a task card from a message to view it here.
+        Откройте карточку задачи из сообщения, чтобы просмотреть её здесь.
       </div>
     );
   }
@@ -268,7 +268,7 @@ function TaskEmbedPanelContent({ params }: ExperimentalThreadActionTabProps) {
           {taskKey.trim()}
         </div>
         <OpenInTasksButton
-          label={`Open ${taskKey.trim()} in Tasks`}
+          label={`Открыть ${taskKey.trim()} в задачах`}
           subPath={taskDetailSubPath(taskKey.trim())}
         />
       </div>

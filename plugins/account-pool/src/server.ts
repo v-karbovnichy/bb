@@ -349,11 +349,11 @@ export function createAccountPoolPlugin(
     const proxiedHealth = async (provider: PoolProvider) =>
       (await canServe(provider))
         ? {
-            label: "Proxied",
+            label: "Через прокси",
             statusMessage:
               proxyingParent() === null
-                ? "Credentials are provided by the Account Pooler hub."
-                : "Credentials are proxied to the parent bb server's Account Pooler.",
+                ? "Учётные данные предоставляет центр пула аккаунтов."
+                : "Учётные данные передаются через прокси в пул аккаунтов родительского сервера bb.",
           }
         : null;
     bb.providers.experimental_contributeEnv(

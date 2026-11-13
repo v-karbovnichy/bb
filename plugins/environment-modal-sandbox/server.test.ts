@@ -331,7 +331,7 @@ describe("Modal machine provider", () => {
       harness.provider.validate?.({ inputs: { preset: "Missing" } }),
     ).resolves.toEqual({
       action: "refuse",
-      message: 'The Modal sandbox preset "Missing" is not configured.',
+      message: 'Размер песочницы Modal «Missing» не настроен.',
     });
     await expect(
       harness.provider.create(
@@ -422,7 +422,7 @@ describe("Modal machine provider", () => {
     });
     expect(harness.backend.creates).toHaveLength(2);
     expect(log.mock.calls.flat().join("")).toContain(
-      "Restored Modal sandbox sandbox-2 from image image-1",
+      "Песочница Modal sandbox-2 восстановлена из образа image-1",
     );
     expect(log.mock.calls.flat().join("")).toMatch(
       /Modal daemon connected in \d+ ms/u,
@@ -891,9 +891,9 @@ it("blocks observation and resume after the configured account identity changes"
   };
   await expect(
     harness.harness.callRpc("machine.inspect", { hostId: HOST_ID }),
-  ).rejects.toThrow("pinned Modal account");
+  ).rejects.toThrow("закреплённую за машиной учётную запись Modal");
   await expect(harness.provider.resume?.(context)).rejects.toThrow(
-    "pinned Modal account",
+    "закреплённую за машиной учётную запись Modal",
   );
   expect(harness.backend.creates).toHaveLength(1);
 });
@@ -942,10 +942,10 @@ it("refuses an older snapshot when running compute disappears unexpectedly", asy
     checkpoint: async () => {},
   };
   await expect(test.provider.resume?.(context)).rejects.toThrow(
-    "potentially stale snapshot",
+    "возможно устаревшего снимка",
   );
   await expect(test.provider.suspend?.(context)).rejects.toThrow(
-    "potentially stale snapshot",
+    "возможно устаревшего снимка",
   );
   expect(test.backend.creates).toHaveLength(1);
 });
@@ -958,7 +958,7 @@ it("validates and persists a Dockerfile override used by new machines, then rese
     test.harness.behavior.callRpc("image.set", {
       dockerfile: "FROM node:22\nCOPY . /app\n",
     }),
-  ).rejects.toThrow("requires one FROM");
+  ).rejects.toThrow("требуется одна инструкция FROM");
   expect(
     await test.harness.behavior.callRpc("image.definition", {}),
   ).toMatchObject({ customized: false });
@@ -1090,14 +1090,14 @@ it("preserves command argv, output and exit codes while preventing access to unr
   ).toMatchObject({ exitCode: 1 });
   await expect(
     test.harness.behavior.callRpc("sandbox.stop", { sandboxId: "unrelated" }),
-  ).rejects.toThrow("Unknown debug sandbox");
+  ).rejects.toThrow("Неизвестная отладочная песочница");
   await test.harness.setSettings({ tokenId: "different-account" });
   await expect(
     test.harness.behavior.callRpc("sandbox.exec", {
       sandboxId: "sandbox-1",
       command: ["true"],
     }),
-  ).rejects.toThrow("Restore the Modal account");
+  ).rejects.toThrow("Восстановите учётную запись Modal");
 });
 
 it("stops debug compute without snapshots and refuses commands after expiry", async () => {
@@ -1164,7 +1164,7 @@ describe("modal CLI surface", () => {
     ).toMatchObject({
       exitCode: 1,
       stderr: expect.stringContaining(
-        "bb modal sandbox exec requires a command after --",
+        "Для bb modal sandbox exec укажите команду после --",
       ),
     });
   });

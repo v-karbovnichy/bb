@@ -59,13 +59,13 @@ export function debugSandbox(
     const stored = await bb.storage.kv.get<unknown>(`debug/${sandboxId}`);
     if (stored === undefined)
       throw new Error(
-        "Unknown debug sandbox; use an ID returned by bb modal sandbox run",
+        "Неизвестная отладочная песочница; используйте ID из bb modal sandbox run",
       );
     const record = recordSchema.parse(stored);
     const { client } = await resolve();
     if (record.accountIdentity !== (await client.accountIdentity()))
       throw new Error(
-        "Restore the Modal account that created this debug sandbox",
+        "Восстановите учётную запись Modal, в которой создана эта отладочная песочница",
       );
     const observed = await client.observe({
       sandboxId,
@@ -120,7 +120,7 @@ export function debugSandbox(
       const sandbox = await owned(input.sandboxId);
       if (!sandbox)
         throw new Error(
-          "Debug sandbox has stopped or expired; run a new sandbox",
+          "Отладочная песочница остановлена или её срок истёк; запустите новую",
         );
       return sandbox.exec(input.command, {
         timeoutMs: 60_000,

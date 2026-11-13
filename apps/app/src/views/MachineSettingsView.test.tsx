@@ -175,10 +175,10 @@ function lastMove(overrides: Partial<LastServerMove> = {}): LastServerMove {
 
 async function openMachineMenu(): Promise<void> {
   fireEvent.pointerDown(
-    await screen.findByRole("button", { name: "dev-vm actions" }),
+    await screen.findByRole("button", { name: "Действия с машиной dev-vm" }),
     { button: 0 },
   );
-  await screen.findByRole("menuitem", { name: "Rename" });
+  await screen.findByRole("menuitem", { name: "Переименовать" });
 }
 
 beforeEach(() => {
@@ -218,7 +218,7 @@ describe("MachineSettingsView", () => {
 
     renderView();
 
-    const issueLink = await screen.findByRole("link", { name: "1 to fix" });
+    const issueLink = await screen.findByRole("link", { name: "Требуют исправления: 1" });
     expect(issueLink.getAttribute("href")).toBe("/settings/updates");
     const pill = issueLink.firstElementChild;
     expect(pill?.className).toContain("bg-surface-attention");
@@ -250,7 +250,7 @@ describe("MachineSettingsView", () => {
     renderView();
 
     fireEvent.click(
-      await screen.findByRole("radio", { name: /Accept Edits/u }),
+      await screen.findByRole("radio", { name: /Принимать изменения/u }),
     );
 
     await waitFor(() => {
@@ -275,16 +275,16 @@ describe("MachineSettingsView", () => {
     renderView();
 
     const remove = await screen.findByRole("button", {
-      name: "Remove machine",
+      name: "Удалить машину",
     });
     expect(remove.hasAttribute("disabled")).toBe(true);
     expect(remove.className).toContain("bg-destructive");
     expect(remove.parentElement?.className).not.toContain("justify-end");
-    expect(screen.queryByText("This machine")).toBeNull();
-    expect(screen.getByText("Server")).toBeDefined();
+    expect(screen.queryByText("Эта машина")).toBeNull();
+    expect(screen.getByText("Сервер")).toBeDefined();
     expect(
       screen.getByText(
-        "The server machine can't be removed. Move the server to another machine first.",
+        "Серверную машину нельзя удалить. Сначала перенесите сервер на другую машину.",
       ),
     ).toBeDefined();
   });
@@ -308,15 +308,15 @@ describe("MachineSettingsView", () => {
     renderView();
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove machine" }),
+      await screen.findByRole("button", { name: "Удалить машину" }),
     );
     const dialog = await screen.findByRole("dialog");
     expect(
-      await within(dialog).findByText("7 unarchived threads on this machine:"),
+      await within(dialog).findByText("Неархивированных чатов на этой машине: 7"),
     ).toBeDefined();
     expect(within(dialog).getAllByRole("listitem")).toHaveLength(5);
     expect(within(dialog).getByText("Refactor auth")).toBeDefined();
-    expect(within(dialog).getByText("and 2 more")).toBeDefined();
+    expect(within(dialog).getByText("и ещё 2")).toBeDefined();
     expect(sdk.threads.list).toHaveBeenCalledWith(
       expect.objectContaining({ archived: false, hostId: HOST_ID, limit: 5 }),
     );
@@ -344,14 +344,14 @@ describe("MachineSettingsView", () => {
     renderView();
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove machine" }),
+      await screen.findByRole("button", { name: "Удалить машину" }),
     );
     const dialog = await screen.findByRole("dialog");
     expect(
-      within(dialog).getByText(/The machine provider's removal still runs/),
+      within(dialog).getByText(/Провайдер машины всё равно удалит свои ресурсы/),
     ).toBeDefined();
     fireEvent.click(
-      within(dialog).getByRole("button", { name: "Remove anyway" }),
+      within(dialog).getByRole("button", { name: "Всё равно удалить" }),
     );
     await waitFor(() =>
       expect(sdk.hosts.delete).toHaveBeenCalledWith({
@@ -373,8 +373,8 @@ describe("MachineSettingsView", () => {
 
     renderView();
 
-    expect(await screen.findByText("This machine")).toBeDefined();
-    expect(screen.queryByText("Server")).toBeNull();
+    expect(await screen.findByText("Эта машина")).toBeDefined();
+    expect(screen.queryByText("Сервер")).toBeNull();
     expect(screen.getByText(/Linux/u)).toBeDefined();
   });
 
@@ -387,7 +387,7 @@ describe("MachineSettingsView", () => {
     renderView();
 
     await screen.findByRole("heading", { name: /dev-vm/u });
-    expect(screen.queryByText("This machine")).toBeNull();
+    expect(screen.queryByText("Эта машина")).toBeNull();
   });
 
   it("badges a lone server machine but does not count sandboxes toward the client-local badge", async () => {
@@ -410,13 +410,13 @@ describe("MachineSettingsView", () => {
     renderView();
 
     await screen.findByText(
-      "The server machine can't be removed. Move the server to another machine first.",
+      "Серверную машину нельзя удалить. Сначала перенесите сервер на другую машину.",
     );
-    expect(screen.getByText("Server")).toBeDefined();
-    expect(screen.queryByText("This machine")).toBeNull();
+    expect(screen.getByText("Сервер")).toBeDefined();
+    expect(screen.queryByText("Эта машина")).toBeNull();
   });
 
-  it("offers Move server here in the title menu of an eligible machine", async () => {
+  it("offers Перенести сервер сюда in the title menu of an eligible machine", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue(systemConfig());
     vi.mocked(sdk.hosts.list).mockResolvedValue([host()]);
     vi.mocked(sdk.experimental_server.checkMove).mockResolvedValue({
@@ -439,11 +439,11 @@ describe("MachineSettingsView", () => {
     });
     await openMachineMenu();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Move server here" }),
+      await screen.findByRole("menuitem", { name: "Перенести сервер сюда" }),
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Move the server to dev-vm" }),
+      await screen.findByRole("heading", { name: "Перенести сервер на dev-vm" }),
     ).toBeDefined();
     await waitFor(() => {
       expect(vi.mocked(sdk.experimental_server.checkMove)).toHaveBeenCalledWith(
@@ -452,7 +452,7 @@ describe("MachineSettingsView", () => {
     });
   });
 
-  it("does not offer Move server here on the server machine or an offline machine", async () => {
+  it("does not offer Перенести сервер сюда on the server machine or an offline machine", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue({
       ...systemConfig(),
       primaryHostId: HOST_ID,
@@ -464,7 +464,7 @@ describe("MachineSettingsView", () => {
 
     await openMachineMenu();
     expect(
-      screen.queryByRole("menuitem", { name: "Move server here" }),
+      screen.queryByRole("menuitem", { name: "Перенести сервер сюда" }),
     ).toBeNull();
     cleanup();
 
@@ -477,7 +477,7 @@ describe("MachineSettingsView", () => {
 
     await openMachineMenu();
     expect(
-      screen.queryByRole("menuitem", { name: "Move server here" }),
+      screen.queryByRole("menuitem", { name: "Перенести сервер сюда" }),
     ).toBeNull();
   });
 
@@ -498,22 +498,22 @@ describe("MachineSettingsView", () => {
     renderView();
 
     expect(
-      await screen.findByRole("heading", { name: "Old server copy" }),
+      await screen.findByRole("heading", { name: "Старая копия сервера" }),
     ).toBeDefined();
     expect(
       screen.getByText(
-        /The server moved from dev-vm to workstation\. The old server data is still on dev-vm/u,
+        /Сервер перенесён с dev-vm на workstation\. Старые данные сервера остались на dev-vm/u,
       ),
     ).toBeDefined();
-    fireEvent.click(screen.getByRole("button", { name: "Delete old copy" }));
+    fireEvent.click(screen.getByRole("button", { name: "Удалить старую копию" }));
     const confirm = await screen.findByRole("dialog", {
-      name: "Delete the old server copy?",
+      name: "Удалить старую копию сервера?",
     });
     expect(
       vi.mocked(sdk.hosts.experimental_deleteOldServerCopy),
     ).not.toHaveBeenCalled();
     fireEvent.click(
-      within(confirm).getByRole("button", { name: "Delete old copy" }),
+      within(confirm).getByRole("button", { name: "Удалить старую копию" }),
     );
 
     await waitFor(() => {
@@ -523,12 +523,12 @@ describe("MachineSettingsView", () => {
     });
     await waitFor(() => {
       expect(
-        screen.queryByRole("heading", { name: "Old server copy" }),
+        screen.queryByRole("heading", { name: "Старая копия сервера" }),
       ).toBeNull();
     });
   });
 
-  it("hides Move server here and the old server copy while the serverMove experiment is off", async () => {
+  it("hides Перенести сервер сюда and the old server copy while the serverMove experiment is off", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue({
       ...systemConfig(),
       experiments: defaultExperiments,
@@ -542,16 +542,16 @@ describe("MachineSettingsView", () => {
 
     renderView();
 
-    await screen.findByRole("heading", { name: "Machine information" });
+    await screen.findByRole("heading", { name: "Сведения о машине" });
     await waitFor(() => {
       expect(vi.mocked(sdk.experimental_server.moveStatus)).toHaveBeenCalled();
     });
     expect(
-      screen.queryByRole("heading", { name: "Old server copy" }),
+      screen.queryByRole("heading", { name: "Старая копия сервера" }),
     ).toBeNull();
     await openMachineMenu();
     expect(
-      screen.queryByRole("menuitem", { name: "Move server here" }),
+      screen.queryByRole("menuitem", { name: "Перенести сервер сюда" }),
     ).toBeNull();
   });
 
@@ -566,12 +566,12 @@ describe("MachineSettingsView", () => {
 
     const first = renderView();
 
-    await screen.findByRole("heading", { name: "Machine information" });
+    await screen.findByRole("heading", { name: "Сведения о машине" });
     await waitFor(() => {
       expect(vi.mocked(sdk.experimental_server.moveStatus)).toHaveBeenCalled();
     });
     expect(
-      screen.queryByRole("heading", { name: "Old server copy" }),
+      screen.queryByRole("heading", { name: "Старая копия сервера" }),
     ).toBeNull();
     first.unmount();
 
@@ -583,12 +583,12 @@ describe("MachineSettingsView", () => {
 
     renderView();
 
-    await screen.findByRole("heading", { name: "Machine information" });
+    await screen.findByRole("heading", { name: "Сведения о машине" });
     await waitFor(() => {
       expect(vi.mocked(sdk.experimental_server.moveStatus)).toHaveBeenCalled();
     });
     expect(
-      screen.queryByRole("heading", { name: "Old server copy" }),
+      screen.queryByRole("heading", { name: "Старая копия сервера" }),
     ).toBeNull();
   });
 
@@ -606,11 +606,11 @@ describe("MachineSettingsView", () => {
     renderView();
 
     const deleteButton = await screen.findByRole("button", {
-      name: "Delete old copy",
+      name: "Удалить старую копию",
     });
     expect(deleteButton.hasAttribute("disabled")).toBe(true);
     expect(
-      screen.getByText(/dev-vm has to be online to delete it\.$/u),
+      screen.getByText(/Для удаления dev-vm должна быть в сети\.$/u),
     ).toBeDefined();
   });
 });

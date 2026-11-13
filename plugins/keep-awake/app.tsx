@@ -131,7 +131,7 @@ function KeepAwakeSettings() {
         }
         role={error === null ? "status" : "alert"}
       >
-        {error ?? "Loading hosts…"}
+        {error ?? "Загрузка машин…"}
       </p>
     );
   }
@@ -145,17 +145,17 @@ function KeepAwakeSettings() {
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
           <h3 className="text-sm font-medium text-foreground">
-            Prevent idle sleep
+            Не допускать перехода в сон при бездействии
           </h3>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            Keep selected Macs awake while bb is running. Closing the lid or
-            choosing Sleep still sleeps the Mac.
+            Не допускать перехода выбранных компьютеров Mac в сон, пока работает bb.
+            Закрытие крышки или выбор команды «Сон» по-прежнему переводит Mac в сон.
           </p>
         </div>
         <Switch
           checked={view.enabled}
           size="default"
-          aria-label="Keep Awake"
+          aria-label="Не допускать перехода в сон"
           onCheckedChange={(enabled) => {
             updateConfiguration((current) => ({ ...current, enabled }));
           }}
@@ -165,9 +165,9 @@ function KeepAwakeSettings() {
       {view.enabled ? (
         <>
           <div className="border-t border-border/60 pt-4">
-            <h3 className="text-sm font-medium text-foreground">Hosts</h3>
+            <h3 className="text-sm font-medium text-foreground">Машины</h3>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Choose which Macs to keep awake.
+              Выберите компьютеры Mac, которые не должны переходить в сон.
             </p>
             <RadioGroup
               className="mt-2 gap-1"
@@ -183,14 +183,14 @@ function KeepAwakeSettings() {
                 <RadioGroupItem
                   id="keep-awake-all-hosts"
                   value="all"
-                  aria-label="All hosts"
+                  aria-label="Все машины"
                   className="mt-0.5"
                 />
                 <span>
-                  <span className="block text-sm font-medium">All hosts</span>
+                  <span className="block text-sm font-medium">Все машины</span>
                   <span className="block text-xs text-muted-foreground">
-                    Include hosts added in the future. Only macOS and Windows
-                    hosts are supported.
+                    Включая машины, которые будут добавлены позже. Поддерживаются
+                    только машины с macOS и Windows.
                   </span>
                 </span>
               </label>
@@ -205,16 +205,16 @@ function KeepAwakeSettings() {
                 <RadioGroupItem
                   id="keep-awake-selected-hosts"
                   value="selected"
-                  aria-label="Specific hosts"
+                  aria-label="Выбранные машины"
                   disabled={!hasHosts}
                   className="mt-0.5"
                 />
                 <span>
                   <span className="block text-sm font-medium">
-                    Specific hosts
+                    Выбранные машины
                   </span>
                   <span className="block text-xs text-muted-foreground">
-                    Choose individual Macs below.
+                    Выберите отдельные компьютеры Mac ниже.
                   </span>
                 </span>
               </label>
@@ -247,8 +247,8 @@ function KeepAwakeSettings() {
                         </span>
                         <span className="text-xs text-muted-foreground">
                           {host.status === "connected"
-                            ? "Connected"
-                            : "Offline"}
+                            ? "Подключена"
+                            : "Не в сети"}
                         </span>
                       </div>
                     );
@@ -256,7 +256,7 @@ function KeepAwakeSettings() {
                 </div>
               ) : (
                 <p className="px-3 py-4 text-sm text-muted-foreground">
-                  No hosts available.
+                  Нет доступных машин.
                 </p>
               )}
             </div>
@@ -271,7 +271,7 @@ function KeepAwakeSettings() {
           </span>
         ) : (
           <span className="text-xs text-muted-foreground" role="status">
-            {saveState === "saving" ? "Saving…" : "Saved"}
+            {saveState === "saving" ? "Сохранение…" : "Сохранено"}
           </span>
         )}
       </div>

@@ -66,9 +66,9 @@ function render(
 }
 
 async function openPicker(slot: ReturnType<typeof render>["slot"]) {
-  fireEvent.click(slot.getByRole("combobox", { name: "Worktree" }));
+  fireEvent.click(slot.getByRole("combobox", { name: "Рабочее дерево" }));
   await waitFor(() => {
-    expect(slot.getByText("Work in:")).toBeTruthy();
+    expect(slot.getByText("Работать в:")).toBeTruthy();
   });
 }
 
@@ -87,12 +87,12 @@ describe("worktree inputs control", () => {
     const { slot } = render({ branch: { kind: "default" } });
     expect(slot.queryAllByRole("combobox")).toHaveLength(1);
     await openPicker(slot);
-    expect(slot.getByRole("button", { name: "New worktree" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Новое рабочее дерево" })).toBeTruthy();
     expect(
-      slot.getByRole("button", { name: "Existing worktree" }),
+      slot.getByRole("button", { name: "Существующее рабочее дерево" }),
     ).toBeTruthy();
     expect(
-      within(slot.getByRole("dialog")).getByText("Branch from:"),
+      within(slot.getByRole("dialog")).getByText("Создать от ветки:"),
     ).toBeTruthy();
     expect(slot.getByRole("button", { name: "Default branch" })).toBeTruthy();
     expect(slot.getByRole("button", { name: "release" })).toBeTruthy();
@@ -111,7 +111,7 @@ describe("worktree inputs control", () => {
   it("allows an explicit remote branch as the worktree base", async () => {
     const { slot, onChange } = render({ branch: { kind: "default" } });
     await openPicker(slot);
-    fireEvent.change(slot.getByRole("textbox", { name: "Search branches" }), {
+    fireEvent.change(slot.getByRole("textbox", { name: "Поиск веток" }), {
       target: { value: "origin/main" },
     });
     fireEvent.click(slot.getByRole("button", { name: "origin/main" }));
@@ -127,7 +127,7 @@ describe("worktree inputs control", () => {
     try {
       const { slot, onChange } = render({ branch: { kind: "default" } });
       await openPicker(slot);
-      const search = slot.getByRole("textbox", { name: "Search branches" });
+      const search = slot.getByRole("textbox", { name: "Поиск веток" });
       fireEvent.change(search, { target: { value: "release" } });
       const release = slot.getByRole("button", { name: "release" });
       expect(release.hasAttribute("data-highlighted")).toBe(true);
@@ -180,15 +180,15 @@ describe("worktree inputs control", () => {
       },
     );
     await openPicker(slot);
-    const existing = slot.getByRole("button", { name: "Existing worktree" });
-    const fresh = slot.getByRole("button", { name: "New worktree" });
+    const existing = slot.getByRole("button", { name: "Существующее рабочее дерево" });
+    const fresh = slot.getByRole("button", { name: "Новое рабочее дерево" });
     fireEvent.click(existing);
     expect(existing.querySelector(".opacity-100")).not.toBeNull();
     expect(fresh.querySelector(".opacity-100")).toBeNull();
     expect(
-      slot.getByRole("textbox", { name: "Search worktrees" }),
+      slot.getByRole("textbox", { name: "Поиск рабочих деревьев" }),
     ).toBeTruthy();
-    expect(slot.getByText("Loading worktrees...")).toBeTruthy();
+    expect(slot.getByText("Загрузка рабочих деревьев...")).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
     fireEvent.click(fresh);
     expect(fresh.querySelector(".opacity-100")).not.toBeNull();
@@ -200,14 +200,14 @@ describe("worktree inputs control", () => {
     async (query) => {
       const { slot, onChange } = render({ branch: { kind: "default" } });
       await openPicker(slot);
-      fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+      fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
       await waitFor(() =>
         expect(slot.getByRole("button", { name: /app-feature/u })).toBeTruthy(),
       );
-      const search = slot.getByRole("textbox", { name: "Search worktrees" });
+      const search = slot.getByRole("textbox", { name: "Поиск рабочих деревьев" });
       fireEvent.change(search, { target: { value: "absent" } });
       await waitFor(() =>
-        expect(slot.getByText("No matching worktrees found.")).toBeTruthy(),
+        expect(slot.getByText("Подходящие рабочие деревья не найдены.")).toBeTruthy(),
       );
       fireEvent.change(search, { target: { value: query } });
       await waitFor(() =>
@@ -225,11 +225,11 @@ describe("worktree inputs control", () => {
   it("does not select a prunable worktree through search Enter", async () => {
     const { slot, onChange } = render({ branch: { kind: "default" } });
     await openPicker(slot);
-    fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+    fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
     await waitFor(() =>
       expect(slot.getByRole("button", { name: /app-hotfix/u })).toBeTruthy(),
     );
-    const search = slot.getByRole("textbox", { name: "Search worktrees" });
+    const search = slot.getByRole("textbox", { name: "Поиск рабочих деревьев" });
     fireEvent.change(search, { target: { value: "hotfix" } });
     await waitFor(() =>
       expect(slot.queryByRole("button", { name: /app-feature/u })).toBeNull(),
@@ -241,7 +241,7 @@ describe("worktree inputs control", () => {
   it("picks an existing worktree from the second section", async () => {
     const { slot, onChange } = render({ branch: { kind: "default" } });
     await openPicker(slot);
-    fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+    fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
     await waitFor(() => {
       expect(slot.getByRole("button", { name: /app-feature/u })).toBeTruthy();
     });
@@ -256,27 +256,27 @@ describe("worktree inputs control", () => {
     const fresh = render({ branch: { kind: "default" } });
     await waitFor(() =>
       expect(
-        fresh.slot.getByRole("combobox", { name: "Worktree" }).textContent,
-      ).toContain("Branch from:main"),
+        fresh.slot.getByRole("combobox", { name: "Рабочее дерево" }).textContent,
+      ).toContain("Создать от ветки:main"),
     );
     cleanup();
 
     const named = render({ branch: { kind: "named", name: "release" } });
     expect(
-      named.slot.getByRole("combobox", { name: "Worktree" }).textContent,
-    ).toContain("Branch from:release");
+      named.slot.getByRole("combobox", { name: "Рабочее дерево" }).textContent,
+    ).toContain("Создать от ветки:release");
     cleanup();
 
     const reused = render({ kind: "existing", path: "/code/app-feature/" });
     expect(
-      reused.slot.getByRole("combobox", { name: "Worktree" }).textContent,
-    ).toContain("Reuse:code/app-feature");
+      reused.slot.getByRole("combobox", { name: "Рабочее дерево" }).textContent,
+    ).toContain("Использовать:code/app-feature");
   });
 
   it("drops the trigger prefix in a compact promptbox", async () => {
     const { slot } = render({ branch: { kind: "named", name: "release" } });
-    const trigger = slot.getByRole("combobox", { name: "Worktree" });
-    const prefix = within(trigger).getByText("Branch from:");
+    const trigger = slot.getByRole("combobox", { name: "Рабочее дерево" });
+    const prefix = within(trigger).getByText("Создать от ветки:");
     expect(prefix.dataset.promptboxHideCompact).toBe("");
     expect(
       within(trigger).getByText("release").dataset.promptboxHideCompact,
@@ -285,8 +285,8 @@ describe("worktree inputs control", () => {
 
     const reused = render({ kind: "existing", path: "/code/app-feature" });
     expect(
-      within(reused.slot.getByRole("combobox", { name: "Worktree" })).getByText(
-        "Reuse:",
+      within(reused.slot.getByRole("combobox", { name: "Рабочее дерево" })).getByText(
+        "Использовать:",
       ).dataset.promptboxHideCompact,
     ).toBe("");
   });
@@ -310,9 +310,9 @@ describe("worktree inputs control", () => {
     );
     await openPicker(slot);
     expect(list).not.toHaveBeenCalled();
-    fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+    fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
     await waitFor(() =>
-      expect(slot.getByText("No existing worktrees found.")).toBeTruthy(),
+      expect(slot.getByText("Существующие рабочие деревья не найдены.")).toBeTruthy(),
     );
     expect(list).toHaveBeenCalledTimes(1);
   });
@@ -350,10 +350,10 @@ describe("worktree discovery scope", () => {
       expect(requests).toHaveLength(0);
       await openPicker(slot);
       expect(requests).toHaveLength(0);
-      fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+      fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
       await act(async () => requests[0]!.resolve({ worktrees: WORKTREES }));
       expect(slot.getByRole("button", { name: /app-feature/u })).toBeTruthy();
-      fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+      fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
       expect(requests).toHaveLength(2);
 
       const Component = inputsSlot().component;
@@ -369,7 +369,7 @@ describe("worktree discovery scope", () => {
       );
       expect(slot.queryByRole("button", { name: /app-feature/u })).toBeNull();
       expect(requests).toHaveLength(2);
-      fireEvent.click(slot.getByRole("button", { name: "Existing worktree" }));
+      fireEvent.click(slot.getByRole("button", { name: "Существующее рабочее дерево" }));
       expect(requests).toHaveLength(3);
       await act(async () =>
         requests[2]!.resolve({
@@ -422,7 +422,7 @@ describe("default branch label scope", () => {
         },
       });
       expect(slot.getByRole("combobox").textContent).toContain(
-        "Branch from:default",
+        "Создать от ветки:default",
       );
       const Component = inputsSlot().component;
       slot.rerender(
@@ -437,11 +437,11 @@ describe("default branch label scope", () => {
       );
       await act(async () => requests[1]!({ branch: "origin/main" }));
       expect(slot.getByRole("combobox").textContent).toContain(
-        "Branch from:origin/main",
+        "Создать от ветки:origin/main",
       );
       await act(async () => requests[0]!({ branch: "old-branch" }));
       expect(slot.getByRole("combobox").textContent).toContain(
-        "Branch from:origin/main",
+        "Создать от ветки:origin/main",
       );
       expect(onChange).not.toHaveBeenCalled();
       expect(list).not.toHaveBeenCalled();

@@ -52,7 +52,7 @@ function NotificationCopyButton({
   return (
     <button
       type="button"
-      aria-label="Copy notification"
+      aria-label="Копировать уведомление"
       className={ROW_ACTION_CLASS}
       onClick={() => {
         const text = bodyRef.current?.textContent ?? "";
@@ -112,7 +112,7 @@ function NotificationRow({ focused, notification, now }: NotificationRowProps) {
         <NotificationCopyButton bodyRef={bodyRef} />
         <button
           type="button"
-          aria-label="Dismiss notification"
+          aria-label="Закрыть уведомление"
           className={ROW_ACTION_CLASS}
           onClick={() => {
             dismissNotification(notification.id);
@@ -190,25 +190,25 @@ export function NotificationCenter() {
         onOpenAutoFocus={(event) => {
           event.preventDefault();
         }}
-        mobileTitle="Notifications"
-        aria-label="Notifications"
+        mobileTitle="Уведомления"
+        aria-label="Уведомления"
         data-testid="notification-center"
         className="w-96 max-w-[calc(100vw-2rem)] p-0"
         mobileClassName="p-0"
       >
         <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
-          <div className="text-sm font-medium leading-5">Notifications</div>
+          <div className="text-sm font-medium leading-5">Уведомления</div>
           <TooltipProvider delayDuration={300} disableHoverableContent>
             <div className="flex items-center gap-0.5">
               <HeaderAction
                 icon="Trash2"
-                label="Clear all"
+                label="Очистить всё"
                 disabled={notifications.length === 0}
                 onClick={clearNotifications}
               />
               <HeaderAction
                 icon="X"
-                label="Hide notifications"
+                label="Скрыть уведомления"
                 disabled={false}
                 onClick={closeNotificationCenter}
               />
@@ -217,7 +217,7 @@ export function NotificationCenter() {
         </div>
         {notifications.length === 0 ? (
           <div className="px-3 py-8 text-center text-xs leading-5 text-muted-foreground">
-            No notifications yet.
+            Уведомлений пока нет.
           </div>
         ) : (
           <ul className="max-h-[min(60vh,26rem)] divide-y divide-border overflow-y-auto">

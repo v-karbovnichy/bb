@@ -40,7 +40,7 @@ export function ThreadTerminalContent({
         className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-sm"
       >
         <div className="space-y-1">
-          <p className="font-medium text-foreground">Couldn't start terminal</p>
+          <p className="font-medium text-foreground">Не удалось запустить терминал</p>
           <p className="text-muted-foreground">{controller.start.error}</p>
         </div>
         <div className="flex gap-2">
@@ -50,7 +50,7 @@ export function ThreadTerminalContent({
             size="sm"
             onClick={onRetryStart}
           >
-            Retry
+            Повторить
           </Button>
           <Button
             type="button"
@@ -58,7 +58,7 @@ export function ThreadTerminalContent({
             size="sm"
             onClick={onCloseStart}
           >
-            Close
+            Закрыть
           </Button>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function ThreadTerminalContent({
   if (controller.hasTerminalQueryError) {
     return (
       <div className="flex h-full items-center justify-center px-4 text-center text-sm text-destructive-text">
-        Failed to load terminals.
+        Не удалось загрузить терминалы.
       </div>
     );
   }
@@ -88,7 +88,7 @@ export function ThreadTerminalContent({
   if (status === "exited") {
     return (
       <div className="flex h-full items-center justify-center px-4 text-center text-sm">
-        <p className="font-medium text-foreground">Terminal exited</p>
+        <p className="font-medium text-foreground">Терминал завершил работу</p>
       </div>
     );
   }
@@ -112,10 +112,10 @@ function TerminalStarting() {
   return (
     <div
       aria-busy="true"
-      aria-label="Starting terminal"
+      aria-label="Запуск терминала"
       className="flex h-full items-center justify-center px-4 text-center text-sm text-muted-foreground"
     >
-      {isSlow ? "Starting terminal…" : null}
+      {isSlow ? "Запуск терминала…" : null}
     </div>
   );
 }

@@ -19,16 +19,16 @@ export function buildSettingsPaletteActions(
     ...args.sections.map((section) => ({
       id: `settings:${section.id}`,
       bucket: "Settings" as const,
-      group: "Settings",
-      title: `${section.label} settings`,
+      group: "Настройки",
+      title: `Настройки: ${section.label}`,
       shortcut: null,
       run: () => args.navigate(getSettingsSectionRoutePath(section.id)),
     })),
     ...args.pluginEntries.map((plugin) => ({
       id: `settings:plugin:${plugin.id}`,
       bucket: "Settings" as const,
-      group: "Plugin settings",
-      title: `${plugin.label} settings`,
+      group: "Настройки плагина",
+      title: `Настройки: ${plugin.label}`,
       shortcut: null,
       run: () =>
         args.navigate(getPluginConfigurationRoutePath({ pluginId: plugin.id })),

@@ -11,16 +11,16 @@ import {
 
 describe("automation schedule cadence", () => {
   it.each([
-    ["*/5 9-17 * * *", "Every 5 min, 9AM-5:59PM"],
-    ["0 9-17 * * 1-5", "Every hour, 9AM-5PM Mon-Fri"],
-    ["15 9-17 * * *", "15 min past the hour, 9AM-5:59PM"],
-    ["0 0-2 * * *", "Every hour, 12AM-2AM"],
-    ["0 9,17 * * 1,3,5", "9AM, 5PM Mon, Wed, Fri"],
-    ["30 9,12,17 * * *", "9:30AM, 12:30PM, 5:30PM"],
-    ["10-20 * * * *", "Minutes 10-20 past the hour"],
-    ["*/5 * * * *", "Every 5 min"],
-    ["0 9 * * 1-5", "9AM Mon-Fri"],
-    ["invalid", "Custom schedule"],
+    ["*/5 9-17 * * *", "Каждые 5 минут, с 09:00 по 17:59"],
+    ["0 9-17 * * 1-5", "Каждый час, с 09:00 по 17:00, с понедельника по пятницу"],
+    ["15 9-17 * * *", "В 15 минут, с 09:00 по 17:59"],
+    ["0 0-2 * * *", "Каждый час, с 00:00 по 02:00"],
+    ["0 9,17 * * 1,3,5", "В 09:00 и 17:00, только в понедельник, среду, и пятницу"],
+    ["30 9,12,17 * * *", "В 09:30, 12:30 и 17:30"],
+    ["10-20 * * * *", "Минуты с 10 по 20"],
+    ["*/5 * * * *", "Каждые 5 минут"],
+    ["0 9 * * 1-5", "В 09:00, с понедельника по пятницу"],
+    ["invalid", "Пользовательское расписание"],
   ])("formats %s as %s", (cron, expected) => {
     expect(
       formatAutomationTrigger({
@@ -33,7 +33,7 @@ describe("automation schedule cadence", () => {
 
   it("formats one-shot schedules", () => {
     expect(formatAutomationTrigger({ triggerType: "once", runAt: 2_000 })).toBe(
-      "One time",
+      "Однократно",
     );
   });
 });
@@ -60,7 +60,7 @@ describe("automation list and detail states", () => {
         enabled: true,
         nextRunAt: NOW + 60_000,
       }),
-    ).toMatch(/^Next /);
+    ).toMatch(/^Следующий запуск: /);
   });
 
   it("filters active versus paused automations", () => {
@@ -184,7 +184,7 @@ describe("one-shot automation lifecycle", () => {
       now: NOW,
     });
     expect(next?.isNextRun).toBe(true);
-    expect(next?.text).not.toContain("Next");
+    expect(next?.text).not.toContain("Следующий запуск:");
   });
 
   it("allows pausing a scheduled run and resuming a future paused run", () => {
@@ -233,14 +233,14 @@ describe("one-shot automation lifecycle", () => {
         lastRunStatus: null,
         now: NOW,
       }),
-    ).toBe("Expired — edit to reschedule");
+    ).toBe("Срок истёк — измените расписание");
   });
 
   it.each([
-    ["running", "running", "Running"],
-    ["succeeded", "completed", "Completed"],
-    ["failed", "failed", "Failed"],
-    ["skipped", "skipped", "Skipped"],
+    ["running", "running", "Выполняется"],
+    ["succeeded", "completed", "Завершено"],
+    ["failed", "failed", "Ошибка"],
+    ["skipped", "skipped", "Пропущено"],
   ] as const)(
     "shows a terminal %s run truthfully",
     (lastRunStatus, expectedLifecycle, expectedLabel) => {

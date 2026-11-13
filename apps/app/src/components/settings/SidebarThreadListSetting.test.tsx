@@ -20,7 +20,7 @@ afterEach(async () => {
 });
 
 describe("SidebarThreadListSetting", () => {
-  it("defaults to Automatic, which prefers an installed plugin over the bundled Thread list", async () => {
+  it("defaults to Автоматически, which prefers an installed plugin over the bundled Thread list", async () => {
     setBuiltinPluginIds(["thread-list"]);
     setPluginSlotRegistrations(
       "thread-list",
@@ -55,21 +55,21 @@ describe("SidebarThreadListSetting", () => {
 
     expect(store.get(threadListProviderAtom)).toBe("__automatic__");
     const trigger = screen.getByRole("button", {
-      name: "Sidebar thread list",
+      name: "Список чатов в боковой панели",
     });
-    expect(trigger.textContent).toContain("Automatic");
+    expect(trigger.textContent).toContain("Автоматически");
 
     fireEvent.pointerDown(trigger, { button: 0 });
     expect(
-      (await screen.findByRole("menuitem", { name: /Automatic/u })).textContent,
-    ).toContain("Chooses Inbox (zen).");
+      (await screen.findByRole("menuitem", { name: /Автоматически/u })).textContent,
+    ).toContain("Выбирает Inbox (zen).");
     const options = screen
       .getAllByRole("menuitem")
       .map((item) => item.textContent ?? "");
-    expect(options[1]).toContain("InboxFrom the zen plugin.");
-    expect(options[2]).toBe("Thread list (built-in)");
+    expect(options[1]).toContain("InboxИз плагина zen.");
+    expect(options[2]).toBe("Thread list (встроенный)");
     fireEvent.click(
-      screen.getByRole("menuitem", { name: /^Thread list \(built-in\)/u }),
+      screen.getByRole("menuitem", { name: /^Thread list \(встроенный\)/u }),
     );
 
     expect(store.get(threadListProviderAtom)).toBe("thread-list/thread-list");

@@ -93,7 +93,7 @@ export function PluginAuthorPage({
   const official =
     entries.length > 0 &&
     entries.every((entry) => entry.marketplace === "bb-official");
-  const authorName = official ? "BB Official" : author?.name;
+  const authorName = official ? "Официальный BB" : author?.name;
   const installsKnown = entries.some((entry) => entry.installs !== null);
   const sort =
     requestedSort === "most-installed" && !installsKnown ? null : requestedSort;
@@ -146,7 +146,7 @@ export function PluginAuthorPage({
             className="-ml-1 inline-flex items-center gap-1 rounded-sm px-1 text-xs text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <Icon name="ChevronLeft" className="size-3" aria-hidden />
-            Browse plugins
+            Обзор плагинов
           </Link>
           {author === null ? null : (
             <div className="flex items-center gap-3">
@@ -180,7 +180,7 @@ export function PluginAuthorPage({
                     ) : null}
                     {formatUrlLabel(author.url)}
                     <Icon name="ExternalLink" className="size-3" aria-hidden />
-                    <span className="sr-only">Opens in a new tab</span>
+                    <span className="sr-only">Откроется в новой вкладке</span>
                   </a>
                 )}
               </div>
@@ -189,15 +189,15 @@ export function PluginAuthorPage({
         </div>
 
         {catalogQuery.isPending ? (
-          <ResourceListState state="loading" message="Loading author" />
+          <ResourceListState state="loading" message="Загрузка автора" />
         ) : catalogQuery.isError && entries.length === 0 ? (
           <ResourceListState
             state="error"
-            message="The author catalog is not available."
+            message="Каталог авторов недоступен."
             onRetry={() => void catalogQuery.refetch()}
           />
         ) : author === null ? (
-          <ResourceListState state="empty" message="Author not found." />
+          <ResourceListState state="empty" message="Автор не найден." />
         ) : (
           <section className="space-y-6">
             <PluginCollectionToolbar
@@ -211,15 +211,15 @@ export function PluginAuthorPage({
             />
             {catalogQuery.isError || searchQuery.isError ? (
               <p className="text-xs text-warning-text" role="status">
-                The latest search failed. The page shows saved catalog results.
+                Последний поиск завершился ошибкой. Показаны сохранённые результаты каталога.
               </p>
             ) : null}
             {searchPending ? (
-              <ResourceListState state="loading" message="Loading plugins" />
+              <ResourceListState state="loading" message="Загрузка плагинов" />
             ) : visibleEntries.length === 0 ? (
               <ResourceListState
                 state="empty"
-                message="No plugins match these filters."
+                message="По заданным фильтрам плагины не найдены."
               />
             ) : (
               <PluginCatalogGrid

@@ -190,7 +190,7 @@ async function selectSort(
   label: string,
 ) {
   fireEvent.click(slot.getByRole("button", { name: /Sort/ }));
-  const drawer = await slot.findByRole("dialog", { name: "Sort tasks" });
+  const drawer = await slot.findByRole("dialog", { name: "Сортировать задачи" });
   fireEvent.click(
     await within(drawer).findByRole("menuitemcheckbox", { name: label }),
   );
@@ -262,14 +262,14 @@ describe("list filter/sort preference persistence", () => {
       slot.lifecycle.rerender(<Component subPath="active" />);
       expect(slot.queryByText("ALP-1")).toBeNull();
       expect(slot.queryByText("ALP-9")).toBeNull();
-      expect(slot.queryByText("Couldn't load tasks")).toBeNull();
+      expect(slot.queryByText("Не удалось загрузить задачи")).toBeNull();
 
       if (outcome === "resolve") {
         resolveTasks({ tasks: [task(PROJECT_A, 9, "in_progress")] });
         await slot.findByText("ALP-9");
       } else {
         rejectTasks(new Error("Destination request failed"));
-        await slot.findByText("Couldn't load tasks");
+        await slot.findByText("Не удалось загрузить задачи");
         expect(slot.getByText("Destination request failed")).toBeDefined();
       }
       expect(slot.queryByText("ALP-1")).toBeNull();
@@ -285,10 +285,10 @@ describe("list filter/sort preference persistence", () => {
     );
     await slot.findByText("ALP-1");
 
-    await selectSort(slot, "Priority");
+    await selectSort(slot, "Приоритет");
     await waitFor(() =>
       expect(slot.getByRole("button", { name: /Sort/ }).textContent).toContain(
-        "Priority",
+        "Приоритет",
       ),
     );
 
@@ -314,10 +314,10 @@ describe("list filter/sort preference persistence", () => {
     await remounted.findByText("ALP-3");
     expect(
       remounted.getByRole("button", { name: /Sort/ }).textContent,
-    ).toContain("Priority");
+    ).toContain("Приоритет");
     expect(
       remounted.getByRole("button", { name: /^Status/ }).textContent,
-    ).toContain("Done");
+    ).toContain("Готово");
     expect(remounted.queryByText("ALP-1")).toBeNull();
     expect(remounted.queryByText("ALP-2")).toBeNull();
     expect(remounted.getByText("ALP-3")).toBeDefined();
@@ -331,10 +331,10 @@ describe("list filter/sort preference persistence", () => {
       { rpc: baseRpc() },
     );
     await slotA.findByText("ALP-1");
-    await selectSort(slotA, "Priority");
+    await selectSort(slotA, "Приоритет");
     await waitFor(() =>
       expect(slotA.getByRole("button", { name: /Sort/ }).textContent).toContain(
-        "Priority",
+        "Приоритет",
       ),
     );
     slotA.lifecycle.unmount();
@@ -347,11 +347,11 @@ describe("list filter/sort preference persistence", () => {
     await slotB.findByText("BET-1");
     expect(
       slotB.getByRole("button", { name: /Sort/ }).textContent,
-    ).not.toContain("Priority");
-    await selectSort(slotB, "Due date");
+    ).not.toContain("Приоритет");
+    await selectSort(slotB, "Срок");
     await waitFor(() =>
       expect(slotB.getByRole("button", { name: /Sort/ }).textContent).toContain(
-        "Due date",
+        "Срок",
       ),
     );
     slotB.lifecycle.unmount();
@@ -363,11 +363,11 @@ describe("list filter/sort preference persistence", () => {
     );
     await backToA.findByText("ALP-1");
     expect(backToA.getByRole("button", { name: /Sort/ }).textContent).toContain(
-      "Priority",
+      "Приоритет",
     );
     expect(
       backToA.getByRole("button", { name: /Sort/ }).textContent,
-    ).not.toContain("Due date");
+    ).not.toContain("Срок");
   });
 
   it("remembers an explicit clear across remount", async () => {
@@ -411,7 +411,7 @@ describe("list filter/sort preference persistence", () => {
     expect(remounted.queryByRole("button", { name: /Clear/ })).toBeNull();
     expect(
       remounted.getByRole("button", { name: /Sort/ }).textContent,
-    ).toContain("Priority");
+    ).toContain("Приоритет");
     expect(remounted.getByText("ALP-2")).toBeDefined();
   });
 
@@ -421,10 +421,10 @@ describe("list filter/sort preference persistence", () => {
     });
     const slot = renderProject(PROJECT_A);
     await slot.findByText("ALP-1");
-    await selectSort(slot, "Priority");
+    await selectSort(slot, "Приоритет");
     await waitFor(() =>
       expect(slot.getByRole("button", { name: /Sort/ }).textContent).toContain(
-        "Priority",
+        "Приоритет",
       ),
     );
     expect(slot.getByText("ALP-2")).toBeDefined();
@@ -438,7 +438,7 @@ describe("list filter/sort preference persistence", () => {
       { rpc: baseRpc() },
     );
     await allSlot.findByText("ALP-1");
-    await selectSort(allSlot, "Priority");
+    await selectSort(allSlot, "Приоритет");
     allSlot.lifecycle.unmount();
 
     const activeSlot = renderSlot(
@@ -455,7 +455,7 @@ describe("list filter/sort preference persistence", () => {
     await activeSlot.findByText("ALP-9");
     expect(
       activeSlot.getByRole("button", { name: /Sort/ }).textContent,
-    ).not.toContain("Priority");
+    ).not.toContain("Приоритет");
   });
 
   it("persists priority and label filters and sends resolved label ids", async () => {
@@ -508,7 +508,7 @@ describe("list filter/sort preference persistence", () => {
     await remounted.findByRole("button", { name: /Priority/ });
     expect(
       remounted.getByRole("button", { name: /^Priority/ }).textContent,
-    ).toContain("Urgent");
+    ).toContain("Срочно");
     expect(
       remounted.getByRole("button", { name: /^Label/ }).textContent,
     ).toContain("Bug");

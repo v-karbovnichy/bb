@@ -74,7 +74,7 @@ export function PendingInteractionShell({
       type="button"
       aria-controls={contentId}
       aria-expanded={isExpanded}
-      aria-label={isExpanded ? "Hide details" : "Show details"}
+      aria-label={isExpanded ? "Скрыть подробности" : "Показать подробности"}
       onClick={handleToggle}
       className="flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
     >

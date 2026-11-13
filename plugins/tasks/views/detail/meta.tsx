@@ -155,27 +155,27 @@ export const THREAD_STATUS_META: Record<
   { label: string; dotClassName: string; textClassName: string }
 > = {
   starting: {
-    label: "Starting",
+    label: "Запускается",
     dotClassName: "bg-attention animate-pulse",
     textClassName: "text-attention",
   },
   working: {
-    label: "Working",
+    label: "В работе",
     dotClassName: "bg-success animate-pulse",
     textClassName: "text-success",
   },
   idle: {
-    label: "Idle",
+    label: "Ожидает",
     dotClassName: "bg-muted-foreground",
     textClassName: "text-muted-foreground",
   },
   completed: {
-    label: "Completed",
+    label: "Завершено",
     dotClassName: "bg-muted",
     textClassName: "text-muted-foreground",
   },
   failed: {
-    label: "Failed",
+    label: "Ошибка",
     dotClassName: "bg-destructive",
     textClassName: "text-destructive",
   },
@@ -186,22 +186,22 @@ export const PR_STATE_META: Record<
   { label: string; icon: IconName; textClassName: string }
 > = {
   open: {
-    label: "Open",
+    label: "Открыт",
     icon: "GitPullRequestArrow",
     textClassName: "text-success",
   },
   draft: {
-    label: "Draft",
+    label: "Черновик",
     icon: "GitPullRequestDraft",
     textClassName: "text-muted-foreground",
   },
   merged: {
-    label: "Merged",
+    label: "Объединён",
     icon: "GitMerge",
     textClassName: "text-pr-merged",
   },
   closed: {
-    label: "Closed",
+    label: "Закрыт",
     icon: "GitPullRequestClosed",
     textClassName: "text-destructive",
   },

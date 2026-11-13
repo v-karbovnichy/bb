@@ -51,7 +51,7 @@ export function PromptMentionPillNodeView({
   const activate = resolveLink?.(mention) ?? null;
   const presentation = describePromptMention(mention);
   const title = presentation.title;
-  const activationLabel = activate ? `Open ${title}` : undefined;
+  const activationLabel = activate ? `Открыть ${title}` : undefined;
   const handleClick = activate
     ? (event: MouseEvent<HTMLElement>) => {
         if (

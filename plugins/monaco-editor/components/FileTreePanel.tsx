@@ -95,7 +95,7 @@ export function FileTreePanel({
       y: event.clientY,
       items: [
         {
-          label: "Copy absolute path",
+          label: "Скопировать абсолютный путь",
           onSelect: () =>
             void copy(
               root === ""
@@ -103,16 +103,16 @@ export function FileTreePanel({
                 : root.includes("\\")
                   ? `${root}\\${node.path.replace(/\//g, "\\")}`
                   : `${root}/${node.path}`,
-              "Absolute path copied",
+              "Абсолютный путь скопирован",
             ),
         },
         {
-          label: "Copy relative path",
-          onSelect: () => void copy(node.path, "Relative path copied"),
+          label: "Скопировать относительный путь",
+          onSelect: () => void copy(node.path, "Относительный путь скопирован"),
         },
         {
-          label: "Copy filename",
-          onSelect: () => void copy(node.name, "Filename copied"),
+          label: "Скопировать имя файла",
+          onSelect: () => void copy(node.name, "Имя файла скопировано"),
         },
       ],
     });
@@ -170,8 +170,8 @@ export function FileTreePanel({
             if (query !== "") setQuery("");
             else onClose();
           }}
-          placeholder="Filter files…"
-          aria-label="Filter files"
+          placeholder="Фильтр файлов…"
+          aria-label="Фильтр файлов"
           spellCheck={false}
           className={cn(
             "h-6 min-w-0 flex-1 rounded-sm bg-state-hover px-2 text-sm text-foreground",
@@ -182,8 +182,8 @@ export function FileTreePanel({
         <button
           type="button"
           onClick={onClose}
-          title="Hide files"
-          aria-label="Hide files"
+          title="Скрыть файлы"
+          aria-label="Скрыть файлы"
           className={cn(
             "flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md",
             "text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground",
@@ -205,10 +205,10 @@ export function FileTreePanel({
         {error !== null ? (
           <Message tone="error">{error}</Message>
         ) : isLoading ? (
-          <Message>Loading files…</Message>
+          <Message>Загрузка файлов…</Message>
         ) : filtered.nodes.length === 0 ? (
           <Message>
-            {query.trim() === "" ? "No files" : `No files match “${query}”`}
+            {query.trim() === "" ? "Нет файлов" : `Нет файлов по запросу «${query}»`}
           </Message>
         ) : (
           <Rows
@@ -285,7 +285,7 @@ function ResizeHandle({
     <div
       ref={dividerRef}
       role="separator"
-      aria-label="Resize the file tree"
+      aria-label="Изменить высоту дерева файлов"
       aria-orientation="horizontal"
       tabIndex={0}
       onKeyDown={(event) => {

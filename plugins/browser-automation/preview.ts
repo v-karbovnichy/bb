@@ -328,7 +328,7 @@ export function createPreview(
       signal.throwIfAborted();
       if (closed)
         return Promise.reject(
-          new Error("Browser session stopped; open a new session"),
+          new Error("Сеанс браузера остановлен; откройте новый сеанс"),
         );
       touch();
       connect();
@@ -373,7 +373,7 @@ export function createPreview(
       idleTimer = null;
       disconnect();
       for (const waiter of [...waiters])
-        waiter.fail(new Error("Browser session stopped; open a new session"));
+        waiter.fail(new Error("Сеанс браузера остановлен; откройте новый сеанс"));
     },
   };
 }

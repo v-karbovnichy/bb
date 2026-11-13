@@ -145,7 +145,7 @@ posixDescribe("runMachineInstaller", () => {
       }),
     ).resolves.toEqual({
       ok: false,
-      reason: "The installer exited with code 3.",
+      reason: "Установщик завершился с кодом 3.",
     });
   });
 });
@@ -193,9 +193,9 @@ describe("keepMovedMachineConnected", () => {
     expect(harness.events).toEqual(["stop", "install", "stop", "install"]);
     expect(harness.notices).toEqual([
       {
-        detail: `bb couldn't install the background service that keeps this computer connected and up to date: Node.js 20.18.1 is too old. bb tries again the next time it opens. The installer log is ${join(dir, "install-machine-service.log")}.`,
+        detail: `bb не удалось установить фоновую службу, которая поддерживает подключение и обновление этого компьютера: Node.js 20.18.1 is too old. bb повторит попытку при следующем запуске. Журнал установщика: ${join(dir, "install-machine-service.log")}.`,
         message:
-          "This computer stays connected to Studio desktop only while bb is open",
+          "Этот компьютер остаётся подключённым к Studio desktop, только пока открыт bb",
       },
     ]);
   });

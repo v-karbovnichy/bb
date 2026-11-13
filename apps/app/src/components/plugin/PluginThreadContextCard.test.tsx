@@ -162,7 +162,7 @@ describe("thread context card", () => {
     );
     renderPane({ enabled: false });
 
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
     expect(
       screen.queryByRole("button", { name: /thread details/i }),
     ).toBeNull();
@@ -243,10 +243,10 @@ describe("thread context card", () => {
   it("toggles the pinned card from the header in a wide pane", () => {
     renderPane({ paneWidth: 1600 });
     const toggle = screen.getByRole("button", { name: "Unpin thread context" });
-    expect(screen.getByRole("group", { name: "Thread context" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Контекст чата" })).toBeTruthy();
 
     fireEvent.click(toggle);
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
     expect(
       screen
         .getByRole("button", { name: "Pin thread context" })
@@ -263,19 +263,19 @@ describe("thread context card", () => {
         component: Empty,
       })),
     });
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
     expect(screen.getByLabelText("Inset").textContent).toBe("0");
 
     fireEvent.click(screen.getByRole("button", { name: "Pin thread context" }));
     expect(
-      screen.getByRole("group", { name: "Thread context" }).textContent,
-    ).toContain("Nothing to show yet");
+      screen.getByRole("group", { name: "Контекст чата" }).textContent,
+    ).toContain("Пока нечего показать");
     expect(screen.getByLabelText("Inset").textContent).not.toBe("0");
 
     fireEvent.click(
       screen.getByRole("button", { name: "Unpin thread context" }),
     );
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
 
     act(() => {
       setPluginSlotRegistrations(
@@ -288,7 +288,7 @@ describe("thread context card", () => {
       );
     });
     expect(
-      (await screen.findByRole("group", { name: "Thread context" }))
+      (await screen.findByRole("group", { name: "Контекст чата" }))
         .textContent,
     ).toContain("Branch for thr_1");
   });
@@ -303,16 +303,16 @@ describe("thread context card", () => {
       }),
     );
     renderPane({ paneWidth: 900 });
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Thread context" }));
-    expect(screen.getByRole("group", { name: "Thread context" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Контекст чата" }));
+    expect(screen.getByRole("group", { name: "Контекст чата" })).toBeTruthy();
     expect(
       screen.getAllByTestId("section").map((node) => node.textContent),
     ).toEqual(["Core environment for thr_1", "Core children for thr_1"]);
 
     fireEvent.click(screen.getByRole("button", { name: "Open diff" }));
-    expect(screen.queryByRole("group", { name: "Thread context" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Контекст чата" })).toBeNull();
   });
 });
 

@@ -205,7 +205,7 @@ const SYSTEM_MESSAGE_FALLBACK_SEGMENTS: TimelineTitleSegment[] = [
     em: false,
     link: null,
     shimmer: false,
-    text: "System Message",
+    text: "Системное сообщение",
     truncate: true,
   }),
 ];
@@ -229,36 +229,36 @@ export function systemMessageTitleSegments(
 ): TimelineTitleSegment[] {
   switch (systemMessageKind) {
     case "ownership-assigned":
-      return threadSubjectTitleSegments(subject, "assigned to you");
+      return threadSubjectTitleSegments(subject, "назначен вам");
     case "ownership-removed":
-      return threadSubjectTitleSegments(subject, "unassigned");
+      return threadSubjectTitleSegments(subject, "снят с вас");
     case "ownership-batch":
       return subject !== null && subject.kind === "thread-batch"
-        ? [verbSegment(`Ownership changed for ${subject.count} threads`)]
+        ? [verbSegment(`Назначение изменено для ${subject.count} чатов`)]
         : SYSTEM_MESSAGE_FALLBACK_SEGMENTS;
     case "child-needs-attention":
-      return threadSubjectTitleSegments(subject, "needs attention");
+      return threadSubjectTitleSegments(subject, "требует внимания");
     case "child-completed":
-      return threadSubjectTitleSegments(subject, "finished");
+      return threadSubjectTitleSegments(subject, "завершён");
     case "child-failed":
-      return threadSubjectTitleSegments(subject, "failed");
+      return threadSubjectTitleSegments(subject, "завершился с ошибкой");
     case "child-interrupted":
-      return threadSubjectTitleSegments(subject, "was interrupted");
+      return threadSubjectTitleSegments(subject, "был прерван");
     case "child-outcome-batch":
       return subject !== null && subject.kind === "thread-batch"
-        ? [verbSegment(`${subject.count} threads updated`)]
+        ? [verbSegment(`Обновлено чатов: ${subject.count}`)]
         : SYSTEM_MESSAGE_FALLBACK_SEGMENTS;
     case "tool-result-delivered":
       return subject !== null && subject.kind === "tool-call"
         ? [
-            verbSegment("Delivered"),
+            verbSegment("Доставлено"),
             subjectSegment(subject.toolName, null),
-            verbSegment("result"),
+            verbSegment("результат"),
           ]
         : SYSTEM_MESSAGE_FALLBACK_SEGMENTS;
     case "environment-directory-updated":
       return subject !== null && subject.kind === "directory"
-        ? [verbSegment("Continued in"), subjectSegment(subject.path, null)]
+        ? [verbSegment("Продолжено в"), subjectSegment(subject.path, null)]
         : SYSTEM_MESSAGE_FALLBACK_SEGMENTS;
     case "unlabeled":
       return SYSTEM_MESSAGE_FALLBACK_SEGMENTS;
@@ -274,7 +274,7 @@ export function generatedConversationTitle({
   systemMessageSubject,
 }: GeneratedConversationTitleArgs): TimelineTitle {
   const agentLeadIn =
-    sourceKind === "agent-recipient" ? "Sent to" : "Message from";
+    sourceKind === "agent-recipient" ? "Отправлено для" : "Сообщение от";
   const sideChatAction =
     sourceIsPluginSideChat && sourceThreadId !== null
       ? ({ kind: "open-plugin-side-chat", threadId: sourceThreadId } as const)
@@ -302,7 +302,7 @@ export function generatedConversationTitle({
           }),
         ]
       : sourceKind === "automation"
-        ? [verbSegment("Automation")]
+        ? [verbSegment("Автоматизация")]
         : systemMessageTitleSegments(systemMessageKind, systemMessageSubject);
 
   return {
@@ -322,11 +322,11 @@ function generatedConversationEmptyText(
   switch (sourceKind) {
     case "agent":
     case "agent-recipient":
-      return "Sent an agent message";
+      return "Отправлено сообщение агенту";
     case "automation":
-      return "Ran an automation";
+      return "Запущена автоматизация";
     case "system":
-      return "Sent a BB system message";
+      return "Отправлено системное сообщение BB";
   }
 }
 
@@ -395,7 +395,7 @@ function GeneratedAgentSourceTitle({
   const sourceDisplayName = useThreadTitleDisplayText(sourceName);
   const sourceTitleAction =
     title.action && onTitleAction ? onTitleAction(title.action) : null;
-  const leadIn = title.segments[0]?.text ?? "Message from";
+  const leadIn = title.segments[0]?.text ?? "Сообщение от";
 
   return (
     <span
@@ -450,7 +450,7 @@ function GeneratedAutomationTitle({
   return (
     <span className="inline-flex min-w-0 max-w-full items-center gap-1 whitespace-nowrap text-sm leading-5">
       {automationLink === null ? (
-        <span className="shrink-0">Automation</span>
+        <span className="shrink-0">Автоматизация</span>
       ) : (
         <RouteAnchor
           href={generatePath(AUTOMATION_DETAIL_ROUTE_PATH, {
@@ -461,7 +461,7 @@ function GeneratedAutomationTitle({
           onClick={stopRowToggle}
           onKeyDown={stopRowToggleKey}
         >
-          Automation
+          Автоматизация
         </RouteAnchor>
       )}
       <span aria-hidden="true" className="shrink-0 text-subtle-foreground">

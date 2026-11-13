@@ -43,7 +43,9 @@ describe("RootComposeRightPanelToggle", () => {
     expect(preload).not.toHaveBeenCalled();
     expect(preloadThreadSecondaryPanel).not.toHaveBeenCalled();
 
-    const button = screen.getByRole("button", { name: "Show right panel" });
+    const button = screen.getByRole("button", {
+      name: "Показать правую панель",
+    });
     fireEvent.pointerEnter(button);
     fireEvent.pointerDown(button);
     fireEvent.focus(button);

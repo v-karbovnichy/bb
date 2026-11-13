@@ -12,21 +12,21 @@ const customInstructionsSchema = z
   .string()
   .max(
     MAX_CUSTOM_INSTRUCTIONS_LENGTH,
-    `Custom instructions must be at most ${MAX_CUSTOM_INSTRUCTIONS_LENGTH} characters`,
+    `Пользовательские инструкции не могут превышать ${MAX_CUSTOM_INSTRUCTIONS_LENGTH} символов`,
   );
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 export default async function plugin(bb: BbPluginApi) {
   const settings = bb.settings.define({
     instructions: {
       type: "string",
-      label: "Custom instructions",
+      label: "Пользовательские инструкции",
       description:
-        "Give agents extra instructions and context for tasks on this bb host.",
+        "Добавьте инструкции и контекст для задач агентов на этом сервере bb.",
       experimental_multiline: true,
       experimental_schema: customInstructionsSchema,
       default: "",
@@ -54,12 +54,12 @@ export default async function plugin(bb: BbPluginApi) {
   bb.cli.register(
     defineCli({
       name: "instructions",
-      summary: "Read and update the custom instructions injected into agents",
+      summary: "Просмотреть и изменить пользовательские инструкции для агентов",
       description:
-        "The text is appended to the instructions bb already gives every agent on this host.",
+        "Этот текст добавляется к инструкциям, которые bb уже передаёт каждому агенту на этом сервере.",
       commands: {
         get: cliCommand({
-          summary: "Print the current custom instructions",
+          summary: "Вывести текущие пользовательские инструкции",
           options: { json: JSON_OPTION },
           run: (input) => ({
             exitCode: 0,
@@ -69,11 +69,11 @@ export default async function plugin(bb: BbPluginApi) {
           }),
         }),
         set: cliCommand({
-          summary: "Replace the custom instructions",
+          summary: "Заменить пользовательские инструкции",
           positionals: [
             {
               name: "text",
-              description: `Replacement instructions, joined with single spaces; at most ${MAX_CUSTOM_INSTRUCTIONS_LENGTH} characters`,
+              description: `Новые инструкции, соединённые одиночными пробелами; не более ${MAX_CUSTOM_INSTRUCTIONS_LENGTH} символов`,
               required: true,
               variadic: true,
             },
@@ -85,7 +85,7 @@ export default async function plugin(bb: BbPluginApi) {
             );
             if (!parsed.success) {
               throw new PluginCliError(
-                parsed.error.issues[0]?.message ?? "invalid instructions",
+                parsed.error.issues[0]?.message ?? "Недопустимые инструкции",
                 { code: "invalid_instructions" },
               );
             }
@@ -97,12 +97,12 @@ export default async function plugin(bb: BbPluginApi) {
               exitCode: 0,
               stdout: input.options.json
                 ? JSON.stringify({ instructions: customInstructions })
-                : "Custom instructions updated",
+                : "Пользовательские инструкции обновлены",
             };
           },
         }),
         clear: cliCommand({
-          summary: "Clear the custom instructions",
+          summary: "Очистить пользовательские инструкции",
           options: { json: JSON_OPTION },
           async run(input) {
             const next = await settings.experimental_set({ instructions: "" });
@@ -111,7 +111,7 @@ export default async function plugin(bb: BbPluginApi) {
               exitCode: 0,
               stdout: input.options.json
                 ? JSON.stringify({ instructions: "" })
-                : "Custom instructions cleared",
+                : "Пользовательские инструкции очищены",
             };
           },
         }),

@@ -110,14 +110,14 @@ describe("AiServicesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<AiServicesSettingsSection />, { wrapper });
 
-    const titles = await screen.findByRole("button", { name: "Thread titles" });
-    await vi.waitFor(() => expect(titles.textContent).toContain("Automatic"));
+    const titles = await screen.findByRole("button", { name: "Названия чатов" });
+    await vi.waitFor(() => expect(titles.textContent).toContain("Автоматически"));
     expect(
-      screen.getByRole("button", { name: "Commit messages" }).textContent,
+      screen.getByRole("button", { name: "Сообщения коммитов" }).textContent,
     ).toContain("OpenRouter");
     expect(
-      screen.getByRole("button", { name: "Voice input" }).textContent,
-    ).toContain("Unavailable plugin");
+      screen.getByRole("button", { name: "Голосовой ввод" }).textContent,
+    ).toContain("Недоступный плагин");
     expect(screen.getByText(/Using bb cloud\./u)).toBeTruthy();
   });
 
@@ -126,9 +126,9 @@ describe("AiServicesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<AiServicesSettingsSection />, { wrapper });
 
-    const trigger = await screen.findByRole("button", { name: "Voice input" });
+    const trigger = await screen.findByRole("button", { name: "Голосовой ввод" });
     await vi.waitFor(() =>
-      expect(trigger.textContent).toContain("Unavailable plugin"),
+      expect(trigger.textContent).toContain("Недоступный плагин"),
     );
     fireEvent.pointerDown(trigger, { button: 0 });
     expect(
@@ -136,7 +136,7 @@ describe("AiServicesSettingsSection", () => {
     ).toBeTruthy();
     expect(screen.queryByRole("menuitem", { name: /^bb cloud/u })).toBeNull();
     expect(screen.queryByRole("menuitem", { name: /^OpenRouter/u })).toBeNull();
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Off/u }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Выключено/u }));
 
     await vi.waitFor(() => {
       const put = requests.find(
@@ -147,7 +147,7 @@ describe("AiServicesSettingsSection", () => {
         selection: { mode: "off" },
       });
     });
-    await vi.waitFor(() => expect(trigger.textContent).toContain("Off"));
+    await vi.waitFor(() => expect(trigger.textContent).toContain("Выключено"));
   });
 
   it("runs a test and shows the reply", async () => {
@@ -156,7 +156,7 @@ describe("AiServicesSettingsSection", () => {
     render(<AiServicesSettingsSection />, { wrapper });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Test thread titles" }),
+      await screen.findByRole("button", { name: "Проверить названия чатов" }),
     );
     expect(
       await screen.findByText(
@@ -177,7 +177,7 @@ describe("AiServicesSettingsSection", () => {
     render(<AiServicesSettingsSection />, { wrapper });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Test commit messages" }),
+      await screen.findByRole("button", { name: "Проверить сообщения коммитов" }),
     );
     expect(
       await screen.findByText(
@@ -197,13 +197,13 @@ describe("AiServicesSettingsSection", () => {
     render(<AiServicesSettingsSection />, { wrapper });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Test thread titles" }),
+      await screen.findByRole("button", { name: "Проверить названия чатов" }),
     );
     expect(
       await screen.findByText(/Test failed: .*The sample prompt is empty/u),
     ).toBeTruthy();
     expect(
-      screen.getByRole("button", { name: "Test thread titles" }).textContent,
-    ).toBe("Test");
+      screen.getByRole("button", { name: "Проверить названия чатов" }).textContent,
+    ).toBe("Проверить");
   });
 });

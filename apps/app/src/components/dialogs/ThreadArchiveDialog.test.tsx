@@ -36,16 +36,16 @@ describe("ThreadArchiveDialog", () => {
   it("announces the cascade with singular and plural child counts", () => {
     const { view } = renderDialog({ childThreadCount: 1 });
     expect(screen.getByRole("dialog").textContent).toContain(
-      "Its 1 child thread will be archived too.",
+      "1 дочерний чат тоже будет архивирован.",
     );
-    expect(screen.getByText("1 child thread").className).toContain(
+    expect(screen.getByText("1 дочерний чат").className).toContain(
       "font-semibold",
     );
 
     view.unmount();
     renderDialog({ childThreadCount: 3 });
     expect(screen.getByRole("dialog").textContent).toContain(
-      "Its 3 child threads will be archived too.",
+      "3 дочерних чата тоже будут архивированы.",
     );
   });
 
@@ -53,25 +53,25 @@ describe("ThreadArchiveDialog", () => {
     renderDialog({ childThreadCount: 3 });
 
     expect(
-      screen.getByRole("heading", { name: "Archive thread?" }),
+      screen.getByRole("heading", { name: "Архивировать чат?" }),
     ).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Archive" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Архивировать" })).toBeTruthy();
   });
 
   it("warns when the archive will stop work beyond the selected idle thread", () => {
     renderDialog({ stopsRunningWork: true });
-    expect(screen.getByText(/This will stop current work\./)).toBeTruthy();
+    expect(screen.getByText(/Текущая задача будет остановлена\./)).toBeTruthy();
   });
 
   it("omits the active-work warning for an idle thread", () => {
     renderDialog();
-    expect(screen.queryByText(/This will stop current work\./)).toBeNull();
+    expect(screen.queryByText(/Текущая задача будет остановлена\./)).toBeNull();
   });
 
   it("focuses the archive action when opened for keyboard confirmation", () => {
     renderDialog();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Archive" }),
+      screen.getByRole("button", { name: "Архивировать" }),
     );
   });
 
@@ -84,7 +84,7 @@ describe("ThreadArchiveDialog", () => {
 
   it("ignores confirmation while archiving is pending", () => {
     const { onArchive } = renderDialog({ pending: true });
-    fireEvent.click(screen.getByRole("button", { name: "Archive" }));
+    fireEvent.click(screen.getByRole("button", { name: "Архивировать" }));
     expect(onArchive).not.toHaveBeenCalled();
   });
 
@@ -93,11 +93,11 @@ describe("ThreadArchiveDialog", () => {
       childThreadCount: 2,
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
     expect(onArchive).not.toHaveBeenCalled();
     expect(onOpenChange).toHaveBeenCalledWith(false);
 
-    fireEvent.click(screen.getByRole("button", { name: "Archive" }));
+    fireEvent.click(screen.getByRole("button", { name: "Архивировать" }));
     expect(onArchive).toHaveBeenCalledWith({
       threads: [thread],
       childThreadCount: 2,

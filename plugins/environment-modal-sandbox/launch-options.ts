@@ -98,7 +98,7 @@ export function modalLaunchOptions(
     const [standard, ...extraImages] = parsed.images;
     if (standard?.name !== "Default" || standard.source !== "dockerfile") {
       throw new Error(
-        'The first image must be the bundled "Default" Dockerfile.',
+        'Первым должен быть встроенный образ «Default» с Dockerfile.',
       );
     }
     requireUniqueNames("Preset", parsed.presets);

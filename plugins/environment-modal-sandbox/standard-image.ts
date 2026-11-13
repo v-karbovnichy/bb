@@ -28,7 +28,7 @@ export async function readStandardImage(override?: string) {
     lines.slice(1).some((line) => !/^(RUN|ENV|WORKDIR|USER) /.test(line))
   )
     throw new Error(
-      "The Modal Dockerfile requires one FROM followed by RUN, ENV, WORKDIR or USER instructions",
+      "Для Dockerfile Modal требуется одна инструкция FROM, за которой следуют RUN, ENV, WORKDIR или USER",
     );
   return {
     reference: from[1]!,

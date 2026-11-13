@@ -95,7 +95,7 @@ export function useSkillFiles(projectId: string, skill: SkillSummary | null) {
 export function useDeleteSkill(projectId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    meta: { errorMessage: "Failed to delete skill." },
+    meta: { errorMessage: "Не удалось удалить навык." },
     mutationFn: (body: DeleteSkillRequest) =>
       sdk.skills.remove({ projectId, ...body }),
     onSuccess: () => {

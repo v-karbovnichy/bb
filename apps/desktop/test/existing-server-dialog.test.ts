@@ -20,10 +20,10 @@ const DETAILS = {
 
 describe("formatStartedAt", () => {
   it("describes how long ago bb started", () => {
-    expect(formatStartedAt("2026-08-03T11:59:30.000Z", NOW)).toBe("just now");
-    expect(formatStartedAt("2026-08-03T11:30:00.000Z", NOW)).toBe("30 min ago");
-    expect(formatStartedAt("2026-08-03T04:00:00.000Z", NOW)).toBe("8 h ago");
-    expect(formatStartedAt("2026-07-31T12:00:00.000Z", NOW)).toBe("3 d ago");
+    expect(formatStartedAt("2026-08-03T11:59:30.000Z", NOW)).toBe("только что");
+    expect(formatStartedAt("2026-08-03T11:30:00.000Z", NOW)).toBe("30 мин назад");
+    expect(formatStartedAt("2026-08-03T04:00:00.000Z", NOW)).toBe("8 ч назад");
+    expect(formatStartedAt("2026-07-31T12:00:00.000Z", NOW)).toBe("3 дн назад");
   });
 
   it("falls back to the raw value it cannot parse", () => {
@@ -33,8 +33,8 @@ describe("formatStartedAt", () => {
 
 describe("formatSurface", () => {
   it("names how bb was started", () => {
-    expect(formatSurface("desktop")).toBe("the bb desktop app");
-    expect(formatSurface("web")).toBe("a terminal");
+    expect(formatSurface("desktop")).toBe("приложение bb");
+    expect(formatSurface("web")).toBe("терминал");
   });
 });
 
@@ -49,9 +49,9 @@ describe("renderExistingServerDialogHtml", () => {
     for (const choice of EXISTING_SERVER_DIALOG_CHOICES) {
       expect(html).toContain(`data-choice="${choice}"`);
     }
-    expect(html).toContain(">Quit this bb<");
-    expect(html).toContain(">Quit other bb<");
-    expect(html).toContain(">Connect<");
+    expect(html).toContain(">Закрыть это приложение bb<");
+    expect(html).toContain(">Остановить другой bb<");
+    expect(html).toContain(">Подключиться<");
   });
 
   it("describes the running bb", () => {
@@ -64,8 +64,8 @@ describe("renderExistingServerDialogHtml", () => {
     expect(html).toContain("http://127.0.0.1:38886");
     expect(html).toContain("/Users/example/.bb");
     expect(html).toContain("0.34.0");
-    expect(html).toContain("30 min ago by a terminal (pid 4242)");
-    expect(html).toContain(`bb is already running on ${BUILTIN_SERVER_NAME}`);
+    expect(html).toContain("30 мин назад через терминал (pid 4242)");
+    expect(html).toContain(`bb уже запущен на ${BUILTIN_SERVER_NAME}`);
   });
 
   it("hides the stop option for a bb that cannot be identified", () => {

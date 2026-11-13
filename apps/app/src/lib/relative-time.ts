@@ -7,6 +7,7 @@ const MINUTE_MS = 60 * 1000;
 const HOUR_MS = 60 * MINUTE_MS;
 const DAY_MS = 24 * HOUR_MS;
 const WEEK_MS = 7 * DAY_MS;
+const RELATIVE_FORMATTER = new Intl.RelativeTimeFormat("ru", { style: "short" });
 
 export function formatRelativeTime({
   timestamp,
@@ -14,25 +15,25 @@ export function formatRelativeTime({
 }: FormatRelativeTimeArgs): string {
   const diffMs = now - timestamp;
   if (diffMs < MINUTE_MS) {
-    return "just now";
+    return "только что";
   }
   if (diffMs < HOUR_MS) {
-    return `${Math.floor(diffMs / MINUTE_MS)}m ago`;
+    return RELATIVE_FORMATTER.format(-Math.floor(diffMs / MINUTE_MS), "minute");
   }
   if (diffMs < DAY_MS) {
-    return `${Math.floor(diffMs / HOUR_MS)}h ago`;
+    return RELATIVE_FORMATTER.format(-Math.floor(diffMs / HOUR_MS), "hour");
   }
   const days = Math.floor(diffMs / DAY_MS);
   if (days === 1) {
-    return "Yesterday";
+    return "Вчера";
   }
   if (diffMs < WEEK_MS) {
-    return `${days}d ago`;
+    return RELATIVE_FORMATTER.format(-days, "day");
   }
   if (diffMs < 5 * WEEK_MS) {
-    return `${Math.floor(diffMs / WEEK_MS)}w ago`;
+    return RELATIVE_FORMATTER.format(-Math.floor(diffMs / WEEK_MS), "week");
   }
-  return new Date(timestamp).toLocaleDateString(undefined, {
+  return new Date(timestamp).toLocaleDateString("ru", {
     month: "short",
     day: "numeric",
   });
@@ -48,7 +49,7 @@ export function formatScheduledTime({
   now,
 }: FormatScheduledTimeArgs): string {
   const target = new Date(timestamp);
-  const clock = target.toLocaleTimeString(undefined, {
+  const clock = target.toLocaleTimeString("ru", {
     hour: "numeric",
     minute: "2-digit",
   });
@@ -63,9 +64,9 @@ export function formatScheduledTime({
     return clock;
   }
   if (daysAhead === 1) {
-    return `Tomorrow ${clock}`;
+    return `Завтра ${clock}`;
   }
-  const date = target.toLocaleDateString(undefined, {
+  const date = target.toLocaleDateString("ru", {
     month: "short",
     day: "numeric",
   });

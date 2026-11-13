@@ -80,7 +80,7 @@ function renderDialog() {
 }
 
 function startButton(): HTMLElement {
-  return screen.getByRole("button", { name: "Stop all and move" });
+  return screen.getByRole("button", { name: "Остановить всё и перенести" });
 }
 
 afterEach(() => {
@@ -114,21 +114,21 @@ describe("MoveServerDialog", () => {
     const { onOpenChange } = renderDialog();
 
     expect(
-      await screen.findByRole("heading", { name: "Move the server to desk" }),
+      await screen.findByRole("heading", { name: "Перенести сервер на desk" }),
     ).toBeDefined();
     const warnings = await screen.findByRole("region", {
-      name: "Before you move",
+      name: "Перед переносом",
     });
     expect(within(warnings).getByText("2 turns are running")).toBeDefined();
-    const info = screen.getByRole("region", { name: "Good to know" });
+    const info = screen.getByRole("region", { name: "Полезно знать" });
     expect(within(info).getByText("desk uses Europe/Berlin")).toBeDefined();
     expect(
       within(info).getByText("Core plugin schedules shift by 9 hours."),
     ).toBeDefined();
-    expect(screen.queryByRole("region", { name: "Fix before moving" })).toBe(
+    expect(screen.queryByRole("region", { name: "Исправьте перед переносом" })).toBe(
       null,
     );
-    expect(screen.queryByLabelText("New server address")).toBeNull();
+    expect(screen.queryByLabelText("Адрес нового сервера")).toBeNull();
     expect(vi.mocked(sdk.experimental_server.checkMove)).toHaveBeenCalledTimes(
       1,
     );
@@ -179,16 +179,16 @@ describe("MoveServerDialog", () => {
     );
     renderDialog();
 
-    const address = await screen.findByLabelText("New server address");
+    const address = await screen.findByLabelText("Адрес нового сервера");
     expect(
-      await screen.findByRole("region", { name: "Fix before moving" }),
+      await screen.findByRole("region", { name: "Исправьте перед переносом" }),
     ).toBeDefined();
     expect(startButton().hasAttribute("disabled")).toBe(true);
 
     fireEvent.change(address, {
       target: { value: "  https://desk.example.com  " },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Check address" }));
+    fireEvent.click(screen.getByRole("button", { name: "Проверить адрес" }));
 
     await waitFor(() => {
       expect(
@@ -201,7 +201,7 @@ describe("MoveServerDialog", () => {
     await waitFor(() => {
       expect(startButton().hasAttribute("disabled")).toBe(false);
     });
-    expect(screen.queryByRole("region", { name: "Fix before moving" })).toBe(
+    expect(screen.queryByRole("region", { name: "Исправьте перед переносом" })).toBe(
       null,
     );
 
@@ -229,7 +229,7 @@ describe("MoveServerDialog", () => {
     });
   });
 
-  it("keeps Stop all and move disabled while any blocker remains, even if canMove disagrees", async () => {
+  it("keeps Остановить всё и перенести disabled while any blocker remains, even if canMove disagrees", async () => {
     vi.mocked(sdk.experimental_server.checkMove)
       .mockResolvedValueOnce(
         checkResponse({
@@ -254,7 +254,7 @@ describe("MoveServerDialog", () => {
     renderDialog();
 
     const blockers = await screen.findByRole("region", {
-      name: "Fix before moving",
+      name: "Исправьте перед переносом",
     });
     expect(
       within(blockers).getByText("Port 38886 is in use on desk"),
@@ -263,7 +263,7 @@ describe("MoveServerDialog", () => {
     fireEvent.click(startButton());
     expect(vi.mocked(sdk.experimental_server.startMove)).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Check again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Проверить повторно" }));
 
     await waitFor(() => {
       expect(startButton().hasAttribute("disabled")).toBe(false);
@@ -341,14 +341,14 @@ describe("MoveServerDialog", () => {
     );
     expect(startButton().hasAttribute("disabled")).toBe(true);
 
-    fireEvent.click(screen.getByRole("button", { name: "Check again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Проверить повторно" }));
 
     await waitFor(() => {
       expect(startButton().hasAttribute("disabled")).toBe(false);
     });
     expect(screen.queryByRole("alert")).toBeNull();
     expect(
-      screen.getByText("Nothing needs attention before the move."),
+      screen.getByText("Перед переносом ничего исправлять не нужно."),
     ).toBeDefined();
   });
 
@@ -387,7 +387,7 @@ describe("MoveServerDialog", () => {
     expect((await screen.findByRole("alert")).textContent).toBe(
       "The move is blocked",
     );
-    const blockers = screen.getByRole("region", { name: "Fix before moving" });
+    const blockers = screen.getByRole("region", { name: "Исправьте перед переносом" });
     expect(within(blockers).getByText("desk is suspending")).toBeDefined();
     expect(startButton().hasAttribute("disabled")).toBe(true);
     expect(onOpenChange).not.toHaveBeenCalled();

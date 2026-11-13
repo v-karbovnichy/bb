@@ -125,7 +125,7 @@ export function PluginDetailRow({
               className="mt-2 rounded-sm text-xs font-medium text-subtle-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               onClick={() => setExpanded((current) => !current)}
             >
-              {expanded ? "Show less" : "Show full description"}
+              {expanded ? "Свернуть" : "Показать полное описание"}
             </button>
           ) : null}
         </td>

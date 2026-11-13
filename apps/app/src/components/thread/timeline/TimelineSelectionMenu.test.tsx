@@ -85,7 +85,7 @@ describe("TimelineSelectionMenu", () => {
     mockLiveSelection(new DOMRect(10, 40, 100, 20));
 
     fireEvent.scroll(screen.getByTestId("scroller"));
-    fireEvent.click(screen.getByRole("button", { name: "Add to chat" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить в чат" }));
 
     expect(onAddToChat).toHaveBeenCalledWith("selected text");
   });
@@ -137,7 +137,7 @@ describe("TimelineSelectionMenu", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Add to chat" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Добавить в чат" })).toBeTruthy();
     expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
   });
 
@@ -219,7 +219,7 @@ describe("TimelineSelectionMenu", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Add to chat" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Добавить в чат" })).toBeTruthy();
     expect(document.body.querySelector('[data-side="top"]')).toBeTruthy();
   });
 
@@ -236,7 +236,7 @@ describe("TimelineSelectionMenu", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Add to chat" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Добавить в чат" })).toBeTruthy();
     expect(document.body.querySelector('[data-side="bottom"]')).toBeTruthy();
   });
 
@@ -251,7 +251,7 @@ describe("TimelineSelectionMenu", () => {
       />,
     );
 
-    const button = screen.getByRole("button", { name: "Add to chat" });
+    const button = screen.getByRole("button", { name: "Добавить в чат" });
     fireEvent.pointerDown(button, { pointerType: "touch" });
     fireEvent.pointerUp(button, { pointerType: "touch" });
     fireEvent.click(button);
@@ -287,7 +287,7 @@ describe("TimelineSelectionMenu", () => {
     }
 
     render(<ComposerFocusHandoff />);
-    const action = screen.getByRole("button", { name: "Add to chat" });
+    const action = screen.getByRole("button", { name: "Добавить в чат" });
     let focusedWhenGestureEnded: Element | null = null;
     const recordFocus = () => {
       focusedWhenGestureEnded = document.activeElement;

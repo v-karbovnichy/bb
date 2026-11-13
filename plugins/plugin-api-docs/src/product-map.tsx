@@ -65,7 +65,7 @@ const MOBILE_SLIDES: GuideSlide[] = DESKTOP_SLIDES.flatMap((group) => {
       {
         ...group,
         blurb:
-          "Plugins can replace the prompt box, or add banners, actions, providers, and rich text to it.",
+          "Плагины могут заменять поле ввода или добавлять в него баннеры, действия, провайдеров и форматированный текст.",
       },
     ];
   }
@@ -73,9 +73,9 @@ const MOBILE_SLIDES: GuideSlide[] = DESKTOP_SLIDES.flatMap((group) => {
     return [
       {
         ...group,
-        title: "Sidebar",
+        title: "Боковая панель",
         blurb:
-          "Plugins can add navigation, thread status, and footer controls.",
+          "Плагины могут добавлять навигацию, состояние чата и элементы управления внизу панели.",
         appShellScene: "navigation" as const,
         surfaces: group.surfaces.filter((surface) =>
           [
@@ -90,9 +90,9 @@ const MOBILE_SLIDES: GuideSlide[] = DESKTOP_SLIDES.flatMap((group) => {
       {
         ...group,
         id: "app-shell-thread",
-        title: "Thread",
+        title: "Чат",
         blurb:
-          "Plugins can extend the thread header, conversation, and composer.",
+          "Плагины могут дополнять заголовок чата, переписку и поле ввода.",
         appShellScene: "conversation" as const,
         surfaces: group.surfaces.filter((surface) =>
           [
@@ -111,8 +111,8 @@ const MOBILE_SLIDES: GuideSlide[] = DESKTOP_SLIDES.flatMap((group) => {
       {
         ...group,
         id: "app-shell-panel",
-        title: "Side panel",
-        blurb: "Explore plugin controls and content in the side panel’s tabs.",
+        title: "Боковая панель чата",
+        blurb: "Изучите элементы управления и содержимое плагинов на вкладках боковой панели.",
         appShellScene: "panel" as const,
         surfaces: group.surfaces.filter((surface) =>
           [
@@ -137,8 +137,8 @@ const MOBILE_SLIDES: GuideSlide[] = DESKTOP_SLIDES.flatMap((group) => {
       {
         ...group,
         id: "home-actions",
-        title: "New thread actions",
-        blurb: "Plugins can add an action to the new-thread panel launcher.",
+        title: "Действия нового чата",
+        blurb: "Плагины могут добавлять действия в меню создания чата.",
         homePanel: true,
         surfaces: group.surfaces.filter(
           (surface) => surface.id === "new-thread-panel",
@@ -172,7 +172,7 @@ function PlatformCard({ surface }: { surface: PluginSurface }) {
   return (
     <a
       href={`#surface-${surface.id}`}
-      aria-label={`${surface.title} — jump to details`}
+      aria-label={`${surface.title} — перейти к подробностям`}
       onClick={
         onSelect
           ? (event) => {
@@ -657,7 +657,7 @@ function PanButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      aria-label={`${direction === "previous" ? "Previous" : "Next"} surface`}
+      aria-label={direction === "previous" ? "Предыдущий раздел" : "Следующий раздел"}
       className={cn(
         "inline-flex size-10 @2xl/guide:size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground",
         FOCUS_RING_CLASS,
@@ -960,7 +960,7 @@ export function ProductMap({
         <div data-map-column className="mx-auto w-full max-w-[100rem]">
           <section
             aria-roledescription="carousel"
-            aria-label="bb surfaces a plugin can extend"
+            aria-label="Разделы bb, которые может расширять плагин"
             onKeyDown={onKeyDown}
             className="mt-2"
           >
@@ -1083,7 +1083,7 @@ export function ProductMap({
               <div
                 data-guide-display-mode
                 role="group"
-                aria-label="Preview layout"
+                aria-label="Режим предпросмотра"
                 className="flex shrink-0 items-center gap-0.5 border-l border-border-hairline pl-2"
               >
                 {(["mobile", "desktop"] as const).map((mode) => (
@@ -1091,14 +1091,14 @@ export function ProductMap({
                     key={mode}
                     type="button"
                     aria-label={
-                      mode === "mobile" ? "Mobile layout" : "Desktop layout"
+                      mode === "mobile" ? "Мобильный вид" : "Вид для компьютера"
                     }
                     title={
                       mode === "mobile"
-                        ? "Mobile layout"
+                        ? "Мобильный вид"
                         : desktopLocked
-                          ? "Desktop layout is available on wider screens"
-                          : "Desktop layout"
+                          ? "Вид для компьютера доступен на широком экране"
+                          : "Вид для компьютера"
                     }
                     aria-pressed={(mobile ? "mobile" : "desktop") === mode}
                     disabled={mode === "desktop" && desktopLocked}

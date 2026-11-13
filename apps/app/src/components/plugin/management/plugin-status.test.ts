@@ -67,7 +67,7 @@ describe("pluginRowSignals", () => {
       status: {
         kind: "status",
         icon: "AlertTriangle",
-        label: "Needs attention",
+        label: "Требует внимания",
         tone: "warning",
         detail:
           "The cached checkout does not prove that this ref was a branch.",
@@ -94,7 +94,7 @@ describe("pluginRowSignals", () => {
       status: {
         kind: "status",
         icon: "RotateCcw",
-        label: "Update failed",
+        label: "Ошибка обновления",
         tone: "error",
         detail: "boom",
       },
@@ -103,11 +103,11 @@ describe("pluginRowSignals", () => {
   });
 
   it.each([
-    ["error", "CircleX", "Failed", "error"],
-    ["incompatible", "AlertCircle", "Incompatible", "error"],
-    ["missing", "FileQuestion", "Missing", "error"],
-    ["needs-configuration", "Settings", "Needs configuration", "warning"],
-    ["degraded", "AlertTriangle", "Degraded", "warning"],
+    ["error", "CircleX", "Ошибка", "error"],
+    ["incompatible", "AlertCircle", "Несовместим", "error"],
+    ["missing", "FileQuestion", "Отсутствует", "error"],
+    ["needs-configuration", "Settings", "Требует настройки", "warning"],
+    ["degraded", "AlertTriangle", "Работает с ограничениями", "warning"],
   ] as const)(
     "names the %s runtime status instead of collapsing it into attention",
     (status, icon, label, tone) => {
@@ -147,7 +147,7 @@ describe("pluginRowSignals", () => {
         }),
       ),
     ).toMatchObject({
-      status: { kind: "status", label: "Update failed" },
+      status: { kind: "status", label: "Ошибка обновления" },
       update: { kind: "update", version: "2.1.0" },
     });
   });
@@ -163,9 +163,9 @@ describe("pluginRowSignals", () => {
       status: {
         kind: "status",
         icon: "RotateCcw",
-        label: "Update failed",
+        label: "Ошибка обновления",
         tone: "error",
-        detail: "Update to 1.7.0 failed and was rolled back.",
+        detail: "Не удалось обновить до 1.7.0; предыдущая версия восстановлена.",
       },
       update: null,
     });
@@ -188,16 +188,16 @@ describe("pluginRuntimeStatusPresentation", () => {
         plugin({}, { status: "error", source: "path:/plugins/linear" }),
       ),
     ).toMatchObject({
-      label: "Failed",
-      condition: "The plugin couldn't start.",
-      recovery: "Fix the plugin, then reload.",
+      label: "Ошибка",
+      condition: "Не удалось запустить плагин.",
+      recovery: "Исправьте плагин и перезагрузите.",
     });
     expect(
       pluginRuntimeStatusPresentation(plugin({}, { status: "error" })),
     ).toMatchObject({
-      label: "Failed",
-      condition: "The plugin couldn't start.",
-      recovery: "Try reloading it.",
+      label: "Ошибка",
+      condition: "Не удалось запустить плагин.",
+      recovery: "Попробуйте перезагрузить.",
     });
   });
 
@@ -214,12 +214,12 @@ describe("pluginRuntimeStatusPresentation", () => {
         ),
       ),
     ).toMatchObject({
-      recovery: "Update or reinstall bb.",
+      recovery: "Обновите или переустановите bb.",
     });
     expect(
       pluginRuntimeStatusPresentation(plugin({}, { status: "missing" })),
     ).toMatchObject({
-      recovery: "Reinstall from its source.",
+      recovery: "Переустановите из источника.",
     });
   });
 
@@ -229,8 +229,8 @@ describe("pluginRuntimeStatusPresentation", () => {
         plugin({}, { status: "needs-configuration", hasSettings: true }),
       ),
     ).toMatchObject({
-      label: "Needs configuration",
-      condition: "Complete the required settings.",
+      label: "Требует настройки",
+      condition: "Завершите обязательную настройку.",
       recovery: "",
     });
   });
@@ -245,7 +245,7 @@ describe("pluginRuntimeStatusPresentation", () => {
           },
         ),
       ),
-    ).toMatchObject({ recovery: "Restore the folder, then reload." });
+    ).toMatchObject({ recovery: "Восстановите папку и перезагрузите." });
   });
 
   it("directs configured path failures to the path instead of reinstalling", () => {
@@ -261,8 +261,8 @@ describe("pluginRuntimeStatusPresentation", () => {
         ),
       ),
     ).toMatchObject({
-      condition: "Configured folder unavailable.",
-      recovery: "Check the path, then reload.",
+      condition: "Настроенная папка недоступна.",
+      recovery: "Проверьте путь и перезагрузите.",
     });
   });
 
@@ -273,7 +273,7 @@ describe("pluginRuntimeStatusPresentation", () => {
           {},
           {
             status: "running",
-            statusDetail: "Reload failed; previous instance retained",
+            statusDetail: "Перезагрузить failed; previous instance retained",
           },
         ),
       ),

@@ -55,14 +55,14 @@ function backgroundActivityDisplay(
   if (isBackgroundAgentTaskType(row.taskType)) {
     return {
       icon: "UserRoundPlus",
-      label: "Background agent",
-      runningPrefix: "Running background agent:",
+      label: "Фоновый агент",
+      runningPrefix: "Работает фоновый агент:",
     };
   }
   return {
     icon: "Terminal",
-    label: "Background command",
-    runningPrefix: "Running background command:",
+    label: "Фоновая команда",
+    runningPrefix: "Выполняется фоновая команда:",
   };
 }
 
@@ -74,9 +74,9 @@ function backgroundActivityGroupLabel(
     (row) => !isBackgroundAgentTaskType(row.taskType),
   );
   if (hasAgent && hasCommand) {
-    return "Background activity";
+    return "Фоновая активность";
   }
-  return hasAgent ? "Background agents" : "Background commands";
+  return hasAgent ? "Фоновые агенты" : "Фоновые команды";
 }
 
 function backgroundActivityModel(row: TimelineWorkflowWorkRow): string | null {
@@ -266,7 +266,7 @@ export function ThreadBackgroundCommandsCard({
           labelledBy={TOGGLE_ID}
           isExpanded={isExpanded}
           collapsedBorder="none"
-          collapseLabel={`Collapse ${groupLabel.toLowerCase()}`}
+          collapseLabel={`Свернуть: ${groupLabel.toLowerCase()}`}
           collapseRef={focus.collapseRef}
           onCollapse={focus.onCollapseClick}
         >

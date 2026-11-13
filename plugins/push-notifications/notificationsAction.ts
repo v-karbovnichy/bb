@@ -96,7 +96,7 @@ function useThreadNotificationsData({
           threadIds.map((threadId) => saveLevel({ threadId, level })),
         );
       } catch (error) {
-        toast.error("Failed to update notifications", {
+        toast.error("Не удалось обновить уведомления", {
           description: error instanceof Error ? error.message : undefined,
         });
       }
@@ -119,15 +119,15 @@ const LEVEL_ICONS: Record<NotificationLevel, string> = {
 };
 
 function capHint(row: ThreadNotifications): string | undefined {
-  if (row.source === "parent") return "Limited by a parent thread";
-  if (row.source === "ancestor") return "Limited by an ancestor thread";
+  if (row.source === "parent") return "Ограничено родительским чатом";
+  if (row.source === "ancestor") return "Ограничено вышестоящим чатом";
   return undefined;
 }
 
 export const notificationsThreadAction: PluginThreadActionRegistration<ThreadNotificationsData> =
   {
     id: "notifications",
-    title: "Notifications",
+    title: "Уведомления",
     icon: "BellDot",
     group: experimental_THREAD_ACTION_GROUPS.state,
     order: 50,
@@ -147,9 +147,9 @@ export const notificationsThreadAction: PluginThreadActionRegistration<ThreadNot
       const hint =
         data.error ?? (resolved === null ? undefined : capHint(resolved));
       return {
-        label: "Notifications",
+        label: "Уведомления",
         ...(unavailable
-          ? { detail: "Notifications unavailable" }
+          ? { detail: "Уведомления недоступны" }
           : resolved === null
             ? {}
             : { detail: NOTIFICATION_LEVEL_LABELS[resolved.effective] }),
@@ -164,7 +164,7 @@ export const notificationsThreadAction: PluginThreadActionRegistration<ThreadNot
                   label: NOTIFICATION_LEVEL_LABELS[id],
                   selected: id === stored.own,
                 }))),
-            ...(data.error === null ? [] : [{ id: "retry", label: "Retry" }]),
+            ...(data.error === null ? [] : [{ id: "retry", label: "Повторить" }]),
           ],
         },
         run: async ({ value }) => {
@@ -210,17 +210,17 @@ export const notificationsThreadAction: PluginThreadActionRegistration<ThreadNot
       const capped = resolved?.some((row) => capHint(row) !== undefined);
       const hint =
         data.error ??
-        (capped ? "Some threads are limited by a parent thread" : undefined);
+        (capped ? "Некоторые чаты ограничены родительским чатом" : undefined);
       return {
-        label: "Notifications",
+        label: "Уведомления",
         ...(unavailable
-          ? { detail: "Notifications unavailable" }
+          ? { detail: "Уведомления недоступны" }
           : resolved === null
             ? {}
             : {
                 detail:
                   sharedEffective === null
-                    ? "Mixed"
+                    ? "Разные"
                     : NOTIFICATION_LEVEL_LABELS[sharedEffective],
               }),
         icon:
@@ -235,7 +235,7 @@ export const notificationsThreadAction: PluginThreadActionRegistration<ThreadNot
                   label: NOTIFICATION_LEVEL_LABELS[id],
                   selected: id === sharedOwn,
                 }))),
-            ...(data.error === null ? [] : [{ id: "retry", label: "Retry" }]),
+            ...(data.error === null ? [] : [{ id: "retry", label: "Повторить" }]),
           ],
         },
         run: async ({ value }) => {

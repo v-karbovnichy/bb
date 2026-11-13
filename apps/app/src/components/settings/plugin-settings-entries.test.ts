@@ -22,7 +22,7 @@ describe("buildPluginSettingsEntries", () => {
     const entries = buildPluginSettingsEntries({
       installedPlugins: [
         candidate({ id: "workflows" }),
-        candidate({ enabled: false, id: "disabled", name: "Disabled" }),
+        candidate({ enabled: false, id: "disabled", name: "Выключено" }),
         candidate({
           hasSettings: true,
           icon: "linear-icon",

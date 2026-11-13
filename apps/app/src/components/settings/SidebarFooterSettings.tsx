@@ -28,8 +28,8 @@ export function SidebarFooterSettings() {
   });
   return (
     <SettingsWithControl
-      label="Sidebar footer"
-      description="Drag to reorder."
+      label="Нижняя часть боковой панели"
+      description="Перетащите, чтобы изменить порядок."
       controlPlacement="below"
     >
       <div
@@ -92,7 +92,7 @@ function FooterSettingsRow({
         ref={dragBindings.setActivatorNodeRef}
         {...dragBindings.attributes}
         {...dragBindings.listeners}
-        aria-label={`Reorder ${item.label}`}
+        aria-label={`Изменить порядок: ${item.label}`}
       >
         <Icon name="DragDropVertical" className="size-4" />
       </Button>
@@ -102,7 +102,7 @@ function FooterSettingsRow({
         checked={visible}
         disabled={disabled}
         onCheckedChange={onVisibleChange}
-        aria-label={`Show ${item.label} in footer`}
+        aria-label={`Показывать ${item.label} в нижней панели`}
       />
     </div>
   );

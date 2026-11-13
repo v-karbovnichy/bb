@@ -129,7 +129,7 @@ describe("BrowserTabContent persistent navigation", () => {
 
     act(() => harness.emitState(browserState({ isLoading: true })));
 
-    const stopButton = screen.getByRole("button", { name: "Stop loading" });
+    const stopButton = screen.getByRole("button", { name: "Остановить загрузку" });
     fireEvent.click(stopButton);
     expect(harness.stop).toHaveBeenCalledWith("browser:test");
   });
@@ -139,7 +139,7 @@ describe("BrowserTabContent persistent navigation", () => {
     renderBrowserChrome(harness, "https://example.com/docs");
 
     act(() => harness.emitState(browserState({ canGoBack: true })));
-    fireEvent.click(screen.getByRole("button", { name: "Go back" }));
+    fireEvent.click(screen.getByRole("button", { name: "Назад" }));
     expect(harness.goBack).toHaveBeenCalledWith("browser:test");
   });
 
@@ -153,7 +153,7 @@ describe("BrowserTabContent persistent navigation", () => {
       const harness = createBrowserChromeHarness();
       renderBrowserChrome(harness, "https://example.com/docs");
       const address = screen.getByRole<HTMLInputElement>("textbox", {
-        name: /Address and search bar/,
+        name: /Адресная и поисковая строка/,
       });
       const clickAt = (start: number, end: number) => {
         fireEvent.mouseDown(address);
@@ -183,7 +183,7 @@ describe("BrowserTabContent persistent navigation", () => {
         canShowNativeBrowserView: true,
       });
       const address = screen.getByRole("textbox", {
-        name: /Address and search bar/,
+        name: /Адресная и поисковая строка/,
       });
       act(() => address.focus());
       fireEvent.change(address, { target: { value: "google.com" } });
@@ -205,7 +205,7 @@ describe("BrowserTabContent persistent navigation", () => {
     const navigate = vi.spyOn(harness.api, "navigate");
     renderBrowserChrome(harness, "https://example.com/docs");
     const address = screen.getByRole<HTMLInputElement>("textbox", {
-      name: /Address and search bar/,
+      name: /Адресная и поисковая строка/,
     });
     act(() => address.focus());
     fireEvent.change(address, { target: { value: "unfinished address" } });
@@ -245,7 +245,7 @@ describe("BrowserTabContent persistent navigation", () => {
         onOpenInNewTab,
       });
       const address = screen.getByRole<HTMLInputElement>("textbox", {
-        name: /Address and search bar/,
+        name: /Адресная и поисковая строка/,
       });
       act(() => address.focus());
       fireEvent.change(address, { target: { value: "google.com" } });
@@ -262,7 +262,7 @@ describe("BrowserTabContent persistent navigation", () => {
     },
   );
 
-  it.each(["Stop", "Take over"])(
+  it.each(["Остановить", "Перехватить управление"])(
     "releases native control with %s",
     async (action) => {
       const harness = createBrowserChromeHarness();
@@ -284,7 +284,7 @@ describe("BrowserTabContent persistent navigation", () => {
       harness.focus.mockClear();
       fireEvent.click(button);
       expect(releaseControl).toHaveBeenCalledWith("browser:test");
-      if (action === "Take over")
+      if (action === "Перехватить управление")
         expect(harness.focus).toHaveBeenCalledWith("browser:test");
       else expect(harness.focus).not.toHaveBeenCalled();
     },
@@ -300,7 +300,7 @@ describe("BrowserTabContent persistent navigation", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getByLabelText("Address and search bar")).not.toBeNull(),
+      expect(screen.getByLabelText("Адресная и поисковая строка")).not.toBeNull(),
     );
     expect(harness.focus).not.toHaveBeenCalled();
     act(() => harness.emitNativeFocus("browser:other"));

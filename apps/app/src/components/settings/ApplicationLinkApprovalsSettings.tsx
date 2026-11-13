@@ -23,27 +23,27 @@ export function ApplicationLinkApprovalsSettings() {
     try {
       await applicationLinkApprovals.revoke(scheme);
     } catch (error) {
-      appToast.error("Couldn't remove app link approval", {
-        description: error instanceof Error ? error.message : "Try again.",
+      appToast.error("Не удалось удалить разрешение на ссылку приложения", {
+        description: error instanceof Error ? error.message : "Повторите попытку.",
       });
     }
   };
   return (
     <div className="border-border not-first:border-t not-first:pt-5">
       <SettingsWithControl
-        label="App links"
-        description="BB asks before opening links like linear:// in another app. Approvals stay on this device and aren't synced."
+        label="Ссылки приложений"
+        description="BB запрашивает разрешение перед открытием ссылок вроде linear:// в другом приложении. Разрешения хранятся только на этом устройстве и не синхронизируются."
         controlPlacement="below"
       >
         {approvals.isPending ? (
-          <p className="text-xs text-subtle-foreground">Loading…</p>
+          <p className="text-xs text-subtle-foreground">Загрузка…</p>
         ) : approvals.isError ? (
           <p className="text-xs text-destructive-text">
             {approvals.error.message}
           </p>
         ) : approvals.data.length === 0 ? (
           <p className="text-xs text-subtle-foreground">
-            No apps are always allowed.
+            Нет приложений, которым всегда разрешено открывать ссылки.
           </p>
         ) : (
           <div className="space-y-1">
@@ -69,7 +69,7 @@ export function ApplicationLinkApprovalsSettings() {
                     size="icon"
                     variant="ghost"
                     className="-mr-2 size-8 shrink-0 text-subtle-foreground"
-                    aria-label={`Remove ${scheme} approval`}
+                    aria-label={`Удалить разрешение для ${scheme}`}
                     onClick={() => {
                       void revoke(scheme);
                     }}

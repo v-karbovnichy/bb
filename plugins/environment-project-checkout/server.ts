@@ -24,11 +24,11 @@ const LIVE_THREAD_STATUSES = new Set([
   "stopping",
 ]);
 const LIVE_THREAD_MESSAGE =
-  "Cannot checkout branch while another thread is using this workspace";
-const DETACHED_MESSAGE = "Checkout blocked while HEAD is detached";
-const UNBORN_MESSAGE = "Checkout blocked before the first commit";
-const CONFLICTS_MESSAGE = "Checkout blocked by unresolved conflicts";
-const DIRTY_MESSAGE = "Checkout blocked by uncommitted changes";
+  "Нельзя переключить ветку, пока другой чат использует эту рабочую копию";
+const DETACHED_MESSAGE = "Переключение заблокировано: HEAD отсоединён";
+const UNBORN_MESSAGE = "Переключение заблокировано до первого коммита";
+const CONFLICTS_MESSAGE = "Переключение заблокировано неразрешёнными конфликтами";
+const DIRTY_MESSAGE = "Переключение заблокировано несохранёнными изменениями";
 
 export const checkoutInputsSchema = z.object({
   path: z.string().min(1).optional(),
@@ -130,7 +130,7 @@ export default async function checkoutPlugin(bb: BbPluginApi): Promise<void> {
       return CONFLICTS_MESSAGE;
     }
     if (operation.kind !== "none") {
-      return `Checkout blocked by an in-progress ${operation.kind}`;
+      return `Переключение заблокировано: выполняется ${operation.kind}`;
     }
     if (inspection.hasUncommittedChanges) {
       return DIRTY_MESSAGE;
@@ -171,7 +171,7 @@ export default async function checkoutPlugin(bb: BbPluginApi): Promise<void> {
       if (branch !== null || Date.now() >= claimDeadline) {
         return {
           status: "failed",
-          message: "Workspace is being prepared by another thread",
+          message: "Другой чат подготавливает рабочую копию",
         };
       }
       await delay(50, undefined, { signal: context.signal });
@@ -217,8 +217,8 @@ export default async function checkoutPlugin(bb: BbPluginApi): Promise<void> {
 
   bb.experimental_environments.register({
     id: PROJECT_CHECKOUT_ENVIRONMENT_PROVIDER_ID,
-    displayName: "Project checkout",
-    description: "Work in a project checkout on this machine.",
+    displayName: "Рабочая копия проекта",
+    description: "Работайте в рабочей копии проекта на этой машине.",
     icon: "Folder",
     requires: { projectCheckout: true },
     inputs: checkoutInputsSchema,
@@ -290,7 +290,7 @@ export default async function checkoutPlugin(bb: BbPluginApi): Promise<void> {
         return {
           status: "failed",
           message:
-            "The removed workspace had no branch checked out, so there is no branch to restore it on.",
+            "В удалённой рабочей копии не была выбрана ветка, поэтому восстановить её не на чем.",
         };
       }
       return attachWorkspace(context, {

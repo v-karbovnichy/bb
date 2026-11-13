@@ -118,7 +118,7 @@ describe("scheduling", () => {
     expect(slot.getByText(/^Local time/)).toBeTruthy();
     expect(slot.inspection.composer.submits).toHaveLength(0);
 
-    fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
 
     await waitFor(() =>
       expect(slot.inspection.composer.submits).toHaveLength(1),
@@ -139,7 +139,7 @@ describe("scheduling", () => {
       await chooseScheduleOption(slot, `In ${minutes} minutes`);
       const confirmationTime = Date.now() + HOUR_MS;
       vi.spyOn(Date, "now").mockReturnValue(confirmationTime);
-      fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+      fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
       await waitFor(() =>
         expect(slot.inspection.composer.submits).toHaveLength(1),
       );
@@ -152,7 +152,7 @@ describe("scheduling", () => {
   it("remembers a preset after scheduling and switching composers", async () => {
     const slot = openPicker();
     await chooseScheduleOption(slot, "In 10 minutes");
-    fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
     await waitFor(() => expect(slot.queryByRole("dialog")).toBeNull());
     slot.unmount();
     const next = openPicker({
@@ -173,7 +173,7 @@ describe("scheduling", () => {
     });
     const time = `${String(target.getHours()).padStart(2, "0")}:${String(target.getMinutes()).padStart(2, "0")}`;
     fireEvent.change(slot.getByLabelText("Time"), { target: { value: time } });
-    fireEvent.click(slot.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отмена" }));
     slot.unmount();
     const next = openPicker();
     expect(
@@ -184,7 +184,7 @@ describe("scheduling", () => {
       dateInputValue(target),
     );
     expect(next.getByLabelText("Time")).toHaveProperty("value", time);
-    fireEvent.click(next.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(next.getByRole("button", { name: "Запланировать отправку" }));
     await waitFor(() =>
       expect(next.inspection.composer.submits).toHaveLength(1),
     );
@@ -204,7 +204,7 @@ describe("scheduling", () => {
     const clock = vi.spyOn(Date, "now").mockReturnValue(now.getTime());
     const slot = openPicker();
     await chooseScheduleOption(slot, "This evening");
-    fireEvent.click(slot.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отмена" }));
     now.setHours(18);
     clock.mockReturnValue(now.getTime());
     act(() => {
@@ -222,9 +222,9 @@ describe("scheduling", () => {
     });
 
     expect(
-      slot.getByText(/model and environment selected in the composer/),
+      slot.getByText(/модель и окружение, выбранные в поле ввода/),
     ).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
 
     await waitFor(() =>
       expect(slot.inspection.composer.submits).toHaveLength(1),
@@ -247,7 +247,7 @@ describe("scheduling", () => {
     fireEvent.change(slot.getByLabelText("Time"), {
       target: { value: "14:30" },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
 
     await waitFor(() =>
       expect(slot.inspection.composer.submits).toHaveLength(1),
@@ -270,7 +270,7 @@ describe("scheduling", () => {
     expect(slot.getByRole("alert").textContent).toContain("future");
     expect(
       slot
-        .getByRole("button", { name: "Schedule send" })
+        .getByRole("button", { name: "Запланировать отправку" })
         .hasAttribute("disabled"),
     ).toBe(true);
     expect(slot.inspection.composer.submits).toHaveLength(0);
@@ -283,7 +283,7 @@ describe("scheduling", () => {
     const confirmationTime = now + 2 * HOUR_MS;
     vi.spyOn(Date, "now").mockReturnValue(confirmationTime);
 
-    fireEvent.click(slot.getByRole("button", { name: "Schedule send" }));
+    fireEvent.click(slot.getByRole("button", { name: "Запланировать отправку" }));
 
     await waitFor(() =>
       expect(slot.inspection.composer.submits).toHaveLength(1),
@@ -296,7 +296,7 @@ describe("scheduling", () => {
   it("cancels without submitting or clearing the draft", () => {
     const slot = openPicker();
 
-    fireEvent.click(slot.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отмена" }));
 
     expect(slot.queryByRole("dialog")).toBeNull();
     expect(slot.inspection.composer.submits).toHaveLength(0);

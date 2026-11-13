@@ -391,24 +391,24 @@ export function resolveNewThreadBlocker({
   submissionEnvironmentUnavailable,
 }: ResolveNewThreadSubmitDisabledReasonArgs): NewThreadBlocker | null {
   const pending = (message: string) => ({ message, reason: null });
-  if (isSubmitting) return pending("Starting thread...");
+  if (isSubmitting) return pending("Создание чата...");
   if (isCopyingAttachments) {
-    return pending("Moving attachments to the selected project...");
+    return pending("Перенос вложений в выбранный проект...");
   }
-  if (isUploading) return pending("Uploading attachments...");
+  if (isUploading) return pending("Загрузка вложений...");
   if (projectDefaultsUnavailable) {
     return projectDefaultsStatus === "error"
       ? {
-          message: "Could not load the project's execution defaults.",
+          message: "Не удалось загрузить настройки выполнения проекта.",
           reason: "project_setup",
         }
-      : pending("Loading the project's execution defaults...");
+      : pending("Загрузка настроек выполнения проекта...");
   }
   if (!selectedProviderId) {
-    return { message: "Select a provider.", reason: "provider_selection" };
+    return { message: "Выберите провайдера.", reason: "provider_selection" };
   }
   if (isLoadingModels) {
-    return pending("Loading models from the selected machine...");
+    return pending("Загрузка моделей с выбранного компьютера...");
   }
 
   const fatalModelLoadError =
@@ -430,14 +430,14 @@ export function resolveNewThreadBlocker({
     };
   }
   if (!selectedThreadModel) {
-    return { message: "Select a model.", reason: "model_selection" };
+    return { message: "Выберите модель.", reason: "model_selection" };
   }
   const setupMessage =
     environmentSetupRequiredReason ||
     environmentProviderInputsBlocker ||
-    (submissionEnvironmentUnavailable ? "Select an environment." : null);
+    (submissionEnvironmentUnavailable ? "Выберите окружение." : null);
   if (setupMessage) return { message: setupMessage, reason: "project_setup" };
-  if (promptInputEmpty) return pending("Enter a prompt or attach a file.");
+  if (promptInputEmpty) return pending("Введите запрос или прикрепите файл.");
   return null;
 }
 
@@ -1480,7 +1480,7 @@ export function NewThreadComposer({
               setAttachmentError(
                 getMutationErrorMessage({
                   error,
-                  fallbackMessage: "Attachment upload failed",
+                  fallbackMessage: "Не удалось загрузить вложение",
                 }),
               );
             }
@@ -1536,7 +1536,7 @@ export function NewThreadComposer({
               getMutationErrorMessage({
                 error,
                 fallbackMessage:
-                  "Attachments could not be moved to the selected project",
+                  "Не удалось перенести вложения в выбранный проект",
               }),
             );
             return "refused";
@@ -1687,7 +1687,7 @@ export function NewThreadComposer({
   const submissionBlockerReason = submissionBlocker?.reason ?? null;
   const submitDisabledReason =
     submissionReadinessReason ??
-    (promptInputEmpty ? "Enter a prompt or attach a file." : null);
+    (promptInputEmpty ? "Введите запрос или прикрепите файл." : null);
   const submitDraft = useCallback(
     async (
       blockedReason: string | null,
@@ -1709,8 +1709,8 @@ export function NewThreadComposer({
           blockedReason ??
             submissionReadinessReason ??
             (input.length === 0
-              ? "Type a message first."
-              : "This composer is not ready to submit yet."),
+              ? "Сначала введите сообщение."
+              : "Поле ввода ещё не готово к отправке."),
         );
       }
       const sources: CreateExecutionInputSources = {
@@ -2102,7 +2102,7 @@ export function NewThreadComposer({
                         void navigate(getSettingsRoutePath("machines"))
                       }
                     >
-                      Set up machine access
+                      Настроить доступ к компьютеру
                     </Button>
                   }
                 />

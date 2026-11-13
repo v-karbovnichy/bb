@@ -248,7 +248,7 @@ function MermaidDiagramDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex h-[min(84dvh,58rem)] w-full max-w-none gap-0 overflow-hidden border-border bg-background p-0 shadow-sm md:w-[min(96vw,88rem)] [&>button]:right-2 [&>button]:top-2 [&>button]:z-20 [&>button]:flex [&>button]:size-8 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-md [&>button]:bg-surface-scrim/95 [&>button]:text-muted-foreground [&>button]:opacity-100 [&>button]:backdrop-blur-sm [&>button]:hover:bg-state-hover [&>button]:hover:text-foreground">
-        <DialogTitle className="sr-only">Mermaid diagram</DialogTitle>
+        <DialogTitle className="sr-only">Диаграмма Mermaid</DialogTitle>
         <DialogDescription className="sr-only">
           Expanded Mermaid diagram preview with zoom and pan controls.
         </DialogDescription>
@@ -259,7 +259,7 @@ function MermaidDiagramDialog({
             size="icon"
             className="size-7 text-muted-foreground"
             onClick={() => zoomAroundCenter(-MERMAID_DIAGRAM_SCALE_STEP)}
-            aria-label="Zoom out"
+            aria-label="Уменьшить масштаб"
           >
             <Icon name="ZoomOut" />
           </Button>
@@ -269,7 +269,7 @@ function MermaidDiagramDialog({
             size="icon"
             className="size-7 text-muted-foreground"
             onClick={() => zoomAroundCenter(MERMAID_DIAGRAM_SCALE_STEP)}
-            aria-label="Zoom in"
+            aria-label="Увеличить масштаб"
           >
             <Icon name="ZoomIn" />
           </Button>
@@ -279,13 +279,13 @@ function MermaidDiagramDialog({
             size="icon"
             className="size-7 text-muted-foreground"
             onClick={resetView}
-            aria-label="Reset view"
+            aria-label="Сбросить вид"
           >
             <Icon name="RotateCcw" />
           </Button>
           <CopyButton
             text={source}
-            label="Copy Mermaid source"
+            label="Копировать код Mermaid"
             className="size-7 rounded-md hover:bg-state-hover hover:text-foreground"
             iconClassName="size-4"
           />
@@ -303,7 +303,7 @@ function MermaidDiagramDialog({
               ref={dialogDiagramRef}
               className="flex h-full w-full select-none items-center justify-center [&_svg]:block [&_svg]:h-auto [&_svg]:max-h-full [&_svg]:max-w-full"
               role="img"
-              aria-label="Mermaid diagram"
+              aria-label="Диаграмма Mermaid"
               style={{
                 transform: createPanZoomTransform(view),
                 transformOrigin: "center center",
@@ -473,7 +473,7 @@ export function MarkdownMermaidDiagram({
               size="icon"
               className="size-7 text-muted-foreground"
               onClick={toggleDisplayMode}
-              aria-label="Show Mermaid source"
+              aria-label="Показать код Mermaid"
               aria-pressed={displayMode === "source"}
             >
               <Icon name="Code" />
@@ -486,12 +486,12 @@ export function MarkdownMermaidDiagram({
               size="icon"
               className="size-7 text-muted-foreground"
               onClick={() => setIsDialogOpen(true)}
-              aria-label="Open Mermaid diagram"
+              aria-label="Открыть диаграмму Mermaid"
             >
               <Icon name="Maximize2" />
             </Button>
           ) : null}
-          <CopyButton text={source} label="Copy Mermaid source" />
+          <CopyButton text={source} label="Копировать код Mermaid" />
         </div>
       </div>
       {showRenderedDiagram ? (
@@ -500,7 +500,7 @@ export function MarkdownMermaidDiagram({
             ref={diagramElementRef}
             className="min-w-0 [&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-full"
             role="img"
-            aria-label="Mermaid diagram"
+            aria-label="Диаграмма Mermaid"
             dangerouslySetInnerHTML={{ __html: renderState.diagram.svg }}
           />
         </div>

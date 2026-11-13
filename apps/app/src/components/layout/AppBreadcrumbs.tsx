@@ -16,7 +16,7 @@ export function AppBreadcrumbs({
   usesDesktopChrome: boolean;
 }) {
   return (
-    <nav aria-label="Breadcrumb" className="min-w-0">
+    <nav aria-label="Навигационная цепочка" className="min-w-0">
       <ol className="flex min-w-0 items-center gap-1.5 text-sm font-semibold">
         {breadcrumbs.map((segment, index) => {
           const isLast = index === breadcrumbs.length - 1;

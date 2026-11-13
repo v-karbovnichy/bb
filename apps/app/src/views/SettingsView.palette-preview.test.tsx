@@ -55,7 +55,7 @@ function renderSection({ compact = false } = {}) {
 }
 
 async function openPaletteMenu() {
-  fireEvent.pointerDown(screen.getByRole("button", { name: "Palette" }), {
+  fireEvent.pointerDown(screen.getByRole("button", { name: "Палитра" }), {
     button: 0,
   });
   return screen.findByRole("menu");
@@ -100,7 +100,7 @@ describe("palette hover preview", () => {
 
   it("previews compact keyboard focus and clears it on blur or cancel", async () => {
     const { onAppearanceThemePreview } = renderSection({ compact: true });
-    fireEvent.click(screen.getByRole("button", { name: "Palette" }));
+    fireEvent.click(screen.getByRole("button", { name: "Палитра" }));
 
     const item = await screen.findByRole("menuitem", { name: /Nord/u });
     fireEvent.focus(item);

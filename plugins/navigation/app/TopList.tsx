@@ -275,12 +275,12 @@ export function TopList({
               <ListRowButton
                 aria-label={
                   hiddenBadgeLabels.length > 0
-                    ? `More, ${hiddenBadgeLabels.join(", ")}`
+                    ? `Ещё, ${hiddenBadgeLabels.join(", ")}`
                     : undefined
                 }
               >
                 <Icon name="MoreHorizontal" aria-hidden="true" />
-                <span className="min-w-0 flex-1 truncate text-left">More</span>
+                <span className="min-w-0 flex-1 truncate text-left">Ещё</span>
                 {hiddenBadgeTone !== null ? (
                   <NavigationBadgeMark
                     badge={{ tone: hiddenBadgeTone }}

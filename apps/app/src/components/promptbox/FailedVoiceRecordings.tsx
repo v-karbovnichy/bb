@@ -38,12 +38,12 @@ export function FailedVoiceRecordings({
       >
         {recordings.map((recording) => {
           const errorMessage =
-            recording.errorMessage ?? "Transcription did not finish";
+            recording.errorMessage ?? "Не удалось завершить расшифровку";
           return (
             <div
               key={recording.id}
               role="group"
-              aria-label="Voice input failed"
+              aria-label="Ошибка голосового ввода"
               className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-1 rounded-lg bg-muted py-1 pl-2.5 pr-1 md:flex"
             >
               <Icon
@@ -53,7 +53,7 @@ export function FailedVoiceRecordings({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <p className="flex min-w-0 flex-1 overflow-hidden whitespace-nowrap px-1 text-xs">
-                    <span className="shrink-0">Voice input failed</span>
+                    <span className="shrink-0">Ошибка голосового ввода</span>
                     <span className="min-w-0 truncate text-muted-foreground">
                       &nbsp;· {errorMessage}
                     </span>
@@ -67,14 +67,14 @@ export function FailedVoiceRecordings({
                     type="button"
                     size="icon"
                     variant="ghost"
-                    aria-label="Discard recording"
+                    aria-label="Удалить запись"
                     onClick={() => onDiscard(recording)}
                     className={cn(ICON_BUTTON_CLASS, "md:order-last")}
                   >
                     <Icon name="X" className="size-3.5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="top">Discard recording</TooltipContent>
+                <TooltipContent side="top">Удалить запись</TooltipContent>
               </Tooltip>
               <div className="col-start-2 flex items-center gap-1 pb-0.5 md:contents">
                 <Button
@@ -88,7 +88,7 @@ export function FailedVoiceRecordings({
                     recording.retrying && "disabled:opacity-100",
                   )}
                 >
-                  {recording.retrying ? "Retrying…" : "Retry"}
+                  {recording.retrying ? "Повторная попытка…" : "Повторить"}
                 </Button>
                 <Button
                   type="button"
@@ -97,7 +97,7 @@ export function FailedVoiceRecordings({
                   onClick={() => onDownload(recording)}
                   className={cn(ACTION_BUTTON_CLASS, "text-muted-foreground")}
                 >
-                  Download
+                  Скачать
                 </Button>
               </div>
             </div>

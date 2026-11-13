@@ -30,7 +30,7 @@ export function PullRequestSummary({
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleClick}
-        aria-label={`Pull request ${pullRequest.number}: ${describePullRequestStatus(pullRequest)}`}
+        aria-label={`Пул-реквест ${pullRequest.number}: ${describePullRequestStatus(pullRequest)}`}
         className="flex min-w-0 items-center gap-2 overflow-hidden text-xs text-foreground no-underline transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         <GithubFaviconIcon />
@@ -58,7 +58,7 @@ export function PullRequestSummary({
 
 export function PullRequestRow({ pullRequest }: { pullRequest: PullRequest }) {
   return (
-    <DetailRow icon="GitPullRequestArrow" label="Pull request">
+    <DetailRow icon="GitPullRequestArrow" label="Пул-реквест">
       <PullRequestSummary pullRequest={pullRequest} />
     </DetailRow>
   );

@@ -298,7 +298,7 @@ export function ResourceShelfSeeAllAction({
 }: Omit<ButtonProps, "children" | "size" | "variant">) {
   return (
     <ResourceShelfAction className={className} {...props}>
-      See all
+      Показать всё
     </ResourceShelfAction>
   );
 }
@@ -448,12 +448,12 @@ export function ResourceTemplateBrowseCard({
       title={title}
       description={description}
       descriptionLines={3}
-      openLabel={`Use template: ${title}`}
+      openLabel={`Использовать шаблон: ${title}`}
       pointerOnlyOpen
       headerAction={
         <ResourceActionButton
-          label={`Use template: ${title}`}
-          tooltipLabel="Use template"
+          label={`Использовать шаблон: ${title}`}
+          tooltipLabel="Использовать шаблон"
           icon="MessageCirclePlus"
           className="size-7 hover:bg-state-hover focus-visible:bg-state-hover"
           onClick={onUse}

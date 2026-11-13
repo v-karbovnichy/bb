@@ -93,7 +93,7 @@ describe("Resource detail header", () => {
       <ResourceDetailPage
         leading={<span>Leading icon</span>}
         title="A long resource title"
-        titleMeta={<span>Category</span>}
+        titleMeta={<span>Категория</span>}
       >
         <div>Content</div>
       </ResourceDetailPage>,
@@ -107,7 +107,7 @@ describe("Resource detail header", () => {
     const titleAndIcon = titleColumn?.parentElement;
     const leading = screen.getByText("Leading icon");
 
-    expect(titleRow?.contains(screen.getByText("Category"))).toBe(true);
+    expect(titleRow?.contains(screen.getByText("Категория"))).toBe(true);
     expect(titleColumn?.contains(leading)).toBe(false);
     expect(titleAndIcon?.contains(leading)).toBe(true);
   });
@@ -119,7 +119,7 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).toEqual([
       ["overview", ""],
-      ["release", "Details"],
+      ["release", "Сведения"],
     ]);
   });
 
@@ -141,9 +141,9 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).toEqual([
       ["overview", ""],
-      ["release", "Details"],
-      ["activity", "Background services"],
-      ["activity", "Scheduled jobs"],
+      ["release", "Сведения"],
+      ["activity", "Фоновые службы"],
+      ["activity", "Запланированные задачи"],
     ]);
   });
 
@@ -155,8 +155,8 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).toEqual([
       ["overview", ""],
-      ["release", "Details"],
-      ["activity", "Background services"],
+      ["release", "Сведения"],
+      ["activity", "Фоновые службы"],
     ]);
   });
 
@@ -167,7 +167,7 @@ describe("Plugin detail recipe", () => {
       "overview",
     );
     expect(
-      screen.getByText("This plugin does not describe itself."),
+      screen.getByText("У плагина нет описания."),
     ).toBeTruthy();
   });
 
@@ -188,7 +188,7 @@ describe("Plugin detail recipe", () => {
     const detail = screen.getByText(description);
     expect(detail.className).toContain("line-clamp-3");
     const disclosure = screen.getByRole("button", {
-      name: "Show full description",
+      name: "Показать полное описание",
     });
     expect(disclosure.getAttribute("aria-expanded")).toBe("false");
 
@@ -196,7 +196,7 @@ describe("Plugin detail recipe", () => {
 
     expect(detail.className).not.toContain("line-clamp-3");
     const collapseDisclosure = screen.getByRole("button", {
-      name: "Show less",
+      name: "Свернуть",
     });
     expect(collapseDisclosure.getAttribute("aria-expanded")).toBe("true");
     expect(container.textContent).toContain(description);
@@ -324,7 +324,7 @@ describe("Plugin detail recipe", () => {
     );
 
     const destinations = [
-      ["Settings", "/settings/plugins/github"],
+      ["Настройки", "/settings/plugins/github"],
       ["Issues", "/plugins/github/issues"],
       ["GitHub dashboard", "/#plugin-homepage:github:dashboard"],
       ["GitHub threads", "/settings/appearance"],
@@ -338,12 +338,12 @@ describe("Plugin detail recipe", () => {
       );
     }
     expect(
-      screen.getByRole("button", { name: "GitHub settings" }),
+      screen.getByRole("button", { name: "Настройки GitHub" }),
     ).toBeTruthy();
     expect(renderedRecipe(container).map(([kind]) => kind)).not.toContain(
       "configuration",
     );
-    expect(screen.getAllByRole("link", { name: "Settings" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: "Настройки" })).toHaveLength(1);
     expect(screen.queryByRole("link", { name: "Inspect issue" })).toBeNull();
     expect(screen.queryByRole("link", { name: "Sync status" })).toBeNull();
     expect(listSkills).not.toHaveBeenCalled();
@@ -383,7 +383,7 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).not.toContainEqual([
       "includes",
-      "Capabilities",
+      "Возможности",
     ]);
     expect(screen.queryByText("Frontend app")).toBeNull();
   });
@@ -405,7 +405,7 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).not.toContainEqual([
       "includes",
-      "Capabilities",
+      "Возможности",
     ]);
     expect(screen.queryByText("GitHub Dark")).toBeNull();
     expect(
@@ -430,7 +430,7 @@ describe("Plugin detail recipe", () => {
 
     expect(renderedRecipe(container)).toContainEqual([
       "includes",
-      "Capabilities",
+      "Возможности",
     ]);
     expect(screen.getByText("GitHub Dark")).toBeTruthy();
   });
@@ -462,7 +462,7 @@ describe("Plugin detail recipe", () => {
     });
 
     expect(renderedRecipe(container).map(([, label]) => label)).not.toContain(
-      "Capabilities",
+      "Возможности",
     );
   });
 });
@@ -524,7 +524,7 @@ describe("Skill detail recipe", () => {
     ]);
 
     expect(renderedRecipe(container)).toEqual([
-      ["includes", "Files"],
+      ["includes", "Файлы"],
       ["definition", "/skills/writing-voice/SKILL.md"],
     ]);
   });

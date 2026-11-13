@@ -62,7 +62,7 @@ const infoFixedTab = createThreadInfoFixedPanelTab();
 const diffFixedTab = createGitDiffFixedPanelTab();
 const infoFixedTabDescriptor = {
   ariaLabel: "Show thread info panel",
-  label: "Info",
+  label: "Информация",
   contentFillsRegion: true,
   renderContent: () => <ThreadInfoFixedTabContent />,
   leadingVisual: null,
@@ -218,12 +218,12 @@ describe("ThreadSecondaryPanel unavailable content", () => {
         </Wrapper>
       );
       const { unmount } = render(panel(false));
-      expect(screen.queryByText("This panel view is unavailable.")).toBeNull();
+      expect(screen.queryByText("Этот раздел панели недоступен.")).toBeNull();
 
       unmount();
       render(panel(true));
       expect(
-        screen.getByText("This panel view is unavailable."),
+        screen.getByText("Этот раздел панели недоступен."),
       ).not.toBeNull();
     },
   );
@@ -239,7 +239,7 @@ describe("ThreadSecondaryPanel compact file content", () => {
     view.settle();
     expect(document.querySelectorAll("[data-split-pane-id]")).toHaveLength(2);
     const groups = document.querySelectorAll("[data-sidebar-split-tab-group]");
-    expect(groups[0]?.textContent).toContain("Info");
+    expect(groups[0]?.textContent).toContain("Информация");
     expect(groups[1]?.textContent).toContain("Diff");
   });
 
@@ -505,9 +505,9 @@ describe("ThreadSecondaryPanel compact file content", () => {
     expect(screen.getByText("Second tab body")).toBeTruthy();
     expect(document.querySelectorAll("[data-split-pane-id]")).toHaveLength(2);
     expect(
-      screen.getAllByRole("button", { name: "Remove split" }),
+      screen.getAllByRole("button", { name: "Убрать разделение" }),
     ).toHaveLength(2);
-    fireEvent.click(screen.getByRole("button", { name: "Close first.ts" }));
+    fireEvent.click(screen.getByRole("button", { name: "Закрыть first.ts" }));
     expect(closeFirstTab).toHaveBeenCalledTimes(1);
     expect(closeSecondTab).not.toHaveBeenCalled();
   });
@@ -630,7 +630,7 @@ describe("ThreadSecondaryPanel compact file content", () => {
       "[data-sidebar-split-tab-group]",
     );
     expect(restoredTabGroups).toHaveLength(2);
-    expect(restoredTabGroups[0]?.textContent).toContain("Info");
+    expect(restoredTabGroups[0]?.textContent).toContain("Информация");
     expect(restoredTabGroups[1]?.textContent).toContain("index.ts");
     expect(renderContent).toHaveBeenCalledWith(
       expect.objectContaining({ isFocused: expect.any(Boolean) }),
@@ -645,7 +645,7 @@ describe("ThreadSecondaryPanel remove-split control", () => {
       isConversationCollapsed: false,
       onToggleConversationCollapse: noop,
     });
-    expect(unsplit.queryByRole("button", { name: "Remove split" })).toBeNull();
+    expect(unsplit.queryByRole("button", { name: "Убрать разделение" })).toBeNull();
     unsplit.unmount();
 
     renderFixedTabSplit();
@@ -654,7 +654,7 @@ describe("ThreadSecondaryPanel remove-split control", () => {
       document.querySelectorAll<HTMLElement>("[data-split-pane-id]"),
     );
     const removeControls = screen.getAllByRole("button", {
-      name: "Remove split",
+      name: "Убрать разделение",
     });
     expect(panes).toHaveLength(2);
     expect(removeControls).toHaveLength(2);
@@ -663,7 +663,7 @@ describe("ThreadSecondaryPanel remove-split control", () => {
         const chrome = pane.querySelector(
           '[data-testid="thread-secondary-panel-top-chrome"]',
         );
-        const removeControl = pane.querySelector('[aria-label="Remove split"]');
+        const removeControl = pane.querySelector('[aria-label="Убрать разделение"]');
         return (
           chrome?.lastElementChild instanceof HTMLElement &&
           removeControl instanceof HTMLButtonElement &&
@@ -677,7 +677,7 @@ describe("ThreadSecondaryPanel remove-split control", () => {
     renderFixedTabSplit();
 
     const removeControl = screen.getAllByRole("button", {
-      name: "Remove split",
+      name: "Убрать разделение",
     })[1];
     expect(removeControl).toBeInstanceOf(HTMLButtonElement);
     if (!(removeControl instanceof HTMLButtonElement)) return;
@@ -688,7 +688,7 @@ describe("ThreadSecondaryPanel remove-split control", () => {
     fireEvent.click(removeControl, { detail: 0 });
 
     expect(document.querySelectorAll("[data-split-pane-id]")).toHaveLength(0);
-    expect(screen.queryByRole("button", { name: "Remove split" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Убрать разделение" })).toBeNull();
     expect(
       screen.getByRole("button", { name: "Show thread info panel" }),
     ).toBeTruthy();
@@ -730,7 +730,7 @@ describe("ThreadSecondaryPanel Diff eligibility", () => {
     expect(
       screen.queryByRole("button", { name: "Show diff panel" }),
     ).toBeNull();
-    expect(screen.queryByText("This panel view is unavailable.")).toBeNull();
+    expect(screen.queryByText("Этот раздел панели недоступен.")).toBeNull();
   });
 
 });
@@ -743,7 +743,7 @@ describe("ThreadSecondaryPanel hide control glyph", () => {
       renderAsDrawer: true,
     });
 
-    const hideControl = view.getByRole("button", { name: "Hide right panel" });
+    const hideControl = view.getByRole("button", { name: "Скрыть правую панель" });
     expect(hideControl.querySelector('[data-icon="PanelRight"]')).toBeTruthy();
     expect(
       screen
@@ -758,7 +758,7 @@ describe("ThreadSecondaryPanel hide control glyph", () => {
       onToggleConversationCollapse: noop,
     });
     const desktopClassName = desktop.getByRole("button", {
-      name: "Hide right panel",
+      name: "Скрыть правую панель",
     }).className;
     cleanup();
 
@@ -768,7 +768,7 @@ describe("ThreadSecondaryPanel hide control glyph", () => {
       renderAsDrawer: true,
     });
     const drawerControl = drawer.getByRole("button", {
-      name: "Hide right panel",
+      name: "Скрыть правую панель",
     });
     expect(drawerControl.className).toBe(desktopClassName);
     expect(
@@ -785,7 +785,7 @@ describe("ThreadSecondaryPanel resize boundary", () => {
     });
 
     const boundary = view.getByRole("separator", {
-      name: "Resize thread and right panel",
+      name: "Изменить размер чата и правой панели",
     });
     const seam = boundary.querySelector(
       "span:not([data-panel-resize-hit-target])",
@@ -803,10 +803,10 @@ describe("ThreadSecondaryPanel full-screen control", () => {
     });
 
     const fullScreenControl = view.getByRole("button", {
-      name: "Full Screen",
+      name: "Полный экран",
     });
     const hideControl = view.getByRole("button", {
-      name: "Hide right panel",
+      name: "Скрыть правую панель",
     });
     expect(
       fullScreenControl.compareDocumentPosition(hideControl) &
@@ -821,7 +821,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       onToggleConversationCollapse,
     });
 
-    const control = view.getByRole("button", { name: "Full Screen" });
+    const control = view.getByRole("button", { name: "Полный экран" });
     expect(control.getAttribute("aria-pressed")).toBe("false");
     expect(control.querySelector('[data-icon="Maximize2"]')).not.toBeNull();
 
@@ -836,7 +836,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       onToggleConversationCollapse,
     });
 
-    const control = view.getByRole("button", { name: "Exit Full Screen" });
+    const control = view.getByRole("button", { name: "Выйти из полноэкранного режима" });
     expect(control.getAttribute("aria-pressed")).toBe("true");
     expect(control.querySelector('[data-icon="Minimize2"]')).not.toBeNull();
     expect(document.querySelector("aside")?.style.width).toBe("100%");
@@ -886,26 +886,26 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       </Wrapper>,
     );
 
-    expect(screen.getByRole("button", { name: "Open new tab" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Открыть вкладку" })).not.toBeNull();
     expect(
-      screen.queryByRole("button", { name: "Open new tab in this pane" }),
+      screen.queryByRole("button", { name: "Открыть вкладку в этой области" }),
     ).toBeNull();
     expect(
       document.querySelectorAll("[data-new-tab-control-reserved]"),
     ).toHaveLength(0);
 
-    const control = screen.getByRole("button", { name: "Maximize pane" });
+    const control = screen.getByRole("button", { name: "Развернуть панель" });
     fireEvent.focus(control);
     expect(
-      screen.getByRole("menu", { name: "Pane arrangement" }),
+      screen.getByRole("menu", { name: "Расположение панелей" }),
     ).not.toBeNull();
     for (const side of ["left", "right", "top", "bottom"] as const) {
       expect(
-        screen.getByRole("menuitem", { name: `Move ${side}` }),
+        screen.getByRole("menuitem", { name: { left: "Переместить влево", right: "Переместить вправо", top: "Переместить вверх", bottom: "Переместить вниз" }[side] }),
       ).not.toBeNull();
     }
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Move right" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Переместить вправо" }));
     const panes = Array.from(
       document.querySelectorAll<HTMLElement>("[data-split-pane-id]"),
     );
@@ -914,7 +914,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       document.querySelectorAll<HTMLElement>("[data-sidebar-split-tab-group]"),
     );
     expect(tabGroups).toHaveLength(2);
-    expect(tabGroups[0]?.textContent).toContain("Info");
+    expect(tabGroups[0]?.textContent).toContain("Информация");
     expect(tabGroups[1]?.textContent).toContain("index.ts");
     expect(
       document.querySelectorAll(
@@ -927,17 +927,17 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       ),
     ).toBe(true);
     expect(
-      screen.getAllByRole("button", { name: "Maximize pane" }),
+      screen.getAllByRole("button", { name: "Развернуть панель" }),
     ).toHaveLength(2);
     expect(
-      screen.getAllByRole("button", { name: "Remove split" }),
+      screen.getAllByRole("button", { name: "Убрать разделение" }),
     ).toHaveLength(2);
     expect(
-      screen.getAllByRole("button", { name: "Hide right panel" }),
+      screen.getAllByRole("button", { name: "Скрыть правую панель" }),
     ).toHaveLength(1);
     expect(document.querySelectorAll("header")).toHaveLength(0);
     const newTabControls = screen.getAllByRole("button", {
-      name: "Open new tab in this pane",
+      name: "Открыть вкладку в этой области",
     });
     expect(newTabControls).toHaveLength(1);
     expect(
@@ -951,7 +951,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
     );
     expect(
       initiallyFocusedPane?.querySelector(
-        'button[aria-label^="Open new tab in this pane"]',
+        'button[aria-label^="Открыть вкладку в этой области"]',
       ),
     ).not.toBeNull();
     expect(
@@ -960,7 +960,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
 
     fireEvent.pointerDown(initiallyInactivePane as HTMLElement);
     const focusedPaneNewTabControl = screen.getByRole("button", {
-      name: "Open new tab in this pane",
+      name: "Открыть вкладку в этой области",
     });
     expect(focusedPaneNewTabControl.closest("[data-split-pane-id]")).toBe(
       initiallyInactivePane,
@@ -1032,7 +1032,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
     );
 
     const restoreControls = screen.getAllByRole("button", {
-      name: "Restore split",
+      name: "Восстановить разделение",
     });
     expect(restoreControls).toHaveLength(1);
     const panes = Array.from(
@@ -1045,7 +1045,7 @@ describe("ThreadSecondaryPanel full-screen control", () => {
           pane.querySelector("[data-sidebar-split-tab-group]")?.textContent,
       ),
     ).toEqual([
-      expect.stringContaining("Info"),
+      expect.stringContaining("Информация"),
       expect.stringContaining("index.ts"),
     ]);
     expect(
@@ -1057,14 +1057,14 @@ describe("ThreadSecondaryPanel full-screen control", () => {
       ),
     ).toEqual([1, 1]);
     const separator = document.querySelector<HTMLElement>(
-      '[aria-label="Resize stacked right panel panes"]',
+      '[aria-label="Изменить размер областей правой панели по вертикали"]',
     );
     expect(separator?.getAttribute("aria-orientation")).toBe("horizontal");
     expect(separator?.getAttribute("aria-hidden")).toBe("true");
     expect(separator?.className).toContain("invisible");
     expect(
       panes.map(
-        (pane) => pane.querySelectorAll('[aria-label="Restore split"]').length,
+        (pane) => pane.querySelectorAll('[aria-label="Восстановить разделение"]').length,
       ),
     ).toEqual([0, 1]);
     expect(panes[0]?.getAttribute("aria-hidden")).toBe("true");
@@ -1088,8 +1088,8 @@ describe("ThreadSecondaryPanel full-screen shortcut", () => {
   const shortcut = { label: "⌘⇧F", ariaKeyshortcuts: "Meta+Shift+F" };
 
   it.each([
-    ["Full Screen", undefined],
-    ["Maximize pane", "full-screen-shortcut-split"],
+    ["Полный экран", undefined],
+    ["Развернуть панель", "full-screen-shortcut-split"],
   ])("advertises the bound command on the %s control", (label, splitId) => {
     fullScreenShortcut.current = shortcut;
     renderPanel({
@@ -1114,7 +1114,7 @@ describe("ThreadSecondaryPanel full-screen shortcut", () => {
       onToggleConversationCollapse: noop,
     });
 
-    const control = screen.getByRole("button", { name: "Full Screen" });
+    const control = screen.getByRole("button", { name: "Полный экран" });
     expect(control.getAttribute("aria-keyshortcuts")).toBeNull();
   });
 });
@@ -1161,7 +1161,7 @@ it("focuses New tab without opening it and resumes cycling from the button", asy
   );
   const next = screen.getByRole("button", { name: "Next panel tab" });
   const info = screen.getByRole("button", { name: "Show thread info panel" });
-  const newTab = screen.getByRole("button", { name: /^Open new tab/ });
+  const newTab = screen.getByRole("button", { name: /^Открыть вкладку/ });
   const draft = screen.getByRole("textbox", { name: "Draft" });
   draft.focus();
   fireEvent.click(next);

@@ -48,18 +48,18 @@ export function ExperimentalFileLinkMenu({
   return (
     <>
       <ContextMenuItem onSelect={() => navigation.openFilePreview(intent)}>
-        Open preview
+        Открыть предпросмотр
       </ContextMenuItem>
       {matchingOpeners.length > 0 ? (
         <ContextMenuSub>
-          <ContextMenuSubTrigger>Open with</ContextMenuSubTrigger>
+          <ContextMenuSubTrigger>Открыть с помощью</ContextMenuSubTrigger>
           <ContextMenuSubContent className="min-w-52">
             <ContextMenuItem
               onSelect={() =>
                 navigation.openFilePreview({ ...intent, viewer: "builtin" })
               }
             >
-              BB preview
+              Предпросмотр BB
             </ContextMenuItem>
             {matchingOpeners.map((opener) => (
               <ContextMenuItem
@@ -84,11 +84,11 @@ export function ExperimentalFileLinkMenu({
         disabled={!localTargets.canOpenExternally}
         onSelect={() => navigation.openFileExternally(intent)}
       >
-        Open externally
+        Открыть во внешнем приложении
       </ContextMenuItem>
       {absolutePath !== null && localTargets.fileOpenTargets.length > 0 ? (
         <ContextMenuSub>
-          <ContextMenuSubTrigger>Open in</ContextMenuSubTrigger>
+          <ContextMenuSubTrigger>Открыть в</ContextMenuSubTrigger>
           <ContextMenuSubContent className="min-w-52">
             {localTargets.fileOpenTargets.map((target) => (
               <ContextMenuItem
@@ -113,22 +113,22 @@ export function ExperimentalFileLinkMenu({
       <ContextMenuItem
         onSelect={() => {
           void copyToClipboardWithToast(absolutePath ?? intent.target.path, {
-            successMessage: "File path copied",
-            errorMessage: "Failed to copy file path",
+            successMessage: "Путь к файлу скопирован",
+            errorMessage: "Не удалось скопировать путь к файлу",
           });
         }}
       >
-        Copy file path
+        Скопировать путь к файлу
       </ContextMenuItem>
       <ContextMenuItem
         onSelect={() => {
           void copyToClipboardWithToast(getFileBasename(intent.target.path), {
-            successMessage: "File name copied",
-            errorMessage: "Failed to copy file name",
+            successMessage: "Имя файла скопировано",
+            errorMessage: "Не удалось скопировать имя файла",
           });
         }}
       >
-        Copy file name
+        Скопировать имя файла
       </ContextMenuItem>
     </>
   );

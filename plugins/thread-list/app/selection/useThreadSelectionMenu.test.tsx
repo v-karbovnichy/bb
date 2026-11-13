@@ -122,7 +122,7 @@ it("clears the multi-selection from its Clear selection item", async () => {
   renderSelection();
   fireEvent.contextMenu(screen.getByText("Second"));
   fireEvent.click(
-    await screen.findByRole("menuitem", { name: "Clear selection" }),
+    await screen.findByRole("menuitem", { name: "Снять выделение" }),
   );
   await waitFor(() => expect(screen.getByText("0 selected")).toBeTruthy());
 });

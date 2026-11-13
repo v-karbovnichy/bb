@@ -4,7 +4,7 @@ import type {
   ComposerDraftSnapshot,
 } from "@get-bb/plugin-sdk/app";
 
-export const CREATE_AUTOMATION_PROMPT = "Create a new bb automation to ";
+export const CREATE_AUTOMATION_PROMPT = "Создай новую автоматизацию bb, которая ";
 
 export function withCreateAutomationPrompt(
   draft: ComposerDraftSnapshot,
@@ -35,7 +35,7 @@ export const composerCustomization: ComposerCustomization = {
   plusMenu: [
     {
       id: "automation",
-      label: "Automation",
+      label: "Автоматизация",
       icon: "Repeat",
       run: ({ composer }) => composer.replace(withCreateAutomationPrompt),
     },

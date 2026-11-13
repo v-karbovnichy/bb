@@ -156,7 +156,7 @@ export function useQueuedMessageActions({
         );
         throw reportMutationError({
           error,
-          fallbackMessage: "Failed to send queued message",
+          fallbackMessage: "Не удалось отправить сообщение из очереди",
           lifecycleOperation: "send_queued_message",
         });
       }
@@ -203,7 +203,7 @@ export function useQueuedMessageActions({
       }
       showMutationErrorToast({
         error,
-        fallbackMessage: "Failed to update queued message",
+        fallbackMessage: "Не удалось обновить сообщение в очереди",
         lifecycleOperation: "update_queued_message",
       });
     } finally {
@@ -247,7 +247,7 @@ export function useQueuedMessageActions({
         .catch((error) => {
           showMutationErrorToast({
             error,
-            fallbackMessage: "Failed to delete queued message",
+            fallbackMessage: "Не удалось удалить сообщение из очереди",
             lifecycleOperation: "queue_message",
           });
         })
@@ -270,7 +270,7 @@ export function useQueuedMessageActions({
         .catch((error) => {
           showMutationErrorToast({
             error,
-            fallbackMessage: "Failed to reorder queued message",
+            fallbackMessage: "Не удалось изменить порядок сообщений в очереди",
             lifecycleOperation: "reorder_queued_message",
           });
         });
@@ -288,7 +288,7 @@ export function useQueuedMessageActions({
         .catch((error) => {
           showMutationErrorToast({
             error,
-            fallbackMessage: "Failed to group queued messages",
+            fallbackMessage: "Не удалось сгруппировать сообщения в очереди",
             lifecycleOperation: "set_queued_message_group_boundary",
           });
         });

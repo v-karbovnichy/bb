@@ -8,11 +8,11 @@ import { showMutationErrorToast } from "@/lib/mutation-errors";
 import { sdk } from "@/lib/sdk";
 import { hydrateAppUpdateStatus } from "../cache-owners/app-update-cache-owner";
 
-const APPLY_APP_UPDATE_ERROR_MESSAGE = "Couldn't start the bb update.";
+const APPLY_APP_UPDATE_ERROR_MESSAGE = "Не удалось запустить обновление bb.";
 const SET_AUTO_APP_UPDATE_ERROR_MESSAGE =
-  "Couldn't change automatic bb updates.";
+  "Не удалось изменить автоматические обновления bb.";
 const CANCEL_SCHEDULED_APP_UPDATE_ERROR_MESSAGE =
-  "Couldn't cancel the scheduled bb update.";
+  "Не удалось отменить запланированное обновление bb.";
 
 export function useApplyAppUpdate() {
   const queryClient = useQueryClient();

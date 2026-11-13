@@ -185,15 +185,15 @@ describe("ProjectDetailSettingsView", () => {
     );
     renderView();
     await screen.findByRole("heading", { name: "bb" });
-    expect(screen.getByText(/2 of 2 machines/)).toBeDefined();
+    expect(screen.getByText(/2 из 2 машины/)).toBeDefined();
     expect(screen.queryByRole("link", { name: sandbox.name })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Show all machines" }));
-    expect(screen.getByText(/3 of 3 machines/)).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Показать все машины" }));
+    expect(screen.getByText(/3 из 3 машины/)).toBeDefined();
     expect(screen.getByRole("link", { name: sandbox.name })).toBeDefined();
     fireEvent.click(
-      screen.getByRole("button", { name: "Show fewer machines" }),
+      screen.getByRole("button", { name: "Показать меньше машин" }),
     );
-    expect(screen.getByText(/2 of 2 machines/)).toBeDefined();
+    expect(screen.getByText(/2 из 2 машины/)).toBeDefined();
     expect(screen.queryByRole("link", { name: sandbox.name })).toBeNull();
   });
 
@@ -207,12 +207,12 @@ describe("ProjectDetailSettingsView", () => {
     expect(await screen.findByRole("heading", { name: "bb" })).toBeDefined();
     expect(screen.getByText("/Users/me/bb")).toBeDefined();
     expect(
-      screen.getByText("github.com/get-bb/bb · 1 of 3 machines · 1 thread"),
+      screen.getByText("github.com/get-bb/bb · 1 из 3 машины · 1 чат"),
     ).toBeDefined();
-    expect(screen.getAllByText("Not set up on this machine")).toHaveLength(2);
-    expect(screen.getByRole("button", { name: "Set up" })).toBeDefined();
+    expect(screen.getAllByText("Не настроено на этой машине")).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Настроить" })).toBeDefined();
     expect(
-      screen.getByRole("button", { name: "Offline" }).hasAttribute("disabled"),
+      screen.getByRole("button", { name: "Не в сети" }).hasAttribute("disabled"),
     ).toBe(true);
     expect(
       screen.getByRole("link", { name: "dev-vm" }).getAttribute("href"),
@@ -225,18 +225,18 @@ describe("ProjectDetailSettingsView", () => {
     ]);
 
     renderView();
-    fireEvent.click(await screen.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Настроить" }));
 
-    expect(await screen.findByText("Set up bb on dev-vm")).toBeDefined();
+    expect(await screen.findByText("Настроить bb на dev-vm")).toBeDefined();
   });
 
   it("opens the path dialog when the local machine has no checkout", async () => {
     stubSidebarBootstrapFetch([{ hostId: "host_remote", path: "/home/me/bb" }]);
 
     renderView();
-    fireEvent.click(await screen.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Настроить" }));
 
-    expect(await screen.findByText("Add project source")).toBeDefined();
+    expect(await screen.findByText("Добавить источник проекта")).toBeDefined();
   });
 
   it("refuses to remove the last checkout but removes an extra one", async () => {
@@ -248,13 +248,13 @@ describe("ProjectDetailSettingsView", () => {
 
     renderView();
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "dev-vm checkout actions" }),
+      await screen.findByRole("button", { name: "Действия с локальной копией на dev-vm" }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Remove checkout" }),
+      await screen.findByRole("menuitem", { name: "Удалить локальную копию" }),
     );
-    fireEvent.click(await screen.findByRole("button", { name: /^Remove/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /^Удалить/ }));
 
     await waitFor(() =>
       expect(sdk.projects.sources.delete).toHaveBeenCalledWith({
@@ -278,26 +278,26 @@ describe("ProjectDetailSettingsView", () => {
 
     renderView();
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "dev-vm checkout actions" }),
+      await screen.findByRole("button", { name: "Действия с локальной копией на dev-vm" }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Change folder" }),
+      await screen.findByRole("menuitem", { name: "Изменить папку" }),
     );
 
     expect(
       await screen.findByText(
-        "Browse to the project folder on dev-vm, or edit the path directly.",
+        "Перейдите в папку проекта на dev-vm, или укажите путь вручную.",
       ),
     ).toBeDefined();
     await waitFor(() =>
       expect(
         screen
-          .getByRole("button", { name: "Save path" })
+          .getByRole("button", { name: "Сохранить путь" })
           .hasAttribute("disabled"),
       ).toBe(false),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Save path" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сохранить путь" }));
 
     await waitFor(() =>
       expect(sdk.projects.sources.update).toHaveBeenCalledWith({
@@ -321,13 +321,13 @@ describe("ProjectDetailSettingsView", () => {
     renderView();
     fireEvent.pointerDown(
       await screen.findByRole("button", {
-        name: "old-laptop checkout actions",
+        name: "Действия с локальной копией на old-laptop",
       }),
       { button: 0 },
     );
 
     const changeFolder = await screen.findByRole("menuitem", {
-      name: "Change folder",
+      name: "Изменить папку",
     });
     expect(changeFolder.getAttribute("aria-disabled")).toBe("true");
   });
@@ -340,13 +340,13 @@ describe("ProjectDetailSettingsView", () => {
     renderView();
     fireEvent.pointerDown(
       await screen.findByRole("button", {
-        name: "MacBook Pro checkout actions",
+        name: "Действия с локальной копией на MacBook Pro",
       }),
       { button: 0 },
     );
 
     const remove = await screen.findByRole("menuitem", {
-      name: "Remove checkout",
+      name: "Удалить локальную копию",
     });
     expect(remove.getAttribute("aria-disabled")).toBe("true");
   });
@@ -382,7 +382,7 @@ describe("ProjectDetailSettingsView", () => {
     renderView();
 
     expect(
-      await screen.findByText("Couldn't load thread defaults."),
+      await screen.findByText("Не удалось загрузить параметры чатов по умолчанию."),
     ).toBeDefined();
     expect(screen.queryByText(/^No threads have run here yet/u)).toBeNull();
   });
@@ -395,10 +395,10 @@ describe("ProjectDetailSettingsView", () => {
 
     renderView();
     fireEvent.click(
-      await screen.findByRole("button", { name: "Delete project" }),
+      await screen.findByRole("button", { name: "Удалить проект" }),
     );
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove project" }),
+      await screen.findByRole("button", { name: "Удалить проект" }),
     );
 
     await waitFor(() =>
@@ -415,7 +415,7 @@ describe("ProjectDetailSettingsView", () => {
     renderView("proj_missing");
 
     expect(
-      await screen.findByText("This project no longer exists."),
+      await screen.findByText("Этого проекта больше нет."),
     ).toBeDefined();
   });
 
@@ -425,6 +425,6 @@ describe("ProjectDetailSettingsView", () => {
     renderView();
 
     expect(await screen.findByRole("alert")).toBeDefined();
-    expect(screen.queryByText("Loading…")).toBeNull();
+    expect(screen.queryByText("Загрузка…")).toBeNull();
   });
 });

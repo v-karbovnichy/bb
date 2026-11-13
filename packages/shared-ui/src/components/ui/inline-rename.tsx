@@ -57,21 +57,24 @@ export function renameError(error: unknown, kind: RenameSession["kind"]) {
       (kind === "section" && http.status === 409)
     ) {
       return {
-        error: "A section with this name already exists.",
+        error: "Раздел с таким названием уже существует.",
         cannotRetry: false,
       };
     }
     if (http.status === 404 || http.status === 410) {
-      return { error: "This item no longer exists.", cannotRetry: true };
+      return { error: "Этот элемент больше не существует.", cannotRetry: true };
     }
     if (http.status === 401 || http.status === 403) {
       return {
-        error: "You do not have permission to rename this item.",
+        error: "У вас нет прав на переименование этого элемента.",
         cannotRetry: true,
       };
     }
   }
-  return { error: "Could not save the name. Try again.", cannotRetry: false };
+  return {
+    error: "Не удалось сохранить название. Повторите попытку.",
+    cannotRetry: false,
+  };
 }
 
 export function useRenameController() {
@@ -107,9 +110,9 @@ export function useRenameController() {
       const error = shouldClear
         ? null
         : !value
-          ? "Name cannot be empty."
+          ? "Название не может быть пустым."
           : current.maxLength && value.length > current.maxLength
-            ? `Name must be ${current.maxLength} characters or fewer.`
+            ? `Название должно содержать не более ${current.maxLength} символов.`
             : null;
       if (error) {
         update({ ...current, error });

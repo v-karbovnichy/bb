@@ -385,38 +385,38 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
       route: "/",
       layout: null,
       desktop: [
-        "Open in split",
-        "Copy link",
+        "Открыть рядом",
+        "Скопировать ссылку",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
       compact: [
-        "Copy link",
-        "New thread in environment",
+        "Скопировать ссылку",
+        "Новый чат в окружении",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
@@ -435,37 +435,37 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
       route: "/",
       layout: null,
       desktop: [
-        "Open in split",
-        "Copy link",
+        "Открыть рядом",
+        "Скопировать ссылку",
         "---",
-        "Unpin",
-        "Mark read",
-        "Notify parent, Auto",
+        "Открепить",
+        "Отметить прочитанным",
+        "Уведомлять родителя, Auto",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "---",
         "Customize actions",
         "---",
-        "Unarchive",
-        "Delete",
+        "Вернуть из архива",
+        "Удалить",
         "---",
         "Notifications",
       ],
       compact: [
-        "Copy link",
+        "Скопировать ссылку",
         "---",
-        "Unpin",
-        "Mark read",
-        "Notify parent, Auto",
+        "Открепить",
+        "Отметить прочитанным",
+        "Уведомлять родителя, Auto",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "---",
         "Customize actions",
         "---",
-        "Unarchive",
-        "Delete",
+        "Вернуть из архива",
+        "Удалить",
         "---",
         "Notifications",
       ],
@@ -479,37 +479,37 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
       }),
       layout: null,
       desktop: [
-        "Copy link",
+        "Скопировать ссылку",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
       compact: [
-        "Copy link",
-        "New thread in environment",
+        "Скопировать ссылку",
+        "Новый чат в окружении",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
@@ -520,38 +520,38 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
       route: getThreadRoutePath({ projectId: "proj_a", threadId: "thr_other" }),
       layout: twoPaneLayout("pane_other"),
       desktop: [
-        "Focus split",
-        "Copy link",
+        "Перейти к соседней панели",
+        "Скопировать ссылку",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
       compact: [
-        "Copy link",
-        "New thread in environment",
+        "Скопировать ссылку",
+        "Новый чат в окружении",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
@@ -565,37 +565,37 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
       }),
       layout: twoPaneLayout("pane_target"),
       desktop: [
-        "Copy link",
+        "Скопировать ссылку",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
       compact: [
-        "Copy link",
-        "New thread in environment",
+        "Скопировать ссылку",
+        "Новый чат в окружении",
         "---",
-        "Pin",
-        "Mark unread",
+        "Закрепить",
+        "Отметить непрочитанным",
         "---",
-        "Rename",
-        "Regenerate title",
+        "Переименовать",
+        "Создать название заново",
         "Move to section",
         "---",
         "Customize actions",
         "---",
-        "Archive",
-        "Delete",
+        "Архивировать",
+        "Удалить",
         "---",
         "Notifications",
       ],
@@ -656,14 +656,14 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     renderSurface(surface, { thread: baseThread, requestRename });
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Pin" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Закрепить" }));
     await waitFor(() =>
       expect(sdkThreads.pin).toHaveBeenCalledWith({ threadId: baseThread.id }),
     );
 
     await surface.open();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Mark unread" }),
+      await screen.findByRole("menuitem", { name: "Отметить непрочитанным" }),
     );
     await waitFor(() =>
       expect(sdkThreads.markUnread).toHaveBeenCalledWith({
@@ -672,13 +672,13 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     );
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
     expect(requestRename).toHaveBeenCalledWith(baseThread.id);
     expect(defaultRequestRename).not.toHaveBeenCalled();
 
     await surface.open();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Regenerate title" }),
+      await screen.findByRole("menuitem", { name: "Создать название заново" }),
     );
     await waitFor(() =>
       expect(sdkThreads.experimental_regenerateTitle).toHaveBeenCalledWith({
@@ -687,7 +687,7 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     );
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Archive" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Архивировать" }));
     await waitFor(() =>
       expect(hostActions.requestArchiveThreads).toHaveBeenCalledWith([
         expect.objectContaining({ id: baseThread.id }),
@@ -695,7 +695,7 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     );
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Delete" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Удалить" }));
     await waitFor(() =>
       expect(hostActions.requestDeleteThreads).toHaveBeenCalledWith([
         expect.objectContaining({ id: baseThread.id }),
@@ -709,12 +709,12 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     );
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Copy link" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Скопировать ссылку" }));
     expect(copyToClipboardWithToast).toHaveBeenCalledWith(
       `${window.location.origin}/projects/proj_a/threads/thr_target`,
       {
-        successMessage: "Thread link copied",
-        errorMessage: "Failed to copy thread link",
+        successMessage: "Ссылка на чат скопирована",
+        errorMessage: "Не удалось скопировать ссылку на чат",
       },
     );
   });
@@ -722,7 +722,7 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
   it("falls back to bb's rename dialog when the surface has no editor", async () => {
     renderSurface(surface, { thread: baseThread });
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
     expect(defaultRequestRename).toHaveBeenCalledWith(baseThread.id);
   });
 
@@ -747,7 +747,7 @@ describe.each(SURFACES)("thread actions on the $name", (surface) => {
     renderSurface(surface, { thread: baseThread });
     await surface.open();
     const menu = await openMenu();
-    expect(within(menu).getByRole("menuitem", { name: "Pin" })).not.toBeNull();
+    expect(within(menu).getByRole("menuitem", { name: "Закрепить" })).not.toBeNull();
     expect(within(menu).queryByRole("menuitem", { name: "Boom" })).toBeNull();
     expect(error).toHaveBeenCalled();
   });
@@ -768,7 +768,7 @@ describe("thread action run containment", () => {
     });
     await waitFor(() => expect(error).toHaveBeenCalled());
     await surface.open();
-    expect(await screen.findByRole("menuitem", { name: "Pin" })).not.toBeNull();
+    expect(await screen.findByRole("menuitem", { name: "Закрепить" })).not.toBeNull();
   });
 });
 
@@ -884,7 +884,7 @@ describe("thread actions outside bb's own surfaces", () => {
     renderSurface(surface, { thread: baseThread }, { cached: false });
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Archive" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Архивировать" }));
     await waitFor(() =>
       expect(hostActions.requestArchiveThreads).toHaveBeenCalledWith([
         expect.objectContaining({ id: baseThread.id }),
@@ -892,7 +892,7 @@ describe("thread actions outside bb's own surfaces", () => {
     );
 
     await surface.open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Delete" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Удалить" }));
     await waitFor(() =>
       expect(hostActions.requestDeleteThreads).toHaveBeenCalledWith([
         expect.objectContaining({ id: baseThread.id }),
@@ -1203,15 +1203,15 @@ describe.each([
     renderSelection([readThread, unreadThread]);
     fireEvent.contextMenu(screen.getByText("Selection"));
     const menu = await openMenu();
-    expect(within(menu).getByText("2 threads selected")).toBeTruthy();
+    expect(within(menu).getByText("Выбрано чатов: 2")).toBeTruthy();
     expect(await menuRows()).toEqual([
       "---",
-      "Pin",
-      "Mark read",
+      "Закрепить",
+      "Отметить прочитанным",
       "Level for 2",
       "---",
-      "Archive 2 threads",
-      "Delete 2 threads",
+      "Архивировать чаты (2)",
+      "Удалить чаты (2)",
       "---",
       "Clear selection",
     ]);
@@ -1232,7 +1232,7 @@ describe.each([
     const open = () => fireEvent.contextMenu(screen.getByText("Selection"));
 
     open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Mark read" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Отметить прочитанным" }));
     await waitFor(() =>
       expect(sdkThreads.markRead.mock.calls).toEqual([
         [{ threadId: "thr_read" }],
@@ -1241,7 +1241,7 @@ describe.each([
     );
 
     open();
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Pin" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Закрепить" }));
     await waitFor(() =>
       expect(sdkThreads.pin.mock.calls).toEqual([[{ threadId: "thr_read" }]]),
     );
@@ -1257,7 +1257,7 @@ describe.each([
 
     open();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Archive 2 threads" }),
+      await screen.findByRole("menuitem", { name: "Архивировать чаты (2)" }),
     );
     await waitFor(() =>
       expect(hostActions.requestArchiveThreads).toHaveBeenCalledWith([
@@ -1268,7 +1268,7 @@ describe.each([
 
     open();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Delete 2 threads" }),
+      await screen.findByRole("menuitem", { name: "Удалить чаты (2)" }),
     );
     await waitFor(() =>
       expect(hostActions.requestDeleteThreads).toHaveBeenCalledWith([
@@ -1297,12 +1297,12 @@ describe.each([
     ]);
     fireEvent.contextMenu(screen.getByText("Selection"));
     const trigger = await screen.findByRole("menuitem", {
-      name: "Notify parent, Mixed",
+      name: "Уведомлять родителя, Смешанные настройки",
     });
     if (compact) fireEvent.click(trigger);
     else fireEvent.keyDown(trigger, { key: "ArrowRight" });
     expect(
-      await screen.findByText("Applies to 2 threads with a parent"),
+      await screen.findByText("Применяется к 2 чатам с родителем"),
     ).toBeTruthy();
     fireEvent.click(await screen.findByRole("menuitem", { name: "Off" }));
     await waitFor(() =>
@@ -1319,7 +1319,7 @@ describe.each([
     ]);
     fireEvent.contextMenu(screen.getByText("Selection"));
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Unarchive 2 threads" }),
+      await screen.findByRole("menuitem", { name: "Вернуть чаты из архива (2)" }),
     );
     await waitFor(() =>
       expect(sdkThreads.unarchive.mock.calls).toEqual([
@@ -1335,7 +1335,7 @@ describe.each([
     await openMenu();
     expect(screen.queryByText(/selected$/)).toBeNull();
     expect(
-      await screen.findByRole("menuitem", { name: "Rename" }),
+      await screen.findByRole("menuitem", { name: "Переименовать" }),
     ).toBeTruthy();
   });
 

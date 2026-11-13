@@ -61,9 +61,9 @@ function readMergeMethod(): PullRequestMergeMethod {
 }
 
 const MERGE_LOADING_TITLES: Record<PullRequestMergeMethod, string> = {
-  merge: "Merging pull request",
-  squash: "Squash merging pull request",
-  rebase: "Rebase merging pull request",
+  merge: "Объединение пул-реквеста",
+  squash: "Объединение пул-реквеста со сжатием",
+  rebase: "Объединение пул-реквеста с перебазированием",
 };
 
 interface ActionToastCopy {
@@ -73,8 +73,8 @@ interface ActionToastCopy {
 }
 
 const UPDATE_FAILURE = {
-  failure: "Failed to update pull request",
-  fallback: "Pull request was not updated",
+  failure: "Не удалось обновить пул-реквест",
+  fallback: "Пул-реквест не обновлён",
 };
 
 async function runWithToast(
@@ -115,12 +115,12 @@ export function usePullRequestActions(environmentId: string) {
     mergeMethod,
     markReady: () =>
       runWithToast(
-        { loading: "Marking pull request ready", ...UPDATE_FAILURE },
+        { loading: "Отмечаем пул-реквест готовым", ...UPDATE_FAILURE },
         () => markReady.mutate({ environmentId }),
       ),
     markDraft: () =>
       runWithToast(
-        { loading: "Converting pull request to draft", ...UPDATE_FAILURE },
+        { loading: "Преобразование пул-реквеста в черновик", ...UPDATE_FAILURE },
         () => markDraft.mutate({ environmentId }),
       ),
     merge: (method: PullRequestMergeMethod) => {
@@ -129,8 +129,8 @@ export function usePullRequestActions(environmentId: string) {
       return runWithToast(
         {
           loading: MERGE_LOADING_TITLES[method],
-          failure: "Failed to merge pull request",
-          fallback: "Pull request was not merged",
+          failure: "Не удалось объединить пул-реквест",
+          fallback: "Пул-реквест не объединён",
         },
         () => merge.mutate({ environmentId, method }),
       );

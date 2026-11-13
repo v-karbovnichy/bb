@@ -466,15 +466,15 @@ async function selectPromptAction(label: string) {
     () =>
       new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
   );
-  const trigger = screen.getByRole("button", { name: "Prompt actions" });
+  const trigger = screen.getByRole("button", { name: "Действия с сообщением" });
   fireEvent.pointerDown(trigger, { button: 0 });
-  const menu = await screen.findByRole("menu", { name: "Prompt actions" });
+  const menu = await screen.findByRole("menu", { name: "Действия с сообщением" });
   const menuItem = within(menu).getByRole("menuitem", { name: label });
   fireEvent.click(menuItem);
   await waitFor(() =>
-    expect(screen.queryByRole("menu", { name: "Prompt actions" })).toBeNull(),
+    expect(screen.queryByRole("menu", { name: "Действия с сообщением" })).toBeNull(),
   );
-  if (label !== "Attach files") {
+  if (label !== "Прикрепить файлы") {
     await waitFor(() =>
       expect(document.activeElement).toBe(getPromptEditorElement()),
     );
@@ -774,10 +774,10 @@ describe("ComposerBox composer popups", () => {
 
   async function openPopupFromMenu() {
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Prompt actions" }),
+      screen.getByRole("button", { name: "Действия с сообщением" }),
       { button: 0 },
     );
-    const menu = await screen.findByRole("menu", { name: "Prompt actions" });
+    const menu = await screen.findByRole("menu", { name: "Действия с сообщением" });
     fireEvent.click(
       within(menu).getByRole("menuitem", { name: "Saved prompts" }),
     );
@@ -855,26 +855,26 @@ describe("ComposerBox composer popups", () => {
     registerPopup();
     renderPromptBox("@");
     await waitForPromptFocus();
-    await screen.findByText("Type to search mentions");
+    await screen.findByText("Введите текст для поиска упоминаний");
     await openPopupFromMenu();
     const search = await screen.findByRole("textbox", {
       name: "Search saved prompts",
     });
     await waitFor(() => expect(document.activeElement).toBe(search));
-    expect(screen.queryByText("Type to search mentions")).toBeNull();
+    expect(screen.queryByText("Введите текст для поиска упоминаний")).toBeNull();
     fireEvent.keyDown(search, { key: "Escape" });
     await waitForPromptFocus();
     expect(screen.queryByRole("dialog", { name: "Saved prompts" })).toBeNull();
-    expect(screen.queryByText("Type to search mentions")).toBeNull();
+    expect(screen.queryByText("Введите текст для поиска упоминаний")).toBeNull();
     const editor = (getPromptEditorElement() as TiptapEditorHTMLElement).editor;
     if (!editor) throw new Error("Composer editor is missing");
     act(() => {
       editor.commands.setContent("next @");
       editor.commands.setTextSelection(7);
     });
-    await screen.findByText("Type to search mentions");
+    await screen.findByText("Введите текст для поиска упоминаний");
     fireEvent.keyDown(editor.view.dom, { key: "Escape" });
-    expect(screen.queryByText("Type to search mentions")).toBeNull();
+    expect(screen.queryByText("Введите текст для поиска упоминаний")).toBeNull();
   });
 
   it("honors scope, rejects another plugin's close, and closes on plugin removal", async () => {
@@ -1003,14 +1003,14 @@ describe("ComposerBox controlled value sync", () => {
     const editor = getPromptEditorElement();
 
     expect(screen.getByRole("button", { name: "Plugin action" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Prompt actions" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Действия с сообщением" })).toBeTruthy();
 
     view.rerender(
       <ComposerBox {...props} suppressPluginComposerCustomizations />,
     );
 
     expect(screen.queryByRole("button", { name: "Plugin action" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Prompt actions" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Действия с сообщением" })).toBeTruthy();
     expect(getPromptEditorElement()).toBe(editor);
 
     view.rerender(
@@ -1018,7 +1018,7 @@ describe("ComposerBox controlled value sync", () => {
     );
 
     expect(screen.getByRole("button", { name: "Plugin action" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Prompt actions" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Действия с сообщением" })).toBeTruthy();
     expect(getPromptEditorElement()).toBe(editor);
   });
 
@@ -1505,7 +1505,7 @@ describe("ComposerBox controlled value sync", () => {
       expect(document.activeElement).toBe(editor);
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Start voice input" }),
+        screen.getByRole("button", { name: "Начать голосовой ввод" }),
       );
 
       expect(start).toHaveBeenCalledOnce();
@@ -1826,7 +1826,7 @@ describe("ComposerBox programmatic submit", () => {
     });
 
     fireEvent.click(screen.getByRole("button", { name: "Plugin submit" }));
-    await waitFor(() => expect(rejected).toEqual(["Type a message first."]));
+    await waitFor(() => expect(rejected).toEqual(["Сначала введите сообщение."]));
 
     fireEvent.keyDown(getPromptEditorElement(), { key: "Enter" });
     await waitFor(() => expect(steer).toHaveBeenCalledTimes(1));
@@ -2101,7 +2101,7 @@ describe("ComposerBox submit shortcuts", () => {
           expect(onSubmit).toHaveBeenCalledTimes(value ? 1 : 0);
           expect(onModifierSubmit).toHaveBeenCalledOnce();
           if (!value) {
-            fireEvent.click(screen.getByRole("button", { name: "Stop run" }));
+            fireEvent.click(screen.getByRole("button", { name: "Остановить выполнение" }));
             expect(onStop).toHaveBeenCalledOnce();
           }
         },
@@ -2187,12 +2187,12 @@ describe("ComposerBox submit shortcuts", () => {
         const openMenu = () => {
           if (!isTouch) {
             fireEvent.pointerDown(
-              screen.getByRole("button", { name: "Send options" }),
+              screen.getByRole("button", { name: "Параметры отправки" }),
               { button: 0, ctrlKey: false, pointerType: "mouse" },
             );
             return;
           }
-          const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+          const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
           vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
             new DOMRect(0, 0, 40, 40),
           );
@@ -2212,12 +2212,12 @@ describe("ComposerBox submit shortcuts", () => {
         expect(
           screen.getAllByRole("menuitem").map((item) => item.textContent),
         ).toEqual([
-          swapSubmitActions ? "Queue" : "Steer",
+          swapSubmitActions ? "В очередь" : "Уточнить",
           "Save draft",
           "Send later",
         ]);
         const alternateAction = screen.getByRole("menuitem", {
-          name: swapSubmitActions ? "Queue" : "Steer",
+          name: swapSubmitActions ? "В очередь" : "Уточнить",
         });
         expect(
           alternateAction.querySelector(
@@ -2253,11 +2253,11 @@ describe("ComposerBox submit shortcuts", () => {
         expect(screen.queryByRole("menuitem")).toBeNull();
         expect(
           screen
-            .getByRole("button", { name: "Submit (Enter)" })
+            .getByRole("button", { name: "Отправить (Enter)" })
             .hasAttribute("disabled"),
         ).toBe(true);
         expect(
-          screen.queryByRole("button", { name: "Send options" }),
+          screen.queryByRole("button", { name: "Параметры отправки" }),
         ).toBeNull();
         if (isTouch) {
           openMenu();
@@ -2297,9 +2297,9 @@ describe("ComposerBox submit shortcuts", () => {
           />,
         );
         expect(
-          screen.queryByRole("button", { name: "Send options" }),
+          screen.queryByRole("button", { name: "Параметры отправки" }),
         ).toBeNull();
-        const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+        const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
         vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
           new DOMRect(0, 0, 40, 40),
         );
@@ -2651,7 +2651,7 @@ describe("ComposerBox size controls", () => {
     await waitForPromptFocus();
 
     const collapseButton = screen.getByRole("button", {
-      name: "Collapse prompt box",
+      name: "Свернуть поле ввода",
     });
     expect(collapseButton.classList).toContain("text-subtle-foreground/75");
     expect(collapseButton.classList).toContain("w-6");
@@ -2720,7 +2720,7 @@ describe("ComposerBox plugin composer actions", () => {
       screen
         .getByRole("button", { name: "Zeta action" })
         .compareDocumentPosition(
-          screen.getByRole("button", { name: "Start voice input" }),
+          screen.getByRole("button", { name: "Начать голосовой ввод" }),
         ) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).not.toBe(0);
   });
@@ -2774,7 +2774,7 @@ describe("ComposerBox plugin composer actions", () => {
       screen.getByRole("button", { name: "Still available" }),
     ).toBeTruthy();
     expect(screen.queryByText(/plugin actions crashed/u)).toBeNull();
-    expect(screen.getByRole("button", { name: "Submit (Enter)" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Отправить (Enter)" })).toBeTruthy();
     await waitFor(() => {
       expect(getPromptEditorElement().getAttribute("contenteditable")).toBe(
         "true",
@@ -2852,7 +2852,7 @@ describe("ComposerBox plugin composer actions", () => {
     expect(
       screen.getByRole("button", { name: "Toggle lock (thread)" }),
     ).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Prompt actions" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Действия с сообщением" })).toBeTruthy();
     await waitFor(() => {
       expect(document.querySelector(".thread-rule")?.textContent).toBe(
         "Thread draft",
@@ -2870,7 +2870,7 @@ describe("ComposerBox plugin composer actions", () => {
           ?.getAttribute("aria-busy"),
       ).toBe("true");
     });
-    expect(screen.getByRole("button", { name: "Submit (Enter)" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Отправить (Enter)" })).toBeTruthy();
 
     fireEvent.click(
       screen.getByRole("button", { name: "Toggle lock (thread)" }),
@@ -2974,7 +2974,7 @@ describe("ComposerBox plugin composer actions", () => {
     );
 
     expect(screen.queryByRole("button", { name: "Plugin action" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Submit (Enter)" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Отправить (Enter)" })).toBeTruthy();
   });
 });
 
@@ -3043,17 +3043,17 @@ describe("ComposerBox compact layout", () => {
       compact: { when: "always", placeholder: "Ask a follow-up" },
     });
     const { rerender } = render(<ComposerBox {...props} />);
-    expect(screen.getByRole("img", { name: "2 attachments" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: /Remove / })).toBeNull();
+    expect(screen.getByRole("img", { name: "2 вложения" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /Удалить / })).toBeNull();
     expect(
       document.querySelector("[data-promptbox-attachments] button"),
     ).toBeNull();
     rerender(<ComposerBox {...props} compact={undefined} />);
     expect(
-      screen.getByRole("button", { name: "Remove photo.png" }),
+      screen.getByRole("button", { name: "Удалить photo.png" }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("button", { name: "Remove notes.txt" }),
+      screen.getByRole("button", { name: "Удалить notes.txt" }),
     ).toBeTruthy();
     rerender(
       <ComposerBox
@@ -3061,7 +3061,7 @@ describe("ComposerBox compact layout", () => {
         attachments={{ ...props.attachments, items: items.slice(1) }}
       />,
     );
-    expect(screen.getByRole("img", { name: "1 attachment" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "1 вложение" })).toBeTruthy();
     rerender(
       <ComposerBox
         {...props}
@@ -3088,12 +3088,12 @@ describe("ComposerBox compact layout", () => {
       );
 
       const submit = screen.getByRole("button", {
-        name: "Uploading attachments...",
+        name: "Загрузка вложений...",
       });
       expect(submit.hasAttribute("disabled")).toBe(true);
       expect(submit.querySelector('[data-icon="Loading"]')).not.toBeNull();
       expect(
-        screen.getByRole("button", { name: "Start voice input" }),
+        screen.getByRole("button", { name: "Начать голосовой ввод" }),
       ).toBeTruthy();
     } finally {
       restoreMatchMedia();
@@ -3212,15 +3212,15 @@ describe("ComposerBox compact layout", () => {
 
     const form = document.querySelector("[data-promptbox]");
     expect(form?.getAttribute("data-promptbox-compact")).toBe("");
-    expect(screen.getByRole("button", { name: "Submit (Enter)" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Prompt actions" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Отправить (Enter)" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Действия с сообщением" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Model selector" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Attach files" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Прикрепить файлы" })).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Start voice input" }),
+      screen.getByRole("button", { name: "Начать голосовой ввод" }),
     ).toBeTruthy();
     expect(
-      screen.queryByRole("button", { name: "Collapse prompt box" }),
+      screen.queryByRole("button", { name: "Свернуть поле ввода" }),
     ).toBeNull();
     expect(getPromptEditorElement().getAttribute("data-placeholder")).toBe(
       "Ask a follow-up",
@@ -3248,14 +3248,14 @@ describe("ComposerBox compact layout", () => {
       );
 
       const voiceButton = screen.getByRole("button", {
-        name: "Start voice input",
+        name: "Начать голосовой ввод",
       });
       const submitGroup = document.querySelector(
         "[data-promptbox-submit-group]",
       );
       expect(submitGroup?.contains(voiceButton)).toBe(true);
       expect(
-        screen.queryByRole("button", { name: "Submit (Enter)" }),
+        screen.queryByRole("button", { name: "Отправить (Enter)" }),
       ).toBeNull();
 
       expect(
@@ -3292,9 +3292,9 @@ describe("ComposerBox compact layout", () => {
         );
 
         const voiceButton = screen.getByRole("button", {
-          name: "Start voice input",
+          name: "Начать голосовой ввод",
         });
-        const stopButton = screen.getByRole("button", { name: "Stop run" });
+        const stopButton = screen.getByRole("button", { name: "Остановить выполнение" });
         expect(voiceButton.hasAttribute("disabled")).toBe(false);
         fireEvent.pointerDown(voiceButton, {
           button: 0,
@@ -3336,10 +3336,10 @@ describe("ComposerBox compact layout", () => {
         );
 
         const voiceButton = screen.getByRole("button", {
-          name: "Start voice input",
+          name: "Начать голосовой ввод",
         });
         expect(
-          screen.getByRole("button", { name: "Submit (Enter)" }),
+          screen.getByRole("button", { name: "Отправить (Enter)" }),
         ).toBeTruthy();
         fireEvent.pointerDown(voiceButton, {
           button: 0,
@@ -3374,7 +3374,7 @@ describe("ComposerBox compact layout", () => {
         />,
       );
 
-      const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+      const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
       vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
         new DOMRect(0, 0, 40, 40),
       );
@@ -3402,7 +3402,7 @@ describe("ComposerBox compact layout", () => {
       );
 
       const replacement = screen.getByRole("button", {
-        name: "Start voice input",
+        name: "Начать голосовой ввод",
       });
       expect(replacement).not.toBe(submit);
 
@@ -3429,7 +3429,7 @@ describe("ComposerBox compact layout", () => {
           compact: { when: "always", placeholder: "Ask a follow-up" },
         });
         const { rerender } = render(<ComposerBox {...props} />);
-        const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+        const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
         vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
           new DOMRect(0, 0, 40, 40),
         );
@@ -3452,7 +3452,7 @@ describe("ComposerBox compact layout", () => {
             submission={{ isRunning: true, onStop }}
           />,
         );
-        const stop = screen.getByRole("button", { name: "Stop run" });
+        const stop = screen.getByRole("button", { name: "Остановить выполнение" });
         expect(stop).not.toBe(submit);
         fireEvent.click(stop, { detail: 1 });
         expect(onStop).not.toHaveBeenCalled();
@@ -3479,7 +3479,7 @@ describe("ComposerBox compact layout", () => {
           })}
         />,
       );
-      const stop = screen.getByRole("button", { name: "Stop run" });
+      const stop = screen.getByRole("button", { name: "Остановить выполнение" });
       if (input !== "keyboard") {
         fireEvent.pointerDown(stop, { button: 0, pointerType: input });
         fireEvent.pointerUp(stop, { button: 0, pointerType: input });
@@ -3503,7 +3503,7 @@ describe("ComposerBox compact layout", () => {
       );
 
       const voiceButton = screen.getByRole("button", {
-        name: "Start voice input",
+        name: "Начать голосовой ввод",
       });
       const touch = {
         button: 0,
@@ -3535,7 +3535,7 @@ describe("ComposerBox compact layout", () => {
       );
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Start voice input" }),
+        screen.getByRole("button", { name: "Начать голосовой ввод" }),
         {
           detail: 0,
         },
@@ -3565,7 +3565,7 @@ describe("ComposerBox compact layout", () => {
       );
 
       expect(document.activeElement).not.toBe(getPromptEditorElement());
-      const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+      const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
       expect(
         fireEvent.pointerDown(submit, {
           button: 0,
@@ -3596,7 +3596,7 @@ describe("ComposerBox compact layout", () => {
 
       const editor = getPromptEditorElement();
       act(() => editor.focus());
-      const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+      const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
       fireEvent.pointerDown(submit, { button: 0, pointerType: "touch" });
       fireEvent.pointerUp(submit, { button: 0, pointerType: "touch" });
 
@@ -3626,7 +3626,7 @@ describe("ComposerBox compact layout", () => {
     );
     const editor = getPromptEditorElement();
     act(() => editor.focus());
-    const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+    const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
     vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
       new DOMRect(0, 0, 40, 40),
     );
@@ -3684,7 +3684,7 @@ describe("ComposerBox compact layout", () => {
     try {
       render(<Harness />);
       act(() => getPromptEditorElement().focus());
-      const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+      const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
       vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
         new DOMRect(0, 0, 40, 40),
       );
@@ -3702,7 +3702,7 @@ describe("ComposerBox compact layout", () => {
       expect(document.activeElement).not.toBe(getPromptEditorElement());
 
       const donut = screen.getByRole("button", {
-        name: "Context window 10% used",
+        name: "Окно контекста: использовано 10%",
       });
       fireEvent.click(donut, { detail: 1 });
       expect(
@@ -3728,7 +3728,7 @@ describe("ComposerBox compact layout", () => {
           {...createPromptBoxProps({ value: "Keep this draft", onSubmit })}
         />,
       );
-      const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+      const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
       vi.spyOn(submit, "getBoundingClientRect").mockReturnValue(
         new DOMRect(0, 0, 40, 40),
       );
@@ -3771,7 +3771,7 @@ describe("ComposerBox compact layout", () => {
 
     await waitForPromptFocus();
     const editor = getPromptEditorElement();
-    const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+    const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
 
     expect(
       fireEvent.pointerDown(submit, { button: 0, pointerType: "touch" }),
@@ -3792,7 +3792,7 @@ describe("ComposerBox compact layout", () => {
 
     await waitForPromptFocus();
     const editor = getPromptEditorElement();
-    const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+    const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
 
     editor.dispatchEvent(new FocusEvent("blur"));
     expect(document.activeElement).toBe(editor);
@@ -3821,7 +3821,7 @@ describe("ComposerBox compact layout", () => {
 
     const editor = getPromptEditorElement();
     act(() => editor.focus());
-    const submit = screen.getByRole("button", { name: "Submit (Enter)" });
+    const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
 
     expect(
       fireEvent.pointerDown(submit, { button: 0, pointerType: "touch" }),
@@ -3893,8 +3893,8 @@ describe("ComposerBox compact layout", () => {
     );
 
     const submitGroup = document.querySelector("[data-promptbox-submit-group]");
-    const submit = screen.getByRole("button", { name: "Submit (Enter)" });
-    const voice = screen.getByRole("button", { name: "Start voice input" });
+    const submit = screen.getByRole("button", { name: "Отправить (Enter)" });
+    const voice = screen.getByRole("button", { name: "Начать голосовой ввод" });
 
     expect(submitGroup?.contains(submit)).toBe(true);
     expect(submitGroup?.contains(voice)).toBe(false);
@@ -4071,7 +4071,7 @@ describe("ComposerBox compact layout", () => {
       const form = document.querySelector("[data-promptbox]");
       expect(form?.hasAttribute("data-promptbox-compact")).toBe(true);
       expect(
-        screen.getByRole("button", { name: "Send voice input" }),
+        screen.getByRole("button", { name: "Отправить голосовое сообщение" }),
       ).toBeTruthy();
       expect(screen.queryByRole("textbox")).toBeNull();
 
@@ -4128,12 +4128,12 @@ describe("ComposerBox compact layout", () => {
     expect(waveform).toBeTruthy();
     expect(actionRow?.contains(waveform)).toBe(true);
     const confirm = screen.getByRole("button", {
-      name: "Stop and add to draft",
+      name: "Остановить и добавить в черновик",
     });
     const cancelButton = screen.getByRole("button", {
-      name: "Cancel recording",
+      name: "Отменить запись",
     });
-    const sendButton = screen.getByRole("button", { name: "Send voice input" });
+    const sendButton = screen.getByRole("button", { name: "Отправить голосовое сообщение" });
     const voiceControls = document.querySelector(
       "[data-promptbox-voice-controls]",
     );
@@ -4233,10 +4233,10 @@ describe("ComposerBox compact layout", () => {
       expect(voiceControls?.hasAttribute("inert")).toBe(true);
       expect(voiceControls?.getAttribute("aria-hidden")).toBe("true");
       expect(
-        voiceControls?.querySelector('[aria-label="Cancel transcription"]'),
+        voiceControls?.querySelector('[aria-label="Отменить расшифровку"]'),
       ).toBeTruthy();
       expect(
-        screen.queryByRole("button", { name: "Cancel transcription" }),
+        screen.queryByRole("button", { name: "Отменить расшифровку" }),
       ).toBeNull();
 
       await act(async () => {
@@ -4263,7 +4263,7 @@ describe("ComposerBox compact layout", () => {
         <ComposerBox {...createPromptBoxProps({ voice: recordingVoice })} />,
       );
 
-      fireEvent.click(screen.getByRole("button", { name: "Cancel recording" }));
+      fireEvent.click(screen.getByRole("button", { name: "Отменить запись" }));
       expect(cancel).toHaveBeenCalledOnce();
 
       view.rerender(
@@ -4284,13 +4284,13 @@ describe("ComposerBox compact layout", () => {
       expect(voiceControls?.hasAttribute("inert")).toBe(true);
       expect(voiceControls?.getAttribute("aria-hidden")).toBe("true");
       expect(
-        voiceControls?.querySelector('[aria-label="Cancel recording"]'),
+        voiceControls?.querySelector('[aria-label="Отменить запись"]'),
       ).toBeTruthy();
       expect(
-        voiceControls?.querySelector('[aria-label="Cancel transcription"]'),
+        voiceControls?.querySelector('[aria-label="Отменить расшифровку"]'),
       ).toBeNull();
       expect(
-        screen.queryByRole("button", { name: "Cancel recording" }),
+        screen.queryByRole("button", { name: "Отменить запись" }),
       ).toBeNull();
 
       await act(async () => {
@@ -4433,9 +4433,9 @@ describe("ComposerBox mention triggers", () => {
     await waitFor(() =>
       expect(onMentionQueryChange).toHaveBeenLastCalledWith(null, null),
     );
-    expect(screen.queryByText("No matching mentions")).toBeNull();
+    expect(screen.queryByText("Совпадений не найдено")).toBeNull();
     expect(
-      screen.queryByRole("button", { name: "Close suggestions" }),
+      screen.queryByRole("button", { name: "Закрыть подсказки" }),
     ).toBeNull();
     expect(getPromptEditorElement().textContent).toBe(text);
 
@@ -4449,7 +4449,7 @@ describe("ComposerBox mention triggers", () => {
       onMentionQueryChange.mock.calls.every(([query]) => query === null),
     ).toBe(true);
     expect(
-      screen.queryByRole("button", { name: "Close suggestions" }),
+      screen.queryByRole("button", { name: "Закрыть подсказки" }),
     ).toBeNull();
     expect(latestChange(changes)?.mentions).toEqual([]);
   });
@@ -4460,7 +4460,7 @@ describe("ComposerBox mention triggers", () => {
 
     await focusPromptEnd(promptBoxRef);
 
-    expect(await screen.findByText("No matching mentions")).not.toBeNull();
+    expect(await screen.findByText("Совпадений не найдено")).not.toBeNull();
     expect(onMentionQueryChange).toHaveBeenLastCalledWith("unlisted", "@");
   });
 
@@ -4519,7 +4519,7 @@ describe("ComposerBox mention triggers", () => {
     await focusPromptEnd(promptBoxRef);
 
     expect(
-      await screen.findByTitle("Attachment: Design notes.txt"),
+      await screen.findByTitle("Вложение: Design notes.txt"),
     ).not.toBeNull();
   });
 
@@ -4606,7 +4606,7 @@ describe("ComposerBox mention triggers", () => {
       expect(onMentionQueryChange).toHaveBeenLastCalledWith(null, null),
     );
     expect(typeaheadMenu()).toBeNull();
-    expect(screen.queryByText("No matching mentions")).toBeNull();
+    expect(screen.queryByText("Совпадений не найдено")).toBeNull();
   });
 
   it("keeps an escaped mention closed when deleting back through its query", async () => {
@@ -4643,8 +4643,8 @@ describe("ComposerBox mention triggers", () => {
     });
 
     await focusPromptEnd(promptBoxRef);
-    await screen.findByTitle("Attachment: Pasted text.txt");
-    expect(screen.queryByTitle("Attachment: photo.png")).toBeNull();
+    await screen.findByTitle("Вложение: Pasted text.txt");
+    expect(screen.queryByTitle("Вложение: photo.png")).toBeNull();
 
     fireEvent.keyDown(getPromptEditorElement(), { key: "Enter" });
 
@@ -4691,7 +4691,7 @@ describe("ComposerBox mention triggers", () => {
     });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: /^Open .*spec\.txt/u }),
+      await screen.findByRole("button", { name: /^Открыть .*spec\.txt/u }),
     );
 
     expect(openAttachment).toHaveBeenCalledWith({
@@ -4725,7 +4725,7 @@ describe("ComposerBox mention triggers", () => {
       });
 
       const closeButton = await screen.findByRole("button", {
-        name: "Close suggestions",
+        name: "Закрыть подсказки",
       });
       expect(closeButton.classList).toContain("size-11");
       expect(closeButton.parentElement?.classList).toContain("h-11");
@@ -4777,7 +4777,7 @@ describe("ComposerBox mention triggers", () => {
       render(<RetriggerHarness />);
       await screen.findByRole("button", { name: /Fix login bug/u });
       fireEvent.click(
-        screen.getByRole("button", { name: "Close suggestions" }),
+        screen.getByRole("button", { name: "Закрыть подсказки" }),
       );
 
       fireEvent.click(
@@ -5044,15 +5044,14 @@ describe("ComposerBox mention triggers", () => {
         .getAllByRole("button")
         .map((button) => button.getAttribute("title")),
     ).toEqual([
-      "Shared context · parent",
-      "Shared context · same environment",
+      "Shared context · родительский чат",
+      "Shared context · общая среда",
       "Shared context",
-      "Shared context · child thread",
+      "Shared context · дочерний чат",
     ]);
-    expect(within(menu).getByText("parent")).toBeTruthy();
-    expect(within(menu).getByText("child thread")).toBeTruthy();
-    expect(within(menu).getByText("same environment")).toBeTruthy();
-    expect(within(menu).getByText("same env").className).toContain("hidden");
+    expect(within(menu).getByText("родительский чат")).toBeTruthy();
+    expect(within(menu).getByText("дочерний чат")).toBeTruthy();
+    expect(within(menu).getByText("общая среда")).toBeTruthy();
   });
 
   it("keeps path-first mention results in keyboard navigation order", async () => {
@@ -5407,7 +5406,7 @@ describe("ComposerBox prompt actions", () => {
     });
 
     await focusPromptEnd(promptBoxRef);
-    fireEvent.click(screen.getByRole("button", { name: "Remove b.txt" }));
+    fireEvent.click(screen.getByRole("button", { name: "Удалить b.txt" }));
     await waitFor(() =>
       expect(attachmentPaths()).toEqual(["uploads/a.txt", "uploads/c.txt"]),
     );
@@ -5810,18 +5809,18 @@ describe("ComposerBox prompt actions", () => {
       .spyOn(attachmentInput, "click")
       .mockImplementation(() => {});
 
-    await selectPromptAction("Attach files");
+    await selectPromptAction("Прикрепить файлы");
 
     expect(clickFileInput).toHaveBeenCalledOnce();
     await waitFor(() =>
-      expect(screen.queryByRole("menu", { name: "Prompt actions" })).toBeNull(),
+      expect(screen.queryByRole("menu", { name: "Действия с сообщением" })).toBeNull(),
     );
   });
 
   it("inserts the skills trigger with no trailing space", async () => {
     const { changes, onCommandQueryChange } = renderPromptBox("");
 
-    await selectPromptAction("Skills");
+    await selectPromptAction("Навыки");
 
     await waitFor(() => expect(latestValue(changes)).toBe("/"));
     await waitFor(() =>
@@ -5833,7 +5832,7 @@ describe("ComposerBox prompt actions", () => {
   it("does not duplicate the skills trigger when it is already active", async () => {
     const { changes } = renderPromptBox("/");
 
-    await selectPromptAction("Skills");
+    await selectPromptAction("Навыки");
 
     expect(changes).toHaveLength(0);
   });
@@ -5842,7 +5841,7 @@ describe("ComposerBox prompt actions", () => {
     const { changes, promptBoxRef } = renderPromptBox("");
 
     await focusPromptEnd(promptBoxRef);
-    await selectPromptAction("Goal");
+    await selectPromptAction("Цель");
 
     await waitFor(() => expect(latestValue(changes)).toBe("/goal "));
     await waitFor(() =>
@@ -5869,10 +5868,10 @@ describe("ComposerBox prompt actions", () => {
     const { changes, promptBoxRef } = renderPromptBox("");
 
     await focusPromptEnd(promptBoxRef);
-    await selectPromptAction("Automation");
+    await selectPromptAction("Автоматизация");
 
     await waitFor(() =>
-      expect(latestValue(changes)).toBe("Create a new bb automation to "),
+      expect(latestValue(changes)).toBe("Создай новую автоматизацию bb, которая "),
     );
     expect(latestChange(changes)?.mentions).toEqual([]);
   });
@@ -5888,7 +5887,7 @@ describe("ComposerBox prompt actions", () => {
     });
 
     await focusPromptEnd(promptBoxRef);
-    await selectPromptAction("Plan");
+    await selectPromptAction("План");
 
     await waitFor(() => expect(latestValue(changes)).toBe("/plan fix @bb"));
     expect(latestChange(changes)?.mentions).toEqual([
@@ -5917,7 +5916,7 @@ describe("ComposerBox prompt actions", () => {
     const { changes, promptBoxRef } = renderPromptBox("");
 
     await focusPromptEnd(promptBoxRef);
-    await selectPromptAction("Plan");
+    await selectPromptAction("План");
     await waitFor(() => expect(latestValue(changes)).toBe("/plan "));
     await waitForPromptFocus();
     await act(async () => {
@@ -6013,7 +6012,7 @@ describe("ComposerBox prompt actions", () => {
     const { changes, promptBoxRef } = renderPromptBox("");
 
     await focusPromptEnd(promptBoxRef);
-    await selectPromptAction("Plan");
+    await selectPromptAction("План");
     await waitFor(() => expect(latestValue(changes)).toBe("/plan "));
     await waitForPromptFocus();
 
@@ -6022,7 +6021,7 @@ describe("ComposerBox prompt actions", () => {
     });
     await waitFor(() => expect(latestValue(changes)).toBe("/plan clean up"));
 
-    await selectPromptAction("Goal");
+    await selectPromptAction("Цель");
 
     await waitFor(() => expect(latestValue(changes)).toBe("/goal clean up"));
     expect(latestChange(changes)?.mentions).toEqual([
@@ -6511,7 +6510,7 @@ describe("thread URL clipboard paste", () => {
         view.rerender(content(url));
         if (action === "submit")
           fireEvent.click(
-            screen.getByRole("button", { name: "Submit (Enter)" }),
+            screen.getByRole("button", { name: "Отправить (Enter)" }),
           );
         else view.rerender(content("Replacement draft"));
         const expected = action === "submit" ? url : "Replacement draft";

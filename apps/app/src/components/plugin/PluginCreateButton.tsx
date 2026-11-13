@@ -12,10 +12,10 @@ export function PluginCreateButton({
     <CreateWithTemplatesButton
       kind="plugin"
       compactWhenNarrow
-      label="New plugin"
+      label="Новый плагин"
       menuActions={[
         {
-          label: "Install from source",
+          label: "Установить из источника",
           icon: "Download",
           onSelect: onInstallFromSource,
         },

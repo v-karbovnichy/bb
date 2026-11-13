@@ -161,7 +161,7 @@ function renderBanner({
 
 function rowText(): string {
   const card = screen.getByRole("region", {
-    name: "Thread context before sending",
+    name: "Контекст чата перед отправкой",
   });
   return card.firstElementChild?.textContent ?? "";
 }
@@ -184,7 +184,7 @@ describe("thread context segments", () => {
     });
 
     expect(
-      screen.queryByRole("button", { name: "Parent Plan the release" }),
+      screen.queryByRole("button", { name: "Родительский чат Plan the release" }),
     ).toBeNull();
     expect(screen.getByText(/Plugin summary demo\/status/)).toBeTruthy();
   });
@@ -196,12 +196,12 @@ describe("thread context segments", () => {
     const row = rowText();
     expect(row.indexOf("Plugin summary")).toBeGreaterThan(-1);
     expect(
-      screen.getByRole("button", { name: "Parent Plan the release" }),
+      screen.getByRole("button", { name: "Родительский чат Plan the release" }),
     ).toBeTruthy();
     expect(row.indexOf("Plugin summary")).toBeLessThan(
-      row.indexOf("Uncommitted"),
+      row.indexOf("Без коммита"),
     );
-    expect(row.indexOf("Uncommitted")).toBeLessThan(
+    expect(row.indexOf("Без коммита")).toBeLessThan(
       row.indexOf("Plugin action"),
     );
     expect(
@@ -215,7 +215,7 @@ describe("thread context segments", () => {
       environment: { id: "env_1" },
     });
     expect(screen.getByRole("group", { name: "Demo status" })).toBeTruthy();
-    expect(screen.queryByText("Merge base")).toBeNull();
+    expect(screen.queryByText("База слияния")).toBeNull();
   });
 
   it("places a segment in a group of its own where that group sorts", () => {
@@ -234,7 +234,7 @@ describe("thread context segments", () => {
     renderBanner({ git });
 
     expect(screen.queryByText(/Plugin summary/)).toBeNull();
-    expect(screen.getByText("Merge base")).toBeTruthy();
+    expect(screen.getByText("База слияния")).toBeTruthy();
   });
 
   it("expands one segment at a time through the shared key", () => {
@@ -255,7 +255,7 @@ describe("thread context segments", () => {
     expect(screen.getByText("Plugin details")).toBeTruthy();
     expect(
       screen
-        .getByRole("button", { name: /Changed files/ })
+        .getByRole("button", { name: /Изменённые файлы/ })
         .getAttribute("aria-expanded"),
     ).toBe("false");
   });
@@ -270,7 +270,7 @@ describe("thread context segments", () => {
     });
     renderBanner({ git });
 
-    expect(screen.getByRole("button", { name: /Changed files/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Изменённые файлы/ })).toBeTruthy();
     expect(screen.getByText("Plugin action")).toBeTruthy();
   });
 
@@ -296,14 +296,14 @@ describe("thread context segments", () => {
     renderBanner({ git });
 
     expect(screen.queryByText(/Plugin summary/)).toBeNull();
-    expect(screen.getByText("Merge base")).toBeTruthy();
+    expect(screen.getByText("База слияния")).toBeTruthy();
   });
 
   it("keeps plugin segments off read-only history", () => {
     registerPluginSegment();
     renderBanner({ core: { ...EMPTY_CORE, parentThread }, archived: true });
 
-    expect(screen.getByText("Thread is archived")).toBeTruthy();
+    expect(screen.getByText("Чат в архиве")).toBeTruthy();
     expect(screen.queryByText(/Plugin summary/)).toBeNull();
   });
 });

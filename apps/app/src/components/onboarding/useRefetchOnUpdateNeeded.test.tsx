@@ -119,7 +119,7 @@ describe("useRefetchOnUpdateNeeded", () => {
     await waitFor(() =>
       expect(result.current).toEqual({
         status: "update",
-        detail: "Needs version 0.136.0 or newer",
+        detail: "Нужна версия 0.136.0 или новее",
         canInstall: true,
       }),
     );

@@ -43,8 +43,8 @@ export function MicrophonePreferences({
         if (disposed) return;
         setError(
           cause instanceof DOMException && cause.name === "NotAllowedError"
-            ? "Allow mic access in your settings."
-            : "Can't open this mic. Choose another.",
+            ? "Разрешите доступ к микрофону в настройках."
+            : "Не удалось открыть этот микрофон. Выберите другой.",
         );
       });
     return () => {
@@ -72,16 +72,16 @@ export function MicrophonePreferences({
       {open ? (
         <div
           className="space-y-2 rounded-lg border bg-muted/30 p-3"
-          aria-label="Live microphone preview"
+          aria-label="Проверка микрофона в реальном времени"
         >
           <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span className="shrink-0 font-medium">Live preview</span>
+            <span className="shrink-0 font-medium">Проверка звука</span>
             <span className="min-w-0 truncate" title={activeLabel}>
               {error || !isSupported
-                ? "Unavailable"
+                ? "Недоступно"
                 : stream
-                  ? activeLabel || "Listening"
-                  : "Connecting…"}
+                  ? activeLabel || "Слушаю"
+                  : "Подключение…"}
             </span>
           </div>
           <WaveformVisualizer
@@ -92,31 +92,31 @@ export function MicrophonePreferences({
           <p role="status" className="min-h-5 text-sm text-muted-foreground">
             {error ??
               (!isSupported
-                ? "This browser can't use a mic."
+                ? "Этот браузер не может использовать микрофон."
                 : !stream
-                  ? "Connecting to microphone…"
+                  ? "Подключение к микрофону…"
                   : silent
-                    ? "No audio detected. Try another mic."
-                    : "Speak to check your microphone.")}
+                    ? "Звук не обнаружен. Попробуйте другой микрофон."
+                    : "Скажите что-нибудь, чтобы проверить микрофон.")}
           </p>
         </div>
       ) : null}
       <div className="space-y-2">
         <p className="px-1 text-xs font-medium text-muted-foreground">
-          Input device
+          Устройство ввода
         </p>
         <div
           role="group"
-          aria-label="Microphone"
+          aria-label="Микрофон"
           className="max-h-64 space-y-1 overflow-y-auto rounded-lg border p-1"
         >
           {[
-            { deviceId: null, label: "System default" },
+            { deviceId: null, label: "Системный по умолчанию" },
             ...(preferredMissing
               ? [
                   {
                     deviceId: preferred,
-                    label: "Preferred microphone (unavailable)",
+                    label: "Предпочитаемый микрофон (недоступен)",
                   },
                 ]
               : []),

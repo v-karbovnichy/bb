@@ -262,11 +262,11 @@ function CustomSectionsVisibilityProbe({
       builtInSections={{
         collapsedSectionIds: new Set(),
         onToggleCollapsed: vi.fn(),
-        pinned: { label: "Pinned", content: null },
+        pinned: { label: "Закреплённые", content: null },
         threads: {
-          label: "Threads",
+          label: "Чаты",
           actions: (
-            <SidebarHeaderControls label="Threads" showNewThread={false}>
+            <SidebarHeaderControls label="Чаты" showNewThread={false}>
               <ThreadListVisibilityMenuItems />
             </SidebarHeaderControls>
           ),
@@ -300,14 +300,14 @@ function renderCollapsedSection(
       builtInSections={{
         collapsedSectionIds: new Set(),
         onToggleCollapsed: vi.fn(),
-        pinned: { label: "Pinned", content: null },
-        threads: { label: "Threads" },
+        pinned: { label: "Закреплённые", content: null },
+        threads: { label: "Чаты" },
       }}
     />,
     { threads: [thread], draftThreadIds },
   );
   fireEvent.click(
-    screen.getByRole("button", { name: `Collapse ${name} section` }),
+    screen.getByRole("button", { name: `Свернуть раздел ${name}` }),
   );
 }
 
@@ -436,7 +436,7 @@ describe("ProjectRow interactions", () => {
   it("keeps project header controls touch-accessible when their menu opens and closes", async () => {
     renderProjectRow();
     const trigger = screen.getByRole("button", {
-      name: /^Test project actions(?:;|$)/,
+      name: /^Действия: Test project(?:;|$)/,
     });
     const actions = trigger.closest(".bb-sidebar-hover-actions");
     expect(actions?.getAttribute("data-sidebar-hover-actions-mobile")).toBe(
@@ -472,11 +472,11 @@ describe("ProjectRow interactions", () => {
       { sdk: { projects: { update } } },
     );
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Test project actions" }),
+      screen.getByRole("button", { name: "Действия: Test project" }),
       { button: 0 },
     );
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
-    const input = await screen.findByRole("textbox", { name: "Project name" });
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
+    const input = await screen.findByRole("textbox", { name: "Название проекта" });
     await waitFor(() => expect(document.activeElement).toBe(input));
     fireEvent.change(input, { target: { value: "  Renamed project  " } });
     await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
@@ -504,17 +504,17 @@ describe("ProjectRow interactions", () => {
       { sdk: { projects: { delete: remove } } },
     );
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Test project actions" }),
+      screen.getByRole("button", { name: "Действия: Test project" }),
       { button: 0 },
     );
     const settings = await screen.findByRole("menuitem", {
-      name: "Project settings",
+      name: "Настройки проекта",
     });
     expect(settings.getAttribute("href")).toBe("/settings/projects/proj_test");
-    fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Удалить" }));
     const dialog = await screen.findByRole("dialog");
     fireEvent.click(
-      within(dialog).getByRole("button", { name: "Remove project" }),
+      within(dialog).getByRole("button", { name: "Удалить проект" }),
     );
     await waitFor(() =>
       expect(sdkCalls).toContainEqual({
@@ -532,7 +532,7 @@ describe("ProjectRow interactions", () => {
     });
 
     const disclosure = screen.getByRole("button", {
-      name: "Collapse Test project section",
+      name: "Свернуть раздел Test project",
     });
     const label = screen.getByTitle("Test project");
     const threadLink = result.container.querySelector(
@@ -581,7 +581,7 @@ describe("ProjectRow interactions", () => {
     });
 
     const group = screen
-      .getByRole("button", { name: "Collapse Nested workspace threads" })
+      .getByRole("button", { name: "Свернуть чаты Nested workspace" })
       .closest("[data-sidebar-sticky-group]");
     const header = group?.querySelector<HTMLElement>(
       ".bb-sidebar-hover-actions-row",
@@ -648,7 +648,7 @@ describe("ProjectRow interactions", () => {
 
     expect(
       screen.getByRole("button", {
-        name: "Expand Feature workspace threads",
+        name: "Развернуть чаты Feature workspace",
       }),
     ).not.toBeNull();
     expect(renderedIndicators()).toEqual(["runtime"]);
@@ -680,7 +680,7 @@ describe("ProjectRow interactions", () => {
       );
 
       const toggle = screen.getByRole("button", {
-        name: `${isCollapsed ? "Expand" : "Collapse"} Disclosure workspace threads`,
+        name: `${isCollapsed ? "Развернуть" : "Свернуть"} чаты Disclosure workspace`,
       });
       expect(toggle.classList.contains("bb-sidebar-hover-actions")).toBe(
         expectedHoverReveal,
@@ -806,11 +806,11 @@ describe("ProjectRow interactions", () => {
 
     expect(screen.getByText("Loose thread")).not.toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Threads actions" }),
+      screen.getByRole("button", { name: "Действия: Чаты" }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Hide from list" }),
+      await screen.findByRole("menuitem", { name: "Скрыть из списка" }),
     );
 
     expect(screen.queryByText("Loose thread")).toBeNull();
@@ -818,22 +818,22 @@ describe("ProjectRow interactions", () => {
     expect(store.get(sidebarManualSectionOrderAtom)).toEqual(savedOrder);
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        screen.getByRole("button", { name: "More sections" }),
+        screen.getByRole("button", { name: "Ещё: Разделы" }),
       ),
     );
-    fireEvent.keyDown(screen.getByRole("button", { name: "More sections" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Ещё: Разделы" }), {
       key: "Enter",
     });
     const threadsGroup = await screen.findByRole("menuitem", {
-      name: "Threads",
+      name: "Чаты",
     });
     fireEvent.keyDown(threadsGroup, { key: "ArrowRight" });
     expect(await screen.findByText("Loose thread")).not.toBeNull();
-    fireEvent.click(await screen.findByRole("button", { name: "Add to list" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Добавить в список" }));
 
     await waitFor(() =>
       expect(
-        screen.queryByRole("button", { name: "More sections" }),
+        screen.queryByRole("button", { name: "Ещё: Разделы" }),
       ).toBeNull(),
     );
     expect(screen.getByText("Loose thread")).not.toBeNull();
@@ -877,13 +877,13 @@ describe("ProjectRow interactions", () => {
 
     expect(screen.getByText("Review parent")).not.toBeNull();
     expect(screen.getByText("Inherited child")).not.toBeNull();
-    expect(screen.queryByRole("button", { name: "More sections" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Ещё: Разделы" })).toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Review section actions" }),
+      screen.getByRole("button", { name: "Действия: Раздел Review" }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Hide from list" }),
+      await screen.findByRole("menuitem", { name: "Скрыть из списка" }),
     );
 
     expect(screen.queryByText("Review parent")).toBeNull();
@@ -892,10 +892,10 @@ describe("ProjectRow interactions", () => {
     expect(store.get(sidebarManualSectionOrderAtom)).toEqual(savedOrder);
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        screen.getByRole("button", { name: "More sections" }),
+        screen.getByRole("button", { name: "Ещё: Разделы" }),
       ),
     );
-    fireEvent.keyDown(screen.getByRole("button", { name: "More sections" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Ещё: Разделы" }), {
       key: "Enter",
     });
     const section = await screen.findByRole("menuitem", { name: "Review" });
@@ -903,7 +903,7 @@ describe("ProjectRow interactions", () => {
     fireEvent.keyDown(section, { key: "ArrowRight" });
     expect(await screen.findByText("Review parent")).not.toBeNull();
     fireEvent.click(
-      await screen.findByRole("link", { name: "Open Inherited child" }),
+      await screen.findByRole("link", { name: "Открыть Inherited child" }),
     );
     await waitFor(() =>
       expect(
@@ -913,7 +913,7 @@ describe("ProjectRow interactions", () => {
     expect(onProjectSelect).toHaveBeenCalledOnce();
     expect(store.get(sidebarHiddenGroupsAtom)).toEqual(["section:sec_review"]);
 
-    fireEvent.keyDown(screen.getByRole("button", { name: "More sections" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Ещё: Разделы" }), {
       key: "Enter",
     });
     const reopenedSection = await screen.findByRole("menuitem", {
@@ -921,11 +921,11 @@ describe("ProjectRow interactions", () => {
     });
     expect(screen.queryByText("Review parent")).toBeNull();
     fireEvent.keyDown(reopenedSection, { key: "ArrowRight" });
-    fireEvent.click(await screen.findByRole("button", { name: "Add to list" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Добавить в список" }));
 
     await waitFor(() =>
       expect(
-        screen.queryByRole("button", { name: "More sections" }),
+        screen.queryByRole("button", { name: "Ещё: Разделы" }),
       ).toBeNull(),
     );
     expect(screen.getByText("Inherited child")).not.toBeNull();
@@ -1030,7 +1030,7 @@ describe("ProjectRow interactions", () => {
       );
 
       const createButton = screen.getByRole("button", {
-        name: "New thread in environment",
+        name: "Новый чат в среде",
       });
       const actions = createButton.closest(".bb-sidebar-hover-actions");
       expect(actions?.getAttribute("data-sidebar-hover-actions-mobile")).toBe(
@@ -1038,7 +1038,7 @@ describe("ProjectRow interactions", () => {
       );
       expect(
         actions?.contains(
-          screen.getByRole("button", { name: "Environment actions" }),
+          screen.getByRole("button", { name: "Действия со средой" }),
         ),
       ).toBe(true);
       fireEvent.click(createButton);
@@ -1055,24 +1055,24 @@ describe("ProjectRow interactions", () => {
       ]);
 
       fireEvent.pointerDown(
-        screen.getByRole("button", { name: "Environment actions" }),
+        screen.getByRole("button", { name: "Действия со средой" }),
         { button: 0 },
       );
-      const rename = await screen.findByRole("menuitem", { name: "Rename" });
+      const rename = await screen.findByRole("menuitem", { name: "Переименовать" });
       expect(
         screen.getAllByRole("menuitem").map((item) => item.textContent),
-      ).toEqual(["Rename", "Archive"]);
+      ).toEqual(["Переименовать", "Архивировать"]);
       fireEvent.click(rename);
 
       const input = await screen.findByRole("textbox", {
-        name: "Environment name",
+        name: "Название среды",
       });
       expect(input.getAttribute("placeholder")).toBe("feat/menu-close");
       expect(input).toHaveProperty("value", "Feature workspace");
       await waitFor(() => expect(document.activeElement).toBe(input));
       expect(screen.queryByRole("dialog")).toBeNull();
       await waitFor(() => {
-        expect(screen.queryByRole("menuitem", { name: "Rename" })).toBeNull();
+        expect(screen.queryByRole("menuitem", { name: "Переименовать" })).toBeNull();
       });
       fireEvent.change(input, { target: { value: "" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -1111,7 +1111,7 @@ describe("ProjectRow interactions", () => {
     });
 
     expect(
-      screen.queryByRole("button", { name: "Collapse main threads" }),
+      screen.queryByRole("button", { name: "Свернуть чаты main" }),
     ).toBeNull();
   });
 
@@ -1154,19 +1154,19 @@ describe("ProjectRow interactions", () => {
     );
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Environment actions" }),
+      screen.getByRole("button", { name: "Действия со средой" }),
       { button: 0 },
     );
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Archive" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Архивировать" }));
     expect(experimental_environmentArchiveCalls).toEqual(["env_plain"]);
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Environment actions" }),
+      screen.getByRole("button", { name: "Действия со средой" }),
       { button: 0 },
     );
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
     const input = await screen.findByRole("textbox", {
-      name: "Environment name",
+      name: "Название среды",
     });
     fireEvent.change(input, { target: { value: "  Release workspace  " } });
     fireEvent.keyDown(input, { key: "Enter" });
@@ -1220,7 +1220,7 @@ describe("environment creation placement", () => {
         { threads },
       );
       fireEvent.click(
-        screen.getByRole("button", { name: "New thread in environment" }),
+        screen.getByRole("button", { name: "Новый чат в среде" }),
       );
       expect(navigateCalls).toEqual([
         {

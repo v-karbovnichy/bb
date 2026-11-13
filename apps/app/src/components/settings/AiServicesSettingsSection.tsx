@@ -34,23 +34,23 @@ interface AiTaskRow {
 const AI_TASK_ROWS: readonly AiTaskRow[] = [
   {
     task: "thread-title",
-    label: "Thread titles",
-    hint: "Branch names follow the title.",
-    offDescription: "Titles use the start of the prompt.",
+    label: "Названия чатов",
+    hint: "Названия веток формируются по названию чата.",
+    offDescription: "Название берётся из начала запроса.",
     testTask: "thread-title",
   },
   {
     task: "commit-message",
-    label: "Commit messages",
-    hint: "Written when you use the Commit action.",
-    offDescription: "Commits say “bb: automated commit”.",
+    label: "Сообщения коммитов",
+    hint: "Создаются при использовании действия «Коммит».",
+    offDescription: "Сообщение коммита: «bb: automated commit».",
     testTask: "commit-message",
   },
   {
     task: "voice",
-    label: "Voice input",
-    hint: "Transcribes the microphone in the composer.",
-    offDescription: "Hides the microphone.",
+    label: "Голосовой ввод",
+    hint: "Расшифровывает речь с микрофона в поле ввода.",
+    offDescription: "Скрывает микрофон.",
     testTask: null,
   },
 ];
@@ -84,7 +84,7 @@ export function automaticServiceFor(
 
 function serviceDescription(service: SystemAiService): string {
   return service.status.ready
-    ? `From the ${service.pluginId} plugin.`
+    ? `Из плагина ${service.pluginId}.`
     : service.status.message;
 }
 
@@ -96,11 +96,11 @@ export function aiTaskOptions(
   return [
     {
       key: AUTOMATIC_KEY,
-      title: "Automatic",
+      title: "Автоматически",
       description:
         automatic === null
-          ? "Nothing bb ships is ready right now."
-          : `Currently using ${automatic.displayName}.`,
+          ? "Сейчас ни один встроенный сервис bb не доступен."
+          : `Сейчас используется ${automatic.displayName}.`,
     },
     ...view.services
       .filter((service) => service.tasks.includes(row.task))
@@ -109,7 +109,7 @@ export function aiTaskOptions(
         title: service.displayName,
         description: serviceDescription(service),
       })),
-    { key: OFF_KEY, title: "Off", description: row.offDescription },
+    { key: OFF_KEY, title: "Выключено", description: row.offDescription },
   ];
 }
 
@@ -176,7 +176,7 @@ export function AiServicesSettingsSection() {
       writeCachedAiServices(queryClient, view);
     },
     onError: (error) => {
-      appToast.error("Changing the AI service failed", {
+      appToast.error("Не удалось изменить сервис ИИ", {
         description: error instanceof Error ? error.message : undefined,
       });
     },
@@ -191,7 +191,7 @@ export function AiServicesSettingsSection() {
       const message =
         error instanceof Error && error.message.trim().length > 0
           ? error.message
-          : "The request failed";
+          : "Не удалось выполнить запрос";
       setTestResults((current) => ({
         ...current,
         [task]: { ok: false, message },
@@ -203,7 +203,7 @@ export function AiServicesSettingsSection() {
   return (
     <SettingsSection
       title="AI services"
-      description="Choose services for thread titles, commit messages, and voice input. Automatic prefers bb cloud, then other available services. A service you choose stays selected."
+      description="Выберите сервисы для названий чатов, сообщений коммитов и голосового ввода. Автоматический выбор предпочитает облако bb, затем другие доступные сервисы. Выбранный вручную сервис останется активным."
     >
       <div className="space-y-5">
         {AI_TASK_ROWS.map((row) => {
@@ -215,7 +215,7 @@ export function AiServicesSettingsSection() {
                 description={row.hint}
                 triggerAriaLabel={row.label}
                 options={[]}
-                selected={{ key: AUTOMATIC_KEY, title: "Loading" }}
+                selected={{ key: AUTOMATIC_KEY, title: "Загрузка" }}
                 onSelect={() => undefined}
                 disabled
               />
@@ -225,7 +225,7 @@ export function AiServicesSettingsSection() {
           const key = selectionKey(view.selections[row.task]);
           const selected = options.find((option) => option.key === key) ?? {
             key,
-            title: "Unavailable plugin",
+            title: "Недоступный плагин",
           };
           const testTask = row.testTask;
           return (
@@ -256,13 +256,13 @@ export function AiServicesSettingsSection() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  aria-label={`Test ${row.label.toLowerCase()}`}
+                  aria-label={`Проверить ${row.label.toLowerCase()}`}
                   disabled={test.isPending}
                   onClick={() => test.mutate(testTask)}
                 >
                   {test.isPending && test.variables === testTask
-                    ? "Testing…"
-                    : "Test"}
+                    ? "Проверка…"
+                    : "Проверить"}
                 </Button>
               )}
             </ChoiceDropdownSetting>

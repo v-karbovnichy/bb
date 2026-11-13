@@ -78,7 +78,7 @@ function PluginCatalogEnabledSwitch({
       checked={enabled}
       disabled={toggle.isPending}
       onCheckedChange={(next) => toggle.mutate(next)}
-      aria-label={`${enabled ? "Disable" : "Enable"} ${displayName}`}
+      aria-label={`${enabled ? "Отключить" : "Включить"} ${displayName}`}
     />
   );
 }
@@ -141,7 +141,7 @@ export function PluginCatalogCard({
           />
         )
       }
-      openLabel={`Open ${entry.displayName} details`}
+      openLabel={`Открыть сведения о ${entry.displayName}`}
       onOpen={(trigger) => onOpenPlugin(catalogEntryDetailKey(entry), trigger)}
     />
   );

@@ -68,11 +68,11 @@ describe("ImageTabLightboxProvider", () => {
   it("shows loading instead of retaining the previous tab image", () => {
     render(<ImageTabGalleryHarness deferSecondSelection />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Open one\.png/u }));
-    fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+    fireEvent.click(screen.getByRole("button", { name: /Открыть one\.png/u }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
 
     expect(
-      screen.getByRole("status", { name: "Loading image" }),
+      screen.getByRole("status", { name: "Загрузка изображения" }),
     ).not.toBeNull();
     expect(
       within(screen.getByRole("dialog")).queryByRole("img", {
@@ -85,12 +85,12 @@ describe("ImageTabLightboxProvider", () => {
   it("keeps the lightbox open while cycling image file tabs", () => {
     render(<ImageTabGalleryHarness />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Open one\.png/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Открыть one\.png/u }));
 
     expect(screen.queryByText("1 of 2")).toBeNull();
     expect(screen.queryByLabelText("Images in this gallery")).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
 
     expect(
       within(screen.getByRole("dialog"))

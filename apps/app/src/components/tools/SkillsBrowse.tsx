@@ -34,11 +34,11 @@ function RegistrySkillActions({
 }) {
   return (
     <ResourceInstallControl
-      accessibleLabel={`Fork ${skillName} into a new bb skill`}
-      label="Fork"
+      accessibleLabel={`Создать новый навык bb на основе ${skillName}`}
+      label="Создать копию"
       icon="Fork"
       presentation={presentation}
-      tooltip={`Fork ${skillName}`}
+      tooltip={`Создать копию ${skillName}`}
       onAction={onFork}
     />
   );
@@ -59,7 +59,7 @@ function RegistrySkillSocialProof({
         <ResourceCardStat
           icon="Download"
           iconClassName="text-success"
-          accessibleLabel={`${installs} installs`}
+          accessibleLabel={`Установок: ${installs}`}
         >
           {installs}
         </ResourceCardStat>
@@ -68,7 +68,7 @@ function RegistrySkillSocialProof({
         <ResourceCardStat
           icon="Star"
           iconClassName="fill-attention/20 text-attention"
-          accessibleLabel={`${stars} stars`}
+          accessibleLabel={`Звёзд: ${stars}`}
         >
           {stars}
         </ResourceCardStat>
@@ -91,9 +91,9 @@ function RegistrySkillSourceItem({
   return (
     <ResourceBrowseCard
       title={skill.name}
-      byline={`by ${formatRegistrySource(skill.source)}`}
+      byline={`от ${formatRegistrySource(skill.source)}`}
       description={skill.summary ?? undefined}
-      openLabel={`View details for ${skill.name}`}
+      openLabel={`Посмотреть сведения о ${skill.name}`}
       onOpen={() => onSelect(skill)}
       headerAction={
         <RegistrySkillActions
@@ -113,10 +113,10 @@ function RegistrySkillSourceItemSkeleton({ skillName }: { skillName: string }) {
   return (
     <div
       role="status"
-      aria-label={`Loading ${skillName}`}
+      aria-label={`Загрузка ${skillName}`}
       className="grid min-h-28 w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-[auto_1fr_auto] gap-2 rounded-lg border border-border bg-card p-3"
     >
-      <span className="sr-only">Loading {skillName}</span>
+      <span className="sr-only">Загрузка {skillName}</span>
       <Skeleton className="h-3.5 w-32 max-w-full self-center" />
       <Skeleton className="size-7 rounded-md" />
       <span className="col-span-2 row-start-2 space-y-1.5 self-center">
@@ -167,7 +167,7 @@ export function RegistrySkillsBrowsePage({
       toolbar={
         <ResourceToolbar
           searchValue={query}
-          searchPlaceholder="Search skills"
+          searchPlaceholder="Поиск навыков"
           onSearchChange={onQueryChange}
           action={action}
         />
@@ -177,13 +177,13 @@ export function RegistrySkillsBrowsePage({
         {hasError && skills.length === 0 ? (
           <ResourceListState
             state="error"
-            message="Couldn't load skills.sh."
+            message="Не удалось загрузить skills.sh."
             onRetry={onRetry}
           />
         ) : isLoading ? (
           <ResourceListState
             state="loading"
-            message="Loading skills.sh skills"
+            message="Загрузка навыков с skills.sh"
             loadingRows={REGISTRY_PAGE_SIZE}
           />
         ) : skills.length === 0 ? (
@@ -191,8 +191,8 @@ export function RegistrySkillsBrowsePage({
             state="empty"
             message={
               query.trim().length === 0
-                ? "No skills.sh resources available."
-                : `No skills.sh resources match "${query}"`
+                ? "На skills.sh нет доступных навыков."
+                : `На skills.sh по запросу «${query}» ничего не найдено`
             }
           />
         ) : (
@@ -218,7 +218,7 @@ export function RegistrySkillsBrowsePage({
             {hasError ? (
               <ResourceListState
                 state="error"
-                message="Couldn't load more from skills.sh."
+                message="Не удалось загрузить другие навыки с skills.sh."
                 onRetry={onRetry}
               />
             ) : null}
@@ -276,20 +276,20 @@ export function RegistrySkillDetailView({
       overflowMenu={
         localSkill !== null && localPath !== null ? (
           <ResourceOverflowMenu
-            label={`${skill.name} actions`}
+            label={`Действия с навыком ${skill.name}`}
             items={[
               {
-                label: "Edit",
+                label: "Редактировать",
                 icon: "Edit",
                 onSelect: () => onEditLocalSkill(localSkill),
               },
               {
-                label: "Open source",
+                label: "Открыть исходник",
                 icon: "ExternalLink",
                 disabled: !canOpenPreferredFileTarget,
                 disabledReason: canOpenPreferredFileTarget
                   ? undefined
-                  : "No editor configured",
+                  : "Редактор не настроен",
                 onSelect: () => {
                   void openPathInPreferredFileTarget({
                     path: localPath,
@@ -309,7 +309,7 @@ export function RegistrySkillDetailView({
           ? { kind: "ready", content: selectedFile.contents }
           : {
               kind: "error",
-              message: "The source does not include SKILL.md content.",
+              message: "Источник не содержит файл SKILL.md.",
               onRetry,
             }
       }

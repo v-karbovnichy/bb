@@ -104,7 +104,7 @@ export function useSortableSettingsRow({
         !disabled && "cursor-grab active:cursor-grabbing",
       )}
       disabled={disabled}
-      aria-label={`Reorder ${label}`}
+      aria-label={`Изменить порядок: ${label}`}
       {...attributes}
       {...listeners}
     >

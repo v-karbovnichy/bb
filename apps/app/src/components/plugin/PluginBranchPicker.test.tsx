@@ -50,7 +50,7 @@ describe("PluginBranchPicker", () => {
     "uses %s for the trigger prefix and menu heading",
     (label) => {
       renderPicker({ value: "release", label });
-      const trigger = screen.getByRole("combobox", { name: "Branch" });
+      const trigger = screen.getByRole("combobox", { name: "Ветка" });
       expect(trigger.textContent).toContain(label);
       expect(trigger.textContent).toContain("release");
       const labelsBeforeOpen = screen.queryAllByText(label).length;
@@ -64,8 +64,8 @@ describe("PluginBranchPicker", () => {
 
   it("uses a neutral menu heading without a label", () => {
     renderPicker({ value: null, placeholder: "Choose a comparison branch" });
-    fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
-    expect(screen.getByText("Branches")).toBeTruthy();
+    fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
+    expect(screen.getByText("Ветки")).toBeTruthy();
     expect(screen.queryByText("Branch from:")).toBeNull();
   });
 
@@ -74,8 +74,8 @@ describe("PluginBranchPicker", () => {
     (label) => {
       const onChange = vi.fn();
       renderPicker({ value: null, label, onChange });
-      const trigger = screen.getByRole("combobox", { name: "Branch" });
-      expect(trigger.textContent).toBe("Select branch");
+      const trigger = screen.getByRole("combobox", { name: "Ветка" });
+      expect(trigger.textContent).toBe("Выбрать ветку");
       expect(onChange).not.toHaveBeenCalled();
     },
   );
@@ -86,7 +86,7 @@ describe("PluginBranchPicker", () => {
       label: "Compare with:",
       placeholder: "Choose a comparison branch",
     });
-    expect(screen.getByRole("combobox", { name: "Branch" }).textContent).toBe(
+    expect(screen.getByRole("combobox", { name: "Ветка" }).textContent).toBe(
       "Choose a comparison branch",
     );
   });
@@ -95,7 +95,7 @@ describe("PluginBranchPicker", () => {
     const onChange = vi.fn();
     renderPicker({ value: null, onChange });
 
-    fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
 
     expect(refreshBranches).toHaveBeenCalledOnce();
     expect(screen.queryByText("New branch…")).toBeNull();

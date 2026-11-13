@@ -141,7 +141,7 @@ it("names the server machine a new machine depends on", async () => {
   const rendered = renderAddMachineContent("host_server");
   expect(
     await screen.findByText(
-      "The new machine will connect to the bb server on Mac mini. Keep that computer on so the new machine can keep working.",
+      "Новая машина подключится к серверу bb на Mac mini. Оставьте этот компьютер включённым, чтобы новая машина могла работать.",
     ),
   ).toBeDefined();
   rendered.unmount();
@@ -153,7 +153,7 @@ it("does not name a fallback machine when the server has no primary host", async
   await screen.findByText("bb machine enroll test");
   expect(
     screen.getByText(
-      "The new machine will connect to your bb server. Keep the server machine on so the new machine can keep working.",
+      "Новая машина подключится к вашему серверу bb. Оставьте серверную машину включённой, чтобы новая могла работать.",
     ),
   ).toBeDefined();
   expect(screen.queryByText(/Mac mini|MacBook Pro/u)).toBeNull();
@@ -219,9 +219,9 @@ it("marks a previously available command as used when the server withdraws it", 
   await act(async () => {
     await vi.advanceTimersByTimeAsync(1_000);
   });
-  expect(screen.getByText("Command used")).toBeDefined();
+  expect(screen.getByText("Команда использована")).toBeDefined();
   expect(
-    screen.getByRole("button", { name: "Copy" }).hasAttribute("disabled"),
+    screen.getByRole("button", { name: "Копировать" }).hasAttribute("disabled"),
   ).toBe(true);
   rendered.unmount();
 });
@@ -243,7 +243,7 @@ it("accepts a connection before an enrollment command is returned", async () => 
   await act(async () => {
     await vi.advanceTimersByTimeAsync(1_000);
   });
-  expect(screen.getByText("Manual machine connected")).toBeDefined();
+  expect(screen.getByText("Manual machine подключена")).toBeDefined();
   rendered.unmount();
   expect(sdk.hosts.delete).not.toHaveBeenCalled();
 });
@@ -280,7 +280,7 @@ it("reuses the launch key on retry and replaces it on regeneration without rando
       expiresAt: Date.now() - 1_000,
     });
   });
-  fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Повторить" }));
   await screen.findByText("expired enrollment command");
   const requests = vi.mocked(sdk.hosts.experimental_create).mock.calls;
   expect(requests).toHaveLength(2);
@@ -290,7 +290,7 @@ it("reuses the launch key on retry and replaces it on regeneration without rando
   expect(requests[1]![0].key).toBe(firstKey);
 
   fireEvent.click(
-    screen.getByRole("button", { name: "Generate a new command" }),
+    screen.getByRole("button", { name: "Создать новую команду" }),
   );
   await waitFor(() => expect(requests).toHaveLength(3));
   expect(requests[2]![0].key).toEqual(expect.any(String));
@@ -325,7 +325,7 @@ it.each([
     await waitFor(() =>
       expect(onEnrollmentFailed).toHaveBeenCalledExactlyOnceWith(failure),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
     await screen.findByText("bb machine enroll test");
     rendered.unmount();
     await waitFor(() => expect(sdk.hosts.delete).toHaveBeenCalled());
@@ -370,10 +370,10 @@ it("shows the enrollment command inline", async () => {
   );
 
   await screen.findByText("bb machine enroll test");
-  screen.getByText("On the other machine, run:");
-  screen.getByText("Waiting for it to connect…");
+  screen.getByText("На другой машине выполните:");
+  screen.getByText("Ожидание подключения…");
   expect(screen.queryByRole("dialog")).toBeNull();
-  expect(screen.queryByText("Connection method")).toBeNull();
+  expect(screen.queryByText("Способ подключения")).toBeNull();
 
   fireEvent.click(screen.getByRole("button", { name: "Windows" }));
   screen.getByText("irm windows-command | iex");
@@ -396,6 +396,6 @@ it("replaces the waiting line once the machine connects", () => {
     />,
   );
 
-  screen.getByText("Studio Mac connected");
-  expect(screen.queryByText("Waiting for it to connect…")).toBeNull();
+  screen.getByText("Studio Mac подключена");
+  expect(screen.queryByText("Ожидание подключения…")).toBeNull();
 });

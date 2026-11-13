@@ -35,12 +35,13 @@ interface CompactSelectContextValue {
 
 const CompactSelectContext =
   React.createContext<CompactSelectContextValue | null>(null);
-const SelectOverlayContext =
-  React.createContext<ResponsiveOverlayContextValue>({
+const SelectOverlayContext = React.createContext<ResponsiveOverlayContextValue>(
+  {
     isCompactViewport: false,
     open: false,
     onOpenChange: () => {},
-  });
+  },
+);
 const CompactSelectListContext = React.createContext(false);
 const CompactSelectGroupLabelContext = React.createContext<string | undefined>(
   undefined,
@@ -53,7 +54,7 @@ function useCompactSelectList(): CompactSelectContextValue | null {
 }
 
 function readTriggerLabel(trigger: HTMLButtonElement | null): string {
-  if (trigger === null) return "Options";
+  if (trigger === null) return "Варианты";
   const ariaLabel = trigger.getAttribute("aria-label")?.trim();
   if (ariaLabel) return ariaLabel;
   const labelledBy = (trigger.getAttribute("aria-labelledby") ?? "")
@@ -66,7 +67,7 @@ function readTriggerLabel(trigger: HTMLButtonElement | null): string {
     .map((label) => label.textContent?.trim())
     .filter(Boolean)
     .join(" ");
-  return labels || "Options";
+  return labels || "Варианты";
 }
 
 function Select({

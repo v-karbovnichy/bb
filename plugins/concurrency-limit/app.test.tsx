@@ -79,17 +79,17 @@ describe("Concurrency limit settings", () => {
       },
     );
 
-    expect(await slot.findByText("Host limits")).toBeTruthy();
+    expect(await slot.findByText("Лимиты компьютеров")).toBeTruthy();
     expect(
-      slot.getByText("Auto allows one thread per available processor."),
+      slot.getByText("Автоматический режим разрешает один чат на каждый доступный процессор."),
     ).toBeTruthy();
-    expect(slot.getByText("8 processors")).toBeTruthy();
-    expect(slot.getByText("Offline")).toBeTruthy();
+    expect(slot.getByText("8 процессоров")).toBeTruthy();
+    expect(slot.getByText("Не в сети")).toBeTruthy();
     expect(
       slot
-        .getByRole("spinbutton", { name: "Laptop thread limit" })
+        .getByRole("spinbutton", { name: "Лимит чатов: Laptop" })
         .getAttribute("placeholder"),
-    ).toBe("Auto (8)");
+    ).toBe("Авто (8)");
   });
 
   it("saves overall and per-host limits without accepting invalid numbers", async () => {
@@ -126,12 +126,12 @@ describe("Concurrency limit settings", () => {
     );
 
     const overall = await slot.findByRole("spinbutton", {
-      name: "Overall thread limit",
+      name: "Общий лимит чатов",
     });
     fireEvent.change(overall, { target: { value: "1.5" } });
     fireEvent.blur(overall);
     expect((await slot.findByRole("alert")).textContent).toBe(
-      "Use a whole number from 0 to 10000, or leave blank.",
+      "Введите целое число от 0 до 10000 или оставьте поле пустым.",
     );
     expect(
       slot.rpcCalls.filter((call) => call.method === "setConfiguration"),
@@ -147,7 +147,7 @@ describe("Concurrency limit settings", () => {
     );
 
     const laptop = slot.getByRole("spinbutton", {
-      name: "Laptop thread limit",
+      name: "Лимит чатов: Laptop",
     });
     fireEvent.change(laptop, { target: { value: "2" } });
     fireEvent.blur(laptop);

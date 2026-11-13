@@ -29,8 +29,8 @@ interface VoiceInputSettingsSectionContentProps {
   preferredDeviceId: PreferredAudioInputDeviceId;
 }
 
-const SYSTEM_DEFAULT_MICROPHONE_LABEL = "System default";
-const MICROPHONE_SETTING_LABEL = "Microphone";
+const SYSTEM_DEFAULT_MICROPHONE_LABEL = "Системный по умолчанию";
+const MICROPHONE_SETTING_LABEL = "Микрофон";
 
 function selectedMicrophoneLabel({
   devices,
@@ -42,7 +42,7 @@ function selectedMicrophoneLabel({
   preferredDeviceId: PreferredAudioInputDeviceId;
 }): string {
   if (!isSupported) {
-    return "Unsupported";
+    return "Не поддерживается";
   }
   if (preferredDeviceId === null) {
     return SYSTEM_DEFAULT_MICROPHONE_LABEL;
@@ -69,10 +69,10 @@ function microphoneSettingDescription({
   preferredDeviceId: PreferredAudioInputDeviceId;
 }): ReactNode {
   if (!isSupported) {
-    return "This browser does not expose microphone devices.";
+    return "Браузер не предоставляет доступ к микрофонам.";
   }
   if (isLoading) {
-    return "Loading microphones.";
+    return "Загрузка микрофонов.";
   }
   if (errorMessage !== null) {
     return errorMessage;
@@ -85,9 +85,9 @@ function microphoneSettingDescription({
           className="rounded-sm underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           onClick={onRequestAccess}
         >
-          Check microphone access
+          Проверить доступ к микрофону
         </button>{" "}
-        to see available devices.
+        чтобы увидеть доступные устройства.
       </>
     );
   }
@@ -95,9 +95,9 @@ function microphoneSettingDescription({
     preferredDeviceId !== null &&
     devices.every((device) => device.deviceId !== preferredDeviceId)
   ) {
-    return "Preferred microphone is disconnected. Using another input until it reconnects.";
+    return "Предпочтительный микрофон отключён. До его подключения используется другой вход.";
   }
-  return "Used for prompt voice input.";
+  return "Используется для голосового ввода запросов.";
 }
 
 export function VoiceInputSettingsSectionContent({
@@ -117,7 +117,7 @@ export function VoiceInputSettingsSectionContent({
 
   return (
     <SettingsSection
-      title="Voice Input"
+      title="Голосовой ввод"
       actionPlacement="inline"
       action={
         <Tooltip delayDuration={300} disableHoverableContent>
@@ -129,7 +129,7 @@ export function VoiceInputSettingsSectionContent({
               disabled={!isSupported || isLoading}
               onClick={() => onRefresh(true)}
               aria-label={
-                isLoading ? "Loading microphones" : "Load microphones"
+                isLoading ? "Загрузка микрофонов" : "Загрузить микрофоны"
               }
             >
               <Icon
@@ -138,7 +138,7 @@ export function VoiceInputSettingsSectionContent({
               />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="bottom">Load microphones</TooltipContent>
+          <TooltipContent side="bottom">Загрузить микрофоны</TooltipContent>
         </Tooltip>
       }
     >

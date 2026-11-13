@@ -9,8 +9,8 @@ import {
 
 describe("builtinServerName", () => {
   it("uses the operating system's local server label", () => {
-    expect(builtinServerName("darwin")).toBe("This Mac");
-    expect(builtinServerName("linux")).toBe("This Computer");
+    expect(builtinServerName("darwin")).toBe("Этот Mac");
+    expect(builtinServerName("linux")).toBe("Этот компьютер");
     expect(BUILTIN_SERVER_NAME).toBe(builtinServerName(process.platform));
   });
 });

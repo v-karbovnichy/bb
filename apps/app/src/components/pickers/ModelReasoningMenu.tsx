@@ -128,7 +128,7 @@ export function ModelReasoningMenu({
   const singleServiceTier =
     serviceTierOptions.length === 1 ? serviceTierOptions[0] : undefined;
   const singleServiceTierText = singleServiceTier
-    ? `${singleServiceTier.label} mode`
+    ? `Режим ${singleServiceTier.label}`
     : "";
   const selectedServiceTier = serviceTierOptions.some(
     (option) => option.id === serviceTierValue,
@@ -144,18 +144,18 @@ export function ModelReasoningMenu({
           key={providerId || "no-provider"}
           role={listboxId ? "listbox" : undefined}
           id={listboxId}
-          aria-label={listboxId ? "Models" : undefined}
+          aria-label={listboxId ? "Модели" : undefined}
           className={cn(
             "min-h-0 flex-1 overflow-y-auto overscroll-contain px-1 pb-1 pt-0",
             !isCompactViewport && "max-h-64",
           )}
         >
           {isShowingModelError ? null : (
-            <MenuSectionLabel>Model</MenuSectionLabel>
+            <MenuSectionLabel>Модель</MenuSectionLabel>
           )}
           {modelIsLoading ? (
             <PickerLoadingRows
-              label="Loading models"
+              label="Загрузка моделей"
               rowDataAttribute="data-model-loading-row"
             />
           ) : hasModelOptions ? (
@@ -213,7 +213,7 @@ export function ModelReasoningMenu({
                     "py-[0.3125rem] max-md:pointer-coarse:py-2",
                   )}
                 >
-                  No models match your search
+                  По вашему запросу модели не найдены
                 </div>
               ) : null}
             </>
@@ -241,9 +241,9 @@ export function ModelReasoningMenu({
                     : { installUrl: provider.installUrl })}
                 />
               ) : modelLoadFailed ? (
-                "Could not load models."
+                "Не удалось загрузить модели."
               ) : (
-                "No models available"
+                "Нет доступных моделей"
               )}
             </div>
           )}
@@ -254,11 +254,11 @@ export function ModelReasoningMenu({
             <div className="shrink-0 border-t border-border" />
             <div className="shrink-0 px-2 py-2.5">
               <MenuSectionLabel className="mb-2 px-1 py-0">
-                Reasoning
+                Рассуждение
               </MenuSectionLabel>
               <ToggleGroup
                 type="single"
-                aria-label="Reasoning"
+                aria-label="Рассуждение"
                 value={reasoningValue}
                 onValueChange={(value) => {
                   const option = reasoningOptions.find(
@@ -280,14 +280,14 @@ export function ModelReasoningMenu({
                       LIST_HOVER_TRANSITION,
                     )}
                   >
-                    {option.label === "Medium" ||
-                    option.label === "Extra High" ? (
+                    {option.value === "medium" ||
+                    option.value === "xhigh" ? (
                       <>
                         <span className="max-[360px]:hidden">
                           {option.label}
                         </span>
                         <span className="hidden max-[360px]:inline">
-                          {option.label === "Medium" ? "Med" : "XHigh"}
+                          {option.value === "medium" ? "Сред." : "Очень выс."}
                         </span>
                       </>
                     ) : (
@@ -333,11 +333,11 @@ export function ModelReasoningMenu({
             <div className="shrink-0 border-t border-border" />
             <div className="shrink-0 px-2 py-2.5">
               <MenuSectionLabel className="mb-2 px-1 py-0">
-                Speed
+                Скорость
               </MenuSectionLabel>
               <ToggleGroup
                 type="single"
-                aria-label="Speed"
+                aria-label="Скорость"
                 value={selectedServiceTier}
                 onValueChange={(value) => {
                   if (
@@ -350,7 +350,7 @@ export function ModelReasoningMenu({
                 className="flex flex-wrap gap-1"
               >
                 {[
-                  { id: DEFAULT_SERVICE_TIER, label: "Default" },
+                  { id: DEFAULT_SERVICE_TIER, label: "По умолчанию" },
                   ...serviceTierOptions,
                 ].map((option: ProviderOptionDescriptor) => (
                   <ToggleGroupItem
@@ -451,7 +451,7 @@ export function ModelReasoningMenu({
             <div className="shrink-0 border-t border-border" />
             <div className="shrink-0 p-1">
               <MenuActionButton
-                label="Handoff to new thread"
+                label="Передать в новый чат"
                 iconName="MessageSquarePlus"
                 onClick={onStartHandoff}
               />
@@ -511,7 +511,7 @@ function MoreModelsToggleRow({
       )}
       {...hoverProps}
     >
-      <span>{expanded ? "Fewer models" : "More models"}</span>
+      <span>{expanded ? "Меньше моделей" : "Больше моделей"}</span>
       <Icon
         name={expanded ? "ChevronUp" : "ChevronDown"}
         className="size-3.5 shrink-0"
@@ -612,7 +612,7 @@ function MoreModelsSubmenu({
           )}
           data-last-hovered={hoverProps["data-last-hovered"]}
         >
-          <span>More models</span>
+          <span>Больше моделей</span>
           <Icon name="ChevronRight" className="size-3.5 shrink-0" />
         </button>
       </PopoverAnchor>

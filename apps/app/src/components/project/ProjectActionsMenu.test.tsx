@@ -47,13 +47,13 @@ describe("ProjectActionsMenu", () => {
     );
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Test project actions" }),
+      screen.getByRole("button", { name: "Действия с проектом Test project" }),
       { button: 0 },
     );
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
 
     await waitFor(() => {
-      expect(screen.queryByRole("menuitem", { name: "Rename" })).toBeNull();
+      expect(screen.queryByRole("menuitem", { name: "Переименовать" })).toBeNull();
     });
   });
 });

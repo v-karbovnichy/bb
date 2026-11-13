@@ -57,7 +57,7 @@ function requireContext(ctx: PluginCliContext): {
   threadId: string;
 } {
   if (ctx.projectId === undefined || ctx.threadId === undefined) {
-    throw new Error("This command must run inside a BB project thread");
+    throw new Error("Эту команду нужно запускать в чате проекта BB");
   }
   return { projectId: ctx.projectId, threadId: ctx.threadId };
 }
@@ -84,7 +84,7 @@ function parseJsonOption(value: string | undefined): JsonValue {
     return JSON.parse(value) as JsonValue;
   } catch (error) {
     throw new Error(
-      `--args must be valid JSON: ${error instanceof Error ? error.message : String(error)}`,
+      `Параметр --args должен содержать корректный JSON: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }
@@ -94,7 +94,7 @@ function parseStoredJson(value: string, description: string): JsonValue {
     return JSON.parse(value) as JsonValue;
   } catch (error) {
     throw new Error(
-      `Persisted ${description} is invalid JSON: ${error instanceof Error ? error.message : String(error)}`,
+      `Сохранённые данные (${description}) содержат некорректный JSON: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }
@@ -280,10 +280,10 @@ function callLogRecord(call: WorkflowCallInspection, exportedAt: number) {
 }
 
 const JSON_OPTION_DESCRIPTION =
-  "Report failures as a JSON envelope on stdout; command output is always JSON";
+  "Выводить ошибки в формате JSON в stdout; результат команды всегда в формате JSON";
 const RUN_ID_POSITIONAL = {
   name: "run-id",
-  description: "Workflow run ID returned by bb workflows run",
+  description: "ID запуска рабочего процесса, который вернула команда bb workflows run",
   required: true,
 } as const;
 const SOURCE_OPTIONS = {
@@ -292,21 +292,21 @@ const SOURCE_OPTIONS = {
     placeholder: "javascript",
     aliases: ["source"],
     description:
-      "Inline workflow source starting with `export const meta = { name, description, phases }`",
+      "Исходный код рабочего процесса, начинающийся с `export const meta = { name, description, phases }`",
   },
   file: {
     type: "string",
     placeholder: "path",
     aliases: ["script-file", "path"],
     description:
-      "Workflow file inside the origin workspace; relative paths resolve from the CLI working directory",
+      "Файл рабочего процесса в исходном рабочем пространстве; относительные пути отсчитываются от рабочей папки CLI",
   },
   name: {
     type: "string",
     placeholder: "name",
     aliases: ["workflow"],
     description:
-      "Named workflow under .bb/workflows/<name>.js; lowercase kebab-case, at most 64 characters",
+      "Именованный рабочий процесс в .bb/workflows/<name>.js; строчные буквы и дефисы, не более 64 символов",
   },
 } as const;
 const SOURCE_CONSTRAINT = {
@@ -321,12 +321,12 @@ export function registerWorkflowCli(
   bb.cli.register(
     defineCli({
       name: "workflows",
-      summary: "Run and inspect durable BB workflows",
+      summary: "Запуск и просмотр рабочих процессов BB",
       description:
-        "Workflows run in the background: start one, then poll the compact status summary and read bounded JSONL history pages.",
+        "Рабочие процессы выполняются в фоне. Запустите процесс, затем проверяйте краткое состояние и читайте страницы истории в формате JSONL.",
       commands: {
         run: cliCommand({
-          summary: "Start a workflow and return immediately",
+          summary: "Запустить рабочий процесс и сразу вернуть управление",
           constraints: [SOURCE_CONSTRAINT],
           options: {
             ...SOURCE_OPTIONS,
@@ -334,13 +334,13 @@ export function registerWorkflowCli(
               type: "string",
               placeholder: "json",
               description:
-                "JSON value exposed to the script as the global `args`, verbatim",
+                "Значение JSON, доступное скрипту без изменений через глобальную переменную `args`",
             },
             resume: {
               type: "string",
               placeholder: "run-id",
               description:
-                "Reuse the recorded results of a previous run for calls that match",
+                "Повторно использовать записанные результаты совпадающих вызовов предыдущего запуска",
             },
             json: { type: "boolean", description: JSON_OPTION_DESCRIPTION },
           },
@@ -368,7 +368,7 @@ export function registerWorkflowCli(
           },
         }),
         validate: cliCommand({
-          summary: "Validate workflow source and literal model selections",
+          summary: "Проверить код рабочего процесса и указанные модели",
           constraints: [SOURCE_CONSTRAINT],
           options: {
             ...SOURCE_OPTIONS,
@@ -390,7 +390,7 @@ export function registerWorkflowCli(
           },
         }),
         status: cliCommand({
-          summary: "Show a compact workflow run summary",
+          summary: "Показать краткую сводку запуска рабочего процесса",
           positionals: [RUN_ID_POSITIONAL],
           options: {
             json: { type: "boolean", description: JSON_OPTION_DESCRIPTION },
@@ -401,14 +401,14 @@ export function registerWorkflowCli(
               const runId = input.positionals["run-id"];
               const page = service.inspectPage(runId, -1, 1);
               if (page === null || page.run.projectId !== context.projectId) {
-                throw new Error(`Unknown workflow run ${runId}`);
+                throw new Error(`Неизвестный запуск рабочего процесса: ${runId}`);
               }
               return success(statusSummary(page));
             });
           },
         }),
         history: cliCommand({
-          summary: "Read one JSONL page of workflow run and call history",
+          summary: "Прочитать страницу истории запуска и вызовов в формате JSONL",
           positionals: [RUN_ID_POSITIONAL],
           options: {
             cursor: {
@@ -418,14 +418,14 @@ export function registerWorkflowCli(
               default: 0,
               placeholder: "call-index",
               description:
-                "First call index to include; use a page record's nextCursor to continue",
+                "Индекс первого вызова; для продолжения используйте поле nextCursor из записи страницы",
             },
             limit: {
               type: "integer",
               min: 1,
               max: MAX_HISTORY_LIMIT,
               default: DEFAULT_HISTORY_LIMIT,
-              description: "How many calls to include in this page",
+              description: "Сколько вызовов включить в страницу",
             },
             json: { type: "boolean", description: JSON_OPTION_DESCRIPTION },
           },
@@ -436,7 +436,7 @@ export function registerWorkflowCli(
               const context = requireContext(ctx);
               const page = service.inspectPage(runId, cursor - 1, limit + 1);
               if (page === null || page.run.projectId !== context.projectId) {
-                throw new Error(`Unknown workflow run ${runId}`);
+                throw new Error(`Неизвестный запуск рабочего процесса: ${runId}`);
               }
               const exportedAt = Date.now();
               const calls = page.calls.slice(0, limit);
@@ -464,14 +464,14 @@ export function registerWorkflowCli(
           },
         }),
         list: cliCommand({
-          summary: "List recent project workflow runs",
+          summary: "Показать недавние запуски рабочих процессов проекта",
           options: {
             limit: {
               type: "integer",
               min: 1,
               max: MAX_LIST_LIMIT,
               default: DEFAULT_LIST_LIMIT,
-              description: "How many recent runs to list, newest first",
+              description: "Сколько недавних запусков показать; сначала новые",
             },
             json: { type: "boolean", description: JSON_OPTION_DESCRIPTION },
           },
@@ -487,7 +487,7 @@ export function registerWorkflowCli(
           },
         }),
         stop: cliCommand({
-          summary: "Cancel a workflow run",
+          summary: "Отменить запуск рабочего процесса",
           positionals: [RUN_ID_POSITIONAL],
           options: {
             json: { type: "boolean", description: JSON_OPTION_DESCRIPTION },
@@ -498,7 +498,7 @@ export function registerWorkflowCli(
               const runId = input.positionals["run-id"];
               const run = service.get(runId);
               if (run === null || run.projectId !== context.projectId) {
-                throw new Error(`Unknown workflow run ${runId}`);
+                throw new Error(`Неизвестный запуск рабочего процесса: ${runId}`);
               }
               return success({ runId, stopped: await service.stop(runId) });
             });

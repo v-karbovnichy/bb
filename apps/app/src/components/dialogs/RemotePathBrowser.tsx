@@ -53,9 +53,9 @@ export function toBreadcrumb(directory: string): Crumb[] {
 }
 
 export function getFolderNameValidationMessage(name: string): string | null {
-  if (!name) return "Enter a folder name.";
-  if (name === "." || name === "..") return "Enter a folder name.";
-  if (/[\\/]/.test(name)) return "Folder names can't contain slashes.";
+  if (!name) return "Введите имя папки.";
+  if (name === "." || name === "..") return "Введите имя папки.";
+  if (/[\\/]/.test(name)) return "Имя папки не может содержать косые черты.";
   return null;
 }
 
@@ -148,7 +148,7 @@ export function RemotePathBrowser({
   const createFolder = useMutation({
     mutationFn: async ({ parent, name }: { parent: string; name: string }) => {
       const path = joinHostPath({ rootPath: parent, relativePath: name });
-      if (path === null) throw new Error("Invalid parent directory.");
+      if (path === null) throw new Error("Недопустимая родительская папка.");
       await sdk.files.mkdir({ hostId, path });
       return path;
     },
@@ -165,7 +165,7 @@ export function RemotePathBrowser({
       setNewFolderError(
         getMutationErrorMessage({
           error: mutationError,
-          fallbackMessage: "Couldn't create that folder.",
+          fallbackMessage: "Не удалось создать эту папку.",
         }),
       );
     },
@@ -231,7 +231,7 @@ export function RemotePathBrowser({
         icon="AlertCircle"
         message={getMutationErrorMessage({
           error,
-          fallbackMessage: "Couldn't read this folder.",
+          fallbackMessage: "Не удалось открыть эту папку.",
         })}
         messageClassName="text-destructive"
         className="px-2 py-3"
@@ -242,12 +242,12 @@ export function RemotePathBrowser({
       <EmptyState
         icon="Spinner"
         iconClassName="animate-spin"
-        message="Loading…"
+        message="Загрузка…"
         className="px-2 py-3"
       />
     );
   } else if (entries.length === 0) {
-    body = <EmptyState message="This folder is empty." className="px-2 py-3" />;
+    body = <EmptyState message="Эта папка пуста." className="px-2 py-3" />;
   } else {
     body = (
       <ul
@@ -313,7 +313,7 @@ export function RemotePathBrowser({
           <>
             <Input
               ref={editInputRef}
-              aria-label="Project path"
+              aria-label="Путь к проекту"
               className="h-7 flex-1 text-xs"
               value={editValue}
               disabled={disabled}
@@ -334,7 +334,7 @@ export function RemotePathBrowser({
               variant="ghost"
               size="icon"
               className="size-7 shrink-0"
-              aria-label="Go to path"
+              aria-label="Перейти по пути"
               disabled={disabled}
               onClick={commitEditor}
             >
@@ -348,7 +348,7 @@ export function RemotePathBrowser({
               variant="ghost"
               size="icon"
               className="size-7 shrink-0"
-              aria-label="Go to parent folder"
+              aria-label="Перейти в родительскую папку"
               disabled={interactionDisabled || !data?.parent}
               onClick={() => {
                 if (data?.parent) navigateTo(data.parent);
@@ -388,7 +388,7 @@ export function RemotePathBrowser({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="start"
-                        mobileTitle="Drive"
+                        mobileTitle="Диск"
                         className="max-h-72 overflow-y-auto"
                       >
                         {roots.map((root) => (
@@ -424,7 +424,7 @@ export function RemotePathBrowser({
                 variant="ghost"
                 size="icon"
                 className="size-7 shrink-0"
-                aria-label="New folder"
+                aria-label="Новая папка"
                 disabled={!canCreateFolderHere}
                 onClick={startCreatingFolder}
               >
@@ -436,7 +436,7 @@ export function RemotePathBrowser({
               variant="ghost"
               size="icon"
               className="size-7 shrink-0"
-              aria-label="Edit path"
+              aria-label="Изменить путь"
               disabled={interactionDisabled}
               onClick={openEditor}
             >
@@ -456,7 +456,7 @@ export function RemotePathBrowser({
         {isCreatingFolder ? (
           <div
             role="group"
-            aria-label="Create new folder"
+            aria-label="Создать новую папку"
             className="mb-1 flex flex-col gap-1"
           >
             <div className="flex items-center gap-2 px-2">
@@ -466,11 +466,11 @@ export function RemotePathBrowser({
               />
               <Input
                 ref={newFolderInputRef}
-                aria-label="New folder name"
+                aria-label="Имя новой папки"
                 className="-ml-1 h-7 min-w-0 flex-1 px-1 text-sm"
                 value={newFolderName}
                 disabled={interactionDisabled}
-                placeholder="Folder name"
+                placeholder="Имя папки"
                 onChange={(event) => {
                   setNewFolderName(event.target.value);
                   setNewFolderError(null);
@@ -491,7 +491,7 @@ export function RemotePathBrowser({
                   variant="ghost"
                   size="icon"
                   className="size-7 shrink-0"
-                  aria-label="Create folder"
+                  aria-label="Создать папку"
                   disabled={interactionDisabled}
                   onClick={commitNewFolder}
                 >
@@ -505,7 +505,7 @@ export function RemotePathBrowser({
                   variant="ghost"
                   size="icon"
                   className="size-7 shrink-0"
-                  aria-label="Cancel new folder"
+                  aria-label="Отменить создание папки"
                   disabled={interactionDisabled}
                   onClick={cancelCreatingFolder}
                 >

@@ -11,80 +11,80 @@ import type { ConnectNextStatus } from "./types.js";
 const NEXT_ADDRESS = "https://<label>.next.<account domain>";
 
 const DESCRIPTION = [
-  `Beta: also reach this bb at ${NEXT_ADDRESS} through bb's Fly gate.`,
-  "The domain follows the bb account this bb is signed in to: https://<label>.next.getbb.app for getbb.app.",
-  "bb connect (https://<label>.getbb.app) keeps working; both addresses answer at once.",
+  `Бета: доступ к этому bb также возможен по адресу ${NEXT_ADDRESS} через шлюз Fly.`,
+  "Домен зависит от аккаунта bb: для getbb.app используется https://<label>.next.getbb.app.",
+  "bb connect (https://<label>.getbb.app) продолжает работать; оба адреса доступны одновременно.",
   "",
-  "It is on as soon as this plugin is enabled and this bb is signed in to your bb account",
+  "Доступ включается, когда плагин активен и этот bb вошёл в ваш аккаунт",
   "(bb account login).",
   "",
-  "`bb connect-next off` closes the connect next tunnel and leaves bb connect alone;",
-  "`bb connect-next on` opens it again.",
-  "Ports shared from the bb server's machine with `bb connect expose <port>` also answer at",
-  "https://<label>--<port>.next.<account domain> (owner only); `bb connect-next status` lists them.",
-  "Ports shared from other enrolled machines with `bb connect expose <port> --host <machine>` answer at",
-  "https://<machine-label>--<port>.next.<account domain>; each machine's daemon runs its own tunnel.",
+  "`bb connect-next off` закрывает туннель connect next, не затрагивая bb connect;",
+  "`bb connect-next on` открывает его снова.",
+  "Порты сервера bb, открытые командой `bb connect expose <port>`, также доступны по адресу",
+  "https://<label>--<port>.next.<account domain> (только владельцу); список показывает `bb connect-next status`.",
+  "Порты других подключённых машин, открытые командой `bb connect expose <port> --host <machine>`, доступны по адресу",
+  "https://<machine-label>--<port>.next.<account domain>; демон каждой машины запускает собственный туннель.",
 ].join("\n");
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для программной обработки",
 } as const;
 
 const MACHINE_STATE_TEXT: Record<
   ConnectNextStatus["machines"][number]["state"],
   string
 > = {
-  idle: "idle",
-  connecting: "connecting",
-  connected: "connected",
-  refused: "credential refused",
-  offline: "offline",
-  error: "error",
+  idle: "ожидание",
+  connecting: "подключение",
+  connected: "подключено",
+  refused: "учётные данные отклонены",
+  offline: "не в сети",
+  error: "ошибка",
 };
 
 const STATE_TEXT: Record<ConnectNextStatus["state"], string> = {
-  off: "off",
-  "signed-out": "waiting for a bb account sign-in",
-  connecting: "connecting",
-  connected: "connected",
-  refused: "credential refused",
-  offline: "offline",
-  error: "error",
+  off: "выключено",
+  "signed-out": "ожидание входа в аккаунт bb",
+  connecting: "подключение",
+  connected: "подключено",
+  refused: "учётные данные отклонены",
+  offline: "не в сети",
+  error: "ошибка",
 };
 
 export function formatStatus(status: ConnectNextStatus): string {
   if (!status.enabled) {
     return status.url === null
-      ? "connect next is off. Run `bb connect-next on` to also reach this bb at its next address."
-      : `connect next is off. Run \`bb connect-next on\` to also reach this bb at ${status.url}.`;
+      ? "connect next выключен. Выполните `bb connect-next on` для доступа к bb по новому адресу."
+      : `connect next выключен. Выполните \`bb connect-next on\` для доступа к bb по адресу ${status.url}.`;
   }
   if (status.label === null) {
-    return "connect next is on, but this bb isn't signed in to a bb account. Run `bb account login`; the tunnel starts once it is.";
+    return "connect next включён, но этот bb не вошёл в аккаунт. Выполните `bb account login`; затем туннель запустится.";
   }
   const lines = [`${status.label}  ${status.url}  ${STATE_TEXT[status.state]}`];
   if (status.lastError !== null && status.state !== "connected") {
-    lines.push(`  last error: ${status.lastError}`);
+    lines.push(`  последняя ошибка: ${status.lastError}`);
   }
   if (status.nextRetryAt !== null && status.state !== "connected") {
-    lines.push(`  next try: ${new Date(status.nextRetryAt).toISOString()}`);
+    lines.push(`  следующая попытка: ${new Date(status.nextRetryAt).toISOString()}`);
   }
-  lines.push(`  gate: ${status.server}`);
+  lines.push(`  шлюз: ${status.server}`);
   for (const share of status.shares) {
     lines.push(
-      `  share ${share.port}  ${share.url}  ${share.state}${share.error === null ? "" : ` (${share.error})`}`,
+      `  порт ${share.port}  ${share.url}  ${share.state}${share.error === null ? "" : ` (${share.error})`}`,
     );
   }
   for (const machine of status.machines) {
     lines.push(
-      `machine ${machine.hostName} (${machine.hostId})  ${machine.label ?? "no label yet"}  ${MACHINE_STATE_TEXT[machine.state]}`,
+      `машина ${machine.hostName} (${machine.hostId})  ${machine.label ?? "метка пока не задана"}  ${MACHINE_STATE_TEXT[machine.state]}`,
     );
     if (machine.lastError !== null && machine.state !== "connected") {
-      lines.push(`  last error: ${machine.lastError}`);
+      lines.push(`  последняя ошибка: ${machine.lastError}`);
     }
     for (const share of machine.shares) {
       lines.push(
-        `  share ${share.port}  ${share.url}  ${share.state}${share.error === null ? "" : ` (${share.error})`}`,
+        `  порт ${share.port}  ${share.url}  ${share.state}${share.error === null ? "" : ` (${share.error})`}`,
       );
     }
   }
@@ -116,11 +116,11 @@ export function registerConnectNextCli(
   bb.cli.register(
     defineCli({
       name: "connect-next",
-      summary: `Beta: also reach this bb at ${NEXT_ADDRESS}`,
+      summary: `Бета: доступ к этому bb также по адресу ${NEXT_ADDRESS}`,
       description: DESCRIPTION,
       commands: {
         status: cliCommand({
-          summary: "Show the connect next tunnel status and address",
+          summary: "Показать состояние туннеля connect next и адрес",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -134,7 +134,7 @@ export function registerConnectNextCli(
             }),
         }),
         on: cliCommand({
-          summary: `Reach this bb at ${NEXT_ADDRESS} as well`,
+          summary: `Открыть доступ к bb также по адресу ${NEXT_ADDRESS}`,
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -146,13 +146,13 @@ export function registerConnectNextCli(
                 exitCode: 0,
                 stdout:
                   status.url === null
-                    ? "connect next is on. Run `bb account login` to sign in; the tunnel starts once you do.\n"
-                    : `connect next is on — this bb will answer at ${status.url}\n`,
+                    ? "connect next включён. Выполните `bb account login`; после входа туннель запустится.\n"
+                    : `connect next включён — bb будет доступен по адресу ${status.url}\n`,
               };
             }),
         }),
         off: cliCommand({
-          summary: "Close the connect next tunnel; bb connect is unaffected",
+          summary: "Закрыть туннель connect next, сохранив работу bb connect",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -161,7 +161,7 @@ export function registerConnectNextCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? asJson(status)
-                  : "connect next is off. bb connect and local access are unaffected.\n",
+                  : "connect next выключен. bb connect и локальный доступ продолжают работать.\n",
               };
             }),
         }),

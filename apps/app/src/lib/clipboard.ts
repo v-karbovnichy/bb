@@ -201,7 +201,7 @@ export async function copyToClipboardWithToast(
   text: string,
   {
     successMessage = "Copied",
-    errorMessage = "Failed to copy",
+    errorMessage = "Не удалось скопировать",
     imageUrl,
   }: CopyToClipboardOptions = {},
 ): Promise<boolean> {
@@ -227,7 +227,7 @@ export interface ClipboardCopyOptions extends CopyToClipboardOptions {
 export function useClipboardCopy({
   text,
   successMessage = null,
-  errorMessage = "Failed to copy",
+  errorMessage = "Не удалось скопировать",
   imageUrl,
 }: ClipboardCopyOptions) {
   const { copied, markCopied } = useCopiedFeedback();

@@ -36,7 +36,7 @@ import {
 } from "./question-form-state";
 import { useQuestionFormDraft } from "./question-form-draft";
 
-const OTHER_OPTION_LABEL = "Other…";
+const OTHER_OPTION_LABEL = "Другое…";
 const FREE_TEXT_MIN_HEIGHT = 84;
 const FREE_TEXT_MAX_HEIGHT = 158;
 const PREVIEW_MAX_HEIGHT = 220;
@@ -274,7 +274,7 @@ function QuestionTabs({
         </div>
       </div>
       <span className="shrink-0 text-xs text-muted-foreground">
-        {currentIndex + 1} of {questions.length}
+        {currentIndex + 1} из {questions.length}
       </span>
     </div>
   );
@@ -314,7 +314,7 @@ function QuestionInputBlock({
     maxHeight: FREE_TEXT_MAX_HEIGHT,
   });
   const options = question.options;
-  const freeTextLabel = `${question.shortLabel} answer`;
+  const freeTextLabel = `Ответ на вопрос «${question.shortLabel}»`;
 
   useLayoutEffect(() => {
     if (!state.otherSelected) return;
@@ -348,7 +348,7 @@ function QuestionInputBlock({
         </div>
       ) : null}
       {question.required ? null : (
-        <div className="text-xs text-muted-foreground">Optional</div>
+        <div className="text-xs text-muted-foreground">Необязательно</div>
       )}
       <div
         className={cn(
@@ -397,7 +397,7 @@ function QuestionInputBlock({
           onValueChange={onFreeTextChange}
           onVoiceInputActiveChange={onVoiceInputActiveChange}
           onKeyDown={handleFreeTextKeyDown}
-          placeholder="Type your own answer…"
+          placeholder="Введите свой ответ…"
           className="mt-2 block w-full resize-none overflow-y-auto rounded-md border border-border bg-surface-raised px-3 py-2 text-xs leading-relaxed text-foreground placeholder:text-muted-foreground focus-visible:border-ring/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40"
           style={{
             minHeight: `${FREE_TEXT_MIN_HEIGHT}px`,
@@ -659,7 +659,7 @@ export function QuestionForm({
           disabled={cancelBlocked}
           onClick={() => void handleCancel()}
         >
-          Cancel
+          Отмена
         </Button>
         <div className="flex items-center gap-2">
           {!isFirst ? (
@@ -674,7 +674,7 @@ export function QuestionForm({
               disabled={navigationDisabled}
               onClick={handleBack}
             >
-              Back
+              Назад
             </Button>
           ) : null}
           <Button
@@ -690,9 +690,9 @@ export function QuestionForm({
             ) : null}
             {isLast
               ? density === "compact"
-                ? "Submit"
-                : "Submit answer"
-              : "Next"}
+                ? "Отправить"
+                : "Отправить ответ"
+              : "Далее"}
           </Button>
         </div>
       </div>

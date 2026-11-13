@@ -60,7 +60,7 @@ export function createModalSandboxPlugin(
     async function inspectMachine({ hostId }: { hostId: string }) {
       const stored = await bb.experimental_machines.getResource(hostId);
       if (stored === null)
-        throw new Error("No provider resource for this machine.");
+        throw new Error("Для этой машины нет ресурса провайдера.");
       return backend.inspect(backend.parseResource(stored));
     }
 

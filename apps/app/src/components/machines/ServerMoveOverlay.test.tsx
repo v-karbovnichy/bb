@@ -194,34 +194,34 @@ describe("ServerMoveOverlay", () => {
     renderOverlay();
 
     const overlay = await screen.findByRole("dialog", {
-      name: "Moving server to desk",
+      name: "Перенос сервера на desk",
     });
     expect(overlay.getAttribute("aria-modal")).toBe("true");
     expect(overlay.className).toContain("fixed");
     expect(overlay.className).toContain("inset-0");
-    expect(stepStatus(overlay, "Stopping running work")).toBe("done");
-    expect(stepStatus(overlay, "Updating bb on desk")).toBe("skipped");
-    expect(stepStatus(overlay, "Exporting server data")).toBe("running");
-    expect(stepStatus(overlay, "Sending data to desk")).toBe("pending");
-    expect(stepStatus(overlay, "Starting the new server")).toBe("pending");
-    expect(stepStatus(overlay, "Checking the new address")).toBe("pending");
-    expect(stepStatus(overlay, "Switching machines over")).toBe("pending");
+    expect(stepStatus(overlay, "Остановка выполняемых задач")).toBe("done");
+    expect(stepStatus(overlay, "Обновление bb на desk")).toBe("skipped");
+    expect(stepStatus(overlay, "Экспорт данных сервера")).toBe("running");
+    expect(stepStatus(overlay, "Передача данных на desk")).toBe("pending");
+    expect(stepStatus(overlay, "Запуск нового сервера")).toBe("pending");
+    expect(stepStatus(overlay, "Проверка нового адреса")).toBe("pending");
+    expect(stepStatus(overlay, "Переключение машин")).toBe("pending");
     expect(document.body.hasAttribute("aria-hidden")).toBe(false);
 
     fireEvent.click(
-      within(overlay).getByRole("button", { name: "Cancel move" }),
+      within(overlay).getByRole("button", { name: "Отменить перенос" }),
     );
 
     const ended = await screen.findByRole("dialog", {
-      name: "Server move cancelled",
+      name: "Перенос сервера отменён",
     });
     expect(vi.mocked(sdk.experimental_server.cancelMove)).toHaveBeenCalledTimes(
       1,
     );
     expect(
-      within(ended).queryByRole("button", { name: "Cancel move" }),
+      within(ended).queryByRole("button", { name: "Отменить перенос" }),
     ).toBeNull();
-    fireEvent.click(within(ended).getByRole("button", { name: "Close" }));
+    fireEvent.click(within(ended).getByRole("button", { name: "Закрыть" }));
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).toBeNull();
     });
@@ -276,54 +276,54 @@ describe("ServerMoveOverlay", () => {
     renderOverlay();
 
     const overlay = await screen.findByRole("dialog", {
-      name: "Couldn't confirm the switch to desk",
+      name: "Не удалось подтвердить переход на desk",
     });
     expect(
       within(overlay).getByText(
-        "desk didn't confirm that it took over, so this server stays up but read-only. bb keeps checking and finishes the move as soon as desk answers.",
+        "desk не подтвердил принятие управления. Этот сервер продолжает работать только для чтения. bb продолжит проверку и завершит перенос после ответа desk.",
       ),
     ).toBeDefined();
     expect(
       within(overlay).getByText(
-        "If desk isn't running the server, abandon the move to keep the server here. If this server stops, run bb server unlock on this computer.",
+        "Если сервер на desk не работает, прервите перенос, чтобы оставить сервер здесь. Если этот сервер остановится, выполните bb server unlock на этом компьютере.",
       ),
     ).toBeDefined();
-    expect(stepStatus(overlay, "Switching machines over")).toBe("running");
+    expect(stepStatus(overlay, "Переключение машин")).toBe("running");
 
     fireEvent.click(
-      within(overlay).getByRole("button", { name: "Abandon move…" }),
+      within(overlay).getByRole("button", { name: "Прервать перенос…" }),
     );
     expect(
       vi.mocked(sdk.experimental_server.cancelMove),
     ).not.toHaveBeenCalled();
     expect(
       within(overlay).getByText(
-        "Abandon only if desk isn't running the server. If it already took over, two servers will run with the same data.",
+        "Прерывайте перенос только если сервер на desk не работает. Если он уже принял управление, два сервера будут работать с одинаковыми данными.",
       ),
     ).toBeDefined();
     fireEvent.click(
-      within(overlay).getByRole("button", { name: "Keep waiting" }),
+      within(overlay).getByRole("button", { name: "Продолжить ожидание" }),
     );
     expect(
-      within(overlay).queryByRole("button", { name: "Abandon move" }),
+      within(overlay).queryByRole("button", { name: "Прервать перенос" }),
     ).toBeNull();
 
     fireEvent.click(
-      within(overlay).getByRole("button", { name: "Abandon move…" }),
+      within(overlay).getByRole("button", { name: "Прервать перенос…" }),
     );
     fireEvent.click(
-      within(overlay).getByRole("button", { name: "Abandon move" }),
+      within(overlay).getByRole("button", { name: "Прервать перенос" }),
     );
 
     const ended = await screen.findByRole("dialog", {
-      name: "Server move abandoned",
+      name: "Перенос сервера прерван",
     });
     expect(vi.mocked(sdk.experimental_server.cancelMove)).toHaveBeenCalledTimes(
       1,
     );
     expect(
       within(ended).getByText(
-        "The server keeps running here. If desk took over anyway, stop the server there.",
+        "Сервер продолжает работать здесь. Если desk всё же принял управление, остановите сервер там.",
       ),
     ).toBeDefined();
   });
@@ -348,9 +348,9 @@ describe("ServerMoveOverlay", () => {
     renderOverlay();
 
     const overlay = await screen.findByRole("dialog", {
-      name: "Moving server to desk",
+      name: "Перенос сервера на desk",
     });
-    expect(stepStatus(overlay, "Switching machines over")).toBe("running");
+    expect(stepStatus(overlay, "Переключение машин")).toBe("running");
     expect(within(overlay).queryByRole("button")).toBeNull();
   });
 
@@ -388,11 +388,11 @@ describe("ServerMoveOverlay", () => {
     );
 
     const waiting = await screen.findByRole("dialog", {
-      name: "Starting the server on desk…",
+      name: "Запуск сервера на desk…",
     });
     expect(navigateTo).not.toHaveBeenCalled();
     expect(
-      within(waiting).queryByRole("link", { name: "Open the new address" }),
+      within(waiting).queryByRole("link", { name: "Открыть новый адрес" }),
     ).toBeNull();
     const destination =
       "https://desk.example.com/projects/proj_1/threads/thr_1?panel=diff&bbServerMove=move_1#turn-3";
@@ -411,11 +411,11 @@ describe("ServerMoveOverlay", () => {
       },
     });
     const overlay = screen.getByRole("dialog", {
-      name: "Server moved to desk",
+      name: "Сервер перенесён на desk",
     });
     expect(
       within(overlay)
-        .getByRole("link", { name: "Open the new address" })
+        .getByRole("link", { name: "Открыть новый адрес" })
         .getAttribute("href"),
     ).toBe(destination);
     expect(navigateTo).toHaveBeenCalledTimes(1);
@@ -442,12 +442,12 @@ describe("ServerMoveOverlay", () => {
     const { navigateTo } = renderOverlay();
 
     expect(
-      await screen.findByRole("dialog", { name: "Reconnecting to desk…" }),
+      await screen.findByRole("dialog", { name: "Повторное подключение к desk…" }),
     ).toBeDefined();
 
     await waitFor(() => {
       expect(vi.mocked(appToast.success)).toHaveBeenCalledWith(
-        "Server moved to desk",
+        "Сервер перенесён на desk",
       );
     });
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -455,7 +455,7 @@ describe("ServerMoveOverlay", () => {
     expect(vi.mocked(appToast.success)).toHaveBeenCalledTimes(1);
   });
 
-  it("shows why a followed move failed and stays dismissed after Close", async () => {
+  it("shows why a followed move failed and stays dismissed after Закрыть", async () => {
     vi.mocked(sdk.experimental_server.moveStatus)
       .mockResolvedValueOnce({
         move: move({ steps: steps({ "stop-work": "running" }) }),
@@ -478,23 +478,23 @@ describe("ServerMoveOverlay", () => {
       });
     const { queryClient } = renderOverlay();
 
-    await screen.findByRole("dialog", { name: "Moving server to desk" });
+    await screen.findByRole("dialog", { name: "Перенос сервера на desk" });
     await queryClient.invalidateQueries({
       queryKey: serverMoveStatusQueryKey(),
     });
 
     const overlay = await screen.findByRole("dialog", {
-      name: "Couldn't move the server to desk",
+      name: "Не удалось перенести сервер на desk",
     });
     expect(
       within(overlay).getByText("desk ran out of disk space"),
     ).toBeDefined();
     expect(
-      within(overlay).getByText("The server keeps running where it was."),
+      within(overlay).getByText("Сервер продолжает работать на прежней машине."),
     ).toBeDefined();
-    expect(stepStatus(overlay, "Sending data to desk")).toBe("failed");
+    expect(stepStatus(overlay, "Передача данных на desk")).toBe("failed");
 
-    fireEvent.click(within(overlay).getByRole("button", { name: "Close" }));
+    fireEvent.click(within(overlay).getByRole("button", { name: "Закрыть" }));
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).toBeNull();
     });
@@ -532,11 +532,11 @@ describe("ServerMoveOverlay", () => {
     realtime.state = "reconnecting";
     renderOverlay();
 
-    await screen.findByRole("dialog", { name: "Moving server to desk" });
+    await screen.findByRole("dialog", { name: "Перенос сервера на desk" });
     const overlay = await screen.findByRole("dialog", {
-      name: "Server move stopped",
+      name: "Перенос сервера остановлен",
     });
-    fireEvent.click(within(overlay).getByRole("button", { name: "Close" }));
+    fireEvent.click(within(overlay).getByRole("button", { name: "Закрыть" }));
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).toBeNull();
     });
@@ -587,7 +587,7 @@ describe("ServerMoveOverlay", () => {
 
     await waitFor(() => {
       expect(vi.mocked(appToast.success)).toHaveBeenCalledWith(
-        "Server moved to desk",
+        "Сервер перенесён на desk",
       );
     });
     await waitFor(() => {

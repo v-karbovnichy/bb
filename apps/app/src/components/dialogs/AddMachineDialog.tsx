@@ -108,8 +108,8 @@ export function AddMachineContent({
 
 function serverMachineNotice(serverMachineName: string | null): string {
   return serverMachineName === null
-    ? "The new machine will connect to your bb server. Keep the server machine on so the new machine can keep working."
-    : `The new machine will connect to the bb server on ${serverMachineName}. Keep that computer on so the new machine can keep working.`;
+    ? "Новая машина подключится к вашему серверу bb. Оставьте серверную машину включённой, чтобы новая могла работать."
+    : `Новая машина подключится к серверу bb на ${serverMachineName}. Оставьте этот компьютер включённым, чтобы новая машина могла работать.`;
 }
 
 export type MachineAccessGateState =
@@ -127,9 +127,9 @@ export function MachineAccessGate({
   if (state.status === "checking") {
     return (
       <>
-        <DialogTitle className="sr-only">Add a machine</DialogTitle>
+        <DialogTitle className="sr-only">Добавить машину</DialogTitle>
         <p role="status" className="text-sm text-subtle-foreground">
-          Checking machine access…
+          Проверка доступа машин…
         </p>
       </>
     );
@@ -138,14 +138,14 @@ export function MachineAccessGate({
     return (
       <>
         <DialogHeader>
-          <DialogTitle>Add a machine</DialogTitle>
+          <DialogTitle>Добавить машину</DialogTitle>
           <DialogDescription className="text-destructive-text">
-            Couldn’t check whether machines can reach this server.
+            Не удалось проверить доступность сервера для машин.
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={state.onRetry}>
-            Try again
+            Повторить
           </Button>
         </div>
       </>
@@ -154,10 +154,9 @@ export function MachineAccessGate({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Set up machine access</DialogTitle>
+        <DialogTitle>Настроить доступ машин</DialogTitle>
         <DialogDescription>
-          A new machine has to reach this server over the network. Choose the
-          address it should use.
+          Новой машине нужен сетевой доступ к этому серверу. Выберите адрес для подключения.
         </DialogDescription>
       </DialogHeader>
       {children}
@@ -240,7 +239,7 @@ function useManualMachineEnrollment(
         if (generation !== lifecycleGeneration.current) {
           pendingHostIds.current.delete(host.id);
           await sdk.hosts.delete({ hostId: host.id });
-          throw new Error("Machine setup closed");
+          throw new Error("Настройка машины закрыта");
         }
         let enrollment: Awaited<
           ReturnType<typeof sdk.hosts.experimental_getEnrollmentCommand>
@@ -284,7 +283,7 @@ function useManualMachineEnrollment(
         pendingHostIds.current.delete(host.id);
         if (host.lifecycle.phase !== "active") {
           throw new MachineEnrollmentEndedError(
-            host.lifecycle.message ?? "Machine setup cancelled",
+            host.lifecycle.message ?? "Настройка машины отменена",
           );
         }
         return host;
@@ -313,7 +312,7 @@ function useManualMachineEnrollment(
     errorMessage: createMachine.isError
       ? getMutationErrorMessage({
           error: createMachine.error,
-          fallbackMessage: "Couldn't prepare an enrollment command.",
+          fallbackMessage: "Не удалось подготовить команду подключения.",
         })
       : null,
     retry: () => start({ replaceLaunch: false }),
@@ -382,7 +381,7 @@ export function QuickMachineSetupView({
           {errorMessage}
         </p>
         <Button type="button" variant="outline" size="sm" onClick={onRetry}>
-          Try again
+          Повторить
         </Button>
       </div>
     );
@@ -391,10 +390,10 @@ export function QuickMachineSetupView({
     <div className="flex flex-col gap-3 text-xs text-muted-foreground">
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-          <p className="text-foreground">On the other machine, run:</p>
+          <p className="text-foreground">На другой машине выполните:</p>
           <div
             role="group"
-            aria-label="Machine operating system"
+            aria-label="Операционная система машины"
             className="flex items-center gap-1"
           >
             {MACHINE_LAUNCH_PLATFORMS.map((option, index) => (
@@ -431,8 +430,8 @@ export function QuickMachineSetupView({
       {connectedHost === null ? (
         <PendingStatus>
           {command === null
-            ? "Preparing a command…"
-            : "Waiting for it to connect…"}
+            ? "Подготовка команды…"
+            : "Ожидание подключения…"}
         </PendingStatus>
       ) : (
         <p role="status" className="flex items-center gap-1.5 text-foreground">
@@ -441,7 +440,7 @@ export function QuickMachineSetupView({
             aria-hidden
             className="size-3.5 shrink-0 text-success"
           />
-          {connectedHost.name} connected
+          {connectedHost.name} подключена
         </p>
       )}
     </div>
@@ -473,7 +472,7 @@ function QuickMachineCommand({
           variant="ghost"
           size="icon"
           className="size-6 shrink-0"
-          aria-label={copied ? "Copied" : "Copy command"}
+          aria-label={copied ? "Скопировано" : "Скопировать команду"}
           disabled={expired || unavailable}
           onClick={() => void copy()}
         >
@@ -485,16 +484,16 @@ function QuickMachineCommand({
         </Button>
       </div>
       {unavailable ? (
-        <p role="status">Command used</p>
+        <p role="status">Команда использована</p>
       ) : expired ? (
         <p role="status" className="flex flex-wrap items-center gap-x-2">
-          Command expired
+          Срок действия команды истёк
           <InlineTextButton onClick={onRegenerate}>
-            Get a new command
+            Получить новую команду
           </InlineTextButton>
         </p>
       ) : (
-        <p className="tabular-nums">Expires in {formatCountdown(remaining)}</p>
+        <p className="tabular-nums">Истекает через {formatCountdown(remaining)}</p>
       )}
     </div>
   );
@@ -520,20 +519,20 @@ export function ManualMachineSetupView({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Add a machine</DialogTitle>
+        <DialogTitle>Добавить машину</DialogTitle>
         <DialogDescription
           className={
             errorMessage === null ? undefined : "text-destructive-text"
           }
         >
           {errorMessage ??
-            "Run this command on the machine you want to add. It installs bb and keeps the machine connected to this server."}
+            "Выполните эту команду на добавляемой машине. Она установит bb и поддержит подключение к серверу."}
         </DialogDescription>
       </DialogHeader>
       {errorMessage === null ? null : (
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={onRetry}>
-            Try again
+            Повторить
           </Button>
         </div>
       )}
@@ -557,8 +556,8 @@ export function ManualMachineSetupView({
               />
               <span role="status" className="text-sm text-muted-foreground">
                 {command === null
-                  ? "Preparing an enrollment command…"
-                  : "Waiting for the machine to connect…"}
+                  ? "Подготовка команды подключения…"
+                  : "Ожидание подключения машины…"}
               </span>
             </>
           ) : (
@@ -568,7 +567,7 @@ export function ManualMachineSetupView({
                 role="status"
                 className="min-w-0 flex-1 truncate text-sm text-foreground"
               >
-                {connectedHost.name} connected
+                {connectedHost.name} подключена
               </span>
               <Button
                 asChild
@@ -580,7 +579,7 @@ export function ManualMachineSetupView({
                   to={getSettingsMachineRoutePath(connectedHost.id)}
                   onClick={onOpenMachine}
                 >
-                  Open machine
+                  Открыть машину
                   <Icon name="ArrowRight" />
                 </Link>
               </Button>
@@ -630,7 +629,7 @@ export function MachineLaunchCommand({
     <div className="overflow-hidden rounded-md border border-border bg-muted/30">
       <div
         role="group"
-        aria-label="Machine operating system"
+        aria-label="Операционная система машины"
         className="flex items-center gap-1 border-b border-border px-2 py-1.5"
       >
         {MACHINE_LAUNCH_PLATFORMS.map((option) => (
@@ -648,7 +647,7 @@ export function MachineLaunchCommand({
         ))}
         {platform === "windows" ? (
           <span className="ml-auto text-xs text-subtle-foreground">
-            Run in PowerShell
+            Выполните в PowerShell
           </span>
         ) : null}
       </div>
@@ -658,12 +657,12 @@ export function MachineLaunchCommand({
       <div className="flex flex-wrap items-center gap-2 border-t border-border px-3 py-2">
         {unavailable ? (
           <span role="status" className="text-xs text-subtle-foreground">
-            Command used
+            Команда использована
           </span>
         ) : expired ? (
           <>
             <span role="status" className="text-xs text-subtle-foreground">
-              Command expired
+              Срок действия команды истёк
             </span>
             <Button
               type="button"
@@ -672,7 +671,7 @@ export function MachineLaunchCommand({
               className="h-7 px-2 text-xs"
               onClick={onRegenerate}
             >
-              Generate a new command
+              Создать новую команду
             </Button>
           </>
         ) : (
@@ -680,7 +679,7 @@ export function MachineLaunchCommand({
             role="status"
             className="text-xs tabular-nums text-subtle-foreground"
           >
-            Command expires in {formatCountdown(remaining)}
+            Срок действия команды: {formatCountdown(remaining)}
           </span>
         )}
         <Button
@@ -691,7 +690,7 @@ export function MachineLaunchCommand({
           disabled={expired || unavailable}
           onClick={() => void copy()}
         >
-          {copied ? "Copied" : "Copy"}
+          {copied ? "Скопировано" : "Копировать"}
         </Button>
       </div>
     </div>

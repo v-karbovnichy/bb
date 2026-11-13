@@ -533,7 +533,7 @@ function TiptapEditor(props: {
         HtmlBlock,
         HtmlSource,
         HtmlEmbed.configure({ preview: previewRef.current }),
-        Placeholder.configure({ placeholder: "Start writing…" }),
+        Placeholder.configure({ placeholder: "Начните писать…" }),
         Markdown.configure({
           html: true,
           tightLists: true,
@@ -546,7 +546,7 @@ function TiptapEditor(props: {
       editorProps: {
         attributes: {
           role: "textbox",
-          "aria-label": "Document content",
+          "aria-label": "Содержимое документа",
           "aria-multiline": "true",
         },
         handleKeyDown(view, event) {
@@ -820,17 +820,17 @@ function DocumentNotices({
         role="alert"
       >
         <span className="min-w-0 flex-1">
-          This document changed elsewhere while you were editing.
+          Документ был изменён в другом месте, пока вы его редактировали.
         </span>
         <Button
           size="sm"
           variant="ghost"
           onClick={() => void session.keepMine()}
         >
-          Keep mine
+          Оставить мою версию
         </Button>
         <Button size="sm" variant="ghost" onClick={() => session.useTheirs()}>
-          Use theirs
+          Принять другую версию
         </Button>
       </div>
     );
@@ -843,12 +843,12 @@ function DocumentNotices({
         <span className="min-w-0 flex-1">
           {state.error ??
             (state.loaded
-              ? "This document was moved or deleted elsewhere."
-              : "This document was moved or deleted.")}
+              ? "Документ был перемещён или удалён в другом месте."
+              : "Документ был перемещён или удалён.")}
         </span>
         {onSaveCopy && state.loaded && state.error === null ? (
           <Button size="sm" variant="ghost" onClick={onSaveCopy}>
-            Save a copy
+            Сохранить копию
           </Button>
         ) : null}
       </div>
@@ -861,7 +861,7 @@ function DocumentNotices({
       >
         <span className="min-w-0 flex-1">{state.error}</span>
         <Button size="sm" variant="ghost" onClick={() => void session.retry()}>
-          Retry
+          Повторить
         </Button>
       </div>
     );
@@ -882,10 +882,10 @@ function useSaveCopy(vaultId: string, state: DocumentState) {
         name: `${name} copy`,
         content: state.draft,
       });
-      toast.success(`Saved a copy as ${created.path}`);
+      toast.success(`Копия сохранена как ${created.path}`);
       return created.path;
     } catch (error) {
-      toast.error(`Could not save a copy: ${errorMessage(error)}`);
+      toast.error(`Не удалось сохранить копию: ${errorMessage(error)}`);
       return null;
     }
   };
@@ -897,9 +897,9 @@ function DocumentSkeleton() {
       <div
         className="min-w-0 flex-1 overflow-hidden"
         role="status"
-        aria-label="Loading document"
+        aria-label="Загрузка документа"
       >
-        <span className="sr-only">Loading…</span>
+        <span className="sr-only">Загрузка…</span>
         <div className="mx-auto w-full max-w-3xl space-y-8 px-6 py-12">
           <div className="space-y-4">
             <Skeleton className="h-8 w-2/5" />
@@ -1040,9 +1040,9 @@ function InlineDocument({
   const redo = proposal?.status === "undone" && proposal.baseSha256 === sha256;
   const copy = async () => {
     if (await experimental_copyToClipboard({ text: state.draft })) {
-      toast.success("Document copied");
+      toast.success("Документ скопирован");
     } else {
-      toast.error("Could not copy the document");
+      toast.error("Не удалось скопировать документ");
     }
   };
   const ask = async () => {
@@ -1096,24 +1096,24 @@ function InlineDocument({
               className="inline-flex size-5 shrink-0 items-center justify-center"
             >
               <Icon name="Loading" className="size-3 animate-spin" />
-              <span className="sr-only">Updating document…</span>
+              <span className="sr-only">Обновление документа…</span>
             </span>
           )}
           <div
             className="flex shrink-0 items-center gap-0.5"
             role="group"
-            aria-label="Document actions"
+            aria-label="Действия с документом"
           >
             {pending && (
               <>
                 <DocumentAction
-                  label="Accept"
+                  label="Принять"
                   icon="Check"
                   disabled={state.busy || state.saving || stale}
                   onClick={() => void session.resolve("accept")}
                 />
                 <DocumentAction
-                  label="Reject"
+                  label="Отклонить"
                   icon="X"
                   disabled={state.busy}
                   onClick={() => void session.resolve("reject")}
@@ -1122,7 +1122,7 @@ function InlineDocument({
             )}
             {undo && !state.dirty && (
               <DocumentAction
-                label="Undo"
+                label="Отменить"
                 icon="ArrowTurnBackward"
                 disabled={state.busy}
                 onClick={() => void session.resolve("undo")}
@@ -1130,27 +1130,27 @@ function InlineDocument({
             )}
             {redo && !state.dirty && (
               <DocumentAction
-                label="Redo"
+                label="Повторить"
                 icon="ArrowTurnForward"
                 disabled={state.busy}
                 onClick={() => void session.resolve("redo")}
               />
             )}
             <DocumentAction
-              label="Ask for changes"
+              label="Попросить внести изменения"
               icon="MessageSquare"
               disabled={!state.loaded || state.busy || asking}
               onClick={() => void ask()}
             />
             <DocumentAction
-              label="Copy"
+              label="Копировать"
               icon="Copy"
               disabled={!state.loaded}
               onClick={() => void copy()}
             />
             {panel && (
               <DocumentAction
-                label="Open in Docs"
+                label="Открыть в Docs"
                 icon="ExternalLink"
                 onClick={() =>
                   navigate.toPluginPanel("docs", {
@@ -1163,7 +1163,7 @@ function InlineDocument({
               <>
                 <span className="mx-1 h-4 border-l border-border" />
                 <DocumentAction
-                  label="Open in tab"
+                  label="Открыть во вкладке"
                   icon="ExternalLink"
                   onClick={() => openInTab(title)}
                 />
@@ -1186,7 +1186,7 @@ function InlineDocument({
         )}
         {stale && (
           <p className="px-4 py-2 text-xs text-muted-foreground">
-            This document changed. Ask for an updated proposal before accepting.
+            Документ изменился. Запросите обновлённое предложение перед принятием.
           </p>
         )}
         <div
@@ -1209,7 +1209,7 @@ function InlineDocument({
               >
                 {pending && baseMetadata !== candidateMetadata && (
                   <div className="px-6 pt-4 text-xs">
-                    <p className="mb-2 font-medium">Document metadata</p>
+                    <p className="mb-2 font-medium">Метаданные документа</p>
                     {baseMetadata && (
                       <pre className="whitespace-pre-wrap bg-diff-removed/10 text-diff-removed">
                         <del>{baseMetadata}</del>
@@ -1244,7 +1244,7 @@ function InlineDocument({
               {truncated && openInTab && (
                 <button
                   type="button"
-                  aria-label={`Open ${title} in tab`}
+                  aria-label={`Открыть ${title} во вкладке`}
                   className="absolute inset-0 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
                   onClick={() => openInTab(title)}
                 >
@@ -1266,7 +1266,7 @@ function DocsDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
   if (!document) {
     return (
       <div className="my-3 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-        Invalid Docs link. Expected a vault and a Markdown or HTML path.
+        Неверная ссылка Docs. Укажите хранилище и путь к файлу Markdown или HTML.
       </div>
     );
   }
@@ -1310,7 +1310,7 @@ function DocsDirectiveCard({ attributes }: PluginMessageDirectiveProps) {
         className="relative size-8 shrink-0"
         size="icon"
         variant="ghost"
-        aria-label="Open in Docs"
+        aria-label="Открыть в Docs"
         onClick={openInDocs}
       >
         <HugeiconsIcon icon={ArrowUpRight01Icon} />
@@ -1357,7 +1357,7 @@ function DocumentPicker() {
   return (
     <div className="flex h-full min-h-0 flex-col gap-3 overflow-y-auto p-4">
       <p className="text-sm text-muted-foreground">
-        Choose a document to open.
+        Выберите документ для открытия.
       </p>
       <NotesWorkspace
         subPath={subPath}
@@ -1401,7 +1401,7 @@ function DocumentPanel({ params }: ExperimentalThreadActionTabProps) {
             <span className="truncate opacity-70">{document.title}</span>
           </div>
           <DocumentAction
-            label="Open in Docs"
+            label="Открыть в Docs"
             icon="ExternalLink"
             onClick={() =>
               navigate.toPluginPanel("docs", {
@@ -1660,7 +1660,7 @@ function DocsFileOpener({ path: filePath, source }: PluginFileOpenerProps) {
           expectedSha256,
         });
         if (result.outcome === "conflict")
-          throw new Error("This document changed elsewhere.");
+          throw new Error("Документ изменился в другом месте.");
         return { path: target, sha256: result.sha256 };
       },
       refetch: query.refetch,
@@ -1678,7 +1678,7 @@ function DocsFileOpener({ path: filePath, source }: PluginFileOpenerProps) {
             size="icon"
             variant="ghost"
             className="size-7 shrink-0"
-            aria-label="Open file externally"
+            aria-label="Открыть файл во внешнем приложении"
             onClick={() =>
               navigate.experimental_openFileExternally({
                 target: liveFileTarget,
@@ -1762,7 +1762,7 @@ function NotesSidebarNavigation(props: NotesSidebarNavigationProps) {
   return (
     <div
       role="toolbar"
-      aria-label="Notes sidebar actions"
+      aria-label="Действия с заметками"
       className="flex min-w-0 flex-1 items-center gap-1"
     >
       {props.searchOpen ? (
@@ -1782,14 +1782,14 @@ function NotesSidebarNavigation(props: NotesSidebarNavigationProps) {
                 props.onQueryChange("");
                 props.onSearchOpenChange(false);
               }}
-              placeholder="Search this vault"
+              placeholder="Поиск в хранилище"
             />
           </div>
           <Button
             className="size-8"
             size="icon"
             variant="ghost"
-            aria-label="Close search"
+            aria-label="Закрыть поиск"
             onClick={() => {
               props.onQueryChange("");
               props.onSearchOpenChange(false);
@@ -1805,7 +1805,7 @@ function NotesSidebarNavigation(props: NotesSidebarNavigationProps) {
             className="size-8"
             size="icon"
             variant="ghost"
-            aria-label="Search notes"
+            aria-label="Поиск заметок"
             onClick={() => props.onSearchOpenChange(true)}
           >
             <HugeiconsIcon icon={Search01Icon} className="size-4" />
@@ -1814,7 +1814,7 @@ function NotesSidebarNavigation(props: NotesSidebarNavigationProps) {
             className="size-8"
             size="icon"
             variant="ghost"
-            aria-label="New note"
+            aria-label="Новая заметка"
             onClick={props.onNewNote}
           >
             <HugeiconsIcon icon={FileAddIcon} className="size-4" />
@@ -1823,7 +1823,7 @@ function NotesSidebarNavigation(props: NotesSidebarNavigationProps) {
             className="size-8"
             size="icon"
             variant="ghost"
-            aria-label="New folder"
+            aria-label="Новая папка"
             onClick={props.onNewFolder}
           >
             <HugeiconsIcon icon={FolderAddIcon} className="size-4" />
@@ -2031,12 +2031,12 @@ function Tree({
             onDrop={(event) => moveIntoFolder(event, "")}
           >
             <HugeiconsIcon icon={Folder01Icon} className="size-4 shrink-0" />
-            Move to top level
+            Переместить на верхний уровень
           </button>
         ) : null}
       </div>
       <nav
-        aria-label="Notes"
+        aria-label="Заметки"
         className="relative min-h-0 flex-1 overflow-y-auto p-1.5"
       >
         {data.error || refreshError ? (
@@ -2046,7 +2046,7 @@ function Tree({
           >
             <span className="min-w-0 flex-1">{data.error ?? refreshError}</span>
             <Button size="sm" variant="ghost" onClick={onRefresh}>
-              Retry
+              Повторить
             </Button>
           </div>
         ) : null}
@@ -2155,7 +2155,7 @@ function Tree({
                     onSelect={() => onDeleteFile(entry.path)}
                   >
                     <HugeiconsIcon icon={Delete02Icon} className="size-4" />
-                    Delete
+                    Удалить
                   </ContextMenuPrimitive.Item>
                 </ContextMenuPrimitive.Content>
               </ContextMenuPrimitive.Portal>
@@ -2164,7 +2164,7 @@ function Tree({
         })}
         {data.truncated ? (
           <div className="p-2 text-xs text-muted-foreground">
-            Tree truncated at 5,000 entries.
+            Дерево обрезано до 5000 элементов.
           </div>
         ) : null}
       </nav>
@@ -2173,7 +2173,7 @@ function Tree({
           <Select value={data.vault.id} onValueChange={onVaultChange}>
             <SelectTrigger
               className="min-w-0 flex-1 border-transparent px-2 shadow-none hover:bg-state-hover"
-              aria-label="Vault"
+              aria-label="Хранилище"
             >
               <SelectValue />
             </SelectTrigger>
@@ -2189,7 +2189,7 @@ function Tree({
             className="size-8 shrink-0"
             size="icon"
             variant="ghost"
-            aria-label="Add vault"
+            aria-label="Добавить хранилище"
             onClick={onAddVault}
           >
             <HugeiconsIcon icon={PlusSignIcon} className="size-4" />
@@ -2201,7 +2201,7 @@ function Tree({
             role="status"
           >
             <HugeiconsIcon icon={AlertCircleIcon} className="size-4 shrink-0" />
-            <span className="truncate">Host unavailable</span>
+            <span className="truncate">Хост недоступен</span>
           </div>
         ) : null}
       </div>
@@ -2318,9 +2318,9 @@ function NotesWorkspace({
     if (error)
       return (
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 p-6 text-center text-sm">
-          <p className="text-destructive">Could not load vaults: {error}</p>
+          <p className="text-destructive">Не удалось загрузить хранилища: {error}</p>
           <Button size="sm" variant="outline" onClick={refresh}>
-            Retry
+            Повторить
           </Button>
         </div>
       );
@@ -2330,7 +2330,7 @@ function NotesWorkspace({
           className="flex min-h-0 flex-1 items-center justify-center p-6 text-sm text-muted-foreground"
           role="status"
         >
-          Loading vaults…
+          Загрузка хранилищ…
         </div>
       </DelayedLoading>
     );
@@ -2342,13 +2342,13 @@ function NotesWorkspace({
       .mutate({
         vaultId: activeVaultId,
         parent: selectedFolder,
-        name: "Untitled",
+        name: "Без названия",
       })
       .then((value) => {
         if (isCurrentVault(activeVaultId)) open(value.path);
       })
       .catch((error: unknown) => {
-        toast.error(`Could not create a note: ${errorMessage(error)}`);
+        toast.error(`Не удалось создать заметку: ${errorMessage(error)}`);
       });
   const createFolder = async () => {
     const name = folderName.trim();
@@ -2400,9 +2400,9 @@ function NotesWorkspace({
       if (filePath === path) {
         navigateTo(activeVaultId, true);
       }
-      toast.success(`Deleted ${path}`);
+      toast.success(`Удалено: ${path}`);
     } catch (error) {
-      toast.error(`Could not delete ${path}: ${errorMessage(error)}`);
+      toast.error(`Не удалось удалить ${path}: ${errorMessage(error)}`);
     }
   };
 
@@ -2414,7 +2414,7 @@ function NotesWorkspace({
         paths,
       });
     } catch (error) {
-      toast.error(`Could not reorder files: ${errorMessage(error)}`);
+      toast.error(`Не удалось изменить порядок файлов: ${errorMessage(error)}`);
     }
   };
 
@@ -2446,7 +2446,7 @@ function NotesWorkspace({
         } catch (error) {
           orderPreserved = false;
           toast.error(
-            `Moved ${fileName}, but could not preserve its drop position: ${errorMessage(error)}`,
+            `Файл ${fileName} перемещён, но не удалось сохранить его позицию: ${errorMessage(error)}`,
           );
         }
       }
@@ -2455,12 +2455,12 @@ function NotesWorkspace({
       if (orderPreserved) {
         toast.success(
           targetFolder
-            ? `Moved ${fileName} to ${targetFolder}`
-            : `Moved ${fileName} to the top level`,
+            ? `Файл ${fileName} перемещён в ${targetFolder}`
+            : `Файл ${fileName} перемещён на верхний уровень`,
         );
       }
     } catch (error) {
-      toast.error(`Could not move ${fileName}: ${errorMessage(error)}`);
+      toast.error(`Не удалось переместить ${fileName}: ${errorMessage(error)}`);
     }
   };
 
@@ -2495,9 +2495,9 @@ function NotesWorkspace({
           />
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 text-sm text-muted-foreground">
-            <p>Select a note or HTML page.</p>
+            <p>Выберите заметку или HTML-страницу.</p>
             <Button size="sm" variant="outline" onClick={newNote}>
-              New note
+              Новая заметка
             </Button>
           </div>
         )}
@@ -2513,22 +2513,22 @@ function NotesWorkspace({
               }}
             >
               <DialogHeader>
-                <DialogTitle>New folder</DialogTitle>
+                <DialogTitle>Новая папка</DialogTitle>
                 <DialogDescription>
-                  Create it{" "}
+                  Создать{" "}
                   {selectedFolder
-                    ? `inside ${selectedFolder}`
-                    : "at the vault root"}
+                    ? `в папке ${selectedFolder}`
+                    : "в корне хранилища"}
                   .
                 </DialogDescription>
               </DialogHeader>
               <label className="grid gap-1.5 text-sm font-medium">
-                Folder name
+                Имя папки
                 <Input
                   autoFocus
                   value={folderName}
                   onChange={(event) => setFolderName(event.target.value)}
-                  placeholder="Projects"
+                  placeholder="Проекты"
                 />
               </label>
               {folderError ? (
@@ -2540,10 +2540,10 @@ function NotesWorkspace({
                   variant="ghost"
                   onClick={() => setFolderDialogOpen(false)}
                 >
-                  Cancel
+                  Отмена
                 </Button>
                 <Button type="submit" disabled={!folderName.trim()}>
-                  Create folder
+                  Создать папку
                 </Button>
               </DialogFooter>
             </form>
@@ -2561,22 +2561,22 @@ function NotesWorkspace({
               }}
             >
               <DialogHeader>
-                <DialogTitle>Add vault</DialogTitle>
+                <DialogTitle>Добавить хранилище</DialogTitle>
                 <DialogDescription>
-                  Open a notes folder from this machine or a connected host.
+                  Откройте папку с заметками на этом компьютере или подключённом хосте.
                 </DialogDescription>
               </DialogHeader>
               <label className="grid gap-1.5 text-sm font-medium">
-                Name
+                Название
                 <Input
                   autoFocus
                   value={vaultName}
                   onChange={(event) => setVaultName(event.target.value)}
-                  placeholder="Personal"
+                  placeholder="Личное"
                 />
               </label>
               <label className="grid gap-1.5 text-sm font-medium">
-                Folder path
+                Путь к папке
                 <Input
                   value={vaultRootPath}
                   onChange={(event) => setVaultRootPath(event.target.value)}
@@ -2584,13 +2584,13 @@ function NotesWorkspace({
                 />
               </label>
               <label className="grid gap-1.5 text-sm font-medium">
-                Host
+                Хост
                 <Select value={vaultHostId} onValueChange={setVaultHostId}>
-                  <SelectTrigger aria-label="Vault host">
+                  <SelectTrigger aria-label="Хост хранилища">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="primary">Server machine</SelectItem>
+                    <SelectItem value="primary">Сервер</SelectItem>
                     {data.hosts.map((host) => (
                       <SelectItem key={host.id} value={host.id}>
                         {host.name} · {host.status}
@@ -2608,13 +2608,13 @@ function NotesWorkspace({
                   variant="ghost"
                   onClick={() => setVaultDialogOpen(false)}
                 >
-                  Cancel
+                  Отмена
                 </Button>
                 <Button
                   type="submit"
                   disabled={!vaultName.trim() || !vaultRootPath.trim()}
                 >
-                  Add vault
+                  Добавить хранилище
                 </Button>
               </DialogFooter>
             </form>
@@ -2645,7 +2645,7 @@ export default definePluginApp((app) => {
     context: { kind: "nav-panel", panelId: "docs" },
     availability: "fixed",
     id: "navigation",
-    title: "Navigation",
+    title: "Навигация",
     icon: "FileText",
     component: NotesNavigationPanel,
     layout: "flush",
@@ -2654,7 +2654,7 @@ export default definePluginApp((app) => {
     context: { kind: "thread" },
     availability: "action",
     id: "document",
-    title: "Document",
+    title: "Документ",
     icon: "FileText",
     component: DocumentPanel,
     layout: "flush",

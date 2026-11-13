@@ -96,7 +96,7 @@ function ThreadDetailSecondaryContentBody({
         <ThreadMetadataLoadingSkeleton />
       ) : (
         <div className="px-4 pt-1 text-sm text-muted-foreground">
-          No thread details available.
+          Сведения о чате недоступны.
         </div>
       ),
     [hasForks, isMetadataLoading, metadata],
@@ -117,7 +117,7 @@ function ThreadDetailSecondaryContentBody({
         panelGroupKey="thread-detail"
         resetKey={metadata.thread.id}
         contentKey={metadata.thread.id}
-        drawerLabel="Thread details"
+        drawerLabel="Сведения о чате"
         drawerFallback={<ThreadMetadataLoadingSkeleton />}
         mainPanelId="thread-detail-timeline-panel"
         mainHeader={header}

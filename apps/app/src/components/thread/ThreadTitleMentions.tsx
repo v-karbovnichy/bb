@@ -523,8 +523,8 @@ function threadMentionResource(
   return threadResourceFromThread(threadId, thread);
 }
 
-const UNRESOLVED_THREAD_MENTION_LABEL = "Thread";
-const UNAVAILABLE_THREAD_MENTION_LABEL = "Unavailable thread";
+const UNRESOLVED_THREAD_MENTION_LABEL = "Чат";
+const UNAVAILABLE_THREAD_MENTION_LABEL = "Недоступный чат";
 const SECTION_MENTION_PREFIXES = ["section:", "folder:"] as const;
 
 function unresolvedThreadMentionResource(

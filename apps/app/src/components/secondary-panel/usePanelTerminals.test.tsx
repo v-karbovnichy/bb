@@ -70,7 +70,7 @@ const SURFACES: readonly SurfaceCase[] = [
     }),
   },
   {
-    name: "New thread screen",
+    name: "Новый чат screen",
     createTarget: ENVIRONMENT_TARGET,
     acceptsSession: (session) =>
       isRootComposeTerminalSession(session, ENVIRONMENT_TARGET),

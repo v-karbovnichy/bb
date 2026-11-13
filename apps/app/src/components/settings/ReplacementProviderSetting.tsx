@@ -41,9 +41,9 @@ export function ReplacementProviderSetting({
   if (automaticProvider === undefined) return null;
   const automaticOption = {
     key: AUTOMATIC_REPLACEMENT_PROVIDER,
-    title: "Automatic",
-    description: `Chooses ${automaticProvider.title} (${
-      isBuiltin(automaticProvider) ? "built-in" : automaticProvider.pluginId
+    title: "Автоматически",
+    description: `Выбирает ${automaticProvider.title} (${
+      isBuiltin(automaticProvider) ? "встроенный" : automaticProvider.pluginId
     }).`,
   };
   const builtInOption =
@@ -51,14 +51,14 @@ export function ReplacementProviderSetting({
       ? null
       : {
           key: BUILT_IN_REPLACEMENT_PROVIDER,
-          title: "bb (built-in)",
+          title: "bb (встроенный)",
           description: builtInDescription,
         };
   const optionFor = (slot: ReplacementProviderSlot) =>
     isBuiltin(slot)
       ? {
           key: replacementProviderKey(slot),
-          title: `${slot.title} (built-in)`,
+          title: `${slot.title} (встроенный)`,
           description: slot.description ?? "",
         }
       : {
@@ -66,8 +66,8 @@ export function ReplacementProviderSetting({
           title: slot.title,
           description:
             slot.description === undefined
-              ? `From the ${slot.pluginId} plugin.`
-              : `${slot.pluginId} plugin. ${slot.description}`,
+              ? `Из плагина ${slot.pluginId}.`
+              : `Плагин ${slot.pluginId}. ${slot.description}`,
         };
   const options = [
     ...(allowAutomatic ? [automaticOption] : []),
@@ -80,7 +80,7 @@ export function ReplacementProviderSetting({
     builtInOption ??
     (allowAutomatic
       ? automaticOption
-      : { key: preference, title: "Unavailable plugin" });
+      : { key: preference, title: "Недоступный плагин" });
 
   return (
     <ChoiceDropdownSetting

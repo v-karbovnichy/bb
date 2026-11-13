@@ -215,7 +215,7 @@ export function ThreadListVisibility({
                   focusTarget.current = "more";
                   setCustomizing(null);
                 }}
-                title="Customize list"
+                title="Настроить список"
                 listLabel={label}
                 variant={compact ? "compact" : "card"}
                 testIdPrefix="sidebar-thread-list"
@@ -262,11 +262,11 @@ export function ThreadListVisibilityMenuItems({
       {leadingSeparator && <ActionMenuSeparator surface={surface} />}
       {id !== null && (
         <Item onSelect={() => state.hide(id)}>
-          <SidebarVisibilityActionContent visible label="Hide from list" />
+          <SidebarVisibilityActionContent visible label="Скрыть из списка" />
         </Item>
       )}
       <Item onSelect={state.customize}>
-        <SidebarCustomizeActionContent label="Customize list" />
+        <SidebarCustomizeActionContent label="Настроить список" />
       </Item>
     </>
   );
@@ -324,9 +324,9 @@ export function ThreadListMore() {
   return (
     <div className="mt-4">
       <SidebarMore
-        ariaLabel={`More ${state.label.toLowerCase()}`}
-        listLabel={`Hidden ${state.label.toLowerCase()}`}
-        customizeLabel="Customize list"
+        ariaLabel={`Ещё: ${state.label}`}
+        listLabel={`Скрытые: ${state.label}`}
+        customizeLabel="Настроить список"
         onCustomize={state.customize}
         selected={selectedGroupId !== undefined}
         activity={<GroupActivity threads={threads} />}

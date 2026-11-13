@@ -100,7 +100,7 @@ export interface EnvironmentPickerUIProps {
 }
 
 export const PROVIDER_INPUTS_CONTROL_MISSING_REASON =
-  "Needs its plugin's control";
+  "Нужны элементы управления плагина";
 
 const NO_INPUTS_CONTROL_PROVIDER_IDS: ReadonlySet<string> = new Set();
 
@@ -260,9 +260,9 @@ export function EnvironmentPickerUI({
   const isMachineMenu = hasMultipleMachines;
   const hostConnected = availableHost?.status === "connected";
   const hostUnavailableReason = !availableHost
-    ? "No host connected"
+    ? "Нет подключённого компьютера"
     : !hostConnected
-      ? "Host is offline"
+      ? "Компьютер не в сети"
       : null;
   const parsed = useMemo(() => parseEnvironmentValue(value), [value]);
 
@@ -335,20 +335,20 @@ export function EnvironmentPickerUI({
         modeLabel: selectedMachineName
           ? `${selectedMachineName} · ${hostUnavailableReason}`
           : hostUnavailableReason,
-        compactModeLabel: availableHost ? "Offline" : "No host",
+        compactModeLabel: availableHost ? "Не в сети" : "Нет компьютера",
         icon: "AlertTriangle" as const,
       };
     }
     if (parsed?.type === "reuse") {
       return {
-        modeLabel: "Reuse",
-        compactModeLabel: "Reuse",
+        modeLabel: "Повторно использовать",
+        compactModeLabel: "Повторно использовать",
         icon: REUSE_ENVIRONMENT_ICON_NAME,
       };
     }
     return {
-      modeLabel: "Environment",
-      compactModeLabel: "Env",
+      modeLabel: "Окружение",
+      compactModeLabel: "Окруж.",
       icon: "Laptop" as const,
     };
   }, [
@@ -391,7 +391,7 @@ export function EnvironmentPickerUI({
           type="button"
           variant="ghost"
           size="sm"
-          aria-label="Environment"
+          aria-label="Окружение"
           aria-busy={isLoading}
           disabled={disabled}
           data-promptbox-shrinkable-control=""
@@ -421,7 +421,7 @@ export function EnvironmentPickerUI({
             )}
             {isLoading ? (
               <>
-                <span className="sr-only">Loading environments</span>
+                <span className="sr-only">Загрузка окружений</span>
                 <Skeleton
                   aria-hidden
                   data-environment-loading-placeholder="trigger"
@@ -457,19 +457,19 @@ export function EnvironmentPickerUI({
       <PopoverContent
         mobileClassName={PICKER_MOBILE_CLASS_NAME}
         align="start"
-        aria-label="Environment"
-        mobileTitle="Environment"
+        aria-label="Окружение"
+        mobileTitle="Окружение"
         autoFocusRef={
           isLoading ? undefined : showSearch ? searchInputRef : commandRef
         }
         className="flex max-h-[min(var(--radix-popover-content-available-height),calc(100dvh-0.5rem))] w-auto max-w-80 min-w-52 flex-col overflow-hidden p-0 max-md:min-h-0 max-md:w-full max-md:flex-1"
       >
         {isLoading ? (
-          <ListLoadingPlaceholder label="Loading environments" />
+          <ListLoadingPlaceholder label="Загрузка окружений" />
         ) : (
           <Command
             ref={commandRef}
-            label="Search machines"
+            label="Поиск компьютеров"
             shouldFilter={false}
             value={commandValueOverride ?? selectedCommandValue}
             onValueChange={setCommandValueOverride}
@@ -478,8 +478,8 @@ export function EnvironmentPickerUI({
             {showSearch ? (
               <CommandInput
                 ref={searchInputRef}
-                aria-label="Search machines"
-                placeholder="Search machines"
+                aria-label="Поиск компьютеров"
+                placeholder="Поиск компьютеров"
                 value={searchQuery}
                 onValueChange={setSearchQuery}
                 className="h-8 text-xs"
@@ -589,7 +589,7 @@ export function EnvironmentPickerUI({
   );
 }
 
-const REUSE_ENVIRONMENT_OPTION_LABEL = "Reuse existing";
+const REUSE_ENVIRONMENT_OPTION_LABEL = "Использовать существующее";
 
 interface ReuseEnvironmentOptionProps {
   selected: boolean;
@@ -845,7 +845,7 @@ function MachineContextualEnvironmentOptions({
         data-machine-picker-list=""
         className="max-h-48 min-h-0 flex-1 overflow-y-auto overscroll-contain"
       >
-        <CommandGroup heading="Machines">
+        <CommandGroup heading="Компьютеры">
           {filteredHosts.map((machineHost) => (
             <MachineChoiceItem
               key={machineHost.id}
@@ -860,7 +860,7 @@ function MachineContextualEnvironmentOptions({
           ))}
           {filteredHosts.length === 0 ? (
             <div className="px-2 py-[0.3125rem] text-xs text-muted-foreground max-md:pointer-coarse:py-2">
-              No machines found
+              Компьютеры не найдены
             </div>
           ) : null}
           {onSelectProvider
@@ -966,7 +966,7 @@ function MachineChoiceItem({
         <span className="min-w-0 truncate text-xs">{host.name}</span>
       </span>
       {isThisMachine ? (
-        <span className={MACHINE_BADGE_CLASS_NAME}>this machine</span>
+        <span className={MACHINE_BADGE_CLASS_NAME}>Этот компьютер</span>
       ) : null}
       <Icon
         name="Check"
@@ -1016,7 +1016,7 @@ function MachineSection({
   const statusLabel =
     updateStatus ??
     (!connected && host.lastSeenAt !== null
-      ? `last seen ${formatRelativeTime({ timestamp: host.lastSeenAt, now })}`
+      ? `был в сети ${formatRelativeTime({ timestamp: host.lastSeenAt, now })}`
       : null);
   return (
     <CommandGroup
@@ -1027,7 +1027,7 @@ function MachineSection({
             {contextual ? `On ${host.name}` : host.name}
           </span>
           {!contextual && isThisMachine ? (
-            <span className={MACHINE_BADGE_CLASS_NAME}>this machine</span>
+            <span className={MACHINE_BADGE_CLASS_NAME}>Этот компьютер</span>
           ) : null}
           {statusLabel ? (
             <span
@@ -1073,7 +1073,7 @@ function MachineSection({
       {source === null && onRequestMachineSetup && connected ? (
         <EnvironmentMenuItem
           value={`setup:${host.id}`}
-          label={`Set up on ${host.name}…`}
+          label={`Настроить на ${host.name}…`}
           icon="Plus"
           selected={false}
           onSelect={() => onRequestMachineSetup(host)}
@@ -1084,7 +1084,7 @@ function MachineSection({
           disabled
           className="whitespace-normal break-words text-xs text-muted-foreground"
         >
-          Not set up for this project
+          Не настроено для этого проекта
         </CommandItem>
       ) : null}
     </CommandGroup>

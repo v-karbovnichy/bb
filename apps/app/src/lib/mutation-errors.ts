@@ -8,7 +8,7 @@ import {
 } from "./lifecycle-errors";
 
 const NETWORK_TRANSPORT_ERROR_MESSAGE =
-  "Could not reach the server. Check that it is running and try again.";
+  "Не удалось связаться с сервером. Проверьте, что он запущен, и повторите попытку.";
 const GENERIC_REQUEST_FAILED_MESSAGE = "Request failed";
 const TRAILING_PERIOD_PATTERN = /\.$/u;
 
@@ -169,8 +169,8 @@ export function showMutationErrorToast({
     lifecycleOperation,
   }).replace(TRAILING_PERIOD_PATTERN, "");
   if (message === GENERIC_REQUEST_FAILED_MESSAGE) {
-    appToast.error("Request failed", {
-      description: "Please try again",
+    appToast.error("Ошибка запроса", {
+      description: "Повторите попытку",
     });
     return;
   }

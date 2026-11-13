@@ -81,7 +81,7 @@ function afterMenuCloses(run: () => void): void {
 }
 
 function describeThreadCount(count: number): string {
-  return count === 1 ? "1 thread" : `${count} threads`;
+  return count === 1 ? "1 чату" : `${count} чатам`;
 }
 
 async function runForEach(
@@ -109,15 +109,15 @@ function parentNotificationsAction(
     ? first.parentNotifications
     : null;
   return {
-    label: "Notify parent",
+    label: "Уведомлять родителя",
     detail:
       PARENT_NOTIFICATIONS_OPTIONS.find((option) => option.value === shared)
-        ?.label ?? "Mixed",
+        ?.label ?? "Смешанные настройки",
     icon: "Megaphone02",
     choices: {
       ...(children.length < threads.length
         ? {
-            hint: `Applies to ${describeThreadCount(children.length)} with a parent`,
+            hint: `Применяется к ${describeThreadCount(children.length)} с родителем`,
           }
         : {}),
       items: PARENT_NOTIFICATIONS_OPTIONS.map((option) => ({
@@ -140,8 +140,8 @@ function parentNotificationsAction(
             parentNotifications: parentNotifications.data,
           }),
         children.length === 1
-          ? "Failed to change parent notifications."
-          : "Failed to change parent notifications for some threads.",
+          ? "Не удалось изменить уведомления родителя."
+          : "Не удалось изменить уведомления родителя для некоторых чатов.",
       );
     },
   };
@@ -179,8 +179,8 @@ function useLifecycleHandlers(): LifecycleHandlers {
             error,
             fallbackMessage:
               threadIds.length === 1
-                ? "Failed to archive thread."
-                : "Failed to archive threads.",
+                ? "Не удалось архивировать чат."
+                : "Не удалось архивировать чаты.",
           });
         }
       },
@@ -196,8 +196,8 @@ function useLifecycleHandlers(): LifecycleHandlers {
             error,
             fallbackMessage:
               threadIds.length === 1
-                ? "Failed to delete thread."
-                : "Failed to delete threads.",
+                ? "Не удалось удалить чат."
+                : "Не удалось удалить чаты.",
           });
         }
       },
@@ -212,7 +212,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "split",
       group: GROUPS.open,
       order: 10,
-      title: "Open in split",
+      title: "Открыть рядом",
       icon: "Columns2",
       useData: useSplitAvailability,
       item: ({ thread, data, navigate }) =>
@@ -220,8 +220,8 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
           ? null
           : {
               label: data.otherPaneThreadIds.has(thread.id)
-                ? "Focus split"
-                : "Open in split",
+                ? "Перейти к соседней панели"
+                : "Открыть рядом",
               icon: "Columns2",
               run: () => navigate.toThread(thread.id, { split: true }),
             },
@@ -230,7 +230,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "newThreadInEnvironment",
       group: GROUPS.open,
       order: 30,
-      title: "New thread in environment",
+      title: "Новый чат в окружении",
       icon: "MessageSquarePlus",
       useData: useIsCompactViewport,
       item: ({ thread, data: isCompact, navigate }) => {
@@ -239,7 +239,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
           return null;
         }
         return {
-          label: "New thread in environment",
+          label: "Новый чат в окружении",
           icon: "MessageSquarePlus",
           run: () =>
             navigate.toCompose({
@@ -258,15 +258,15 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "copyLink",
       group: GROUPS.open,
       order: 20,
-      title: "Copy link",
+      title: "Скопировать ссылку",
       icon: "Copy",
       item: ({ thread }) => ({
-        label: "Copy link",
+        label: "Скопировать ссылку",
         icon: "Copy",
         run: () =>
           copyToClipboardWithToast(getThreadUrl(thread), {
-            successMessage: "Thread link copied",
-            errorMessage: "Failed to copy thread link",
+            successMessage: "Ссылка на чат скопирована",
+            errorMessage: "Не удалось скопировать ссылку на чат",
           }).then(() => undefined),
       }),
     }),
@@ -274,10 +274,10 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "read",
       group: GROUPS.state,
       order: 30,
-      title: "Mark read / unread",
+      title: "Отметить прочитанным или непрочитанным",
       icon: "MailOpen",
       item: ({ thread, sdk }) => ({
-        label: thread.isUnread ? "Mark read" : "Mark unread",
+        label: thread.isUnread ? "Отметить прочитанным" : "Отметить непрочитанным",
         icon: thread.isUnread ? "MailOpen" : "Mail",
         run: async () => {
           try {
@@ -290,8 +290,8 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
             showMutationErrorToast({
               error,
               fallbackMessage: thread.isUnread
-                ? "Failed to mark thread read"
-                : "Failed to mark thread unread",
+                ? "Не удалось отметить чат прочитанным"
+                : "Не удалось отметить чат непрочитанным",
             });
           }
         },
@@ -299,7 +299,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       experimental_bulkItem: ({ threads, sdk }) => {
         const anyUnread = threads.some((thread) => thread.isUnread);
         return {
-          label: anyUnread ? "Mark read" : "Mark unread",
+          label: anyUnread ? "Отметить прочитанным" : "Отметить непрочитанным",
           icon: anyUnread ? "MailOpen" : "Mail",
           run: () =>
             runForEach(
@@ -309,8 +309,8 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
                   ? sdk.threads.markRead({ threadId: thread.id })
                   : sdk.threads.markUnread({ threadId: thread.id }),
               anyUnread
-                ? "Failed to mark threads read"
-                : "Failed to mark threads unread",
+                ? "Не удалось отметить чаты прочитанными"
+                : "Не удалось отметить чаты непрочитанными",
             ),
         };
       },
@@ -319,12 +319,12 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "pin",
       group: GROUPS.state,
       order: 20,
-      title: "Pin",
+      title: "Закрепить",
       icon: "Pin",
       item: ({ thread, sdk }) => {
         const isPinned = thread.pinnedAt !== null;
         return {
-          label: isPinned ? "Unpin" : "Pin",
+          label: isPinned ? "Открепить" : "Закрепить",
           icon: isPinned ? "PinOff" : "Pin",
           run: async () => {
             try {
@@ -337,8 +337,8 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
               showMutationErrorToast({
                 error,
                 fallbackMessage: isPinned
-                  ? "Failed to unpin thread."
-                  : "Failed to pin thread.",
+                  ? "Не удалось открепить чат."
+                  : "Не удалось закрепить чат.",
               });
             }
           },
@@ -347,14 +347,14 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       experimental_bulkItem: ({ threads, sdk }) => {
         const allPinned = threads.every((thread) => thread.pinnedAt !== null);
         return {
-          label: allPinned ? "Unpin" : "Pin",
+          label: allPinned ? "Открепить" : "Закрепить",
           icon: allPinned ? "PinOff" : "Pin",
           run: async () => {
             if (allPinned) {
               await runForEach(
                 threads,
                 (thread) => sdk.threads.unpin({ threadId: thread.id }),
-                "Failed to unpin threads.",
+                "Не удалось открепить чаты.",
               );
               return;
             }
@@ -367,7 +367,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
             } catch (error) {
               showMutationErrorToast({
                 error,
-                fallbackMessage: "Failed to pin threads.",
+                fallbackMessage: "Не удалось закрепить чаты.",
               });
             }
           },
@@ -378,7 +378,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "parentNotifications",
       group: GROUPS.state,
       order: 60,
-      title: "Notify parent",
+      title: "Уведомлять родителя",
       icon: "Megaphone02",
       item: ({ thread, sdk }) =>
         parentNotificationsAction([thread], childThreads([thread]), sdk),
@@ -389,10 +389,10 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "rename",
       group: GROUPS.organize,
       order: 10,
-      title: "Rename",
+      title: "Переименовать",
       icon: "Edit",
       item: ({ thread }) => ({
-        label: "Rename",
+        label: "Переименовать",
         icon: "Edit",
         run: ({ requestRename }) => requestRename(thread.id),
       }),
@@ -401,13 +401,13 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
       id: "regenerateTitle",
       group: GROUPS.organize,
       order: 20,
-      title: "Regenerate title",
+      title: "Создать название заново",
       icon: "RotateCcw",
       item: ({ thread, sdk }) => ({
-        label: "Regenerate title",
+        label: "Создать название заново",
         icon: "RotateCcw",
         run: async () => {
-          const toastId = appToast.loading("Regenerating title");
+          const toastId = appToast.loading("Создание названия");
           try {
             await sdk.threads.experimental_regenerateTitle({
               threadId: thread.id,
@@ -417,7 +417,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
             appToast.dismiss(toastId);
             showMutationErrorToast({
               error,
-              fallbackMessage: "Failed to regenerate title.",
+              fallbackMessage: "Не удалось создать название заново.",
             });
           }
         },
@@ -426,13 +426,13 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
     coreThreadAction({
       id: "archive",
       group: GROUPS.lifecycle,
-      title: "Archive",
+      title: "Архивировать",
       icon: "Archive",
       useData: useLifecycleHandlers,
       item: ({ thread, data, sdk }) => {
         const isArchived = thread.archivedAt !== null;
         return {
-          label: isArchived ? "Unarchive" : "Archive",
+          label: isArchived ? "Вернуть из архива" : "Архивировать",
           icon: isArchived ? "ArchiveRestore" : "Archive",
           run: async () => {
             if (!isArchived) {
@@ -444,7 +444,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
             } catch (error) {
               showMutationErrorToast({
                 error,
-                fallbackMessage: "Failed to unarchive thread.",
+                fallbackMessage: "Не удалось вернуть чат из архива.",
               });
             }
           },
@@ -454,7 +454,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
         const active = threads.filter((thread) => thread.archivedAt === null);
         if (active.length > 0) {
           return {
-            label: `Archive ${describeThreadCount(active.length)}`,
+            label: `Архивировать чаты (${active.length})`,
             icon: "Archive",
             run: () =>
               afterMenuCloses(
@@ -463,7 +463,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
           };
         }
         return {
-          label: `Unarchive ${describeThreadCount(threads.length)}`,
+          label: `Вернуть чаты из архива (${threads.length})`,
           icon: "ArchiveRestore",
           run: async () => {
             try {
@@ -473,7 +473,7 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
             } catch (error) {
               showMutationErrorToast({
                 error,
-                fallbackMessage: "Failed to unarchive threads.",
+                fallbackMessage: "Не удалось вернуть чаты из архива.",
               });
             }
           },
@@ -483,17 +483,17 @@ export const CORE_THREAD_ACTIONS: readonly PluginThreadActionRegistration<unknow
     coreThreadAction({
       id: "delete",
       group: GROUPS.lifecycle,
-      title: "Delete",
+      title: "Удалить",
       icon: "Trash2",
       useData: useLifecycleHandlers,
       item: ({ thread, data }) => ({
-        label: "Delete",
+        label: "Удалить",
         icon: "Trash2",
         variant: "destructive",
         run: () => afterMenuCloses(() => void data.requestDelete([thread.id])),
       }),
       experimental_bulkItem: ({ threads, data }) => ({
-        label: `Delete ${describeThreadCount(threads.length)}`,
+        label: `Удалить чаты (${threads.length})`,
         icon: "Trash2",
         variant: "destructive",
         run: () =>

@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { SettingsWithControl } from "@/components/ui/settings-section";
 import { dimInactiveSplitsAtom } from "@/lib/split-layout/atoms";
 
-const SPLIT_DIMMING_SETTING_LABEL = "Fade inactive splits";
+const SPLIT_DIMMING_SETTING_LABEL = "Затемнять неактивные области";
 
 export function SplitDimmingSetting() {
   const [dimsInactiveSplits, setDimsInactiveSplits] = useAtom(
@@ -13,7 +13,7 @@ export function SplitDimmingSetting() {
   return (
     <SettingsWithControl
       label={SPLIT_DIMMING_SETTING_LABEL}
-      description="Fade out splits that do not have focus."
+      description="Затемнять области без фокуса."
     >
       <Switch
         checked={dimsInactiveSplits}

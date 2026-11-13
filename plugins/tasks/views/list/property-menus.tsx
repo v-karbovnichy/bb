@@ -142,7 +142,7 @@ export function StatusEditor({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label={`Change status, currently ${STATUS_LABELS[task.status]}`}
+          aria-label={`Изменить статус, сейчас «${STATUS_LABELS[task.status]}»`}
           className={cn(TRIGGER_CLASS, className)}
         >
           <StatusIcon status={task.status} />
@@ -151,7 +151,7 @@ export function StatusEditor({
       <DropdownMenuContent
         align="start"
         className="min-w-56"
-        mobileTitle="Change status"
+        mobileTitle="Изменить статус"
         onKeyDown={(event) => {
           const status = statusForShortcut(event.key);
           if (status !== null && isBareKey(event)) {
@@ -161,7 +161,7 @@ export function StatusEditor({
           }
         }}
       >
-        <MenuHeading label="Change status…" shortcut="S" />
+        <MenuHeading label="Изменить статус…" shortcut="S" />
         {TASK_STATUSES.map((status, index) => (
           <DropdownMenuItem
             key={status}
@@ -202,7 +202,7 @@ export function PriorityEditor({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label={`Set priority, currently ${PRIORITY_LABELS[task.priority]}`}
+          aria-label={`Установить приоритет, сейчас «${PRIORITY_LABELS[task.priority]}»`}
           className={cn(TRIGGER_CLASS, className)}
         >
           <PriorityIcon priority={task.priority} />
@@ -211,7 +211,7 @@ export function PriorityEditor({
       <DropdownMenuContent
         align="start"
         className="min-w-52"
-        mobileTitle="Set priority"
+        mobileTitle="Установить приоритет"
         onKeyDown={(event) => {
           const priority = priorityForShortcut(event.key);
           if (priority !== null && isBareKey(event)) {
@@ -221,7 +221,7 @@ export function PriorityEditor({
           }
         }}
       >
-        <MenuHeading label="Set priority to…" shortcut="P" />
+        <MenuHeading label="Установить приоритет…" shortcut="P" />
         {PRIORITY_MENU_ORDER.map((priority, index) => (
           <DropdownMenuItem
             key={priority}
@@ -269,7 +269,7 @@ export function TaskContextMenu({
         <ContextMenuSub>
           <ContextMenuSubTrigger>
             <StatusIcon status={task.status} />
-            <span>Status</span>
+            <span>Статус</span>
             <ContextMenuShortcut>S</ContextMenuShortcut>
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="min-w-48">
@@ -299,7 +299,7 @@ export function TaskContextMenu({
         <ContextMenuSub>
           <ContextMenuSubTrigger>
             <PriorityIcon priority={task.priority} />
-            <span>Priority</span>
+            <span>Приоритет</span>
             <ContextMenuShortcut>P</ContextMenuShortcut>
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="min-w-44">
@@ -329,7 +329,7 @@ export function TaskContextMenu({
         <ContextMenuSub>
           <ContextMenuSubTrigger>
             <Icon name="Clock" className="size-3.5" />
-            <span>Due date</span>
+            <span>Срок</span>
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="min-w-44">
             {DUE_DATE_PRESETS.map(([label, days]) => {
@@ -353,7 +353,7 @@ export function TaskContextMenu({
                   onSelect={() => onEdit(task, { dueDate: null })}
                 >
                   <Icon name="X" className="size-3.5" />
-                  <span>No due date</span>
+                  <span>Без срока</span>
                 </ContextMenuItem>
               </>
             ) : null}
@@ -364,7 +364,7 @@ export function TaskContextMenu({
           <ContextMenuSub>
             <ContextMenuSubTrigger>
               <Icon name="ListTodo" className="size-3.5" />
-              <span>Labels</span>
+              <span>Метки</span>
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className="min-w-48">
               {projectLabels.map((label) => (
@@ -390,7 +390,7 @@ export function TaskContextMenu({
           <ContextMenuSub>
             <ContextMenuSubTrigger>
               <Icon name="ArrowUpRight" className="size-3.5" />
-              <span>Move to project</span>
+              <span>Переместить в проект</span>
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className="min-w-48">
               {projects.map((project) => (

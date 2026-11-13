@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Run a thread in the project's own checkout on an enrolled machine, on the branch you choose",
+  "description": "Запускайте чат в рабочей копии проекта на подключённой машине и выбранной ветке",
   "engines": {
     "bb": ">=0.0"
   },
   "bb": {
-    "name": "Project checkout",
-    "description": "Run a thread in the project's own checkout on an enrolled machine, on the branch you choose",
+    "name": "Рабочая копия проекта",
+    "description": "Запускайте чат в рабочей копии проекта на подключённой машине и выбранной ветке",
     "branding": {
       "icon": "Laptop"
     },

@@ -81,7 +81,7 @@ it.each([
     });
     window.getSelection()!.addRange(range);
     fireEvent(document, new Event("selectionchange"));
-    fireEvent.click(await screen.findByRole("button", { name: "Add to chat" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Добавить в чат" }));
     expect(onSelectionAddToChat).toHaveBeenCalledWith(expected);
   },
 );

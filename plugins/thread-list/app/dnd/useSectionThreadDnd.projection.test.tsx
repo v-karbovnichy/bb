@@ -597,14 +597,14 @@ describe("worktree group drop collisions", () => {
     const props = () => result.current!.dndContextProps;
     act(() => props().onDragStart?.(dragStart(activeId)));
     expect(result.current?.activeThread?.title).toBe(
-      "Reviewer worktree group (3 threads)",
+      "Reviewer worktree group (3 чатов)",
     );
     expect(
       result.current?.activeThread &&
         "displayTitle" in result.current.activeThread
         ? result.current.activeThread.displayTitle
         : null,
-    ).toBe("Reviewer worktree group (3 threads)");
+    ).toBe("Reviewer worktree group (3 чатов)");
     act(() => props().onDragOver?.(dragOver(activeId, "threads")));
     expect(result.current?.dragOverParentKey).toBe(CHRONOLOGICAL_CONTAINER_ID);
 

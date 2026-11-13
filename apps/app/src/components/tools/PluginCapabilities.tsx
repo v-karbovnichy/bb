@@ -50,30 +50,30 @@ function pluginActivityIcon(state: "running" | "ok" | "error" | null): {
     return {
       name: "Clock",
       className: "text-muted-foreground",
-      label: "Scheduled",
+      label: "Запланировано",
     };
   }
   if (state === "running") {
     return {
       name: "Clock",
       className: "animate-shine-icon text-muted-foreground",
-      label: "Running",
+      label: "Работает",
     };
   }
   if (state === "ok") {
     return {
       name: "CircleCheck",
       className: "text-success",
-      label: "Succeeded",
+      label: "Успешно",
     };
   }
   if (state === "error") {
-    return { name: "CircleX", className: "text-destructive", label: "Failed" };
+    return { name: "CircleX", className: "text-destructive", label: "Ошибка" };
   }
   return {
     name: "Clock",
     className: "text-muted-foreground",
-    label: "Scheduled",
+    label: "Запланировано",
   };
 }
 
@@ -85,20 +85,20 @@ function pluginServiceStatus(state: "running" | "backoff" | "stopped"): {
 } {
   if (state === "running") {
     return {
-      label: "Running",
+      label: "Работает",
       labelClassName: "animate-shine",
       tone: "success",
     };
   }
   if (state === "backoff") {
     return {
-      label: "Restarting",
+      label: "Перезапускается",
       labelClassName: "animate-shine",
       tone: "muted",
     };
   }
   return {
-    label: "Stopped",
+    label: "Остановлено",
     statusClassName: "opacity-50",
     tone: "muted",
   };
@@ -191,8 +191,8 @@ function pluginAppSurfaceItems(
           namedSurface(
             "settings",
             "settings",
-            "Settings",
-            "Opens this plugin's configuration.",
+            "Настройки",
+            "Открывает настройки этого плагина.",
             configurationPath ?? getPluginConfigurationRoutePath({ pluginId }),
           ),
         ]
@@ -203,7 +203,7 @@ function pluginAppSurfaceItems(
         (panel) => panel.experimental_hideFromNavigation !== true,
       ),
       "nav",
-      "Adds a page to the app sidebar.",
+      "Добавляет страницу на боковую панель приложения.",
       (panel) =>
         getPluginPanelRoutePath({
           pluginId,
@@ -216,7 +216,7 @@ function pluginAppSurfaceItems(
         (panel) => panel.experimental_hideFromNavigation === true,
       ),
       "nav",
-      "Adds a page the plugin opens itself, outside navigation.",
+      "Добавляет страницу, которую плагин открывает сам, вне навигации.",
       (panel) =>
         getPluginPanelRoutePath({
           pluginId,
@@ -227,7 +227,7 @@ function pluginAppSurfaceItems(
       pluginId,
       slots.homepageSections,
       "homepage",
-      "Adds content to the Home page.",
+      "Добавляет содержимое на главную страницу.",
       (section) =>
         `${getRootComposeRoutePath()}#${getPluginHomepageSectionAnchor(pluginId, section.id)}`,
     ),
@@ -235,58 +235,58 @@ function pluginAppSurfaceItems(
       pluginId,
       slots.appOverlays,
       "app-overlay",
-      "Renders app-wide floating interface content.",
+      "Показывает плавающий интерфейс во всём приложении.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadLists,
       "thread-list",
-      "Can replace the sidebar thread list; configured in Appearance.",
+      "Может заменить список чатов на боковой панели; настраивается в разделе «Внешний вид».",
       () => getSettingsRoutePath("appearance"),
     ),
     ...namedSlotItems(
       pluginId,
       slots.experimentalSidebarNavigations,
       "sidebar-navigation",
-      "Can draw the sidebar navigation; configured in Appearance.",
+      "Может отображать навигацию на боковой панели; настраивается в разделе «Внешний вид».",
       () => getSettingsRoutePath("appearance"),
     ),
     ...namedSlotItems(
       pluginId,
       slots.sourceCodeRenderers,
       "source-code-renderer",
-      "Replaces how source code is displayed everywhere in the app.",
+      "Изменяет отображение исходного кода во всём приложении.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.diffRenderers,
       "diff-renderer",
-      "Replaces how diffs are displayed everywhere in the app.",
+      "Изменяет отображение различий во всём приложении.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.composers,
       "composer",
-      "Can replace the thread composer; configured in Appearance.",
+      "Может заменить поле ввода чата; настраивается в разделе «Внешний вид».",
       () => getSettingsRoutePath("appearance"),
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadPanelActions,
       "thread-panel",
-      "Adds an action that opens a panel beside a thread.",
+      "Добавляет действие, открывающее панель рядом с чатом.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.newThreadPanelActions,
       "new-thread-panel",
-      "Adds an action that opens a panel beside the New thread screen.",
+      "Добавляет действие, открывающее панель рядом с экраном нового чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.pendingInteractions,
       "input",
-      "Renders a custom interaction inside a thread.",
+      "Показывает пользовательский интерфейс внутри чата.",
     ),
     ...slots.sidebarFooterItems
       .filter((slot) => slot.pluginId === pluginId)
@@ -296,81 +296,81 @@ function pluginAppSurfaceItems(
           slot.id,
           slot.label,
           slot.kind === "action"
-            ? "Adds an action to the app sidebar footer."
-            : "Adds content revealed from the app sidebar footer.",
+            ? "Добавляет действие в нижнюю часть боковой панели."
+            : "Добавляет содержимое, открываемое из нижней части боковой панели.",
         ),
       ),
     ...namedSlotItems(
       pluginId,
       slots.messageActions,
       "message-action",
-      "Adds an action to messages in threads.",
+      "Добавляет действие к сообщениям в чатах.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadHeaderActions,
       "thread-header",
-      "Adds an action to thread headers.",
+      "Добавляет действие к заголовкам чатов.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadContextSegments,
       "thread-context",
-      "Adds context beside a thread's composer.",
+      "Показывает контекст рядом с полем ввода чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadRowMetadata,
       "thread-row-item",
-      "Adds an item to each thread row in the sidebar.",
+      "Добавляет элемент к каждой строке чата на боковой панели.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadInfoRows,
       "thread-info-row",
-      "Adds a row to the thread Info tab.",
+      "Добавляет строку на вкладку сведений о чате.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadInfoSections,
       "thread-info-section",
-      "Adds a section to the thread Info tab.",
+      "Добавляет раздел на вкладку сведений о чате.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadHeaderRows,
       "thread-header-row",
-      "Adds a row under the thread header.",
+      "Добавляет строку под заголовком чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadHeaderTitles,
       "thread-header-title",
-      "Replaces the thread title in the thread header.",
+      "Заменяет название чата в заголовке.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadContextCardRows,
       "thread-context-card-row",
-      "Adds a row to the thread context card.",
+      "Добавляет строку на карточку контекста чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadContextCardSections,
       "thread-context-card-section",
-      "Adds a section to the thread context card.",
+      "Добавляет раздел на карточку контекста чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.threadActions,
       "thread-action",
-      "Adds an action to thread menus.",
+      "Добавляет действие в меню чата.",
     ),
     ...namedSlotItems(
       pluginId,
       slots.browserToolbarActions,
       "browser-toolbar",
-      "Adds an action to Browser tab toolbars.",
+      "Добавляет действие на панель инструментов вкладки браузера.",
     ),
     ...slots.composerCustomizations
       .filter((slot) => slot.pluginId === pluginId)
@@ -380,7 +380,7 @@ function pluginAppSurfaceItems(
             `composer:${slot.id}:action`,
             action.id,
             undefined,
-            "Adds an action beside the thread composer.",
+            "Добавляет действие рядом с полем ввода чата.",
           ),
         ),
         ...(slot.experimental_popups ?? []).map((popup) =>
@@ -388,7 +388,7 @@ function pluginAppSurfaceItems(
             `composer:${slot.id}:popup:${popup.id}`,
             popup.id,
             popup.label,
-            "Opens plugin content beside the composer, sharing the mention menu's placement.",
+            "Открывает содержимое плагина рядом с полем ввода, на месте меню упоминаний.",
           ),
         ),
         ...(slot.banners ?? []).map((banner) =>
@@ -396,7 +396,7 @@ function pluginAppSurfaceItems(
             `composer:${slot.id}:banner`,
             banner.id,
             undefined,
-            "Shows information above the thread composer.",
+            "Показывает сведения над полем ввода чата.",
           ),
         ),
         ...(slot.plusMenu ?? []).map((item) =>
@@ -404,7 +404,7 @@ function pluginAppSurfaceItems(
             `composer:${slot.id}:plus-menu`,
             item.id,
             item.label,
-            "Adds an item to the composer’s add menu.",
+            "Добавляет элемент в меню добавления поля ввода.",
           ),
         ),
         ...(slot.richText?.effects ?? []).map((effect) =>
@@ -412,7 +412,7 @@ function pluginAppSurfaceItems(
             `composer:${slot.id}:rich-text`,
             effect.id,
             undefined,
-            "Adds rich-text behavior while composing a message.",
+            "Добавляет форматирование текста при составлении сообщения.",
           ),
         ),
       ]),
@@ -423,17 +423,17 @@ function pluginAppSurfaceItems(
           "file",
           slot.id,
           slot.title,
-          "Opens supported files in a plugin-provided viewer.",
+          "Открывает поддерживаемые файлы в просмотрщике плагина.",
           getSettingsRoutePath("files"),
         ),
         detail:
           slot.extensions.length === 0 ? (
             <span>
-              Opens files the plugin shows in a plugin-provided viewer.
+              Открывает файлы, показанные плагином, в просмотрщике плагина.
             </span>
           ) : (
             <span className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
-              <span>Opens these files in a plugin-provided viewer:</span>
+              <span>Открывает эти файлы в просмотрщике плагина:</span>
               <span className="font-mono">
                 {slot.extensions.map((extension) => `.${extension}`).join(", ")}
               </span>
@@ -445,7 +445,7 @@ function pluginAppSurfaceItems(
       .map((slot) => ({
         key: `directive:${slot.id}`,
         label: `::${slot.id}`,
-        detail: "Renders plugin-provided content inside thread messages.",
+        detail: "Показывает содержимое плагина в сообщениях чата.",
         mono: true,
       })),
     ...slots.codeFenceRenderers
@@ -453,7 +453,7 @@ function pluginAppSurfaceItems(
       .map((slot) => ({
         key: `code-fence:${slot.id}`,
         label: slot.languages.map((language) => `\`\`\`${language}`).join(", "),
-        detail: "Renders these fenced code blocks inside assistant messages.",
+        detail: "Показывает эти блоки кода в сообщениях ассистента.",
         mono: true,
       })),
   ];
@@ -507,12 +507,12 @@ export function PluginIncludes({
   }> = [
     {
       icon: "AppWindow",
-      kind: "App surface",
+      kind: "Экран приложения",
       items: appItems,
     },
     {
       icon: "Terminal",
-      kind: "Command",
+      kind: "Команда",
       items: plugin.cliCommand
         ? [
             {
@@ -526,22 +526,22 @@ export function PluginIncludes({
     },
     {
       icon: "Explore",
-      kind: "Skill",
+      kind: "Навык",
       items: declared("skill"),
     },
     {
       icon: "Toolbox",
-      kind: "Agent tool",
+      kind: "Инструмент агента",
       items: declared("agent-tool"),
     },
     {
       icon: "MessageCirclePlus",
-      kind: "Thread integration",
+      kind: "Интеграция с чатом",
       items: declared("thread-integration"),
     },
     {
       icon: "Palette",
-      kind: "Theme",
+      kind: "Тема",
       items: declared("theme"),
     },
   ];
@@ -556,10 +556,10 @@ export function PluginIncludes({
     plugin.status === "degraded" ||
     plugin.status === "needs-configuration";
   const liveCapabilitiesNote =
-    "This plugin isn't running, so its commands, settings, agent tools, app surfaces, and thread integrations can't be listed.";
+    "Плагин не запущен, поэтому нельзя показать его команды, настройки, инструменты агента, экраны приложения и интеграции с чатом.";
 
   return (
-    <ResourceDetailIncludesSection label="Capabilities">
+    <ResourceDetailIncludesSection label="Возможности">
       <div className="space-y-3">
         <PluginDetailTable>
           {items.map((item) => (
@@ -655,7 +655,7 @@ function PluginRuntimeStatusAlert({
                     getPluginConfigurationRoutePath({ pluginId: plugin.id })
                   }
                 >
-                  Open settings
+                  Открыть настройки
                   <Icon name="ChevronRight" className="size-3.5" aria-hidden />
                 </Link>
               </Button>
@@ -664,7 +664,7 @@ function PluginRuntimeStatusAlert({
               <ResourceActionButton
                 icon="RotateCcw"
                 className="[&_[data-icon-root]]:size-3.5"
-                label={reloadPending ? "Reloading…" : "Reload"}
+                label={reloadPending ? "Перезагрузка…" : "Перезагрузить"}
                 loading={reloadPending}
                 disabled={reloadPending}
                 onClick={onReload}
@@ -692,7 +692,7 @@ export function PluginHealthBanner({
     mutationFn: () => reloadPlugin(fetch, plugin.id),
     onSuccess: () => invalidatePluginList({ queryClient }),
     onError: (error) => {
-      appToast.error("Failed to reload plugin", {
+      appToast.error("Не удалось перезагрузить плагин", {
         description: error instanceof Error ? error.message : String(error),
       });
     },
@@ -714,7 +714,7 @@ export function PluginServices({ plugin }: { plugin: PluginListItem }) {
   return (
     <div className="@container/plugin-detail max-w-full overflow-hidden rounded-lg border border-border bg-card align-top">
       <table
-        aria-label="Background services"
+        aria-label="Фоновые службы"
         className="w-full max-w-full table-fixed border-collapse text-left"
       >
         <colgroup>
@@ -730,7 +730,7 @@ export function PluginServices({ plugin }: { plugin: PluginListItem }) {
                 "px-4 py-2 font-medium",
               )}
             >
-              Status
+              Состояние
             </th>
             <th
               scope="col"
@@ -739,7 +739,7 @@ export function PluginServices({ plugin }: { plugin: PluginListItem }) {
                 "border-l border-border px-4 py-2 font-medium",
               )}
             >
-              Service
+              Служба
             </th>
           </tr>
         </thead>
@@ -785,7 +785,7 @@ export function PluginSchedules({ plugin }: { plugin: PluginListItem }) {
           name={schedule.name}
           detail={
             schedule.lastError ??
-            `Next ${formatAbsoluteDate(schedule.nextRunAt)}`
+            `Следующий запуск: ${formatAbsoluteDate(schedule.nextRunAt)}`
           }
         />
       ))}

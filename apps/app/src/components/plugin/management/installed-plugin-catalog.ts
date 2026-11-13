@@ -117,7 +117,7 @@ export function catalogEntryInstallBlocker(
 ): string | null {
   if (entry.incompatibleReason !== null) return entry.incompatibleReason;
   if (entry.conflictingInstallSource === null) return null;
-  return `Another plugin with the ID “${entry.pluginId}” is installed from ${conflictingInstallLocation(entry.conflictingInstallSource)}. Remove it to install this one.`;
+  return `Другой плагин с ID «${entry.pluginId}» установлен из ${conflictingInstallLocation(entry.conflictingInstallSource)}. Удалите его, чтобы установить этот плагин.`;
 }
 
 function conflictingInstallLocation(source: string): string {

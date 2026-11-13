@@ -17,8 +17,8 @@ export function PluginAttentionBanner({
     <AttentionBanner
       title={
         affected.length === 1
-          ? "1 plugin isn’t running"
-          : `${affected.length} plugins aren’t running`
+          ? "Один плагин не запущен"
+          : `Не запущено плагинов: ${affected.length}`
       }
     >
       <ul className="space-y-2">
@@ -39,9 +39,9 @@ export function PluginAttentionBanner({
                 onClick={(event) =>
                   onOpenPlugin(plugin.id, event.currentTarget)
                 }
-                aria-label={`View details for ${plugin.name ?? plugin.id}`}
+                aria-label={`Посмотреть сведения о ${plugin.name ?? plugin.id}`}
               >
-                View details
+                Подробнее
               </Button>
             </li>
           );

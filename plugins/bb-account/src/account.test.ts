@@ -909,7 +909,7 @@ describe("bb account CLI", () => {
   it("reports status, pairs with a code, and signs out", async () => {
     const host = await loadAccount();
     const signedOut = await host.harness.runCli(["status"]);
-    expect(signedOut.stdout).toContain("Not signed in");
+    expect(signedOut.stdout).toContain("Вход не выполнен");
 
     stub.issueRedeemCode("CODE-1234");
     const paired = await host.harness.runCli([
@@ -920,7 +920,7 @@ describe("bb account CLI", () => {
       stub.apexUrl,
     ]);
     expect(paired.exitCode).toBe(0);
-    expect(paired.stdout).toContain("Signed in as Sawyer Hood (@sawyerhood)");
+    expect(paired.stdout).toContain("Выполнен вход: Sawyer Hood (@sawyerhood)");
     expect(paired.stdout).toContain("sawyer-desktop");
 
     const json = await host.harness.runCli(["status", "--json"]);
@@ -931,7 +931,7 @@ describe("bb account CLI", () => {
     });
 
     const logout = await host.harness.runCli(["logout"]);
-    expect(logout.stdout).toContain("Signed out");
+    expect(logout.stdout).toContain("Вы вышли");
     expect((await status(host)).state).toBe("signed-out");
   });
 
@@ -960,14 +960,14 @@ describe("bb account CLI", () => {
     stub.approveLink(login.userCode);
     const done = await waiting;
     expect(done.exitCode).toBe(0);
-    expect(done.stdout).toContain("Signed in as Sawyer Hood");
+    expect(done.stdout).toContain("Выполнен вход: Sawyer Hood");
   });
 
   it("fails --wait clearly when nothing is pending or the link is denied", async () => {
     const host = await loadAccount();
     const nothing = await host.harness.runCli(["login", "--wait"]);
     expect(nothing.exitCode).toBe(1);
-    expect(nothing.stderr).toContain("no sign-in is in progress");
+    expect(nothing.stderr).toContain("вход не выполняется");
 
     await host.harness.runCli(["login", "--base-url", stub.apexUrl]);
     const view = (
@@ -995,7 +995,7 @@ describe("bb account CLI", () => {
       stub.apexUrl,
     ]);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("invalid or has expired");
+    expect(result.stderr).toContain("недействителен или истёк");
   });
 });
 
@@ -1338,8 +1338,8 @@ describe("pairings without a profile, and replaced servers", () => {
       account: null,
     });
     const text = await host.harness.runCli(["status"]);
-    expect(text.stdout).toContain("hasn't loaded the account yet");
-    expect(text.stdout).not.toContain("Not signed in");
+    expect(text.stdout).toContain("данные аккаунта ещё не загружены");
+    expect(text.stdout).not.toContain("Вход не выполнен");
 
     stub.route("GET", "/api/account/me", (request) => {
       stub.route("GET", "/api/account/me", () => ({ status: 500 }));

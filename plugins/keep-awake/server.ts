@@ -15,7 +15,7 @@ const MAX_SELECTED_HOSTS = 256;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 const hostSelectionSchema = z.discriminatedUnion("mode", [
@@ -145,47 +145,47 @@ export default async function keepAwakePlugin(bb: BbPluginApi): Promise<void> {
       exitCode: 0,
       stdout: json
         ? JSON.stringify(configuration)
-        : `Keep Awake ${configuration.enabled ? "enabled" : "disabled"}`,
+        : `Keep Awake ${configuration.enabled ? "включён" : "выключен"}`,
     };
   }
 
   bb.cli.register(
     defineCli({
       name: "keep-awake",
-      summary: "Configure idle-sleep prevention",
+      summary: "Настроить предотвращение перехода в сон при бездействии",
       description:
-        "Keep Awake keeps every selected macOS or Windows host from idle-sleeping while bb runs.",
+        "Keep Awake не допускает перехода выбранных машин с macOS или Windows в сон при бездействии, пока работает bb.",
       commands: {
         status: cliCommand({
-          summary: "Show whether Keep Awake is enabled and which hosts it uses",
+          summary: "Показать состояние Keep Awake и выбранные машины",
           options: { json: JSON_OPTION },
           run: (input) => ({
             exitCode: 0,
             stdout: input.options.json
               ? JSON.stringify(configuration)
-              : `${configuration.enabled ? "Enabled" : "Disabled"}\nHosts: ${
+              : `${configuration.enabled ? "Включён" : "Выключен"}\nМашины: ${
                   configuration.selection.mode === "all"
-                    ? "all"
+                    ? "все"
                     : configuration.selection.hostIds.join(", ")
                 }`,
           }),
         }),
         enable: cliCommand({
-          summary: "Enable Keep Awake",
+          summary: "Включить Keep Awake",
           options: { json: JSON_OPTION },
           run: (input) => setEnabled(true, input.options.json),
         }),
         disable: cliCommand({
-          summary: "Disable Keep Awake",
+          summary: "Выключить Keep Awake",
           options: { json: JSON_OPTION },
           run: (input) => setEnabled(false, input.options.json),
         }),
         hosts: cliCommand({
-          summary: "Show or replace the Keep Awake host selection",
+          summary: "Показать или изменить список машин Keep Awake",
           positionals: [
             {
               name: "host-id",
-              description: `Host ids to keep awake, at most ${MAX_SELECTED_HOSTS}, or the single word "all"; omit every id to print the current selection`,
+              description: `ID машин, которые не должны переходить в сон (не более ${MAX_SELECTED_HOSTS}), или одно слово "all"; без ID выводится текущий выбор`,
               variadic: true,
             },
           ],
@@ -195,10 +195,10 @@ export default async function keepAwakePlugin(bb: BbPluginApi): Promise<void> {
             if (requested[0] === "all") {
               if (requested.length !== 1) {
                 throw new PluginCliError(
-                  '"all" cannot be combined with individual host ids',
+                  '"all" нельзя сочетать с ID отдельных машин',
                   {
                     code: "invalid_host_selection",
-                    hint: "Run `bb keep-awake hosts all`, or list only host ids.",
+                    hint: "Запустите `bb keep-awake hosts all` или укажите только ID машин.",
                   },
                 );
               }
@@ -209,12 +209,12 @@ export default async function keepAwakePlugin(bb: BbPluginApi): Promise<void> {
             } else if (requested.length > 0) {
               if (requested.length > MAX_SELECTED_HOSTS) {
                 throw new PluginCliError(
-                  `Select at most ${MAX_SELECTED_HOSTS} hosts, or use "all"`,
+                  `Выберите не более ${MAX_SELECTED_HOSTS} машин или используйте "all"`,
                   { code: "invalid_host_selection" },
                 );
               }
               if (requested.some((hostId) => hostId.length === 0)) {
-                throw new PluginCliError("Host ids cannot be empty", {
+                throw new PluginCliError("ID машин не могут быть пустыми", {
                   code: "invalid_host_selection",
                 });
               }
@@ -228,7 +228,7 @@ export default async function keepAwakePlugin(bb: BbPluginApi): Promise<void> {
               stdout: input.options.json
                 ? JSON.stringify(configuration.selection)
                 : configuration.selection.mode === "all"
-                  ? "All hosts"
+                  ? "Все машины"
                   : configuration.selection.hostIds.join("\n"),
             };
           },

@@ -149,7 +149,7 @@ function SendLaterPicker() {
 
   async function schedule(at: number): Promise<void> {
     if (at <= Date.now()) {
-      setError("That time has just passed. Pick another.");
+      setError("Это время уже прошло. Выберите другое.");
       return;
     }
     setBusy(true);
@@ -160,7 +160,7 @@ function SendLaterPicker() {
         sendAt: at,
       });
       closeSendLater();
-      toast.success(`Sending ${formatScheduleTime(at, Date.now())}`);
+      toast.success(`Отправка ${formatScheduleTime(at, Date.now())}`);
     } catch (scheduleError: unknown) {
       setError(errorMessage(scheduleError));
     } finally {
@@ -188,11 +188,11 @@ function SendLaterPicker() {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Send later</DialogTitle>
+          <DialogTitle>Отправить позже</DialogTitle>
           <DialogDescription>
             {composer.scope.kind === "new-thread"
-              ? "Choose when this thread should start. It will use the model and environment selected in the composer."
-              : "Choose when this message should send."}
+              ? "Выберите время начала чата. Будут использованы модель и окружение, выбранные в поле ввода."
+              : "Выберите время отправки сообщения."}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -227,10 +227,10 @@ function SendLaterPicker() {
               type="button"
               variant="outline"
             >
-              Cancel
+              Отмена
             </Button>
             <Button disabled={busy || !preview.ok} type="submit">
-              {busy ? "Scheduling…" : "Schedule send"}
+              {busy ? "Планирование…" : "Запланировать отправку"}
             </Button>
           </div>
         </form>
@@ -241,14 +241,14 @@ function SendLaterPicker() {
 
 const sendLater: ComposerSendMenuItem = {
   id: "send-later",
-  label: "Send later…",
+  label: "Отправить позже…",
   icon: "Calendar",
-  description: "Schedule the current draft to send at a time you pick.",
+  description: "Запланировать отправку текущего черновика на выбранное время.",
   disabled: (composer) => composer.isSubmittingBlocked,
   run: ({ composer }) => {
     if (!openSendLater(composer)) {
-      toast.error("Nothing to schedule", {
-        description: "Type a message first, then choose Send later.",
+      toast.error("Нечего планировать", {
+        description: "Сначала введите сообщение, затем выберите «Отправить позже».",
       });
     }
   },

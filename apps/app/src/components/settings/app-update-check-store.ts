@@ -24,7 +24,7 @@ export function checkErrorDescription(error: unknown): string {
   if (error instanceof Error && error.message.length > 0) {
     return error.message;
   }
-  return "The update check did not complete.";
+  return "Проверка обновлений не завершилась.";
 }
 
 export function startAppUpdateCheck(check: () => Promise<void>): void {
@@ -36,7 +36,7 @@ export function startAppUpdateCheck(check: () => Promise<void>): void {
 
   void check()
     .catch((error: unknown) => {
-      appToast.error("Update check failed", {
+      appToast.error("Не удалось проверить обновления", {
         description: checkErrorDescription(error),
       });
     })

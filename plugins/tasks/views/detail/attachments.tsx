@@ -106,7 +106,7 @@ export function Lightbox({
       </div>
       <button
         type="button"
-        aria-label="Close"
+        aria-label="Закрыть"
         className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-md bg-popover/90 text-popover-foreground shadow-md hover:bg-popover"
         onClick={onClose}
       >
@@ -118,7 +118,7 @@ export function Lightbox({
 
 function RemovalSpinner() {
   return (
-    <span role="status" aria-label="Removing" className="inline-flex">
+    <span role="status" aria-label="Удаление" className="inline-flex">
       <Icon name="Spinner" className="size-3.5 animate-spin" aria-hidden />
     </span>
   );
@@ -170,7 +170,7 @@ export function AttachmentsGrid({
     return (
       <button
         type="button"
-        aria-label={`Remove ${attachment.fileName}`}
+        aria-label={`Удалить ${attachment.fileName}`}
         disabled={busy}
         className={base}
         onClick={(event) => {
@@ -269,9 +269,9 @@ export function AttachmentsGrid({
       >
         {confirm ? (
           <ConfirmDeleteDialogContent
-            title="Remove attachment?"
+            title="Удалить вложение?"
             description={`"${confirm.fileName}" will be permanently removed. Any references in the task description will be removed too. This cannot be undone.`}
-            confirmLabel="Remove"
+            confirmLabel="Удалить"
             pending={false}
             size="sm"
             onCancel={() => setConfirm(null)}

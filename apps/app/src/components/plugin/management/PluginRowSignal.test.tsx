@@ -20,7 +20,7 @@ describe("PluginRowSignalView", () => {
     expect(
       screen
         .getByRole("button", {
-          name: "Update to 1.9.0",
+          name: "Обновить до 1.9.0",
         })
         .querySelector('[data-icon="Download"]'),
     ).not.toBeNull();
@@ -33,7 +33,7 @@ describe("PluginRowSignalView", () => {
         signal={{
           kind: "status",
           icon: "AlertTriangle",
-          label: "Degraded",
+          label: "Работает с ограничениями",
           tone: "warning",
           detail: "One background service failed.",
         }}
@@ -43,13 +43,13 @@ describe("PluginRowSignalView", () => {
     );
 
     const statusButton = screen.getByRole("button", {
-      name: "Degraded: One background service failed.",
+      name: "Работает с ограничениями: One background service failed.",
     });
-    expect(screen.queryByText("Degraded")).toBeNull();
+    expect(screen.queryByText("Работает с ограничениями")).toBeNull();
 
     focusWithKeyboard(statusButton);
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Degraded: One background service failed.",
+      "Работает с ограничениями: One background service failed.",
     );
 
     fireEvent.click(statusButton);
@@ -65,7 +65,7 @@ describe("PluginRowSignalView", () => {
       />,
     );
     expect(
-      screen.getByRole("button", { name: "Update to 1.2.0" }),
+      screen.getByRole("button", { name: "Обновить до 1.2.0" }),
     ).toBeTruthy();
 
     rerender(
@@ -78,7 +78,7 @@ describe("PluginRowSignalView", () => {
         onStatusClick={vi.fn()}
       />,
     );
-    const button = screen.getByRole("button", { name: "Update available" });
+    const button = screen.getByRole("button", { name: "Доступно обновление" });
     expect(button.getAttribute("aria-label")).not.toContain("a985e1d");
   });
 });

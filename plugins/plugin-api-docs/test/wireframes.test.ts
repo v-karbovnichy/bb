@@ -288,8 +288,8 @@ describe("guide fixture boundaries", () => {
         classAnchor,
       );
     }
-    expect(body.indexOf("Branch")).toBeLessThan(body.indexOf("Deploy"));
-    expect(body.indexOf("Automations")).toBeLessThan(body.indexOf("Commits"));
+    expect(body.indexOf("Ветка")).toBeLessThan(body.indexOf("Развёртывание"));
+    expect(body.indexOf("Автоматизации")).toBeLessThan(body.indexOf("Коммиты"));
     expect(body.match(/data-guide-region="thread-info"/g)).toHaveLength(2);
   });
 
@@ -324,7 +324,7 @@ describe("guide fixture boundaries", () => {
     expect(railStart).toBeGreaterThan(-1);
     expect(railEnd).toBeGreaterThan(railStart);
     expect(rail).toContain('data-guide-region="nav-panel"');
-    expect(rail).toContain('class="sr-only">Your panel');
+    expect(rail).toContain('class="sr-only">Ваша панель');
     expect(
       markup.lastIndexOf('data-guide-region="sidebar-navigation"', railStart),
     ).toBeGreaterThan(-1);
@@ -350,7 +350,7 @@ describe("guide fixture boundaries", () => {
 
   it.each([
     ["browser-toolbar", "browser-toolbar", "https://example.com"],
-    ["thread-panel", "thread-panel", "Release checklist"],
+    ["thread-panel", "thread-panel", "Проверка релиза"],
     ["file-opener", "file-viewer", "Checkout retry notes"],
     ["code-renderers", "diff-renderer", "checkout.test.ts"],
   ] as const)(
@@ -405,8 +405,8 @@ describe("guide fixture boundaries", () => {
     );
     expect(markup).not.toContain("p-1 pl-3 text-sm");
     expect(markup).toContain('role="option" aria-selected="true"');
-    expect(markup).toContain("Run release checklist");
-    expect(markup).toContain("Plugins");
+    expect(markup).toContain("Запустить проверку релиза");
+    expect(markup).toContain("Плагины");
     expect(markup).toContain("⇧⌘P");
     expect(markup).not.toContain(
       'data-guide-fixture="release-checklist-panel"',

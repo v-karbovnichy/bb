@@ -170,7 +170,7 @@ function DueDateMenu({
       <PopoverTrigger asChild>
         <button type="button" className={triggerClassName}>
           <Icon name="Clock" className="size-3.5 shrink-0" />
-          {task.dueDate ? formatDueDate(task.dueDate) : "Set due date"}
+          {task.dueDate ? formatDueDate(task.dueDate) : "Указать срок"}
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-52 p-2">
@@ -190,7 +190,7 @@ function DueDateMenu({
           ))}
           <input
             type="date"
-            aria-label="Due date"
+            aria-label="Срок"
             className="mt-1 h-7 rounded-md border border-input bg-transparent px-2 text-sm text-foreground"
             value={task.dueDate ?? ""}
             onChange={(event) => {
@@ -204,7 +204,7 @@ function DueDateMenu({
               onClick={() => pick(null)}
             >
               <Icon name="X" className="size-3.5" />
-              Remove due date
+              Убрать срок
             </button>
           ) : null}
         </div>
@@ -258,7 +258,7 @@ function LabelsMenu({
       <PopoverContent className="w-56 p-0" align="start">
         <Command>
           <CommandInput
-            placeholder="Add labels…"
+            placeholder="Добавить метки…"
             value={query}
             onValueChange={setQuery}
           />
@@ -277,7 +277,7 @@ function LabelsMenu({
                   Create “{query.trim()}”
                 </button>
               ) : (
-                "No labels in this project."
+                "В этом проекте нет меток."
               )}
             </CommandEmpty>
             {labels !== undefined && labelList.length === 0 ? (
@@ -351,7 +351,7 @@ function ProjectMenu({
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Move to project"
+          aria-label="Переместить в проект"
           className={triggerClassName}
         >
           <ProjectSwatch project={project} />
@@ -360,9 +360,9 @@ function ProjectMenu({
       </PopoverTrigger>
       <PopoverContent className="w-56 p-0" align="start">
         <Command>
-          <CommandInput placeholder="Move to project…" />
+          <CommandInput placeholder="Переместить в проект…" />
           <CommandList>
-            <CommandEmpty>No matching projects.</CommandEmpty>
+            <CommandEmpty>Подходящих проектов нет.</CommandEmpty>
             <CommandGroup>
               {(projects ?? []).map((candidate) => (
                 <CommandItem
@@ -441,7 +441,7 @@ function DispatchTargetMenu({
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Edit dispatch target"
+          aria-label="Изменить цель запуска"
           className={triggerClassName}
         >
           <Icon name="ArrowUpRight" className="size-3.5 shrink-0" />
@@ -461,7 +461,7 @@ function DispatchTargetMenu({
           value={selection}
           onChange={setSelection}
           bbProjects={bbProjects}
-          noneLabel={linkedBbProjectId !== null ? "Unlink" : "Not linked"}
+          noneLabel={linkedBbProjectId !== null ? "Отвязать" : "Не связан"}
         />
         <div className="mt-2.5 flex items-center justify-between gap-2">
           {linkedBbProjectId !== null ? (
@@ -473,7 +473,7 @@ function DispatchTargetMenu({
               onClick={() => void save(null)}
             >
               <Icon name="X" className="size-3.5" />
-              Unlink
+              Отвязать
             </Button>
           ) : (
             <span />
@@ -484,7 +484,7 @@ function DispatchTargetMenu({
             disabled={saving}
             onClick={() => void save(selection)}
           >
-            Save
+            Сохранить
           </Button>
         </div>
       </PopoverContent>
@@ -519,7 +519,7 @@ export function PropertiesRail({
   return (
     <aside className={cn("w-56 shrink-0 py-10 pl-2 pr-6", className)}>
       <h2 className="mb-1.5 text-xs font-semibold text-muted-foreground">
-        Properties
+        Свойства
       </h2>
       <StatusMenu
         task={task}
@@ -538,7 +538,7 @@ export function PropertiesRail({
       />
 
       <div className="mb-1 mt-3 text-2xs font-semibold text-muted-foreground">
-        Labels
+        Метки
       </div>
       <div className="flex flex-wrap items-center gap-1 py-0.5">
         {taskLabels.map((label) => (
@@ -547,7 +547,7 @@ export function PropertiesRail({
         <LabelsMenu task={task} labels={labels} onUpdate={onUpdate}>
           <button
             type="button"
-            aria-label="Edit labels"
+            aria-label="Изменить метки"
             className="inline-flex items-center rounded-md border border-dashed border-border px-1.5 py-0.5 text-muted-foreground hover:border-input hover:text-foreground"
           >
             <Icon name="Plus" className="size-3" />
@@ -556,7 +556,7 @@ export function PropertiesRail({
       </div>
 
       <div className="mb-1 mt-3 text-2xs font-semibold text-muted-foreground">
-        Project
+        Проект
       </div>
       <ProjectMenu
         task={task}
@@ -567,7 +567,7 @@ export function PropertiesRail({
       />
 
       <div className="mb-1 mt-3 text-2xs font-semibold text-muted-foreground">
-        Dispatch target
+        Цель запуска
       </div>
       {project !== undefined ? (
         <DispatchTargetMenu
@@ -591,7 +591,7 @@ export function PropertiesRail({
       </div>
 
       <div className="mb-1 mt-3 text-2xs font-semibold text-muted-foreground">
-        Agents
+        Агенты
       </div>
       <div className="flex flex-col gap-1 py-0.5 text-xs">
         {active.length > 0 ? (
@@ -611,7 +611,7 @@ export function PropertiesRail({
             </span>
           ))
         ) : (
-          <span className="text-muted-foreground">none active</span>
+          <span className="text-muted-foreground">нет активных</span>
         )}
       </div>
     </aside>
@@ -669,7 +669,7 @@ export function InlineProperties({
       <LabelsMenu task={task} labels={labels} onUpdate={onUpdate}>
         <button
           type="button"
-          aria-label="Edit labels"
+          aria-label="Изменить метки"
           className="inline-flex items-center rounded-md border border-dashed border-border px-2 py-1 text-muted-foreground hover:border-input hover:text-foreground"
         >
           <Icon name="Plus" className="size-3" />

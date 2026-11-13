@@ -837,7 +837,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
     );
   },
 );
-Sidebar.displayName = "Sidebar";
+Sidebar.displayName = "Боковая панель";
 
 const SidebarCollapsibleBody = React.forwardRef<
   HTMLDivElement,
@@ -1085,7 +1085,7 @@ const SidebarMobilePanel = React.forwardRef<
           ref={setPanelRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Sidebar"
+          aria-label="Боковая панель"
           tabIndex={-1}
           inert={!open}
           data-sidebar="panel"
@@ -1148,7 +1148,7 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       <Icon name="PanelLeft" />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">Переключить боковую панель</span>
     </Button>
   );
 });

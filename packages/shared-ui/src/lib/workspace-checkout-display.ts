@@ -8,7 +8,7 @@ export interface WorkspaceCheckoutDisplay {
   copySuccessMessage: string | null;
   copyValue: string | null;
   label: string;
-  rowLabel: "Branch" | "Checkout";
+  rowLabel: "Ветка" | "Рабочая копия";
   title: string;
 }
 
@@ -26,13 +26,13 @@ export function formatWorkspaceCheckoutDisplay({
   switch (checkout.kind) {
     case "branch":
       return {
-        copyErrorMessage: "Failed to copy branch name",
-        copyLabel: "Copy branch name",
-        copySuccessMessage: "Branch name copied",
+        copyErrorMessage: "Не удалось скопировать название ветки",
+        copyLabel: "Скопировать название ветки",
+        copySuccessMessage: "Название ветки скопировано",
         copyValue: checkout.branchName,
         label: checkout.branchName,
-        rowLabel: "Branch",
-        title: `Copy branch name: ${checkout.branchName}`,
+        rowLabel: "Ветка",
+        title: `Скопировать название ветки: ${checkout.branchName}`,
       };
     case "detached":
       if (checkout.headSha === null) {
@@ -41,19 +41,19 @@ export function formatWorkspaceCheckoutDisplay({
           copyLabel: null,
           copySuccessMessage: null,
           copyValue: null,
-          label: "detached HEAD",
-          rowLabel: "Checkout",
-          title: "Detached HEAD",
+          label: "отсоединённый HEAD",
+          rowLabel: "Рабочая копия",
+          title: "Отсоединённый HEAD",
         };
       }
       return {
-        copyErrorMessage: "Failed to copy commit SHA",
-        copyLabel: "Copy commit SHA",
-        copySuccessMessage: "Commit SHA copied",
+        copyErrorMessage: "Не удалось скопировать SHA коммита",
+        copyLabel: "Скопировать SHA коммита",
+        copySuccessMessage: "SHA коммита скопирован",
         copyValue: checkout.headSha,
-        label: `detached ${shortSha(checkout.headSha)}`,
-        rowLabel: "Checkout",
-        title: `Detached HEAD: ${checkout.headSha}`,
+        label: `отсоединённый ${shortSha(checkout.headSha)}`,
+        rowLabel: "Рабочая копия",
+        title: `Отсоединённый HEAD: ${checkout.headSha}`,
       };
     case "unborn":
       return {
@@ -63,13 +63,13 @@ export function formatWorkspaceCheckoutDisplay({
         copyValue: null,
         label:
           checkout.branchName !== null
-            ? `${checkout.branchName} (empty)`
-            : "empty repo",
-        rowLabel: "Checkout",
+            ? `${checkout.branchName} (пустая)`
+            : "пустой репозиторий",
+        rowLabel: "Рабочая копия",
         title:
           checkout.branchName !== null
-            ? `Empty branch: ${checkout.branchName}`
-            : "Empty repository",
+            ? `Пустая ветка: ${checkout.branchName}`
+            : "Пустой репозиторий",
       };
     case "unknown":
       return {
@@ -77,9 +77,9 @@ export function formatWorkspaceCheckoutDisplay({
         copyLabel: null,
         copySuccessMessage: null,
         copyValue: null,
-        label: "unknown checkout",
-        rowLabel: "Checkout",
-        title: `Unknown checkout: ${checkout.reason}`,
+        label: "неизвестная рабочая копия",
+        rowLabel: "Рабочая копия",
+        title: `Неизвестная рабочая копия: ${checkout.reason}`,
       };
   }
 }

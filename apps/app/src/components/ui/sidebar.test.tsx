@@ -293,7 +293,7 @@ describe("desktop collapsed rail", () => {
     expect(probe.dataset.keepsRail).toBe("true");
     expect(probe.dataset.showing).toBe("true");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     expect(root.dataset.state).toBe("collapsed");
     expect(root.dataset.collapsible).toBe("rail");
@@ -327,13 +327,13 @@ describe("desktop collapsed rail", () => {
     expect(body.hasAttribute("inert")).toBe(false);
     expect(content?.style.width).toBe("calc(281px)");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     expect(body.hasAttribute("inert")).toBe(true);
     expect(content?.style.width).toBe("calc(281px)");
     expect(body.className).toContain("group-data-[collapsible=rail]:invisible");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     expect(body.hasAttribute("inert")).toBe(false);
   });
@@ -429,7 +429,7 @@ describe("framed desktop sidebar", () => {
       inset.classList.contains("before:rounded-bl-(--bb-frame-card-radius)"),
     ).toBe(false);
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     expect(
       inset.classList.contains("before:rounded-tl-(--bb-frame-card-radius)"),
@@ -682,7 +682,7 @@ describe("mobile sidebar deferred realization", () => {
     renderCompactSidebarHarness();
     expect(getMobilePanel()?.textContent).not.toContain("Sidebar content");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     const openingPanel = getMobilePanel();
     expect(openingPanel?.dataset.state).toBe("closed");
@@ -701,7 +701,7 @@ describe("mobile sidebar deferred realization", () => {
   it("keeps the realize commit out of the open tap's synchronous flush", () => {
     vi.useFakeTimers();
     renderCompactSidebarHarness();
-    const trigger = screen.getByRole("button", { name: "Toggle Sidebar" });
+    const trigger = screen.getByRole("button", { name: "Переключить боковую панель" });
 
     let panelStyledForSlideInTap = false;
     let realizedInTapFlush = true;
@@ -775,7 +775,7 @@ describe("mobile sidebar shelf stacking", () => {
     expect(inset.className).toContain("motion-reduce:transition-none!");
     expect(inset.dataset.sidebarShelf).toBe("closed");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
 
     expect(inset.dataset.sidebarShelf).toBe("open");
@@ -827,7 +827,7 @@ describe("mobile sidebar persistence", () => {
     vi.useFakeTimers();
     renderCompactSidebarHarness();
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
 
     const panel = getMobilePanel();
@@ -876,7 +876,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
     settleMobileRealization();
 
@@ -897,7 +897,7 @@ describe("mobile sidebar persistence", () => {
     vi.useFakeTimers();
     renderCompactSidebarHarness();
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
 
     const panel = getMobilePanel();
@@ -927,7 +927,7 @@ describe("mobile sidebar persistence", () => {
     const inset = document.querySelector('[data-sidebar="inset"]');
     expect(inset?.hasAttribute("inert")).toBe(false);
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     const openingPanel = getMobilePanel();
     expect(openingPanel?.dataset.state).toBe("closed");
@@ -973,7 +973,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
 
     const backdrop = screen.getByTestId("sidebar-mobile-backdrop");
     expect(getMobilePanel()?.dataset.state).toBe("closed");
@@ -1005,7 +1005,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    const trigger = screen.getByRole("button", { name: "Toggle Sidebar" });
+    const trigger = screen.getByRole("button", { name: "Переключить боковую панель" });
     const overlay = screen.getByTestId("trigger-overlay");
 
     fireEvent.click(trigger);
@@ -1072,7 +1072,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переключить боковую панель" }));
     settleMobileToggle();
     fireEvent.click(screen.getByRole("button", { name: "Open destination" }));
 
@@ -1111,7 +1111,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    const trigger = screen.getByRole("button", { name: "Toggle Sidebar" });
+    const trigger = screen.getByRole("button", { name: "Переключить боковую панель" });
     const insetAction = screen.getByRole("button", { name: "Inset action" });
 
     fireEvent.click(trigger);
@@ -1148,7 +1148,7 @@ describe("mobile sidebar persistence", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    const trigger = screen.getByRole("button", { name: "Toggle Sidebar" });
+    const trigger = screen.getByRole("button", { name: "Переключить боковую панель" });
     const panel = getMobilePanel();
     if (!panel) throw new Error("Expected mobile sidebar panel");
     const focusSpy = vi.spyOn(panel, "focus");

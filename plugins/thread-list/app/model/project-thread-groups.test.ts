@@ -619,7 +619,7 @@ describe("worktree grouping preference", () => {
       },
       {
         section: "chronological::sec_later",
-        name: "Section",
+        name: "Раздел",
         items: [{ env: "env_wt", threads: ["later-b", "later-a"] }],
       },
     ]);

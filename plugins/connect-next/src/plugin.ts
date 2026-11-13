@@ -40,9 +40,9 @@ export function createConnectNextPlugin(
     const settings = bb.settings.define({
       enabled: {
         type: "boolean",
-        label: "Reach this bb at its next address (beta)",
+        label: "Доступ к bb по новому адресу (бета)",
         description:
-          "Also make this bb reachable at https://<label>.next.<your bb account's domain> through bb's new Fly gate while it is signed in to your bb account. Your bb connect address keeps working.",
+          "Пока bb вошёл в ваш аккаунт, он также доступен через новый шлюз Fly по адресу https://<label>.next.<домен вашего аккаунта bb>. Текущий адрес bb connect продолжает работать.",
         default: true,
       },
     });

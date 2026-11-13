@@ -38,7 +38,7 @@ export function buildAsyncQuestionFormQuestions(
   return questions.map((question, questionIndex) => ({
     id: `question-${questionIndex + 1}`,
     prompt: question.title,
-    shortLabel: `Question ${questionIndex + 1}`,
+    shortLabel: `Вопрос ${questionIndex + 1}`,
     multiSelect: false,
     allowFreeText: true,
     required: true,

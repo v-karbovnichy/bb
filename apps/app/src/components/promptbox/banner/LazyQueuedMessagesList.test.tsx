@@ -91,15 +91,15 @@ it("downloads the queue only for queued work, warming it from the pending summar
   );
   screen.getByText("Please check the follow-up");
   expect(
-    screen.queryByRole("button", { name: "Send queued message 1 now" }),
+    screen.queryByRole("button", { name: "Отправить сообщение 1 из очереди сейчас" }),
   ).toBeNull();
   view.rerender(<QueuedMessagesPendingCard queuedMessageCount={2} />);
   mocks.releaseImport();
   await act(() => LazyQueuedMessagesList.preload());
   expect(mocks.imported).toHaveBeenCalledOnce();
-  screen.getByRole("status", { name: "Loading queued messages" });
+  screen.getByRole("status", { name: "Загрузка сообщений в очереди" });
   expect(
-    screen.queryByRole("button", { name: "Send queued message 1 now" }),
+    screen.queryByRole("button", { name: "Отправить сообщение 1 из очереди сейчас" }),
   ).toBeNull();
 
   view.rerender(
@@ -111,11 +111,11 @@ it("downloads the queue only for queued work, warming it from the pending summar
     />,
   );
   expect(
-    screen.queryByRole("status", { name: "Loading queued messages" }),
+    screen.queryByRole("status", { name: "Загрузка сообщений в очереди" }),
   ).toBeNull();
   fireEvent.click(
-    screen.getByRole("button", { name: "Toggle queued messages" }),
+    screen.getByRole("button", { name: "Показать или скрыть очередь сообщений" }),
   );
-  screen.getByRole("button", { name: "Send queued message 1 now" });
-  screen.getByRole("button", { name: "Reorder queued message 2" });
+  screen.getByRole("button", { name: "Отправить сообщение 1 из очереди сейчас" });
+  screen.getByRole("button", { name: "Изменить порядок сообщения 2 в очереди" });
 });

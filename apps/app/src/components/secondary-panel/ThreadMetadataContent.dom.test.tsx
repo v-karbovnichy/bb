@@ -76,12 +76,12 @@ describe("EnvironmentRow", () => {
 
     focusWithKeyboard(
       screen.getByRole("button", {
-        name: "New thread in environment",
+        name: "Новый чат в окружении",
       }),
     );
 
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "New thread in environment",
+      "Новый чат в окружении",
     );
   });
 });

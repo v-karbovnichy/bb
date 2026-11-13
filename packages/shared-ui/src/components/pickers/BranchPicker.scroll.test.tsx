@@ -23,8 +23,8 @@ describe("BranchPicker search", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
-    const search = screen.getByPlaceholderText("Search branches");
+    fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
+    const search = screen.getByPlaceholderText("Поиск веток");
     const scrollArea = search.parentElement?.parentElement?.nextElementSibling;
     expect(scrollArea).toBeInstanceOf(HTMLElement);
     if (!(scrollArea instanceof HTMLElement)) return;
@@ -49,8 +49,8 @@ describe("BranchPicker search", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
-    fireEvent.change(screen.getByPlaceholderText("Search branches"), {
+    fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
+    fireEvent.change(screen.getByPlaceholderText("Поиск веток"), {
       target: { value: "fth" },
     });
 
@@ -74,10 +74,10 @@ describe("BranchPicker search", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
 
-    expect(screen.getByText("Branches")).toBeTruthy();
-    expect(screen.getByText("No branches found.").className).toContain("py-3");
+    expect(screen.getByText("Ветки")).toBeTruthy();
+    expect(screen.getByText("Ветки не найдены.").className).toContain("py-3");
   });
 });
 
@@ -95,8 +95,8 @@ describe("BranchPicker keyboard navigation", () => {
         />,
       );
 
-      fireEvent.click(screen.getByRole("combobox", { name: "Branch" }));
-      const search = screen.getByPlaceholderText("Search branches");
+      fireEvent.click(screen.getByRole("combobox", { name: "Ветка" }));
+      const search = screen.getByPlaceholderText("Поиск веток");
       const row = (name: string) => screen.getByRole("button", { name });
       expect(row("origin/main").hasAttribute("data-highlighted")).toBe(true);
 

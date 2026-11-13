@@ -43,7 +43,7 @@ export function FilePreviewPath({
   copyPath: string | null;
 }) {
   const copyTarget = copyPath ?? path;
-  const label = "Copy file path";
+  const label = "Скопировать путь к файлу";
   const className = cn(
     "min-w-0 font-mono font-medium leading-5 text-file-accent",
     COARSE_POINTER_TEXT_SM_CLASS,
@@ -62,8 +62,8 @@ export function FilePreviewPath({
             aria-label={label}
             onClick={() => {
               void copyToClipboardWithToast(copyTarget, {
-                successMessage: "File path copied",
-                errorMessage: "Failed to copy file path",
+                successMessage: "Путь к файлу скопирован",
+                errorMessage: "Не удалось скопировать путь к файлу",
               });
             }}
           >
@@ -88,7 +88,7 @@ export function FilePreviewLoading({
   return (
     <div
       role="status"
-      aria-label="Loading file preview"
+      aria-label="Загрузка предпросмотра файла"
       className="@container/page min-h-full"
       style={FILE_PREVIEW_WRAPPER_STYLE}
     >

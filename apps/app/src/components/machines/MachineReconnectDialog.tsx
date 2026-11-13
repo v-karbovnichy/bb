@@ -37,7 +37,7 @@ export function MachineReconnectDialog({
   const errorMessage = reconnectHost.isError
     ? getMutationErrorMessage({
         error: reconnectHost.error,
-        fallbackMessage: "Couldn't prepare a reconnect command.",
+        fallbackMessage: "Не удалось подготовить команду для повторного подключения.",
       })
     : null;
 
@@ -48,14 +48,14 @@ export function MachineReconnectDialog({
         onInteractOutside={(event) => event.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>Reconnect machine</DialogTitle>
+          <DialogTitle>Подключить машину повторно</DialogTitle>
           <DialogDescription
             className={
               errorMessage === null ? undefined : "text-destructive-text"
             }
           >
             {errorMessage ??
-              `Run this command on ${target?.name ?? "the machine"} to bring it back online. It keeps the machine's projects, environments and history.`}
+              `Выполните эту команду на ${target?.name ?? "машине"}, чтобы вернуть её в сеть. Проекты, среды и история сохранятся.`}
           </DialogDescription>
         </DialogHeader>
         {errorMessage === null ? null : (
@@ -67,7 +67,7 @@ export function MachineReconnectDialog({
                 if (hostId !== null) mutate(hostId);
               }}
             >
-              Try again
+              Повторить
             </Button>
           </div>
         )}
@@ -91,7 +91,7 @@ export function MachineReconnectDialog({
                   role="status"
                   className="min-w-0 flex-1 truncate text-sm text-foreground"
                 >
-                  {target?.name} reconnected
+                  {target?.name} снова в сети
                 </span>
                 <Button
                   size="sm"
@@ -99,7 +99,7 @@ export function MachineReconnectDialog({
                   className="h-7 shrink-0 px-2 text-xs"
                   onClick={() => onOpenChange(false)}
                 >
-                  Done
+                  Готово
                 </Button>
               </>
             ) : (
@@ -110,8 +110,8 @@ export function MachineReconnectDialog({
                 />
                 <span role="status" className="text-sm text-muted-foreground">
                   {prepared === null
-                    ? "Preparing a reconnect command…"
-                    : "Waiting for the machine to reconnect…"}
+                    ? "Подготовка команды для повторного подключения…"
+                    : "Ожидание подключения машины…"}
                 </span>
               </>
             )}

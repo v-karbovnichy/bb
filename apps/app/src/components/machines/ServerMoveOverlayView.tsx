@@ -24,27 +24,27 @@ const STEP_STATUS_PRESENTATION: Record<
   pending: {
     icon: "Circle",
     iconClassName: "text-subtle-foreground/60",
-    label: "Waiting",
+    label: "Ожидание",
   },
   running: {
     icon: "Spinner",
     iconClassName: "animate-spin text-foreground",
-    label: "In progress",
+    label: "Выполняется",
   },
   done: {
     icon: "CircleCheck",
     iconClassName: "text-foreground",
-    label: "Done",
+    label: "Готово",
   },
   failed: {
     icon: "CircleX",
     iconClassName: "text-destructive-text",
-    label: "Failed",
+    label: "Ошибка",
   },
   skipped: {
     icon: "Circle",
     iconClassName: "text-subtle-foreground/40",
-    label: "Skipped",
+    label: "Пропущено",
   },
 };
 
@@ -178,7 +178,7 @@ function ServerMoveOverlayActions({
           disabled={cancelPending}
           onClick={onCancel}
         >
-          {cancelPending ? "Cancelling…" : "Cancel move"}
+          {cancelPending ? "Отмена…" : "Отменить перенос"}
         </Button>
       </div>
     );
@@ -196,7 +196,7 @@ function ServerMoveOverlayActions({
     return (
       <div className="flex justify-end">
         <Button asChild variant="outline">
-          <a href={content.destination}>Open the new address</a>
+          <a href={content.destination}>Открыть новый адрес</a>
         </Button>
       </div>
     );
@@ -207,7 +207,7 @@ function ServerMoveOverlayActions({
   return (
     <div className="flex justify-end">
       <Button type="button" onClick={onClose}>
-        Close
+        Закрыть
       </Button>
     </div>
   );
@@ -231,7 +231,7 @@ function ServerMoveRecoveryActions({
           variant="outline"
           onClick={() => setConfirming(true)}
         >
-          Abandon move…
+          Прервать перенос…
         </Button>
       </div>
     );
@@ -239,7 +239,7 @@ function ServerMoveRecoveryActions({
   return (
     <div className="space-y-3">
       <p className="text-sm text-destructive-text">
-        {`Abandon only if ${targetHostName} isn't running the server. If it already took over, two servers will run with the same data.`}
+        {`Прерывайте перенос только если сервер на ${targetHostName} не работает. Если он уже принял управление, два сервера будут работать с одинаковыми данными.`}
       </p>
       <div className="flex justify-end gap-2">
         <Button
@@ -248,7 +248,7 @@ function ServerMoveRecoveryActions({
           disabled={cancelPending}
           onClick={() => setConfirming(false)}
         >
-          Keep waiting
+          Продолжить ожидание
         </Button>
         <Button
           type="button"
@@ -256,7 +256,7 @@ function ServerMoveRecoveryActions({
           disabled={cancelPending}
           onClick={onAbandon}
         >
-          {cancelPending ? "Abandoning…" : "Abandon move"}
+          {cancelPending ? "Прерывание…" : "Прервать перенос"}
         </Button>
       </div>
     </div>
@@ -271,24 +271,24 @@ function overlayTitle(content: VisibleServerMoveOverlayContent): string {
   const name = content.move.targetHostName;
   switch (content.kind) {
     case "progress":
-      return `Moving server to ${name}`;
+      return `Перенос сервера на ${name}`;
     case "recovery":
-      return `Couldn't confirm the switch to ${name}`;
+      return `Не удалось подтвердить переход на ${name}`;
     case "waiting":
-      return `Starting the server on ${name}…`;
+      return `Запуск сервера на ${name}…`;
     case "redirecting":
-      return `Server moved to ${name}`;
+      return `Сервер перенесён на ${name}`;
     case "reconnecting":
-      return `Reconnecting to ${name}…`;
+      return `Повторное подключение к ${name}…`;
     case "ended":
       if (isAbandonedSwitch(content.move)) {
-        return "Server move abandoned";
+        return "Перенос сервера прерван";
       }
       return content.move.state === "cancelled"
-        ? "Server move cancelled"
-        : `Couldn't move the server to ${name}`;
+        ? "Перенос сервера отменён"
+        : `Не удалось перенести сервер на ${name}`;
     case "abandoned":
-      return "Server move stopped";
+      return "Перенос сервера остановлен";
   }
 }
 
@@ -297,42 +297,42 @@ function overlayDescription(content: VisibleServerMoveOverlayContent): string {
   switch (content.kind) {
     case "progress":
       return content.move.state === "switching"
-        ? `Every machine and app is switching over to ${name}. The move can't be cancelled now.`
-        : `bb is copying the server to ${name}.`;
+        ? `Все машины и приложения переходят на ${name}. Перенос уже нельзя отменить.`
+        : `bb копирует сервер на ${name}.`;
     case "recovery":
-      return `${name} didn't confirm that it took over, so this server stays up but read-only. bb keeps checking and finishes the move as soon as ${name} answers.`;
+      return `${name} не подтвердил принятие управления. Этот сервер продолжает работать только для чтения. bb продолжит проверку и завершит перенос после ответа ${name}.`;
     case "waiting":
       return content.destinationState === "activating"
-        ? `${name} is switching over to the new server. This page opens it as soon as it's ready.`
-        : `The server on ${name} is starting. This page opens ${content.move.serverUrl} as soon as it answers.`;
+        ? `${name} переходит на новый сервер. Страница откроет его, когда он будет готов.`
+        : `Сервер на ${name} запускается. Страница откроет ${content.move.serverUrl}, когда он ответит.`;
     case "redirecting":
-      return `Opening the server at ${content.move.serverUrl}…`;
+      return `Открытие сервера по адресу ${content.move.serverUrl}…`;
     case "reconnecting":
-      return `The server on ${name} is starting. This page reconnects as soon as it answers.`;
+      return `Сервер на ${name} запускается. Страница подключится, когда он ответит.`;
     case "ended":
       if (isAbandonedSwitch(content.move)) {
-        return `The server keeps running here. If ${name} took over anyway, stop the server there.`;
+        return `Сервер продолжает работать здесь. Если ${name} всё же принял управление, остановите сервер там.`;
       }
       return content.move.state === "cancelled"
-        ? "The server keeps running where it was."
+        ? "Сервер продолжает работать на прежней машине."
         : (content.move.error?.message ??
-            "The move stopped before it finished.");
+            "Перенос остановлен до завершения.");
     case "abandoned":
-      return `The server restarted before the move to ${name} finished, so nothing switched over.`;
+      return `Сервер перезапустился до завершения переноса на ${name}, поэтому переход не произошёл.`;
   }
 }
 
 function overlayNote(content: VisibleServerMoveOverlayContent): string | null {
   if (content.kind === "recovery") {
     const name = content.move.targetHostName;
-    return `If ${name} isn't running the server, abandon the move to keep the server here. If this server stops, run bb server unlock on this computer.`;
+    return `Если сервер на ${name} не работает, прервите перенос, чтобы оставить сервер здесь. Если этот сервер остановится, выполните bb server unlock на этом компьютере.`;
   }
   if (
     content.kind === "ended" &&
     content.move.state === "failed" &&
     content.move.error?.step !== "switch"
   ) {
-    return "The server keeps running where it was.";
+    return "Сервер продолжает работать на прежней машине.";
   }
   return null;
 }
@@ -345,7 +345,7 @@ export function ServerMoveStepList({
   targetHostName: string;
 }) {
   return (
-    <ol className="space-y-2" aria-label="Move steps">
+    <ol className="space-y-2" aria-label="Этапы переноса">
       {steps.map((step) => {
         const presentation = STEP_STATUS_PRESENTATION[step.status];
         return (
@@ -378,7 +378,7 @@ export function ServerMoveStepList({
                 <span className="sr-only">{`, ${presentation.label}`}</span>
               </p>
               {step.status === "skipped" ? (
-                <p className="text-xs text-subtle-foreground">Skipped</p>
+                <p className="text-xs text-subtle-foreground">Пропущено</p>
               ) : step.message === null ? null : (
                 <p className="text-xs break-words text-subtle-foreground">
                   {step.message}

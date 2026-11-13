@@ -41,7 +41,7 @@ describe("app chrome opts out of text selection", () => {
     expect(getPanel().classList.contains("select-none")).toBe(true);
     expect(
       screen
-        .getByRole("button", { name: "Toggle Sidebar" })
+        .getByRole("button", { name: "Переключить боковую панель" })
         .classList.contains("select-none"),
     ).toBe(true);
     const header = document.querySelector("header");

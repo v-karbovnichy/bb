@@ -29,7 +29,7 @@ export function useForkThreadFromMessage({
   const queryClient = useQueryClient();
   const forkThread = useMutation({
     meta: {
-      errorMessage: "Failed to fork thread.",
+      errorMessage: "Не удалось ответвить чат.",
       lifecycleOperation: "create_thread",
     },
     mutationFn: (request: AppCreateThreadRequest) =>

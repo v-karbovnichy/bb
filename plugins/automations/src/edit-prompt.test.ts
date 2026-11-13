@@ -10,7 +10,7 @@ describe("automation edit thread prompt", () => {
         automationId: "auto_456",
       }),
     ).toBe(
-      'Edit the bb automation "Daily triage" (ID auto_456) in project proj_123. I want to ',
+      'Измени автоматизацию bb "Daily triage" (ID auto_456) в проекте proj_123. Я хочу ',
     );
   });
 });

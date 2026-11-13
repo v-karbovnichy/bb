@@ -35,7 +35,7 @@ it("registers the Diff tab, Info rows and sections, the composer segment, and th
     { id: "changed-files", group: "3_git", order: 10 },
   ]);
   expect(app.threadActions).toMatchObject([
-    { id: "commit", placement: "header", title: "Commit" },
+    { id: "commit", placement: "header", title: "Создать коммит" },
   ]);
   expect(app.appOverlays.map((overlay) => overlay.id)).toEqual([
     "commit-dialog",

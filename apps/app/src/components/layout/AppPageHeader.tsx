@@ -120,7 +120,7 @@ export function AppPageHeader({
       {isCompactViewport ? (
         <button
           type="button"
-          aria-label="Scroll to top"
+          aria-label="Прокрутить вверх"
           className="absolute inset-0 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
           onClick={handleScrollToTop}
         />

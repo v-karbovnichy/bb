@@ -49,7 +49,7 @@ export function startQueuedMessageEditHold({
       ) {
         showMutationErrorToast({
           error,
-          fallbackMessage: "Failed to edit queued message",
+          fallbackMessage: "Не удалось изменить сообщение в очереди",
           lifecycleOperation: "update_queued_message",
         });
         onRejected();

@@ -75,9 +75,9 @@ function relativeTime(iso: string): string {
   const then = Date.parse(iso);
   if (Number.isNaN(then)) return "";
   const seconds = Math.max(0, (Date.now() - then) / 1000);
-  if (seconds < 3600) return `${Math.max(1, Math.floor(seconds / 60))}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
+  if (seconds < 3600) return `${Math.max(1, Math.floor(seconds / 60))} мин назад`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)} ч назад`;
+  return `${Math.floor(seconds / 86400)} дн назад`;
 }
 
 const PANEL_PATH = "github";
@@ -256,10 +256,13 @@ function StateDot({ kind, state }: { kind: "issue" | "pr"; state: string }) {
 }
 
 function StateBadge({ kind, state }: { kind: "issue" | "pr"; state: string }) {
+  const label = kind === "issue"
+    ? ({ OPEN: "открыта", CLOSED: "закрыта" }[state] ?? state.toLowerCase())
+    : ({ OPEN: "открыт", CLOSED: "закрыт", MERGED: "объединён" }[state] ?? state.toLowerCase());
   return (
     <Badge variant="outline" className="gap-1.5 font-normal">
       <StateDot kind={kind} state={state} />
-      {state.toLowerCase()}
+      {label}
     </Badge>
   );
 }
@@ -272,7 +275,7 @@ function ThreadPills({ links }: { links: ThreadLink[] | undefined }) {
       {links.map((link, index) => (
         <Badge
           key={link.threadId}
-          title={`Open BB thread ${link.threadId}`}
+          title={`Открыть чат BB ${link.threadId}`}
           onClick={(event) => {
             event.stopPropagation();
             navigate.toThread(link.threadId);
@@ -280,7 +283,7 @@ function ThreadPills({ links }: { links: ThreadLink[] | undefined }) {
           variant="secondary"
           className="cursor-pointer whitespace-nowrap hover:bg-accent"
         >
-          ⚡ agent{links.length > 1 ? ` ${index + 1}` : ""}
+          ⚡ агент{links.length > 1 ? ` ${index + 1}` : ""}
         </Badge>
       ))}
     </span>
@@ -318,7 +321,7 @@ function useIssueMutations() {
         .call("setIssueState", { repo, number, state })
         .then(() =>
           toast.success(
-            state === "closed" ? `#${number} closed` : `#${number} reopened`,
+            state === "closed" ? `#${number} закрыта` : `#${number} снова открыта`,
           ),
         ),
     [rpc],
@@ -438,7 +441,7 @@ function FilterBar({
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
         onKeyDown={onKeyDown}
-        placeholder="Filter — is:open assignee:@me label:bug, or plain text"
+        placeholder="Фильтр — is:open assignee:@me label:bug или обычный текст"
         className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 pr-8 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         spellCheck={false}
         autoComplete="off"
@@ -452,7 +455,7 @@ function FilterBar({
             setCaret(0);
             inputRef.current?.focus();
           }}
-          aria-label="Clear filter"
+          aria-label="Очистить фильтр"
         >
           ✕
         </button>
@@ -543,11 +546,11 @@ function StatusCell({ item }: { item: Item }) {
           variant="ghost"
           className="h-7 gap-1.5 px-2 text-xs font-normal"
           onClick={(event) => event.stopPropagation()}
-          aria-label={`Change issue #${item.number} state, currently ${item.state.toLowerCase()}`}
+          aria-label={`Изменить состояние задачи #${item.number}; сейчас ${({ OPEN: "открыта", CLOSED: "закрыта" }[item.state] ?? item.state.toLowerCase())}`}
           aria-busy={pending}
         >
           <StateDot kind="issue" state={item.state} />
-          <span>{pending ? "…" : item.state.toLowerCase()}</span>
+          <span>{pending ? "…" : ({ OPEN: "открыта", CLOSED: "закрыта" }[item.state] ?? item.state.toLowerCase())}</span>
           <ChevronDownIcon />
         </Button>
       </DropdownMenuTrigger>
@@ -580,8 +583,8 @@ function RowMenu({ item }: { item: Item }) {
       .then(() =>
         toast.success(
           assignedToMe
-            ? `Unassigned from #${item.number}`
-            : `Assigned to #${item.number}`,
+            ? `Назначение с #${item.number} снято`
+            : `Назначено на #${item.number}`,
         ),
       )
       .catch((error: unknown) => toast.error(errorText(error)));
@@ -602,7 +605,7 @@ function RowMenu({ item }: { item: Item }) {
       <DropdownMenuContent align="end">
         {item.kind === "issue" && viewer !== null ? (
           <DropdownMenuItem onSelect={toggleSelfAssign}>
-            {assignedToMe ? "Unassign me" : "Assign to me"}
+            {assignedToMe ? "Снять с меня назначение" : "Назначить мне"}
           </DropdownMenuItem>
         ) : null}
         {item.kind === "issue" ? (
@@ -615,7 +618,7 @@ function RowMenu({ item }: { item: Item }) {
               ).catch((error: unknown) => toast.error(errorText(error)));
             }}
           >
-            {item.state === "OPEN" ? "Close issue" : "Reopen issue"}
+            {item.state === "OPEN" ? "Закрыть задачу" : "Открыть задачу снова"}
           </DropdownMenuItem>
         ) : null}
         {item.kind === "issue" ? <DropdownMenuSeparator /> : null}
@@ -624,14 +627,14 @@ function RowMenu({ item }: { item: Item }) {
             navigate.openUrl(item.url);
           }}
         >
-          Open on GitHub ↗
+          Открыть на GitHub ↗
         </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => {
             void experimental_copyToClipboard({ text: item.url }).then(
               (copied) => {
-                if (copied) toast.success("Link copied");
-                else toast.error("Could not copy the link");
+                if (copied) toast.success("Ссылка скопирована");
+                else toast.error("Не удалось скопировать ссылку");
               },
             );
           }}
@@ -703,7 +706,7 @@ function ItemRow({
               );
             }}
           >
-            {busy ? "…" : item.kind === "issue" ? "Start" : "Review"}
+            {busy ? "…" : item.kind === "issue" ? "Начать" : "Ревью"}
           </Button>
           <RowMenu item={item} />
         </span>
@@ -783,8 +786,8 @@ function ItemsTable({
       <EmptyState
         message={
           hasFilter
-            ? `No ${kind === "issue" ? "issues" : "pull requests"} match this filter.`
-            : `No ${kind === "issue" ? "issues" : "pull requests"} in the tracked repos.`
+            ? `По фильтру не найдено ${kind === "issue" ? "задач" : "пул-реквестов"}.`
+            : `В отслеживаемых репозиториях нет ${kind === "issue" ? "задач" : "пул-реквестов"}.`
         }
       />
     );
@@ -807,10 +810,10 @@ function ItemsTable({
     <div className="@container overflow-hidden rounded-lg border border-border bg-card">
       <div className="hidden items-center gap-3 border-b border-border bg-muted/50 px-3 py-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground @[48rem]:flex">
         <span className={COL.id}>ID</span>
-        <span className="min-w-0 flex-1">Title</span>
-        <span className={COL.assignee}>Assignee</span>
-        <span className={COL.status}>Status</span>
-        <span className={COL.updated}>Updated</span>
+        <span className="min-w-0 flex-1">Название</span>
+        <span className={COL.assignee}>Исполнитель</span>
+        <span className={COL.status}>Статус</span>
+        <span className={COL.updated}>Обновлено</span>
         <span className={COL.actions} />
       </div>
       {body}
@@ -868,13 +871,13 @@ function AssigneePicker({
         align="end"
         className="max-h-72 w-56 overflow-y-auto"
       >
-        <DropdownMenuLabel>Assignees</DropdownMenuLabel>
+        <DropdownMenuLabel>Исполнители</DropdownMenuLabel>
         {loadError !== null ? (
           <DropdownMenuItem disabled>{loadError}</DropdownMenuItem>
         ) : ordered === null ? (
-          <DropdownMenuItem disabled>Loading…</DropdownMenuItem>
+          <DropdownMenuItem disabled>Загрузка…</DropdownMenuItem>
         ) : ordered.length === 0 ? (
-          <DropdownMenuItem disabled>No assignable users</DropdownMenuItem>
+          <DropdownMenuItem disabled>Нет доступных исполнителей</DropdownMenuItem>
         ) : (
           ordered.map((login) => (
             <DropdownMenuCheckboxItem
@@ -941,13 +944,13 @@ function LabelPicker({
         align="end"
         className="max-h-72 w-56 overflow-y-auto"
       >
-        <DropdownMenuLabel>Labels</DropdownMenuLabel>
+        <DropdownMenuLabel>Метки</DropdownMenuLabel>
         {loadError !== null ? (
           <DropdownMenuItem disabled>{loadError}</DropdownMenuItem>
         ) : ordered === null ? (
-          <DropdownMenuItem disabled>Loading…</DropdownMenuItem>
+          <DropdownMenuItem disabled>Загрузка…</DropdownMenuItem>
         ) : ordered.length === 0 ? (
-          <DropdownMenuItem disabled>No labels in repo</DropdownMenuItem>
+          <DropdownMenuItem disabled>В репозитории нет меток</DropdownMenuItem>
         ) : (
           ordered.map((label) => (
             <DropdownMenuCheckboxItem
@@ -1071,14 +1074,14 @@ function IssueDetailView({
     <div className="@container/github-detail flex flex-col gap-4">
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
         <Button size="sm" variant="ghost" className="h-7 px-2" onClick={onBack}>
-          ← Issues
+          ← Задачи
         </Button>
         <span>
           {repo} · #{number}
         </span>
         <span className="flex-1" />
         <UrlLink href={detail.url} className="underline hover:text-foreground">
-          Open on GitHub ↗
+          Открыть на GitHub ↗
         </UrlLink>
       </div>
 
@@ -1094,7 +1097,7 @@ function IssueDetailView({
           disabled={spawningKey !== null}
           onClick={() => spawn("startWork", repo, number)}
         >
-          {spawningKey !== null ? "Starting…" : "Send agent"}
+          {spawningKey !== null ? "Запуск…" : "Запустить агента"}
         </Button>
       </div>
 
@@ -1106,14 +1109,14 @@ function IssueDetailView({
               <span className="font-medium text-foreground">
                 {detail.author}
               </span>
-              opened this issue · updated {relativeTime(detail.updatedAt)}
+              создал эту задачу · обновлено {relativeTime(detail.updatedAt)}
             </div>
             <div className="p-4">
               {detail.body.length > 0 ? (
                 <Markdown content={detail.body} className="text-sm" />
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  (no description)
+                  (нет описания)
                 </p>
               )}
             </div>
@@ -1122,7 +1125,7 @@ function IssueDetailView({
           {detail.comments.length > 0 ? (
             <div className="flex flex-col gap-2">
               <h3 className="text-xs font-semibold text-muted-foreground">
-                Activity · {detail.comments.length}
+                Активность · {detail.comments.length}
               </h3>
               {detail.comments.map((entry, index) => (
                 <div
@@ -1146,7 +1149,7 @@ function IssueDetailView({
             <Textarea
               value={comment}
               onChange={(event) => setComment(event.target.value)}
-              placeholder="Leave a comment…"
+              placeholder="Оставить комментарий…"
               rows={3}
             />
             <div className="flex justify-end">
@@ -1155,7 +1158,7 @@ function IssueDetailView({
                 disabled={posting || comment.trim().length === 0}
                 onClick={postComment}
               >
-                {posting ? "Posting…" : "Comment"}
+                {posting ? "Отправка…" : "Комментировать"}
               </Button>
             </div>
           </div>
@@ -1163,7 +1166,7 @@ function IssueDetailView({
 
         <aside className="flex w-full shrink-0 flex-col gap-5 @min-[56rem]/github-detail:w-56">
           <div className="flex flex-col gap-2">
-            <SidebarHeading>Status</SidebarHeading>
+            <SidebarHeading>Статус</SidebarHeading>
             <Select
               value={detail.state === "OPEN" ? "open" : "closed"}
               onValueChange={(value) =>
@@ -1190,7 +1193,7 @@ function IssueDetailView({
 
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <SidebarHeading>Assignees</SidebarHeading>
+              <SidebarHeading>Исполнители</SidebarHeading>
               <AssigneePicker
                 repo={repo}
                 assignees={detail.assignees}
@@ -1198,7 +1201,7 @@ function IssueDetailView({
               />
             </div>
             {detail.assignees.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No one assigned</p>
+              <p className="text-sm text-muted-foreground">Никто не назначен</p>
             ) : (
               detail.assignees.map((login) => (
                 <p
@@ -1214,7 +1217,7 @@ function IssueDetailView({
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <SidebarHeading>Labels</SidebarHeading>
+              <SidebarHeading>Метки</SidebarHeading>
               <LabelPicker
                 repo={repo}
                 labels={detail.labels}
@@ -1222,7 +1225,7 @@ function IssueDetailView({
               />
             </div>
             {detail.labels.length === 0 ? (
-              <p className="text-sm text-muted-foreground">None yet</p>
+              <p className="text-sm text-muted-foreground">Пока нет</p>
             ) : (
               <LabelChips labels={detail.labels} className="flex flex-wrap" />
             )}
@@ -1230,7 +1233,7 @@ function IssueDetailView({
 
           {issueLinks !== undefined && issueLinks.length > 0 ? (
             <div className="flex flex-col gap-1.5">
-              <SidebarHeading>Agents</SidebarHeading>
+              <SidebarHeading>Агенты</SidebarHeading>
               <ThreadPills links={issueLinks} />
             </div>
           ) : null}
@@ -1242,10 +1245,10 @@ function IssueDetailView({
 
 function pullStateBadgeParts(state: string): { dot: string; label: string } {
   if (state === "DRAFT")
-    return { dot: "bg-muted-foreground/60", label: "draft" };
-  if (state === "OPEN") return { dot: "bg-green-500", label: "open" };
-  if (state === "MERGED") return { dot: "bg-purple-500", label: "merged" };
-  return { dot: "bg-red-500", label: "closed" };
+    return { dot: "bg-muted-foreground/60", label: "черновик" };
+  if (state === "OPEN") return { dot: "bg-green-500", label: "открыт" };
+  if (state === "MERGED") return { dot: "bg-purple-500", label: "объединён" };
+  return { dot: "bg-red-500", label: "закрыт" };
 }
 
 function PullStateBadge({ state }: { state: string }) {
@@ -1259,11 +1262,11 @@ function PullStateBadge({ state }: { state: string }) {
 }
 
 const REVIEW_STATE_LABELS: Record<string, string> = {
-  APPROVED: "approved",
-  CHANGES_REQUESTED: "requested changes",
-  COMMENTED: "commented",
-  DISMISSED: "dismissed",
-  PENDING: "review requested",
+  APPROVED: "одобрено",
+  CHANGES_REQUESTED: "запрошены изменения",
+  COMMENTED: "комментарий",
+  DISMISSED: "отклонено",
+  PENDING: "ревью запрошено",
 };
 
 function reviewStateClass(state: string): string {
@@ -1276,15 +1279,15 @@ function ReviewDecisionBadge({ decision }: { decision: string }) {
   if (decision === "APPROVED") {
     return (
       <Badge className="bg-green-600 text-white hover:bg-green-600">
-        approved
+        одобрено
       </Badge>
     );
   }
   if (decision === "CHANGES_REQUESTED") {
-    return <Badge variant="destructive">changes requested</Badge>;
+    return <Badge variant="destructive">запрошены изменения</Badge>;
   }
   if (decision === "REVIEW_REQUIRED") {
-    return <Badge variant="secondary">review required</Badge>;
+    return <Badge variant="secondary">требуется ревью</Badge>;
   }
   return null;
 }
@@ -1318,10 +1321,10 @@ function ChecksSection({ checks }: { checks: PullCheck[] }) {
                 : "animate-pulse bg-yellow-500"
           }`}
         />
-        <span className="font-medium text-foreground">Checks</span>
+        <span className="font-medium text-foreground">Проверки</span>
         <span className="text-xs text-muted-foreground">
-          {passing}/{checks.length} passing
-          {failing > 0 ? ` · ${failing} failing` : ""}
+          {passing}/{checks.length} пройдено
+          {failing > 0 ? ` · ${failing} не пройдено` : ""}
         </span>
         <span className="ml-auto text-xs text-muted-foreground">
           {open ? "▾" : "▸"}
@@ -1356,6 +1359,14 @@ function ChecksSection({ checks }: { checks: PullCheck[] }) {
   );
 }
 
+const FILE_STATUS_LABELS: Record<string, string> = {
+  added: "добавлен",
+  removed: "удалён",
+  renamed: "переименован",
+  copied: "скопирован",
+  changed: "изменён",
+};
+
 function FileDiffCard({
   environmentId,
   file,
@@ -1372,7 +1383,7 @@ function FileDiffCard({
         <button
           type="button"
           className="shrink-0 text-xs text-muted-foreground after:absolute after:inset-0 after:content-['']"
-          aria-label={`${open ? "Collapse" : "Expand"} ${file.path} diff`}
+          aria-label={`${open ? "Свернуть" : "Развернуть"} изменения ${file.path}`}
           aria-expanded={open}
           onClick={() => setOpen((prev) => !prev)}
         >
@@ -1399,7 +1410,7 @@ function FileDiffCard({
             variant="secondary"
             className="shrink-0 font-normal text-muted-foreground"
           >
-            {file.status}
+            {FILE_STATUS_LABELS[file.status] ?? file.status}
           </Badge>
         ) : null}
         <span className="shrink-0 text-xs text-green-600 dark:text-green-400">
@@ -1416,9 +1427,9 @@ function FileDiffCard({
           </div>
         ) : (
           <p className="border-t border-border px-3 py-2 text-xs text-muted-foreground">
-            Diff too large to inline —{" "}
+            Изменения слишком велики для показа здесь —{" "}
             <UrlLink href={`${url}/files`} className="underline">
-              view on GitHub ↗
+              открыть на GitHub ↗
             </UrlLink>
           </p>
         )
@@ -1488,7 +1499,7 @@ function PullTimeline({ pull }: { pull: PullDetail }) {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-xs font-semibold text-muted-foreground">
-        Activity · {entries.length + pull.reviewThreads.length}
+        Активность · {entries.length + pull.reviewThreads.length}
       </h3>
       {entries.map((entry, index) => (
         <div
@@ -1534,7 +1545,7 @@ function PullReviewersList({ pull }: { pull: PullDetail }) {
     return [...latest.values()];
   }, [pull]);
   if (rows.length === 0)
-    return <p className="text-sm text-muted-foreground">No reviewers</p>;
+    return <p className="text-sm text-muted-foreground">Нет ревьюеров</p>;
   return (
     <>
       {rows.map((row) => (
@@ -1584,7 +1595,7 @@ function PullCommentBox({
       <Textarea
         value={comment}
         onChange={(event) => setComment(event.target.value)}
-        placeholder="Leave a comment…"
+        placeholder="Оставить комментарий…"
         rows={3}
       />
       <div className="flex justify-end">
@@ -1593,7 +1604,7 @@ function PullCommentBox({
           disabled={posting || comment.trim().length === 0}
           onClick={post}
         >
-          {posting ? "Posting…" : "Comment"}
+          {posting ? "Отправка…" : "Комментировать"}
         </Button>
       </div>
     </div>
@@ -1604,7 +1615,7 @@ function PullDetailView({
   repo,
   number,
   onBack,
-  backLabel = "Pull requests",
+  backLabel = "Пул-реквесты",
   compact = false,
   workspaceEnvironmentId = null,
 }: {
@@ -1649,13 +1660,13 @@ function PullDetailView({
         <div className="flex items-center gap-2 border-b border-border bg-muted/50 px-4 py-2 text-xs text-muted-foreground">
           <Avatar login={pull.author} />
           <span className="font-medium text-foreground">{pull.author}</span>
-          opened this pull request · updated {relativeTime(pull.updatedAt)}
+          создал этот пул-реквест · обновлено {relativeTime(pull.updatedAt)}
         </div>
         <div className="p-4">
           {pull.body.length > 0 ? (
             <Markdown content={pull.body} className="text-sm" />
           ) : (
-            <p className="text-sm text-muted-foreground">(no description)</p>
+            <p className="text-sm text-muted-foreground">(нет описания)</p>
           )}
         </div>
       </div>
@@ -1665,7 +1676,7 @@ function PullDetailView({
       {pull.files.length > 0 ? (
         <div className="flex flex-col gap-2">
           <h3 className="text-xs font-semibold text-muted-foreground">
-            Files changed · {pull.files.length}
+            Изменённые файлы · {pull.files.length}
             <span className="ml-2 font-normal">
               <span className="text-green-600 dark:text-green-400">
                 +{pull.additions}
@@ -1711,7 +1722,7 @@ function PullDetailView({
           href={pull.url}
           className="shrink-0 underline hover:text-foreground"
         >
-          Open on GitHub ↗
+          Открыть на GitHub ↗
         </UrlLink>
       </div>
 
@@ -1729,7 +1740,7 @@ function PullDetailView({
           disabled={spawningKey !== null}
           onClick={() => spawn("startReview", repo, number)}
         >
-          {spawningKey !== null ? "Starting…" : "Review with agent"}
+          {spawningKey !== null ? "Запуск…" : "Ревью с агентом"}
         </Button>
       </div>
 
@@ -1759,13 +1770,13 @@ function PullDetailView({
           {mainColumn}
           <aside className="flex w-full shrink-0 flex-col gap-5 @min-[56rem]/github-detail:w-56">
             <div className="flex flex-col gap-1">
-              <SidebarHeading>Reviewers</SidebarHeading>
+              <SidebarHeading>Ревьюеры</SidebarHeading>
               <PullReviewersList pull={pull} />
             </div>
             <div className="flex flex-col gap-1">
-              <SidebarHeading>Assignees</SidebarHeading>
+              <SidebarHeading>Исполнители</SidebarHeading>
               {pull.assignees.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No one assigned</p>
+                <p className="text-sm text-muted-foreground">Никто не назначен</p>
               ) : (
                 pull.assignees.map((login) => (
                   <p
@@ -1779,16 +1790,16 @@ function PullDetailView({
               )}
             </div>
             <div className="flex flex-col gap-1.5">
-              <SidebarHeading>Labels</SidebarHeading>
+              <SidebarHeading>Метки</SidebarHeading>
               {pull.labels.length === 0 ? (
-                <p className="text-sm text-muted-foreground">None yet</p>
+                <p className="text-sm text-muted-foreground">Пока нет</p>
               ) : (
                 <LabelChips labels={pull.labels} className="flex flex-wrap" />
               )}
             </div>
             {pullLinks !== undefined && pullLinks.length > 0 ? (
               <div className="flex flex-col gap-1.5">
-                <SidebarHeading>Agents</SidebarHeading>
+                <SidebarHeading>Агенты</SidebarHeading>
                 <ThreadPills links={pullLinks} />
               </div>
             ) : null}
@@ -1819,7 +1830,7 @@ function PullPickerList({
   }
   const open = items.filter((item) => item.state === "OPEN");
   if (open.length === 0) {
-    return <EmptyState message="No open pull requests in the tracked repos." />;
+    return <EmptyState message="В отслеживаемых репозиториях нет открытых пул-реквестов." />;
   }
   return (
     <div className="@container/github-picker overflow-hidden rounded-lg border border-border bg-card">
@@ -1880,7 +1891,7 @@ function PullPanelTab({ threadId }: ExperimentalThreadActionTabProps) {
     return (
       <div className="flex flex-col gap-3">
         <p className="text-xs text-muted-foreground">
-          No pull request is linked to this thread yet — pick one:
+          К этому чату пока не привязан пул-реквест — выберите:
         </p>
         <PullPickerList
           onPick={(repo, number) =>
@@ -1896,7 +1907,7 @@ function PullPanelTab({ threadId }: ExperimentalThreadActionTabProps) {
       number={selected.number}
       compact
       workspaceEnvironmentId={selected.environmentId}
-      backLabel="All PRs"
+      backLabel="Все PR"
       onBack={() => setSelected(null)}
     />
   );
@@ -1922,7 +1933,7 @@ function NewIssueForm({
     rpc
       .call("createIssue", { repo, title, body })
       .then((result) => {
-        toast.success("Issue created");
+        toast.success("Задача создана");
         onCreated(repo, result.number);
       })
       .catch((err: unknown) => toast.error(errorText(err)))
@@ -1931,10 +1942,10 @@ function NewIssueForm({
 
   return (
     <div className="flex max-w-2xl flex-col gap-3">
-      <h2 className="text-lg font-semibold text-foreground">New issue</h2>
+      <h2 className="text-lg font-semibold text-foreground">Новая задача</h2>
       <Select value={repo} onValueChange={setRepo}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Repository" />
+          <SelectValue placeholder="Репозиторий" />
         </SelectTrigger>
         <SelectContent>
           {repos.map((entry) => (
@@ -1947,12 +1958,12 @@ function NewIssueForm({
       <Input
         value={title}
         onChange={(event) => setTitle(event.target.value)}
-        placeholder="Title"
+        placeholder="Название"
       />
       <Textarea
         value={body}
         onChange={(event) => setBody(event.target.value)}
-        placeholder="Description (markdown)"
+        placeholder="Описание (Markdown)"
         rows={8}
       />
       <div className="flex gap-2">
@@ -1961,10 +1972,10 @@ function NewIssueForm({
           disabled={creating || title.trim().length === 0 || repo.length === 0}
           onClick={create}
         >
-          {creating ? "Creating…" : "Create issue"}
+          {creating ? "Создание…" : "Создать задачу"}
         </Button>
         <Button size="sm" variant="ghost" onClick={onCancel}>
-          Cancel
+          Отмена
         </Button>
       </div>
     </div>
@@ -2004,19 +2015,19 @@ function PanelHeader() {
     <>
       <span className="hidden text-xs text-muted-foreground @min-[40rem]/page-header:inline">
         {failed ? (
-          "Sync failed — check `gh auth status`"
+          "Синхронизация не удалась — проверьте `gh auth status`"
         ) : status === null ? (
-          <DelayedLoading>Loading…</DelayedLoading>
+          <DelayedLoading>Загрузка…</DelayedLoading>
         ) : status.ghOk ? (
-          `${status.repos.length} repo${status.repos.length === 1 ? "" : "s"} · synced ${
+          `${status.repos.length} репозиториев · синхронизировано ${
             status.lastSyncedAt !== null
               ? relativeTime(status.lastSyncedAt)
-              : "never"
+              : "никогда"
           }`
         ) : status.ghState === "unavailable" ? (
-          "GitHub CLI unavailable — retrying"
+          "GitHub CLI недоступен — повторная попытка"
         ) : (
-          "GitHub CLI not authenticated"
+          "GitHub CLI не авторизован"
         )}
       </span>
       <Button
@@ -2025,11 +2036,11 @@ function PanelHeader() {
         className="size-8 gap-1.5 px-0 @min-[32rem]/page-header:h-8 @min-[32rem]/page-header:w-auto @min-[32rem]/page-header:px-3"
         disabled={syncing}
         onClick={refresh}
-        aria-label={syncing ? "Syncing GitHub data" : "Refresh GitHub data"}
+        aria-label={syncing ? "Синхронизация данных GitHub" : "Обновить данные GitHub"}
       >
         <RefreshIcon className={syncing ? "animate-spin" : undefined} />
         <span className="hidden @min-[32rem]/page-header:inline">
-          {syncing ? "Syncing…" : "Refresh"}
+          {syncing ? "Синхронизация…" : "Обновить"}
         </span>
       </Button>
     </>
@@ -2140,20 +2151,20 @@ function GithubPanelBody({
   if (status !== null && status.ghState === "unavailable") {
     return (
       <EmptyState
-        message={`GitHub CLI could not reach GitHub. Check your network or keychain; the plugin retries by itself. (${status.ghError ?? ""})`}
+        message={`GitHub CLI не может связаться с GitHub. Проверьте сеть или хранилище ключей; плагин повторит попытку. (${status.ghError ?? ""})`}
       />
     );
   }
   if (status !== null && !status.ghOk) {
     return (
       <EmptyState
-        message={`GitHub CLI is not available or not authenticated. Install it from cli.github.com, run \`gh auth login\`, then reload the plugin. (${status.ghError ?? ""})`}
+        message={`GitHub CLI недоступен или не авторизован. Установите его с cli.github.com, выполните \`gh auth login\`, затем перезагрузите плагин. (${status.ghError ?? ""})`}
       />
     );
   }
   if (status !== null && status.repos.length === 0) {
     return (
-      <EmptyState message="No GitHub repos tracked yet. Create a BB project whose checkout has a GitHub origin remote, or add repos via the extraRepos plugin setting." />
+      <EmptyState message="Репозитории GitHub пока не отслеживаются. Создайте проект BB с удалённым репозиторием GitHub origin или добавьте репозитории через настройку плагина extraRepos." />
     );
   }
 
@@ -2204,8 +2215,8 @@ function GithubPanelBody({
           }}
         >
           <TabsList>
-            <TabsTrigger value="issues">Issues</TabsTrigger>
-            <TabsTrigger value="pulls">Pull requests</TabsTrigger>
+            <TabsTrigger value="issues">Задачи</TabsTrigger>
+            <TabsTrigger value="pulls">Пул-реквесты</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex-1" />

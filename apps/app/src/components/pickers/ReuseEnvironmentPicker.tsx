@@ -164,7 +164,7 @@ export function ReuseEnvironmentPicker({
           type="button"
           variant="ghost"
           size="sm"
-          aria-label="Environment"
+          aria-label="Окружение"
           disabled={disabled}
           data-promptbox-icon-only-control=""
           className={cn(
@@ -197,18 +197,18 @@ export function ReuseEnvironmentPicker({
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        aria-label="Reuse an existing environment"
-        mobileTitle="Environment"
+        aria-label="Использовать существующее окружение"
+        mobileTitle="Окружение"
         className={cn(
           OPTION_MENU_CONTENT_CLASS_NAME,
           "flex max-h-[min(var(--radix-popover-content-available-height),calc(100dvh-0.5rem))] w-auto max-w-80 min-w-52 flex-col overflow-hidden p-0 max-md:min-h-0 max-md:w-full max-md:flex-1",
         )}
       >
-        <Command label="Search environments" shouldFilter={false}>
+        <Command label="Поиск окружений" shouldFilter={false}>
           {showSearch ? (
             <CommandInput
-              aria-label="Search environments"
-              placeholder="Search environments"
+              aria-label="Поиск окружений"
+              placeholder="Поиск окружений"
               value={searchQuery}
               onValueChange={setSearchQuery}
               className="h-8 text-xs"
@@ -217,14 +217,14 @@ export function ReuseEnvironmentPicker({
           <CommandList className="min-h-0 max-h-none flex-1 overscroll-contain">
             {options.length === 0 ? (
               <div className="px-2 py-2 text-xs text-muted-foreground">
-                Nothing to reuse yet.
+                Пока нечего использовать повторно.
               </div>
             ) : (
               <>
                 <CommandEmpty className="px-2 py-2 text-xs text-muted-foreground">
-                  No environments match.
+                  Подходящие окружения не найдены.
                 </CommandEmpty>
-                <CommandGroup heading="Reuse an existing environment">
+                <CommandGroup heading="Использовать существующее окружение">
                   {visibleOptions.map((option) => (
                     <ReuseEnvironmentMenuItem
                       key={option.environmentId}

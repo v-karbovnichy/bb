@@ -193,7 +193,7 @@ export function SplitWorkspaceSecondaryPanelHost({
     setIsPanelVisible(false);
   };
 
-  const toggleLabel = isOpen ? "Hide right panel" : "Show right panel";
+  const toggleLabel = isOpen ? "Скрыть правую панель" : "Показать правую панель";
   const toggleIconName = RIGHT_PANEL_TOGGLE_ICON_NAME;
   const showsCornerToggle = !isPaneMaximized && !(isOpen && model !== null);
   const pinsCornerToggle = showsCornerToggle && !isOpen;
@@ -295,7 +295,7 @@ export function SplitWorkspaceSecondaryPanelHost({
                       ? "w-px cursor-col-resize opacity-100"
                       : "pointer-events-none w-0 opacity-0",
                   )}
-                  aria-label="Resize right panel"
+                  aria-label="Изменить размер правой панели"
                 >
                   <span
                     aria-hidden
@@ -325,7 +325,7 @@ export function SplitWorkspaceSecondaryPanelHost({
                     className="flex h-full min-h-0 flex-col overflow-hidden bg-background p-4 pt-12"
                   >
                     <EmptyStatePanel className="flex-1 rounded-lg">
-                      This pane has no right panel.
+                      Для этой области нет правой панели.
                     </EmptyStatePanel>
                   </div>
                 </Panel>

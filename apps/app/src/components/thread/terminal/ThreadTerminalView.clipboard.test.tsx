@@ -113,7 +113,7 @@ describe("terminal clipboard interactions", () => {
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledExactlyOnceWith("alpha"),
     );
-    expect(success).toHaveBeenCalledExactlyOnceWith("Selection copied");
+    expect(success).toHaveBeenCalledExactlyOnceWith("Выделенный текст скопирован");
   });
 
   it("copies a drag selection released outside the terminal", async () => {
@@ -244,7 +244,7 @@ describe("terminal clipboard interactions", () => {
     }
 
     fireEvent.contextMenu(terminalScreen);
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Paste" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Вставить" }));
 
     await waitFor(() =>
       expect(paste).toHaveBeenCalledExactlyOnceWith("echo hello"),

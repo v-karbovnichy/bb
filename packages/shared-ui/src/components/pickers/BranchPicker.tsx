@@ -244,8 +244,8 @@ export function BranchPicker({
       firstFilteredOption)
     : firstFilteredOption;
   const unresolvedTriggerLabel = loading
-    ? "Loading branches..."
-    : (placeholder ?? "Select branch");
+    ? "Загрузка веток..."
+    : (placeholder ?? "Выбрать ветку");
   const triggerLabel = triggerLabelOverride ?? value ?? unresolvedTriggerLabel;
   const triggerHasPlainBranchValue =
     emphasizeTriggerValue &&
@@ -284,7 +284,7 @@ export function BranchPicker({
           variant={variant === "default" ? "outline" : "ghost"}
           size="sm"
           disabled={disabled}
-          aria-label="Branch"
+          aria-label="Ветка"
           className={cn(
             LIST_HOVER_TRANSITION,
             variant === "default" &&
@@ -347,7 +347,7 @@ export function BranchPicker({
         align={popoverAlign}
         sideOffset={6}
         collisionPadding={16}
-        mobileTitle={menuLabel || "Branch"}
+        mobileTitle={menuLabel || "Ветка"}
         autoFocusRef={inputRef}
         className={cn(
           BRANCH_PICKER_CONTENT_CLASS_NAME,
@@ -370,7 +370,7 @@ export function BranchPicker({
               event.stopPropagation();
             }}
           >
-            <BranchPickerSectionHeader label={menuLabel || "Branches"} />
+            <BranchPickerSectionHeader label={menuLabel || "Ветки"} />
             {filteredBranchOptions.map((branch) => (
               <BranchPickerRow
                 key={branch}
@@ -385,10 +385,10 @@ export function BranchPicker({
             ))}
             {filteredBranchOptions.length === 0 ? (
               loading ? (
-                <ListLoadingPlaceholder label="Loading branches…" />
+                <ListLoadingPlaceholder label="Загрузка веток…" />
               ) : (
                 <p className="px-2 py-3 text-center text-xs text-muted-foreground">
-                  No branches found.
+                  Ветки не найдены.
                 </p>
               )
             ) : null}

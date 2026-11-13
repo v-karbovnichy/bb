@@ -34,24 +34,24 @@ afterEach(() => {
 });
 
 it.each([
-  { build: 3, latest: 4, status: "Update available" },
-  { build: 4, latest: 4, status: "You’re up to date" },
+  { build: 3, latest: 4, status: "Доступно обновление" },
+  { build: 4, latest: 4, status: "Установлена последняя версия" },
   {
     build: 5,
     latest: 4,
-    status: "You’re running a newer build than the latest published release",
+    status: "У вас более новая сборка, чем последний опубликованный выпуск",
   },
   {
     build: undefined,
     latest: 4,
     status:
-      "This app does not report its build number. Download the latest APK to check for updates.",
+      "Приложение не сообщает номер сборки. Загрузите последний APK, чтобы проверить обновления.",
   },
   {
     build: 4,
     latest: null,
     status:
-      "Unable to check for updates. You can still download the latest APK.",
+      "Не удалось проверить обновления. Вы можете загрузить последний APK.",
   },
 ])(
   "reports Android update status for build $build and release $latest",
@@ -84,8 +84,8 @@ it.each([
     expect(
       screen.getByText(
         build === undefined
-          ? "Installed: 0.39.0"
-          : `Installed: 0.39.0 (build ${build})`,
+          ? "Установлено: 0.39.0"
+          : `Установлено: 0.39.0 (сборка ${build})`,
       ),
     ).toBeTruthy();
     expect(
@@ -119,7 +119,7 @@ it("shows Android release details and links to the TestFlight app", async () => 
     },
   });
   renderSection();
-  await screen.findByText("0.39.0 (build 4)");
+  await screen.findByText("0.39.0 (сборка 4)");
   expect(screen.getByText("141 MB")).toBeTruthy();
   expect(
     screen.getByRole("link", { name: "TestFlight" }).getAttribute("href"),
@@ -134,10 +134,10 @@ it("keeps both install links available when release metadata cannot be loaded", 
     new Error("offline"),
   );
   renderSection();
-  await screen.findByText(/Release details are unavailable/);
+  await screen.findByText(/Сведения о выпуске недоступны/);
   expect(
     screen
-      .getByRole("link", { name: "Join iOS TestFlight" })
+      .getByRole("link", { name: "Присоединиться к TestFlight для iOS" })
       .getAttribute("href"),
   ).toBe("https://testflight.apple.com/join/T9MayTMb");
   expect(

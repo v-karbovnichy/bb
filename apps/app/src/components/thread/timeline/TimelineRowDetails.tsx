@@ -84,7 +84,7 @@ function ImageWorkRowBody({ resolveImageViewSrc, row }: ImageWorkRowBodyProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const imageSrc = resolveImageViewSource({ resolveImageViewSrc, row });
   const imageName = row.path ? fileNameFromPath(row.path) : "";
-  const imageAlt = `${row.workKind === "image-generation" ? "Generated" : "Viewed"} image: ${imageName}`;
+  const imageAlt = `${row.workKind === "image-generation" ? "Созданное" : "Просмотренное"} изображение: ${imageName}`;
 
   useEffect(() => {
     setLoadError(false);
@@ -97,7 +97,7 @@ function ImageWorkRowBody({ resolveImageViewSrc, row }: ImageWorkRowBodyProps) {
         <div className="whitespace-pre-wrap break-words">
           {row.workKind === "image-generation" && row.error
             ? row.error
-            : "Image preview unavailable."}
+            : "Просмотр изображения недоступен."}
         </div>
         <div className="mt-1 break-all font-mono text-xs">{row.path}</div>
       </EmptyStatePanel>
@@ -110,7 +110,7 @@ function ImageWorkRowBody({ resolveImageViewSrc, row }: ImageWorkRowBodyProps) {
         type="button"
         className="block w-full max-w-80 cursor-zoom-in overflow-hidden rounded-lg border border-border bg-surface-recessed focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring sm:max-w-96"
         onClick={() => setLightboxOpen(true)}
-        aria-label={`Open image preview: ${imageName}`}
+        aria-label={`Открыть просмотр изображения: ${imageName}`}
       >
         <img
           src={imageSrc}
@@ -135,18 +135,18 @@ function outputPreviewNoteText({
   state,
   totalChars,
 }: OutputPreviewNoteArgs): string | null {
-  const total = `${totalChars.toLocaleString()} characters`;
+  const total = `${totalChars.toLocaleString()} символов`;
   switch (state) {
     case "streaming-preview":
-      return `Preview of ${total}. The full output loads when this finishes.`;
+      return `Предпросмотр: ${total}. Полный вывод загрузится после завершения.`;
     case "limited-preview":
-      return `Preview of ${total}. The full output exceeds the detail response limit.`;
+      return `Предпросмотр: ${total}. Полный вывод превышает ограничение на размер ответа.`;
     case "expired-preview":
-      return `Preview of ${total}. The full output is no longer available because its retention period ended.`;
+      return `Предпросмотр: ${total}. Полный вывод больше недоступен: срок хранения истёк.`;
     case "loading":
-      return `Loading the full output (${total})…`;
+      return `Загрузка полного вывода (${total})…`;
     case "error":
-      return `Failed to load the full output (${total}).`;
+      return `Не удалось загрузить полный вывод (${total}).`;
     case "complete":
     case "loaded":
       return null;
@@ -181,7 +181,7 @@ function OutputPreviewNote({ fullOutput, row }: OutputPreviewNoteProps) {
           className="h-6 cursor-pointer px-2"
         >
           <Icon name="RotateCcw" />
-          Retry
+          Повторить
         </Button>
       ) : null}
     </div>

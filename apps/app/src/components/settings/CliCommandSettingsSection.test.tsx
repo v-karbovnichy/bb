@@ -43,7 +43,7 @@ describe("CliCommandSettingsSectionContent", () => {
   it("installs the command when it is not on PATH", () => {
     const changes = renderSection(NOT_INSTALLED);
 
-    fireEvent.click(button("Install bb CLI"));
+    fireEvent.click(button("Установить bb CLI"));
 
     expect(changes).toEqual(["install"]);
   });
@@ -57,10 +57,10 @@ describe("CliCommandSettingsSectionContent", () => {
 
     expect(
       screen.getByText(
-        "Installed at /home/me/.local/bin/bb. You can control bb from any terminal, and so can agents outside bb, such as Claude Code or Codex.",
+        "Установлено в /home/me/.local/bin/bb. Управлять bb можно из любого терминала; агенты вне bb, например Claude Code или Codex, тоже смогут им пользоваться.",
       ),
     ).toBeDefined();
-    fireEvent.click(button("Remove bb CLI"));
+    fireEvent.click(button("Удалить bb CLI"));
 
     expect(changes).toEqual(["remove"]);
   });
@@ -73,7 +73,7 @@ describe("CliCommandSettingsSectionContent", () => {
 
     expect(
       screen.getByText(
-        "Installed at /home/me/.local/bin/bb, but its folder is not on your PATH. Add the folder to your PATH to use bb outside bb.",
+        "Установлено в /home/me/.local/bin/bb, но эта папка не входит в PATH. Добавьте её в PATH, чтобы пользоваться bb вне bb.",
       ),
     ).toBeDefined();
   });
@@ -84,10 +84,10 @@ describe("CliCommandSettingsSectionContent", () => {
       shadowedBy: { path: "/usr/local/bin/bb", source: "other" },
     });
 
-    expect(button("Install bb CLI").disabled).toBe(true);
+    expect(button("Установить bb CLI").disabled).toBe(true);
     expect(
       screen.getByText(
-        "Another bb at /usr/local/bin/bb comes first on your PATH. Remove it to install this one.",
+        "В PATH раньше находится другая установка bb: /usr/local/bin/bb. Удалите её, чтобы установить эту версию.",
       ),
     ).toBeDefined();
   });
@@ -98,10 +98,10 @@ describe("CliCommandSettingsSectionContent", () => {
       shadowedBy: { path: "/usr/local/bin/bb", source: "npm" },
     });
 
-    expect(button("Install bb CLI").disabled).toBe(true);
+    expect(button("Установить bb CLI").disabled).toBe(true);
     expect(
       screen.getByText(
-        "Already installed for use outside bb at /usr/local/bin/bb, by npm.",
+        "Уже установлено для работы вне bb через npm по пути /usr/local/bin/bb.",
       ),
     ).toBeDefined();
   });
@@ -109,6 +109,6 @@ describe("CliCommandSettingsSectionContent", () => {
   it("blocks a second change while one is running", () => {
     renderSection(NOT_INSTALLED, true);
 
-    expect(button("Install bb CLI").disabled).toBe(true);
+    expect(button("Установить bb CLI").disabled).toBe(true);
   });
 });

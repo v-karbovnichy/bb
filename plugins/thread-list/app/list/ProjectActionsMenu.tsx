@@ -43,10 +43,10 @@ export function ProjectActionsMenuItems({
   return (
     <>
       <ActionMenuItem surface={surface} icon="Settings" href={project.settingsHref}>
-        Project settings
+        Настройки проекта
       </ActionMenuItem>
       <ActionMenuItem surface={surface} icon="Edit" onSelect={onRename}>
-        Rename
+        Переименовать
       </ActionMenuItem>
       {extraActions?.(surface)}
       <ActionMenuSeparator surface={surface} />
@@ -56,7 +56,7 @@ export function ProjectActionsMenuItems({
         variant="destructive"
         onSelect={onRemove}
       >
-        Remove
+        Удалить
       </ActionMenuItem>
     </>
   );

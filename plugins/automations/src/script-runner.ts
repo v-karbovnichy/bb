@@ -179,7 +179,7 @@ export function mapScriptResultToRun(
       status: "failed",
       output: result.output.length > 0 ? result.output : null,
       exitCode: null,
-      error: "Script timed out",
+      error: "Время выполнения скрипта истекло",
       skipReason: null,
     };
   }
@@ -363,7 +363,7 @@ export async function executeStoredScript(args: {
   await mkdir(scriptsRoot(args.pluginDataDir), { recursive: true });
   if (!(await isDirectory(args.workingDir))) {
     throw new Error(
-      `Script working directory is not an existing directory: ${args.workingDir}`,
+      `Рабочая папка скрипта не существует: ${args.workingDir}`,
     );
   }
   const cwd = args.workingDir;

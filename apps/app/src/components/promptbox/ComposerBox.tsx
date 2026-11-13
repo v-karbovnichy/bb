@@ -448,14 +448,14 @@ function useComposerRendererHostApi({
     (state: ComposerEditorState) =>
     async ({ mode, ...extras }: ComposerEditorSubmission) => {
       if (host?.sendsOnEnter !== true) {
-        throw new Error("This composer cannot submit programmatically.");
+        throw new Error("Это поле ввода нельзя отправить программно.");
       }
       const current = host.getCurrent();
       if (
         current.text.trim().length === 0 &&
         current.attachments.length === 0
       ) {
-        throw new Error("Type a message first.");
+        throw new Error("Сначала введите сообщение.");
       }
       const onModifierSubmit = submission?.onModifierSubmit;
       const runsSteer =
@@ -474,7 +474,7 @@ function useComposerRendererHostApi({
       ) {
         throw new Error(
           state.submittingBlockedReason ??
-            "This composer can't submit right now.",
+            "Сейчас нельзя отправить сообщение из этого поля.",
         );
       }
       await run(extras);
@@ -672,7 +672,7 @@ export function ComposerBox(props: ComposerBoxProps) {
   }, [pluginId]);
   const handleCrash = useCallback(
     (crashedPluginId: string) => {
-      appToast.error("Composer plugin crashed", {
+      appToast.error("Сбой плагина поля ввода", {
         description: `${registration?.title ?? "Composer"} (${crashedPluginId}) stopped working.`,
       });
     },

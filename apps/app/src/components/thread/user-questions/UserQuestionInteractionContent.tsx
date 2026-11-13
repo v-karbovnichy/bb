@@ -34,7 +34,7 @@ export function UserQuestionAnswerForm({
   const error = resolvePendingInteraction.error
     ? getMutationErrorMessage({
         error: resolvePendingInteraction.error,
-        fallbackMessage: "Failed to submit answer",
+        fallbackMessage: "Не удалось отправить ответ",
         lifecycleOperation: "resolve_interaction",
       })
     : null;

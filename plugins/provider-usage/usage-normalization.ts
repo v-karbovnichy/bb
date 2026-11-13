@@ -21,9 +21,9 @@ export function normalizeUsageMeasurement(
   const plan = usage.plan;
   const planName = plan ? labels[plan.id] : undefined;
   const windowLabels = {
-    "five-hour": "Five-hour limit",
-    daily: "Daily limit",
-    weekly: "Weekly limit",
+    "five-hour": "Лимит на 5 часов",
+    daily: "Дневной лимит",
+    weekly: "Недельный лимит",
     custom: "",
   };
   return {
@@ -38,7 +38,7 @@ export function normalizeUsageMeasurement(
         label:
           window.kind && window.kind !== "custom"
             ? window.model
-              ? `${window.kind === "weekly" ? "Weekly" : windowLabels[window.kind]} · ${window.model.charAt(0).toUpperCase() + window.model.slice(1)}`
+              ? `${window.kind === "weekly" ? "Недельный лимит" : windowLabels[window.kind]} · ${window.model.charAt(0).toUpperCase() + window.model.slice(1)}`
               : windowLabels[window.kind]
             : window.label,
       })),

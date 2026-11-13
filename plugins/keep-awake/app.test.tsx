@@ -63,12 +63,12 @@ describe("Keep Awake settings", () => {
       },
     );
 
-    const enabled = await slot.findByRole("switch", { name: "Keep Awake" });
+    const enabled = await slot.findByRole("switch", { name: "Не допускать перехода в сон" });
     expect(enabled.getAttribute("aria-checked")).toBe("false");
     expect(slot.queryByRole("button", { name: /save/u })).toBeNull();
-    expect(slot.queryByText("Hosts")).toBeNull();
-    expect(slot.queryByRole("radio", { name: "All hosts" })).toBeNull();
-    expect(slot.queryByText("Offline")).toBeNull();
+    expect(slot.queryByText("Машины")).toBeNull();
+    expect(slot.queryByRole("radio", { name: "Все машины" })).toBeNull();
+    expect(slot.queryByText("Не в сети")).toBeNull();
     expect(slot.queryByRole("checkbox", { name: "Laptop" })).toBeNull();
 
     fireEvent.click(enabled);
@@ -78,10 +78,10 @@ describe("Keep Awake settings", () => {
         input: { enabled: true, selection: { mode: "all" } },
       }),
     );
-    expect(slot.getByText("Hosts")).toBeTruthy();
-    expect(slot.getByText("Choose which Macs to keep awake.")).toBeTruthy();
+    expect(slot.getByText("Машины")).toBeTruthy();
+    expect(slot.getByText("Выберите компьютеры Mac, которые не должны переходить в сон.")).toBeTruthy();
 
-    fireEvent.click(slot.getByRole("radio", { name: "Specific hosts" }));
+    fireEvent.click(slot.getByRole("radio", { name: "Выбранные машины" }));
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
         method: "setConfiguration",
@@ -94,7 +94,7 @@ describe("Keep Awake settings", () => {
         },
       }),
     );
-    expect(slot.getByText("Offline")).toBeTruthy();
+    expect(slot.getByText("Не в сети")).toBeTruthy();
 
     fireEvent.click(slot.getByRole("checkbox", { name: "Laptop" }));
     await waitFor(() =>
@@ -106,7 +106,7 @@ describe("Keep Awake settings", () => {
         },
       }),
     );
-    expect(slot.getByRole("status").textContent).toBe("Saved");
+    expect(slot.getByRole("status").textContent).toBe("Сохранено");
   });
 
   it("reverts an optimistic change when autosave fails", async () => {
@@ -124,13 +124,13 @@ describe("Keep Awake settings", () => {
       },
     );
 
-    const enabled = await slot.findByRole("switch", { name: "Keep Awake" });
+    const enabled = await slot.findByRole("switch", { name: "Не допускать перехода в сон" });
     fireEvent.click(enabled);
 
     const alert = await slot.findByRole("alert");
     expect(alert.textContent).toContain("Could not save configuration");
     expect(enabled.getAttribute("aria-checked")).toBe("false");
-    expect(slot.queryByRole("radio", { name: "All hosts" })).toBeNull();
+    expect(slot.queryByRole("radio", { name: "Все машины" })).toBeNull();
   });
 
   it("serializes rapid autosaves so an older response cannot win", async () => {
@@ -152,8 +152,8 @@ describe("Keep Awake settings", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("switch", { name: "Keep Awake" }));
-    fireEvent.click(slot.getByRole("radio", { name: "Specific hosts" }));
+    fireEvent.click(await slot.findByRole("switch", { name: "Не допускать перехода в сон" }));
+    fireEvent.click(slot.getByRole("radio", { name: "Выбранные машины" }));
 
     await waitFor(() => expect(saveCount).toBe(1));
     await act(async () => {
@@ -161,10 +161,10 @@ describe("Keep Awake settings", () => {
       await first.promise;
     });
     await waitFor(() => expect(saveCount).toBe(2));
-    expect(slot.getByRole("status").textContent).toBe("Saving…");
+    expect(slot.getByRole("status").textContent).toBe("Сохранение…");
     expect(
       slot
-        .getByRole("radio", { name: "Specific hosts" })
+        .getByRole("radio", { name: "Выбранные машины" })
         .getAttribute("data-state"),
     ).toBe("checked");
     await act(async () => {
@@ -181,12 +181,12 @@ describe("Keep Awake settings", () => {
     });
 
     await waitFor(() =>
-      expect(slot.getByRole("status").textContent).toBe("Saved"),
+      expect(slot.getByRole("status").textContent).toBe("Сохранено"),
     );
     expect(
       (
         slot.getByRole("radio", {
-          name: "Specific hosts",
+          name: "Выбранные машины",
         }) as HTMLButtonElement
       ).getAttribute("data-state"),
     ).toBe("checked");

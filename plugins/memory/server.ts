@@ -701,7 +701,7 @@ function renderCatalog(store: MemoryStore, projectId: string): string {
   return `${header}${finalLines.join("\n")}${footer}`;
 }
 
-const SCOPE_DESCRIPTION = "Which memories to read";
+const SCOPE_DESCRIPTION = "Какие воспоминания читать";
 const READ_SCOPES = ["all", "project", "global"] as const;
 const MAX_EXPECTED_VERSION = Number.MAX_SAFE_INTEGER;
 
@@ -777,7 +777,7 @@ export default async function plugin(bb: BbPluginApi) {
     updateMemory(input) {
       const { id } = input;
       const current = store.getAdmin(id);
-      if (!current) throw new Error(`memory "${id}" was not found`);
+      if (!current) throw new Error(`Воспоминание «${id}» не найдено`);
       const memory = store.update(
         id,
         {
@@ -789,7 +789,7 @@ export default async function plugin(bb: BbPluginApi) {
           importance: input.importance,
           pinned: input.pinned,
           sourceThreadId: null,
-          writeReason: "Edited in Memory settings",
+          writeReason: "Изменено в настройках памяти",
         },
         current.projectId ?? undefined,
       );
@@ -798,11 +798,11 @@ export default async function plugin(bb: BbPluginApi) {
     deleteMemory(input) {
       const { id } = input;
       const current = store.getAdmin(id);
-      if (!current) throw new Error(`memory "${id}" was not found`);
+      if (!current) throw new Error(`Воспоминание «${id}» не найдено`);
       const memory = store.forget(
         id,
         input.expectedVersion,
-        "Deleted in Memory settings",
+        "Удалено в настройках памяти",
         null,
         current.projectId ?? undefined,
       );
@@ -817,12 +817,12 @@ export default async function plugin(bb: BbPluginApi) {
   bb.cli.register(
     defineCli({
       name: "memory",
-      summary: "Read and maintain durable global and project memories",
+      summary: "Чтение и управление долговременной общей памятью и памятью проектов",
       description:
         "Memories are summaries first: search or list, then read one in full.\nProject scope holds repository facts; global scope holds durable user preferences.",
       commands: {
         catalog: cliCommand({
-          summary: "List compact memory summaries",
+          summary: "Показать краткие описания воспоминаний",
           aliases: ["list"],
           options: {
             scope: {
@@ -836,11 +836,11 @@ export default async function plugin(bb: BbPluginApi) {
               min: 1,
               max: MAX_RESULT_LIMIT,
               default: DEFAULT_RESULT_LIMIT,
-              description: "How many memories to list",
+              description: "Сколько воспоминаний показать",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -857,16 +857,16 @@ export default async function plugin(bb: BbPluginApi) {
                   })
                 : result.memories
                     .map((memory) => displayMemory(memory, false))
-                    .join("\n") || "No memories.",
+                    .join("\n") || "Воспоминаний нет.",
             };
           },
         }),
         search: cliCommand({
-          summary: "Search memory summaries and details",
+          summary: "Поиск по кратким описаниям и подробностям воспоминаний",
           positionals: [
             {
               name: "query",
-              description: "Words to match; every word is searched",
+              description: "Слова для поиска; ищется каждое слово",
               required: true,
               variadic: true,
             },
@@ -883,11 +883,11 @@ export default async function plugin(bb: BbPluginApi) {
               min: 1,
               max: MAX_RESULT_LIMIT,
               default: DEFAULT_RESULT_LIMIT,
-              description: "How many matches to return",
+              description: "Сколько совпадений вернуть",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -906,16 +906,16 @@ export default async function plugin(bb: BbPluginApi) {
                   })
                 : memories
                     .map((memory) => displayMemory(memory, false))
-                    .join("\n") || "No matches.",
+                    .join("\n") || "Совпадений нет.",
             };
           },
         }),
         get: cliCommand({
-          summary: "Read one complete memory",
+          summary: "Прочитать одно воспоминание полностью",
           positionals: [
             {
               name: "id-or-name",
-              description: "Memory id or its unique name",
+              description: "ID воспоминания или его уникальное имя",
               required: true,
             },
           ],
@@ -928,7 +928,7 @@ export default async function plugin(bb: BbPluginApi) {
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -952,7 +952,7 @@ export default async function plugin(bb: BbPluginApi) {
           },
         }),
         add: cliCommand({
-          summary: "Save a project or global memory",
+          summary: "Сохранить воспоминание проекта или общее воспоминание",
           unexpectedPositionalHint:
             "memory text belongs in --details <TEXT>, not a bare argument",
           options: {
@@ -969,34 +969,34 @@ export default async function plugin(bb: BbPluginApi) {
               placeholder: "NAME",
               aliases: ["title"],
               description:
-                "Unique 1-80 character lowercase name (letters, digits, dots, underscores, hyphens)",
+                "Уникальное имя длиной 1–80 символов в нижнем регистре: буквы, цифры, точки, подчёркивания и дефисы",
             },
             summary: {
               type: "string",
               required: true,
               placeholder: "TEXT",
-              description: "One line retrieval summary, at most 400 characters",
+              description: "Краткое описание в одной строке, до 400 символов",
             },
             details: {
               type: "string",
               required: true,
               placeholder: "TEXT",
               aliases: ["body", "text", "content"],
-              description: "Full memory text, at most 16000 characters",
+              description: "Полный текст воспоминания, до 16000 символов",
             },
             reason: {
               type: "string",
               required: true,
               placeholder: "TEXT",
               description:
-                "Why this is worth remembering, at most 500 characters",
+                "Почему это стоит запомнить, до 500 символов",
             },
             kind: {
               type: "enum",
               values: MEMORY_KINDS,
               default: "fact",
               aliases: ["type"],
-              description: "What kind of memory this is",
+              description: "Тип воспоминания",
             },
             tag: {
               type: "string",
@@ -1005,22 +1005,22 @@ export default async function plugin(bb: BbPluginApi) {
               placeholder: "TAG",
               aliases: ["tags"],
               description:
-                "Lowercase tag; repeat or pass a comma-separated list, at most 20",
+                "Тег в нижнем регистре; повторите параметр или передайте список через запятую, не более 20 тегов",
             },
             importance: {
               type: "integer",
               min: 0,
               max: 100,
               default: 50,
-              description: "Ranking weight for the injected catalog",
+              description: "Вес при ранжировании в каталоге памяти",
             },
             pinned: {
               type: "boolean",
-              description: "Keep this memory at the top of the catalog",
+              description: "Держать воспоминание вверху каталога",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -1040,14 +1040,14 @@ export default async function plugin(bb: BbPluginApi) {
               exitCode: 0,
               stdout: input.options.json
                 ? jsonOutput({ ok: true, memory })
-                : `Saved ${memory.id} v${memory.version} (${memory.scope}/${memory.name}).`,
+                : `Сохранено ${memory.id} v${memory.version} (${memory.scope}/${memory.name}).`,
             };
           },
         }),
         update: cliCommand({
-          summary: "Update a memory with version checking",
+          summary: "Обновить воспоминание с проверкой версии",
           positionals: [
-            { name: "id", description: "Memory id", required: true },
+            { name: "id", description: "ID воспоминания", required: true },
           ],
           constraints: [
             {
@@ -1068,30 +1068,30 @@ export default async function plugin(bb: BbPluginApi) {
               min: 1,
               max: MAX_EXPECTED_VERSION,
               required: true,
-              description: "Version this update is based on",
+              description: "Версия, на которой основано обновление",
             },
             reason: {
               type: "string",
               required: true,
               placeholder: "TEXT",
-              description: "Why the memory changed, at most 500 characters",
+              description: "Причина изменения воспоминания, до 500 символов",
             },
             summary: {
               type: "string",
               placeholder: "TEXT",
-              description: "Replacement summary, at most 400 characters",
+              description: "Новое краткое описание, до 400 символов",
             },
             details: {
               type: "string",
               placeholder: "TEXT",
               aliases: ["body", "text", "content"],
-              description: "Replacement details, at most 16000 characters",
+              description: "Новые подробности, до 16000 символов",
             },
             kind: {
               type: "enum",
               values: MEMORY_KINDS,
               aliases: ["type"],
-              description: "Replacement kind",
+              description: "Новый тип",
             },
             tag: {
               type: "string",
@@ -1100,22 +1100,22 @@ export default async function plugin(bb: BbPluginApi) {
               placeholder: "TAG",
               aliases: ["tags"],
               description:
-                "Replacement tags; repeat or pass a comma-separated list",
+                "Новые теги; повторите параметр или передайте список через запятую",
             },
             importance: {
               type: "integer",
               min: 0,
               max: 100,
-              description: "Replacement ranking weight",
+              description: "Новый вес при ранжировании",
             },
             pinned: {
               type: "enum",
               values: ["true", "false"],
-              description: "Pin or unpin the memory",
+              description: "Закрепить или открепить воспоминание",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -1142,14 +1142,14 @@ export default async function plugin(bb: BbPluginApi) {
               exitCode: 0,
               stdout: input.options.json
                 ? jsonOutput({ ok: true, memory })
-                : `Updated ${memory.id} to v${memory.version}.`,
+                : `${memory.id} обновлено до v${memory.version}.`,
             };
           },
         }),
         forget: cliCommand({
-          summary: "Soft-delete a memory with version checking",
+          summary: "Пометить воспоминание удалённым с проверкой версии",
           positionals: [
-            { name: "id", description: "Memory id", required: true },
+            { name: "id", description: "ID воспоминания", required: true },
           ],
           options: {
             "expected-version": {
@@ -1157,17 +1157,17 @@ export default async function plugin(bb: BbPluginApi) {
               min: 1,
               max: MAX_EXPECTED_VERSION,
               required: true,
-              description: "Version this deletion is based on",
+              description: "Версия, на которой основано удаление",
             },
             reason: {
               type: "string",
               required: true,
               placeholder: "TEXT",
-              description: "Why the memory is gone, at most 500 characters",
+              description: "Причина удаления воспоминания, до 500 символов",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {
@@ -1185,14 +1185,14 @@ export default async function plugin(bb: BbPluginApi) {
                     ok: true,
                     forgotten: { id: memory.id, version: memory.version },
                   })
-                : `Forgot ${memory.id} at v${memory.version}.`,
+                : `${memory.id} удалено в версии v${memory.version}.`,
             };
           },
         }),
         history: cliCommand({
-          summary: "Show a memory's version history",
+          summary: "Показать историю версий воспоминания",
           positionals: [
-            { name: "id", description: "Memory id", required: true },
+            { name: "id", description: "ID воспоминания", required: true },
           ],
           options: {
             limit: {
@@ -1200,11 +1200,11 @@ export default async function plugin(bb: BbPluginApi) {
               min: 1,
               max: MAX_RESULT_LIMIT,
               default: DEFAULT_RESULT_LIMIT,
-              description: "How many versions to show, newest first",
+              description: "Сколько версий показать, начиная с новых",
             },
             json: {
               type: "boolean",
-              description: "Emit machine-readable JSON",
+              description: "Вывести JSON для машинной обработки",
             },
           },
           run(input, ctx) {

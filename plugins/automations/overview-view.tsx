@@ -54,38 +54,38 @@ import { AutomationMetadataItem, automationErrorMessage } from "./metadata.js";
 import { AutomationActionsMenu } from "./actions-menu.js";
 
 const AUTOMATION_STATUS_FILTER_OPTIONS = [
-  { id: "active", label: "Active" },
-  { id: "paused", label: "Paused" },
+  { id: "active", label: "Активные" },
+  { id: "paused", label: "Приостановленные" },
 ] as const;
 
 export const AUTOMATION_CREATE_TEMPLATES = [
   {
-    label: "CI failure triage",
+    label: "Разбор сбоев CI",
     icon: "AlertCircle",
     description:
-      "runs every weekday morning, checks failed main-branch CI, and opens fixer threads only for new failures",
-    prompt: `${CREATE_AUTOMATION_PROMPT}runs every weekday morning, checks failed main-branch CI, and opens fixer threads only for new failures.`,
+      "каждое буднее утро проверяет сбои CI в основной ветке и создаёт чаты для исправления только новых сбоев",
+    prompt: `${CREATE_AUTOMATION_PROMPT}каждое буднее утро проверяет сбои CI в основной ветке и создаёт чаты для исправления только новых сбоев.`,
   },
   {
-    label: "Dependency drift",
+    label: "Устаревшие зависимости",
     icon: "ElectricPlugs",
     description:
-      "checks weekly for stale dependencies and opens an update thread when risk is low",
-    prompt: `${CREATE_AUTOMATION_PROMPT}checks weekly for stale dependencies and opens an update thread when risk is low.`,
+      "еженедельно проверяет устаревшие зависимости и создаёт чат для обновления при низком риске",
+    prompt: `${CREATE_AUTOMATION_PROMPT}еженедельно проверяет устаревшие зависимости и создаёт чат для обновления при низком риске.`,
   },
   {
-    label: "Release readiness",
+    label: "Готовность релиза",
     icon: "Target",
     description:
-      "checks the release branch hourly, summarizes blocking checks, and alerts only when the status changes",
-    prompt: `${CREATE_AUTOMATION_PROMPT}checks the release branch hourly, summarizes blocking checks, and alerts only when the status changes.`,
+      "ежечасно проверяет ветку релиза, собирает блокирующие проверки и оповещает только при изменении статуса",
+    prompt: `${CREATE_AUTOMATION_PROMPT}ежечасно проверяет ветку релиза, собирает блокирующие проверки и оповещает только при изменении статуса.`,
   },
   {
-    label: "Stale worktrees",
+    label: "Старые рабочие деревья",
     icon: "FolderGit",
     description:
-      "checks daily for stale worktrees and opens cleanup threads only after they exceed the team's retention window",
-    prompt: `${CREATE_AUTOMATION_PROMPT}checks daily for stale worktrees and opens cleanup threads only after they exceed the team's retention window.`,
+      "ежедневно проверяет старые рабочие деревья и создаёт чаты для очистки только после окончания срока хранения",
+    prompt: `${CREATE_AUTOMATION_PROMPT}ежедневно проверяет старые рабочие деревья и создаёт чаты для очистки только после окончания срока хранения.`,
   },
 ] as const;
 
@@ -126,7 +126,7 @@ function AutomationRowLeading({
           "text-destructive",
           COARSE_POINTER_ICON_SIZE_SHRINK_CLASS,
         )}
-        aria-label="Failed"
+        aria-label="Ошибка"
       />
     );
   }
@@ -138,7 +138,7 @@ function AutomationRowLeading({
           "animate-spin text-muted-foreground/50",
           COARSE_POINTER_ICON_SIZE_SHRINK_CLASS,
         )}
-        aria-label="Running"
+        aria-label="Выполняется"
       />
     );
   }
@@ -225,20 +225,20 @@ function AutomationRowMetadata({
       items={[
         <AutomationMetadataItem
           icon="Folder"
-          iconLabel={personalProject ? `Project: ${projectLabel}` : "Project"}
+          iconLabel={personalProject ? `Проект: ${projectLabel}` : "Проект"}
           title={projectLabel}
         >
           {projectLabel}
         </AutomationMetadataItem>,
         automation !== null ? (
-          <AutomationMetadataItem icon="DateTime" iconLabel="Schedule">
+          <AutomationMetadataItem icon="DateTime" iconLabel="Расписание">
             {formatAutomationTrigger(automation.trigger)}
           </AutomationMetadataItem>
         ) : null,
         automation !== null && scheduleMetadata !== null ? (
           <AutomationMetadataItem
             icon={scheduleMetadata.isNextRun ? "CalendarCheckOut02" : undefined}
-            iconLabel={scheduleMetadata.isNextRun ? "Next run" : undefined}
+            iconLabel={scheduleMetadata.isNextRun ? "Следующий запуск" : undefined}
           >
             {scheduleMetadata.text}
           </AutomationMetadataItem>
@@ -252,7 +252,7 @@ function AutomationRowMetadata({
             {errorMessage}
           </span>
         ) : null,
-        automation === null ? "The stored configuration cannot be read." : null,
+        automation === null ? "Не удалось прочитать сохранённые настройки." : null,
       ]}
     />
   );
@@ -315,11 +315,11 @@ export function OverviewRow({
           disabledReason={
             lifecycleLocked
               ? oneShotLifecycle === "expired"
-                ? "Missed its run time. Edit to reschedule."
-                : "Already ran. Edit to reschedule."
+                ? "Время запуска прошло. Измените расписание."
+                : "Уже выполнено. Измените расписание для нового запуска."
               : undefined
           }
-          label={`${automation.enabled ? "Disable" : "Enable"} ${automation.name}`}
+          label={`${automation.enabled ? "Отключить" : "Включить"} ${automation.name}`}
           onCheckedChange={(enabled) => {
             setTogglePending(true);
             void onEnabledChange(enabled, route).finally(() =>
@@ -389,8 +389,8 @@ function AutomationProblemRow({
           pending={false}
           runDisabledReason={
             repairTarget !== null
-              ? "Add a prompt before running this automation."
-              : "The stored configuration cannot be read."
+              ? "Добавьте запрос перед запуском автоматизации."
+              : "Не удалось прочитать сохранённые настройки."
           }
           onRunNow={() => {}}
           onDelete={() => onDelete(route, automation.name)}
@@ -405,7 +405,7 @@ function AutomationProblemRow({
             variant="outline"
             onClick={() => onNavigate(route, { editing: true })}
           >
-            Edit
+            Изменить
           </Button>
         ) : undefined
       }
@@ -417,8 +417,8 @@ export function automationProblemLabel(
   automation: AutomationReadProblem,
 ): string {
   return automation.problem === "missing-agent-prompt"
-    ? "Prompt required"
-    : "Invalid data";
+    ? "Нужен запрос"
+    : "Некорректные данные";
 }
 
 function automationProblemSearchText(
@@ -604,19 +604,19 @@ export function AutomationOverviewView({
     body = (
       <ResourceListState
         state="error"
-        message="Couldn't load automations."
+        message="Не удалось загрузить автоматизации."
         onRetry={onRetry}
       />
     );
   } else if (entries === null) {
     body = (
       <DelayedLoading>
-        <ResourceListState state="loading" message="Loading automations" />
+        <ResourceListState state="loading" message="Загрузка автоматизаций" />
       </DelayedLoading>
     );
   } else if (entries.length === 0) {
     body = (
-      <ResourceListState state="empty" message="No automations installed." />
+      <ResourceListState state="empty" message="Нет установленных автоматизаций." />
     );
   } else if (visibleEntries.length === 0) {
     body = (
@@ -624,10 +624,10 @@ export function AutomationOverviewView({
         state="empty"
         message={
           normalizedQuery === ""
-            ? "No automations match these filters."
+            ? "Нет автоматизаций, соответствующих фильтрам."
             : projectFilters.length > 0 || statusFilters.length > 0
-              ? `No automations match "${query}" with these filters.`
-              : `No automations match "${query}"`
+              ? `По запросу «${query}» и выбранным фильтрам ничего не найдено.`
+              : `По запросу «${query}» автоматизации не найдены.`
         }
       />
     );
@@ -663,21 +663,21 @@ export function AutomationOverviewView({
   return (
     <ResourceCollectionPage
       id="automations-collection"
-      description="Manage scheduled bb work across projects and folders. Automations run recurring or one-time tasks without manual prompting."
+      description="Управляйте запланированной работой bb в проектах и папках. Автоматизации выполняют повторяющиеся и разовые задачи без ручного запуска."
       modes={[
         {
           id: "installed",
-          label: "Installed",
+          label: "Установленные",
           count: entries?.length ?? "pending",
         },
-        { id: "browse", label: "Browse" },
+        { id: "browse", label: "Обзор" },
       ]}
       activeMode={activeMode}
       onModeChange={onModeChange}
       actions={
         <ResourceCreateButton
-          label="New automation"
-          shortLabel="New"
+          label="Новая автоматизация"
+          shortLabel="Создать"
           icon="Repeat"
           templates={AUTOMATION_CREATE_TEMPLATES}
           onCreate={onCreateViaChat}
@@ -704,7 +704,7 @@ export function AutomationOverviewView({
           toolbar={
             <ResourceToolbar
               searchValue={query}
-              searchPlaceholder="Search automations"
+              searchPlaceholder="Поиск автоматизаций"
               onSearchChange={setQuery}
               controls={
                 <>
@@ -713,7 +713,7 @@ export function AutomationOverviewView({
                     groups={[
                       {
                         id: "projects",
-                        label: "Projects",
+                        label: "Проекты",
                         options: projectOptions,
                         selectedValues: projectFilters,
                         onChange: (values) =>
@@ -723,7 +723,7 @@ export function AutomationOverviewView({
                       },
                       {
                         id: "status",
-                        label: "Status",
+                        label: "Статус",
                         options: AUTOMATION_STATUS_FILTER_OPTIONS,
                         selectedValues: statusFilters,
                         onChange: (values) =>
@@ -740,10 +740,10 @@ export function AutomationOverviewView({
                     options={[
                       {
                         id: "project",
-                        label: "Project",
+                        label: "Проект",
                         disabled: projectBucketCount <= 1,
                       },
-                      { id: "alpha", label: "Automation name" },
+                      { id: "alpha", label: "Название автоматизации" },
                     ]}
                     onChange={handleSortChange}
                   />

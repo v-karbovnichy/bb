@@ -200,8 +200,8 @@ export function ThreadDetailHeader({
     mountRightPanelToggle && (!isSecondaryPanelOpen || isCompactViewport);
   const rightPanelLabel =
     isSecondaryPanelOpen && showRightPanelToggle
-      ? "Hide right panel"
-      : "Show right panel";
+      ? "Скрыть правую панель"
+      : "Показать правую панель";
 
   const center = (
     <>
@@ -320,7 +320,7 @@ export function ThreadDetailHeader({
               HEADER_PANE_ACTION_ICON_BUTTON_CLASS,
               CHROME_SUBTLE_ICON_BUTTON_FOREGROUND_CLASS,
             )}
-            aria-label="Close pane"
+            aria-label="Закрыть панель"
             onClick={onClosePane}
           >
             <Icon name="CloseThreadPane" />

@@ -297,7 +297,11 @@ describe("AppLayout plugin panel header", () => {
     act(() => setCompactSecondaryPanelPresentation("full"));
     expect(trigger.dataset.panelShelf).toBe("full");
 
-    fireEvent.click(screen.getByRole("button", { name: /^Toggle sidebar/ }));
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /^Показать или скрыть боковую панель/,
+      }),
+    );
 
     await waitFor(() => expect(trigger.dataset.panelShelf).toBeUndefined());
   });
@@ -322,11 +326,13 @@ describe("AppLayout plugin panel header", () => {
       expect(screen.getByTestId("app-layout-root").dataset.framed).toBe("");
       expect(
         titleBar.contains(
-          screen.getByRole("button", { name: /^Toggle sidebar/ }),
+          screen.getByRole("button", {
+            name: /^Показать или скрыть боковую панель/,
+          }),
         ),
       ).toBe(true);
       expect(
-        titleBar.contains(screen.getByRole("button", { name: "Go back" })),
+        titleBar.contains(screen.getByRole("button", { name: "Назад" })),
       ).toBe(true);
       expect(screen.queryByTestId("app-desktop-sidebar-trigger")).toBeNull();
     },

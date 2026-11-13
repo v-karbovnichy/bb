@@ -37,17 +37,17 @@ const SEVERITY_PRESENTATION: Record<
   { heading: string; icon: IconName; iconClassName: string }
 > = {
   blocker: {
-    heading: "Fix before moving",
+    heading: "Исправьте перед переносом",
     icon: "AlertCircle",
     iconClassName: "text-destructive-text",
   },
   warning: {
-    heading: "Before you move",
+    heading: "Перед переносом",
     icon: "AlertTriangle",
     iconClassName: "text-warning-text",
   },
   info: {
-    heading: "Good to know",
+    heading: "Полезно знать",
     icon: "Info",
     iconClassName: "text-muted-foreground",
   },
@@ -204,7 +204,7 @@ function MoveServerDialogContent({
         startMove.isError
           ? getMutationErrorMessage({
               error: startMove.error,
-              fallbackMessage: "Couldn't start the move.",
+              fallbackMessage: "Не удалось начать перенос.",
             })
           : null
       }
@@ -260,11 +260,9 @@ export function MoveServerDialogView({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Move the server to {targetName}</DialogTitle>
+        <DialogTitle>Перенести сервер на {targetName}</DialogTitle>
         <DialogDescription>
-          Your threads, settings and plugin data move to {targetName}. Every
-          machine and app switches over when it's done, and the current server
-          machine keeps running as a regular machine.
+          Чаты, настройки и данные плагинов будут перенесены на {targetName}. После этого все машины и приложения переключатся на новый сервер, а текущая серверная машина продолжит работать как обычная.
         </DialogDescription>
       </DialogHeader>
       {result === null && checkError === null ? (
@@ -274,7 +272,7 @@ export function MoveServerDialogView({
             className="size-4 shrink-0 animate-spin text-muted-foreground"
           />
           <span role="status" className="text-sm text-muted-foreground">
-            Checking {targetName}…
+            Проверка {targetName}…
           </span>
         </div>
       ) : null}
@@ -311,7 +309,7 @@ export function MoveServerDialogView({
         </p>
       )}
       <p className="text-xs text-subtle-foreground">
-        Moving stops every running turn and pauses scheduled automations.
+        Перенос остановит все текущие ответы и приостановит запланированные автоматизации.
       </p>
       <DialogFooter>
         <Button
@@ -320,7 +318,7 @@ export function MoveServerDialogView({
           disabled={starting}
           onClick={onCancel}
         >
-          Cancel
+          Отмена
         </Button>
         {showCheckAgain ? (
           <Button
@@ -329,11 +327,11 @@ export function MoveServerDialogView({
             disabled={starting}
             onClick={onCheck}
           >
-            Check again
+            Проверить повторно
           </Button>
         ) : null}
         <Button type="button" disabled={!startAllowed} onClick={onStart}>
-          {starting ? "Starting…" : "Stop all and move"}
+          {starting ? "Запуск…" : "Остановить всё и перенести"}
         </Button>
       </DialogFooter>
     </>
@@ -364,11 +362,10 @@ function ServerAddressField({
         htmlFor={inputId}
         className="block text-sm font-medium text-foreground"
       >
-        New server address
+        Адрес нового сервера
       </label>
       <p id={hintId} className="text-xs text-subtle-foreground">
-        Machines and apps use this address to reach the server on {targetName}{" "}
-        after the move.
+        Машины и приложения будут использовать этот адрес для подключения к серверу на {targetName} после переноса.
       </p>
       <div className="flex min-w-0 items-center gap-2">
         <Input
@@ -395,7 +392,7 @@ function ServerAddressField({
           disabled={!canCheck}
           onClick={onCheck}
         >
-          {checking ? "Checking…" : "Check address"}
+          {checking ? "Проверка…" : "Проверить адрес"}
         </Button>
       </div>
     </div>
@@ -413,7 +410,7 @@ export function ServerMoveCheckItems({
   if (items.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        Nothing needs attention before the move.
+        Перед переносом ничего исправлять не нужно.
       </p>
     );
   }

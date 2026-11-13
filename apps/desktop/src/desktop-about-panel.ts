@@ -28,9 +28,9 @@ export interface DesktopAboutDialogOptions {
   type: "info";
 }
 
-export const ABOUT_DIALOG_COPY_BUTTON_LABEL = "Copy";
+export const ABOUT_DIALOG_COPY_BUTTON_LABEL = "Скопировать";
 const ABOUT_DIALOG_DISMISS_BUTTON_LABEL = "OK";
-const UNKNOWN_VALUE = "unknown";
+const UNKNOWN_VALUE = "неизвестно";
 const MILLISECONDS_PER_DAY = 86_400_000;
 
 function displayValue(value: string): string {
@@ -51,9 +51,9 @@ export function formatBuildAge(
     Math.floor((nowMs - buildMs) / MILLISECONDS_PER_DAY),
   );
   if (days === 0) {
-    return "today";
+    return "сегодня";
   }
-  return days === 1 ? "1 day old" : `${days} days old`;
+  return days === 1 ? "1 день назад" : `${days} дн назад`;
 }
 
 function formatBuildDate(buildDate: string, nowMs: number | null): string {
@@ -73,11 +73,11 @@ export function buildDesktopAboutDetails(
   nowMs: number | null,
 ): string {
   const lines: [string, string][] = [
-    ["Version", facts.version],
-    ["Build Type", facts.channel === "nightly" ? "Nightly" : "Stable"],
-    ["Commit", facts.commit],
-    ["Date", formatBuildDate(facts.buildDate, nowMs)],
-    ["Plugin SDK", facts.pluginSdkVersion],
+    ["Версия", facts.version],
+    ["Тип сборки", facts.channel === "nightly" ? "Ночная" : "Стабильная"],
+    ["Коммит", facts.commit],
+    ["Дата", formatBuildDate(facts.buildDate, nowMs)],
+    ["SDK плагинов", facts.pluginSdkVersion],
     ["Electron", facts.electronVersion],
     ["OS", `${facts.osType} ${facts.osArch} ${facts.osRelease}`],
   ];

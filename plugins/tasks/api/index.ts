@@ -261,27 +261,27 @@ function validateTaskParent(
 ): void {
   if (parentTaskId === null) return;
   if (parentTaskId === ownTaskId) {
-    fail("task_parent_invalid", "A task cannot be its own parent");
+    fail("task_parent_invalid", "Задача не может быть родителем самой себя");
   }
 
   const parent = store.tasks.getTask(parentTaskId);
-  if (!parent) throw new Error(`Task not found: ${parentTaskId}`);
+  if (!parent) throw new Error(`Задача не найдена: ${parentTaskId}`);
   if (parent.projectId !== projectId) {
     fail(
       "subtask_project_mismatch",
-      "A sub-task must belong to the same project as its parent",
+      "Подзадача должна находиться в том же проекте, что и родительская задача",
     );
   }
   if (parent.parentTaskId !== null) {
     fail(
       "subtask_depth_exceeded",
-      "Tasks support at most one level of sub-tasks",
+      "Поддерживается не более одного уровня подзадач",
     );
   }
   if (ownTaskId && store.tasks.listSubtasks(ownTaskId).length > 0) {
     fail(
       "subtask_depth_exceeded",
-      "A task with sub-tasks cannot itself become a sub-task",
+      "Задача с подзадачами сама не может стать подзадачей",
     );
   }
 }
@@ -296,7 +296,7 @@ function validateTaskLabels(
     if (!label || label.projectId !== projectId) {
       fail(
         "label_project_mismatch",
-        `Task labels must belong to the task project: ${labelId}`,
+        `Метки задачи должны принадлежать её проекту: ${labelId}`,
       );
     }
   }
@@ -697,7 +697,7 @@ export function registerHandlers(
         if (!input.force && store.projectTaskCount(input.projectId) > 0) {
           fail(
             "project_not_empty",
-            "A project must be empty before it can be deleted; pass force: true to delete its tasks",
+            "Перед удалением проект должен быть пустым; передайте force: true, чтобы удалить его задачи",
           );
         }
         const taskIds = store.tasks
@@ -753,7 +753,7 @@ export function registerHandlers(
     updateTask(input) {
       try {
         const current = store.tasks.getTask(input.taskId);
-        if (!current) throw new Error(`Task not found: ${input.taskId}`);
+        if (!current) throw new Error(`Задача не найдена: ${input.taskId}`);
         const parentTaskId =
           input.parentTaskId === undefined
             ? current.parentTaskId
@@ -874,7 +874,7 @@ export function registerHandlers(
     },
     boardMove(input) {
       const current = store.tasks.getTask(input.taskId);
-      if (!current) throw new Error(`Task not found: ${input.taskId}`);
+      if (!current) throw new Error(`Задача не найдена: ${input.taskId}`);
       const result = store.transaction(() => {
         const moved = store.tasks.updatePosition(current.id, {
           status: input.status,
@@ -895,7 +895,7 @@ export function registerHandlers(
     },
     moveTaskToProject(input) {
       const current = store.tasks.getTask(input.taskId);
-      if (!current) throw new Error(`Task not found: ${input.taskId}`);
+      if (!current) throw new Error(`Задача не найдена: ${input.taskId}`);
       const result = store.transaction(() => {
         const outcome = store.tasks.moveTaskToProject(
           current.id,

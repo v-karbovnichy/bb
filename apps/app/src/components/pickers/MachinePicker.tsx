@@ -116,7 +116,7 @@ export function MachinePickerUI({
           type="button"
           variant="ghost"
           size="sm"
-          aria-label="Machine"
+          aria-label="Компьютер"
           disabled={disabled}
           data-promptbox-shrinkable-control=""
           className={cn(
@@ -130,7 +130,7 @@ export function MachinePickerUI({
         >
           <span className={OPTION_TRIGGER_CONTENT_CLASS_NAME}>
             {selectedHost == null ? (
-              <span className="min-w-0 truncate">Machine</span>
+              <span className="min-w-0 truncate">Компьютер</span>
             ) : (
               <MachineLabel
                 host={selectedHost}
@@ -155,22 +155,22 @@ export function MachinePickerUI({
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        aria-label="Machine"
-        mobileTitle="Machine"
+        aria-label="Компьютер"
+        mobileTitle="Компьютер"
         autoFocusRef={showSearch ? searchInputRef : commandRef}
         className="flex max-h-[min(var(--radix-popover-content-available-height),calc(100dvh-0.5rem))] w-72 flex-col overflow-hidden p-0 max-md:min-h-0 max-md:w-full max-md:flex-1"
       >
         <Command
           ref={commandRef}
-          label="Search machines"
+          label="Поиск компьютеров"
           shouldFilter={false}
           className="min-h-0"
         >
           {showSearch ? (
             <CommandInput
               ref={searchInputRef}
-              aria-label="Search machines"
-              placeholder="Search machines"
+              aria-label="Поиск компьютеров"
+              placeholder="Поиск компьютеров"
               value={searchQuery}
               onValueChange={setSearchQuery}
               className="h-8 text-xs"
@@ -214,7 +214,7 @@ export function MachinePickerUI({
                       />
                       {host.id === localDaemonHostId ? (
                         <span className={MACHINE_BADGE_CLASS_NAME}>
-                          this machine
+                          Этот компьютер
                         </span>
                       ) : null}
                     </span>
@@ -224,7 +224,7 @@ export function MachinePickerUI({
                       </span>
                     ) : !connected && host.lastSeenAt !== null ? (
                       <span className="shrink-0 text-2xs text-muted-foreground">
-                        last seen{" "}
+                        был в сети{" "}
                         {formatRelativeTime({
                           timestamp: host.lastSeenAt,
                           now,
@@ -246,7 +246,7 @@ export function MachinePickerUI({
               })}
               {showSearch && filteredHosts.length === 0 ? (
                 <div className="px-2 py-1.5 text-xs text-muted-foreground max-md:pointer-coarse:py-2">
-                  No machines found
+                  Компьютеры не найдены
                 </div>
               ) : null}
             </CommandGroup>

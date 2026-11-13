@@ -86,7 +86,7 @@ describe("ThreadEnvironmentSummary", () => {
     expect(environmentDisplay).not.toBeNull();
     expect(environmentDisplay!.className).not.toContain("max-w-[10rem]");
     expect(environmentDisplay!.getAttribute("title")).toBe(
-      "Environment: Bersabel's MacBook Pro",
+      "Окружение: Bersabel's MacBook Pro",
     );
     expect(environmentDisplay!.hasAttribute("tabindex")).toBe(false);
   });
@@ -105,7 +105,7 @@ describe("ThreadEnvironmentSummary", () => {
             copySuccessMessage: "Branch name copied",
             copyValue: "bb/fix-environment-summary",
             label: "bb/fix-environment-summary",
-            rowLabel: "Branch",
+            rowLabel: "Ветка",
             title: "Copy branch name: bb/fix-environment-summary",
           }}
         />
@@ -169,7 +169,7 @@ describe("ThreadEnvironmentSummary", () => {
     );
 
     const createThreadButton = screen.getByRole("button", {
-      name: "New thread in this environment",
+      name: "Новый чат в этом окружении",
     });
     expect(createThreadButton.classList).toContain("text-subtle-foreground/75");
     expect(createThreadButton.classList).toContain(
@@ -181,7 +181,7 @@ describe("ThreadEnvironmentSummary", () => {
     focusWithKeyboard(createThreadButton);
 
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "New thread in this environment",
+      "Новый чат в этом окружении",
     );
   });
 });

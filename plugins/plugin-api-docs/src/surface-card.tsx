@@ -135,7 +135,7 @@ export function SurfaceCard({
           {navigation ? (
             <div
               role="group"
-              aria-label="Annotation navigation"
+              aria-label="Навигация по аннотациям"
               className="flex items-center gap-0.5"
             >
               {(
@@ -145,10 +145,10 @@ export function SurfaceCard({
                 ] as const
               ).map(([direction, target, arrowIcon]) => {
                 const directionLabel =
-                  direction === "previous" ? "Previous" : "Next";
+                  direction === "previous" ? "Предыдущая" : "Следующая";
                 const label = target
-                  ? `${directionLabel} annotation: ${target.title}`
-                  : `No ${direction} annotation`;
+                  ? `${directionLabel} аннотация: ${target.title}`
+                  : direction === "previous" ? "Предыдущей аннотации нет" : "Следующей аннотации нет";
                 return (
                   <button
                     key={direction}
@@ -170,8 +170,8 @@ export function SurfaceCard({
           <button
             type="button"
             onClick={onDismiss}
-            aria-label="Close"
-            title="Close annotation"
+            aria-label="Закрыть"
+            title="Закрыть аннотацию"
             className={`inline-flex size-9 @2xl/guide:size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground ${FOCUS_RING_CLASS}`}
           >
             <Icon name="X" className="size-3.5" />
@@ -191,7 +191,7 @@ export function SurfaceCard({
       {surface.reference ? (
         <details className="mt-3 text-sm leading-relaxed text-muted-foreground">
           <summary className={`cursor-pointer rounded-sm ${FOCUS_RING_CLASS}`}>
-            API behavior
+            Поведение API
           </summary>
           <div className="mt-2 space-y-2">
             {surface.reference.map((paragraph) => (
@@ -207,7 +207,7 @@ export function SurfaceCard({
           {surface.firstParty && surface.firstParty.length > 0 ? (
             <div className={`flex min-w-0 flex-1 items-center ${mobile ? "gap-1" : "gap-2"}`}>
               <span className={`shrink-0 whitespace-nowrap text-xs text-subtle-foreground ${mobile ? "" : "rounded bg-surface-recessed px-2 py-0.5 font-normal"}`}>
-                Used by
+                Используется в
               </span>
               <ExampleList
                 key={surface.id}
@@ -253,8 +253,8 @@ export function SurfaceCard({
               type="button"
               onClick={() => void copyForAgent()}
               disabled={copyState === "copying"}
-              aria-label={copyState === "failed" ? "Copy failed. Retry copy for agent" : "Copy for agent"}
-              title={copyState === "failed" ? "Copy failed. Retry copy for agent" : "Copy for agent"}
+              aria-label={copyState === "failed" ? "Не удалось скопировать. Повторить копирование для агента" : "Скопировать для агента"}
+              title={copyState === "failed" ? "Не удалось скопировать. Повторить копирование для агента" : "Скопировать для агента"}
               className={`ml-auto inline-flex shrink-0 cursor-pointer items-center rounded-md text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground disabled:opacity-60 ${mobile ? "size-9 @2xl/guide:size-7 justify-center" : "h-7 gap-1.5 whitespace-nowrap px-2 text-xs font-medium"} ${FOCUS_RING_CLASS}`}
             >
               <Icon
@@ -263,12 +263,12 @@ export function SurfaceCard({
               />
               <span className={mobile ? "sr-only" : undefined} aria-live="polite">
                 {copyState === "copying"
-                  ? "Copying…"
+                  ? "Копирование…"
                   : copyState === "copied"
-                    ? "Copied"
+                    ? "Скопировано"
                     : copyState === "failed"
-                      ? "Copy failed"
-                      : "Copy for agent"}
+                      ? "Не удалось скопировать"
+                      : "Скопировать для агента"}
               </span>
             </button>
           ) : null}

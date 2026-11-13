@@ -11,25 +11,25 @@ export function CodeRendererSettings() {
   return (
     <>
       <ReplacementProviderSetting
-        label="Source code"
-        triggerAriaLabel="Source code"
-        description="Choose automatic activation, BB's viewer, or a specific plugin on this device."
-        builtInDescription="Syntax highlighting and gutters from the bb code theme."
+        label="Исходный код"
+        triggerAriaLabel="Исходный код"
+        description="Выберите автоматический режим, просмотрщик BB или конкретный плагин на этом устройстве."
+        builtInDescription="Подсветка синтаксиса и поля из темы кода bb."
         preferenceAtom={sourceCodeRendererProviderAtom}
         slots={sourceCodeRenderers}
       />
       <ReplacementProviderSetting
-        label="Diffs"
-        triggerAriaLabel="Diffs"
-        description="Applies to file diffs in threads, the diff panel, and plugin views."
-        builtInDescription="Unified and split diffs from the bb code theme."
+        label="Изменения"
+        triggerAriaLabel="Изменения"
+        description="Применяется к изменениям файлов в чатах, панели изменений и представлениях плагинов."
+        builtInDescription="Единый и разделённый просмотр изменений в теме кода bb."
         preferenceAtom={diffRendererProviderAtom}
         slots={diffRenderers}
       />
       <ReplacementProviderSetting
-        label="Composer"
-        triggerAriaLabel="Composer"
-        description="The prompt box in threads, the New thread screen, and message editors."
+        label="Поле ввода"
+        triggerAriaLabel="Поле ввода"
+        description="Поле запроса в чатах, на экране нового чата и в редакторах сообщений."
         preferenceAtom={composerRendererProviderAtom}
         slots={composers}
       />

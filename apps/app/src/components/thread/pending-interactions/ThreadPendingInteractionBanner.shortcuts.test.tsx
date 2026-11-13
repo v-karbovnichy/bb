@@ -111,12 +111,12 @@ describe("ThreadPendingInteractionBanner question shortcuts", () => {
     expect(pressedState("AOption A")).toBe("true");
     expect(pressedState("BOption B")).toBe("false");
 
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
     pressDigit("2");
     expect(pressedState("AOption A")).toBe("true");
     expect(pressedState("BOption B")).toBe("false");
 
-    fireEvent.click(screen.getByRole("button", { name: "Show details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать подробности" }));
     pressDigit("2");
     expect(pressedState("AOption A")).toBe("false");
     expect(pressedState("BOption B")).toBe("true");

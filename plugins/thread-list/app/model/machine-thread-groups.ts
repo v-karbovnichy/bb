@@ -44,7 +44,7 @@ export function buildMachineThreadGroups(
   for (const hostId of unknownHostIds) {
     groups.push({
       key: hostId,
-      label: "Unknown machine",
+      label: "Неизвестный компьютер",
       threads: threadsByKey.get(hostId) ?? [],
     });
   }
@@ -52,7 +52,7 @@ export function buildMachineThreadGroups(
   if (noMachineThreads) {
     groups.push({
       key: NO_MACHINE_GROUP_KEY,
-      label: "No machine",
+      label: "Без компьютера",
       threads: noMachineThreads,
     });
   }

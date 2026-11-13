@@ -34,12 +34,12 @@ export function PluginThreadList({
   const registration =
     replacement.kind === "plugin" ? replacement.registration : null;
   const pluginId = registration?.pluginId ?? null;
-  const title = registration?.title ?? "Thread list";
+  const title = registration?.title ?? "Список чатов";
 
   const handleCrash = useCallback(
     (crashedPluginId: string) => {
-      appToast.error("Thread list plugin crashed", {
-        description: `${title} (${crashedPluginId}) stopped working.`,
+      appToast.error("Плагин списка чатов завершился с ошибкой", {
+        description: `Сбой в работе ${title} (${crashedPluginId}).`,
       });
     },
     [title],

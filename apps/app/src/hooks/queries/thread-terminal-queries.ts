@@ -76,7 +76,7 @@ export function useCreateTerminal() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to start terminal.",
+      errorMessage: "Не удалось запустить терминал.",
       lifecycleOperation: "open_terminal",
     },
     mutationFn: ({ target, ...request }: CreateTerminalRequest) =>
@@ -92,7 +92,7 @@ export function useRenameTerminal() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to rename terminal.",
+      errorMessage: "Не удалось переименовать терминал.",
     },
     mutationFn: ({ terminalId, ...request }: RenameTerminalMutationRequest) =>
       sdk.terminals.rename({ terminalId, ...request }),
@@ -107,7 +107,7 @@ export function useCloseTerminal() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to close terminal.",
+      errorMessage: "Не удалось закрыть терминал.",
     },
     mutationFn: ({ mode, terminalId }: CloseTerminalMutationRequest) =>
       sdk.terminals.close({ mode, terminalId }).catch((error: unknown) => {

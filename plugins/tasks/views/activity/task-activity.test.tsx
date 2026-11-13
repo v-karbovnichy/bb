@@ -67,7 +67,7 @@ function comment(
     id: `01HZZZZZZZZZZZZZZZZZZZZZ${kind === "agent" ? "A" : "U"}`,
     taskId: "01HZZZZZZZZZZZZZZZZZZZZZT1",
     kind,
-    authorName: kind === "agent" ? "Agent" : "You",
+    authorName: kind === "agent" ? "Агент" : "You",
     presetName: null,
     threadId,
     threadTitle,
@@ -198,7 +198,7 @@ describe("AgentNotificationControl", () => {
     );
 
     const toggle = screen.getByRole("switch", {
-      name: "Notify Fix the login bug",
+      name: "Уведомить Fix the login bug",
     });
     expect(toggle.getAttribute("aria-disabled")).toBe("false");
     expect(toggle.getAttribute("aria-checked")).toBe("true");
@@ -217,7 +217,7 @@ describe("AgentNotificationControl", () => {
     );
 
     const toggle = screen.getByRole("switch", {
-      name: "Notify Fix the login bug",
+      name: "Уведомить Fix the login bug",
     });
     expect(toggle.getAttribute("aria-disabled")).toBe("false");
     expect(toggle.getAttribute("aria-checked")).toBe("false");
@@ -236,7 +236,7 @@ describe("AgentNotificationControl", () => {
     );
 
     const toggle = screen.getByRole("switch", {
-      name: "Latest responding agent can’t be notified",
+      name: "Невозможно уведомить агента, ответившего последним",
     });
     expect(toggle.getAttribute("aria-disabled")).toBe("true");
     expect(toggle.getAttribute("aria-checked")).toBe("false");
@@ -255,7 +255,7 @@ describe("AgentNotificationControl", () => {
     );
 
     const toggle = screen.getByRole("switch", {
-      name: "No prior agent reply to notify",
+      name: "Нет предыдущего ответа агента для уведомления",
     });
     expect(toggle.getAttribute("aria-disabled")).toBe("true");
     fireEvent.click(toggle);
@@ -347,7 +347,7 @@ describe("CommentComposer", () => {
       holdSend: true,
     });
     try {
-      const submit = screen.getByRole("button", { name: "Comment" });
+      const submit = screen.getByRole("button", { name: "Комментарий" });
       fireEvent.click(submit);
       fireEvent.click(submit);
 
@@ -406,7 +406,7 @@ describe("CommentComposer", () => {
       });
       expect(rpcCall).not.toHaveBeenCalled();
       expect(
-        (screen.getByRole("button", { name: "Comment" }) as HTMLButtonElement)
+        (screen.getByRole("button", { name: "Комментарий" }) as HTMLButtonElement)
           .disabled,
       ).toBe(true);
     } finally {

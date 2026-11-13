@@ -37,20 +37,20 @@ function checkoutLabel(
   const verb =
     branch.kind === "new"
       ? {
-          waiting: "Waiting to create",
-          ready: "Ready to create",
-          doing: "Creating",
-          done: "Created",
-          failed: "Failed to create",
+          waiting: "Ожидание создания ветки",
+          ready: "Готово к созданию ветки",
+          doing: "Создание ветки",
+          done: "Ветка создана:",
+          failed: "Не удалось создать ветку",
         }[phase]
       : {
-          waiting: "Waiting to switch to",
-          ready: "Ready to switch to",
-          doing: "Switching to",
-          done: "Switched to",
-          failed: "Failed to switch to",
+          waiting: "Ожидание переключения на ветку",
+          ready: "Готово к переключению на ветку",
+          doing: "Переключение на ветку",
+          done: "Переключились на ветку",
+          failed: "Не удалось переключиться на ветку",
         }[phase];
-  return `${verb} branch ${branch.name}`;
+  return `${verb} ${branch.name}`;
 }
 
 type BranchLocation = "local" | "origin" | "missing";
@@ -95,42 +95,42 @@ async function assertSwitchable(
     case "detached":
       throw new WorkspaceError(
         "checkout_detached",
-        "Cannot checkout branch while the workspace is on a detached HEAD",
+        "Нельзя переключить ветку, пока HEAD рабочей копии отсоединён",
       );
     case "unborn":
       throw new WorkspaceError(
         "checkout_unborn",
-        "Cannot checkout branch before the current branch has an initial commit",
+        "Нельзя переключить ветку до первого коммита в текущей ветке",
       );
     case "unknown":
       throw new WorkspaceError(
         "checkout_unknown",
-        `Cannot inspect current checkout: ${ref.reason}`,
+        `Не удалось проверить текущую рабочую копию: ${ref.reason}`,
       );
   }
   if (branch.kind === "existing" && plan.location === "missing") {
     throw new WorkspaceError(
       "checkout_missing_branch",
-      `Cannot checkout missing branch ${branch.name}`,
+      `Нельзя переключиться на несуществующую ветку ${branch.name}`,
     );
   }
   const operation = await getWorkspaceGitOperation(repo);
   if (operation.kind !== "none" && operation.hasConflicts) {
     throw new WorkspaceError(
       "checkout_conflicts",
-      `Cannot checkout branch while ${operation.kind} has unresolved conflicts`,
+      `Нельзя переключить ветку: в операции ${operation.kind} есть неразрешённые конфликты`,
     );
   }
   if (operation.kind !== "none") {
     throw new WorkspaceError(
       "checkout_in_progress_operation",
-      `Cannot checkout branch while ${operation.kind} is in progress`,
+      `Нельзя переключить ветку, пока выполняется ${operation.kind}`,
     );
   }
   if (await hasUncommittedChanges(repo.path)) {
     throw new WorkspaceError(
       "checkout_dirty",
-      "Cannot checkout branch while the workspace has uncommitted changes",
+      "Нельзя переключить ветку: в рабочей копии есть несохранённые изменения",
     );
   }
   return "ready";

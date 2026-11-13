@@ -12,35 +12,35 @@ import type { LinkLogins } from "./login.js";
 import { resolveBaseUrl, type BaseUrlPolicy } from "./rpc.js";
 
 const DESCRIPTION = [
-  "Sign this bb in to your getbb.app account. bb account holds the server",
-  "credential that remote access (bb connect) and hosted services use.",
+  "Войдите в аккаунт getbb.app на этом bb. Плагин аккаунта bb хранит учётные данные сервера,",
+  "которые используют удалённый доступ (bb connect) и облачные сервисы.",
   "",
-  "  bb account login          Print a getbb.app link and code to approve",
-  "  bb account login --wait   Wait here until that sign-in finishes",
+  "  bb account login          Вывести ссылку getbb.app и код подтверждения",
+  "  bb account login --wait   Дождаться завершения входа",
   "  bb account login --code <code>",
-  "                            Pair with a one-time code from the dashboard",
+  "                            Привязать одноразовым кодом из панели управления",
 ].join("\n");
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для программной обработки",
 } as const;
 
 const REDEEM_ERROR_TEXT: Record<RedeemError["code"], string> = {
   invalid_code:
-    "that code is invalid or has expired — get a new one from the getbb.app dashboard",
+    "код недействителен или истёк — получите новый в панели getbb.app",
   expired_code:
-    "that code has expired — get a new one from the getbb.app dashboard",
+    "срок действия кода истёк — получите новый в панели getbb.app",
   already_used:
-    "that code was already used — get a new one from the getbb.app dashboard",
-  network: "couldn't reach getbb.app — check the connection and try again",
+    "код уже использован — получите новый в панели getbb.app",
+  network: "нет связи с getbb.app — проверьте подключение и повторите попытку",
 };
 
 const HOSTED_ERROR_TEXT: Partial<Record<HostedRequestError["code"], string>> = {
   rate_limited:
-    "too many sign-in attempts from this network — wait a minute, then try again",
+    "слишком много попыток входа из этой сети — подождите минуту и повторите попытку",
   unavailable:
-    "getbb.app couldn't handle that request right now — try again in a minute",
+    "getbb.app сейчас не может обработать запрос — повторите попытку через минуту",
 };
 
 function asJson(value: unknown): string {
@@ -50,21 +50,21 @@ function asJson(value: unknown): string {
 function formatAccount(status: AccountStatus): string {
   if (status.state === "profile-pending") {
     return [
-      "Paired with getbb.app, but bb hasn't loaded the account yet; it keeps retrying.",
-      "Remote access and hosted services start once it does. Check this machine's",
-      "connection, or run `bb account logout` to sign out and start over.",
+      "bb привязан к getbb.app, но данные аккаунта ещё не загружены; повторные попытки продолжаются.",
+      "После загрузки заработают удалённый доступ и облачные сервисы. Проверьте подключение",
+      "этой машины или выполните `bb account logout`, чтобы выйти и начать заново.",
     ].join("\n");
   }
   if (status.account === null) {
-    return "Not signed in. Run `bb account login` to sign in.";
+    return "Вход не выполнен. Выполните `bb account login`.";
   }
   const account = status.account;
   const login =
     account.githubLogin === null ? "" : ` (@${account.githubLogin})`;
   return [
-    `Signed in as ${account.name}${login}`,
-    `  Handle:  ${account.handle ?? "none yet"}`,
-    `  Server:  ${account.serverLabel}  ${account.serverUrl}`,
+    `Выполнен вход: ${account.name}${login}`,
+    `  Имя пользователя:  ${account.handle ?? "пока нет"}`,
+    `  Сервер:  ${account.serverLabel}  ${account.serverUrl}`,
   ].join("\n");
 }
 
@@ -74,12 +74,12 @@ function formatPendingLogin(view: LoginView): string {
     Math.round((view.expiresAt - Date.now()) / 60_000),
   );
   return [
-    "To sign in this bb, open:",
+    "Для входа на этом bb откройте:",
     `  ${view.verificationUrl}`,
-    `and confirm the code ${view.userCode}. It expires in about ${minutes} min.`,
+    `и подтвердите код ${view.userCode}. Он истечёт примерно через ${minutes} мин.`,
     "",
-    "bb finishes signing in on its own once you approve. To wait here for the",
-    "result, run:",
+    "После подтверждения bb завершит вход автоматически. Чтобы дождаться",
+    "результата здесь, выполните:",
     "  bb account login --wait",
   ].join("\n");
 }
@@ -87,13 +87,13 @@ function formatPendingLogin(view: LoginView): string {
 function formatSignOut(result: SignOutResult): string {
   switch (result.revocation) {
     case "not-signed-in":
-      return "Not signed in.";
+      return "Вход не выполнен.";
     case "revoked":
-      return "Signed out. Remote access and hosted services stop until you sign in again.";
+      return "Вы вышли. Удалённый доступ и облачные сервисы остановлены до повторного входа.";
     case "failed":
       return [
-        "Signed out on this bb, but getbb.app didn't confirm it revoked this server",
-        `(${result.message}). Remove the server at ${result.dashboardUrl}.`,
+        "На этом bb выполнен выход, но getbb.app не подтвердил отзыв доступа у сервера",
+        `(${result.message}). Удалите сервер через ${result.dashboardUrl}.`,
       ].join("\n");
   }
 }
@@ -101,7 +101,7 @@ function formatSignOut(result: SignOutResult): string {
 function loginFailure(view: LoginView): PluginCliError {
   const reason = view.message ?? `sign-in ${view.state}`;
   return new PluginCliError(
-    `${reason} Run \`bb account login\` to start again.`,
+    `${reason} Выполните \`bb account login\`, чтобы начать заново.`,
     { code: `login_${view.state.replace("-", "_")}` },
   );
 }
@@ -147,15 +147,15 @@ export function registerAccountCli(args: {
   bb.cli.register(
     defineCli({
       name: "account",
-      summary: "Sign this bb in to your getbb.app account",
+      summary: "Войти в аккаунт getbb.app на этом bb",
       description: DESCRIPTION,
       root: cliCommand({
-        summary: "Show how to sign in",
+        summary: "Показать инструкцию по входу",
         run: (input) => ({ exitCode: 0, stdout: input.help }),
       }),
       commands: {
         status: cliCommand({
-          summary: "Show which getbb.app account this bb is signed in to",
+          summary: "Показать, в какой аккаунт getbb.app вошёл этот bb",
           options: { json: JSON_OPTION },
           run: (input) => {
             const status = account.status();
@@ -167,32 +167,32 @@ export function registerAccountCli(args: {
             if (login !== null && login.state === "pending") {
               lines.push(
                 "",
-                `Sign-in waiting for approval: open ${login.verificationUrl} and confirm ${login.userCode}.`,
+                `Вход ожидает подтверждения: откройте ${login.verificationUrl} и подтвердите ${login.userCode}.`,
               );
             }
             return { exitCode: 0, stdout: `${lines.join("\n")}\n` };
           },
         }),
         login: cliCommand({
-          summary: "Sign in with a getbb.app link, or pair with a code",
+          summary: "Войти по ссылке getbb.app или привязать bb кодом",
           description:
-            "Without --code, prints a getbb.app link and a code to approve in any browser, then returns; bb keeps checking and signs in once you approve. --wait waits for that sign-in to finish. Signing in replaces the account this bb is signed in to.",
+            "Без --code команда выводит ссылку getbb.app и код для подтверждения в браузере. bb продолжает проверку и входит после подтверждения. --wait ожидает завершения входа. Новый вход заменяет текущий аккаунт bb.",
           options: {
             code: {
               type: "string",
               placeholder: "code",
-              description: "One-time pairing code from the getbb.app dashboard",
+              description: "Одноразовый код привязки из панели getbb.app",
             },
             wait: {
               type: "boolean",
               description:
-                "Wait until the sign-in started by `bb account login` is approved, denied, or expires",
+                "Ждать подтверждения, отклонения или истечения кода входа, начатого командой `bb account login`",
             },
             "base-url": {
               type: "string",
               placeholder: "url",
               description:
-                "getbb.app origin: https://getbb.app or https://vibecodethis.site (development builds also accept http://bb.localhost:<port>)",
+                "Источник getbb.app: https://getbb.app или https://vibecodethis.site (сборки для разработки также принимают http://bb.localhost:<port>)",
             },
             json: JSON_OPTION,
           },
@@ -222,13 +222,13 @@ export function registerAccountCli(args: {
                 const view = await logins.wait(ctx.signal);
                 if (view === null) {
                   throw new PluginCliError(
-                    "no sign-in is in progress — run `bb account login` first",
+                    "вход не выполняется — сначала выполните `bb account login`",
                     { code: "no_login" },
                   );
                 }
                 if (view.state === "pending") {
                   throw new PluginCliError(
-                    "stopped waiting; the sign-in is still open",
+                    "ожидание прекращено; вход всё ещё открыт",
                     { code: "login_pending" },
                   );
                 }
@@ -251,9 +251,9 @@ export function registerAccountCli(args: {
             }),
         }),
         logout: cliCommand({
-          summary: "Sign out and forget this bb's getbb.app pairing",
+          summary: "Выйти и удалить привязку этого bb к getbb.app",
           description:
-            "Revokes the server credential on getbb.app and forgets it here, and cancels a sign-in that is waiting for approval. Remote access and hosted services stop until you sign in again. If getbb.app can't be reached, bb still signs out here and says so; remove the server from the getbb.app dashboard.",
+            "Отзывает учётные данные сервера на getbb.app, удаляет их здесь и отменяет ожидающий подтверждения вход. Удалённый доступ и облачные сервисы останавливаются до повторного входа. Если getbb.app недоступен, bb всё равно выполнит локальный выход; тогда удалите сервер через панель getbb.app.",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {

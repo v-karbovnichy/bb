@@ -82,13 +82,13 @@ describe("Markdown file preview image routing", () => {
       value: "https://app.example/one.png",
     });
     fireEvent.click(firstImage);
-    fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+    fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
 
     expect(
       screen.getByRole("img", { name: "Expanded image" }).getAttribute("src"),
     ).toMatch(/two\.png$/u);
 
-    fireEvent.click(screen.getByRole("button", { name: "Previous image" }));
+    fireEvent.click(screen.getByRole("button", { name: "Предыдущее изображение" }));
 
     expect(
       screen.getByRole("img", { name: "Expanded image" }).getAttribute("src"),

@@ -295,14 +295,14 @@ describe("Automation detail recipe", () => {
 
     const recipe = renderedRecipe(container);
     expect(recipe.map(([kind]) => kind)).toEqual(["definition", "activity"]);
-    expect(recipe.at(-1)?.[1]).toBe("Runs");
-    expect(screen.getByRole("img", { name: "Project: Personal" })).toBeTruthy();
-    expect(screen.getByRole("img", { name: "Schedule" })).toBeTruthy();
-    expect(screen.getByRole("img", { name: "Next run" })).toBeTruthy();
-    expect(screen.queryByText("Next run:")).toBeNull();
+    expect(recipe.at(-1)?.[1]).toBe("Запуски");
+    expect(screen.getByRole("img", { name: "Проект: Personal" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Расписание" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Следующий запуск" })).toBeTruthy();
+    expect(screen.queryByText("Следующий запуск:")).toBeNull();
 
     const emptyRuns = screen
-      .getByText("No runs yet.")
+      .getByText("Запусков пока нет.")
       .closest('[data-automation-runs-state="empty"]') as HTMLElement;
     expect(emptyRuns).not.toBeNull();
 
@@ -314,7 +314,7 @@ describe("Automation detail recipe", () => {
     ) as HTMLElement;
     expect(readOnlyPromptShell.contains(savedPrompt)).toBe(true);
     expect(savedPrompt.textContent).toBe("Summarize yesterday's commits.");
-    expect(screen.queryByRole("button", { name: "Save Prompt" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Сохранить запрос" })).toBeNull();
     const disabledModelSelector = container.querySelector(
       '[data-testid="bb-provider-model-picker"]',
     ) as HTMLButtonElement;
@@ -329,17 +329,17 @@ describe("Automation detail recipe", () => {
       '[data-automation-prompt-footer=""]',
     ) as HTMLElement;
     expect(readOnlyPromptShell.contains(readOnlyPromptFooter)).toBe(true);
-    const editButton = screen.getByRole("button", { name: "Edit prompt" });
+    const editButton = screen.getByRole("button", { name: "Изменить запрос" });
     expect(editButton.querySelector('[data-icon="Edit"]')).not.toBeNull();
     fireEvent.pointerMove(editButton);
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Edit prompt",
+      "Изменить запрос",
     );
 
     fireEvent.click(editButton);
 
     const promptContent = screen.getByRole("textbox", {
-      name: "Automation prompt",
+      name: "Запрос автоматизации",
     }) as HTMLTextAreaElement;
     const promptPanel = promptContent.closest("form") as HTMLElement;
     expect(
@@ -354,9 +354,9 @@ describe("Automation detail recipe", () => {
     const promptFooter = container.querySelector(
       '[data-automation-prompt-footer=""]',
     ) as HTMLElement;
-    expect(promptFooter.textContent).toContain("Personal workspace");
+    expect(promptFooter.textContent).toContain("Личное рабочее пространство");
     expect(
-      promptFooter.querySelector('[title="Environment: Personal workspace"]'),
+      promptFooter.querySelector('[title="Окружение: Личное рабочее пространство"]'),
     ).not.toBeNull();
     expect(promptFooter.textContent).toContain("Approve for me");
     expect(
@@ -374,11 +374,11 @@ describe("Automation detail recipe", () => {
     ) as HTMLButtonElement;
     expect(modelSelector.disabled).toBe(false);
     expect(modelSelector.textContent).toContain("medium");
-    const savePrompt = screen.getByRole("button", { name: "Save Prompt" });
+    const savePrompt = screen.getByRole("button", { name: "Сохранить запрос" });
     expect(promptPanel.contains(savePrompt)).toBe(true);
     expect(savePrompt.querySelector('[data-icon="Check"]')).not.toBeNull();
     expect((savePrompt as HTMLButtonElement).disabled).toBe(true);
-    const cancelEditing = screen.getByRole("button", { name: "Cancel" });
+    const cancelEditing = screen.getByRole("button", { name: "Отмена" });
     expect((cancelEditing as HTMLButtonElement).disabled).toBe(false);
     fireEvent.click(cancelEditing);
     expect(
@@ -386,9 +386,9 @@ describe("Automation detail recipe", () => {
     ).toBeTruthy();
     expect(updateAgent).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Edit prompt" }));
+    fireEvent.click(screen.getByRole("button", { name: "Изменить запрос" }));
     const reopenedPrompt = screen.getByRole("textbox", {
-      name: "Automation prompt",
+      name: "Запрос автоматизации",
     }) as HTMLTextAreaElement;
     const reopenedPanel = reopenedPrompt.closest("form") as HTMLElement;
     const reopenedModelSelector = reopenedPanel.querySelector(
@@ -398,7 +398,7 @@ describe("Automation detail recipe", () => {
       '[data-testid="bb-permission-mode-picker"]',
     ) as HTMLButtonElement;
     const reopenedSavePrompt = screen.getByRole("button", {
-      name: "Save Prompt",
+      name: "Сохранить запрос",
     });
     fireEvent.change(reopenedPrompt, {
       target: { value: "Summarize the last two days." },
@@ -407,7 +407,7 @@ describe("Automation detail recipe", () => {
     fireEvent.click(reopenedAccessSelector);
     expect((reopenedSavePrompt as HTMLButtonElement).disabled).toBe(false);
     expect(
-      (screen.getByRole("button", { name: "Cancel" }) as HTMLButtonElement)
+      (screen.getByRole("button", { name: "Отмена" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
     fireEvent.click(reopenedSavePrompt);
@@ -423,7 +423,7 @@ describe("Automation detail recipe", () => {
       await screen.findByRole("textbox", { name: "Saved prompt" }),
     ).toBeTruthy();
     expect(
-      screen.queryByRole("textbox", { name: "Automation prompt" }),
+      screen.queryByRole("textbox", { name: "Запрос автоматизации" }),
     ).toBeNull();
   });
 
@@ -449,16 +449,16 @@ describe("Automation detail recipe", () => {
     );
 
     expect(
-      (screen.getByRole("button", { name: "Edit prompt" }) as HTMLButtonElement)
+      (screen.getByRole("button", { name: "Изменить запрос" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
     expect(
-      (screen.getByRole("button", { name: "Run now" }) as HTMLButtonElement)
+      (screen.getByRole("button", { name: "Запустить сейчас" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
-    const save = screen.getByRole("button", { name: "Save Prompt" });
+    const save = screen.getByRole("button", { name: "Сохранить запрос" });
     expect((save as HTMLButtonElement).disabled).toBe(true);
-    fireEvent.change(screen.getByLabelText("Automation prompt"), {
+    fireEvent.change(screen.getByLabelText("Запрос автоматизации"), {
       target: { value: "Review the failed build" },
     });
     expect((save as HTMLButtonElement).disabled).toBe(false);
@@ -501,7 +501,7 @@ describe("Automation detail recipe", () => {
     expect(permission.getAttribute("data-provider-id")).toBe("claude");
     expect(permission.getAttribute("data-routing-kind")).toBe("environment");
     fireEvent.click(permission);
-    fireEvent.click(screen.getByText("Save Prompt"));
+    fireEvent.click(screen.getByText("Сохранить запрос"));
 
     expect(onUpdate).toHaveBeenCalledWith({
       prompt: "Summarize the inbox",
@@ -622,7 +622,7 @@ describe("Automation detail recipe", () => {
     );
 
     expect(
-      container.querySelector('[aria-label="Project"] [data-icon="Folder"]'),
+      container.querySelector('[aria-label="Проект"] [data-icon="Folder"]'),
     ).toBeTruthy();
     const promptFooter = container.querySelector(
       '[data-automation-prompt-footer=""]',
@@ -677,7 +677,7 @@ describe("Automation detail recipe", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Script" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Скрипт" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Script file" })).toBeNull();
     expect(container.textContent).toContain("2 env vars");
     expect(container.textContent).toContain("/srv/projects/digest");
@@ -686,7 +686,7 @@ describe("Automation detail recipe", () => {
     expect(container.textContent).not.toContain("secret-token");
 
     const scriptScroll = screen.getByRole("region", {
-      name: "Script contents",
+      name: "Содержимое скрипта",
     });
     expect(scriptScroll.querySelector("pre")?.textContent).toContain(
       storedScript,
@@ -724,7 +724,7 @@ describe("Automation detail recipe", () => {
       "/srv/automation-work",
       "/srv/automation-work",
     ],
-    [{ type: "project" } as const, null, "Working directory unavailable"],
+    [{ type: "project" } as const, null, "Рабочая папка недоступна"],
   ])(
     "shows the resolved script working directory",
     (workingDirectory, resolvedWorkingDirectory, label) => {
@@ -744,9 +744,9 @@ describe("Automation detail recipe", () => {
       expect(
         container.querySelector(
           `[aria-label="${
-            label === "Working directory unavailable"
+            label === "Рабочая папка недоступна"
               ? label
-              : `Working directory: ${label}`
+              : `Рабочая папка: ${label}`
           }"]`,
         ),
       ).not.toBeNull();

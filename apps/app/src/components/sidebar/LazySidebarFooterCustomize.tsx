@@ -34,7 +34,7 @@ function FooterCustomizePlaceholder({
       {retry ? (
         <SplitLoadFailure retry={retry} />
       ) : (
-        <div role="status" aria-label="Loading footer customization">
+        <div role="status" aria-label="Загрузка настройки нижней панели">
           <div
             ref={footerRowRef}
             className="relative flex items-center gap-1 px-3 py-2 text-xs text-muted-foreground"

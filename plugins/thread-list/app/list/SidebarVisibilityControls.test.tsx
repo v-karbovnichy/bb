@@ -28,7 +28,7 @@ describe("thread overflow submenus", () => {
         <SidebarMore
           ariaLabel="More sections"
           listLabel="Hidden sections"
-          customizeLabel="Customize list"
+          customizeLabel="Настроить список"
           onCustomize={() => {}}
         >
           {(close) => (
@@ -68,7 +68,7 @@ describe("thread overflow submenus", () => {
         <SidebarMore
           ariaLabel="More sections"
           listLabel="Hidden sections"
-          customizeLabel="Customize list"
+          customizeLabel="Настроить список"
           onCustomize={() => {}}
         >
           {(close) => (
@@ -111,12 +111,12 @@ describe("thread overflow submenus", () => {
       screen.queryByRole("button", { name: "Planning thread" }),
     ).toBeNull();
     expect(
-      screen.queryByRole("menuitem", { name: "Customize list" }),
+      screen.queryByRole("menuitem", { name: "Настроить список" }),
     ).toBeNull();
     expect(
       screen.getByRole("button", { name: "Review thread" }),
     ).not.toBeNull();
-    fireEvent.click(screen.getByRole("menuitem", { name: "Back" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Назад" }));
     expect(screen.getByRole("button", { name: "Planning" })).not.toBeNull();
     expect(screen.queryByRole("button", { name: "Review thread" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Planning" }));
@@ -125,7 +125,7 @@ describe("thread overflow submenus", () => {
       screen.getByRole("button", { name: "Planning thread" }),
     ).not.toBeNull();
     expect(screen.queryByRole("button", { name: "Review thread" })).toBeNull();
-    fireEvent.click(screen.getByRole("menuitem", { name: "Back" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Назад" }));
     fireEvent.click(screen.getByRole("button", { name: "Review" }));
     fireEvent.click(screen.getByRole("button", { name: "Review thread" }));
 

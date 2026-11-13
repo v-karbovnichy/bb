@@ -107,7 +107,7 @@ async function rowOrder(slot: ReturnType<typeof renderList>) {
 
 async function selectSort(slot: ReturnType<typeof renderList>, label: string) {
   fireEvent.click(slot.getByRole("button", { name: /Sort/ }));
-  const drawer = await slot.findByRole("dialog", { name: "Sort tasks" });
+  const drawer = await slot.findByRole("dialog", { name: "Сортировать задачи" });
   fireEvent.click(
     await within(drawer).findByRole("menuitemcheckbox", { name: label }),
   );
@@ -118,7 +118,7 @@ describe("list sorting (compact viewport)", () => {
     const slot = renderList();
     expect(await rowOrder(slot)).toEqual(["TSK-1", "TSK-2", "TSK-3", "TSK-4"]);
 
-    await selectSort(slot, "Priority");
+    await selectSort(slot, "Приоритет");
     await waitFor(async () =>
       expect(await rowOrder(slot)).toEqual([
         "TSK-2",
@@ -128,7 +128,7 @@ describe("list sorting (compact viewport)", () => {
       ]),
     );
 
-    await selectSort(slot, "Due date");
+    await selectSort(slot, "Срок");
     await waitFor(async () =>
       expect(await rowOrder(slot)).toEqual([
         "TSK-1",
@@ -144,12 +144,12 @@ describe("list sorting (compact viewport)", () => {
     await slot.findByText("TSK-1");
 
     fireEvent.click(slot.getByRole("button", { name: /Sort/ }));
-    const drawer = await slot.findByRole("dialog", { name: "Sort tasks" });
+    const drawer = await slot.findByRole("dialog", { name: "Сортировать задачи" });
     const options = await within(drawer).findAllByRole("menuitemcheckbox");
     expect(options.map((option) => option.textContent)).toEqual([
-      "Manual",
-      "Priority",
-      "Due date",
+      "Вручную",
+      "Приоритет",
+      "Срок",
     ]);
     expect(
       options.map((option) => option.getAttribute("aria-checked")),
@@ -157,12 +157,12 @@ describe("list sorting (compact viewport)", () => {
 
     fireEvent.click(
       await within(drawer).findByRole("menuitemcheckbox", {
-        name: "Priority",
+        name: "Приоритет",
       }),
     );
     await waitFor(() =>
       expect(slot.getByRole("button", { name: /Sort/ }).textContent).toContain(
-        "Priority",
+        "Приоритет",
       ),
     );
   });

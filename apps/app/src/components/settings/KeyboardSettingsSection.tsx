@@ -107,11 +107,11 @@ const ShortcutRecorder = memo(
       }
       const next = appShortcutFromInput(event, platform);
       if (next === null) {
-        setError("Press a non-modifier key.");
+        setError("Нажмите клавишу, отличную от клавиши-модификатора.");
         return;
       }
       if (!canAssignAppShortcut(command, next)) {
-        setError("Use Command, Control, or Alt with a key.");
+        setError("Нажмите клавишу вместе с Command, Control или Alt.");
         return;
       }
       setError(null);
@@ -124,8 +124,8 @@ const ShortcutRecorder = memo(
         <Button
           aria-label={
             recording
-              ? `Recording shortcut for ${label}. Press keys or Escape to cancel.`
-              : `Record shortcut for ${label}, current shortcut ${formattedShortcut}`
+              ? `Запись сочетания для ${label}. Нажмите клавиши или Escape для отмены.`
+              : `Записать сочетание для ${label}, текущее сочетание ${formattedShortcut}`
           }
           aria-pressed={recording}
           className={cn(
@@ -148,9 +148,9 @@ const ShortcutRecorder = memo(
           variant="outline"
         >
           {recording ? (
-            "Press keys"
+            "Нажмите клавиши"
           ) : shortcutPresentation === null ? (
-            "Unassigned"
+            "Не назначено"
           ) : (
             <ShortcutPill
               className={SETTINGS_SHORTCUT_PILL_CLASS}
@@ -345,8 +345,8 @@ const KeyboardCommandRow = memo(
       desktopDefaultShortcut !== null &&
       !areAppShortcutsEqual(webDefaultShortcut, desktopDefaultShortcut)
         ? [
-            { label: "Web", shortcut: webDefaultShortcut },
-            { label: "Desktop", shortcut: desktopDefaultShortcut },
+            { label: "Веб", shortcut: webDefaultShortcut },
+            { label: "Компьютер", shortcut: desktopDefaultShortcut },
           ]
         : null;
     const sharedDefaultShortcut =
@@ -365,19 +365,19 @@ const KeyboardCommandRow = memo(
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
             <p className="text-sm text-foreground">{metadata.label}</p>
-            {desktopOnly ? <SettingsBadge>Desktop</SettingsBadge> : null}
-            {customized ? <SettingsBadge>Custom</SettingsBadge> : null}
+            {desktopOnly ? <SettingsBadge>Компьютер</SettingsBadge> : null}
+            {customized ? <SettingsBadge>Пользовательская</SettingsBadge> : null}
           </div>
           <p className="mt-0.5 text-xs leading-snug text-subtle-foreground/75">
             {metadata.description}
           </p>
           {splitDefaults !== null || sharedDefaultShortcut !== null ? (
             <div
-              aria-label={`${splitDefaults === null ? "Default shortcut" : "Default shortcuts"} for ${metadata.label}`}
+              aria-label={`${splitDefaults === null ? "Сочетание по умолчанию" : "Сочетания по умолчанию"} для ${metadata.label}`}
               className="mt-1.5 flex flex-wrap items-center gap-1.5"
             >
               <span className="text-xs text-subtle-foreground/75">
-                {splitDefaults === null ? "Default:" : "Defaults:"}
+                По умолчанию:
               </span>
               {sharedDefaultShortcut !== null ? (
                 <ShortcutPill
@@ -406,14 +406,14 @@ const KeyboardCommandRow = memo(
           ) : null}
           {model.defaultConflicts.length > 0 ? (
             <p className="mt-1 text-xs text-warning-text">
-              Default shortcut left unbound: also used by{" "}
+              Сочетание по умолчанию не назначено: его также использует{" "}
               {model.defaultConflicts.join(", ")}.
             </p>
           ) : null}
           {conflicts.length > 0 ? (
             <p className="mt-1 text-xs text-warning-text">
-              Also used by {conflicts.join(", ")}. Context determines which
-              command runs.
+              Его также использует {conflicts.join(", ")}. Выполняемая команда
+              зависит от контекста.
             </p>
           ) : null}
         </div>
@@ -428,7 +428,7 @@ const KeyboardCommandRow = memo(
             shortcut={shortcut}
           />
           <Button
-            aria-label={`Clear shortcut for ${metadata.label}`}
+            aria-label={`Очистить сочетание для ${metadata.label}`}
             className="size-7"
             disabled={!availableOnClient || shortcut === null}
             onClick={() => onChange(command, null)}
@@ -439,7 +439,7 @@ const KeyboardCommandRow = memo(
             <Icon name="X" className="size-3.5" />
           </Button>
           <Button
-            aria-label={`Reset shortcut for ${metadata.label}`}
+            aria-label={`Сбросить сочетание для ${metadata.label}`}
             className="size-7"
             disabled={!availableOnClient || !customized}
             onClick={() => onReset(command)}
@@ -486,7 +486,7 @@ export function KeyboardSettingsSection() {
     () => [
       ...APP_COMMAND_GROUPS,
       {
-        label: "Plugin commands",
+        label: "Команды плагинов",
         commands: commands.map((command) => ({
           command: pluginCommandId(command.pluginId, command.id),
           label: command.title,
@@ -596,7 +596,7 @@ export function KeyboardSettingsSection() {
       .filter(({ rank }) => rank !== -1)
       .sort((left, right) => left.rank - right.rank)
       .map(({ metadata }) => metadata);
-    return commands.length === 0 ? [] : [{ label: "Search results", commands }];
+    return commands.length === 0 ? [] : [{ label: "Результаты поиска", commands }];
   }, [commandGroups, search, shortcutMatches]);
 
   const latestSettingsRef = useRef({
@@ -731,19 +731,19 @@ export function KeyboardSettingsSection() {
           type="button"
           variant="outline"
         >
-          Reset all
+          Сбросить все
         </Button>
       }
-      description="Click a shortcut, then press its new keys. Changes sync to every bb window."
-      title="Keyboard shortcuts"
+      description="Нажмите на сочетание клавиш, затем нажмите новые клавиши. Изменения синхронизируются во всех окнах bb."
+      title="Сочетания клавиш"
     >
       <div className="space-y-5">
         <SettingsWithControl
-          description="Show shortcut badges after holding Command or Control."
-          label="Show keyboard hints when holding CMD / Control"
+          description="Показывать подсказки сочетаний при удержании Command или Control."
+          label="Показывать подсказки при удержании CMD / Control"
         >
           <Switch
-            aria-label="Show keyboard hints when holding CMD / Control"
+            aria-label="Показывать подсказки при удержании CMD / Control"
             checked={generalSettings.showKeyboardHints}
             disabled={systemConfig.data === undefined}
             onCheckedChange={(showKeyboardHints) =>
@@ -752,9 +752,9 @@ export function KeyboardSettingsSection() {
           />
         </SettingsWithControl>
         <Input
-          aria-label="Search keyboard shortcuts"
+          aria-label="Поиск сочетаний клавиш"
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search shortcuts"
+          placeholder="Искать сочетания"
           value={search}
         />
         {pendingAssignment !== null ? (
@@ -763,11 +763,11 @@ export function KeyboardSettingsSection() {
             className="space-y-2 rounded border border-border p-3"
           >
             <p className="text-sm">
-              Shortcut already used by{" "}
+              Сочетание уже используется командой{" "}
               {pendingAssignment.conflicts
                 .map((id) => labels.get(id) ?? id)
                 .join(", ")}
-              . Replace it with{" "}
+              . Заменить его для команды{" "}
               {labels.get(pendingAssignment.command) ??
                 pendingAssignment.command}
               ?
@@ -784,14 +784,14 @@ export function KeyboardSettingsSection() {
                 }
                 size="sm"
               >
-                Replace binding
+                Заменить сочетание
               </Button>
               <Button
                 onClick={() => setPendingAssignment(null)}
                 size="sm"
                 variant="outline"
               >
-                Cancel
+                Отмена
               </Button>
             </div>
           </div>
@@ -831,7 +831,7 @@ export function KeyboardSettingsSection() {
           ))}
           {visibleGroups.length === 0 ? (
             <p className="py-6 text-center text-sm text-subtle-foreground">
-              No shortcuts match “{search}”.
+              По запросу «{search}» сочетания не найдены.
             </p>
           ) : null}
         </fieldset>

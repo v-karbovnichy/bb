@@ -45,7 +45,7 @@ export function ThreadWorkflowStack({
     return (
       <PromptStackPeekLayers hiddenCount={running.length - 1}>
         <PromptStackCard
-          ariaLabel="Workflows"
+          ariaLabel="Процессы"
           className="overflow-hidden"
           style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
         >
@@ -53,7 +53,7 @@ export function ThreadWorkflowStack({
             ref={focus.triggerRef}
             type="button"
             aria-expanded="false"
-            aria-label={`${running.length} workflows running. Show all`}
+            aria-label={`Работают процессы: ${running.length}. Показать все`}
             onClick={focus.onTriggerClick}
             className={cn(
               PROMPT_STACK_CARD_HEADER_BUTTON_CLASS,
@@ -83,7 +83,7 @@ export function ThreadWorkflowStack({
         <PromptStackCollapseRow
           buttonRef={focus.collapseRef}
           controlsId={listId}
-          label={`Collapse ${running.length} workflows`}
+          label={`Свернуть процессы (${running.length})`}
           onCollapse={focus.onCollapseClick}
         />
       ) : null}

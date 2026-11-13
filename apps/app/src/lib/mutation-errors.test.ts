@@ -132,7 +132,7 @@ describe("getMutationErrorMeta", () => {
         fallbackMessage: "Failed to send message.",
         lifecycleOperation: "send_message",
       }),
-    ).toBe("Failed to send message. The thread is still starting.");
+    ).toBe("Не удалось отправить сообщение. Чат ещё запускается.");
   });
 });
 
@@ -160,7 +160,7 @@ describe("getMutationErrorMessage", () => {
         fallbackMessage: "Request failed.",
       }),
     ).toBe(
-      "Could not reach the server. Check that it is running and try again.",
+      "Не удалось связаться с сервером. Проверьте, что он запущен, и повторите попытку.",
     );
 
     const fallbackHttpError = new HttpError({
@@ -198,8 +198,8 @@ describe("showMutationErrorToast", () => {
 
     const props = readLatestToastProps();
     expect(props.tone).toBe("error");
-    expect(props.title).toBe("Request failed");
-    expect(props.description).toBe("Please try again");
+    expect(props.title).toBe("Ошибка запроса");
+    expect(props.description).toBe("Повторите попытку");
   });
 
   it("keeps the submission context in the title and the server explanation in the body", () => {
@@ -237,8 +237,8 @@ describe("showMutationErrorToast", () => {
       lifecycleOperation: "send_message",
     });
     expect(readLatestToastProps()).toMatchObject({
-      title: "Failed to send message",
-      description: "The thread is still starting.",
+      title: "Не удалось отправить сообщение",
+      description: "Чат ещё запускается.",
     });
   });
 

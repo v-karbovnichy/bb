@@ -126,9 +126,9 @@ describe("connect settings section", () => {
       },
     );
 
-    await slot.findByRole("button", { name: "Sign in to your bb account" });
+    await slot.findByRole("button", { name: "Войти в аккаунт bb" });
     slot.getByText("you.bb.localhost:42745");
-    slot.getByText(/Only your bb\.localhost:42745 account can open this bb/);
+    slot.getByText(/Только ваш аккаунт bb\.localhost:42745 может открыть этот bb/);
   });
 
   it("signs in through bb account, shows the code, and waits for approval", async () => {
@@ -155,7 +155,7 @@ describe("connect settings section", () => {
     );
 
     const signIn = await slot.findByRole("button", {
-      name: "Sign in to your bb account",
+      name: "Войти в аккаунт bb",
     });
     vi.useFakeTimers();
     await act(async () => fireEvent.click(signIn));
@@ -168,16 +168,16 @@ describe("connect settings section", () => {
     expect(
       slot.navigateCalls.filter((call) => call.method === "openUrl"),
     ).toEqual([]);
-    slot.getByText("Confirm this code on getbb.app:");
-    expect(slot.getByLabelText("Sign-in code").textContent).toBe("K7QP-2M4X");
+    slot.getByText("Подтвердите этот код на getbb.app:");
+    expect(slot.getByLabelText("Код входа").textContent).toBe("K7QP-2M4X");
     const link = slot.getByRole("link", {
-      name: /Open getbb\.app/,
+      name: /Открыть getbb\.app/,
     }) as HTMLAnchorElement;
     expect(link.href).toBe("https://getbb.app/link?code=K7QP-2M4X");
     expect(link.target).toBe("_blank");
-    slot.getByRole("button", { name: "Cancel" });
+    slot.getByRole("button", { name: "Отмена" });
     slot.getByText(
-      "Waiting for you to approve it. You can approve from any device.",
+      "Ожидаем подтверждения. Подтвердить можно с любого устройства.",
     );
 
     await act(async () => vi.advanceTimersByTimeAsync(1_999));
@@ -189,7 +189,7 @@ describe("connect settings section", () => {
     expect(polls).toBe(2);
     currentStatus = connected();
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, currentStatus);
-    expect(slot.getByText("Connected")).toBeTruthy();
+    expect(slot.getByText("Подключено")).toBeTruthy();
   });
 
   it("backs off the sign-in poll while bb account can't be reached", async () => {
@@ -213,7 +213,7 @@ describe("connect settings section", () => {
       },
     );
     const signIn = await slot.findByRole("button", {
-      name: "Sign in to your bb account",
+      name: "Войти в аккаунт bb",
     });
     vi.useFakeTimers();
     await act(async () => fireEvent.click(signIn));
@@ -242,9 +242,9 @@ describe("connect settings section", () => {
       { sdk: account.sdk, rpc: { status: () => status() } },
     );
     fireEvent.click(
-      await slot.findByRole("button", { name: "Sign in to your bb account" }),
+      await slot.findByRole("button", { name: "Войти в аккаунт bb" }),
     );
-    await slot.findByText(/The bb account plugin is off/);
+    await slot.findByText(/Плагин аккаунта bb выключен/);
   });
 
   it("auto-submits a normalized 4-4 pairing code through bb account and applies live paired status", async () => {
@@ -260,9 +260,9 @@ describe("connect settings section", () => {
     );
 
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "  k7qp-2m4x  " },
     });
 
@@ -278,9 +278,9 @@ describe("connect settings section", () => {
     currentStatus = connected();
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, currentStatus);
 
-    await slot.findByText("Connected");
+    await slot.findByText("Подключено");
     slot.getByText("https://workstation.getbb.app");
-    slot.getByRole("button", { name: "Copy URL" });
+    slot.getByRole("button", { name: "Скопировать адрес" });
   });
 
   it("does not auto-submit an incomplete code", async () => {
@@ -291,13 +291,13 @@ describe("connect settings section", () => {
       { sdk: account.sdk, rpc: { status: () => status() } },
     );
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "K7QP-2M4" },
     });
     expect(
-      (slot.getByRole("button", { name: "Pair" }) as HTMLButtonElement)
+      (slot.getByRole("button", { name: "Привязать" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
     expect(account.calls).toEqual([]);
@@ -316,14 +316,14 @@ describe("connect settings section", () => {
     );
 
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "K7QP-2M4X" },
     });
 
-    await slot.findByText(/That code has expired\./);
-    slot.getByRole("link", { name: "Get a new code" });
+    await slot.findByText(/Срок действия кода истёк\./);
+    slot.getByRole("link", { name: "Получить новый код" });
     expect(slot.queryByText(/expired_code/)).toBeNull();
   });
 
@@ -340,14 +340,14 @@ describe("connect settings section", () => {
     );
 
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "K7QP-2M4X" },
     });
 
-    await slot.findByText(/hasn't returned your account yet/);
-    expect(slot.queryByText(/invalid or has expired/)).toBeNull();
+    await slot.findByText(/пока не вернул данные аккаунта/);
+    expect(slot.queryByText(/недействителен или истёк/)).toBeNull();
     expect(slot.queryByText(/profile_unavailable/)).toBeNull();
   });
 
@@ -357,8 +357,8 @@ describe("connect settings section", () => {
       {},
       { rpc: { status: () => connected({ remoteClients: 2 }) } },
     );
-    await slot.findByText("Connected");
-    await slot.findByText(/2 viewing remotely/);
+    await slot.findByText("Подключено");
+    await slot.findByText(/2 удалённых просмотров/);
   });
 
   it("reconnecting shows the amber state with the human transport error", async () => {
@@ -376,10 +376,10 @@ describe("connect settings section", () => {
         },
       },
     );
-    await slot.findByText("Reconnecting…");
+    await slot.findByText("Повторное подключение…");
     await slot.findByText(/can't reach getbb.app — connection refused/);
-    await slot.findByText(/Local access is unaffected/);
-    expect(slot.queryByRole("button", { name: "Open" })).toBeNull();
+    await slot.findByText(/Локальный доступ работает/);
+    expect(slot.queryByRole("button", { name: "Открыть" })).toBeNull();
   });
 
   it("groups shares by host and degrades an unreachable host's group", async () => {
@@ -430,24 +430,24 @@ describe("connect settings section", () => {
         .closest("a")
         ?.getAttribute("href"),
     ).toBe("https://workstation--3000.getbb.app");
-    slot.getByText(`Unavailable — ${reason}`);
+    slot.getByText(`Недоступно — ${reason}`);
     expect(
-      slot.queryByRole("button", { name: "Copy share URL for port 5173" }),
+      slot.queryByRole("button", { name: "Скопировать адрес порта 5173" }),
     ).toBeNull();
 
     const machine = slot.getByRole("button", {
-      name: "Workstation, 2 shared ports",
+      name: "Workstation, открыто портов: 2",
     });
     fireEvent.click(machine);
     expect(machine.getAttribute("aria-expanded")).toBe("false");
     expect(
       slot.queryByRole("link", { name: "workstation--3000.getbb.app" }),
     ).toBeNull();
-    expect(slot.getAllByRole("button", { name: "Revoke" })).toHaveLength(1);
+    expect(slot.getAllByRole("button", { name: "Отозвать" })).toHaveLength(1);
     fireEvent.click(machine);
     expect(machine.getAttribute("aria-expanded")).toBe("true");
 
-    const revokeButtons = slot.getAllByRole("button", { name: "Revoke" });
+    const revokeButtons = slot.getAllByRole("button", { name: "Отозвать" });
     expect(revokeButtons).toHaveLength(3);
     fireEvent.click(revokeButtons[0]!);
     await waitFor(() =>
@@ -474,14 +474,14 @@ describe("connect settings section", () => {
       shares: currentStatus.shares.filter((share) => share.port !== 8080),
     });
     const updatedMachine = slot.getByRole("button", {
-      name: "Workstation, 1 shared ports",
+      name: "Workstation, открыто портов: 1",
     });
     expect(updatedMachine.getAttribute("aria-expanded")).toBe("false");
     expect(
       slot.getByRole("button", {
-        name: "Revoke all (1) shared ports on Workstation",
+        name: "Отозвать все открытые порты (1) на Workstation",
       }).textContent,
-    ).toBe("Revoke all (1)");
+    ).toBe("Отозвать все (1)");
     expect(
       slot.queryByRole("link", { name: "workstation--3000.getbb.app" }),
     ).toBeNull();
@@ -517,7 +517,7 @@ describe("connect settings section", () => {
       },
     );
     const revokeAll = await slot.findByRole("button", {
-      name: "Revoke all (1) shared ports on Workstation",
+      name: "Отозвать все открытые порты (1) на Workstation",
     });
     fireEvent.click(revokeAll);
     await waitFor(() =>
@@ -528,7 +528,7 @@ describe("connect settings section", () => {
     );
     expect(revokeAll.hasAttribute("disabled")).toBe(true);
     expect(
-      slot.getByRole("button", { name: "Revoke" }).hasAttribute("disabled"),
+      slot.getByRole("button", { name: "Отозвать" }).hasAttribute("disabled"),
     ).toBe(true);
     fireEvent.click(revokeAll);
     expect(
@@ -561,14 +561,14 @@ describe("connect settings section", () => {
       },
     );
 
-    await slot.findByText("Shared ports");
-    expect(slot.queryByLabelText("Port to share")).toBeNull();
-    fireEvent.click(slot.getByRole("button", { name: "Expose a port" }));
+    await slot.findByText("Открытые порты");
+    expect(slot.queryByLabelText("Открываемый порт")).toBeNull();
+    fireEvent.click(slot.getByRole("button", { name: "Открыть порт" }));
 
-    fireEvent.change(slot.getByLabelText("Port to share"), {
+    fireEvent.change(slot.getByLabelText("Открываемый порт"), {
       target: { value: "8080" },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Expose" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть" }));
 
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
@@ -591,23 +591,23 @@ describe("connect settings section", () => {
       expect(slot.rpcCalls).toContainEqual({ method: "status", input: null }),
     );
     expect(
-      slot.queryByRole("button", { name: "Add mobile device" }),
+      slot.queryByRole("button", { name: "Добавить мобильное устройство" }),
     ).toBeNull();
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, connected());
-    await slot.findByRole("button", { name: "Add mobile device" });
+    await slot.findByRole("button", { name: "Добавить мобильное устройство" });
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, {
       ...connected(),
       enabled: false,
     });
     expect(
-      slot.queryByRole("button", { name: "Add mobile device" }),
+      slot.queryByRole("button", { name: "Добавить мобильное устройство" }),
     ).toBeNull();
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, {
       ...connected(),
       state: "reconnecting",
     });
     expect(
-      slot.queryByRole("button", { name: "Add mobile device" }),
+      slot.queryByRole("button", { name: "Добавить мобильное устройство" }),
     ).toBeNull();
   });
 
@@ -628,10 +628,10 @@ describe("connect settings section", () => {
       },
     );
 
-    await slot.findByRole("button", { name: "Add mobile device" });
+    await slot.findByRole("button", { name: "Добавить мобильное устройство" });
     expect(slot.queryByText("K7QP-2M4X")).toBeNull();
     fireEvent.click(
-      await slot.findByRole("button", { name: "Add mobile device" }),
+      await slot.findByRole("button", { name: "Добавить мобильное устройство" }),
     );
 
     await waitFor(() =>
@@ -641,10 +641,10 @@ describe("connect settings section", () => {
       }),
     );
     await slot.findByText("K7QP-2M4X");
-    slot.getByRole("button", { name: "Copy pairing code" });
-    slot.getByText(/Code expires in 9:5\d/);
+    slot.getByRole("button", { name: "Скопировать код привязки" });
+    slot.getByText(/Код истечёт через 9:5\d/);
     const qr = (await slot.findByRole("img", {
-      name: "QR code to pair the bb mobile app",
+      name: "QR-код для привязки мобильного приложения bb",
     })) as HTMLImageElement;
     expect(qr.src.startsWith("data:image/png")).toBe(true);
   });
@@ -670,26 +670,26 @@ describe("connect settings section", () => {
     );
 
     const addMobileDevice = await slot.findByRole("button", {
-      name: "Add mobile device",
+      name: "Добавить мобильное устройство",
     });
     vi.useFakeTimers();
     await act(async () => fireEvent.click(addMobileDevice));
     expect(slot.getByText("AAAA-1111")).toBeTruthy();
     await act(async () => vi.advanceTimersByTimeAsync(1_000));
-    expect(slot.queryByText("Code expired")).toBeNull();
+    expect(slot.queryByText("Срок действия кода истёк")).toBeNull();
     await act(async () => vi.advanceTimersByTimeAsync(1_000));
-    expect(slot.getByText("Code expired")).toBeTruthy();
+    expect(slot.getByText("Срок действия кода истёк")).toBeTruthy();
     expect(
-      slot.queryByRole("button", { name: "Copy pairing code" }),
+      slot.queryByRole("button", { name: "Скопировать код привязки" }),
     ).toBeNull();
     await act(async () => {
       fireEvent.click(
-        slot.getByRole("button", { name: "Generate a new code" }),
+        slot.getByRole("button", { name: "Получить новый код" }),
       );
     });
     expect(slot.getByText("BBBB-2222")).toBeTruthy();
     expect(slot.queryByText("AAAA-1111")).toBeNull();
-    slot.getByText(/Code expires in/);
+    slot.getByText(/Код истечёт через/);
   });
 
   it("explains the account machine limit with a dashboard link", async () => {
@@ -706,18 +706,18 @@ describe("connect settings section", () => {
       },
     );
 
-    await slot.findByRole("button", { name: "Add mobile device" });
+    await slot.findByRole("button", { name: "Добавить мобильное устройство" });
     fireEvent.click(
-      await slot.findByRole("button", { name: "Add mobile device" }),
+      await slot.findByRole("button", { name: "Добавить мобильное устройство" }),
     );
 
-    await slot.findByText(/reached its machine limit/);
+    await slot.findByText(/достигнут лимит машин/);
     const link = slot.getByRole("link", {
-      name: "Revoke a device you no longer use",
+      name: "Отозвать доступ у неиспользуемого устройства",
     }) as HTMLAnchorElement;
     expect(link.href).toBe("https://getbb.app/dashboard");
     expect(slot.queryByText("machine_limit")).toBeNull();
-    slot.getByRole("button", { name: "Add mobile device" });
+    slot.getByRole("button", { name: "Добавить мобильное устройство" });
   });
 
   it("turn off confirms, keeps the account, and shows the off card with a receipt", async () => {
@@ -740,12 +740,12 @@ describe("connect settings section", () => {
       },
     );
 
-    await slot.findByText("Connected");
-    fireEvent.click(slot.getByRole("button", { name: "Turn off" }));
+    await slot.findByText("Подключено");
+    fireEvent.click(slot.getByRole("button", { name: "Выключить" }));
 
-    await slot.findByText("Turn off remote access?");
-    await slot.findByText(/stays signed in to your bb account/);
-    fireEvent.click(slot.getAllByRole("button", { name: "Turn off" }).at(-1)!);
+    await slot.findByText("Выключить удалённый доступ?");
+    await slot.findByText(/Вход в аккаунт bb сохранится/);
+    fireEvent.click(slot.getAllByRole("button", { name: "Выключить" }).at(-1)!);
 
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
@@ -755,9 +755,9 @@ describe("connect settings section", () => {
     );
     await slot.emitRealtime(CONNECT_REALTIME_CHANNEL, currentStatus);
 
-    await slot.findByText("Remote access is off");
-    await slot.findByText("Remote access turned off");
-    fireEvent.click(slot.getByRole("button", { name: "Turn on" }));
+    await slot.findByText("Удалённый доступ выключен");
+    await slot.findByText("Удалённый доступ отключён");
+    fireEvent.click(slot.getByRole("button", { name: "Включить" }));
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
         method: "setRemoteAccess",
@@ -783,7 +783,7 @@ describe("connect settings section", () => {
     );
 
     const signIn = await slot.findByRole("button", {
-      name: "Sign in to your bb account",
+      name: "Войти в аккаунт bb",
     });
     expect(onSetupStarted).not.toHaveBeenCalled();
     fireEvent.click(signIn);
@@ -811,11 +811,11 @@ describe("connect settings section", () => {
     );
 
     fireEvent.click(
-      await slot.findByRole("button", { name: "Sign in to your bb account" }),
+      await slot.findByRole("button", { name: "Войти в аккаунт bb" }),
     );
     const retry = await slot.findByRole(
       "button",
-      { name: "Try again" },
+      { name: "Повторить попытку" },
       { timeout: 4_000 },
     );
     expect(onSetupStarted).toHaveBeenCalledOnce();
@@ -832,10 +832,10 @@ describe("connect settings section", () => {
       { sdk: account.sdk, rpc: { status: () => status() } },
     );
     fireEvent.click(
-      await unpaired.findByRole("button", { name: "Have a pairing code?" }),
+      await unpaired.findByRole("button", { name: "Есть код привязки?" }),
     );
     expect(onSetupStarted).not.toHaveBeenCalled();
-    fireEvent.change(unpaired.getByLabelText("Pairing code"), {
+    fireEvent.change(unpaired.getByLabelText("Код привязки"), {
       target: { value: "k7qp-2m4x" },
     });
     await waitFor(() => expect(onSetupStarted).toHaveBeenCalledOnce());
@@ -852,7 +852,7 @@ describe("connect settings section", () => {
         },
       },
     );
-    const turnOn = await off.findByRole("button", { name: "Turn on" });
+    const turnOn = await off.findByRole("button", { name: "Включить" });
     expect(onSetupStarted).not.toHaveBeenCalled();
     fireEvent.click(turnOn);
     expect(onSetupStarted).toHaveBeenCalledOnce();
@@ -875,16 +875,16 @@ describe("connect settings section", () => {
     );
     fireEvent.click(
       await unpaired.findByRole("button", {
-        name: "Sign in to your bb account",
+        name: "Войти в аккаунт bb",
       }),
     );
     await waitFor(() =>
       expect(onSetupFailed).toHaveBeenCalledExactlyOnceWith("sign_in", "other"),
     );
     fireEvent.click(
-      unpaired.getByRole("button", { name: "Have a pairing code?" }),
+      unpaired.getByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(unpaired.getByLabelText("Pairing code"), {
+    fireEvent.change(unpaired.getByLabelText("Код привязки"), {
       target: { value: "k7qp-2m4x" },
     });
     await waitFor(() =>
@@ -905,7 +905,7 @@ describe("connect settings section", () => {
         },
       },
     );
-    fireEvent.click(await off.findByRole("button", { name: "Turn on" }));
+    fireEvent.click(await off.findByRole("button", { name: "Включить" }));
     await waitFor(() =>
       expect(onSetupFailed).toHaveBeenCalledExactlyOnceWith("turn_on"),
     );
@@ -922,7 +922,7 @@ describe("Connect settings realtime recovery", () => {
         rpc: { status: () => currentStatus },
       },
     );
-    await slot.findByText("Reconnecting…");
+    await slot.findByText("Повторное подключение…");
     expect(
       slot.inspection.rpcCalls.filter((call) => call.method === "status"),
     ).toHaveLength(1);
@@ -934,8 +934,8 @@ describe("Connect settings realtime recovery", () => {
     ).toHaveLength(1);
     await slot.behavior.setRealtimeConnectionState("connected");
 
-    await slot.findByText("Connected");
-    expect(slot.queryByText("Reconnecting…")).toBeNull();
+    await slot.findByText("Подключено");
+    expect(slot.queryByText("Повторное подключение…")).toBeNull();
     expect(
       slot.inspection.rpcCalls.filter((call) => call.method === "status"),
     ).toHaveLength(2);
@@ -943,7 +943,7 @@ describe("Connect settings realtime recovery", () => {
     await slot.behavior.setRealtimeConnectionState("reconnecting");
     currentStatus = connected({ state: "reconnecting" });
     await slot.behavior.setRealtimeConnectionState("connected");
-    await slot.findByText("Reconnecting…");
+    await slot.findByText("Повторное подключение…");
     expect(
       slot.inspection.rpcCalls.filter((call) => call.method === "status"),
     ).toHaveLength(3);
@@ -964,13 +964,13 @@ describe("Connect settings realtime recovery", () => {
         },
       },
     );
-    await slot.findByText("Failed to load remote-access status: offline");
+    await slot.findByText("Не удалось загрузить состояние удалённого доступа: offline");
 
     reachable = true;
     await slot.behavior.setRealtimeConnectionState("connected");
 
-    await slot.findByText("Connected");
-    expect(slot.queryByText(/Failed to load/)).toBeNull();
+    await slot.findByText("Подключено");
+    expect(slot.queryByText(/Не удалось загрузить/)).toBeNull();
   });
 
   it("keeps the reconnect status when the earlier load settles late", async () => {
@@ -991,11 +991,11 @@ describe("Connect settings realtime recovery", () => {
     );
 
     await slot.behavior.setRealtimeConnectionState("connected");
-    await slot.findByText("Connected");
+    await slot.findByText("Подключено");
     await act(async () => failFirstLoad(new Error("tunnel dropped")));
 
-    expect(slot.queryByText(/Failed to load/)).toBeNull();
-    expect(slot.getByText("Connected")).toBeTruthy();
+    expect(slot.queryByText(/Не удалось загрузить/)).toBeNull();
+    expect(slot.getByText("Подключено")).toBeTruthy();
   });
 });
 
@@ -1008,7 +1008,7 @@ describe("connect setup guide section", () => {
     ) => Promise<HTMLElement>;
   }) =>
     fireEvent.click(
-      await slot.findByRole("button", { name: "I have the app" }),
+      await slot.findByRole("button", { name: "У меня есть приложение" }),
     );
 
   it("offers only Set up while bb connect is off", async () => {
@@ -1018,12 +1018,12 @@ describe("connect setup guide section", () => {
       { rpc: { status: () => status() } },
     );
 
-    await slot.findByRole("button", { name: "Set up" });
-    slot.getByText(/A private web address for your bb server/);
+    await slot.findByRole("button", { name: "Настроить" });
+    slot.getByText(/Личный веб-адрес вашего сервера bb/);
     expect(
-      slot.queryByRole("button", { name: "Have a pairing code?" }),
+      slot.queryByRole("button", { name: "Есть код привязки?" }),
     ).toBeNull();
-    expect(slot.queryByText("Install the bb app on your phone:")).toBeNull();
+    expect(slot.queryByText("Установите приложение bb на телефон:")).toBeNull();
     expect(slot.queryByRole("button", { name: "iPhone" })).toBeNull();
     expect(slot.rpcCalls.map((call) => call.method)).not.toContain(
       "createMachineCode",
@@ -1046,7 +1046,7 @@ describe("connect setup guide section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Настроить" }));
     await slot.findByRole("link", { name: "getbb.app" });
     expect(onSetupStarted).toHaveBeenCalledOnce();
     expect(slot.navigateCalls).toContainEqual({
@@ -1057,22 +1057,22 @@ describe("connect setup guide section", () => {
       slot.queryByText("bb connect turns on automatically after you sign in."),
     ).toBeNull();
     expect(
-      slot.getByText(/Finish signing in on/u).closest("[role=status]"),
+      slot.getByText(/Завершите вход на/u).closest("[role=status]"),
     ).not.toBeNull();
     expect(
       (slot.getByRole("link", { name: "getbb.app" }) as HTMLAnchorElement).href,
     ).toBe("https://getbb.app/link?code=K7QP-2M4X");
     expect(slot.queryByText("K7QP-2M4X")).toBeNull();
-    expect(slot.queryByText(/sign-in code/iu)).toBeNull();
-    expect(slot.queryByRole("button", { name: /copy/iu })).toBeNull();
-    expect(slot.queryByRole("button", { name: "Set up" })).toBeNull();
-    expect(slot.queryByRole("button", { name: "Cancel" })).toBeNull();
+    expect(slot.queryByText(/код входа/iu)).toBeNull();
+    expect(slot.queryByRole("button", { name: /скопировать/iu })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Настроить" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Отмена" })).toBeNull();
     expect(
       slot
-        .getByRole("button", { name: "Have a pairing code?" })
+        .getByRole("button", { name: "Есть код привязки?" })
         .getAttribute("aria-expanded"),
     ).toBe("false");
-    expect(slot.queryByLabelText("Pairing code")).toBeNull();
+    expect(slot.queryByLabelText("Код привязки")).toBeNull();
   });
 
   it("keeps the sign-in code behind Show pairing code, one footer panel open at a time", async () => {
@@ -1090,34 +1090,34 @@ describe("connect setup guide section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Настроить" }));
     const showCode = await slot.findByRole("button", {
-      name: "Show pairing code",
+      name: "Показать код привязки",
     });
     const havePairingCode = slot.getByRole("button", {
-      name: "Have a pairing code?",
+      name: "Есть код привязки?",
     });
     expect(showCode.getAttribute("aria-expanded")).toBe("false");
     expect(slot.queryByText("K7QP-2M4X")).toBeNull();
 
     fireEvent.click(showCode);
     expect(showCode.getAttribute("aria-expanded")).toBe("true");
-    expect(slot.getByLabelText("bb connect sign-in code").textContent).toBe(
+    expect(slot.getByLabelText("Код входа bb connect").textContent).toBe(
       "K7QP-2M4X",
     );
-    slot.getByRole("button", { name: "Copy code" });
-    expect(slot.queryByLabelText("Pairing code")).toBeNull();
+    slot.getByRole("button", { name: "Скопировать код" });
+    expect(slot.queryByLabelText("Код привязки")).toBeNull();
 
     fireEvent.click(havePairingCode);
     expect(havePairingCode.getAttribute("aria-expanded")).toBe("true");
     expect(showCode.getAttribute("aria-expanded")).toBe("false");
     expect(slot.queryByText("K7QP-2M4X")).toBeNull();
-    slot.getByLabelText("Pairing code");
+    slot.getByLabelText("Код привязки");
 
     fireEvent.click(showCode);
     expect(havePairingCode.getAttribute("aria-expanded")).toBe("false");
-    expect(slot.queryByLabelText("Pairing code")).toBeNull();
-    slot.getByLabelText("bb connect sign-in code");
+    expect(slot.queryByLabelText("Код привязки")).toBeNull();
+    slot.getByLabelText("Код входа bb connect");
 
     fireEvent.click(showCode);
     expect(slot.queryByText("K7QP-2M4X")).toBeNull();
@@ -1144,14 +1144,14 @@ describe("connect setup guide section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Настроить" }));
     const toggle = await slot.findByRole("button", {
-      name: "Have a pairing code?",
+      name: "Есть код привязки?",
     });
     fireEvent.click(toggle);
     expect(toggle.getAttribute("aria-expanded")).toBe("true");
     currentStatus = connected();
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "k7qp-2m4x" },
     });
 
@@ -1163,14 +1163,14 @@ describe("connect setup guide section", () => {
       }),
     );
     expect(onSetupStarted).toHaveBeenCalledTimes(2);
-    await slot.findByText("bb connect is on");
+    await slot.findByText("bb connect включён");
     expect(account.calls).toContainEqual({
       pluginId: "bb-account",
       method: "login.cancel",
       input: { loginId: "login-1" },
     });
     expect(
-      slot.queryByRole("button", { name: "Have a pairing code?" }),
+      slot.queryByRole("button", { name: "Есть код привязки?" }),
     ).toBeNull();
   });
 
@@ -1203,35 +1203,35 @@ describe("connect setup guide section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Настроить" }));
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
     currentStatus = () =>
       new Promise<ConnectStatus>((resolve) => {
         statusAfterPairing = resolve;
       });
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "k7qp-2m4x" },
     });
 
-    await slot.findByText("Signed in. Turning on bb connect…");
-    expect(slot.queryByRole("button", { name: "Set up" })).toBeNull();
-    expect(slot.queryByText(/Finish signing in on/u)).toBeNull();
+    await slot.findByText("Вход выполнен. Включаем bb connect…");
+    expect(slot.queryByRole("button", { name: "Настроить" })).toBeNull();
+    expect(slot.queryByText(/Завершите вход на/u)).toBeNull();
     expect(slot.queryByText(/cancelled/u)).toBeNull();
     expect(
-      slot.queryByRole("button", { name: "Have a pairing code?" }),
+      slot.queryByRole("button", { name: "Есть код привязки?" }),
     ).toBeNull();
 
     await waitFor(() => expect(statusAfterPairing).not.toBeNull());
     await act(async () => {
       statusAfterPairing?.(status({ paired: true, enabled: false }));
     });
-    await slot.findByText("bb connect is on");
+    await slot.findByText("bb connect включён");
     expect(
       slot.rpcCalls.filter((call) => call.method === "setRemoteAccess"),
     ).toHaveLength(1);
-    expect(slot.queryByRole("button", { name: "Set up" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Настроить" })).toBeNull();
   });
 
   it("reports a rejected pairing code as a pairing failure and keeps the pending sign-in", async () => {
@@ -1254,11 +1254,11 @@ describe("connect setup guide section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Set up" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Настроить" }));
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: "k7qp-2m4x" },
     });
 
@@ -1269,10 +1269,10 @@ describe("connect setup guide section", () => {
       ),
     );
     expect(onSetupStarted).toHaveBeenCalledTimes(2);
-    await slot.findByText(/That code has expired\./u);
-    slot.getByText(/Finish signing in on/u);
+    await slot.findByText(/Срок действия кода истёк\./u);
+    slot.getByText(/Завершите вход на/u);
     expect(
-      slot.getByLabelText("Pairing code").getAttribute("aria-invalid"),
+      slot.getByLabelText("Код привязки").getAttribute("aria-invalid"),
     ).toBe("true");
     expect(account.calls.map((call) => call.method)).not.toContain(
       "login.cancel",
@@ -1308,7 +1308,7 @@ describe("connect setup guide section", () => {
       },
     );
 
-    const setUp = await slot.findByRole("button", { name: "Set up" });
+    const setUp = await slot.findByRole("button", { name: "Настроить" });
     await waitFor(() =>
       expect(slot.rpcCalls.map((call) => call.method)).toContain("status"),
     );
@@ -1317,7 +1317,7 @@ describe("connect setup guide section", () => {
     await act(async () => fireEvent.click(setUp));
     await act(async () => vi.advanceTimersByTimeAsync(2_000));
     await act(async () => vi.advanceTimersByTimeAsync(100));
-    expect(slot.getByText("bb connect is on")).toBeTruthy();
+    expect(slot.getByText("bb connect включён")).toBeTruthy();
     expect(
       slot.rpcCalls.filter((call) => call.method === "setRemoteAccess"),
     ).toHaveLength(1);
@@ -1348,7 +1348,7 @@ describe("connect setup guide section", () => {
       },
     );
 
-    const setUp = await slot.findByRole("button", { name: "Set up" });
+    const setUp = await slot.findByRole("button", { name: "Настроить" });
     await waitFor(() =>
       expect(slot.rpcCalls.map((call) => call.method)).toContain("status"),
     );
@@ -1360,8 +1360,8 @@ describe("connect setup guide section", () => {
     expect(
       slot.getByText(/Remote access is unavailable right now/u),
     ).toBeTruthy();
-    expect(slot.queryByText(/Turning on bb connect/u)).toBeNull();
-    slot.getByRole("button", { name: "Set up" });
+    expect(slot.queryByText(/Включаем bb connect/u)).toBeNull();
+    slot.getByRole("button", { name: "Настроить" });
     expect(onSetupFailed).toHaveBeenCalledExactlyOnceWith("turn_on");
   });
 
@@ -1395,12 +1395,12 @@ describe("connect setup guide section", () => {
     await act(async () => resolveStatus(status()));
     vi.useFakeTimers();
     await act(async () =>
-      fireEvent.click(slot.getByRole("button", { name: "Set up" })),
+      fireEvent.click(slot.getByRole("button", { name: "Настроить" })),
     );
     expect(onSetupFailed).toHaveBeenCalledExactlyOnceWith("sign_in", "other");
     startFails = false;
     await act(async () =>
-      fireEvent.click(slot.getByRole("button", { name: "Set up" })),
+      fireEvent.click(slot.getByRole("button", { name: "Настроить" })),
     );
     await act(async () => vi.advanceTimersByTimeAsync(2_000));
     expect(onSetupFailed).toHaveBeenCalledTimes(2);
@@ -1424,13 +1424,13 @@ describe("connect setup guide section", () => {
       },
     );
 
-    const setUp = await slot.findByRole("button", { name: "Set up" });
+    const setUp = await slot.findByRole("button", { name: "Настроить" });
     await waitFor(() =>
       expect(slot.rpcCalls.map((call) => call.method)).toContain("status"),
     );
     await act(async () => {});
     fireEvent.click(setUp);
-    await slot.findByText("bb connect is on");
+    await slot.findByText("bb connect включён");
     slot.getByText("https://workstation.getbb.app");
   });
 
@@ -1441,7 +1441,7 @@ describe("connect setup guide section", () => {
       { rpc: { status: () => connected() } },
     );
 
-    const on = await slot.findByText("bb connect is on");
+    const on = await slot.findByText("bb connect включён");
     slot.getByText("bb connect");
     slot.getByText("https://workstation.getbb.app");
     const check = on
@@ -1449,9 +1449,9 @@ describe("connect setup guide section", () => {
       ?.querySelector('[data-icon="CircleCheck"]')?.parentElement;
     expect(check?.className).toContain(SETUP_OPTION_ICON_OUTDENT_CLASS);
     expect(slot.queryByText(/bb cloud/iu)).toBeNull();
-    expect(slot.queryByText(/remote access/iu)).toBeNull();
-    slot.getByText("Install the bb app on your phone:");
-    for (const name of ["iPhone", "Android", "I have the app"]) {
+    expect(slot.queryByText(/удалённый доступ/iu)).toBeNull();
+    slot.getByText("Установите приложение bb на телефон:");
+    for (const name of ["iPhone", "Android", "У меня есть приложение"]) {
       slot.getByRole("button", { name });
     }
     expect(slot.queryByRole("img")).toBeNull();
@@ -1479,18 +1479,18 @@ describe("connect setup guide section", () => {
       },
     );
 
-    await slot.findByText("Install the bb app on your phone:");
-    expect(slot.queryByText("Open the bb app and scan this code:")).toBeNull();
+    await slot.findByText("Установите приложение bb на телефон:");
+    expect(slot.queryByText("Откройте приложение bb и отсканируйте код:")).toBeNull();
     expect(slot.queryByRole("img")).toBeNull();
-    expect(slot.queryByRole("button", { name: "Set up" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Настроить" })).toBeNull();
     expect(slot.rpcCalls.map((call) => call.method)).not.toContain(
       "createMachineCode",
     );
     await openPairingStep(slot);
     await slot.findByText("PAIR-CODE");
-    slot.getByText("Open the bb app and scan this code:");
-    expect(slot.queryByText("Install the bb app on your phone:")).toBeNull();
-    await slot.findByRole("img", { name: "QR code to pair the bb mobile app" });
+    slot.getByText("Откройте приложение bb и отсканируйте код:");
+    expect(slot.queryByText("Установите приложение bb на телефон:")).toBeNull();
+    await slot.findByRole("img", { name: "QR-код для привязки мобильного приложения bb" });
 
     await act(async () => vi.advanceTimersByTimeAsync(3_000));
     expect(slot.rpcCalls).toContainEqual({
@@ -1501,10 +1501,10 @@ describe("connect setup guide section", () => {
 
     consumed = true;
     await act(async () => vi.advanceTimersByTimeAsync(3_000));
-    expect(slot.getByText("Phone paired")).toBeTruthy();
+    expect(slot.getByText("Телефон привязан")).toBeTruthy();
     expect(slot.queryByText("PAIR-CODE")).toBeNull();
-    expect(slot.queryByText("Install the bb app on your phone:")).toBeNull();
-    expect(slot.queryByText("Open the bb app and scan this code:")).toBeNull();
+    expect(slot.queryByText("Установите приложение bb на телефон:")).toBeNull();
+    expect(slot.queryByText("Откройте приложение bb и отсканируйте код:")).toBeNull();
   });
 
   it("re-mints the pairing code before it expires", async () => {
@@ -1533,7 +1533,7 @@ describe("connect setup guide section", () => {
     await slot.findByText("AAAA-1111");
     await act(async () => vi.advanceTimersByTimeAsync(46_000));
     expect(slot.getByText("BBBB-2222")).toBeTruthy();
-    expect(slot.queryByText(/expire/i)).toBeNull();
+    expect(slot.queryByText(/истеч/i)).toBeNull();
   });
 
   it("waits between re-mints when the host's clock says the code already expired", async () => {
@@ -1582,12 +1582,12 @@ describe("connect setup guide section", () => {
     );
 
     fireEvent.click(await slot.findByRole("button", { name: "Android" }));
-    await slot.findByRole("img", { name: "QR code to install bb on Android" });
-    slot.getByText("Scan with your phone's camera.");
+    await slot.findByRole("img", { name: "QR-код для установки bb на Android" });
+    slot.getByText("Отсканируйте камерой телефона.");
     fireEvent.click(slot.getByRole("button", { name: "iPhone" }));
-    await slot.findByRole("img", { name: "QR code to install bb on iPhone" });
+    await slot.findByRole("img", { name: "QR-код для установки bb на iPhone" });
     expect(slot.getAllByRole("img")).toHaveLength(1);
-    fireEvent.click(slot.getByRole("button", { name: "Copy install link" }));
+    fireEvent.click(slot.getByRole("button", { name: "Скопировать ссылку для установки" }));
     await waitFor(() =>
       expect(slot.experimental_clipboardWrites).toContainEqual({
         text: "https://testflight.apple.com/join/T9MayTMb",
@@ -1595,14 +1595,14 @@ describe("connect setup guide section", () => {
     );
 
     await openPairingStep(slot);
-    await slot.findByRole("img", { name: "QR code to pair the bb mobile app" });
+    await slot.findByRole("img", { name: "QR-код для привязки мобильного приложения bb" });
     expect(slot.getAllByRole("img")).toHaveLength(1);
     slot.getByText("PAIR-CODE");
 
     fireEvent.click(
-      slot.getByRole("button", { name: "Don't have the app yet?" }),
+      slot.getByRole("button", { name: "Ещё нет приложения?" }),
     );
-    slot.getByText("Install the bb app on your phone:");
+    slot.getByText("Установите приложение bb на телефон:");
     expect(slot.queryByText("PAIR-CODE")).toBeNull();
     expect(slot.queryByRole("img")).toBeNull();
   });
@@ -1622,7 +1622,7 @@ describe("connect setup guide section", () => {
     );
 
     await openPairingStep(slot);
-    await slot.findByText(/reached its device limit/);
+    await slot.findByText(/достигнут лимит устройств/);
     expect(slot.queryByText("machine_limit")).toBeNull();
   });
 
@@ -1633,8 +1633,8 @@ describe("connect setup guide section", () => {
       { rpc: { status: () => connected() } },
     );
 
-    await slot.findByText("bb connect is on");
-    expect(slot.queryByText("Install the bb app on your phone:")).toBeNull();
+    await slot.findByText("bb connect включён");
+    expect(slot.queryByText("Установите приложение bb на телефон:")).toBeNull();
     expect(slot.rpcCalls.map((call) => call.method)).not.toContain(
       "createMachineCode",
     );

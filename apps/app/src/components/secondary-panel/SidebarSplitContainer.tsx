@@ -488,7 +488,7 @@ export function SidebarSplitContainer({
       const chromeRect = chrome?.getBoundingClientRect() ?? null;
       const startX = event.clientX;
       const startY = event.clientY;
-      const label = tabs.find((tab) => tab.id === tabId)?.label ?? "Panel tab";
+      const label = tabs.find((tab) => tab.id === tabId)?.label ?? "Вкладка панели";
       beginSplitDrag({
         ghostLabel: label,
         sourceEl: sourceElement,
@@ -524,7 +524,13 @@ export function SidebarSplitContainer({
           }
           return {
             zone,
-            label: zone === "center" ? "Group tab here" : `Split ${zone}`,
+            label: {
+              center: "Добавить вкладку в эту группу",
+              left: "Разделить слева",
+              right: "Разделить справа",
+              top: "Разделить сверху",
+              bottom: "Разделить снизу",
+            }[zone],
           };
         },
         onDrop: (target) => moveTab(sourcePaneId, tabId, target),
@@ -976,8 +982,8 @@ function SidebarSplitDivider({
       aria-hidden={hidden || undefined}
       aria-label={
         horizontal
-          ? "Resize right panel panes"
-          : "Resize stacked right panel panes"
+          ? "Изменить размер областей правой панели по горизонтали"
+          : "Изменить размер областей правой панели по вертикали"
       }
       aria-orientation={horizontal ? "vertical" : "horizontal"}
       className={cn(

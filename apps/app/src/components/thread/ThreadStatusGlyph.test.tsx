@@ -77,7 +77,7 @@ describe("ThreadStatusGlyph", () => {
     render(<ThreadStatusGlyph indicator="runtime" archived />);
 
     expect(
-      screen.getByLabelText("Archived thread").getAttribute("data-icon"),
+      screen.getByLabelText("Архивный чат").getAttribute("data-icon"),
     ).toBe("Archive");
   });
 

@@ -26,7 +26,7 @@ describe("Tasks plugin scaffold", () => {
     await expect(harness.runCli(["status", "--json"])).resolves.toEqual({
       exitCode: 0,
       stdout: JSON.stringify({
-        name: "Tasks",
+        name: "Задачи",
         version: TASKS_PLUGIN_VERSION,
       }),
       stderr: "",

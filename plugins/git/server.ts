@@ -37,14 +37,14 @@ export default function gitPlugin(bb: BbPluginApi): void {
   bb.settings.define({
     [GIT_SHOW_CHANGES_SETTING]: {
       type: "boolean",
-      label: "Show Git changes above the composer",
-      description: "Show changed files and the merge base above the composer.",
+      label: "Показывать изменения Git над полем ввода",
+      description: "Показывать изменённые файлы и базу слияния над полем ввода.",
       default: true,
     },
     [GIT_SHOW_COMMIT_BUTTON_SETTING]: {
       type: "boolean",
-      label: "Show Commit button",
-      description: "Show Commit in the thread header and actions menu.",
+      label: "Показывать кнопку создания коммита",
+      description: "Показывать создание коммита в заголовке чата и меню действий.",
       default: false,
     },
   });
@@ -90,7 +90,7 @@ export default function gitPlugin(bb: BbPluginApi): void {
         message:
           error instanceof experimental_PluginRpcRefusal
             ? error.message
-            : "Workspace status unavailable.",
+            : "Статус рабочей копии недоступен.",
       }));
   }
 
@@ -357,7 +357,7 @@ export default function gitPlugin(bb: BbPluginApi): void {
     {
       experimental_discoverable: true,
       experimental_description:
-        "Git status, changed files, diffs and Viewed marks for bb environments.",
+        "Статус Git, изменённые файлы, сравнение и отметки просмотра для окружений bb.",
     },
   );
 

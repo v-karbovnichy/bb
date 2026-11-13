@@ -42,7 +42,7 @@ async function renderReservesTrafficLights({
           <SidebarProvider framed>
             <SidebarTopReserveRow
               testId="reserve-row"
-              headerSlot={<button type="button">New thread</button>}
+              headerSlot={<button type="button">Новый чат</button>}
             />
           </SidebarProvider>
         </CompactViewportOverrideProvider>
@@ -80,7 +80,7 @@ describe("SidebarTopReserveRow macOS traffic lights", () => {
         await renderReservesTrafficLights({ isCompactViewport: false }),
       ).toBe(false);
       expect(
-        screen.getByRole("button", { name: "New thread" }).parentElement,
+        screen.getByRole("button", { name: "Новый чат" }).parentElement,
       ).toBe(screen.getByTestId("reserve-row"));
     },
   );

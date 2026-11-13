@@ -184,7 +184,7 @@ export function TimelineImageGallery({ children }: { children: ReactNode }) {
       <ImageLightbox
         imageSrc={selected?.src ?? null}
         imageAlt={selected?.alt ?? "Image"}
-        title="Timeline image preview"
+        title="Просмотр изображения из истории"
         hasMultipleImages={gallery !== null && gallery.images.length > 1}
         previousDisabled={gallery?.index === 0}
         nextDisabled={

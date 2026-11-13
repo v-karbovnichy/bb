@@ -53,24 +53,24 @@ function CommunityLinkRow({
 export function CommunitySettingsSection() {
   return (
     <SettingsSection
-      title="Community"
-      description="Chat with other bb users and follow development on GitHub."
+      title="Сообщество"
+      description="Общайтесь с другими пользователями bb и следите за разработкой на GitHub."
     >
       <div className="space-y-5">
         <CommunityLinkRow
           label="Discord"
-          description="Join the server for support, feedback, and announcements."
+          description="Присоединяйтесь к серверу для поддержки, отзывов и объявлений."
           href={DISCORD_INVITE_URL}
           icon="DiscordLogo"
           iconClassName="text-brand-discord"
-          openLabel="Join Discord"
+          openLabel="Присоединиться к Discord"
         />
         <CommunityLinkRow
           label="GitHub"
-          description="Source code, issues, and releases for the bb project."
+          description="Исходный код, задачи и выпуски проекта bb."
           href={GITHUB_REPO_URL}
           icon="GithubLogo"
-          openLabel="View on GitHub"
+          openLabel="Открыть на GitHub"
         />
       </div>
     </SettingsSection>

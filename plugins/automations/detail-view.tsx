@@ -165,17 +165,17 @@ function automationDetailNextRun(
 ): ReactNode | null {
   const label = formatDetailScheduleStatusLabel(automation);
   if (label === null) return null;
-  if (!label.startsWith("Next ")) return label;
+  if (!label.startsWith("Следующий запуск: ")) return label;
   return (
-    <AutomationMetadataItem icon="CalendarCheckOut02" iconLabel="Next run">
-      {label.slice("Next ".length)}
+    <AutomationMetadataItem icon="CalendarCheckOut02" iconLabel="Следующий запуск">
+      {label.slice("Следующий запуск: ".length)}
     </AutomationMetadataItem>
   );
 }
 
 function automationBodyLabel(execution: AutomationExecution): string {
-  if (execution.mode === "agent") return "Prompt";
-  return "Script";
+  if (execution.mode === "agent") return "Запрос";
+  return "Скрипт";
 }
 
 const SCRIPT_SCROLLBAR_IDLE_DELAY_MS = 600;
@@ -232,7 +232,7 @@ export function AutomationScriptContent({ content }: { content: string }) {
       <div
         ref={scrollRef}
         role="region"
-        aria-label="Script contents"
+        aria-label="Содержимое скрипта"
         tabIndex={0}
         data-automation-script-scroll=""
         onScroll={handleScroll}
@@ -287,26 +287,26 @@ function automationEnvironmentLabel(
   execution: Extract<AutomationExecution, { mode: "agent" }>,
 ): string {
   const environment = execution.environment;
-  if (environment.type === "reuse") return "Reuse environment";
-  if (environment.type === "project-default") return "Project default";
-  if (environment.workspace.type === "managed-worktree") return "New worktree";
-  if (environment.workspace.type === "personal") return "Personal workspace";
+  if (environment.type === "reuse") return "Повторно использовать окружение";
+  if (environment.type === "project-default") return "Окружение проекта по умолчанию";
+  if (environment.workspace.type === "managed-worktree") return "Новое рабочее дерево";
+  if (environment.workspace.type === "personal") return "Личное рабочее пространство";
   return environment.workspace.path == null
-    ? "Workspace"
+    ? "Рабочее пространство"
     : formatHomePathForDisplay(environment.workspace.path);
 }
 
 function automationEnvironmentCompactLabel(
   execution: Extract<AutomationExecution, { mode: "agent" }>,
 ): string {
-  if (execution.targetThreadId !== undefined) return "Thread";
+  if (execution.targetThreadId !== undefined) return "Чат";
   const environment = execution.environment;
-  if (environment.type === "reuse") return "Reuse environment";
-  if (environment.type === "project-default") return "Default";
-  if (environment.workspace.type === "managed-worktree") return "Worktree";
-  if (environment.workspace.type === "personal") return "Personal workspace";
+  if (environment.type === "reuse") return "Повторно использовать окружение";
+  if (environment.type === "project-default") return "По умолчанию";
+  if (environment.workspace.type === "managed-worktree") return "Рабочее дерево";
+  if (environment.workspace.type === "personal") return "Личное рабочее пространство";
   return environment.workspace.path === null
-    ? "Workspace"
+    ? "Рабочее пространство"
     : formatHomePathForDisplay(environment.workspace.path);
 }
 
@@ -366,22 +366,22 @@ const AUTOMATION_RUN_STATUS_VISUALS: Record<
   }
 > = {
   running: {
-    label: "Running",
+    label: "Выполняется",
     icon: "Loading",
     className: "animate-spin text-muted-foreground",
   },
   failed: {
-    label: "Failed",
+    label: "Ошибка",
     icon: "CircleX",
     className: "text-destructive",
   },
   skipped: {
-    label: "Skipped",
+    label: "Пропущено",
     icon: "ArrowTurnForward",
     className: "text-subtle-foreground",
   },
   succeeded: {
-    label: "Succeeded",
+    label: "Успешно",
     icon: "CircleCheck",
     className: "text-success",
   },
@@ -539,7 +539,7 @@ export function AgentAutomationDefinition({
       <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {!personalProject ? (
           <OptionDisplay
-            label="Project"
+            label="Проект"
             value={projectContextLabel}
             compactValue={projectContextLabel}
             leading={
@@ -549,10 +549,10 @@ export function AgentAutomationDefinition({
           />
         ) : null}
         <OptionDisplay
-          label="Environment"
+          label="Окружение"
           value={
             execution.targetThreadId !== undefined
-              ? "Existing thread"
+              ? "Существующий чат"
               : automationEnvironmentLabel(execution)
           }
           compactValue={automationEnvironmentCompactLabel(execution)}
@@ -600,7 +600,7 @@ export function AgentAutomationDefinition({
       <Textarea
         value={prompt}
         onChange={(event) => setPrompt(event.target.value)}
-        aria-label="Automation prompt"
+        aria-label="Запрос автоматизации"
         disabled={pending}
         className="min-h-28 resize-none border-0 bg-transparent px-4 pb-1 pr-14 pt-3 text-sm leading-relaxed shadow-none focus-visible:ring-0"
       />
@@ -626,7 +626,7 @@ export function AgentAutomationDefinition({
           disabled={pending || dirty}
           onClick={onCancel}
         >
-          Cancel
+          Отмена
         </Button>
         <Button
           type="submit"
@@ -635,7 +635,7 @@ export function AgentAutomationDefinition({
           disabled={pending || !dirty || trimmedPrompt.length === 0}
         >
           <Icon name="Check" className="size-3.5" aria-hidden />
-          Save Prompt
+          Сохранить запрос
         </Button>
       </div>
       {promptFooter}
@@ -689,12 +689,12 @@ export function ScriptAutomationDefinition({
   const { resolvedWorkingDirectory } = execution;
   const workingDirectoryLabel =
     resolvedWorkingDirectory === null
-      ? "Working directory unavailable"
+      ? "Рабочая папка недоступна"
       : formatHomePathForDisplay(resolvedWorkingDirectory);
   const workingDirectoryAriaLabel =
     resolvedWorkingDirectory === null
       ? workingDirectoryLabel
-      : `Working directory: ${workingDirectoryLabel}`;
+      : `Рабочая папка: ${workingDirectoryLabel}`;
   return (
     <ResourceDetailPanel
       surface="flat"
@@ -704,7 +704,7 @@ export function ScriptAutomationDefinition({
         <AutomationScriptContent content={execution.script} />
       ) : (
         <div className="px-3 py-3 text-xs text-muted-foreground">
-          Script content unavailable.
+          Содержимое скрипта недоступно.
         </div>
       )}
       <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border bg-surface-recessed/55 px-3 py-2 text-xs text-muted-foreground">
@@ -758,11 +758,11 @@ export function AutomationDetailView({
   const lifecycleLocked =
     requiresPrompt || !oneShotLifecycleAllowsToggle(oneShotLifecycle);
   const lifecycleDisabledReason = requiresPrompt
-    ? "Add a prompt before changing this automation."
+    ? "Добавьте запрос перед изменением автоматизации."
     : lifecycleLocked
       ? oneShotLifecycle === "expired"
-        ? "Missed its run time. Edit to reschedule."
-        : "Already ran. Edit to reschedule."
+        ? "Время запуска прошло. Измените расписание."
+        : "Уже выполнено. Измените расписание для нового запуска."
       : undefined;
   const bodyLabel = automationBodyLabel(automation.execution);
   const execution = automation.execution;
@@ -788,14 +788,14 @@ export function AutomationDetailView({
                 icon="Folder"
                 iconLabel={
                   personalProject
-                    ? `Project: ${projectContextLabel}`
-                    : "Project"
+                    ? `Проект: ${projectContextLabel}`
+                    : "Проект"
                 }
                 title={projectContextLabel}
               >
                 {projectContextLabel}
               </AutomationMetadataItem>,
-              <AutomationMetadataItem icon="DateTime" iconLabel="Schedule">
+              <AutomationMetadataItem icon="DateTime" iconLabel="Расписание">
                 {formatAutomationTrigger(automation.trigger)}
               </AutomationMetadataItem>,
               automationDetailNextRun(automation),
@@ -828,14 +828,14 @@ export function AutomationDetailView({
           disabledReason={lifecycleDisabledReason}
           label={
             requiresPrompt
-              ? "Add a prompt before changing this automation"
+              ? "Добавьте запрос перед изменением автоматизации"
               : oneShotLifecycle === "expired"
-                ? "Expired automation; edit to reschedule"
+                ? "Срок автоматизации истёк; измените расписание"
                 : lifecycleLocked
                   ? `${formatScheduleStatusLabel(automation)} automation`
                   : automation.enabled
-                    ? "Pause automation"
-                    : "Resume automation"
+                    ? "Приостановить автоматизацию"
+                    : "Возобновить автоматизацию"
           }
           onCheckedChange={onToggle}
         />
@@ -846,7 +846,7 @@ export function AutomationDetailView({
           pending={actionPending}
           runDisabledReason={
             requiresPrompt
-              ? "Add a prompt before running this automation."
+              ? "Добавьте запрос перед запуском автоматизации."
               : undefined
           }
           onRunNow={onRunNow}
@@ -860,10 +860,10 @@ export function AutomationDetailView({
           actions={
             <ResourceActionButton
               label={
-                execution.mode === "agent" ? "Edit prompt" : "Edit with chat"
+                execution.mode === "agent" ? "Изменить запрос" : "Изменить через чат"
               }
               tooltipLabel={
-                execution.mode === "agent" ? "Edit prompt" : "Edit with chat"
+                execution.mode === "agent" ? "Изменить запрос" : "Изменить через чат"
               }
               icon="Edit"
               disabled={editing}
@@ -886,7 +886,7 @@ export function AutomationDetailView({
           )}
         </ResourceDefinitionSection>
 
-        <ResourceActivitySection label="Runs">
+        <ResourceActivitySection label="Запуски">
           {runsState.error !== null ? (
             <ResourceDetailCollection>
               <div
@@ -894,7 +894,7 @@ export function AutomationDetailView({
                 className="flex min-w-0 items-center justify-between gap-3 px-2 py-1.5 text-left text-sm"
               >
                 <span className="py-1.5 text-muted-foreground">
-                  Runs unavailable.
+                  Запуски недоступны.
                 </span>
                 <Button
                   type="button"
@@ -902,7 +902,7 @@ export function AutomationDetailView({
                   size="sm"
                   onClick={runsState.retry}
                 >
-                  Retry
+                  Повторить
                 </Button>
               </div>
             </ResourceDetailCollection>
@@ -912,7 +912,7 @@ export function AutomationDetailView({
                 <div
                   data-automation-runs-state="loading"
                   role="status"
-                  aria-label="Loading runs"
+                  aria-label="Загрузка запусков"
                   className="flex min-w-0 items-center gap-2.5 px-2 py-2.5"
                 >
                   <Skeleton className="size-3.5 shrink-0 rounded-full" />
@@ -927,7 +927,7 @@ export function AutomationDetailView({
                 data-automation-runs-state="empty"
                 className="flex min-w-0 flex-col items-center gap-2 px-2 py-3 text-center text-sm"
               >
-                <span className="text-muted-foreground">No runs yet.</span>
+                <span className="text-muted-foreground">Запусков пока нет.</span>
                 <Button
                   type="button"
                   variant="outline"
@@ -936,7 +936,7 @@ export function AutomationDetailView({
                   onClick={onRunNow}
                 >
                   <Icon name="Play" className="size-3.5" aria-hidden />
-                  Run now
+                  Запустить сейчас
                 </Button>
               </div>
             </ResourceDetailCollection>
@@ -956,7 +956,7 @@ export function AutomationDetailView({
                     disabled={runsState.loadingMore}
                     onClick={runsState.loadMore}
                   >
-                    {runsState.loadingMore ? "Loading…" : "Load more"}
+                    {runsState.loadingMore ? "Загрузка…" : "Загрузить ещё"}
                   </Button>
                 </div>
               ) : null}

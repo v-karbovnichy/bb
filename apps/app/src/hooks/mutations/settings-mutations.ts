@@ -50,7 +50,7 @@ export function useUpdateExperiments() {
   return useMutation({
     mutationKey: experimentsMutationKey,
     meta: {
-      errorMessage: "Failed to update experiments.",
+      errorMessage: "Не удалось обновить эксперименты.",
     },
     mutationFn: (updates: ExperimentUpdates) =>
       sdk.system.updateExperiments(updates),
@@ -79,7 +79,7 @@ export function generalSettingsMutationOptions(queryClient: QueryClient) {
     mutationKey: generalSettingsMutationKey,
     scope: { id: generalSettingsMutationKey.join(":") },
     meta: {
-      errorMessage: "Failed to update general settings.",
+      errorMessage: "Не удалось обновить основные настройки.",
     },
     mutationFn: (patch: Partial<AppSettings>) => {
       const settings = readCachedGeneralSettings(queryClient);
@@ -135,7 +135,7 @@ export function useUpdateGeneralSettings() {
 export function keyboardSettingsMutationOptions(queryClient: QueryClient) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to update keyboard shortcuts.",
+      errorMessage: "Не удалось обновить сочетания клавиш.",
     },
     mutationFn: (overrides: AppKeybindingOverrides) =>
       sdk.system.updateKeyboardSettings(overrides),
@@ -161,7 +161,7 @@ export function useUpdateKeyboardSettings() {
 export function useInstallCliSkills() {
   return useMutation({
     meta: {
-      errorMessage: "Failed to install the bb CLI skills.",
+      errorMessage: "Не удалось установить навыки bb CLI.",
     },
     mutationFn: (args: SystemInstallCliSkillsRequest) =>
       sdk.system.installCliSkills(args),
@@ -171,7 +171,7 @@ export function useInstallCliSkills() {
 export function useChangeCliCommand() {
   return useMutation({
     meta: {
-      errorMessage: "Failed to change the bb CLI install.",
+      errorMessage: "Не удалось изменить установку bb CLI.",
     },
     mutationFn: (change: "install" | "remove") =>
       change === "install"
@@ -185,7 +185,7 @@ export function useUpdateAppearance() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to update appearance.",
+      errorMessage: "Не удалось обновить оформление.",
     },
     mutationFn: (selection: AppThemeSelection) => sdk.theme.set(selection),
     onSuccess: () => {

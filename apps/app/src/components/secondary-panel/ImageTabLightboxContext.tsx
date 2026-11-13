@@ -118,10 +118,10 @@ export function ImageTabLightboxProvider({
     <ImageTabLightboxContext.Provider value={value}>
       {children}
       <ImageLightbox
-        imageAlt={image?.alt ?? "Image preview"}
+        imageAlt={image?.alt ?? "Предпросмотр изображения"}
         imageSrc={isOpen ? (image?.src ?? null) : null}
         isOpen={isOpen}
-        title={image?.alt ?? "Image preview"}
+        title={image?.alt ?? "Предпросмотр изображения"}
         hasMultipleImages={imageTabs.length > 1}
         onPrevious={() => step("previous")}
         onNext={() => step("next")}

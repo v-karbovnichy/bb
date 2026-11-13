@@ -275,7 +275,7 @@ describe("DiffHost", () => {
     ).toBe(true);
     expect(warn).not.toHaveBeenCalled();
     bbDiff.renderFails = false;
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
     expect(await screen.findByTestId("bb-diff")).toBeDefined();
   });
 

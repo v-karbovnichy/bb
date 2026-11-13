@@ -53,7 +53,7 @@ function ImageUploadPreview({ file }: { file: File }) {
   return (
     <div
       role="status"
-      aria-label={`Uploading ${file.name}`}
+      aria-label={`Загрузка ${file.name}`}
       className="relative shrink-0 overflow-hidden rounded-md border border-border bg-surface-recessed"
     >
       <span className="block h-16 w-24">
@@ -74,7 +74,7 @@ function ImageUploadPreview({ file }: { file: File }) {
           name="Loading"
           className="size-3 animate-spin motion-reduce:animate-none"
         />
-        Uploading
+        Загрузка
       </span>
     </div>
   );
@@ -102,7 +102,7 @@ function FileUploadPreview({ file }: { file: File }) {
   return (
     <span
       role="status"
-      aria-label={`Uploading ${file.name}`}
+      aria-label={`Загрузка ${file.name}`}
       className={FILE_ATTACHMENT_PILL_CLASS}
     >
       <span className="truncate">{file.name}</span>
@@ -173,9 +173,9 @@ export function AttachmentPreview({
           role={uploadingCount > 0 ? "status" : "img"}
           aria-label={[
             attachmentCount > 0
-              ? `${attachmentCount} ${attachmentCount === 1 ? "attachment" : "attachments"}`
+              ? `${attachmentCount} ${attachmentCount === 1 ? "вложение" : "вложения"}`
               : null,
-            uploadingCount > 0 ? `${uploadingCount} uploading` : null,
+            uploadingCount > 0 ? `${uploadingCount} загружается` : null,
           ]
             .filter(Boolean)
             .join(", ")}
@@ -223,7 +223,7 @@ export function AttachmentPreview({
                         onRemoveAttachment(attachment.path);
                       }}
                       className="group/attachment-remove-image absolute right-1 top-1 z-10 inline-flex size-4 items-center justify-center rounded-full text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring max-md:pointer-coarse:-right-1 max-md:pointer-coarse:-top-1 max-md:pointer-coarse:size-7"
-                      aria-label={`Remove ${attachment.name}`}
+                      aria-label={`Удалить ${attachment.name}`}
                     >
                       <span className="inline-flex size-4 items-center justify-center rounded-full bg-black/55 transition-colors group-hover/attachment-remove-image:bg-black/70">
                         <Icon name="X" className="size-3" />
@@ -259,7 +259,7 @@ export function AttachmentPreview({
                           onRemoveAttachment(attachment.path);
                         }}
                         className="group/attachment-remove-file absolute left-1/2 top-1/2 inline-flex size-4 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring max-md:pointer-coarse:size-7"
-                        aria-label={`Remove ${attachment.name}`}
+                        aria-label={`Удалить ${attachment.name}`}
                       >
                         <span className="inline-flex size-4 items-center justify-center rounded transition-colors group-hover/attachment-remove-file:bg-state-hover">
                           <Icon name="X" className="size-3" />
@@ -279,8 +279,8 @@ export function AttachmentPreview({
 
       <ImageLightbox
         imageSrc={currentAttachmentImage?.src ?? null}
-        imageAlt={currentAttachmentImage?.alt ?? "Attached image"}
-        title="Attached media preview"
+        imageAlt={currentAttachmentImage?.alt ?? "Прикреплённое изображение"}
+        title="Предпросмотр вложения"
         mediaType={currentAttachmentImage?.mediaType}
         hasMultipleImages={hasMultipleAttachmentImages}
         onPrevious={() => {

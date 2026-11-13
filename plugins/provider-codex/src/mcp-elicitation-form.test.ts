@@ -112,8 +112,8 @@ describe("MCP form normalization and validation", () => {
     expect(validateCodexMcpFormContent(fields, {})).toMatchObject({
       success: false,
       errors: {
-        count: "This field is required.",
-        subscribed: "This field is required.",
+        count: "Обязательное поле.",
+        subscribed: "Обязательное поле.",
       },
       formError: null,
     });
@@ -121,27 +121,27 @@ describe("MCP form normalization and validation", () => {
       validateCodexMcpFormContent(fields, { ...valid, count: "0" }),
     ).toMatchObject({
       success: false,
-      errors: { count: "Enter a finite number." },
+      errors: { count: "Введите конечное число." },
     });
     expect(
       validateCodexMcpFormContent(fields, { ...valid, subscribed: "false" }),
     ).toMatchObject({
       success: false,
-      errors: { subscribed: "Choose Yes or No." },
+      errors: { subscribed: "Выберите «Да» или «Нет»." },
     });
   });
 
   it.each([
-    ["name", "", "at least 1"],
-    ["name", "x".repeat(21), "at most 20"],
-    ["count", 1.5, "whole number"],
-    ["count", -1, "at least 0"],
-    ["price", 4, "at most 3.5"],
-    ["color", "green", "offered options"],
-    ["size", "m", "offered options"],
-    ["tags", [], "at least 1"],
-    ["tags", ["a", "b", "a"], "only once"],
-    ["tags", ["unknown"], "offered options"],
+    ["name", "", "не менее 1"],
+    ["name", "x".repeat(21), "не более 20"],
+    ["count", 1.5, "целое число"],
+    ["count", -1, "не меньше 0"],
+    ["price", 4, "не больше 3.5"],
+    ["color", "green", "предложенных вариантов"],
+    ["size", "m", "предложенных вариантов"],
+    ["tags", [], "не менее 1"],
+    ["tags", ["a", "b", "a"], "только один раз"],
+    ["tags", ["unknown"], "предложенных вариантов"],
   ])("checks %s value %j", (name, value, error) => {
     const parsed = validateCodexMcpFormContent(fields, {
       ...valid,
@@ -166,7 +166,7 @@ describe("MCP form normalization and validation", () => {
       validateCodexMcpFormContent(selected, { tags: ["a", "a"] }),
     ).toMatchObject({
       success: false,
-      errors: { tags: "Choose each option only once." },
+      errors: { tags: "Каждый вариант можно выбрать только один раз." },
     });
   });
 
@@ -210,8 +210,8 @@ describe("MCP form normalization and validation", () => {
     expect(validateCodexMcpFormContent(named, {})).toEqual({
       success: false,
       errors: Object.fromEntries([
-        ["", "This field is required."],
-        ["constructor", "This field is required."],
+        ["", "Обязательное поле."],
+        ["constructor", "Обязательное поле."],
       ]),
       formError: null,
     });

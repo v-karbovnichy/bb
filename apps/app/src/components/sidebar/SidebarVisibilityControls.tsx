@@ -28,7 +28,7 @@ function SidebarVisibilityCustomizePlaceholder({
       ) : (
         <div
           role="status"
-          aria-label="Loading sidebar customization"
+          aria-label="Загрузка настройки боковой панели"
           className="relative min-h-7 space-y-0.5 pb-0.5"
         >
           <div

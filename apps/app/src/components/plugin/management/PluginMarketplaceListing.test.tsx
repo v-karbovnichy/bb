@@ -46,7 +46,7 @@ describe("plugin marketplace author links", () => {
   it("routes the detail author name to the author page", () => {
     render(
       <MemoryRouter initialEntries={["/plugins/Current?category=security"]}>
-        <PluginCardAuthor entry={catalogEntry("Current")} />
+        <PluginCardAuthor entry={catalogEntry("Текущая версия")} />
       </MemoryRouter>,
     );
 
@@ -59,7 +59,7 @@ describe("plugin marketplace author links", () => {
   });
 
   it("excludes the current plugin and caps plain teaser rows at four", () => {
-    const current = catalogEntry("Current");
+    const current = catalogEntry("Текущая версия");
     const entries = [
       current,
       catalogEntry("Echo"),
@@ -84,25 +84,25 @@ describe("plugin marketplace author links", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "More from this author" }),
+      screen.getByRole("heading", { name: "Другие плагины автора" }),
     ).toBeTruthy();
     expect(
       screen
-        .getAllByRole("button", { name: /^Open .+ details$/u })
+        .getAllByRole("button", { name: /^Открыть сведения о .+$/u })
         .map((button) => button.getAttribute("aria-label")),
     ).toEqual([
-      "Open Alpha details",
-      "Open Bravo details",
-      "Open Charlie details",
-      "Open Delta details",
+      "Открыть сведения о Alpha",
+      "Открыть сведения о Bravo",
+      "Открыть сведения о Charlie",
+      "Открыть сведения о Delta",
     ]);
-    expect(screen.queryByText("Current")).toBeNull();
+    expect(screen.queryByText("Текущая версия")).toBeNull();
     expect(screen.queryByText("Echo")).toBeNull();
     expect(screen.queryByText("Other")).toBeNull();
     expect(screen.queryByRole("button", { name: /install/i })).toBeNull();
     expect(screen.queryByText(/trusted|official|installed/iu)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Alpha details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Открыть сведения о Alpha" }));
     expect(onOpenPlugin).toHaveBeenCalledWith("Alpha");
   });
 });

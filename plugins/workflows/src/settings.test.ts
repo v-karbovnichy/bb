@@ -72,12 +72,12 @@ describe("workflow settings policy", () => {
   });
 
   it.each([
-    ["maxActiveRuns", 0, 33, "Maximum active runs"],
-    ["maxConcurrentAgents", 0, 65, "Per-run agent concurrency"],
-    ["maxAgentCalls", 0, 1001, "Maximum agent calls"],
-    ["totalRunTimeoutMs", 59_999, 604_800_001, "Total run timeout"],
-    ["retentionDays", 0, 3651, "Retention days"],
-    ["maxNotificationBytes", 1023, 262_145, "Maximum notification bytes"],
+    ["maxActiveRuns", 0, 33, "Максимум активных запусков"],
+    ["maxConcurrentAgents", 0, 65, "Параллельные агенты на запуск"],
+    ["maxAgentCalls", 0, 1001, "Максимум вызовов агентов"],
+    ["totalRunTimeoutMs", 59_999, 604_800_001, "Общее время ожидания запуска"],
+    ["retentionDays", 0, 3651, "Срок хранения в днях"],
+    ["maxNotificationBytes", 1023, 262_145, "Максимальный размер уведомления в байтах"],
   ] as const)(
     "enforces lower and upper bounds for %s",
     (key, below, above, label) => {
@@ -146,7 +146,7 @@ describe("workflow settings policy", () => {
       "expects a finite number",
     );
     await expect(harness.setSettings({ maxActiveRuns: 0 })).rejects.toThrow(
-      "Maximum active runs must be from 1 through 32",
+      "Максимум активных запусков: значение должно быть от 1 до 32",
     );
     expect(errors).toEqual([]);
     expect(changes).toEqual([]);
@@ -168,13 +168,13 @@ describe("workflow settings policy", () => {
       }),
     ).toEqual(DEFAULT_WORKFLOW_SETTINGS);
     expect(() => parseStoredWorkflowSettings({ maxActiveRuns: 4 })).toThrow(
-      "unexpected fields",
+      "неожиданные поля",
     );
     expect(() =>
       parseStoredWorkflowSettings({
         ...DEFAULT_WORKFLOW_SETTINGS,
         unknownPolicy: 1,
       }),
-    ).toThrow("unexpected fields");
+    ).toThrow("неожиданные поля");
   });
 });

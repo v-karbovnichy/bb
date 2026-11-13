@@ -18,7 +18,7 @@ export function CommentProviderAvatar({
   return (
     <span
       role="img"
-      aria-label={provider?.name ?? "Agent"}
+      aria-label={provider?.name ?? "Агент"}
       className={hasArtwork ? PROVIDER_AVATAR_CLASS : FALLBACK_AVATAR_CLASS}
     >
       {provider === null ? (

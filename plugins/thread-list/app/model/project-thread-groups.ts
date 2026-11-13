@@ -621,7 +621,7 @@ function bucketIntoSections(
 
     let sectionItems = itemsBySectionId.get(sectionId);
     if (!sectionItems) {
-      const fallbackSection = { id: sectionId, name: "Section" };
+      const fallbackSection = { id: sectionId, name: "Раздел" };
       sectionDefinitionsById.set(sectionId, fallbackSection);
       orderedSections.push(fallbackSection);
       sectionItems = [];

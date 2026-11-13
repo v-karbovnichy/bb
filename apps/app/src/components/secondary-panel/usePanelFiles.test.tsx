@@ -46,7 +46,7 @@ const SURFACES: readonly SurfaceCase[] = [
     },
   },
   {
-    name: "New thread screen without a thread",
+    name: "Новый чат screen without a thread",
     scope: { threadId: null, environmentId: "env_1", hostId: "host_1" },
     accepts: {
       ownWorkspace: true,
@@ -56,7 +56,7 @@ const SURFACES: readonly SurfaceCase[] = [
     },
   },
   {
-    name: "New thread screen with a machine terminal",
+    name: "Новый чат screen with a machine terminal",
     scope: { threadId: null, environmentId: null, hostId: null },
     accepts: {
       ownWorkspace: false,

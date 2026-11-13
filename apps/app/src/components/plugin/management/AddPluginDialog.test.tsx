@@ -26,13 +26,13 @@ function installPlanFor(url: string): unknown {
     marketplace,
     marketplaceDisplayName:
       marketplace === "bb-official"
-        ? "BB Official"
+        ? "Официальный BB"
         : marketplace === "bb-community"
           ? "BB Community"
           : "Acme Plugins",
     publisherLabel:
       marketplace === "bb-official"
-        ? "BB Official"
+        ? "Официальный BB"
         : marketplace === "bb-community"
           ? "BB Community"
           : "Acme Plugins",
@@ -130,17 +130,17 @@ describe("AddPluginDialog", () => {
       });
       await screen.findByRole("alert");
       const install = screen.getByRole("button", {
-        name: "Install Acme Notes",
+        name: "Установить Acme Notes",
       }) as HTMLButtonElement;
       expect(install.disabled).toBe(true);
       if (status === 503) {
-        fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+        fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
         await vi.waitFor(() => expect(install.disabled).toBe(false));
         expect(attempts).toBe(2);
       } else {
-        expect(screen.queryByRole("button", { name: "Retry" })).toBeNull();
+        expect(screen.queryByRole("button", { name: "Повторить" })).toBeNull();
         expect(screen.getByRole("alert").textContent).toContain(
-          "Check repository permissions",
+          "Проверьте права на репозиторий",
         );
       }
     },
@@ -150,12 +150,12 @@ describe("AddPluginDialog", () => {
     const requests = stubFetch();
     renderDialog();
     const source = "https://github.com/acme/bb-plugin-usage";
-    const input = screen.getByLabelText("Plugin source") as HTMLInputElement;
+    const input = screen.getByLabelText("Источник плагина") as HTMLInputElement;
 
     expect(input.placeholder).toBe("https://github.com/owner/bb-plugin-name");
-    expect(screen.getByText(/GitHub repository URL/)).toBeTruthy();
+    expect(screen.getByText(/URL репозитория GitHub/)).toBeTruthy();
     fireEvent.change(input, { target: { value: source } });
-    fireEvent.click(screen.getByRole("button", { name: /install plugin/i }));
+    fireEvent.click(screen.getByRole("button", { name: /установить плагин/i }));
 
     await vi.waitFor(() => {
       const post = requests.find(
@@ -173,11 +173,11 @@ describe("AddPluginDialog", () => {
 
     expect(screen.getByTestId("full-trust-warning")).toBeTruthy();
     const install = screen.getByRole("button", {
-      name: /install plugin/i,
+      name: /установить плагин/i,
     }) as HTMLButtonElement;
     expect(install.disabled).toBe(true);
 
-    fireEvent.change(screen.getByLabelText("Plugin source"), {
+    fireEvent.change(screen.getByLabelText("Источник плагина"), {
       target: { value: "./plugins/linear" },
     });
     expect(install.disabled).toBe(false);
@@ -208,10 +208,10 @@ describe("AddPluginDialog", () => {
       { wrapper },
     );
 
-    fireEvent.change(screen.getByLabelText("Plugin source"), {
+    fireEvent.change(screen.getByLabelText("Источник плагина"), {
       target: { value: "./plugins/linear" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /install plugin/i }));
+    fireEvent.click(screen.getByRole("button", { name: /установить плагин/i }));
 
     await vi.waitFor(() => {
       expect(onOpenChange).toHaveBeenCalledWith(false);
@@ -236,7 +236,7 @@ describe("AddPluginDialog", () => {
       source: "builtin:linear",
     });
     expect(
-      screen.getByText("Install this plugin, bundled with BB."),
+      screen.getByText("Установить этот плагин, входящий в BB."),
     ).not.toBeNull();
     unmount();
 
@@ -253,7 +253,7 @@ describe("AddPluginDialog", () => {
     });
     expect(
       screen.getByText(
-        "Install this BB Community plugin from its listed source repository.",
+        "Установить этот плагин BB Community из указанного репозитория.",
       ),
     ).not.toBeNull();
     expect(screen.queryByText(/bundled with BB/)).toBeNull();
@@ -272,7 +272,7 @@ describe("AddPluginDialog", () => {
     });
     expect(
       screen.getByText(
-        "Install this BB Community plugin from its listed npm package.",
+        "Установить этот плагин BB Community из указанного пакета npm.",
       ),
     ).not.toBeNull();
   });
@@ -315,7 +315,7 @@ describe("AddPluginDialog", () => {
     expect(document.querySelector('[data-icon="Github"]')).not.toBeNull();
     expect(document.querySelector('[data-icon="Zap"]')).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: /install linear/i }));
+    fireEvent.click(screen.getByRole("button", { name: /установить linear/i }));
 
     await vi.waitFor(() => {
       const post = requests.find(
@@ -370,7 +370,7 @@ describe("AddPluginDialog", () => {
       />,
       { wrapper },
     );
-    fireEvent.click(screen.getByRole("button", { name: /install linear/i }));
+    fireEvent.click(screen.getByRole("button", { name: /установить linear/i }));
 
     await vi.waitFor(() => {
       expect(screen.getByRole("alert").textContent).toBe(
@@ -404,7 +404,7 @@ describe("AddPluginDialog", () => {
         .getAttribute("href"),
     ).toBe("https://github.com/acme/plugins.git");
     expect(screen.getByText("^1.0.0")).toBeTruthy();
-    expect(screen.getByText(/third-party marketplace/)).toBeTruthy();
+    expect(screen.getByText(/стороннем каталоге/)).toBeTruthy();
     expect(screen.getByText("Acme Plugins")).toBeTruthy();
     expect(
       requests.some((request) =>
@@ -413,7 +413,7 @@ describe("AddPluginDialog", () => {
     ).toBe(true);
 
     fireEvent.click(
-      screen.getByRole("button", { name: /install acme notes/i }),
+      screen.getByRole("button", { name: /установить acme notes/i }),
     );
     await vi.waitFor(() => {
       const post = requests.find(
@@ -447,7 +447,7 @@ describe("AddPluginDialog", () => {
       source: "builtin:linear",
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /install linear/i }));
+    fireEvent.click(screen.getByRole("button", { name: /установить linear/i }));
     await vi.waitFor(() => {
       expect(
         requests.some(

@@ -27,7 +27,7 @@ const TOGGLE_DIFF_COMMAND_ID = "toggle-diff";
 export default definePluginApp((app) => {
   app.commands.register({
     id: TOGGLE_DIFF_COMMAND_ID,
-    title: "Toggle diff",
+    title: "Показать или скрыть изменения",
     defaultShortcut: { key: "d", mod: true },
     isAvailable: (context) => context.threadId !== null,
     run(context) {
@@ -44,7 +44,7 @@ export default definePluginApp((app) => {
     context: { kind: "thread" },
     availability: "fixed",
     id: GIT_DIFF_TAB_ID,
-    title: "Diff",
+    title: "Изменения",
     icon: "FileDiff",
     layout: "flush",
     component: DiffTab,
@@ -83,7 +83,7 @@ export default definePluginApp((app) => {
   });
   app.slots.experimental_threadContextSegment({
     id: "changed-files",
-    title: "Changed files",
+    title: "Изменённые файлы",
     group: experimental_THREAD_CONTEXT_SEGMENT_GROUPS.git,
     order: 10,
     summary: changedFilesSegmentPart("summary"),

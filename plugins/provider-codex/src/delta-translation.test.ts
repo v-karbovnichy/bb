@@ -28,13 +28,13 @@ const ENTROPY = "cx-test";
 const ITEM_ID_PATTERN = /^cx-test-i\d+$/;
 
 const IMAGE_PRESENTATION = {
-  label: { pending: "Viewing image", completed: "Viewed image" },
+  label: { pending: "Просмотр изображения", completed: "Изображение просмотрено" },
   icon: { glyph: "Eye" },
   title: "image.png",
 };
 
 const IMAGE_GENERATION_PRESENTATION = {
-  label: { pending: "Generating image", completed: "Generated image" },
+  label: { pending: "Создание изображения", completed: "Изображение создано" },
   icon: { glyph: "Palette" },
   title: "generated.png",
 };
@@ -1114,7 +1114,7 @@ describe("codex item translation", () => {
           background: false,
           summary: 'sub-thread-1: {"status":"completed","message":"done"}',
           presentation: {
-            label: { pending: "Spawning agent", completed: "Spawned agent" },
+            label: { pending: "Запуск агента", completed: "Агент запущен" },
             icon: { glyph: "UserRound" },
             title: "Inspect the docs directory",
           },
@@ -1556,7 +1556,7 @@ describe("codex plan translation", () => {
           explanation: "Here's the plan",
           status: "completed",
           presentation: {
-            label: { pending: "Updating plan", completed: "Updated plan" },
+            label: { pending: "Обновление плана", completed: "План обновлён" },
             icon: { glyph: "ListTodo" },
             title: "Edit the function",
           },

@@ -54,14 +54,14 @@ describe("buildAppCommandActions", () => {
   it("lists only commands that apply right now", () => {
     const { actions } = build(["thread.new", "panel.toggle"]);
     expect(actions.map((action) => action.title)).toEqual([
-      "New thread",
-      "Toggle panel",
+      "Новый чат",
+      "Показать или скрыть панель",
     ]);
   });
 
   it("never lists a palette-hidden command even when it is available", () => {
     const { actions } = build(["thread.jump.1", "palette.open", "thread.new"]);
-    expect(actions.map((action) => action.title)).toEqual(["New thread"]);
+    expect(actions.map((action) => action.title)).toEqual(["Новый чат"]);
   });
 
   it("carries the group label and the command's current shortcut", () => {
@@ -72,7 +72,7 @@ describe("buildAppCommandActions", () => {
     expect(actions[0]).toMatchObject({
       id: "app:thread.new",
       bucket: "Threads",
-      group: "Threads",
+      group: "Чаты",
       shortcut: SHORTCUT,
     });
   });
@@ -82,7 +82,7 @@ describe("buildAppCommandActions", () => {
     expect(actions[0]).toMatchObject({
       id: "app:panel.toggle",
       bucket: "Actions",
-      group: "Window and layout",
+      group: "Окно и расположение",
     });
   });
 

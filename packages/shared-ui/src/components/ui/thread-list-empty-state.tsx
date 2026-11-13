@@ -1,6 +1,6 @@
 import { EmptyState } from "./empty-state";
 
-export const NO_THREADS_MESSAGE = "No threads";
+export const NO_THREADS_MESSAGE = "Нет чатов";
 
 export function ThreadListEmptyState({
   message = NO_THREADS_MESSAGE,

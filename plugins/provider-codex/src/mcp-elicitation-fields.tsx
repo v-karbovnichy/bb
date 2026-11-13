@@ -40,7 +40,7 @@ export function CodexMcpElicitationField({
           {field.title}
         </Label>
         {!field.required ? (
-          <span className="text-xs text-muted-foreground">Optional</span>
+          <span className="text-xs text-muted-foreground">Необязательно</span>
         ) : null}
         {!field.required && value !== undefined ? (
           <Button
@@ -49,10 +49,10 @@ export function CodexMcpElicitationField({
             variant="ghost"
             className="ml-auto h-6 px-2"
             disabled={disabled}
-            aria-label={`Clear ${field.title}`}
+            aria-label={`Очистить ${field.title}`}
             onClick={() => onChange(undefined)}
           >
-            Clear
+            Очистить
           </Button>
         ) : null}
       </div>
@@ -82,7 +82,7 @@ export function CodexMcpElicitationField({
                 htmlFor={`${id}-${choice}`}
                 className="cursor-pointer text-sm font-medium after:absolute after:inset-0 after:rounded-md after:content-['']"
               >
-                {choice ? "Yes" : "No"}
+                {choice ? "Да" : "Нет"}
               </Label>
             </div>
           ))}

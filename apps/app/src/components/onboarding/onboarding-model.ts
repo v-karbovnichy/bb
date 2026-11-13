@@ -17,10 +17,10 @@ export const ONBOARDING_STEPS: readonly {
   id: OnboardingStepId;
   label: string;
 }[] = [
-  { id: "agent", label: "Agent" },
-  { id: "projects", label: "Projects" },
-  { id: "plugins", label: "Plugins" },
-  { id: "devices", label: "Devices" },
+  { id: "agent", label: "Агент" },
+  { id: "projects", label: "Проекты" },
+  { id: "plugins", label: "Плагины" },
+  { id: "devices", label: "Устройства" },
 ];
 
 export const ONBOARDING_PLUGIN_MARKETPLACE = "bb-official";
@@ -74,53 +74,53 @@ export const STEP_COPY: Readonly<
 > = {
   control: {
     agent: {
-      title: "Connect a coding agent",
+      title: "Подключите агента для программирования",
       description:
-        "bb runs the agents you already use. You need one that is installed and signed in on this computer.",
-      primaryLabel: "Continue",
+        "bb запускает агентов, которыми вы уже пользуетесь. На этом компьютере нужен хотя бы один установленный агент с выполненным входом.",
+      primaryLabel: "Продолжить",
     },
     projects: {
-      title: "Add your projects",
+      title: "Добавьте свои проекты",
       description:
-        "Git repos on this computer that you've worked in over the last 30 days.",
-      primaryLabel: "Continue",
+        "Git-репозитории на этом компьютере, с которыми вы работали за последние 30 дней.",
+      primaryLabel: "Продолжить",
     },
     plugins: {
-      title: "Make bb yours",
+      title: "Настройте bb под себя",
       description:
-        "Most of bb is plugins. These ones are off until you want them, and you can change your mind in Plugins.",
-      primaryLabel: "Continue",
+        "Большая часть возможностей bb работает через плагины. Включите нужные сейчас или позже в разделе «Плагины».",
+      primaryLabel: "Продолжить",
     },
     devices: {
-      title: "Use bb from anywhere",
+      title: "Используйте bb откуда угодно",
       description:
-        "All optional. Everything here also lives in Settings → Machines.",
-      primaryLabel: "Start using bb",
+        "Все шаги необязательны. Эти параметры также доступны в разделе «Настройки → Компьютеры».",
+      primaryLabel: "Начать работу с bb",
     },
   },
   new: {
     agent: {
-      title: "Connect a coding agent",
+      title: "Подключите агента для программирования",
       description:
-        "Agents run on your machine. bb needs one installed and signed in.",
-      primaryLabel: "Continue",
+        "Агенты работают на вашем компьютере. Для bb нужен хотя бы один установленный агент с выполненным входом.",
+      primaryLabel: "Продолжить",
     },
     projects: {
-      title: "Add your projects",
-      description: "Choose local Git repos used in the last 30 days.",
-      primaryLabel: "Continue",
+      title: "Добавьте свои проекты",
+      description: "Выберите локальные Git-репозитории, которыми пользовались за последние 30 дней.",
+      primaryLabel: "Продолжить",
     },
     plugins: {
-      title: "Make bb yours",
+      title: "Настройте bb под себя",
       description:
-        "Customize almost everything in bb with plugins. Turn on a few, change them anytime.",
-      primaryLabel: "Continue",
+        "Настройте почти всё в bb с помощью плагинов. Включите нужные и изменяйте выбор в любое время.",
+      primaryLabel: "Продолжить",
     },
     devices: {
-      title: "Use bb away from this computer",
+      title: "Используйте bb вдали от этого компьютера",
       description:
-        "Start a task at your desk, then check on it from anywhere. Change these later in Settings.",
-      primaryLabel: "Start using bb",
+        "Начните задачу за компьютером и следите за ней откуда угодно. Позже эти параметры можно изменить в настройках.",
+      primaryLabel: "Начать работу с bb",
     },
   },
 };
@@ -217,7 +217,7 @@ export function resolveAgentSetupState({
         detail:
           health.minimumSupportedVersion === null
             ? health.statusMessage
-            : `Needs version ${health.minimumSupportedVersion} or newer`,
+            : `Нужна версия ${health.minimumSupportedVersion} или новее`,
         canInstall,
       };
     case "unauthenticated":

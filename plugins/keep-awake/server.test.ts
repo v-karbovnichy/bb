@@ -332,7 +332,7 @@ describe("builtin Keep Awake server entry", () => {
     });
     await expect(host.harness.runCli(["disable"])).resolves.toMatchObject({
       exitCode: 0,
-      stdout: "Keep Awake disabled",
+      stdout: "Keep Awake выключен",
     });
     await expect(host.bb.storage.kv.get("configuration")).resolves.toEqual({
       enabled: false,
@@ -340,7 +340,7 @@ describe("builtin Keep Awake server entry", () => {
     });
     await expect(host.harness.runCli(["enable"])).resolves.toMatchObject({
       exitCode: 0,
-      stdout: "Keep Awake enabled",
+      stdout: "Keep Awake включён",
     });
     await expect(
       host.harness.runCli(["hosts", "all", "--json"]),
@@ -385,7 +385,7 @@ describe("builtin Keep Awake server entry", () => {
       error: { code: "invalid_host_selection" },
     });
     expect(envelope.stderr).toContain(
-      '"all" cannot be combined with individual host ids',
+      '"all" нельзя сочетать с ID отдельных машин',
     );
     await expect(
       host.bb.storage.kv.get("configuration"),

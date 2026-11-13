@@ -19,7 +19,7 @@ const CONTEXT_SEGMENT_GROUP = "2_pullRequest";
 export default definePluginApp((app) => {
   app.slots.experimental_threadContextSegment({
     id: "pull-request",
-    title: "Pull request",
+    title: "Пул-реквест",
     group: CONTEXT_SEGMENT_GROUP,
     order: 10,
     summary: PullRequestSegmentSummary,

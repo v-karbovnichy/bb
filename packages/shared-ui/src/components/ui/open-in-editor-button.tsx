@@ -14,7 +14,7 @@ export const OpenInEditorButton = forwardRef<
   HTMLButtonElement,
   OpenInEditorButtonProps
 >(function OpenInEditorButton(
-  { className, onClick, label = "Open in editor", ...props },
+  { className, onClick, label = "Открыть в редакторе", ...props },
   ref,
 ) {
   return (

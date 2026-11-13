@@ -276,8 +276,8 @@ export function PasteCodeForm({
     <CodeEntryForm
       label={label}
       value={value}
-      placeholder="Paste the code here"
-      submitLabel="Complete"
+      placeholder="Вставьте код сюда"
+      submitLabel="Готово"
       canSubmit={value.trim().length > 0}
       pending={false}
       invalid={false}
@@ -325,7 +325,7 @@ export function SignInPanel({
         <CodeDisplay
           code={variant.code}
           label={variant.label}
-          copyLabel="Copy code"
+          copyLabel="Скопировать код"
           onCopy={variant.onCopyCode}
         />
       ) : variant.kind === "paste" ? (

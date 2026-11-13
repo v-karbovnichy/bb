@@ -47,7 +47,7 @@ describe("workspace-change-summary", () => {
         deletions: 4,
         lineStatsComplete: true,
       }),
-    ).toBe("3 files, +9 -4");
+    ).toBe("3 файла, +9 -4");
     expect(
       formatChangeSummary({
         filesCount: 1,
@@ -55,7 +55,7 @@ describe("workspace-change-summary", () => {
         deletions: 0,
         lineStatsComplete: true,
       }),
-    ).toBe("1 file");
+    ).toBe("1 файл");
     expect(
       formatChangeSummary({
         filesCount: 2,
@@ -63,7 +63,7 @@ describe("workspace-change-summary", () => {
         deletions: 1,
         lineStatsComplete: false,
       }),
-    ).toBe("2 files");
+    ).toBe("2 файла");
     expect(formatWorkspaceFileStatus("??")).toBe("A?");
     expect(formatWorkspaceFileStatus("XY")).toBe("XY");
   });
@@ -84,7 +84,7 @@ describe("workspace-change-summary", () => {
 
     expect(section).toMatchObject({
       kind: "uncommitted",
-      label: "Uncommitted",
+      label: "Без коммита",
       files: [file],
       mergeBaseRef: null,
       stats: {
@@ -109,7 +109,7 @@ describe("workspace-change-summary", () => {
 
     expect(section).toMatchObject({
       kind: "untracked",
-      label: "Untracked",
+      label: "Неотслеживаемые",
       files: [file],
       mergeBaseRef: null,
       stats: {

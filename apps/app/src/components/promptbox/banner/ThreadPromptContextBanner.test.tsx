@@ -166,7 +166,7 @@ describe("ThreadPromptContextBanner", () => {
       />,
     );
 
-    expect(markup).toContain("Thread is archived");
+    expect(markup).toContain("Чат в архиве");
     expect(markup).toContain('role="status"');
     expect(markup).not.toContain("<button");
   });
@@ -175,7 +175,7 @@ describe("ThreadPromptContextBanner", () => {
     ["removed", "Machine removed"],
     ["removing", "Machine removal in progress"],
     ["cleanup-failed", "Machine cleanup failed"],
-    ["destroyed", "Environment unavailable"],
+    ["destroyed", "Окружение недоступно"],
   ] as const)(
     "collapses the %s explanation behind its status toggle by default",
     (status, label) => {
@@ -231,13 +231,13 @@ describe("ThreadPromptContextBanner", () => {
       label: "archived",
       archivedSection: { archivedAt: 1_731_456_000_000 },
       environmentGoneSection: null,
-      expectedLabel: "Thread is archived",
+      expectedLabel: "Чат в архиве",
     },
     {
       label: "environment archived",
       archivedSection: null,
       environmentGoneSection: { status: "destroyed" as const },
-      expectedLabel: "Environment unavailable",
+      expectedLabel: "Окружение недоступно",
     },
   ])(
     "keeps the $label read-only status visible in compact mode",
@@ -285,10 +285,10 @@ describe("ThreadPromptContextBanner", () => {
       />,
     );
 
-    expect(markup).toContain("Environment unavailable");
-    expect(markup).not.toContain("Thread is archived");
-    expect(markup).toContain(">Unarchive<");
-    expect(markup).not.toContain("Restore workspace");
+    expect(markup).toContain("Окружение недоступно");
+    expect(markup).not.toContain("Чат в архиве");
+    expect(markup).toContain(">Вернуть из архива<");
+    expect(markup).not.toContain("Восстановить рабочую область");
   });
 
   it("offers restoring the workspace once the thread is live again", () => {
@@ -305,8 +305,8 @@ describe("ThreadPromptContextBanner", () => {
       />,
     );
 
-    expect(markup).toContain("Environment unavailable");
-    expect(markup).toContain(">Restore workspace<");
+    expect(markup).toContain("Окружение недоступно");
+    expect(markup).toContain(">Восстановить рабочую область<");
   });
 
   it("shows the restore action as pending while it runs", () => {
@@ -328,7 +328,7 @@ describe("ThreadPromptContextBanner", () => {
     );
 
     expect(
-      markup.match(/<button([^>]*)>Restoring\.\.\.<\/button>/)?.[1],
+      markup.match(/<button([^>]*)>Восстановление\.\.\.<\/button>/)?.[1],
     ).toContain('disabled=""');
   });
 
@@ -352,13 +352,13 @@ describe("ThreadPromptContextBanner", () => {
     );
     const markup = container.innerHTML;
 
-    expect(markup).toContain('aria-label="Child threads"');
-    expect(markup).toContain('aria-label="1 active child thread"');
-    expect(markup).toContain("Active child threads");
+    expect(markup).toContain('aria-label="Дочерние чаты"');
+    expect(markup).toContain('aria-label="Активные дочерние чаты: 1"');
+    expect(markup).toContain("Активные дочерние чаты");
     expect(markup).toContain(">1<");
     expect(markup).toContain('data-icon="ChildThread"');
     expect(markup).toContain("animate-shine-icon");
-    const label = screen.getByText("Active child threads").classList;
+    const label = screen.getByText("Активные дочерние чаты").classList;
     expect(label.contains("animate-shine")).toBe(true);
     expect(label.contains("font-normal")).toBe(true);
     expect(label.contains("font-medium")).toBe(false);
@@ -390,8 +390,8 @@ describe("ThreadPromptContextBanner", () => {
 
     expect(markup).toContain(">2<");
     expect(markup).not.toContain(">+");
-    expect(markup).toContain('aria-label="Needs input"');
-    expect(markup).toContain('aria-label="Working"');
+    expect(markup).toContain('aria-label="Ожидает ответа"');
+    expect(markup).toContain('aria-label="Работает"');
     expect(markup).toContain('data-icon="Loading"');
   });
 
@@ -432,13 +432,13 @@ describe("ThreadPromptContextBanner", () => {
     const collapsed = renderToMarkup(renderBanner(null));
     expect(collapsed).toContain(">Which color should the badge use?<");
     expect(collapsed).toContain(
-      'aria-label="2 active child threads, needs input: Install workspace tools: Which color should the badge use?"',
+      'aria-label="Активные дочерние чаты: 2, нужен ответ: Install workspace tools: Which color should the badge use?"',
     );
-    expect(collapsed).not.toContain("Active child threads");
+    expect(collapsed).not.toContain(">Активные дочерние чаты<");
 
     const expanded = renderToMarkup(renderBanner(CHILD_THREADS));
-    expect(expanded).toContain("Active child threads");
-    expect(expanded).toContain('aria-label="2 active child threads"');
+    expect(expanded).toContain("Активные дочерние чаты");
+    expect(expanded).toContain('aria-label="Активные дочерние чаты: 2"');
   });
 
   it("expands once when a child thread newly needs input, even across remounts", () => {
@@ -482,7 +482,7 @@ describe("ThreadPromptContextBanner", () => {
 
     rerender(renderBanner([blocked, working]));
     expect(onToggleSection).toHaveBeenCalledTimes(1);
-    expect(screen.getByText("Active child threads")).toBeTruthy();
+    expect(screen.getByText("Активные дочерние чаты")).toBeTruthy();
 
     rerender(
       renderBanner([blocked, working], {
@@ -494,7 +494,7 @@ describe("ThreadPromptContextBanner", () => {
     expect(onToggleSection).toHaveBeenCalledTimes(1);
     expect(
       screen
-        .getByRole("button", { name: "2 active child threads" })
+        .getByRole("button", { name: "Активные дочерние чаты: 2" })
         .querySelector('[data-icon="CircleQuestion"]'),
     ).not.toBeNull();
   });
@@ -532,25 +532,25 @@ describe("ThreadPromptContextBanner", () => {
       </MemoryRouter>
     );
     const { rerender } = render(renderBanner());
-    const childCard = screen.getByRole("region", { name: "Child threads" });
+    const childCard = screen.getByRole("region", { name: "Дочерние чаты" });
 
     rerender(renderBanner({ gitSectionPending: true }));
-    expect(screen.getByRole("region", { name: "Child threads" })).toBe(
+    expect(screen.getByRole("region", { name: "Дочерние чаты" })).toBe(
       childCard,
     );
     expect(
-      screen.queryByRole("region", { name: "Thread context before sending" }),
+      screen.queryByRole("region", { name: "Контекст чата перед отправкой" }),
     ).toBeNull();
 
     rerender(renderBanner({ environmentGone: true }));
-    expect(screen.queryByRole("region", { name: "Child threads" })).toBeNull();
+    expect(screen.queryByRole("region", { name: "Дочерние чаты" })).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Environment unavailable" }),
+      screen.getByRole("button", { name: "Окружение недоступно" }),
     ).toBeTruthy();
 
     rerender(renderBanner({ archived: true }));
-    expect(screen.queryByRole("region", { name: "Child threads" })).toBeNull();
-    expect(screen.getByText("Thread is archived")).toBeTruthy();
+    expect(screen.queryByRole("region", { name: "Дочерние чаты" })).toBeNull();
+    expect(screen.getByText("Чат в архиве")).toBeTruthy();
   });
 
   it("opens the child card for a newly waiting child while changed files are open", () => {
@@ -617,7 +617,7 @@ describe("ThreadPromptContextBanner git section body", () => {
     rerender(renderBanner("bb--git/changed-files"));
     expect(screen.getByRole("list")).toBeTruthy();
     expect(
-      screen.getByRole("button", { name: `Open ${changedFile.path}` }),
+      screen.getByRole("button", { name: `Открыть ${changedFile.path}` }),
     ).toBeTruthy();
 
     rerender(renderBanner(null));

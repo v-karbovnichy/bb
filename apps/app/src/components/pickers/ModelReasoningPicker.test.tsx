@@ -307,7 +307,7 @@ describe("ModelReasoningPicker", () => {
     (key, value, next) => {
       const { onReasoningChange } = renderPicker({ reasoningValue: value });
       const trigger = screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       });
       trigger.focus();
       fireEvent.keyDown(trigger, { key });
@@ -323,7 +323,7 @@ describe("ModelReasoningPicker", () => {
     const { onReasoningChange } = renderPicker({ reasoningValue: value });
     fireEvent.keyDown(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
       { key },
     );
@@ -336,10 +336,10 @@ describe("ModelReasoningPicker", () => {
     });
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
     );
-    const search = screen.getByPlaceholderText("Search models");
+    const search = screen.getByPlaceholderText("Поиск моделей");
     fireEvent.keyDown(search, { key: "ArrowRight" });
     expect(onReasoningChange).toHaveBeenCalledExactlyOnceWith("high");
     fireEvent.change(search, { target: { value: "o4" } });
@@ -352,7 +352,7 @@ describe("ModelReasoningPicker", () => {
     const { onReasoningChange, onModelChange } = renderPicker();
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
     );
     const model = screen.getByRole("button", { name: "5.5" });
@@ -371,10 +371,10 @@ describe("ModelReasoningPicker", () => {
       });
       fireEvent.click(
         screen.getByRole("button", {
-          name: "Provider, model and reasoning",
+          name: "Провайдер, модель и уровень рассуждения",
         }),
       );
-      const moreModels = screen.getByRole("button", { name: "More models" });
+      const moreModels = screen.getByRole("button", { name: "Больше моделей" });
       act(() => moreModels.focus());
       fireEvent.keyDown(moreModels, {
         key,
@@ -404,14 +404,14 @@ describe("ModelReasoningPicker", () => {
         moreModelOptions: [{ value: "legacy", label: "Legacy" }],
       });
       fireEvent.click(
-        screen.getByRole("button", { name: "Provider, model and reasoning" }),
+        screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
       );
-      const search = screen.getByPlaceholderText("Search models");
+      const search = screen.getByPlaceholderText("Поиск моделей");
       await waitFor(() => {
         expect(document.activeElement).toBe(search);
       });
       fireEvent.keyDown(search, { key: "ArrowUp" });
-      const moreModels = screen.getByRole("button", { name: "More models" });
+      const moreModels = screen.getByRole("button", { name: "Больше моделей" });
       expect(search.getAttribute("aria-activedescendant")).toBe(moreModels.id);
 
       fireEvent.keyDown(search, { key });
@@ -442,9 +442,9 @@ describe("ModelReasoningPicker", () => {
       ],
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
-    const moreModels = screen.getByRole("button", { name: "More models" });
+    const moreModels = screen.getByRole("button", { name: "Больше моделей" });
     act(() => moreModels.focus());
     fireEvent.keyDown(moreModels, { key: "Enter" });
     const legacy = await screen.findByRole("button", { name: "Legacy" });
@@ -468,13 +468,13 @@ describe("ModelReasoningPicker", () => {
       moreModelOptions: [{ value: "legacy", label: "Legacy" }],
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
-    const search = screen.getByPlaceholderText("Search models");
+    const search = screen.getByPlaceholderText("Поиск моделей");
     await waitFor(() => {
       expect(document.activeElement).toBe(search);
     });
-    const moreModels = screen.getByRole("button", { name: "More models" });
+    const moreModels = screen.getByRole("button", { name: "Больше моделей" });
 
     fireEvent.pointerEnter(moreModels);
     expect(moreModels.getAttribute("aria-expanded")).toBe("true");
@@ -494,10 +494,10 @@ describe("ModelReasoningPicker", () => {
       moreModelOptions: [{ value: "legacy", label: "Legacy" }],
     });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     fireEvent.click(trigger);
-    const moreModels = screen.getByRole("button", { name: "More models" });
+    const moreModels = screen.getByRole("button", { name: "Больше моделей" });
     fireEvent.click(moreModels);
     expect(moreModels.getAttribute("aria-expanded")).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "Legacy" }));
@@ -510,9 +510,9 @@ describe("ModelReasoningPicker", () => {
       moreModelOptions: [{ value: "legacy", label: "Legacy" }],
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
-    const moreModels = screen.getByRole("button", { name: "More models" });
+    const moreModels = screen.getByRole("button", { name: "Больше моделей" });
     fireEvent.pointerEnter(moreModels);
     expect(moreModels.getAttribute("aria-expanded")).toBe("true");
     fireEvent.pointerEnter(screen.getByRole("button", { name: "5.5" }));
@@ -539,10 +539,10 @@ describe("ModelReasoningPicker", () => {
     });
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
     );
-    fireEvent.pointerEnter(screen.getByRole("button", { name: "More models" }));
+    fireEvent.pointerEnter(screen.getByRole("button", { name: "Больше моделей" }));
     const submenuModel = await screen.findByRole("button", { name: "Legacy" });
     act(() => submenuModel.focus());
     fireEvent.keyDown(submenuModel, { key: "ArrowRight" });
@@ -556,7 +556,7 @@ describe("ModelReasoningPicker", () => {
   it("leaves modified arrows and models without reasoning alone", () => {
     const { onReasoningChange } = renderPicker();
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     for (const modifier of ["altKey", "ctrlKey", "metaKey", "shiftKey"]) {
       fireEvent.keyDown(trigger, { key: "ArrowRight", [modifier]: true });
@@ -566,7 +566,7 @@ describe("ModelReasoningPicker", () => {
     renderPicker({ pickerReasoningOptions: [], onReasoningChange });
     fireEvent.keyDown(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
       { key: "ArrowRight" },
     );
@@ -586,12 +586,12 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
     expect(screen.getByTitle("Codex")).not.toBeNull();
-    expect(screen.getByText("Could not load models for Codex.")).not.toBeNull();
-    expect(screen.getByText("Provider plugin failed to load")).not.toBeNull();
+    expect(screen.getByText("Не удалось загрузить модели для Codex.")).not.toBeNull();
+    expect(screen.getByText("Не удалось загрузить плагин провайдера")).not.toBeNull();
   });
 
   it("names the missing CLI in one short line and links it to the install page", () => {
@@ -617,11 +617,11 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    expect(screen.getByText("Could not load models for Codex.")).not.toBeNull();
-    const reason = screen.getByText("CLI not found");
+    expect(screen.getByText("Не удалось загрузить модели для Codex.")).not.toBeNull();
+    const reason = screen.getByText("CLI не найден");
     expect(reason.tagName).toBe("A");
     expect(reason.getAttribute("href")).toBe(
       "https://developers.openai.com/codex/cli",
@@ -643,10 +643,10 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    expect(screen.getByText("Not signed in")).not.toBeNull();
+    expect(screen.getByText("Вход не выполнен")).not.toBeNull();
     expect(screen.getByText(/agent login --device$/)).not.toBeNull();
   });
 
@@ -663,16 +663,16 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    expect(screen.getByText("Could not load models for Codex.")).not.toBeNull();
+    expect(screen.getByText("Не удалось загрузить модели для Codex.")).not.toBeNull();
     expect(
       screen.getByText("bb could not find the Codex CLI on this machine."),
     ).not.toBeNull();
     expect(
       screen.getByTitle(
-        "Could not load models for Codex. bb could not find the Codex CLI on this machine.",
+        "Не удалось загрузить модели для Codex. bb could not find the Codex CLI on this machine.",
       ),
     ).not.toBeNull();
   });
@@ -687,17 +687,17 @@ describe("ModelReasoningPicker", () => {
         pickerReasoningOptions: cache === "cached" ? reasoningOptions : [],
       });
       const trigger = screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       });
 
       expect(trigger.textContent).toContain("5.5");
       expect(trigger.textContent).toContain("Medium");
-      expect(trigger.textContent).not.toContain("Loading models");
+      expect(trigger.textContent).not.toContain("Загрузка моделей");
 
       fireEvent.click(trigger);
 
       expect(
-        screen.getByRole("status", { name: "Loading models" }),
+        screen.getByRole("status", { name: "Загрузка моделей" }),
       ).not.toBeNull();
     },
   );
@@ -710,18 +710,18 @@ describe("ModelReasoningPicker", () => {
       modelIsLoading: true,
     });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
 
     expect(
       trigger.querySelectorAll("[data-model-loading-placeholder]"),
     ).toHaveLength(2);
-    expect(trigger.textContent).not.toContain("Loading models...");
+    expect(trigger.textContent).not.toContain("Загрузка моделей...");
 
     fireEvent.click(trigger);
 
     const loadingStatus = screen.getByRole("status", {
-      name: "Loading models",
+      name: "Загрузка моделей",
     });
     expect(
       loadingStatus.querySelectorAll("[data-model-loading-row]"),
@@ -756,7 +756,7 @@ describe("ModelReasoningPicker", () => {
       reasoningValue: "low",
     });
     const target = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
 
     expect(
@@ -768,7 +768,7 @@ describe("ModelReasoningPicker", () => {
   it("swallows the provider cycle chord when provider switching is locked", () => {
     renderPicker({ onSelectedProviderChange: null });
     const lockedTarget = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     expect(
       commandHandlers.get("modelPicker.cycleProvider")?.({
@@ -805,7 +805,7 @@ describe("ModelReasoningPicker", () => {
   it("cycles the provider while the picker popover is open", () => {
     const { onSelectedProviderChange } = renderPicker();
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     fireEvent.click(trigger);
 
@@ -835,9 +835,9 @@ describe("ModelReasoningPicker", () => {
       alternateProviderModels,
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
-    const search = screen.getByPlaceholderText("Search models");
+    const search = screen.getByPlaceholderText("Поиск моделей");
     search.focus();
     fireEvent.change(search, { target: { value: "o4" } });
     fireEvent.keyDown(search, { key: "ArrowDown" });
@@ -848,7 +848,7 @@ describe("ModelReasoningPicker", () => {
 
     expect(onSelectedProviderChange).toHaveBeenCalledWith("claude-code");
     const nextSearch = screen.getByPlaceholderText(
-      "Search models",
+      "Поиск моделей",
     ) as HTMLInputElement;
     expect(nextSearch.value).toBe("");
     expect(document.activeElement).toBe(nextSearch);
@@ -864,7 +864,7 @@ describe("ModelReasoningPicker", () => {
       ],
     });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     fireEvent.click(trigger);
 
@@ -882,7 +882,7 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     fireEvent.click(screen.getByText("5.2"));
 
@@ -899,7 +899,7 @@ describe("ModelReasoningPicker", () => {
     renderPicker();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
     expect(
@@ -911,7 +911,7 @@ describe("ModelReasoningPicker", () => {
     renderPicker({ modelOptions: manyCodexModels });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
     const menu = screen.getByRole("dialog");
@@ -926,7 +926,7 @@ describe("ModelReasoningPicker", () => {
     ];
     expect(scrollers).toHaveLength(1);
 
-    const models = screen.getByRole("listbox", { name: "Models" });
+    const models = screen.getByRole("listbox", { name: "Модели" });
     expect(scrollers[0]).toBe(models);
     expect(models.className).toContain("overscroll-contain");
     expect(models.className).toContain("max-h-64");
@@ -937,12 +937,12 @@ describe("ModelReasoningPicker", () => {
     renderPicker({ compact: true, modelOptions: manyCodexModels });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
     expect(screen.getByRole("dialog").className).not.toContain("100dvh");
     expect(
-      (await screen.findByRole("listbox", { name: "Models" })).className,
+      (await screen.findByRole("listbox", { name: "Модели" })).className,
     ).not.toContain("max-h-");
   });
 
@@ -951,7 +951,7 @@ describe("ModelReasoningPicker", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
     );
     expect(screen.getAllByText("5.5")).toHaveLength(2);
@@ -984,7 +984,7 @@ describe("ModelReasoningPicker", () => {
         },
       });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     fireEvent.click(trigger);
     fireEvent.click(screen.getByTitle("Claude Code"));
@@ -1000,7 +1000,7 @@ describe("ModelReasoningPicker", () => {
     expect(onReasoningChange).not.toHaveBeenCalled();
 
     fireEvent.click(trigger);
-    expect(screen.queryByRole("button", { name: "Exit handoff" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Выйти из передачи" })).toBeNull();
     expect(screen.queryByText("Opus 4.7")).toBeNull();
     expect(screen.getByRole("button", { name: "5.5" })).not.toBeNull();
   });
@@ -1018,7 +1018,7 @@ describe("ModelReasoningPicker", () => {
       },
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     fireEvent.click(screen.getByTitle("Claude Code"));
     fireEvent.click(await screen.findByText("Opus 4.7"));
@@ -1050,10 +1050,10 @@ describe("ModelReasoningPicker", () => {
       },
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Handoff to new thread" }),
+      screen.getByRole("button", { name: "Передать в новый чат" }),
     );
     expect(onStart).toHaveBeenCalledOnce();
     fireEvent.click(screen.getByRole("button", { name: "5.5" }));
@@ -1061,9 +1061,9 @@ describe("ModelReasoningPicker", () => {
       expect.objectContaining({ providerId: "codex" }),
     );
     expect(onModelChange).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Exit handoff" }));
+    fireEvent.click(screen.getByRole("button", { name: "Выйти из передачи" }));
     expect(onExit).toHaveBeenCalledOnce();
-    expect(screen.queryByRole("button", { name: "Exit handoff" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Выйти из передачи" })).toBeNull();
   });
 
   it("does not offer a fallback catalog as the removed handoff provider's models", () => {
@@ -1086,10 +1086,10 @@ describe("ModelReasoningPicker", () => {
       },
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Handoff to new thread" }),
+      screen.getByRole("button", { name: "Передать в новый чат" }),
     );
     fireEvent.click(screen.getByTitle("Claude Code"));
 
@@ -1136,10 +1136,10 @@ describe("ModelReasoningPicker", () => {
           ],
         });
       fireEvent.click(
-        screen.getByRole("button", { name: "Provider, model and reasoning" }),
+        screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
       );
       fireEvent.click(
-        screen.getByRole("button", { name: "Handoff to new thread" }),
+        screen.getByRole("button", { name: "Передать в новый чат" }),
       );
       fireEvent.click(screen.getByTitle("Claude Code"));
       await screen.findByText("Opus 4.7");
@@ -1185,10 +1185,10 @@ describe("ModelReasoningPicker", () => {
         ],
       });
       fireEvent.click(
-        screen.getByRole("button", { name: "Provider, model and reasoning" }),
+        screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
       );
       fireEvent.click(
-        screen.getByRole("button", { name: "Handoff to new thread" }),
+        screen.getByRole("button", { name: "Передать в новый чат" }),
       );
       fireEvent.click(screen.getByTitle("Claude Code"));
       await screen.findByText("Opus 4.7");
@@ -1221,16 +1221,16 @@ describe("ModelReasoningPicker", () => {
       },
     });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     fireEvent.click(trigger);
     fireEvent.click(screen.getByTitle("Codex (current thread)"));
     expect(onExit).not.toHaveBeenCalled();
     expect(onSelectedProviderChange).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Exit handoff" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Выйти из передачи" })).not.toBeNull();
     fireEvent.click(trigger);
     fireEvent.click(trigger);
-    expect(screen.getByRole("button", { name: "Exit handoff" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Выйти из передачи" })).not.toBeNull();
   });
 
   it("loads no other provider on open and prefetches only the hovered tab on the routed host", async () => {
@@ -1251,7 +1251,7 @@ describe("ModelReasoningPicker", () => {
         .mock.calls.map(([args]) => `${args?.hostId}/${args?.providerId}`);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     fireEvent.pointerEnter(screen.getByTitle("Codex"));
     await act(async () => {
@@ -1269,7 +1269,7 @@ describe("ModelReasoningPicker", () => {
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Provider, model and reasoning",
+        name: "Провайдер, модель и уровень рассуждения",
       }),
     );
     fireEvent.click(screen.getByTitle("Claude Code"));
@@ -1296,7 +1296,7 @@ describe("ModelReasoningPicker", () => {
     });
 
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     expect(trigger.textContent).toContain(modelLabel);
     expect(trigger.textContent).not.toContain("openai-codex");
@@ -1328,9 +1328,9 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
-    fireEvent.change(screen.getByPlaceholderText("Search models"), {
+    fireEvent.change(screen.getByPlaceholderText("Поиск моделей"), {
       target: { value: "gpt4" },
     });
 
@@ -1348,11 +1348,11 @@ describe("ModelReasoningPicker", () => {
     renderPicker({ modelOptions: manyCodexModels });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    const search = screen.getByPlaceholderText("Search models");
-    const list = screen.getByRole("listbox", { name: "Models" });
+    const search = screen.getByPlaceholderText("Поиск моделей");
+    const list = screen.getByRole("listbox", { name: "Модели" });
     list.scrollTop = 120;
 
     fireEvent.change(search, { target: { value: "o4" } });
@@ -1368,14 +1368,14 @@ describe("ModelReasoningPicker", () => {
     });
     renderPicker({ compact: true, modelOptions: manyCodexModels });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
 
     fireEvent.click(trigger);
     act(() => frames.splice(0).forEach((callback) => callback(0)));
     act(() => frames.splice(0).forEach((callback) => callback(16)));
     const search = screen.getByPlaceholderText(
-      "Search models",
+      "Поиск моделей",
     ) as HTMLInputElement;
     fireEvent.change(search, { target: { value: "o4" } });
     expect(search.value).toBe("o4");
@@ -1390,7 +1390,7 @@ describe("ModelReasoningPicker", () => {
     fireEvent.click(trigger);
 
     expect(
-      (screen.getByPlaceholderText("Search models") as HTMLInputElement).value,
+      (screen.getByPlaceholderText("Поиск моделей") as HTMLInputElement).value,
     ).toBe("");
     expect(screen.getByText("o4-mini")).not.toBeNull();
   });
@@ -1402,10 +1402,10 @@ describe("ModelReasoningPicker", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    const search = screen.getByPlaceholderText("Search models");
+    const search = screen.getByPlaceholderText("Поиск моделей");
     fireEvent.change(search, { target: { value: "legacy" } });
 
     expect(screen.getByText("4.1 Legacy")).not.toBeNull();
@@ -1425,13 +1425,13 @@ describe("ModelReasoningPicker", () => {
     renderPicker({ compact: true, modelOptions: manyCodexModels });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
     act(() => frames.splice(0).forEach((callback) => callback(0)));
     act(() => frames.splice(0).forEach((callback) => callback(16)));
 
-    const modelList = screen.getByRole("listbox", { name: "Models" });
-    const reasoning = screen.getByRole("radiogroup", { name: "Reasoning" });
+    const modelList = screen.getByRole("listbox", { name: "Модели" });
+    const reasoning = screen.getByRole("radiogroup", { name: "Рассуждение" });
 
     expect(modelList.contains(reasoning)).toBe(false);
     for (const className of [
@@ -1460,10 +1460,10 @@ describe("ModelReasoningPicker", () => {
     renderPicker();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
 
-    expect(screen.queryByPlaceholderText("Search models")).toBeNull();
+    expect(screen.queryByPlaceholderText("Поиск моделей")).toBeNull();
   });
 });
 
@@ -1562,7 +1562,7 @@ describe("ModelReasoningPicker service tiers", () => {
 
   function openPicker(): void {
     fireEvent.click(
-      screen.getByRole("button", { name: "Provider, model and reasoning" }),
+      screen.getByRole("button", { name: "Провайдер, модель и уровень рассуждения" }),
     );
   }
 
@@ -1573,8 +1573,8 @@ describe("ModelReasoningPicker service tiers", () => {
     });
     openPicker();
 
-    expect(screen.queryByRole("radiogroup", { name: "Speed" })).toBeNull();
-    const toggle = screen.getByRole("switch", { name: "Fast mode" });
+    expect(screen.queryByRole("radiogroup", { name: "Скорость" })).toBeNull();
+    const toggle = screen.getByRole("switch", { name: "Режим Fast" });
     expect(toggle.getAttribute("aria-checked")).toBe("false");
     fireEvent.click(toggle);
     expect(onServiceTierChange).toHaveBeenCalledExactlyOnceWith("fast");
@@ -1587,7 +1587,7 @@ describe("ModelReasoningPicker service tiers", () => {
     });
     openPicker();
 
-    const toggle = screen.getByRole("switch", { name: "Fast mode" });
+    const toggle = screen.getByRole("switch", { name: "Режим Fast" });
     expect(toggle.getAttribute("aria-checked")).toBe("true");
     fireEvent.click(toggle);
     expect(onServiceTierChange).toHaveBeenCalledExactlyOnceWith("default");
@@ -1601,10 +1601,10 @@ describe("ModelReasoningPicker service tiers", () => {
     openPicker();
 
     expect(screen.queryByRole("switch")).toBeNull();
-    const speed = screen.getByRole("radiogroup", { name: "Speed" });
+    const speed = screen.getByRole("radiogroup", { name: "Скорость" });
     const choices = [...speed.querySelectorAll('[role="radio"]')];
     expect(choices.map((choice) => choice.textContent)).toEqual([
-      "Default",
+      "По умолчанию",
       "Fast",
       "Ultrafast",
     ]);
@@ -1624,7 +1624,7 @@ describe("ModelReasoningPicker service tiers", () => {
 
     expect(
       screen
-        .getByRole("radio", { name: "Default" })
+        .getByRole("radio", { name: "По умолчанию" })
         .getAttribute("aria-checked"),
     ).toBe("true");
   });
@@ -1634,7 +1634,7 @@ describe("ModelReasoningPicker service tiers", () => {
     openPicker();
 
     expect(screen.queryByRole("switch")).toBeNull();
-    expect(screen.queryByRole("radiogroup", { name: "Speed" })).toBeNull();
+    expect(screen.queryByRole("radiogroup", { name: "Скорость" })).toBeNull();
   });
 
   it("names the selected tier on the trigger", () => {
@@ -1643,7 +1643,7 @@ describe("ModelReasoningPicker service tiers", () => {
       serviceTierValue: "ultrafast",
     });
 
-    expect(screen.getByTitle(/\(Ultrafast mode\)$/)).toBeTruthy();
+    expect(screen.getByTitle(/\(режим Ultrafast\)$/)).toBeTruthy();
   });
 
   it.each([
@@ -1662,7 +1662,7 @@ describe("ModelReasoningPicker service tiers", () => {
     });
 
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     const icons = [...trigger.querySelectorAll("[data-icon]")].map((node) =>
       node.getAttribute("data-icon"),
@@ -1737,10 +1737,10 @@ describe("ModelReasoningPicker service tiers", () => {
       });
       openPicker();
       const classes = [
-        ...screen.getByRole("radiogroup", { name: "Reasoning" }).classList,
+        ...screen.getByRole("radiogroup", { name: "Рассуждение" }).classList,
       ].filter((name) => /^(flex|grid)/.test(name));
       const speedWraps = screen
-        .getByRole("radiogroup", { name: "Speed" })
+        .getByRole("radiogroup", { name: "Скорость" })
         .classList.contains("flex-wrap");
       cleanup();
       return [classes.join(" "), speedWraps];
@@ -1789,7 +1789,7 @@ describe("ModelReasoningPicker service tiers", () => {
       ],
     });
     const trigger = screen.getByRole("button", {
-      name: "Provider, model and reasoning",
+      name: "Провайдер, модель и уровень рассуждения",
     });
     commandHandlers.get("modelPicker.cycleModel")?.({ target: trigger });
     expect(onModelChange).toHaveBeenLastCalledWith("o3");
@@ -1812,7 +1812,7 @@ describe("ModelReasoningPicker service tiers", () => {
         id: "claude-code",
         capabilities: { supportsServiceTier: true },
         serviceTiers: [
-          { id: "default", label: "Default" },
+          { id: "default", label: "По умолчанию" },
           { id: "fast", label: "Fast" },
           { id: "turbo", label: "Turbo" },
         ],
@@ -1829,13 +1829,13 @@ describe("ModelReasoningPicker service tiers", () => {
       ],
     });
     openPicker();
-    expect(screen.getByRole("radiogroup", { name: "Speed" })).toBeTruthy();
+    expect(screen.getByRole("radiogroup", { name: "Скорость" })).toBeTruthy();
 
     fireEvent.click(screen.getByTitle("Claude Code"));
 
     expect(
-      await screen.findByRole("switch", { name: "Turbo mode" }),
+      await screen.findByRole("switch", { name: "Режим Turbo" }),
     ).toBeTruthy();
-    expect(screen.queryByRole("radiogroup", { name: "Speed" })).toBeNull();
+    expect(screen.queryByRole("radiogroup", { name: "Скорость" })).toBeNull();
   });
 });

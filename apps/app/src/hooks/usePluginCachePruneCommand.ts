@@ -14,13 +14,13 @@ export function usePluginCachePruneCommand(): void {
           {
             description:
               result.removed.length === 0
-                ? "No installed plugin left unused versions behind."
+                ? "У установленных плагинов нет неиспользуемых версий."
                 : `Deleted ${result.removed.length} unused cached plugin version${result.removed.length === 1 ? "" : "s"}.`,
           },
         );
       },
       (error: unknown) => {
-        appToast.error("Failed to clean up plugin cache", {
+        appToast.error("Не удалось очистить кэш плагинов", {
           description: error instanceof Error ? error.message : String(error),
         });
       },

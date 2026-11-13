@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Add persistent custom instructions to agent tasks on this bb host.",
+  "description": "Добавляйте постоянные пользовательские инструкции к задачам агентов на этом хосте bb.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.4.102"
   },
   "bb": {
     "name": "Custom instructions",
-    "description": "Add persistent custom instructions to agent tasks on this bb host.",
+    "description": "Добавляйте постоянные пользовательские инструкции к задачам агентов на этом хосте bb.",
     "branding": {
       "icon": "EditFile"
     },

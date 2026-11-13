@@ -198,7 +198,7 @@ function availablePatches(keys: readonly string[]) {
   );
 }
 
-it("shows Viewed only for files whose stored revision matches and marks the current revision", async () => {
+it("shows Просмотрено only for files whose stored revision matches and marks the current revision", async () => {
   let viewed: GitViewedFile[] = [
     { path: "a.ts", revision: "rev-a" },
     { path: "b.ts", revision: "rev-b-old" },
@@ -278,7 +278,7 @@ it("shows Viewed only for files whose stored revision matches and marks the curr
     expect(screen.queryByRole("checkbox", { name: "b.ts" })).toBeNull(),
   );
   expect(
-    screen.getByText("No changed files match the current filters."),
+    screen.getByText("Изменённые файлы не соответствуют текущим фильтрам."),
   ).toBeTruthy();
   rerenderPanel({
     files: files("rev-b-edited"),
@@ -311,7 +311,7 @@ it("shows Viewed only for files whose stored revision matches and marks the curr
   ).toBe("false");
 });
 
-it("keeps a Viewed change in place while the write is pending and rolls it back when it fails", async () => {
+it("keeps a Просмотрено change in place while the write is pending and rolls it back when it fails", async () => {
   let rejectMark: (error: Error) => void = () => {};
   renderPanel(
     { files: [makeDiffFileEntry({ path: "a.ts", revision: "rev-a" })] },
@@ -545,7 +545,7 @@ it("waits for the requested list before scrolling to an opened file", async () =
   await waitFor(() => expect(onScrolledToPath).toHaveBeenCalled());
 });
 
-it("reads no patches or Viewed marks while the panel is closed", async () => {
+it("reads no patches or Просмотрено marks while the panel is closed", async () => {
   const file = makeDiffFileEntry({ path: "a.ts", revision: "r1" });
   const { inspection } = renderPanel(
     { files: [file], isLive: false },

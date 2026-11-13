@@ -118,12 +118,15 @@ function PluginNavigationHeader({
           )
         }
         onCrash={(pluginId) => {
-          appToast.error("Sidebar header plugin crashed", {
-            description:
-              fallbackHeader === null
-                ? `${slot.title} (${pluginId}) stopped working.`
-                : `${slot.title} (${pluginId}) stopped working, so bb drew the ${fallbackHeader} header instead.`,
-          });
+          appToast.error(
+            "Плагин заголовка боковой панели завершился с ошибкой",
+            {
+              description:
+                fallbackHeader === null
+                  ? `Сбой в работе ${slot.title} (${pluginId}).`
+                  : `Сбой в работе ${slot.title} (${pluginId}). Вместо него bb показал заголовок ${fallbackHeader}.`,
+            },
+          );
         }}
       />
     </div>

@@ -304,7 +304,7 @@ function statusGlyph(): HTMLElement {
 
 function openActionsMenu() {
   fireEvent.pointerDown(
-    screen.getByRole("button", { name: "Thread actions" }),
+    screen.getByRole("button", { name: "Действия с чатом" }),
     {
       button: 0,
     },
@@ -360,15 +360,15 @@ function hostThreadActions({
         thread.pinnedAt === null ? "Pin" : "PinOff",
       ),
       ...(thread.parentThreadId === null && !isArchived
-        ? [entry("thread-list/move", "Move to section", "SectionMove")]
+        ? [entry("thread-list/move", "Переместить в раздел", "SectionMove")]
         : []),
-      entry("bb--core/rename", "Rename", "Edit", async () => {
+      entry("bb--core/rename", "Переименовать", "Edit", async () => {
         requestRename(thread.id);
       }),
       entry(
         "bb--core/archive",
-        isArchived ? "Unarchive" : "Archive",
-        isArchived ? "ArchiveRestore" : "Archive",
+        isArchived ? "Unarchive" : "Архивировать",
+        isArchived ? "ArchiveRestore" : "Архивировать",
         archiveRun,
       ),
     ];
@@ -382,17 +382,17 @@ vi.mock("@/components/ui/hooks/use-pointer-coarse", () => ({
 
 async function expectRenamePresentation(outcome: RenamePresentationOutcome) {
   if (outcome === "none") {
-    expect(screen.queryByRole("textbox", { name: "Thread name" })).toBeNull();
+    expect(screen.queryByRole("textbox", { name: "Название чата" })).toBeNull();
     return;
   }
-  const input = await screen.findByRole("textbox", { name: "Thread name" });
+  const input = await screen.findByRole("textbox", { name: "Название чата" });
   expect(input).toHaveProperty("value", "Thread");
   expect(input.closest('[role="dialog"]') === null ? "inline" : "dialog").toBe(
     outcome,
   );
   fireEvent.keyDown(input, { key: "Escape" });
   await waitFor(() =>
-    expect(screen.queryByRole("textbox", { name: "Thread name" })).toBeNull(),
+    expect(screen.queryByRole("textbox", { name: "Название чата" })).toBeNull(),
   );
 }
 
@@ -433,11 +433,11 @@ describe("ThreadRow", () => {
     ).toBeTruthy();
 
     fireEvent.doubleClick(screen.getByText("Thread"));
-    const input = await screen.findByRole("textbox", { name: "Thread name" });
+    const input = await screen.findByRole("textbox", { name: "Название чата" });
     expect(screen.getByRole("img", { name: "Test Provider" })).toBeTruthy();
     fireEvent.change(input, { target: { value: "Scratch name" } });
     fireEvent.keyDown(input, { key: "Escape" });
-    expect(screen.queryByRole("textbox", { name: "Thread name" })).toBeNull();
+    expect(screen.queryByRole("textbox", { name: "Название чата" })).toBeNull();
     expect(screen.getByRole("img", { name: "Test Provider" })).toBeTruthy();
     expect(slot.inspection.navigateCalls).toEqual([]);
 
@@ -458,7 +458,7 @@ describe("ThreadRow", () => {
     const slot = renderThreadRow({
       thread: createThread({ href: "/projects/proj_test/threads/thr_test" }),
     });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     expect(link.getAttribute("href")).toBe(
       "/projects/proj_test/threads/thr_test",
     );
@@ -475,7 +475,7 @@ describe("ThreadRow", () => {
     ["ctrl", { ctrlKey: true }],
   ])("opens the thread in a split on %s-click", (_label, modifier) => {
     const slot = renderThreadRow();
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     const event = fireEvent.click(link, modifier);
     expect(event).toBe(false);
     expect(slot.inspection.navigateCalls).toEqual([
@@ -490,7 +490,7 @@ describe("ThreadRow", () => {
     "selects the row on %s-shift-click and still splits without shift",
     (_label, modifier) => {
       const slot = renderThreadRow();
-      const link = screen.getByRole("link", { name: "Open Thread" });
+      const link = screen.getByRole("link", { name: "Открыть Thread" });
       const row = link.closest("[data-sidebar-rename-row]");
       expect(row?.hasAttribute("data-sidebar-thread-selected")).toBe(false);
       expect(fireEvent.click(link, { ...modifier, shiftKey: true })).toBe(
@@ -521,30 +521,30 @@ describe("ThreadRow", () => {
       },
     });
     for (const title of ["First", "Second"]) {
-      fireEvent.click(screen.getByRole("link", { name: `Open ${title}` }), {
+      fireEvent.click(screen.getByRole("link", { name: `Открыть ${title}` }), {
         metaKey: true,
         shiftKey: true,
       });
     }
-    fireEvent.contextMenu(screen.getByRole("link", { name: "Open Second" }));
+    fireEvent.contextMenu(screen.getByRole("link", { name: "Открыть Second" }));
     await screen.findByRole("menu", { name: "Actions for 2 threads" });
     expect(bulkTargets.at(-1)).toEqual(["thr_first", "thr_second"]);
     expect(
-      screen.getByRole("menuitem", { name: "Clear selection" }),
+      screen.getByRole("menuitem", { name: "Снять выделение" }),
     ).toBeTruthy();
     fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
     await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
-    fireEvent.click(screen.getByRole("link", { name: "Open First" }), {
+    fireEvent.click(screen.getByRole("link", { name: "Открыть First" }), {
       metaKey: true,
       shiftKey: true,
     });
-    fireEvent.click(screen.getByRole("link", { name: "Open Second" }), {
+    fireEvent.click(screen.getByRole("link", { name: "Открыть Second" }), {
       metaKey: true,
       shiftKey: true,
     });
-    fireEvent.contextMenu(screen.getByRole("link", { name: "Open Third" }));
+    fireEvent.contextMenu(screen.getByRole("link", { name: "Открыть Third" }));
     expect(
-      await screen.findByRole("menu", { name: "Thread actions" }),
+      await screen.findByRole("menu", { name: "Действия с чатом" }),
     ).toBeTruthy();
   });
 
@@ -553,7 +553,7 @@ describe("ThreadRow", () => {
     (target) => {
       const { container } = renderThreadRow();
       container.setAttribute("data-sidebar", "sidebar");
-      const link = screen.getByRole("link", { name: "Open Thread" });
+      const link = screen.getByRole("link", { name: "Открыть Thread" });
       const row = link.closest("[data-sidebar-rename-row]")!;
       const menu = document.createElement("div");
       menu.setAttribute("role", "menu");
@@ -563,7 +563,7 @@ describe("ThreadRow", () => {
         for (const keepingTarget of [
           row,
           link,
-          screen.getByRole("button", { name: "Thread actions" }),
+          screen.getByRole("button", { name: "Действия с чатом" }),
           menu,
         ]) {
           fireEvent.pointerDown(keepingTarget);
@@ -592,7 +592,7 @@ describe("ThreadRow", () => {
     expect(
       restore.closest(".\\[\\@media\\(hover\\:none\\)\\]\\:hidden"),
     ).not.toBeNull();
-    expect(screen.queryByRole("button", { name: "Archive" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Архивировать" })).toBeNull();
     fireEvent.pointerDown(restore, { pointerType: "touch", button: 0 });
     fireEvent.keyDown(restore, { key: "Enter" });
     fireEvent.click(restore);
@@ -664,7 +664,7 @@ describe("ThreadRow", () => {
       Array.from(controls?.querySelectorAll("button") ?? []).map((button) =>
         button.getAttribute("aria-label"),
       ),
-    ).toEqual(["Pin", "Copy link", "Archive", "Thread actions"]);
+    ).toEqual(["Pin", "Copy link", "Архивировать", "Действия с чатом"]);
     expect(
       document
         .querySelector<HTMLElement>(".bb-sidebar-hover-actions-inset")
@@ -686,9 +686,9 @@ describe("ThreadRow", () => {
       thread: createThread({ parentThreadId: "thr_parent" }),
     });
     expect(
-      screen.queryByRole("button", { name: "Move to section" }),
+      screen.queryByRole("button", { name: "Переместить в раздел" }),
     ).toBeNull();
-    expect(screen.getByRole("button", { name: "Archive" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Архивировать" })).toBeTruthy();
     expect(
       document
         .querySelector<HTMLElement>(".bb-sidebar-hover-actions-inset")
@@ -699,8 +699,8 @@ describe("ThreadRow", () => {
   it("shows only the actions menu when every row action is turned off", () => {
     getDefaultStore().set(preferenceValueAtom("rowActions"), []);
     renderThreadRow();
-    expect(screen.queryByRole("button", { name: "Archive" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Thread actions" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Архивировать" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Действия с чатом" })).toBeTruthy();
     expect(
       document
         .querySelector<HTMLElement>(".bb-sidebar-hover-actions-inset")
@@ -731,9 +731,9 @@ describe("ThreadRow", () => {
       "bb--core/rename",
     ]);
     renderThreadRow();
-    fireEvent.click(screen.getByRole("button", { name: "Rename" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переименовать" }));
     expect(
-      await screen.findByRole("textbox", { name: "Thread name" }),
+      await screen.findByRole("textbox", { name: "Название чата" }),
     ).toHaveProperty("value", "Thread");
   });
 
@@ -743,14 +743,14 @@ describe("ThreadRow", () => {
       const customize = vi.fn();
       renderThreadRow({ onCustomizeRowActions: customize });
       if (surface === "dropdown") {
-        fireEvent.click(screen.getByRole("button", { name: "Thread actions" }));
+        fireEvent.click(screen.getByRole("button", { name: "Действия с чатом" }));
       } else {
         fireEvent.contextMenu(
-          screen.getByRole("link", { name: "Open Thread" }),
+          screen.getByRole("link", { name: "Открыть Thread" }),
         );
       }
       fireEvent.click(
-        await screen.findByRole("menuitem", { name: "Customize actions" }),
+        await screen.findByRole("menuitem", { name: "Настроить действия" }),
       );
       expect(customize).toHaveBeenCalledWith("thr_test");
     },
@@ -758,24 +758,24 @@ describe("ThreadRow", () => {
 
   it("leaves Customize actions out when the list cannot customize", async () => {
     renderThreadRow();
-    fireEvent.click(screen.getByRole("button", { name: "Thread actions" }));
-    await screen.findByRole("menuitem", { name: "Rename" });
+    fireEvent.click(screen.getByRole("button", { name: "Действия с чатом" }));
+    await screen.findByRole("menuitem", { name: "Переименовать" });
     expect(
-      screen.queryByRole("menuitem", { name: "Customize actions" }),
+      screen.queryByRole("menuitem", { name: "Настроить действия" }),
     ).toBeNull();
   });
 
   it("customizes row actions on the real row until Done", () => {
     const finish = vi.fn();
     renderThreadRow({ onFinishCustomizingRowActions: finish });
-    expect(screen.getByRole("link", { name: "Open Thread" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Открыть Thread" })).toBeTruthy();
     expect(
       document
         .querySelector("[data-sidebar-thread-trailing]")
         ?.classList.contains("hidden"),
     ).toBe(true);
-    expect(screen.getByRole("group", { name: "Row actions" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Done" }));
+    expect(screen.getByRole("group", { name: "Действия со строкой" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Готово" }));
     expect(finish).toHaveBeenCalledWith(true);
   });
 
@@ -784,14 +784,14 @@ describe("ThreadRow", () => {
     async (surface) => {
       renderThreadRow();
       if (surface === "dropdown") {
-        fireEvent.click(screen.getByRole("button", { name: "Thread actions" }));
+        fireEvent.click(screen.getByRole("button", { name: "Действия с чатом" }));
       } else {
         fireEvent.contextMenu(
-          screen.getByRole("link", { name: "Open Thread" }),
+          screen.getByRole("link", { name: "Открыть Thread" }),
         );
       }
-      fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
-      const input = await screen.findByRole("textbox", { name: "Thread name" });
+      fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
+      const input = await screen.findByRole("textbox", { name: "Название чата" });
       expect(input).toHaveProperty("value", "Thread");
     },
   );
@@ -804,10 +804,10 @@ describe("ThreadRow", () => {
         "bb--core/rename",
       ]);
       renderThreadRow({ isCompactViewport: compact });
-      fireEvent.click(screen.getByRole("button", { name: "Thread actions" }));
-      fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+      fireEvent.click(screen.getByRole("button", { name: "Действия с чатом" }));
+      fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
       await expectRenamePresentation(menu);
-      fireEvent.click(screen.getByRole("button", { name: "Rename" }));
+      fireEvent.click(screen.getByRole("button", { name: "Переименовать" }));
       await expectRenamePresentation(direct);
       fireEvent.doubleClick(screen.getByText("Thread"));
       await expectRenamePresentation(doubleClick);
@@ -817,7 +817,7 @@ describe("ThreadRow", () => {
   it("suppresses the context menu while the title is being edited", async () => {
     renderThreadRow();
     fireEvent.doubleClick(screen.getByText("Thread"));
-    await screen.findByRole("textbox", { name: "Thread name" });
+    await screen.findByRole("textbox", { name: "Название чата" });
     expect(
       screen
         .getByTestId("bb-thread-actions-context-menu")
@@ -889,7 +889,7 @@ describe("ThreadRow", () => {
     ({ pluginStatus, thread }) => {
       const { container } = renderSplitThreadRow({ pluginStatus, thread });
 
-      const splitMap = screen.getByRole("img", { name: /open in split/ });
+      const splitMap = screen.getByRole("img", { name: /открыть в разделённой области/ });
       expect(Array.from(splitMap.classList)).toContain("animate-shine-icon");
       expect(
         splitMap.closest("[data-sidebar-thread-trailing-indicator]"),
@@ -904,7 +904,7 @@ describe("ThreadRow", () => {
   ])("keeps the split map static for %s", (_label, thread) => {
     renderSplitThreadRow({ thread });
 
-    const splitMap = screen.getByRole("img", { name: /open in split/ });
+    const splitMap = screen.getByRole("img", { name: /открыть в разделённой области/ });
     expect(Array.from(splitMap.classList)).not.toContain("animate-shine-icon");
   });
 
@@ -916,7 +916,7 @@ describe("ThreadRow", () => {
     unmount();
 
     const other = renderThreadRow({ splitLayout: twoPaneLayout("thr_other") });
-    expect(screen.queryByRole("img", { name: /open in split/ })).toBeNull();
+    expect(screen.queryByRole("img", { name: /открыть в разделённой области/ })).toBeNull();
     expect(
       other.container.querySelector(".bb-sidebar-open-in-split-row"),
     ).toBeNull();
@@ -969,9 +969,9 @@ describe("ThreadRow", () => {
 
       expect(
         screen
-          .getByRole("img", { name: /open in split/ })
+          .getByRole("img", { name: /открыть в разделённой области/ })
           .getAttribute("aria-label"),
-      ).toBe(`Thread — open in split; ${expectedStatus}`);
+      ).toBe(`Thread — открыть в разделённой области; ${expectedStatus}`);
     },
   );
 
@@ -988,7 +988,7 @@ describe("ThreadRow", () => {
       draftGlyph.closest("[data-sidebar-thread-trailing-indicator]"),
     ).not.toBeNull();
     expect(
-      screen.getByRole("link", { name: "Open Thread (unsubmitted draft)" }),
+      screen.getByRole("link", { name: "Открыть Thread (неотправленный черновик)" }),
     ).not.toBeNull();
   });
 
@@ -1037,7 +1037,7 @@ describe("ThreadRow", () => {
     renderSplitThreadRow({ shortcutKey: "3" });
 
     expect(screen.getByText("⌘3")).not.toBeNull();
-    expect(screen.queryByRole("img", { name: /open in split/ })).toBeNull();
+    expect(screen.queryByRole("img", { name: /открыть в разделённой области/ })).toBeNull();
   });
 
   it("passes the plugin status tone through to the status glyph", () => {
@@ -1099,7 +1099,7 @@ describe("ThreadRow", () => {
     ).toBe("Compare Mention target in Mention project");
     expect(
       screen.getByRole("link", {
-        name: "Open Compare Mention target in Mention project",
+        name: "Открыть Compare Mention target in Mention project",
       }),
     ).not.toBeNull();
     expect(
@@ -1129,7 +1129,7 @@ describe("ThreadRow", () => {
     const marker = container.querySelector(
       "[data-sidebar-thread-cross-project]",
     );
-    expect(marker?.getAttribute("aria-label")).toBe("In project Web App");
+    expect(marker?.getAttribute("aria-label")).toBe("В проекте Web App");
     expect(marker?.querySelector('[data-icon="FolderExport"]')).not.toBeNull();
     expect(
       marker?.parentElement?.querySelector(".bb-thread-title"),
@@ -1138,7 +1138,7 @@ describe("ThreadRow", () => {
       marker?.closest("[data-sidebar-thread-trailing-indicator]"),
     ).toBeNull();
     expect(
-      screen.getByRole("link", { name: "Open Thread" }).getAttribute("href"),
+      screen.getByRole("link", { name: "Открыть Thread" }).getAttribute("href"),
     ).toBe("/projects/proj_other/threads/thr_test");
   });
 
@@ -1155,7 +1155,7 @@ describe("ThreadRow", () => {
       container
         .querySelector("[data-sidebar-thread-cross-project]")
         ?.getAttribute("aria-label"),
-    ).toBe("In another project");
+    ).toBe("В другом проекте");
   });
 
   it("opens the thread when the cross-project marker is clicked", () => {
@@ -1166,7 +1166,7 @@ describe("ThreadRow", () => {
         projectId: "proj_other",
       }),
     });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     const onLinkClick = vi.fn();
     link.addEventListener("click", onLinkClick);
 
@@ -1269,10 +1269,10 @@ describe("ThreadRow", () => {
         },
       });
       const toggle = screen.getByRole("button", {
-        name: /(?:Expand|Collapse) Nested discussion/,
+        name: /(?:Развернуть|Свернуть) чаты Nested discussion/,
       });
       const link = screen.getByRole("link", {
-        name: "Open Nested discussion with enough text to fill the sidebar width",
+        name: "Открыть Nested discussion with enough text to fill the sidebar width",
       });
       expect(
         link.parentElement?.classList.contains(
@@ -1286,8 +1286,8 @@ describe("ThreadRow", () => {
         ),
       ).toEqual([
         toggle.getAttribute("aria-label"),
-        "Archive",
-        "Thread actions",
+        "Архивировать",
+        "Действия с чатом",
       ]);
       fireEvent.click(toggle);
       expect(onToggleCollapsed).toHaveBeenCalledWith("thr_test");
@@ -1296,7 +1296,7 @@ describe("ThreadRow", () => {
 
   it("routes a tap on the bare row through its navigation link", () => {
     renderThreadRow();
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     const row = link.closest("[data-sidebar-rename-row]");
     expect(row).not.toBeNull();
     const clickLink = vi.spyOn(link, "click");
@@ -1311,7 +1311,7 @@ describe("ThreadRow", () => {
     expect(clickLink).toHaveBeenCalledTimes(2);
   });
 
-  it("draws other plugins' metadata only while Metadata is on", () => {
+  it("draws other plugins' metadata only while Метаданные is on", () => {
     const slot = renderThreadRow({ experiments: ["threadRowMetadata"] });
     expect(
       slot.container.querySelector("[data-thread-row-metadata]"),
@@ -1323,7 +1323,7 @@ describe("ThreadRow", () => {
     ).not.toBeNull();
   });
 
-  it("ignores the Metadata preference while its experiment is off", () => {
+  it("ignores the Метаданные preference while its experiment is off", () => {
     getDefaultStore().set(sidebarShowRowMetadataAtom, true);
     const slot = renderThreadRow();
     expect(
@@ -1336,7 +1336,7 @@ describe("ThreadRow", () => {
     const slot = renderThreadRow({
       experiments: ["threadRowMetadata"],
     });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     const row = link.closest("[data-sidebar-rename-row]");
     const items = row?.querySelector("[data-thread-row-metadata]");
     expect(items).not.toBeNull();
@@ -1359,7 +1359,7 @@ describe("ThreadRow", () => {
         consumeClickSuppression: vi.fn(() => true),
       },
     });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     const clickLink = vi.spyOn(link, "click");
     const trailing = link
       .closest("[data-sidebar-rename-row]")
@@ -1389,7 +1389,7 @@ describe("ThreadRow", () => {
 
     expect(
       screen
-        .getByRole("button", { name: "Collapse Parent thread threads" })
+        .getByRole("button", { name: "Свернуть чаты Parent thread" })
         .getAttribute("data-sidebar-hover-actions-mobile"),
     ).toBe("always");
   });
@@ -1417,7 +1417,7 @@ describe("ThreadRow", () => {
       });
 
       const toggle = screen.getByRole("button", {
-        name: `${isCollapsed ? "Expand" : "Collapse"} Parent thread threads`,
+        name: `${isCollapsed ? "Развернуть" : "Свернуть"} чаты Parent thread`,
       });
       expect(toggle.classList.contains("bb-sidebar-hover-actions")).toBe(
         expectedHoverReveal,
@@ -1462,7 +1462,7 @@ describe("ThreadRow", () => {
     expect(renderedIndicators()).toEqual([]);
     expect(
       screen
-        .getByRole("link", { name: "Open Thread" })
+        .getByRole("link", { name: "Открыть Thread" })
         .getAttribute("aria-keyshortcuts"),
     ).toBe("Meta+3");
   });
@@ -1682,7 +1682,7 @@ describe("ThreadRow", () => {
     });
 
     fireEvent.doubleClick(screen.getByText("Thread"));
-    const input = await screen.findByRole("textbox", { name: "Thread name" });
+    const input = await screen.findByRole("textbox", { name: "Название чата" });
     expect(input).toHaveProperty("value", "Thread");
 
     fireEvent.change(input, { target: { value: "Renamed thread" } });
@@ -1697,18 +1697,18 @@ describe("ThreadRow", () => {
       ]);
     });
     await waitFor(() => {
-      expect(screen.queryByRole("textbox", { name: "Thread name" })).toBeNull();
+      expect(screen.queryByRole("textbox", { name: "Название чата" })).toBeNull();
     });
     expect(screen.getByText("Thread")).not.toBeNull();
   });
 
   it("renames inline after a fine-pointer double click on a compact viewport", async () => {
     renderThreadRow({ isCompactViewport: true });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     expect(fireEvent.click(link)).toBe(true);
     expect(fireEvent.click(link)).toBe(false);
     expect(
-      await screen.findByRole("textbox", { name: "Thread name" }),
+      await screen.findByRole("textbox", { name: "Название чата" }),
     ).toHaveProperty("value", "Thread");
     expect(screen.queryByRole("dialog")).toBeNull();
   });
@@ -1737,7 +1737,7 @@ describe("ThreadRow", () => {
 
     fireEvent.doubleClick(screen.getByText("Thread"));
     fireEvent.pointerDown(
-      await screen.findByRole("textbox", { name: "Thread name" }),
+      await screen.findByRole("textbox", { name: "Название чата" }),
     );
 
     expect(onPointerDown).not.toHaveBeenCalled();
@@ -1787,7 +1787,7 @@ describe("ThreadRow", () => {
         sidebarThreads: { threads: [thread], projects: [] },
       },
     );
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
     expect(link).toHaveProperty("draggable", false);
     fireEvent.pointerDown(link, {
       pointerId: 1,
@@ -1839,7 +1839,7 @@ describe("ThreadRow", () => {
       },
     });
 
-    fireEvent.touchStart(screen.getByRole("link", { name: "Open Thread" }));
+    fireEvent.touchStart(screen.getByRole("link", { name: "Открыть Thread" }));
     expect(onTouchStart).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole("button", { name: "Reorder Thread" })).toBeNull();
   });
@@ -1852,7 +1852,7 @@ describe("ThreadRow", () => {
     const slot = renderThreadRow({
       options: { ...DEFAULT_OPTIONS, consumeClickSuppression },
     });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
 
     const row = link.closest("[data-sidebar-rename-row]");
 
@@ -1869,14 +1869,14 @@ describe("ThreadRow", () => {
   it("starts a rename from a second click after the row remounts", async () => {
     const thread = createThread();
     const { rerenderThreadRow } = renderThreadRow({ thread });
-    const link = screen.getByRole("link", { name: "Open Thread" });
+    const link = screen.getByRole("link", { name: "Открыть Thread" });
 
     fireEvent.click(link);
     rerenderThreadRow(thread);
-    fireEvent.click(screen.getByRole("link", { name: "Open Thread" }));
+    fireEvent.click(screen.getByRole("link", { name: "Открыть Thread" }));
 
     expect(
-      await screen.findByRole("textbox", { name: "Thread name" }),
+      await screen.findByRole("textbox", { name: "Название чата" }),
     ).toHaveProperty("value", "Thread");
   });
 });

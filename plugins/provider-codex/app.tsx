@@ -39,14 +39,14 @@ function AsyncQuestionInteraction({
     return (
       <div className="space-y-3">
         <p className="text-sm text-muted-foreground">
-          This question could not be displayed.
+          Не удалось отобразить этот вопрос.
         </p>
         <Button
           type="button"
           variant="outline"
           onClick={() => void cancel().catch(() => {})}
         >
-          Dismiss
+          Закрыть
         </Button>
       </div>
     );
@@ -120,7 +120,7 @@ function CodexMcpElicitation({
     } catch {
       setSubmission({
         status: "failed",
-        message: "Could not send this response. Try again or stop the turn.",
+        message: "Не удалось отправить ответ. Попробуйте ещё раз или остановите ход.",
       });
     }
   };
@@ -133,7 +133,7 @@ function CodexMcpElicitation({
     } catch {
       setSubmission({
         status: "failed",
-        message: "Could not stop this turn. Try again.",
+        message: "Не удалось остановить ход. Попробуйте ещё раз.",
       });
     }
   };
@@ -174,7 +174,7 @@ function CodexMcpElicitation({
           setSubmission({
             status: "failed",
             message:
-              "Could not open this link. Try again or decline the request.",
+              "Не удалось открыть ссылку. Попробуйте ещё раз или отклоните запрос.",
           });
           return;
         }
@@ -182,7 +182,7 @@ function CodexMcpElicitation({
         setSubmission({
           status: "failed",
           message:
-            "Could not open this link. Try again or decline the request.",
+            "Не удалось открыть ссылку. Попробуйте ещё раз или отклоните запрос.",
         });
         return;
       }
@@ -215,7 +215,7 @@ function CodexMcpElicitation({
               />
               <div className="min-w-0 space-y-0.5">
                 {payload.riskLevel === "high" ? (
-                  <p className="font-medium">High risk</p>
+                  <p className="font-medium">Высокий риск</p>
                 ) : null}
                 {payload.warning !== null ? (
                   <p className="whitespace-pre-wrap break-words text-foreground">
@@ -250,12 +250,12 @@ function CodexMcpElicitation({
                   {payload.app.name}
                 </p>
                 <p className="flex min-w-0 gap-1 text-xs text-muted-foreground">
-                  <span className="shrink-0">Computer Use</span>
+                  <span className="shrink-0">Управление компьютером</span>
                   <span aria-hidden>·</span>
                   <span className="truncate">{payload.app.id}</span>
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  Requested by MCP server{" "}
+                  Запрошено сервером MCP{" "}
                   <span className="font-mono">{payload.serverName}</span>
                 </p>
               </div>
@@ -271,8 +271,8 @@ function CodexMcpElicitation({
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {payload.kind === "tool_approval"
-                    ? "MCP server · tool call approval"
-                    : "MCP server"}
+                    ? "Сервер MCP · подтверждение вызова инструмента"
+                    : "Сервер MCP"}
                 </p>
               </div>
             </div>
@@ -286,7 +286,7 @@ function CodexMcpElicitation({
           {payload.kind === "form" ? (
             <fieldset
               disabled={busy}
-              aria-label="Form fields"
+              aria-label="Поля формы"
               className="min-w-0 space-y-4"
             >
               {payload.fields.map((field) => (
@@ -339,7 +339,7 @@ function CodexMcpElicitation({
                   href={payload.url}
                   className="text-sm text-primary underline"
                 >
-                  Open link again
+                  Открыть ссылку ещё раз
                 </UrlLink>
               ) : null}
             </div>
@@ -357,7 +357,7 @@ function CodexMcpElicitation({
               ) : null}
               {payload.params.length > 0 ? (
                 <dl
-                  aria-label="Tool arguments"
+                  aria-label="Аргументы инструмента"
                   className="grid min-w-0 grid-cols-[minmax(0,auto)_minmax(0,1fr)] gap-x-3 gap-y-1"
                 >
                   {payload.params.map((param) => (
@@ -372,13 +372,11 @@ function CodexMcpElicitation({
                   ))}
                 </dl>
               ) : (
-                <p className="text-muted-foreground">No arguments</p>
+                <p className="text-muted-foreground">Нет аргументов</p>
               )}
               {payload.omittedParamCount > 0 ? (
                 <p className="text-muted-foreground">
-                  {payload.omittedParamCount} more{" "}
-                  {payload.omittedParamCount === 1 ? "argument" : "arguments"}{" "}
-                  not shown
+                  Скрыто аргументов: {payload.omittedParamCount}
                 </p>
               ) : null}
             </div>
@@ -402,7 +400,7 @@ function CodexMcpElicitation({
                   void respond({ action: "accept", persist: "always" })
                 }
               >
-                Always allow
+                Всегда разрешать
               </Button>
             ) : null}
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
@@ -413,7 +411,7 @@ function CodexMcpElicitation({
                 disabled={busy}
                 onClick={() => void respond({ action: "decline" })}
               >
-                Decline
+                Отклонить
               </Button>
               {payload.kind === "computer_use" ? (
                 payload.scopes.includes("session") ? (
@@ -425,7 +423,7 @@ function CodexMcpElicitation({
                       void respond({ action: "accept", persist: "session" })
                     }
                   >
-                    Allow for this session
+                    Разрешить для этого сеанса
                   </Button>
                 ) : null
               ) : payload.kind === "tool_approval" ? (
@@ -440,7 +438,7 @@ function CodexMcpElicitation({
                         void respond({ action: "accept", persist: "session" })
                       }
                     >
-                      Allow for this session
+                      Разрешить для этого сеанса
                     </Button>
                   ) : null}
                   <Button
@@ -449,12 +447,12 @@ function CodexMcpElicitation({
                     disabled={busy}
                     onClick={() => void respond({ action: "accept" })}
                   >
-                    Allow
+                    Разрешить
                   </Button>
                 </>
               ) : payload.kind === "form" ? (
                 <Button type="submit" size="sm" disabled={busy}>
-                  {payload.fields.length === 0 ? "Accept" : "Submit response"}
+                  {payload.fields.length === 0 ? "Принять" : "Отправить ответ"}
                 </Button>
               ) : payload.kind === "url" ? (
                 <Button
@@ -464,8 +462,8 @@ function CodexMcpElicitation({
                   onClick={openRequestedUrl}
                 >
                   {urlOpened
-                    ? "Retry response"
-                    : `Open ${new URL(payload.url).host}`}
+                    ? "Повторить отправку"
+                    : `Открыть ${new URL(payload.url).host}`}
                   <Icon name="ArrowUpRight" className="size-3" aria-hidden />
                 </Button>
               ) : null}
@@ -474,7 +472,7 @@ function CodexMcpElicitation({
         </>
       ) : (
         <p className="text-sm text-muted-foreground" role="alert">
-          This request could not be displayed.
+          Не удалось отобразить этот запрос.
         </p>
       )}
       {submission.status === "failed" ? (
@@ -484,7 +482,7 @@ function CodexMcpElicitation({
       ) : null}
       {busy ? (
         <p className="text-xs text-muted-foreground" role="status">
-          Sending response…
+          Отправка ответа…
         </p>
       ) : null}
       {!payload || submission.status === "failed" ? (
@@ -495,7 +493,7 @@ function CodexMcpElicitation({
           disabled={busy}
           onClick={() => void stopTurn()}
         >
-          Stop turn
+          Остановить ход
         </Button>
       ) : null}
     </form>

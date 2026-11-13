@@ -34,7 +34,7 @@ describe("InfoList", () => {
     expect(screen.getAllByText(/^item-/)).toHaveLength(8);
     expect(
       screen
-        .getByRole("button", { name: "Show less" })
+        .getByRole("button", { name: "Показать меньше" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
   });
@@ -42,7 +42,7 @@ describe("InfoList", () => {
   it("expands when the revealed item is past the limit", () => {
     renderList(8, 6);
     expect(screen.getAllByText(/^item-/)).toHaveLength(8);
-    expect(screen.getByRole("button", { name: "Show less" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Показать меньше" })).toBeTruthy();
   });
 });
 

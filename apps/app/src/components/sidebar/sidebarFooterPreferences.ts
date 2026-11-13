@@ -53,7 +53,7 @@ const SETTINGS_FOOTER_ITEM: FooterItem = {
   kind: "builtin",
   id: "settings",
   key: "builtin:settings",
-  label: "Settings",
+  label: "Настройки",
   icon: "Settings",
 };
 
@@ -76,7 +76,7 @@ export function useSidebarFooterPreferences() {
       kind: "builtin",
       id: "mobile",
       key: "builtin:mobile",
-      label: "Mobile apps",
+      label: "Мобильные приложения",
       icon: "Smartphone",
     },
     ...sidebarFooterItems.map((slot): FooterItem => ({
@@ -90,7 +90,7 @@ export function useSidebarFooterPreferences() {
       kind: "builtin",
       id: "report-bug",
       key: "builtin:report-bug",
-      label: "Report a bug",
+      label: "Сообщить об ошибке",
       icon: "Bug",
     },
   ];

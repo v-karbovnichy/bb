@@ -93,7 +93,7 @@ describe("task thread lifecycle", () => {
     expect(fixture.store.tasks.listComments(fixture.taskId)).toContainEqual(
       expect.objectContaining({
         kind: "system",
-        authorName: "Tasks",
+        authorName: "Задачи",
         presetName: "GPT-5.6 · high",
         threadId: "thr_worker",
         body: 'Thread "Lifecycle worker" completed — final message posted · thr_worker',

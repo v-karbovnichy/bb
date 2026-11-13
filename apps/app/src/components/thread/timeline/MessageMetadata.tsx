@@ -62,7 +62,7 @@ export const MessageMetadata = memo(function MessageMetadata({
               "has-[>*>*]:mb-1",
             )
       }
-      aria-label="Message metadata"
+      aria-label="Метаданные сообщения"
       data-message-action-metadata={placement === "actionRow" ? "" : undefined}
     >
       {contributions.map((slot) =>

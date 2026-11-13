@@ -67,19 +67,19 @@ export function serverMoveStepLabel(
 ): string {
   switch (stepId) {
     case "stop-work":
-      return "Stopping running work";
+      return "Остановка выполняемых задач";
     case "update-target":
-      return `Updating bb on ${targetHostName}`;
+      return `Обновление bb на ${targetHostName}`;
     case "export":
-      return "Exporting server data";
+      return "Экспорт данных сервера";
     case "transfer":
-      return `Sending data to ${targetHostName}`;
+      return `Передача данных на ${targetHostName}`;
     case "start-target":
-      return "Starting the new server";
+      return "Запуск нового сервера";
     case "verify-address":
-      return "Checking the new address";
+      return "Проверка нового адреса";
     case "switch":
-      return "Switching machines over";
+      return "Переключение машин";
   }
 }
 

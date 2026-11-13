@@ -75,23 +75,23 @@ export function BrowserNewTabScreen({
       <div className="mx-auto flex w-full max-w-xl flex-col gap-6">
         <section>
           <LauncherSectionHeader
-            label="Recently visited"
+            label="Недавно посещённые"
             count={recent.length}
             action={
               <button
                 type="button"
                 onClick={onClearRecent}
-                aria-label="Clear recently visited"
+                aria-label="Очистить историю посещений"
                 className={cn(
                   "rounded text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
                   COARSE_POINTER_TEXT_SM_CLASS,
                 )}
               >
-                Clear
+                Очистить
               </button>
             }
           />
-          <ul aria-label="Recently visited" className="flex flex-col gap-px">
+          <ul aria-label="Недавно посещённые" className="flex flex-col gap-px">
             {recent.map((entry) => (
               <li key={entry.url}>
                 <BrowserRecentRow

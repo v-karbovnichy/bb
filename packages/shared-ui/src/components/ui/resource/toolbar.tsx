@@ -200,7 +200,7 @@ export function ResourceToolbar({
           <ResourceControlButton
             ref={searchButtonRef}
             label={searchLabel ?? searchPlaceholder}
-            tooltip={searchValue ? `Search: ${searchValue}` : searchPlaceholder}
+            tooltip={searchValue ? `Поиск: ${searchValue}` : searchPlaceholder}
             icon="Search"
             active={searchValue !== ""}
             onClick={() => setSearchExpanded(true)}
@@ -243,7 +243,7 @@ export function ResourceToolbar({
                       type="button"
                       variant="ghost"
                       size="icon"
-                      aria-label="Clear search"
+                      aria-label="Очистить поиск"
                       className="absolute inset-y-0 right-0 size-8 text-muted-foreground hover:text-foreground"
                       onClick={() => {
                         onSearchChange("");
@@ -253,7 +253,7 @@ export function ResourceToolbar({
                       <Icon name="X" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Clear search</TooltipContent>
+                  <TooltipContent>Очистить поиск</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             ) : null}
@@ -529,7 +529,7 @@ export function ResourceMultiSelectMenuItems({
                 "md:px-1.5 pointer-fine:px-1.5 md:py-1 pointer-fine:py-1",
             )}
           >
-            Clear filter
+            Очистить фильтр
           </DropdownMenuItem>
         </>
       ) : null}
@@ -564,12 +564,12 @@ export function ResourceMultiSelectMenu({
   const activeSelectedCount = activeOptions.length;
   const selectionSummary =
     activeSelectedCount === 0
-      ? "All"
+      ? "Все"
       : activeOptions.map((option) => option.label).join(", ");
   const triggerLabel =
     activeSelectedCount === 0
       ? label
-      : `${label}: ${activeSelectedCount} selected`;
+      : `${label}: выбрано ${activeSelectedCount}`;
   const triggerTooltip = `${label}: ${selectionSummary}`;
 
   return (
@@ -638,8 +638,8 @@ export function ResourceFilterMenu({
     );
   const hasActiveFilter = activeSummaries.length > 0;
   const triggerLabel = hasActiveFilter
-    ? `Filters: ${activeSummaries.join("; ")}`
-    : "Filters";
+    ? `Фильтры: ${activeSummaries.join("; ")}`
+    : "Фильтры";
 
   return (
     <DropdownMenu onOpenChange={setOpen}>
@@ -648,11 +648,11 @@ export function ResourceFilterMenu({
         icon="SlidersHorizontal"
         active={hasActiveFilter}
         open={open}
-        tooltip={hasActiveFilter ? activeSummaries.join("; ") : "Filters: All"}
+        tooltip={hasActiveFilter ? activeSummaries.join("; ") : "Фильтры: все"}
       />
       <DropdownMenuContent
         align="end"
-        mobileTitle="Filters"
+        mobileTitle="Фильтры"
         className={cn(
           compact ? "w-max max-w-64 md:p-0.5 pointer-fine:p-0.5" : "min-w-44",
         )}
@@ -707,7 +707,7 @@ export function ResourceSortMenuItems({
   options,
   onChange,
   onClear,
-  placeholderLabel = "Sort",
+  placeholderLabel = "Сортировка",
   compact = false,
   clearInFooter = false,
   showHeading = true,
@@ -732,7 +732,7 @@ export function ResourceSortMenuItems({
               "md:px-1.5 pointer-fine:px-1.5 md:py-1 pointer-fine:py-1",
           )}
         >
-          Sort
+          Сортировка
         </DropdownMenuLabel>
       ) : null}
       {onClear === undefined || clearInFooter ? null : (
@@ -810,7 +810,7 @@ export function ResourceSortMenuItems({
                 "md:px-1.5 pointer-fine:px-1.5 md:py-1 pointer-fine:py-1",
             )}
           >
-            Clear sort
+            Очистить сортировку
           </DropdownMenuItem>
         </>
       ) : null}
@@ -824,7 +824,7 @@ export function ResourceSortMenu({
   options,
   onChange,
   onClear,
-  placeholderLabel = "Sort",
+  placeholderLabel = "Сортировка",
   compact = false,
   clearInFooter = false,
   showLabel = false,
@@ -847,19 +847,19 @@ export function ResourceSortMenu({
 }) {
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((option) => option.id === value);
-  const directionLabel = direction === "asc" ? "ascending" : "descending";
+  const directionLabel = direction === "asc" ? "по возрастанию" : "по убыванию";
   const sortStateLabel =
     selectedOption === undefined
-      ? `Sort: ${placeholderLabel}`
+      ? `Сортировка: ${placeholderLabel}`
       : selectedOption.omitDirection === true
-        ? `Sort: ${selectedOption.label}`
-        : `Sort: ${selectedOption.label}, ${directionLabel}`;
+        ? `Сортировка: ${selectedOption.label}`
+        : `Сортировка: ${selectedOption.label}, ${directionLabel}`;
 
   return (
     <DropdownMenu onOpenChange={setOpen}>
       <ResourceMenuTrigger
         label={sortStateLabel}
-        text={showLabel ? (selectedOption?.label ?? "Sort") : undefined}
+        text={showLabel ? (selectedOption?.label ?? "Сортировка") : undefined}
         icon={triggerIcon}
         trailingIcon={showLabel ? "ChevronDown" : undefined}
         tooltip={tooltip ?? sortStateLabel}
@@ -868,7 +868,7 @@ export function ResourceSortMenu({
       />
       <DropdownMenuContent
         align="end"
-        mobileTitle="Sort"
+        mobileTitle="Сортировка"
         className={cn("min-w-40", compact && "md:p-0.5 pointer-fine:p-0.5")}
       >
         <ResourceSortMenuItems
@@ -925,7 +925,7 @@ export function ResourceCreateButton({
   shortLabel?: string;
 }) {
   const groups: readonly ResourceCreateTemplateGroup[] = templateGroups ?? [
-    { label: "Examples", templates },
+    { label: "Примеры", templates },
   ];
   const createButton = (
     <Button
@@ -967,7 +967,7 @@ export function ResourceCreateButton({
           <Button
             type="button"
             size="sm"
-            aria-label={`${label} options`}
+            aria-label={`Параметры: ${label}`}
             className={cn(
               "rounded-l-none px-1.5",
               compactWhenNarrow && "pl-1 pr-2",
@@ -979,7 +979,7 @@ export function ResourceCreateButton({
         <DropdownMenuContent
           align="end"
           className="min-w-40 w-max"
-          mobileTitle="Examples"
+          mobileTitle="Примеры"
         >
           {menuActions.map((action) => (
             <DropdownMenuItem key={action.label} onSelect={action.onSelect}>

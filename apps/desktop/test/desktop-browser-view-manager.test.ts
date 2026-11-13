@@ -2125,7 +2125,7 @@ describe("DesktopBrowserViewManager", () => {
         },
       });
       const template = vi.mocked(Menu.buildFromTemplate).mock.calls.at(-1)?.[0];
-      const item = template?.find((entry) => entry.label === "Copy Image");
+      const item = template?.find((entry) => entry.label === "Скопировать изображение");
       expect(Boolean(item)).toBe(offersCopy);
       if (offersCopy) {
         expect(item?.enabled).toBe(hasImageContents);
@@ -2136,13 +2136,13 @@ describe("DesktopBrowserViewManager", () => {
         }
       }
       for (const [label, action, value] of [
-        ["Open in Browser", shell.openExternal, "https://example.com/full.png"],
-        ["Copy Link", clipboard.writeText, "https://example.com/full.png"],
+        ["Открыть в браузере", shell.openExternal, "https://example.com/full.png"],
+        ["Скопировать ссылку", clipboard.writeText, "https://example.com/full.png"],
         ["the", contents.replaceMisspelling, "the"],
         ...(offersCopy
           ? ([
               [
-                "Save Image As…",
+                "Сохранить изображение как…",
                 contents.downloadURL,
                 "https://example.com/thumb.png",
               ],
@@ -4329,7 +4329,7 @@ describe("DesktopBrowserViewManager", () => {
     expect(view.visible).toBe(false);
     expect(hostWindow.webContents.sentPayloads.at(-1)).toMatchObject({
       tabId: "browser:a",
-      errorText: "The page renderer stopped repeatedly",
+      errorText: "Процесс отображения страницы неоднократно завершался",
     });
   });
 
@@ -4346,7 +4346,7 @@ describe("DesktopBrowserViewManager", () => {
       expect(view.visible).toBe(false);
       expect(hostWindow.webContents.sentPayloads.at(-1)).toMatchObject({
         tabId: "browser:a",
-        errorText: "The page renderer could not start",
+        errorText: "Не удалось запустить процесс отображения страницы",
       });
     },
   );

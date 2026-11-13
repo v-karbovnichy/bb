@@ -15,7 +15,7 @@ afterEach(() => {
 function renderButton(visible: boolean) {
   render(<ScrollToBottomButton visible={visible} active onClick={() => {}} />);
   const button = screen.getByRole("button", {
-    name: "Scroll to latest event",
+    name: "Прокрутить к последнему событию",
   });
   return {
     classes: button.classList,

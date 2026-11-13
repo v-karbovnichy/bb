@@ -143,7 +143,7 @@ export function RootComposeSecondaryContent({
         onClose={threadSecondaryPanelProps.onClose}
         resetKey="new-thread"
         contentKey="new-thread"
-        drawerLabel="Right panel"
+        drawerLabel="Правая панель"
         drawerFallback={<DrawerPanelLoadingSkeleton />}
         mainPanelId="root-compose-main-panel"
         main={mainContent}

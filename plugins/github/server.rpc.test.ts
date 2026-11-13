@@ -221,14 +221,14 @@ describe("github plugin RPC behavior", () => {
       exitCode: 0,
       stdout: "acme/widgets",
       stderr:
-        'ignoring 2 extraRepos entries that are not "owner/repo": ACME-ORG/*, nonsense\n',
+        'Пропущено записей extraRepos: 2. Ожидался формат owner/repo: ACME-ORG/*, nonsense\n',
     });
     expect(harness.logEntries).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           level: "warn",
           message:
-            'ignoring 2 extraRepos entries that are not "owner/repo": ACME-ORG/*, nonsense',
+            'Пропущено записей extraRepos: 2. Ожидался формат owner/repo: ACME-ORG/*, nonsense',
         }),
       ]),
     );
@@ -264,7 +264,7 @@ describe("github plugin RPC behavior", () => {
       harness.runCli(["issues", "bad/repo/shape"]),
     ).resolves.toMatchObject({
       exitCode: 1,
-      stderr: 'Invalid repository "bad/repo/shape"; expected owner/repo.\n',
+      stderr: 'Неверный репозиторий «bad/repo/shape»; ожидался формат owner/repo.\n',
     });
 
     const failure = await harness.runCli([
@@ -277,7 +277,7 @@ describe("github plugin RPC behavior", () => {
       ok: false,
       error: {
         code: "invalid_repository",
-        message: 'Invalid repository "bad/repo/shape"; expected owner/repo.',
+        message: 'Неверный репозиторий «bad/repo/shape»; ожидался формат owner/repo.',
       },
     });
 

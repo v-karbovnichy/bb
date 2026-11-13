@@ -33,15 +33,15 @@ export function MachineEnvironmentImportDialog({
     >
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Import from .env</DialogTitle>
+          <DialogTitle>Импортировать из .env</DialogTitle>
           <DialogDescription>
-            Paste the contents of a .env file. Existing variables with the same
-            name are replaced; nothing is saved until you save the section.
+            Вставьте содержимое файла .env. Переменные с совпадающими именами
+            будут заменены. Изменения сохранятся после сохранения раздела.
           </DialogDescription>
         </DialogHeader>
         <Textarea
           className="min-h-48 font-mono text-xs"
-          aria-label="Environment file contents"
+          aria-label="Содержимое файла окружения"
           placeholder={"DATABASE_URL=postgres://…\nSENTRY_DSN=https://…"}
           autoComplete="off"
           spellCheck={false}
@@ -50,8 +50,8 @@ export function MachineEnvironmentImportDialog({
         />
         <p className="text-xs text-subtle-foreground" role="status">
           {text.trim() === ""
-            ? "Comments and blank lines are ignored."
-            : `${parsed.entries.length} variable${parsed.entries.length === 1 ? "" : "s"} found.`}
+            ? "Комментарии и пустые строки игнорируются."
+            : `Найдено переменных: ${parsed.entries.length}.`}
         </p>
         {parsed.errors.length > 0 && (
           <ul role="alert" className="space-y-1 text-xs text-destructive-text">
@@ -62,7 +62,7 @@ export function MachineEnvironmentImportDialog({
         )}
         <DialogFooter>
           <Button size="sm" variant="ghost" onClick={close}>
-            Cancel
+            Отмена
           </Button>
           <Button
             size="sm"
@@ -72,7 +72,7 @@ export function MachineEnvironmentImportDialog({
               close();
             }}
           >
-            Import
+            Импортировать
           </Button>
         </DialogFooter>
       </DialogContent>

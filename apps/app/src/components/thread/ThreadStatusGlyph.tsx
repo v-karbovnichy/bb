@@ -117,7 +117,7 @@ export function ThreadStatusGlyph({
       <Icon
         name="Archive"
         className={iconSizeClass}
-        aria-label="Archived thread"
+        aria-label="Архивный чат"
       />
     );
   }

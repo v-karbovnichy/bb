@@ -59,7 +59,7 @@ export function TerminalHostSelector({
         label: host.name,
         ...(host.status === "connected"
           ? {}
-          : { disabled: true, disabledReason: "Offline" }),
+          : { disabled: true, disabledReason: "Нет подключения" }),
       })),
     [hosts],
   );
@@ -67,8 +67,8 @@ export function TerminalHostSelector({
   if (isLoading) {
     return (
       <OptionDisplay
-        label="Machine"
-        value="Loading…"
+        label="Компьютер"
+        value="Загрузка…"
         className={CONTROL_CLASS_NAME}
       />
     );
@@ -77,8 +77,8 @@ export function TerminalHostSelector({
   if (hosts.length === 0) {
     return (
       <OptionDisplay
-        label="Machine"
-        value="No machines"
+        label="Компьютер"
+        value="Нет компьютеров"
         className={CONTROL_CLASS_NAME}
       />
     );
@@ -92,7 +92,7 @@ export function TerminalHostSelector({
   if (hosts.length === 1) {
     return (
       <OptionDisplay
-        label="Machine"
+        label="Компьютер"
         value={selectedHost.name}
         className={CONTROL_CLASS_NAME}
       />
@@ -102,7 +102,7 @@ export function TerminalHostSelector({
   return (
     <OptionPicker
       align="end"
-      label="Machine"
+      label="Компьютер"
       value={selectedHost.id}
       options={options}
       onChange={onChange}

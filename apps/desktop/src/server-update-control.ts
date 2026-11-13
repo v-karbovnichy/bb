@@ -31,7 +31,7 @@ export function attachServerUpdateControl(args: {
         request.action === "install" &&
         (!info.supported || !info.updateDownloaded)
       ) {
-        throw new Error("The update is not ready to install.");
+        throw new Error("Обновление ещё не готово к установке.");
       }
       if (request.action === "install") await args.install();
       send({

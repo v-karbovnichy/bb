@@ -18,7 +18,7 @@ it.each(["warning", "context menu", "keyboard"])(
       <TooltipProvider>
         <VoiceInputButton
           warning={warning}
-          aria-label="Start voice input"
+          aria-label="Начать голосовой ввод"
           onClick={record}
         >
           Mic
@@ -31,8 +31,8 @@ it.each(["warning", "context menu", "keyboard"])(
     const mic = screen.getByRole("button", {
       name:
         method === "warning"
-          ? "Microphone warning: open voice preferences"
-          : "Start voice input",
+          ? "Предупреждение микрофона: откройте настройки голосового ввода"
+          : "Начать голосовой ввод",
     });
     expect(container.querySelectorAll("button")).toHaveLength(1);
     if (method === "warning") fireEvent.click(mic);
@@ -40,18 +40,18 @@ it.each(["warning", "context menu", "keyboard"])(
     if (method === "keyboard")
       fireEvent.keyDown(mic, { key: "F10", shiftKey: true });
     expect(
-      await screen.findByRole("dialog", { name: "Voice preferences" }),
+      await screen.findByRole("dialog", { name: "Настройки голосового ввода" }),
     ).toBeTruthy();
     expect(
-      await screen.findByRole("button", { name: "System default" }),
+      await screen.findByRole("button", { name: "Системный по умолчанию" }),
     ).toBeTruthy();
     expect(record).not.toHaveBeenCalled();
     expect(container.closest('[inert], [aria-hidden="true"]')).toBeNull();
     fireEvent.click(
-      screen.getByRole("button", { name: "Close voice preferences" }),
+      screen.getByRole("button", { name: "Закрыть настройки голосового ввода" }),
     );
     rerender(content(null));
-    fireEvent.click(screen.getByRole("button", { name: "Start voice input" }));
+    fireEvent.click(screen.getByRole("button", { name: "Начать голосовой ввод" }));
     expect(record).toHaveBeenCalledOnce();
   },
 );
@@ -63,13 +63,13 @@ it("shows a recurring capture error after preview recovery and another recording
       enumerateDevices: vi
         .fn()
         .mockResolvedValue([
-          { kind: "audioinput", deviceId: "mic", label: "Microphone" },
+          { kind: "audioinput", deviceId: "mic", label: "Микрофон" },
         ]),
       getUserMedia: vi
         .fn()
         .mockResolvedValue({
           getTracks: () => [{ stop }],
-          getAudioTracks: () => [{ label: "Microphone" }],
+          getAudioTracks: () => [{ label: "Микрофон" }],
         }),
     }),
   });
@@ -78,7 +78,7 @@ it("shows a recurring capture error after preview recovery and another recording
     <TooltipProvider>
       <VoiceInputButton
         warning="Microphone unavailable"
-        aria-label="Start voice input"
+        aria-label="Начать голосовой ввод"
         onClick={record}
       >
         Mic
@@ -87,18 +87,18 @@ it("shows a recurring capture error after preview recovery and another recording
   );
   fireEvent.click(
     screen.getByRole("button", {
-      name: "Microphone warning: open voice preferences",
+      name: "Предупреждение микрофона: откройте настройки голосового ввода",
     }),
   );
-  await screen.findByRole("button", { name: "Start voice input" });
+  await screen.findByRole("button", { name: "Начать голосовой ввод" });
   fireEvent.click(
-    screen.getByRole("button", { name: "Close voice preferences" }),
+    screen.getByRole("button", { name: "Закрыть настройки голосового ввода" }),
   );
-  fireEvent.click(screen.getByRole("button", { name: "Start voice input" }));
+  fireEvent.click(screen.getByRole("button", { name: "Начать голосовой ввод" }));
   expect(record).toHaveBeenCalledOnce();
   expect(
     screen.getByRole("button", {
-      name: "Microphone warning: open voice preferences",
+      name: "Предупреждение микрофона: откройте настройки голосового ввода",
     }),
   ).toBeTruthy();
   expect(stop).toHaveBeenCalledOnce();

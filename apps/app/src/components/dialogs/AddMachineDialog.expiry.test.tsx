@@ -41,7 +41,7 @@ describe("MachineLaunchCommand", () => {
 
     expect(screen.getByText("irm windows-command | iex")).toBeTruthy();
     expect(screen.queryByText(COMMAND)).toBeNull();
-    expect(screen.getByText("Run in PowerShell")).toBeTruthy();
+    expect(screen.getByText("Выполните в PowerShell")).toBeTruthy();
   });
 
   it("counts the remaining time down while the command is still valid", () => {
@@ -54,11 +54,11 @@ describe("MachineLaunchCommand", () => {
       />,
     );
     expect(screen.getByRole("status").textContent).toBe(
-      "Command expires in 15:00",
+      "Срок действия команды: 15:00",
     );
     act(() => void vi.advanceTimersByTime(61_000));
     expect(screen.getByRole("status").textContent).toBe(
-      "Command expires in 13:59",
+      "Срок действия команды: 13:59",
     );
     expect(screen.getByText(COMMAND)).toBeTruthy();
   });
@@ -74,14 +74,14 @@ describe("MachineLaunchCommand", () => {
       />,
     );
     expect(
-      screen.getByRole("button", { name: "Copy" }).hasAttribute("disabled"),
+      screen.getByRole("button", { name: "Копировать" }).hasAttribute("disabled"),
     ).toBe(false);
     act(() => void vi.advanceTimersByTime(6_000));
-    expect(screen.getByRole("status").textContent).toBe("Command expired");
+    expect(screen.getByRole("status").textContent).toBe("Срок действия команды истёк");
     expect(
-      screen.getByRole("button", { name: "Copy" }).hasAttribute("disabled"),
+      screen.getByRole("button", { name: "Копировать" }).hasAttribute("disabled"),
     ).toBe(true);
-    screen.getByRole("button", { name: "Generate a new command" }).click();
+    screen.getByRole("button", { name: "Создать новую команду" }).click();
     expect(onRegenerate).toHaveBeenCalledTimes(1);
   });
 });

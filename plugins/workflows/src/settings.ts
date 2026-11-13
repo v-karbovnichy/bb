@@ -13,42 +13,42 @@ interface IntegerField {
 
 const INTEGER_FIELDS = Object.freeze({
   maxActiveRuns: {
-    label: "Maximum active runs",
+    label: "Максимум активных запусков",
     minimum: 1,
     maximum: 32,
   },
   maxConcurrentAgents: {
-    label: "Per-run agent concurrency",
+    label: "Параллельные агенты на запуск",
     minimum: 1,
     maximum: 64,
   },
   maxAgentCalls: {
-    label: "Maximum agent calls",
+    label: "Максимум вызовов агентов",
     minimum: 1,
     maximum: 1_000,
   },
   totalRunTimeoutMs: {
-    label: "Total run timeout",
+    label: "Общее время ожидания запуска",
     minimum: 60_000,
     maximum: 604_800_000,
   },
   retentionDays: {
-    label: "Retention days",
+    label: "Срок хранения в днях",
     minimum: 1,
     maximum: 3_650,
   },
   maxNotificationBytes: {
-    label: "Maximum notification bytes",
+    label: "Максимальный размер уведомления в байтах",
     minimum: 1_024,
     maximum: 262_144,
   },
 });
 
 function boundedIntegerSchema(field: IntegerField) {
-  const rangeMessage = `${field.label} must be from ${field.minimum} through ${field.maximum}`;
+  const rangeMessage = `${field.label}: значение должно быть от ${field.minimum} до ${field.maximum}`;
   return z
     .number()
-    .int(`${field.label} must be a whole number`)
+    .int(`${field.label}: требуется целое число`)
     .min(field.minimum, rangeMessage)
     .max(field.maximum, rangeMessage);
 }
@@ -69,45 +69,45 @@ export type WorkflowSettings = z.infer<typeof workflowSettingsSchema>;
 export const WORKFLOW_SETTING_DESCRIPTORS = {
   maxActiveRuns: {
     type: "number",
-    label: "Maximum active runs",
-    description: "Concurrent workflow runs across the plugin (1-32).",
+    label: "Максимум активных запусков",
+    description: "Одновременные запуски рабочих процессов во всём плагине (1–32).",
     experimental_schema: workflowSettingsSchema.shape.maxActiveRuns,
     default: 4,
   },
   maxConcurrentAgents: {
     type: "number",
-    label: "Per-run agent concurrency",
-    description: "Agent calls that one workflow may run concurrently (1-64).",
+    label: "Параллельные агенты на запуск",
+    description: "Одновременные вызовы агентов в одном рабочем процессе (1–64).",
     experimental_schema: workflowSettingsSchema.shape.maxConcurrentAgents,
     default: 8,
   },
   maxAgentCalls: {
     type: "number",
-    label: "Maximum agent calls",
-    description: "Agent calls allowed during one workflow run (1-1000).",
+    label: "Максимум вызовов агентов",
+    description: "Допустимое число вызовов агентов за один запуск (1–1000).",
     experimental_schema: workflowSettingsSchema.shape.maxAgentCalls,
     default: 100,
   },
   totalRunTimeoutMs: {
     type: "number",
-    label: "Total run timeout (milliseconds)",
+    label: "Общее время ожидания запуска (мс)",
     description:
-      "Fail a workflow after this total duration in milliseconds (60000-604800000).",
+      "Завершать рабочий процесс с ошибкой по истечении этого времени в миллисекундах (60000–604800000).",
     experimental_schema: workflowSettingsSchema.shape.totalRunTimeoutMs,
     default: 86_400_000,
   },
   retentionDays: {
     type: "number",
-    label: "Retention (days)",
-    description: "Days to retain completed workflow data (1-3650).",
+    label: "Срок хранения (дни)",
+    description: "Сколько дней хранить данные завершённых рабочих процессов (1–3650).",
     experimental_schema: workflowSettingsSchema.shape.retentionDays,
     default: 7,
   },
   maxNotificationBytes: {
     type: "number",
-    label: "Maximum notification bytes",
+    label: "Максимальный размер уведомления в байтах",
     description:
-      "Maximum UTF-8 size of a completion notification (1024-262144).",
+      "Максимальный размер уведомления о завершении в UTF-8 (1024–262144 байт).",
     experimental_schema: workflowSettingsSchema.shape.maxNotificationBytes,
     default: 16_384,
   },
@@ -137,7 +137,7 @@ const LEGACY_STORED_SETTING_KEYS = new Set(["workerStallTimeoutMs"]);
 
 export function parseStoredWorkflowSettings(value: unknown): WorkflowSettings {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    throw new Error("Workflow settings snapshot must be an object");
+    throw new Error("Снимок настроек рабочего процесса должен быть объектом");
   }
   const object = value as Record<string, unknown>;
   const expected = Object.keys(INTEGER_FIELDS);
@@ -150,13 +150,13 @@ export function parseStoredWorkflowSettings(value: unknown): WorkflowSettings {
         !LEGACY_STORED_SETTING_KEYS.has(key),
     )
   ) {
-    throw new Error("Workflow settings snapshot has unexpected fields");
+    throw new Error("В снимке настроек рабочего процесса есть неожиданные поля");
   }
   const stored = Object.fromEntries(
     expected.map((key) => {
       const value = object[key];
       if (typeof value !== "number" || !Number.isSafeInteger(value)) {
-        throw new Error(`Workflow settings snapshot.${key} must be an integer`);
+        throw new Error(`Поле ${key} в снимке настроек рабочего процесса должно быть целым числом`);
       }
       return [key, value];
     }),

@@ -138,7 +138,11 @@ export function SectionSidebar({
       />
       {backTo === null ? null : (
         <div className="shrink-0 px-2 py-2">
-          <SectionSidebarRow active={false} label="Back to app" to={backTo}>
+          <SectionSidebarRow
+            active={false}
+            label="Вернуться в приложение"
+            to={backTo}
+          >
             <SectionSidebarIcon name="ChevronLeft" />
           </SectionSidebarRow>
         </div>

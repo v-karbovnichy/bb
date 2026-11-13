@@ -17,7 +17,7 @@ interface FormatModelLoadErrorTextArgs {
 export function formatModelLoadErrorSummary({
   providerLabel,
 }: Pick<FormatModelLoadErrorTextArgs, "providerLabel">): string {
-  return `Could not load models for ${providerLabel}.`;
+  return `Не удалось загрузить модели для ${providerLabel}.`;
 }
 
 export function formatModelLoadErrorReason({
@@ -25,13 +25,13 @@ export function formatModelLoadErrorReason({
 }: Pick<FormatModelLoadErrorTextArgs, "error">): string | null {
   switch (error.code) {
     case "provider_unavailable":
-      return "Provider plugin failed to load";
+      return "Не удалось загрузить плагин провайдера";
     case "missing_executable":
-      return "CLI not found";
+      return "CLI не найден";
     case "auth_required":
-      return "Not signed in";
+      return "Вход не выполнен";
     case "timeout":
-      return "Timed out";
+      return "Время ожидания истекло";
     case "failed":
       return error.detail;
   }
@@ -72,7 +72,7 @@ export function ModelLoadErrorMessage({
         {formatModelLoadErrorSummary({ providerLabel })}
       </span>
       {reason === null ? null : (
-        <ExpandableText expandLabel="Show details" className="mt-1 opacity-80">
+        <ExpandableText expandLabel="Показать подробности" className="mt-1 opacity-80">
           {helpUrl === undefined ? (
             reason
           ) : (
@@ -89,7 +89,7 @@ export function ModelLoadErrorMessage({
         </ExpandableText>
       )}
       {signInGuidance === null ? null : (
-        <ExpandableText expandLabel="Show details" className="mt-1 opacity-80">
+        <ExpandableText expandLabel="Показать подробности" className="mt-1 opacity-80">
           {signInGuidance}
         </ExpandableText>
       )}

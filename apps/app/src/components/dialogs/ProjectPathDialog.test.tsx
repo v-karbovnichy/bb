@@ -28,7 +28,7 @@ vi.mock("@/components/dialogs/RemotePathBrowser", () => ({
         )
       }
     >
-      Choose folder on {hostId}
+      Выбрать папку на {hostId}
     </button>
   ),
 }));
@@ -62,12 +62,12 @@ describe("ProjectPathDialog machine selection", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Machine" });
+    const trigger = screen.getByRole("button", { name: "Машина" });
     expect(trigger.textContent).toContain("atum");
     expect(
       (
         await screen.findByRole("button", {
-          name: "Choose folder on host_atum",
+          name: "Выбрать папку на host_atum",
         })
       ).getAttribute("data-allow-create-folder"),
     ).toBe("true");
@@ -81,9 +81,9 @@ describe("ProjectPathDialog machine selection", () => {
 
     fireEvent.click(screen.getByRole("menuitem", { name: /Kunst/u }));
     fireEvent.click(
-      screen.getByRole("button", { name: "Choose folder on host_kunst" }),
+      screen.getByRole("button", { name: "Выбрать папку на host_kunst" }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add project" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить проект" }));
 
     expect(onSubmit).toHaveBeenCalledWith(
       { kind: "create" },
@@ -106,11 +106,11 @@ describe("ProjectPathDialog machine selection", () => {
       />,
     );
 
-    expect(screen.queryByRole("button", { name: "Machine" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Машина" })).toBeNull();
     fireEvent.click(
-      screen.getByRole("button", { name: "Choose folder on host_atum" }),
+      screen.getByRole("button", { name: "Выбрать папку на host_atum" }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add project" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить проект" }));
 
     expect(onSubmit).toHaveBeenCalledWith(
       { kind: "create" },
@@ -141,7 +141,7 @@ describe("ProjectPathDialog machine selection", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: "Machine" }), {
+    fireEvent.pointerDown(screen.getByRole("button", { name: "Машина" }), {
       button: 0,
     });
 
@@ -165,10 +165,10 @@ describe("ProjectPathDialog machine selection", () => {
       />,
     );
 
-    expect(screen.queryByLabelText("Project path")).toBeNull();
+    expect(screen.queryByLabelText("Путь проекта")).toBeNull();
     expect(
       screen
-        .getByRole("button", { name: "Add project" })
+        .getByRole("button", { name: "Добавить проект" })
         .hasAttribute("disabled"),
     ).toBe(true);
     expect(onSubmit).not.toHaveBeenCalled();

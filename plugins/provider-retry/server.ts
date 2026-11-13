@@ -74,9 +74,9 @@ export default async function plugin(bb: BbPluginApi) {
   const settings = bb.settings.define({
     maximumWait: {
       type: "select",
-      label: "Maximum automatic wait",
+      label: "Максимальное время автоматического ожидания",
       description:
-        "Do not schedule a subscription-limit retry when its reset is farther away than this.",
+        "Не планировать повторную попытку после достижения лимита подписки, если его сброс произойдёт позже указанного срока.",
       options: [...MAXIMUM_WAIT_OPTIONS],
       default: "6 hours",
     },

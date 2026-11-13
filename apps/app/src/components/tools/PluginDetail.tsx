@@ -101,12 +101,12 @@ function copyMarketplaceLinkItems(
   if (url === null) return [];
   return [
     {
-      label: "Copy marketplace link",
+      label: "Скопировать ссылку на каталог",
       icon: "Copy",
       onSelect: () =>
         void copyToClipboardWithToast(url, {
-          successMessage: "Marketplace link copied",
-          errorMessage: "Failed to copy marketplace link.",
+          successMessage: "Ссылка на каталог скопирована",
+          errorMessage: "Не удалось скопировать ссылку на каталог.",
         }),
     },
   ];
@@ -117,13 +117,13 @@ export function pluginIsLocalSource(plugin: PluginListItem): boolean {
 }
 
 export function pluginRemovalLabel(plugin: PluginListItem): string {
-  return pluginIsLocalSource(plugin) ? "Remove from bb" : "Uninstall";
+  return pluginIsLocalSource(plugin) ? "Удалить из bb" : "Удалить";
 }
 
 export function pluginRemovalDescription(plugin: PluginListItem): string {
   return pluginIsLocalSource(plugin)
-    ? `Remove "${plugin.id}" from bb and delete its settings, secrets, and schedules? Its source files stay on disk. To move it to another directory, install the new path instead; that keeps its settings.`
-    : `Uninstall "${plugin.id}" and delete its managed files, settings, secrets, and schedules?`;
+    ? `Удалить «${plugin.id}» из bb вместе с настройками, секретами и расписаниями? Исходные файлы останутся на диске. Чтобы перенести плагин в другую папку и сохранить настройки, установите его по новому пути.`
+    : `Удалить «${plugin.id}» вместе с управляемыми файлами, настройками, секретами и расписаниями?`;
 }
 
 function PluginLocalSource({
@@ -139,11 +139,11 @@ function PluginLocalSource({
 }) {
   const { copied, copy } = useClipboardCopy({
     text: path,
-    errorMessage: "Failed to copy path.",
+    errorMessage: "Не удалось скопировать путь.",
   });
 
   return (
-    <ResourceDefinitionSection label="Source">
+    <ResourceDefinitionSection label="Источник">
       <div className="flex min-w-0 items-center gap-3">
         <Icon
           name="Folder"
@@ -169,15 +169,15 @@ function PluginLocalSource({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           <ResourceActionButton
-            label="Open source"
+            label="Открыть исходник"
             icon="ExternalLink"
             disabled={openDisabled}
-            disabledReason={openDisabled ? "No editor configured" : undefined}
+            disabledReason={openDisabled ? "Редактор не настроен" : undefined}
             onClick={onOpen}
           />
           <ResourceActionButton
-            label={`Copy plugin path: ${path}`}
-            tooltipLabel={copied ? "Copied" : "Copy path"}
+            label={`Скопировать путь к плагину: ${path}`}
+            tooltipLabel={copied ? "Скопировано" : "Скопировать путь"}
             icon={copied ? "Check" : "Copy"}
             onClick={() => void copy()}
           />
@@ -199,7 +199,7 @@ function PluginLocalSource({
 const OFFICIAL_BYLINE_ENTRY = {
   author: null,
   marketplace: "bb-official",
-  publisherLabel: "BB Official",
+  publisherLabel: "Официальный BB",
 } as const;
 
 export function CatalogPluginDetail({
@@ -247,7 +247,7 @@ export function CatalogPluginDetail({
       overflowMenu={
         overflowItems.length === 0 ? undefined : (
           <ResourceOverflowMenu
-            label={`${entry.displayName} actions`}
+            label={`Действия с ${entry.displayName}`}
             items={overflowItems}
           />
         )
@@ -277,7 +277,7 @@ export function CatalogPluginDetailBanner({
       <PluginBannerBar
         tone="warning"
         icon="AlertTriangle"
-        title="Update bb to install this plugin"
+        title="Обновите bb для установки плагина"
         detail={entry.incompatibleReason}
       />
     );
@@ -287,11 +287,11 @@ export function CatalogPluginDetailBanner({
     <PluginBannerBar
       tone="warning"
       icon="AlertTriangle"
-      title="Another plugin uses this ID"
-      detail={`remove the installed “${entry.pluginId}” to install this one.`}
+      title="Другой плагин использует этот ID"
+      detail={`удалите установленный плагин «${entry.pluginId}», чтобы установить этот.`}
       action={
         <PluginBannerOpenButton
-          label="View installed plugin"
+          label="Показать установленный плагин"
           onClick={() => onOpenPlugin(entry.pluginId)}
         />
       }
@@ -359,10 +359,10 @@ export function PluginDetailBanners({
         <PluginBannerBar
           tone="muted"
           icon="Info"
-          title={`Also published in ${publishedListing.marketplaceDisplayName}`}
+          title={`Также опубликован в ${publishedListing.marketplaceDisplayName}`}
           action={
             <PluginBannerOpenButton
-              label="View listing"
+              label="Открыть запись в каталоге"
               onClick={() =>
                 onOpenPlugin(catalogEntryDetailKey(publishedListing))
               }
@@ -415,7 +415,7 @@ export function PluginDetail({
     return (
       <ResourceListState
         state="loading"
-        message="Loading plugins"
+        message="Загрузка плагинов"
         layout="detail"
         maxWidthClassName="max-w-5xl"
       />
@@ -426,7 +426,7 @@ export function PluginDetail({
     return (
       <ResourceListState
         state="empty"
-        message="Plugin not found."
+        message="Плагин не найден."
         layout="detail"
         maxWidthClassName="max-w-5xl"
       />
@@ -438,12 +438,12 @@ export function PluginDetail({
   const updatesWithBb = plugin.source.startsWith("builtin:");
   const installedAt = sourceQuery.data?.installedAt ?? null;
   const installedValue = updatesWithBb
-    ? "Updates with bb"
+    ? "Обновляется вместе с bb"
     : installedAt !== null
       ? formatAbsoluteDate(installedAt)
       : sourceQuery.isPending
-        ? "Loading…"
-        : "Install date unavailable";
+        ? "Загрузка…"
+        : "Дата установки недоступна";
   const hasReleaseControl =
     hasUpdateManagement &&
     (plugin.updateState.availableVersion !== null ||
@@ -471,7 +471,7 @@ export function PluginDetail({
     ...(canEditSource
       ? [
           {
-            label: "Edit",
+            label: "Редактировать",
             icon: "Edit" as const,
             disabled: pending,
             onSelect: () => onEdit(plugin),
@@ -485,7 +485,7 @@ export function PluginDetail({
       disabled: pending || plugin.provenance === "builtin",
       disabledReason:
         plugin.provenance === "builtin"
-          ? "Included with BB; disable this plugin instead."
+          ? "Плагин входит в BB. Его можно отключить."
           : undefined,
       onSelect: () => onDelete(plugin),
     },
@@ -517,8 +517,8 @@ export function PluginDetail({
       actions={
         hasConfiguration ? (
           <ResourceActionButton
-            label={`${pluginName} settings`}
-            tooltipLabel="Settings"
+            label={`Настройки ${pluginName}`}
+            tooltipLabel="Настройки"
             icon="Settings"
             onClick={() => {
               if (onConfigure) {
@@ -536,13 +536,13 @@ export function PluginDetail({
         <Switch
           checked={plugin.enabled}
           disabled={pending}
-          aria-label={`${plugin.enabled ? "Disable" : "Enable"} ${pluginName}`}
+          aria-label={`${plugin.enabled ? "Отключить" : "Включить"} ${pluginName}`}
           onCheckedChange={() => onToggle(plugin)}
         />
       }
       overflowMenu={
         <ResourceOverflowMenu
-          label={`${pluginName} actions`}
+          label={`Действия с ${pluginName}`}
           items={overflowItems}
         />
       }
@@ -555,7 +555,7 @@ export function PluginDetail({
           >
             <PluginOverviewLead
               description={
-                plugin.description ?? "This plugin does not describe itself."
+                plugin.description ?? "У плагина нет описания."
               }
             />
           </section>
@@ -573,7 +573,7 @@ export function PluginDetail({
           <PluginMarketplaceSource entry={catalogEntry} />
         ) : null}
         <ResourceDetailReleaseSection
-          label="Details"
+          label="Сведения"
           actions={
             hasReleaseControl ? (
               <PluginDetailReleaseControl plugin={plugin} />
@@ -585,18 +585,18 @@ export function PluginDetail({
               <PluginMarketplaceDetailMetadata entry={catalogEntry} />
             )}
             <PluginDetailMetadataItem
-              label={updatesWithBb ? "Delivery" : "Installed"}
+              label={updatesWithBb ? "Поставка" : "Установлен"}
             >
               {installedValue}
             </PluginDetailMetadataItem>
-            <PluginDetailMetadataItem label="Version">
+            <PluginDetailMetadataItem label="Версия">
               <span className="font-mono">{plugin.version}</span>
             </PluginDetailMetadataItem>
           </PluginDetailMetadata>
           {hasReleaseUpdate ? (
             <div className="space-y-1">
               <p className="text-2xs font-medium text-subtle-foreground">
-                Update
+                Обновление
               </p>
               <PluginDetailReleaseStatus plugin={plugin} />
             </div>
@@ -604,12 +604,12 @@ export function PluginDetail({
         </ResourceDetailReleaseSection>
         <PluginIncludes plugin={plugin} configurationPath={configurationPath} />
         {plugin.services.length > 0 ? (
-          <ResourceActivitySection label="Background services">
+          <ResourceActivitySection label="Фоновые службы">
             <PluginServices plugin={plugin} />
           </ResourceActivitySection>
         ) : null}
         {plugin.schedules.length > 0 ? (
-          <ResourceActivitySection label="Scheduled jobs">
+          <ResourceActivitySection label="Запланированные задачи">
             <PluginSchedules plugin={plugin} />
           </ResourceActivitySection>
         ) : null}

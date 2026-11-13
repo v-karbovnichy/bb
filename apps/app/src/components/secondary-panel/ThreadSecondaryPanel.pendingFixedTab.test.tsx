@@ -20,7 +20,7 @@ afterEach(() => {
 const noop = () => {};
 const infoFixedTab = {
   ariaLabel: "Show thread info panel",
-  label: "Info",
+  label: "Информация",
   contentFillsRegion: true,
   renderContent: () => <div>Info content</div>,
   leadingVisual: null,

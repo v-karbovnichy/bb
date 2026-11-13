@@ -39,16 +39,16 @@ function pullRequest(overrides: Partial<PullRequest> = {}): PullRequest {
 
 describe("pull request signals", () => {
   it.each([
-    ["checks_failed", "failing", "Checks failing", "action"],
-    ["changes_requested", "passing", "Changes requested", "action"],
-    ["conflicts", "passing", "Conflicts with main", "action"],
-    ["checks_pending", "pending", "Checks running", "waiting"],
-    ["review_requested", "passing", "Review requested", "waiting"],
-    ["queued", "passing", "Queued to merge", "waiting"],
-    ["ready_to_merge", "passing", "Ready to merge", "ready"],
-    ["none", "no_checks", "No checks", "waiting"],
-    ["draft", "pending", "Checks running", "waiting"],
-    ["draft", "unknown", "Checks unknown", "waiting"],
+    ["checks_failed", "failing", "Проверки не пройдены", "action"],
+    ["changes_requested", "passing", "Запрошены изменения", "action"],
+    ["conflicts", "passing", "Конфликт с main", "action"],
+    ["checks_pending", "pending", "Проверки выполняются", "waiting"],
+    ["review_requested", "passing", "Ревью запрошено", "waiting"],
+    ["queued", "passing", "В очереди на объединение", "waiting"],
+    ["ready_to_merge", "passing", "Готов к объединению", "ready"],
+    ["none", "no_checks", "Нет проверок", "waiting"],
+    ["draft", "pending", "Проверки выполняются", "waiting"],
+    ["draft", "unknown", "Статус проверок неизвестен", "waiting"],
   ] as const)(
     "names one next step for %s with %s checks",
     (attention, checksState, label, tone) => {
@@ -59,8 +59,8 @@ describe("pull request signals", () => {
   );
 
   it.each([
-    ["BEHIND", "Behind main"],
-    ["BLOCKED", "Blocked by rules"],
+    ["BEHIND", "Позади main"],
+    ["BLOCKED", "Заблокирован правилами"],
   ] as const)("explains a %s block", (mergeStateStatus, label) => {
     const pr = pullRequest();
     pr.mergeability.mergeStateStatus = mergeStateStatus;
@@ -86,7 +86,7 @@ describe("pull request signals", () => {
       attention: "review_requested",
       review: { state: "review_required", reviewRequestCount: 0 },
     });
-    expect(getPullRequestNextStep(pr)?.label).toBe("Review required");
+    expect(getPullRequestNextStep(pr)?.label).toBe("Требуется ревью");
   });
 
   it.each(["merged", "closed"] as const)(
@@ -97,7 +97,7 @@ describe("pull request signals", () => {
       expect(isPullRequestAutoMergeOn(pr)).toBe(false);
       expect(getPullRequestGithubCheckStatus(pr)).toBeNull();
       expect(getPullRequestStateDisplay(pr).label).toBe(
-        state[0]!.toUpperCase() + state.slice(1),
+        state === "merged" ? "Объединён" : "Закрыт",
       );
     },
   );
@@ -108,17 +108,17 @@ describe("pull request signals", () => {
       attention: "draft",
       autoMerge: true,
     });
-    expect(describePullRequestStatus(pr)).toBe("Draft, Checks passing");
+    expect(describePullRequestStatus(pr)).toBe("Черновик, Проверки пройдены");
     const open = pullRequest({ autoMerge: true, attention: "queued" });
     expect(describePullRequestStatus(open)).toBe(
-      "Open, Queued to merge, auto-merge on",
+      "Открыт, В очереди на объединение, автообъединение включено",
     );
   });
 
   it("keeps auto-merge out of the next step", () => {
     const pr = pullRequest({ autoMerge: true, attention: "checks_pending" });
     pr.checks.state = "pending";
-    expect(getPullRequestNextStep(pr)?.label).toBe("Checks running");
+    expect(getPullRequestNextStep(pr)?.label).toBe("Проверки выполняются");
     expect(isPullRequestAutoMergeOn(pr)).toBe(true);
   });
 

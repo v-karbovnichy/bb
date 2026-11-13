@@ -44,8 +44,8 @@ export async function changePluginSafeMode({
       (error: unknown) => {
         appToast.error(
           enabled
-            ? "Failed to turn on plugin safe mode"
-            : "Failed to turn off plugin safe mode",
+            ? "Не удалось включить безопасный режим плагинов"
+            : "Не удалось выключить безопасный режим плагинов",
           {
             description: error instanceof Error ? error.message : String(error),
           },

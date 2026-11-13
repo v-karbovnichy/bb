@@ -232,17 +232,17 @@ describe("PluginsOverview", () => {
       { wrapper },
     );
     const banner = await screen.findByRole("region", {
-      name: "1 plugin isn’t running",
+      name: "Один плагин не запущен",
     });
     expect(
-      within(banner).getByText("This version is incompatible with bb."),
+      within(banner).getByText("Эта версия несовместима с bb."),
     ).toBeTruthy();
 
     expect(banner.textContent).not.toContain(
       "/Users/example/plugins/automations",
     );
     fireEvent.change(
-      screen.getByRole("textbox", { name: "Search installed plugins" }),
+      screen.getByRole("textbox", { name: "Поиск установленных плагинов" }),
       { target: { value: "nomatch" } },
     );
     await waitFor(() =>
@@ -250,7 +250,7 @@ describe("PluginsOverview", () => {
     );
     fireEvent.click(
       within(banner).getByRole("button", {
-        name: "View details for Automations",
+        name: "Посмотреть сведения о Automations",
       }),
     );
     expect(screen.getByTestId("location-path").textContent).toContain(
@@ -274,7 +274,7 @@ describe("PluginsOverview", () => {
         </QueryClientWrapper>
       </MemoryRouter>,
     );
-    await screen.findByRole("textbox", { name: "Search plugins" });
+    await screen.findByRole("textbox", { name: "Поиск плагинов" });
     expect(requestCount("/plugins/updates/check")).toBe(0);
     fireEvent.click(
       screen.getByRole("button", { name: "switch-to-installed" }),
@@ -285,7 +285,7 @@ describe("PluginsOverview", () => {
       expect(requestCount("/api/v1/plugins")).toBeGreaterThan(1);
     });
     fireEvent.change(
-      screen.getByRole("textbox", { name: "Search installed plugins" }),
+      screen.getByRole("textbox", { name: "Поиск установленных плагинов" }),
       { target: { value: "Automations" } },
     );
     await act(async () => {
@@ -319,9 +319,9 @@ describe("PluginsOverview", () => {
       </MemoryRouter>,
     );
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "Source: 1 selected" }),
+      await screen.findByRole("button", { name: "Источник: выбрано 1" }),
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Очистить фильтр" }));
     const params = new URLSearchParams(
       screen.getByTestId("location-search").textContent ?? "",
     );
@@ -334,7 +334,7 @@ describe("PluginsOverview", () => {
     ]);
     expect(
       screen
-        .getByRole("menuitem", { name: "Clear filter" })
+        .getByRole("menuitem", { name: "Очистить фильтр" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
   });
@@ -353,16 +353,16 @@ describe("PluginsOverview", () => {
     expect(await screen.findByText("GitHub")).toBeTruthy();
     expect(screen.queryByRole("tab", { name: "Browse" })).toBeNull();
     expect(screen.queryByRole("tab", { name: /Installed/ })).toBeNull();
-    expect(screen.getByRole("button", { name: "New plugin" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Новый плагин" })).toBeTruthy();
     const comboTrigger = screen.getByRole("button", {
-      name: "New plugin options",
+      name: "Параметры: Новый плагин",
     });
     fireEvent.pointerDown(comboTrigger);
     expect(
-      screen.getByRole("menuitem", { name: "Install from source" }),
+      screen.getByRole("menuitem", { name: "Установить из источника" }),
     ).toBeTruthy();
     fireEvent.click(
-      screen.getByRole("menuitem", { name: "Install from source" }),
+      screen.getByRole("menuitem", { name: "Установить из источника" }),
     );
     fireEvent.keyDown(document, { key: "Escape" });
     expect(recordedTelemetryEvents()).toEqual([]);
@@ -401,7 +401,7 @@ describe("PluginsOverview", () => {
 
     await screen.findByText("GitHub");
     const createPlugin = screen.getByRole("button", {
-      name: "New plugin",
+      name: "Новый плагин",
     });
 
     fireEvent.click(createPlugin);
@@ -414,7 +414,7 @@ describe("PluginsOverview", () => {
     fireEvent.click(createPlugin);
     expect(screen.getByTestId("inline-composer")).toBeTruthy();
 
-    const goBack = screen.getByRole("button", { name: "Go back" });
+    const goBack = screen.getByRole("button", { name: "Назад" });
     await waitFor(() =>
       expect(goBack.getAttribute("aria-disabled")).toBeNull(),
     );
@@ -451,7 +451,7 @@ describe("PluginsOverview", () => {
 
     expect(await screen.findByText("GitHub")).toBeTruthy();
     const categoryTrigger = screen.getByRole("button", {
-      name: "Filter plugins by category: All categories",
+      name: "Фильтр плагинов по категории: Все категории",
     });
     expect(screen.queryByRole("button", { name: "Type" })).toBeNull();
     fireEvent.click(categoryTrigger);
@@ -476,7 +476,7 @@ describe("PluginsOverview", () => {
     );
 
     expect(await screen.findByText("Automations")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "New plugin" }));
+    fireEvent.click(screen.getByRole("button", { name: "Новый плагин" }));
 
     expect(screen.getByTestId("location-path").textContent).toBe("/");
     await waitFor(() =>
@@ -510,16 +510,16 @@ describe("PluginsOverview", () => {
     expect(await screen.findByText("Local notes")).toBeTruthy();
     expect(screen.queryByText("Automations")).toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Sort: Default" }),
+      screen.getByRole("button", { name: "Сортировка: По умолчанию" }),
     );
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Name" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Название" }));
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByText("Automations")).toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Source: 1 selected" }),
+      screen.getByRole("button", { name: "Источник: выбрано 1" }),
     );
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Direct install" }),
+      screen.getByRole("menuitemcheckbox", { name: "Прямая установка" }),
     );
     fireEvent.keyDown(document, { key: "Escape" });
     expect(await screen.findByText("Automations")).toBeTruthy();
@@ -547,18 +547,18 @@ describe("PluginsOverview", () => {
         "[data-resource-collection-viewport] > .shrink-0",
       ),
     ).toBeNull();
-    const search = screen.getByRole("textbox", { name: "Search plugins" });
+    const search = screen.getByRole("textbox", { name: "Поиск плагинов" });
     const toolbar = search.closest("[data-resource-toolbar]");
     if (!toolbar) throw new Error("Missing collection toolbar");
     const category = screen.getByRole("button", {
-      name: "Filter plugins by category: All categories",
+      name: "Фильтр плагинов по категории: Все категории",
     });
-    const sort = screen.getByRole("button", { name: /^Sort:/ });
+    const sort = screen.getByRole("button", { name: /^Сортировка:/ });
     expect(toolbar.contains(category)).toBe(true);
     expect(toolbar.contains(sort)).toBe(true);
     const heroHeading = screen.getByRole("heading", {
       level: 2,
-      name: /^Turn bb into/,
+      name: /^Превратите bb в/,
     });
     expect(
       heroHeading.compareDocumentPosition(toolbar) &
@@ -585,7 +585,7 @@ describe("PluginsOverview", () => {
 
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "Automations plugin details",
+        name: "Сведения о плагине Automations",
       }),
     );
     expect(screen.getByTestId("location-path").textContent).toBe(
@@ -611,21 +611,21 @@ describe("PluginsOverview", () => {
     );
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Install GitHub" }),
+      await screen.findByRole("button", { name: "Установить GitHub" }),
     );
     expect(
-      await screen.findByRole("heading", { name: "Install GitHub?" }),
+      await screen.findByRole("heading", { name: "Установить GitHub?" }),
     ).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Install GitHub" }));
+    fireEvent.click(screen.getByRole("button", { name: "Установить GitHub" }));
 
     await waitFor(() => {
       expect(
-        screen.queryByRole("heading", { name: "Install GitHub?" }),
+        screen.queryByRole("heading", { name: "Установить GitHub?" }),
       ).toBeNull();
     });
     expect(screen.getByTestId("location-path").textContent).toBe("/plugins");
     expect(
-      screen.getByRole("textbox", { name: "Search plugins" }),
+      screen.getByRole("textbox", { name: "Поиск плагинов" }),
     ).toHaveProperty("value", "GitHub");
   });
 
@@ -688,7 +688,7 @@ describe("PluginsOverview", () => {
     ).toBeNull();
 
     fireEvent.change(
-      screen.getByRole("textbox", { name: "Search installed plugins" }),
+      screen.getByRole("textbox", { name: "Поиск установленных плагинов" }),
       { target: { value: "Plugin 01" } },
     );
     await waitFor(() => expect(screen.queryByText("Plugin 14")).toBeNull());
@@ -749,7 +749,7 @@ describe("PluginsOverview", () => {
       for (const observer of observers) observer.check();
     });
     expect(
-      screen.getByRole("switch", { name: "Enable plugin-39" }),
+      screen.getByRole("switch", { name: "Включить plugin-39" }),
     ).toBeTruthy();
     expect(
       document.querySelector("[data-resource-infinite-sentinel]"),
@@ -816,25 +816,25 @@ describe("PluginsOverview", () => {
       "plugin-row-enabled-local-alpha",
       "plugin-row-inactive-local",
     ]);
-    const officialPills = screen.getAllByText("BB Official");
+    const officialPills = screen.getAllByText("Официальный BB");
     expect(officialPills).toHaveLength(2);
     expect(screen.getAllByText("BB Community")).toHaveLength(1);
 
-    const sortTrigger = screen.getByRole("button", { name: "Sort: Default" });
+    const sortTrigger = screen.getByRole("button", { name: "Сортировка: По умолчанию" });
     fireEvent.pointerDown(sortTrigger);
     expect(
-      screen.getByRole("menuitemradio", { name: "Published" }),
+      screen.getByRole("menuitemradio", { name: "Опубликован" }),
     ).toBeTruthy();
     expect(
       screen
-        .getByRole("menuitemradio", { name: "Installs" })
+        .getByRole("menuitemradio", { name: "Установки" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
     const rowIds = () =>
       [...document.querySelectorAll('[data-testid^="plugin-row-"]')].map(
         (row) => row.getAttribute("data-testid"),
       );
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Name" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Название" }));
     expect(rowIds()).toEqual([
       "plugin-row-enabled-local-alpha",
       "plugin-row-enabled-official-alpha",
@@ -842,7 +842,7 @@ describe("PluginsOverview", () => {
       "plugin-row-inactive-local",
       "plugin-row-inactive-official",
     ]);
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Name" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Название" }));
     expect(rowIds()).toEqual([
       "plugin-row-inactive-official",
       "plugin-row-inactive-local",
@@ -850,7 +850,7 @@ describe("PluginsOverview", () => {
       "plugin-row-enabled-official-alpha",
       "plugin-row-enabled-local-alpha",
     ]);
-    fireEvent.click(screen.getByRole("menuitem", { name: "Clear sort" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Очистить сортировку" }));
     expect(rowIds()).toEqual([
       "plugin-row-enabled-official-alpha",
       "plugin-row-enabled-official-zulu",
@@ -860,7 +860,7 @@ describe("PluginsOverview", () => {
     ]);
     expect(
       screen
-        .getByRole("menuitem", { name: "Clear sort" })
+        .getByRole("menuitem", { name: "Очистить сортировку" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
   });
@@ -906,11 +906,11 @@ describe("PluginsOverview", () => {
     await screen.findByText("Local Notes");
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Filter plugins by category: All categories",
+        name: "Фильтр плагинов по категории: Все категории",
       }),
     );
     fireEvent.click(
-      await screen.findByRole("option", { name: /Local, 2 plugins/ }),
+      await screen.findByRole("option", { name: /Локальный, плагинов: 2/ }),
     );
     expect(screen.queryByRole("option", { name: /Uncategorized/ })).toBeNull();
     expect(screen.getByText("Local Notes")).toBeTruthy();
@@ -921,11 +921,11 @@ describe("PluginsOverview", () => {
     ).toBeNull();
     expect(screen.queryByText("Automations")).toBeNull();
     fireEvent.click(
-      screen.getByRole("option", { name: /Workflow management, 1 plugin/ }),
+      screen.getByRole("option", { name: /Workflow management, плагинов: 1/ }),
     );
     expect(screen.getByText("Automations")).toBeTruthy();
     expect(screen.queryByText("Marketplace Plugin")).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить фильтр" }));
     expect(screen.getByText("Other Plugin")).toBeTruthy();
     expect(screen.getByText("Marketplace Plugin")).toBeTruthy();
   });
@@ -975,7 +975,7 @@ describe("PluginsOverview", () => {
     expect(await screen.findByText("Automations")).toBeTruthy();
     expect(screen.getByText("Inactive Builtin")).toBeTruthy();
     expect(
-      screen.getByRole("switch", { name: "Enable inactive-builtin" }),
+      screen.getByRole("switch", { name: "Включить inactive-builtin" }),
     ).toBeTruthy();
     expect(screen.getByText("Inactive Catalog Plugin")).toBeTruthy();
     expect(screen.getByText("Inactive Local Plugin")).toBeTruthy();
@@ -1008,7 +1008,7 @@ describe("PluginsOverview", () => {
       </MemoryRouter>,
     );
 
-    const official = await screen.findAllByText("BB Official");
+    const official = await screen.findAllByText("Официальный BB");
     expect(official).toHaveLength(1);
     const community = screen.getAllByText("BB Community");
     expect(community).toHaveLength(1);

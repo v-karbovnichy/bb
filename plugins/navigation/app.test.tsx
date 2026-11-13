@@ -132,13 +132,13 @@ function withBadge(
 
 afterEach(cleanup);
 
-describe("Rail", () => {
+describe("Панель значков", () => {
   it("draws Home and the visible destinations, leaving New thread to the header and hidden ones to More", () => {
     renderRail([NEW_THREAD, SEARCH, PLUGINS, DOCS]);
 
-    expect(railLabels()).toEqual(["Home", "Plugins", "Docs", "More"]);
+    expect(railLabels()).toEqual(["Главная", "Plugins", "Docs", "Ещё"]);
     expect(
-      screen.getByRole("button", { name: "Home" }).getAttribute("aria-current"),
+      screen.getByRole("button", { name: "Главная" }).getAttribute("aria-current"),
     ).toBe("page");
   });
 
@@ -149,7 +149,7 @@ describe("Rail", () => {
       screen.getByRole("button", { name: "Docs" }).getAttribute("aria-current"),
     ).toBe("page");
     expect(
-      screen.getByRole("button", { name: "Home" }).getAttribute("aria-current"),
+      screen.getByRole("button", { name: "Главная" }).getAttribute("aria-current"),
     ).toBeNull();
   });
 
@@ -163,8 +163,8 @@ describe("Rail", () => {
     fireEvent.click(screen.getByRole("button", { name: "Plugins" }), {
       metaKey: true,
     });
-    fireEvent.click(screen.getByRole("button", { name: "Home" }));
-    fireEvent.click(screen.getByRole("button", { name: "Home" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Главная" }));
+    fireEvent.click(screen.getByRole("button", { name: "Главная" }), {
       ctrlKey: true,
     });
 
@@ -216,7 +216,7 @@ describe("Rail", () => {
     ]);
 
     const more = screen.getByRole("button", {
-      name: "More, Docs: 2 drafts, Alerts: 1 due today",
+      name: "Ещё, Docs: 2 drafts, Alerts: 1 due today",
     });
     expect(badgeOf(more)?.dataset.navBadgeTone).toBe("warning");
   });
@@ -226,23 +226,23 @@ describe("Rail", () => {
 
     fireEvent.contextMenu(screen.getByRole("button", { name: "Plugins" }));
     const hostMenu = await screen.findByRole("menu", {
-      name: "Plugins options",
+      name: "Параметры Plugins",
     });
     expect(
       within(hostMenu)
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
-    ).toEqual(["Hide from rail", "Customize navigation"]);
+    ).toEqual(["Скрыть с панели значков", "Настроить навигацию"]);
     fireEvent.click(
-      within(hostMenu).getByRole("menuitem", { name: "Hide from rail" }),
+      within(hostMenu).getByRole("menuitem", { name: "Скрыть с панели значков" }),
     );
 
     fireEvent.contextMenu(screen.getByRole("button", { name: "Docs" }));
     const panelMenu = await screen.findByRole("menu", {
-      name: "Docs panel options",
+      name: "Параметры панели Docs",
     });
     fireEvent.click(
-      within(panelMenu).getByRole("menuitem", { name: "View details" }),
+      within(panelMenu).getByRole("menuitem", { name: "Подробнее" }),
     );
 
     expect(view.inspection.sidebarNavigationCalls).toEqual([
@@ -290,7 +290,7 @@ describe("Rail header", () => {
   });
 });
 
-describe("Top list", () => {
+describe("Верхний список", () => {
   function rowLabels(): string[] {
     return Array.from(
       document.querySelectorAll("[data-sidebar-navigation-item]"),
@@ -311,11 +311,11 @@ describe("Top list", () => {
 
   it("shows More only when something is hidden, and activates hidden items from it", async () => {
     renderTopList([NEW_THREAD, PLUGINS]);
-    expect(screen.queryByRole("button", { name: "More" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Ещё" })).toBeNull();
     cleanup();
 
     const view = renderTopList([NEW_THREAD, SEARCH, PLUGINS]);
-    fireEvent.keyDown(screen.getByRole("button", { name: "More" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Ещё" }), {
       key: "Enter",
     });
     fireEvent.click(
@@ -347,11 +347,11 @@ describe("Top list", () => {
     const view = renderTopList([NEW_THREAD, DOCS]);
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Docs panel options" }),
+      screen.getByRole("button", { name: "Параметры панели Docs" }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Hide from sidebar" }),
+      await screen.findByRole("menuitem", { name: "Скрыть с боковой панели" }),
     );
 
     expect(view.inspection.sidebarNavigationCalls).toEqual([

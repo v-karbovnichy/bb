@@ -563,25 +563,25 @@ function SortablePanelTab({
           <PanelTab tab={tab} isActive={isActive} />
         </div>
       </ContextMenuTrigger>
-      <ContextMenuContent aria-label={`${tab.label} tab actions`}>
+      <ContextMenuContent aria-label={`Действия со вкладкой ${tab.label}`}>
         <ContextMenuItem
           disabled={!canCloseSelf}
           onSelect={() => onCloseTabs(tabId, "self")}
         >
-          Close tab
+          Закрыть вкладку
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem
           disabled={!canCloseOthers}
           onSelect={() => onCloseTabs(tabId, "others")}
         >
-          Close other tabs
+          Закрыть другие вкладки
         </ContextMenuItem>
         <ContextMenuItem
           disabled={!canCloseRight}
           onSelect={() => onCloseTabs(tabId, "right")}
         >
-          Close tabs to the right
+          Закрыть вкладки справа
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
@@ -603,7 +603,7 @@ function TabStripScrollButton({
   className,
   onClick,
 }: TabStripScrollButtonProps) {
-  const label = direction === "left" ? "Scroll tabs left" : "Scroll tabs right";
+  const label = direction === "left" ? "Прокрутить вкладки влево" : "Прокрутить вкладки вправо";
   return (
     <Button
       ref={buttonRef}
@@ -660,7 +660,7 @@ function PanelTab({
           ? null
           : {
               onClose: tab.onClose,
-              closeLabel: `Close ${tab.label}`,
+              closeLabel: `Закрыть ${tab.label}`,
             }
       }
     />

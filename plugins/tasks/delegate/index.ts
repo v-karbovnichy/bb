@@ -140,19 +140,19 @@ function delegatedThreadTitle(task: Task): string {
 
 function requireTask(store: TasksStore, taskId: string): Task {
   const task = store.getTask(taskId);
-  if (!task) throw new Error(`Task not found: ${taskId}`);
+  if (!task) throw new Error(`Задача не найдена: ${taskId}`);
   return task;
 }
 
 function requireProject(store: TasksStore, projectId: string): Project {
   const project = store.getProject(projectId);
-  if (!project) throw new Error(`Project not found: ${projectId}`);
+  if (!project) throw new Error(`Проект не найден: ${projectId}`);
   return project;
 }
 
 function requirePreset(store: TasksStore, presetId: string): Preset {
   const preset = store.getPreset(presetId);
-  if (!preset) throw new Error(`Preset not found: ${presetId}`);
+  if (!preset) throw new Error(`Пресет не найден: ${presetId}`);
   return preset;
 }
 
@@ -160,7 +160,7 @@ function requireLinkedBbProject(project: Project): string {
   if (project.linkedBbProjectId) return project.linkedBbProjectId;
   throw new DelegationError(
     "project_not_linked",
-    `Task project "${project.name}" is not linked to a bb project`,
+    `Проект задач «${project.name}» не связан с проектом bb`,
   );
 }
 
@@ -198,7 +198,7 @@ async function presetSpawnEnvironment(
   if (hostId === null) {
     throw new DelegationError(
       "spawn_target_invalid",
-      "Could not create a worktree because BB has no default machine",
+      "Не удалось создать рабочее дерево: в BB не задана машина по умолчанию",
     );
   }
   return {
@@ -247,7 +247,7 @@ function mapSpawnTargetError(error: unknown, preset: Preset): never {
     const detail = error.message.replace(/^HTTP \d+:\s*/u, "");
     throw new DelegationError(
       "spawn_target_invalid",
-      `Could not create a worktree on ${machine} from ${branch}: ${detail}`,
+      `Не удалось создать рабочее дерево на ${machine} от ветки ${branch}: ${detail}`,
     );
   }
   throw error;

@@ -69,7 +69,7 @@ it.each([
         act(() => {
           if (trigger === "toggle") {
             container
-              .querySelector<HTMLButtonElement>('[aria-label="Mobile layout"]')!
+              .querySelector<HTMLButtonElement>('[aria-label="Мобильный вид"]')!
               .click();
           } else {
             mobile = true;
@@ -88,7 +88,7 @@ it.each([
         );
         expect(
           container.querySelectorAll(
-            '[role="dialog"] [aria-label="Annotation navigation"] button:not(:disabled)',
+            '[role="dialog"] [aria-label="Навигация по аннотациям"] button:not(:disabled)',
           ).length > 0,
         ).toBe(hasNeighbors);
         expect(navigate).toHaveBeenLastCalledWith(mobileSlideId);
@@ -136,10 +136,10 @@ it("pages mobile panes without using annotation selection as navigation", () => 
       return buttons[0]!.textContent;
     };
     const previous = container.querySelector<HTMLButtonElement>(
-      '[aria-label="Previous surface"]',
+      '[aria-label="Предыдущий раздел"]',
     )!;
     const next = container.querySelector<HTMLButtonElement>(
-      '[aria-label="Next surface"]',
+      '[aria-label="Следующий раздел"]',
     )!;
     const openAnnotation = (id: string) =>
       act(() => {
@@ -151,14 +151,14 @@ it("pages mobile panes without using annotation selection as navigation", () => 
       act(() => {
         container
           .querySelector<HTMLButtonElement>(
-            '[role="dialog"] button[aria-label^="Next annotation:"]',
+            '[role="dialog"] button[aria-label^="Следующая аннотация:"]',
           )!
           .click();
       });
     expect(
       container.querySelector('[aria-label="Explore an annotation"]'),
     ).toBeNull();
-    expect(visiblePage()).toBe("Sidebar");
+    expect(visiblePage()).toBe("Боковая панель");
     expect(previous.disabled).toBe(true);
     expect(
       current().querySelector('[data-guide-mobile-scene="navigation"]'),
@@ -169,19 +169,19 @@ it("pages mobile panes without using annotation selection as navigation", () => 
     });
     expect(scroll).toHaveBeenCalledTimes(1);
     expect(navigate).not.toHaveBeenCalled();
-    expect(visiblePage()).toBe("Sidebar");
+    expect(visiblePage()).toBe("Боковая панель");
     expect(
       container.querySelector('[role="dialog"]')?.getAttribute("aria-label"),
     ).toBe("Full-page panels");
     const examples = () =>
-      container.querySelector('[role="group"][aria-label="Example plugins"]')!;
+      container.querySelector('[role="group"][aria-label="Примеры плагинов"]')!;
     const previousExample = () =>
       examples().querySelector<HTMLButtonElement>(
-        '[aria-label="Previous example plugin"]',
+        '[aria-label="Предыдущий пример плагина"]',
       )!;
     const nextExample = () =>
       examples().querySelector<HTMLButtonElement>(
-        '[aria-label="Next example plugin"]',
+        '[aria-label="Следующий пример плагина"]',
       )!;
     expect(previousExample().disabled).toBe(true);
     for (const name of [
@@ -206,7 +206,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
       );
     });
     expect(examples().textContent).toContain("Tasks");
-    expect(visiblePage()).toBe("Sidebar");
+    expect(visiblePage()).toBe("Боковая панель");
     expect(navigate).not.toHaveBeenCalled();
     act(() => {
       container
@@ -217,7 +217,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
     });
     expect(navigate).not.toHaveBeenCalled();
     act(() => next.click());
-    expect(visiblePage()).toBe("Thread");
+    expect(visiblePage()).toBe("Чат");
     expect(previous.disabled).toBe(false);
     expect(
       current().querySelector('[data-guide-mobile-scene="conversation"]'),
@@ -235,7 +235,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
       ).not.toBeNull();
     }
     act(() => next.click());
-    expect(visiblePage()).toBe("Side panel");
+    expect(visiblePage()).toBe("Боковая панель чата");
     expect(
       current().querySelector('[data-guide-mobile-scene="panel"]'),
     ).not.toBeNull();
@@ -259,7 +259,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
       expect(
         current().querySelector(`[data-guide-badge="${id}"]`)?.textContent,
       ).toBe(number);
-      expect(visiblePage()).toBe("Side panel");
+      expect(visiblePage()).toBe("Боковая панель чата");
       if (id !== "file-opener") nextAnnotation();
     }
     expect(navigate.mock.calls.map(([id]) => id)).toEqual([
@@ -272,7 +272,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
     act(() => modes[1]!.click());
     expect(current().getAttribute("data-map-section")).toBe("app-shell");
     act(() => modes[0]!.click());
-    expect(visiblePage()).toBe("Side panel");
+    expect(visiblePage()).toBe("Боковая панель чата");
     act(() => next.click());
     expect(visiblePage()).toBe("Command palette");
     act(() => next.click());
@@ -302,7 +302,7 @@ it("pages mobile panes without using annotation selection as navigation", () => 
     swipe(-40, 80);
     expect(visiblePage()).toBe("Home page");
     swipe(-80);
-    expect(visiblePage()).toBe("New thread actions");
+    expect(visiblePage()).toBe("Действия нового чата");
     expect(
       current().querySelector('[data-guide-region="new-thread-panel"]'),
     ).not.toBeNull();

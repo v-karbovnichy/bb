@@ -322,8 +322,8 @@ function MobileRecentThreadRow({
             aria-expanded={!isCollapsed}
             aria-label={
               isCollapsed
-                ? `Show threads under ${threadTitle}`
-                : `Hide threads under ${threadTitle}`
+                ? `Показать вложенные чаты: ${threadTitle}`
+                : `Скрыть вложенные чаты: ${threadTitle}`
             }
             className="group relative -ml-6 flex h-11 w-13 shrink-0 cursor-pointer items-center rounded-md pl-6 outline-none"
             onClick={(event) => {
@@ -351,7 +351,7 @@ function MobileRecentThreadRow({
             projectId: thread.projectId,
             threadId: thread.id,
           })}
-          aria-label={`Open ${threadTitle}${indicatorLabel ? ` — ${indicatorLabel}` : ""}`}
+          aria-label={`Открыть ${threadTitle}${indicatorLabel ? ` — ${indicatorLabel}` : ""}`}
           onClick={(event) => {
             const ignoreTouchClick = touchStartedBeforeLink.current;
             touchStartedBeforeLink.current = false;
@@ -465,7 +465,7 @@ export function RootComposeMobileRecents({
           id="root-compose-mobile-recents"
           className={CHROME_SECTION_LABEL_CLASS}
         >
-          Recent
+          Недавние
         </h2>
         <OverflowFade placement="below" tone="background" size="sm" />
       </div>
@@ -477,7 +477,7 @@ export function RootComposeMobileRecents({
             MOBILE_RECENT_ROW_HEIGHT_CLASS,
           )}
         >
-          <span className="min-w-0 flex-1 truncate">Creating thread</span>
+          <span className="min-w-0 flex-1 truncate">Создание чата</span>
           <span className="flex size-6 shrink-0 items-center justify-center">
             <Icon
               name="Loading"

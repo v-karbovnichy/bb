@@ -43,7 +43,7 @@ describe("SideChatPanel", () => {
       { rpc: {} },
     );
     expect(slot.getByRole("alert").textContent).toContain(
-      "missing its thread reference",
+      "не указан чат",
     );
   });
 });

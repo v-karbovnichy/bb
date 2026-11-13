@@ -514,10 +514,10 @@ describe("application approval management", () => {
           <ApplicationLinkApprovalsSettings />
         </QueryClientProvider>,
       );
-      await screen.findByRole("button", { name: "Remove linear approval" });
+      await screen.findByRole("button", { name: "Удалить разрешение для linear" });
       if (surface === "settings") {
         fireEvent.click(
-          screen.getByRole("button", { name: "Remove linear approval" }),
+          screen.getByRole("button", { name: "Удалить разрешение для linear" }),
         );
       } else {
         await act(() =>
@@ -528,7 +528,7 @@ describe("application approval management", () => {
       }
       await waitFor(() =>
         expect(
-          screen.queryByRole("button", { name: "Remove linear approval" }),
+          screen.queryByRole("button", { name: "Удалить разрешение для linear" }),
         ).toBeNull(),
       );
       expect(
@@ -536,7 +536,7 @@ describe("application approval management", () => {
       ).toEqual(["reflect"]);
       if (surface === "settings")
         fireEvent.click(
-          screen.getByRole("button", { name: "Remove reflect approval" }),
+          screen.getByRole("button", { name: "Удалить разрешение для reflect" }),
         );
       else
         await act(() =>
@@ -544,7 +544,7 @@ describe("application approval management", () => {
             null,
           ),
         );
-      await screen.findByText(/^No apps are always allowed\./u);
+      await screen.findByText(/^Нет приложений, которым всегда разрешено открывать ссылки\./u);
       expect(store.list()).toEqual([]);
     },
   );

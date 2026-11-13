@@ -50,7 +50,7 @@ function renderSection(overrides?: {
 }
 
 function branchPrefixInput() {
-  const input = screen.getByLabelText("New branch prefix");
+  const input = screen.getByLabelText("Префикс новой ветки");
   if (!(input instanceof HTMLInputElement)) {
     throw new Error("New branch prefix control is not an input");
   }
@@ -61,7 +61,7 @@ describe("terminal copy-on-select setting", () => {
   it("displays the saved value and allows opting out", () => {
     const onChange = vi.fn();
     renderSection({ onTerminalCopyOnSelectChange: onChange });
-    const toggle = screen.getByRole("switch", { name: "Copy on select" });
+    const toggle = screen.getByRole("switch", { name: "Копировать при выделении" });
     expect(toggle.getAttribute("aria-checked")).toBe("true");
     fireEvent.click(toggle);
     expect(onChange).toHaveBeenCalledWith(false);
@@ -69,7 +69,7 @@ describe("terminal copy-on-select setting", () => {
     renderSection({ terminalCopyOnSelect: false });
     expect(
       screen
-        .getByRole("switch", { name: "Copy on select" })
+        .getByRole("switch", { name: "Копировать при выделении" })
         .getAttribute("aria-checked"),
     ).toBe("false");
   });
@@ -80,7 +80,7 @@ describe("terminal copy-on-select setting", () => {
       generalSettingsDisabled: true,
       onTerminalCopyOnSelectChange: onChange,
     });
-    fireEvent.click(screen.getByRole("switch", { name: "Copy on select" }));
+    fireEvent.click(screen.getByRole("switch", { name: "Копировать при выделении" }));
     expect(onChange).not.toHaveBeenCalled();
   });
 });

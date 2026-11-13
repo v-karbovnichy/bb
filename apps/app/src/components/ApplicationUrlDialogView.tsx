@@ -34,10 +34,10 @@ export function ApplicationUrlDialogView() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Open this {confirmation?.target.scheme} link?
+            Открыть ссылку {confirmation?.target.scheme}?
           </DialogTitle>
           <DialogDescription>
-            This will open an application on this device.
+            На этом устройстве откроется приложение.
           </DialogDescription>
         </DialogHeader>
         <p className="break-all text-sm select-text">
@@ -50,8 +50,8 @@ export function ApplicationUrlDialogView() {
               setRememberedConfirmation(checked === true ? confirmation : null)
             }
           />
-          Always allow {confirmation?.target.scheme} links for this BB site on
-          this device
+          Всегда разрешать ссылки {confirmation?.target.scheme} с этого сайта BB
+          на этом устройстве
         </label>
         <DialogFooter>
           <Button
@@ -61,14 +61,14 @@ export function ApplicationUrlDialogView() {
               resolveApplicationUrlConfirmation("cancel");
             }}
           >
-            Cancel
+            Отмена
           </Button>
           <Button
             onClick={() => {
               resolveApplicationUrlConfirmation(remember ? "always" : "open");
             }}
           >
-            Open
+            Открыть
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -285,7 +285,7 @@ export function CommandPalette({ threadId, projectId }: CommandPaletteProps) {
         }}
         data-testid="command-palette"
       >
-        <DialogTitle className="sr-only">Quick palette</DialogTitle>
+        <DialogTitle className="sr-only">Палитра команд</DialogTitle>
         {!searchingThreads ? (
           <LazyCommandPaletteBody
             key={openCount}

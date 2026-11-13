@@ -43,47 +43,47 @@ describe("searchSettings", () => {
   });
 
   it("ranks a title match above settings that only mention the word", () => {
-    expect(searchTitles("theme")).toEqual([
-      "Appearance › Theme",
-      "Appearance › Palette",
+    expect(searchTitles("тема")).toEqual([
+      "Внешний вид › Тема",
+      "Внешний вид › Палитра",
     ]);
   });
 
   it("finds a setting by a word people remember instead of its title", () => {
     expect(searchTitles("telemetry")).toEqual([
-      "General › Share anonymous usage data",
+      "Основные › Отправлять анонимные данные об использовании",
     ]);
-    expect(searchTitles("dark mode")).toEqual(["Appearance › Theme"]);
+    expect(searchTitles("dark mode")).toEqual(["Внешний вид › Тема"]);
     expect(searchTitles("idle timeout")).toEqual([
-      "Providers › Release idle agent sessions",
+      "Провайдеры › Завершать неактивные сеансы агентов",
     ]);
   });
 
   it("matches words in any order and ignores case and extra spaces", () => {
-    expect(searchTitles("  PREFIX   branch ")).toEqual([
-      "General › New branch prefix",
+    expect(searchTitles("  ПРЕФИКС   новой ")).toEqual([
+      "Основные › Префикс новой ветки",
     ]);
   });
 
-  it("puts pages ahead of single settings that match equally well", () => {
+  it("ranks relevant results for a broad query", () => {
     expect(searchTitles("a").slice(0, 4)).toEqual([
-      "AI services",
-      "Appearance",
-      "Archived threads",
-      "General › App links",
+      "Linear › API key",
+      "Настройки плагина › Linear",
+      "Linear › Default team",
+      "Провайдеры",
     ]);
   });
 
   it("lists a section first, then the settings inside it", () => {
-    const titles = searchTitles("experiments");
-    expect(titles[0]).toBe("Experiments");
-    expect(titles).toContain("Experiments › Server move");
+    const titles = searchTitles("эксперименты");
+    expect(titles[0]).toBe("Эксперименты");
+    expect(titles).toContain("Эксперименты › Перенос сервера");
   });
 
   it("points a setting at its section route and carries its anchor", () => {
-    const [result] = searchSettings("favicon", allItems);
+    const [result] = searchSettings("значка", allItems);
     expect(result).toMatchObject({
-      anchor: "Favicon color",
+      anchor: "Цвет значка вкладки",
       to: "/settings/appearance",
     });
   });
@@ -111,7 +111,7 @@ describe("searchSettings", () => {
           sections: [],
         }),
       ),
-    ).toEqual(["Plugin settings › Tracker"]);
+    ).toEqual(["Настройки плагина › Tracker"]);
   });
 
   it("finds a setting inside a plugin's page by its label, key or description", () => {
@@ -126,8 +126,8 @@ describe("searchSettings", () => {
 
   it("lists a plugin's page before the settings inside it", () => {
     expect(searchTitles("linear")).toEqual([
-      "Plugin settings › Linear",
-      "General › App links",
+      "Настройки плагина › Linear",
+      "Основные › Ссылки приложений",
       "Linear › API key",
       "Linear › Default team",
     ]);
@@ -142,8 +142,8 @@ describe("searchSettings", () => {
         (section) => section.id !== "files",
       ),
     });
-    expect(searchTitles("file openers")).toEqual(["Files › File openers"]);
-    expect(searchTitles("file openers", withoutFiles)).toEqual([]);
+    expect(searchTitles("открытие файлов")).toEqual(["Файлы › Открытие файлов"]);
+    expect(searchTitles("открытие файлов", withoutFiles)).toEqual([]);
   });
 });
 
@@ -151,7 +151,7 @@ describe("buildSettingsSearchItems", () => {
   it("offers a conditional setting only while its row is on the page", () => {
     const titles = (conditions: ("desktopBrowser" | "diffRenderers")[]) =>
       searchTitles(
-        "in-app browser",
+        "встроенном браузере",
         buildSettingsSearchItems({
           conditions: new Set(conditions),
           pluginEntries: [],
@@ -162,7 +162,7 @@ describe("buildSettingsSearchItems", () => {
 
     expect(titles(["diffRenderers"])).toEqual([]);
     expect(titles(["desktopBrowser"])).toEqual([
-      "General › Open links in the in-app browser",
+      "Основные › Открывать ссылки во встроенном браузере",
     ]);
   });
 });
@@ -170,8 +170,8 @@ describe("buildSettingsSearchItems", () => {
 describe("readSettingsSearchAnchor", () => {
   it("reads the anchor a search result put in the location state", () => {
     expect(
-      readSettingsSearchAnchor({ [SETTINGS_SEARCH_ANCHOR_STATE_KEY]: "Theme" }),
-    ).toBe("Theme");
+      readSettingsSearchAnchor({ [SETTINGS_SEARCH_ANCHOR_STATE_KEY]: "Тема" }),
+    ).toBe("Тема");
   });
 
   it("ignores location state that belongs to something else", () => {

@@ -143,7 +143,7 @@ function ProviderActionsMenu({
           variant="ghost"
           size="icon"
           className="size-8 shrink-0 text-muted-foreground data-[state=open]:bg-state-active data-[state=open]:text-foreground"
-          aria-label={`Actions for ${provider.displayName}`}
+          aria-label={`Действия с ${provider.displayName}`}
         >
           <Icon name="MoreHorizontal" />
         </Button>
@@ -157,7 +157,7 @@ function ProviderActionsMenu({
               if (checked) onMakeDefault?.();
             }}
           >
-            Default
+            По умолчанию
           </DropdownMenuCheckboxItem>
         ) : null}
         <DropdownMenuItem
@@ -165,7 +165,7 @@ function ProviderActionsMenu({
           onSelect={onToggle}
           variant={enabled ? "destructive" : "default"}
         >
-          {enabled ? "Disable" : "Enable"}
+          {enabled ? "Выключить" : "Включить"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -213,9 +213,9 @@ function SortableProviderRow({
         {provider.displayName}
       </span>
       {!provider.available ? (
-        <SettingsBadge>Unavailable</SettingsBadge>
+        <SettingsBadge>Недоступен</SettingsBadge>
       ) : isDefault ? (
-        <SettingsBadge>Default</SettingsBadge>
+        <SettingsBadge>По умолчанию</SettingsBadge>
       ) : null}
       <ProviderActionsMenu
         provider={provider}
@@ -262,7 +262,7 @@ function CompletedTurnDisplayRow({
       <Switch
         checked={display === "collapse"}
         disabled={disabled}
-        aria-label={`Collapse finished ${provider.displayName} turns`}
+        aria-label={`Сворачивать завершённые ответы ${provider.displayName}`}
         onCheckedChange={(checked) =>
           void onGeneralSettingsChange(
             withProviderCompletedTurnDisplay(
@@ -316,15 +316,15 @@ export function ProvidersSettingsSection({
   return (
     <>
       <SettingsSection
-        title="Providers"
-        description="Choose which agents you use in BB. Drag to reorder them in provider pickers."
+        title="Провайдеры"
+        description="Выберите агентов для работы в BB. Перетащите их, чтобы изменить порядок в списках провайдеров."
       >
         {providersQuery.isPending ? (
-          <p className="text-sm text-muted-foreground">Loading providers…</p>
+          <p className="text-sm text-muted-foreground">Загрузка провайдеров…</p>
         ) : providers.length === 0 && disabledProviders.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No providers available. Install a provider plugin in Settings →
-            Plugins.
+            Нет доступных провайдеров. Установите плагин провайдера в разделе
+            «Настройки → Плагины».
           </p>
         ) : (
           <SortableSettingsRowList
@@ -354,7 +354,7 @@ export function ProvidersSettingsSection({
                 <span className="min-w-0 flex-1 truncate font-medium">
                   {provider.displayName}
                 </span>
-                <SettingsBadge>Disabled</SettingsBadge>
+                <SettingsBadge>Выключен</SettingsBadge>
                 <ProviderActionsMenu
                   provider={provider}
                   enabled={false}
@@ -373,11 +373,11 @@ export function ProvidersSettingsSection({
           </SortableSettingsRowList>
         )}
       </SettingsSection>
-      <SettingsSection title="Configuration">
+      <SettingsSection title="Настройка">
         <div className="space-y-5">
           <SettingsWithControl
-            label="Allow faster service tiers"
-            description="Turn this off to use the default service tier for all new turns, including those from queued messages and automations."
+            label="Разрешить ускоренные уровни сервиса"
+            description="Отключите, чтобы все новые ходы, включая сообщения из очереди и автоматизации, использовали уровень сервиса по умолчанию."
           >
             <Switch
               checked={generalSettings.allowFastServiceTier}
@@ -387,12 +387,12 @@ export function ProvidersSettingsSection({
                   allowFastServiceTier: enabled,
                 })
               }
-              aria-label="Allow faster service tiers"
+              aria-label="Разрешить ускоренные уровни сервиса"
             />
           </SettingsWithControl>
           <SettingsWithControl
-            label="Release idle agent sessions"
-            description="Stop agents that have been idle this long to free memory. Threads keep their history and pick up on your next message. Checked every 5 minutes."
+            label="Завершать неактивные сеансы агентов"
+            description="Останавливать агентов после указанного времени бездействия, чтобы освободить память. История чатов сохраняется, работа возобновится при следующем сообщении. Проверка каждые 5 минут."
           >
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -401,7 +401,7 @@ export function ProvidersSettingsSection({
                   size="sm"
                   className={SETTINGS_DROPDOWN_TRIGGER_CLASS}
                   disabled={disabled}
-                  aria-label="Release idle agent sessions"
+                  aria-label="Завершать неактивные сеансы агентов"
                 >
                   {idleTimeoutLabel(
                     generalSettings.idleProviderSessionTimeoutMinutes,
@@ -450,12 +450,12 @@ export function ProvidersSettingsSection({
           <div className="mt-4 space-y-3 border-t border-border pt-4">
             <div>
               <h3 className="text-sm font-medium text-foreground">
-                Collapse finished turns
+                Сворачивать завершённые ответы
               </h3>
               <p className="mt-0.5 text-xs leading-snug text-subtle-foreground/75">
-                When a turn finishes, fold its work into one Worked for row and
-                keep the final answer visible. Turn off collapsing to keep every
-                step of a finished turn visible.
+                После завершения ответа его работу можно свернуть в одну строку
+                «Выполнялось», оставив итоговый ответ видимым. Отключите
+                сворачивание, чтобы видеть каждый шаг.
               </p>
             </div>
             <SettingsRowList>

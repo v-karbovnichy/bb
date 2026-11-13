@@ -293,12 +293,12 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
     installDesktopBrowser(api);
     const tab = savedTab({ hostId: "host-2" });
     const view = render(renderTargetDeck(tab));
-    await screen.findByText("This tab is open on another computer");
+    await screen.findByText("Эта вкладка открыта на другом компьютере");
     expect(screen.getByText("https://example.com/saved")).not.toBeNull();
     expect(
-      screen.getByRole("button", { name: "Open in browser" }),
+      screen.getByRole("button", { name: "Открыть в браузере" }),
     ).not.toBeNull();
-    expect(screen.getByRole("button", { name: "Copy link" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Скопировать ссылку" })).not.toBeNull();
     expect(attachments).toEqual([]);
     view.rerender(renderTargetDeck({ ...tab, desktopTarget }));
     await waitFor(() => expect(attachments).toHaveLength(1));
@@ -319,7 +319,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       ],
     });
     render(renderTargetDeck(savedTab({ instanceId: "elsewhere" })));
-    await screen.findByText("This tab is open in another bb window");
+    await screen.findByText("Эта вкладка открыта в другом окне bb");
     expect(attachments).toEqual([]);
   });
 
@@ -338,7 +338,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       });
       const tab = savedTab({ instanceId: "elsewhere" });
       const view = render(renderTargetDeck(tab));
-      await screen.findByText("This tab is open in another bb window");
+      await screen.findByText("Эта вкладка открыта в другом окне bb");
       expect(attachments).toEqual([]);
       list.mockResolvedValue({
         instances: [{ ...desktopTarget, label: "Current" }],
@@ -346,7 +346,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       const selected =
         action === "retry" ? tab : { ...tab, id: "another-saved-tab" };
       if (action === "retry")
-        fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+        fireEvent.click(screen.getByRole("button", { name: "Попробовать ещё раз" }));
       else view.rerender(renderTargetDeck(selected));
       await waitFor(() => expect(attachments).toHaveLength(1));
       expect(attachments[0]).toMatchObject({
@@ -375,7 +375,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
     });
     expect(attachments[0]?.existingOnly).toBeUndefined();
     expect(
-      screen.queryByText("This tab is open in another bb window"),
+      screen.queryByText("Эта вкладка открыта в другом окне bb"),
     ).toBeNull();
   });
 
@@ -430,11 +430,11 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       instances: [{ ...desktopTarget, label: "BB window 1" }],
     });
     render(renderTargetDeck(savedTab({ instanceId: "closed-window" })));
-    expect(screen.queryByText("Reconnecting to this tab")).toBeNull();
+    expect(screen.queryByText("Повторное подключение к вкладке")).toBeNull();
     await waitFor(() => expect(attachments).toHaveLength(1), { timeout: 3000 });
     expect(getTarget).toHaveBeenCalledTimes(3);
     expect(attachments[0]?.existingOnly).toBeUndefined();
-    expect(screen.queryByText("Reconnecting to this tab")).toBeNull();
+    expect(screen.queryByText("Повторное подключение к вкладке")).toBeNull();
   });
 
   it("says it is reconnecting, not that the tab is elsewhere, while the desktop stays offline", async () => {
@@ -442,11 +442,11 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
     api.getTarget = async () => null;
     installDesktopBrowser(api);
     render(renderTargetDeck(savedTab({})));
-    await screen.findByText("Reconnecting to this tab", undefined, {
+    await screen.findByText("Повторное подключение к вкладке", undefined, {
       timeout: 4000,
     });
     expect(
-      screen.queryByText("This tab is open on another computer"),
+      screen.queryByText("Эта вкладка открыта на другом компьютере"),
     ).toBeNull();
     expect(attachments).toEqual([]);
   });
@@ -463,11 +463,11 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       const stoppedAt = getTarget.mock.calls.length;
       await act(() => vi.advanceTimersByTimeAsync(30_000));
       expect(getTarget).toHaveBeenCalledTimes(stoppedAt);
-      expect(screen.getByText("Can't reach this tab")).not.toBeNull();
-      fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+      expect(screen.getByText("Не удаётся открыть вкладку")).not.toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: "Попробовать ещё раз" }));
       await act(() => vi.advanceTimersByTimeAsync(1_000));
       expect(getTarget.mock.calls.length).toBeGreaterThan(stoppedAt);
-      expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+      expect(screen.queryByRole("button", { name: "Попробовать ещё раз" })).toBeNull();
     } finally {
       vi.useRealTimers();
     }
@@ -507,18 +507,18 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
     "shows a saved %s URL without offering to open it externally",
     async (url) => {
       render(renderTargetDeck({ ...savedTab({}), url }));
-      await screen.findByText("Browser tabs need the desktop app");
+      await screen.findByText("Для вкладок браузера нужно настольное приложение");
       expect(screen.getByText(url)).not.toBeNull();
       expect(
-        screen.queryByRole("button", { name: "Open in browser" }),
+        screen.queryByRole("button", { name: "Открыть в браузере" }),
       ).toBeNull();
-      expect(screen.getByRole("button", { name: "Copy link" })).not.toBeNull();
+      expect(screen.getByRole("button", { name: "Скопировать ссылку" })).not.toBeNull();
     },
   );
 
   it("explains that desktop tabs need the desktop app on web", async () => {
     render(renderTargetDeck(savedTab({})));
-    await screen.findByText("Browser tabs need the desktop app");
+    await screen.findByText("Для вкладок браузера нужно настольное приложение");
     expect(screen.getByText("https://example.com/saved")).not.toBeNull();
   });
 
@@ -812,7 +812,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       />,
     );
 
-    expect(screen.getByLabelText("Address and search bar")).toBeTruthy();
+    expect(screen.getByLabelText("Адресная и поисковая строка")).toBeTruthy();
     expect(focusSpy).toHaveBeenCalled();
   });
 
@@ -838,7 +838,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
     const view = render(renderTab(false));
     await waitFor(() => expect(consumed).toHaveBeenCalled());
     const address = screen.getByRole("textbox", {
-      name: /Address and search bar/,
+      name: /Адресная и поисковая строка/,
     });
     expect(document.activeElement).toBe(address);
     fireEvent.change(address, { target: { value: "google.co" } });
@@ -847,7 +847,7 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByRole("textbox", { name: /Address and search bar/ }),
+        screen.getByRole("textbox", { name: /Адресная и поисковая строка/ }),
       ).toBe(document.activeElement),
     );
     expect(screen.getByDisplayValue("google.co")).toBe(document.activeElement);
@@ -881,8 +881,8 @@ describe("BrowserTabDeck native browser first-show ordering", () => {
       });
     });
 
-    expect(await screen.findByText("Server not reachable")).toBeTruthy();
-    expect(screen.getByText(/Start the server, then reload\./)).toBeTruthy();
+    expect(await screen.findByText("Сервер недоступен")).toBeTruthy();
+    expect(screen.getByText(/Запустите сервер и обновите страницу\./)).toBeTruthy();
     expect(screen.getByText("ERR_BLOCKED_BY_CLIENT")).toBeTruthy();
 
     await waitFor(() => {

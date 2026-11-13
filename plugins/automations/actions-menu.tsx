@@ -19,7 +19,7 @@ export function AutomationActionsMenu({
       disabled={pending}
       items={[
         {
-          label: "Run now",
+          label: "Запустить сейчас",
           icon: "Play",
           disabled: runDisabledReason !== undefined,
           disabledReason: runDisabledReason,
@@ -27,7 +27,7 @@ export function AutomationActionsMenu({
         },
         { kind: "separator" },
         {
-          label: "Delete",
+          label: "Удалить",
           icon: "Trash2",
           tone: "destructive",
           onSelect: onDelete,

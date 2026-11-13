@@ -22,9 +22,9 @@ interface InstallCliSkillsDialogContentProps {
 }
 
 const MACHINE_STATUS_LABELS: Record<CliSkillMachineStatus, string | null> = {
-  installed: "Installed",
-  outdated: "Out of date",
-  missing: "Not installed",
+  installed: "Установлено",
+  outdated: "Устарели",
+  missing: "Не установлены",
   unknown: null,
 };
 
@@ -36,7 +36,7 @@ function machineStatusLabel(args: {
   connected: boolean;
   status: CliSkillMachineStatus | undefined;
 }): string | null {
-  if (!args.connected) return "Disconnected";
+  if (!args.connected) return "Не подключена";
   return args.status === undefined ? null : MACHINE_STATUS_LABELS[args.status];
 }
 
@@ -61,11 +61,11 @@ function InstallCliSkillsDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Install bb CLI skills</DialogTitle>
+        <DialogTitle>Установить навыки CLI bb</DialogTitle>
         <DialogDescription>
           {choosable
-            ? "Choose the machines to install them onto. Each one gets the skills in ~/.agents/skills and ~/.claude/skills, replacing any copy already there."
-            : `The skills go in ~/.agents/skills and ~/.claude/skills on ${hosts[0]?.name ?? "the selected machine"}, replacing any copy already there.`}
+            ? "Выберите машины для установки. На каждой навыки будут установлены в ~/.agents/skills и ~/.claude/skills, заменив существующие копии."
+            : `Навыки будут установлены в ~/.agents/skills и ~/.claude/skills на ${hosts[0]?.name ?? "выбранной машине"} с заменой существующих копий.`}
         </DialogDescription>
       </DialogHeader>
 
@@ -121,7 +121,7 @@ function InstallCliSkillsDialogContent({
           disabled={pending || selected.length === 0}
           onClick={() => onInstall([...selected])}
         >
-          {pending ? "Installing…" : "Install"}
+          {pending ? "Установка…" : "Установить"}
         </Button>
       </DialogFooter>
     </>

@@ -37,7 +37,7 @@ import {
   type ThreadActionMenuSurface,
 } from "./ThreadActionMenuItems";
 
-const MENU_LABEL = "Thread actions";
+const MENU_LABEL = "Действия с чатом";
 
 function ThreadActionsMenuItems({
   thread,
@@ -225,7 +225,7 @@ export function ThreadActionsContextMenu({
 }
 
 function describeThreadCount(count: number): string {
-  return count === 1 ? "1 thread" : `${count} threads`;
+  return count === 1 ? "Выбран 1 чат" : `Выбрано чатов: ${count}`;
 }
 
 function ThreadBulkMenuItems({
@@ -246,7 +246,7 @@ function ThreadBulkMenuItems({
       {drawerStep === null ? (
         <>
           <Label className="text-muted-foreground">
-            {describeThreadCount(threads.length)} selected
+            {describeThreadCount(threads.length)}
           </Label>
           {groups.length > 0 ? <ActionMenuSeparator surface={surface} /> : null}
         </>

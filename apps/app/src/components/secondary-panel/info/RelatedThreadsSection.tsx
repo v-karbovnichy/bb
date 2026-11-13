@@ -75,7 +75,7 @@ export function ChildThreadsSection({ thread }: { thread: Thread }) {
   });
   return (
     <RelatedThreadsSection
-      label="Child threads"
+      label="Дочерние чаты"
       threads={(childThreadsQuery.data ?? []).filter(
         (childThread) => childThread.originKind === null,
       )}
@@ -92,6 +92,6 @@ export function ForksSection({ thread }: { thread: Thread }) {
     archived: false,
   });
   return (
-    <RelatedThreadsSection label="Forks" threads={forksQuery.data ?? []} />
+    <RelatedThreadsSection label="Ответвления" threads={forksQuery.data ?? []} />
   );
 }

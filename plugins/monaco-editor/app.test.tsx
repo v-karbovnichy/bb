@@ -102,7 +102,7 @@ it("saves edits with the toolbar button and prevents duplicate pending saves", a
   await waitFor(() => expect(create).toHaveBeenCalledOnce());
   act(() => editor.onDidChangeModelContent.mock.calls[0]![0]());
   expect(write).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   await waitFor(() => expect(write).toHaveBeenCalledOnce());
   expect(write).toHaveBeenCalledWith({
     path: base.path,
@@ -110,14 +110,14 @@ it("saves edits with the toolbar button and prevents duplicate pending saves", a
     content: "Edited on a phone",
     expectedSha256: file.sha256,
   });
-  const pendingButton = screen.getByRole("button", { name: "Saving…" });
+  const pendingButton = screen.getByRole("button", { name: "Сохранение…" });
   expect(pendingButton.hasAttribute("disabled")).toBe(true);
   fireEvent.click(pendingButton);
   expect(write).toHaveBeenCalledOnce();
   await act(async () => finishSave({ outcome: "written", sha256: "saved" }));
   expect(screen.queryByRole("status")).toBeNull();
   expect(
-    screen.getByRole("button", { name: "Save" }).hasAttribute("disabled"),
+    screen.getByRole("button", { name: "Сохранить" }).hasAttribute("disabled"),
   ).toBe(false);
 });
 
@@ -135,32 +135,32 @@ it("overwrites the conflicted version and requires confirmation for a newer conf
     },
   });
   await waitFor(() => expect(create).toHaveBeenCalledOnce());
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  await screen.findByRole("button", { name: "Save my edits" });
-  const saveButton = screen.getByRole("button", { name: "Save" });
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
+  await screen.findByRole("button", { name: "Сохранить мои правки" });
+  const saveButton = screen.getByRole("button", { name: "Сохранить" });
   expect(saveButton.getAttribute("aria-disabled")).toBe("true");
   expect(saveButton.getAttribute("aria-description")).toBe(
-    "Resolve the file conflict below",
+    "Разрешите конфликт файла ниже",
   );
   fireEvent.click(saveButton);
   act(() => editor.addCommand.mock.calls[0]![1]());
   expect(write).toHaveBeenCalledOnce();
   expect(document.activeElement).toBe(
     screen.getByRole("status", {
-      name: "File changed on disk, edits not saved.",
+      name: "Файл изменился на диске. Правки не сохранены.",
     }),
   );
-  fireEvent.click(screen.getByRole("button", { name: "Save my edits" }));
-  await screen.findByRole("button", { name: "Save my edits" });
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить мои правки" }));
+  await screen.findByRole("button", { name: "Сохранить мои правки" });
   expect(write).toHaveBeenNthCalledWith(2, {
     path: base.path,
     source: base.source,
     content: "Edited on a phone",
     expectedSha256: "external",
   });
-  fireEvent.click(screen.getByRole("button", { name: "Save my edits" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить мои правки" }));
   await waitFor(() =>
-    expect(screen.queryByRole("button", { name: "Save my edits" })).toBeNull(),
+    expect(screen.queryByRole("button", { name: "Сохранить мои правки" })).toBeNull(),
   );
   expect(write).toHaveBeenNthCalledWith(3, {
     path: base.path,
@@ -168,7 +168,7 @@ it("overwrites the conflicted version and requires confirmation for a newer conf
     content: "Edited on a phone",
     expectedSha256: "newer",
   });
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   await waitFor(() => expect(write).toHaveBeenCalledTimes(4));
   expect(write).toHaveBeenLastCalledWith({
     path: base.path,
@@ -193,38 +193,38 @@ it("undoes keeping the disk version without writing and restores conflict protec
     },
   });
   await waitFor(() => expect(create).toHaveBeenCalledOnce());
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   fireEvent.click(
-    await screen.findByRole("button", { name: "Keep disk version" }),
+    await screen.findByRole("button", { name: "Оставить версию с диска" }),
   );
-  const undo = await screen.findByRole("button", { name: "Undo" });
+  const undo = await screen.findByRole("button", { name: "Отменить" });
   expect(editor.getValue()).toBe("Updated on disk");
   await waitFor(() =>
     expect(document.activeElement).toBe(
-      screen.getByRole("status", { name: "Disk version loaded." }),
+      screen.getByRole("status", { name: "Версия с диска загружена." }),
     ),
   );
   fireEvent.click(undo);
   expect(editor.getValue()).toBe("Edited on a phone");
   expect(editor.focus).toHaveBeenCalledOnce();
   expect(write).toHaveBeenCalledOnce();
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   expect(write).toHaveBeenCalledOnce();
-  fireEvent.click(screen.getByRole("button", { name: "Save my edits" }));
-  await screen.findByRole("button", { name: "Save my edits" });
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить мои правки" }));
+  await screen.findByRole("button", { name: "Сохранить мои правки" });
   expect(write).toHaveBeenLastCalledWith({
     path: base.path,
     source: base.source,
     content: "Edited on a phone",
     expectedSha256: "disk",
   });
-  fireEvent.click(screen.getByRole("button", { name: "Keep disk version" }));
-  fireEvent.click(await screen.findByRole("button", { name: "Undo" }));
+  fireEvent.click(screen.getByRole("button", { name: "Оставить версию с диска" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Отменить" }));
   read.mockRejectedValueOnce(new Error("Disk unavailable"));
-  fireEvent.click(screen.getByRole("button", { name: "Keep disk version" }));
+  fireEvent.click(screen.getByRole("button", { name: "Оставить версию с диска" }));
   await screen.findByText("Disk unavailable");
   act(() => editor.addCommand.mock.calls[0]![1]());
-  await screen.findByRole("button", { name: "Save my edits" });
+  await screen.findByRole("button", { name: "Сохранить мои правки" });
   expect(write).toHaveBeenLastCalledWith({
     path: base.path,
     source: base.source,
@@ -244,11 +244,11 @@ it.each(["edit", "file"])(
       },
     });
     await waitFor(() => expect(create).toHaveBeenCalledOnce());
-    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
     fireEvent.click(
-      await screen.findByRole("button", { name: "Keep disk version" }),
+      await screen.findByRole("button", { name: "Оставить версию с диска" }),
     );
-    await screen.findByRole("button", { name: "Undo" });
+    await screen.findByRole("button", { name: "Отменить" });
     if (action === "edit") {
       act(() => {
         editor.getValue.mockReturnValue("New edits to the disk version");
@@ -259,7 +259,7 @@ it.each(["edit", "file"])(
       slot.lifecycle.rerender(<Component {...base} path="other.ts" />);
       await waitFor(() => expect(create).toHaveBeenCalledTimes(2));
     }
-    expect(screen.queryByRole("button", { name: "Undo" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Отменить" })).toBeNull();
   },
 );
 
@@ -283,14 +283,14 @@ it("does not offer an old file's draft when its disk reload finishes after navig
     },
   });
   await waitFor(() => expect(create).toHaveBeenCalledOnce());
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
   fireEvent.click(
-    await screen.findByRole("button", { name: "Keep disk version" }),
+    await screen.findByRole("button", { name: "Оставить версию с диска" }),
   );
   slot.lifecycle.rerender(<Component {...base} path="other.ts" />);
   await waitFor(() => expect(create).toHaveBeenCalledTimes(2));
   await act(async () => finishRead(file));
-  expect(screen.queryByRole("button", { name: "Undo" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Отменить" })).toBeNull();
   expect(editor.setValue).not.toHaveBeenCalled();
   expect(nextEditor.setValue).not.toHaveBeenCalled();
 });

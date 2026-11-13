@@ -232,7 +232,7 @@ function decodeTaskCursor(value: string): TaskCursor {
   } catch {}
   throw new TasksPageCursorError(
     "invalid_cursor",
-    "invalid task-list cursor; start again without --cursor",
+    "Недопустимый курсор списка задач; начните заново без --cursor",
   );
 }
 
@@ -269,14 +269,14 @@ function nowIso(): string {
 
 function requireNonEmpty(value: string, field: string): string {
   const trimmed = value.trim();
-  if (!trimmed) throw new Error(`${field} must not be empty`);
+  if (!trimmed) throw new Error(`${field} не может быть пустым`);
   return trimmed;
 }
 
 function validatePrefix(prefix: string): string {
   if (!PROJECT_PREFIX_PATTERN.test(prefix)) {
     throw new Error(
-      "Project prefix must be uppercase alphanumeric, start with a letter, and contain at most 10 characters",
+      "Префикс проекта должен содержать до 10 заглавных латинских букв и цифр и начинаться с буквы",
     );
   }
   return prefix;
@@ -285,21 +285,21 @@ function validatePrefix(prefix: string): string {
 function validateDueDate(dueDate: string | null): string | null {
   if (dueDate === null) return null;
   if (!ISO_DATE_PATTERN.test(dueDate)) {
-    throw new Error("dueDate must be an ISO date in YYYY-MM-DD format");
+    throw new Error("dueDate должен быть датой ISO в формате YYYY-MM-DD");
   }
   const parsed = new Date(`${dueDate}T00:00:00.000Z`);
   if (
     Number.isNaN(parsed.valueOf()) ||
     parsed.toISOString().slice(0, 10) !== dueDate
   ) {
-    throw new Error("dueDate must be a valid calendar date");
+    throw new Error("dueDate должен быть существующей календарной датой");
   }
   return dueDate;
 }
 
 function validateLinkedBbProjectId(id: string | null): string | null {
   if (id !== null && !id.startsWith("proj_")) {
-    throw new Error("linkedBbProjectId must be a bb proj_* id");
+    throw new Error("linkedBbProjectId должен быть идентификатором bb вида proj_*");
   }
   return id;
 }
@@ -309,7 +309,7 @@ function validateThreadId(id: null): null;
 function validateThreadId(id: string | null): string | null;
 function validateThreadId(id: string | null): string | null {
   if (id !== null && !id.startsWith("thr_")) {
-    throw new Error("threadId must be a bb thr_* id");
+    throw new Error("threadId должен быть идентификатором bb вида thr_*");
   }
   return id;
 }
@@ -324,7 +324,7 @@ function validateBlobPath(blobPath: string): string {
     segments.includes("..")
   ) {
     throw new Error(
-      "Attachment blobPath must be relative to the plugin data directory",
+      "Путь Attachment blobPath должен быть относительным к папке данных плагина",
     );
   }
   return path;
@@ -467,7 +467,7 @@ function validatePresetEnvironment(input: {
     (baseBranch !== null || machineId !== null)
   ) {
     throw new Error(
-      "Preset baseBranch and machineId require environmentKind new-worktree",
+      "Для Preset baseBranch и machineId требуется environmentKind new-worktree",
     );
   }
   return { environmentKind: input.environmentKind, baseBranch, machineId };
@@ -520,16 +520,16 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireFolder(id: string): Folder {
     const folder = getFolder(id);
-    if (!folder) throw new Error(`Folder not found: ${id}`);
+    if (!folder) throw new Error(`Папка не найдена: ${id}`);
     return folder;
   }
 
   function validateFolderParent(folderId: string | null, ownId?: string): void {
     if (folderId === null) return;
-    if (folderId === ownId) throw new Error("A folder cannot contain itself");
+    if (folderId === ownId) throw new Error("Папка не может содержать саму себя");
     const parent = requireFolder(folderId);
     if (parent.parentFolderId !== null) {
-      throw new Error("Folders support at most one level of nesting");
+      throw new Error("Поддерживается не более одного уровня вложенных папок");
     }
     if (ownId) {
       const hasChildren = db
@@ -538,7 +538,7 @@ export function createTasksStore(db: PluginDatabase) {
         )
         .get(ownId);
       if (hasChildren) {
-        throw new Error("A folder with children cannot be nested");
+        throw new Error("Папку с вложенными папками нельзя поместить внутрь другой папки");
       }
     }
   }
@@ -620,7 +620,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireProject(id: string): Project {
     const project = getProject(id);
-    if (!project) throw new Error(`Project not found: ${id}`);
+    if (!project) throw new Error(`Проект не найден: ${id}`);
     return project;
   }
 
@@ -737,7 +737,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireTask(id: string): Task {
     const task = getTask(id);
-    if (!task) throw new Error(`Task not found: ${id}`);
+    if (!task) throw new Error(`Задача не найдена: ${id}`);
     return task;
   }
 
@@ -748,15 +748,15 @@ export function createTasksStore(db: PluginDatabase) {
   ): void {
     if (parentTaskId === null) return;
     if (parentTaskId === ownId)
-      throw new Error("A task cannot be its own parent");
+      throw new Error("Задача не может быть родителем самой себя");
     const parent = requireTask(parentTaskId);
     if (parent.projectId !== projectId) {
       throw new Error(
-        "A sub-task must belong to the same project as its parent",
+        "Подзадача должна находиться в том же проекте, что и родительская задача",
       );
     }
     if (parent.parentTaskId !== null) {
-      throw new Error("Tasks support at most one level of sub-tasks");
+      throw new Error("Поддерживается не более одного уровня подзадач");
     }
     if (ownId) {
       const hasChildren = db
@@ -766,7 +766,7 @@ export function createTasksStore(db: PluginDatabase) {
         .get(ownId);
       if (hasChildren) {
         throw new Error(
-          "A task with sub-tasks cannot itself become a sub-task",
+          "Задача с подзадачами сама не может стать подзадачей",
         );
       }
     }
@@ -801,7 +801,7 @@ export function createTasksStore(db: PluginDatabase) {
         .run(project.id, project.nextTaskNumber);
       if (allocated.changes !== 1) {
         throw new Error(
-          `Could not allocate the next task number for ${project.id}`,
+          `Не удалось выделить следующий номер задачи для ${project.id}`,
         );
       }
 
@@ -931,7 +931,7 @@ export function createTasksStore(db: PluginDatabase) {
     const limit = filters.limit ?? TASKS_PAGE_DEFAULT_LIMIT;
     if (!Number.isInteger(limit) || limit < 1 || limit > TASKS_PAGE_MAX_LIMIT) {
       throw new Error(
-        `Task page limit must be an integer from 1 to ${TASKS_PAGE_MAX_LIMIT}`,
+        `Размер страницы задач должен быть целым числом от 1 до ${TASKS_PAGE_MAX_LIMIT}`,
       );
     }
     const sort = filters.sort ?? "manual";
@@ -941,13 +941,13 @@ export function createTasksStore(db: PluginDatabase) {
     if (cursor !== null && cursor.sort !== sort) {
       throw new TasksPageCursorError(
         "cursor_query_mismatch",
-        "task-list cursor does not match --sort; start again without --cursor",
+        "Курсор списка задач не соответствует --sort; начните заново без --cursor",
       );
     }
     if (cursor !== null && cursor.query !== query) {
       throw new TasksPageCursorError(
         "cursor_query_mismatch",
-        "task-list cursor does not match the current filters; start again without --cursor",
+        "Курсор списка задач не соответствует текущим фильтрам; начните заново без --cursor",
       );
     }
 
@@ -985,12 +985,12 @@ export function createTasksStore(db: PluginDatabase) {
         )
         .get()?.revision;
       if (revision === undefined) {
-        throw new Error("Task-list revision state is unavailable");
+        throw new Error("Состояние версии списка задач недоступно");
       }
       if (cursor !== null && cursor.revision !== revision) {
         throw new TasksPageCursorError(
           "stale_cursor",
-          "task-list data changed after this cursor was issued; restart pagination without --cursor",
+          "Данные списка задач изменились после выдачи курсора; начните просмотр заново без --cursor",
         );
       }
 
@@ -1171,7 +1171,7 @@ export function createTasksStore(db: PluginDatabase) {
         )
         .run(moving.length, target.id, target.nextTaskNumber);
       if (allocated.changes !== 1) {
-        throw new Error(`Could not allocate task numbers for ${target.id}`);
+        throw new Error(`Не удалось выделить номера задач для ${target.id}`);
       }
 
       const nextPosition = db.prepare<
@@ -1280,7 +1280,7 @@ export function createTasksStore(db: PluginDatabase) {
     (id: string, input: UpdateTaskPositionInput): Task => {
       const task = requireTask(id);
       if (input.beforeTaskId === id || input.afterTaskId === id) {
-        throw new Error("A task cannot be its own reorder neighbor");
+        throw new Error("Задача не может быть собственным соседом при изменении порядка");
       }
 
       const readNeighbor = (
@@ -1293,7 +1293,7 @@ export function createTasksStore(db: PluginDatabase) {
           neighbor.status !== input.status
         ) {
           throw new Error(
-            "Reorder neighbors must be in the destination project and status",
+            "Соседние задачи должны находиться в целевом проекте и иметь целевой статус",
           );
         }
         return neighbor;
@@ -1303,7 +1303,7 @@ export function createTasksStore(db: PluginDatabase) {
       let after = readNeighbor(input.afterTaskId);
       if (before && after && before.position >= after.position) {
         throw new Error(
-          "The before neighbor must sort before the after neighbor",
+          "Предыдущая задача должна располагаться раньше следующей",
         );
       }
 
@@ -1361,7 +1361,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireLabel(id: string): Label {
     const label = getLabel(id);
-    if (!label) throw new Error(`Label not found: ${id}`);
+    if (!label) throw new Error(`Метка не найдена: ${id}`);
     return label;
   }
 
@@ -1417,7 +1417,7 @@ export function createTasksStore(db: PluginDatabase) {
     const task = requireTask(taskId);
     const label = requireLabel(labelId);
     if (task.projectId !== label.projectId) {
-      throw new Error("A task can only use labels from its own project");
+      throw new Error("Задача может использовать только метки своего проекта");
     }
     db.prepare<[string, string]>(
       `
@@ -1468,7 +1468,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireComment(id: string): Comment {
     const comment = getComment(id);
-    if (!comment) throw new Error(`Comment not found: ${id}`);
+    if (!comment) throw new Error(`Комментарий не найден: ${id}`);
     return comment;
   }
 
@@ -1551,7 +1551,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireAttachment(id: string): Attachment {
     const attachment = getAttachment(id);
-    if (!attachment) throw new Error(`Attachment not found: ${id}`);
+    if (!attachment) throw new Error(`Вложение не найдено: ${id}`);
     return attachment;
   }
 
@@ -1560,7 +1560,7 @@ export function createTasksStore(db: PluginDatabase) {
     const commentId = input.commentId ?? null;
     if ((taskId === null) === (commentId === null)) {
       throw new Error(
-        "An attachment must belong to exactly one task or comment",
+        "Вложение должно принадлежать ровно одной задаче или одному комментарию",
       );
     }
     if (taskId !== null) requireTask(taskId);
@@ -1687,7 +1687,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requireTaskThread(id: string): TaskThread {
     const thread = getTaskThread(id);
-    if (!thread) throw new Error(`Task thread not found: ${id}`);
+    if (!thread) throw new Error(`Чат задачи не найден: ${id}`);
     return thread;
   }
 
@@ -1728,7 +1728,7 @@ export function createTasksStore(db: PluginDatabase) {
       timestamp,
     );
     const thread = getTaskThreadByThreadId(input.taskId, input.threadId);
-    if (!thread) throw new Error("Task thread upsert failed");
+    if (!thread) throw new Error("Не удалось сохранить чат задачи");
     return thread;
   }
 
@@ -1816,7 +1816,7 @@ export function createTasksStore(db: PluginDatabase) {
 
   function requirePreset(id: string): Preset {
     const preset = getPreset(id);
-    if (!preset) throw new Error(`Preset not found: ${id}`);
+    if (!preset) throw new Error(`Пресет не найден: ${id}`);
     return preset;
   }
 

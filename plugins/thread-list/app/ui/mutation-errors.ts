@@ -28,7 +28,7 @@ function extractErrorMessage(value: unknown): string | null {
 }
 
 const NETWORK_TRANSPORT_ERROR_MESSAGE =
-  "Could not reach the server. Check that it is running and try again.";
+  "Не удалось связаться с сервером. Проверьте, что он запущен, и повторите попытку.";
 
 interface MutationErrorMessageOptions {
   error: unknown;

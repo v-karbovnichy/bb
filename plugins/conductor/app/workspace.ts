@@ -39,7 +39,7 @@ export function workspaceLabel(
 }
 
 export function projectDisplayName(project: PluginSidebarProject): string {
-  return project.isPersonal ? "Personal" : project.name;
+  return project.isPersonal ? "Личное" : project.name;
 }
 
 export function findWorkspace(

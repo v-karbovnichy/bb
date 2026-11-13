@@ -27,7 +27,7 @@ export const retryConsentContract = defineRpcContract({
     }),
     output: retryConsentSchema,
     experimental_description:
-      "Asked of the plugin that sent a failed turn before provider retry re-runs it. Decline when the sender re-runs the work itself; allow leaves the retry scheduled. A missing, failing, or slow answer counts as allow.",
+      "Запрашивается у плагина, отправившего неудачный ход, перед повторной попыткой провайдера. Отклоните, если отправитель сам повторяет работу; разрешение оставит попытку в расписании. Отсутствующий, ошибочный или медленный ответ считается разрешением.",
   },
 });
 

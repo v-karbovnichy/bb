@@ -6,14 +6,14 @@ import {
 
 const saveDraft: ComposerSendMenuItem = {
   id: "drafts",
-  label: "Save draft…",
+  label: "Сохранить черновик…",
   icon: "EditFile",
-  description: "Keep this message in the queue until you send it manually.",
+  description: "Сохранить сообщение в очереди до отправки вручную.",
   disabled: (composer) => composer.isSubmittingBlocked,
   run: async ({ composer }) => {
     if (composer.isEmpty) {
-      toast.error("Nothing to save", {
-        description: "Type a message first, then save it as a draft.",
+      toast.error("Нечего сохранять", {
+        description: "Сначала введите сообщение, затем сохраните его как черновик.",
       });
       return;
     }
@@ -22,7 +22,7 @@ const saveDraft: ComposerSendMenuItem = {
         experimental_mode: "queue-if-active",
         experimental_data: { kind: "draft" },
       });
-      toast.success("Draft saved");
+      toast.success("Черновик сохранён");
     } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : String(error));
     }

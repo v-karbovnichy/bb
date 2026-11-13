@@ -33,7 +33,7 @@ describe("PermissionModePicker", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Permission mode" });
+    const trigger = screen.getByRole("button", { name: "Режим разрешений" });
     expect(trigger.textContent).toContain("Plan Mode");
     expect(trigger.textContent).not.toContain("Full Access");
   });

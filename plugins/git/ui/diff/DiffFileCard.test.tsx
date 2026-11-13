@@ -137,7 +137,7 @@ describe("DiffFileCard", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Binary file.")).toBeTruthy();
+      expect(screen.getByText("Двоичный файл.")).toBeTruthy();
     });
     screen.getByRole("button", { name: "Load diff" }).click();
     expect(onLoadPatch).toHaveBeenCalledOnce();
@@ -163,7 +163,7 @@ describe("DiffFileCard", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Binary file.")).toBeTruthy();
+      expect(screen.getByText("Двоичный файл.")).toBeTruthy();
     });
     expect(screen.getByText("Load diff")).toBeTruthy();
     expect(onRequestFileContents).toHaveBeenCalledTimes(2);

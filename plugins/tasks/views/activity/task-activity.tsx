@@ -170,7 +170,7 @@ function ImageAttachmentFigure({
     <figure className="relative m-0 flex min-w-0 max-w-full flex-col">
       <button
         type="button"
-        aria-label={`View ${attachment.fileName}`}
+        aria-label={`Просмотреть ${attachment.fileName}`}
         title={attachment.fileName}
         className="block max-w-[211px] rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring @2xl:max-w-[282px]"
         onClick={() => onOpenImage(attachment)}
@@ -356,7 +356,7 @@ export function CommentComposer({ taskId, notificationTarget }: ComposerProps) {
       setPendingFiles((files) => settleStagedUploads(files, staged, failed));
       if (failed.length > 0) {
         setError(
-          `The comment posted, but ${failed.length} attachment${failed.length > 1 ? "s" : ""} failed to upload — retry below.`,
+          `Комментарий опубликован, но не удалось загрузить вложения (${failed.length}). Повторите попытку ниже.`,
         );
       }
     } catch (cause) {
@@ -373,7 +373,7 @@ export function CommentComposer({ taskId, notificationTarget }: ComposerProps) {
         value={body}
         onChange={setBody}
         variant="comment"
-        placeholder="Leave a comment… @-mention tasks and threads to link them"
+        placeholder="Оставьте комментарий… Упомяните задачи и чаты через @, чтобы связать их"
         className="min-h-11"
         mentionItems={mentionItems}
         onOpenThread={(threadId) => navigate.toThread(threadId)}
@@ -420,7 +420,7 @@ export function CommentComposer({ taskId, notificationTarget }: ComposerProps) {
           type="button"
           size="icon"
           variant="ghost"
-          aria-label="Attach file"
+          aria-label="Прикрепить файл"
           className="size-6.5 shrink-0 text-muted-foreground"
           onClick={() => fileInputRef.current?.click()}
         >
@@ -429,7 +429,7 @@ export function CommentComposer({ taskId, notificationTarget }: ComposerProps) {
         <Button
           type="button"
           size="icon"
-          aria-label="Comment"
+          aria-label="Комментарий"
           disabled={!canSend}
           className="size-6.5 shrink-0 rounded-md bg-foreground text-background hover:bg-foreground/90"
           onClick={() => void send()}
@@ -454,10 +454,10 @@ export function AgentNotificationControl({
   const on = enabled && checked;
   const label =
     target.kind === "ready"
-      ? `Notify ${target.title}`
+      ? `Уведомить ${target.title}`
       : target.kind === "none"
-        ? "No prior agent reply to notify"
-        : "Latest responding agent can’t be notified";
+        ? "Нет предыдущего ответа агента для уведомления"
+        : "Невозможно уведомить агента, ответившего последним";
   return (
     <TooltipProvider delayDuration={300}>
       <Tooltip>
@@ -506,9 +506,9 @@ export function TaskActivity({ taskId }: TaskActivityProps) {
   );
 
   return (
-    <section aria-label="Activity">
+    <section aria-label="Активность">
       <div className="mt-6 border-t border-border-hairline" />
-      <h2 className="pb-3 pt-4 text-sm font-semibold">Activity</h2>
+      <h2 className="pb-3 pt-4 text-sm font-semibold">Активность</h2>
       <div
         className={cn(
           "relative",
@@ -520,7 +520,7 @@ export function TaskActivity({ taskId }: TaskActivityProps) {
           <div className="text-xs text-destructive">{feed.error}</div>
         ) : null}
         {entries.length === 0 && !feed.isLoading && !feed.error ? (
-          <div className="text-xs text-muted-foreground">No activity yet.</div>
+          <div className="text-xs text-muted-foreground">Пока нет активности.</div>
         ) : null}
         {entries.map((entry) =>
           entry.comment.kind === "system" ? (

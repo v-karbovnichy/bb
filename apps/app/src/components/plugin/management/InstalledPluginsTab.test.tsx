@@ -50,7 +50,7 @@ describe("InstalledPluginRow", () => {
     );
 
     expect(screen.getByTestId("plugin-runtime-status-notify").textContent).toBe(
-      "Incompatible",
+      "Несовместим",
     );
     expect(
       screen.getByText("requires bb >=0.38.0 <0.39.0, this is 0.39.0"),
@@ -58,7 +58,7 @@ describe("InstalledPluginRow", () => {
     expect(
       screen
         .getByRole("switch", {
-          name: "Disable notify (incompatible, not running)",
+          name: "Отключить notify (incompatible, не запущен)",
         })
         .getAttribute("aria-checked"),
     ).toBe("true");

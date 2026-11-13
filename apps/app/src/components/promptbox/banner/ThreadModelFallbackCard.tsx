@@ -46,7 +46,7 @@ export function ThreadModelFallbackCard({
   }
 
   return (
-    <PromptStackCard ariaLabel="Model fallback" className="overflow-hidden">
+    <PromptStackCard ariaLabel="Резервная модель" className="overflow-hidden">
       <div
         role="status"
         aria-live="polite"
@@ -58,18 +58,18 @@ export function ThreadModelFallbackCard({
           aria-hidden="true"
         />
         <span className="shrink-0 font-medium text-foreground">
-          Model fallback
+          Резервная модель
         </span>
         <span
           className="min-w-0 flex-1 truncate text-muted-foreground"
           title={fallback.message}
         >
-          Switched from {modelLabel(fallback.originalModel)} to{" "}
+          Переключено с {modelLabel(fallback.originalModel)} на{" "}
           {modelLabel(fallback.fallbackModel)}
         </span>
         <button
           type="button"
-          aria-label="Dismiss model fallback"
+          aria-label="Скрыть уведомление о резервной модели"
           className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground"
           onClick={() => {
             rawStringLocalStorage.setItem(storageKey, occurrence);

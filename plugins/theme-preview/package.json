@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Preview and validate bb themes across representative app screens, components, overlays, style tokens, and contrast checks.",
+  "description": "Предпросмотр и проверка тем bb на экранах приложения, компонентах, всплывающих элементах, токенах стилей и контрастности.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.4.6"
   },
   "bb": {
-    "name": "Theme Preview",
-    "description": "Preview and validate bb themes across representative app screens, components, overlays, style tokens, and contrast checks.",
+    "name": "Предпросмотр темы",
+    "description": "Предпросмотр и проверка тем bb на экранах приложения, компонентах, всплывающих элементах, токенах стилей и контрастности.",
     "branding": {
       "icon": "Palette"
     },

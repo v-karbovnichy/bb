@@ -50,7 +50,7 @@ describe("LocalOpenTargetSettingsSection", () => {
     });
 
     expect(onRequestAccess).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Enable" }));
+    fireEvent.click(screen.getByRole("button", { name: "Включить" }));
     await waitFor(() => expect(onRequestAccess).toHaveBeenCalledTimes(1));
   });
 
@@ -58,20 +58,20 @@ describe("LocalOpenTargetSettingsSection", () => {
     const { onRequestAccess } = renderSection({ accessState: "denied" });
 
     expect(
-      screen.getByRole<HTMLButtonElement>("button", { name: "Blocked" })
+      screen.getByRole<HTMLButtonElement>("button", { name: "Заблокировано" })
         .disabled,
     ).toBe(true);
-    expect(screen.queryByText(/allow local network access/i)).not.toBeNull();
+    expect(screen.queryByText(/доступ к локальной сети/i)).not.toBeNull();
     expect(onRequestAccess).not.toHaveBeenCalled();
   });
 
   it("retries after the helper was unavailable", async () => {
     const { onRequestAccess } = renderSection({ accessState: "available" });
 
-    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
     await waitFor(() => expect(onRequestAccess).toHaveBeenCalledTimes(1));
     expect(
-      screen.queryByText(/couldn’t connect to its local editor helper/i),
+      screen.queryByText(/не удалось подключиться к локальному помощнику редактора/i),
     ).not.toBeNull();
   });
 
@@ -79,7 +79,7 @@ describe("LocalOpenTargetSettingsSection", () => {
     const openWindow = vi.spyOn(window, "open").mockImplementation(() => null);
     renderSection({ accessState: "available" });
 
-    fireEvent.click(screen.getByRole("link", { name: "Setup guide" }));
+    fireEvent.click(screen.getByRole("link", { name: "Руководство по настройке" }));
 
     expect(openWindow).toHaveBeenCalledExactlyOnceWith(
       "https://github.com/get-bb/bb/blob/main/docs/multiple-devices.md#open-bb-from-another-browser",
@@ -91,8 +91,8 @@ describe("LocalOpenTargetSettingsSection", () => {
   it("shows editor preferences when the helper is reachable", () => {
     renderSection({ accessState: "available", hasDaemon: true });
 
-    expect(screen.queryByText("Directory default")).not.toBeNull();
-    expect(screen.queryByText("File default")).not.toBeNull();
-    expect(screen.queryByText("Local editor integration")).toBeNull();
+    expect(screen.queryByText("Приложение для папок по умолчанию")).not.toBeNull();
+    expect(screen.queryByText("Приложение для файлов по умолчанию")).not.toBeNull();
+    expect(screen.queryByText("Интеграция с локальным редактором")).toBeNull();
   });
 });

@@ -300,12 +300,12 @@ describe("SkillsOverview", () => {
     });
     expect(markup).toContain("claude-skill");
     expect(markup).toContain("Review the current diff.");
-    expect(markup).toContain('aria-label="Filters"');
-    expect(markup).toContain("Sort");
+    expect(markup).toContain('aria-label="Фильтры"');
+    expect(markup).toContain("Сортировка");
     expect(markup).not.toContain('role="tab"');
-    expect(markup).toContain("BB Official");
-    expect(markup).toContain("New bb skill");
-    expect(markup).not.toContain('aria-label="Open zz-official-skill"');
+    expect(markup).toContain("Официальный BB");
+    expect(markup).toContain("Новый навык bb");
+    expect(markup).not.toContain('aria-label="Открыть zz-official-skill"');
     expect(markup.indexOf("zz-official-skill")).toBeLessThan(
       markup.indexOf("aa-user-skill"),
     );
@@ -348,16 +348,16 @@ describe("SkillsOverview", () => {
     expect(screen.getByText("official-skill")).toBeTruthy();
     expect(screen.getByText("user-skill")).toBeTruthy();
     expect(screen.getByText("automations")).toBeTruthy();
-    const typeTrigger = screen.getByRole("button", { name: /^Filters/ });
+    const typeTrigger = screen.getByRole("button", { name: /^Фильтры/ });
     focusWithKeyboard(typeTrigger);
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Filters: All",
+      "Фильтры: все",
     );
     fireEvent.blur(typeTrigger);
     fireEvent.pointerDown(typeTrigger);
-    expect(screen.getByText("Type")).toBeTruthy();
-    expect(screen.queryByRole("menuitemcheckbox", { name: "All" })).toBeNull();
-    for (const name of ["BB Official", "Included in plugin", "User"]) {
+    expect(screen.getByText("Тип")).toBeTruthy();
+    expect(screen.queryByRole("menuitemcheckbox", { name: "Все" })).toBeNull();
+    for (const name of ["Официальный BB", "Входит в плагин", "Пользователь"]) {
       expect(
         screen
           .getByRole("menuitemcheckbox", { name })
@@ -365,22 +365,22 @@ describe("SkillsOverview", () => {
       ).toBe("false");
     }
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Included in plugin" }),
+      screen.getByRole("menuitemcheckbox", { name: "Входит в плагин" }),
     );
 
     expect(await screen.findByText("automations")).toBeTruthy();
     expect(
       screen.getByLabelText(
-        "automations is included with Automations (bb plugin)",
+        "Навык automations входит в Automations (плагин bb)",
       ).textContent,
-    ).toBe("Included");
+    ).toBe("Входит в комплект");
     expect(screen.queryByText("official-skill")).toBeNull();
     expect(screen.queryByText("user-skill")).toBeNull();
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "User" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Пользователь" }));
     expect(await screen.findByText("user-skill")).toBeTruthy();
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "User" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Пользователь" }));
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Included in plugin" }),
+      screen.getByRole("menuitemcheckbox", { name: "Входит в плагин" }),
     );
     expect(await screen.findByText("official-skill")).toBeTruthy();
     expect(screen.getByText("automations")).toBeTruthy();
@@ -415,9 +415,9 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: /^Filters/ });
+    const trigger = screen.getByRole("button", { name: /^Фильтры/ });
     fireEvent.pointerDown(trigger);
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "User" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Пользователь" }));
 
     expect(await screen.findByText("claude-authored")).toBeTruthy();
     expect(screen.getByText("codex-authored")).toBeTruthy();
@@ -430,7 +430,7 @@ describe("SkillsOverview", () => {
     expect(screen.queryByText("codex-authored")).toBeNull();
     expect(screen.queryByText("official-skill")).toBeNull();
 
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "User" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Пользователь" }));
     expect(await screen.findByText("claude-authored")).toBeTruthy();
     expect(screen.queryByText("codex-authored")).toBeNull();
   });
@@ -461,30 +461,30 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Included in plugin" }),
+      screen.getByRole("menuitemcheckbox", { name: "Входит в плагин" }),
     );
 
     expect(await screen.findByText("automations")).toBeTruthy();
     expect(screen.queryByText("official-skill")).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "BB Official" }),
+      screen.getByRole("menuitemcheckbox", { name: "Официальный BB" }),
     );
     expect(await screen.findByText("official-skill")).toBeTruthy();
     expect(screen.getByText("automations")).toBeTruthy();
 
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Included in plugin" }),
+      screen.getByRole("menuitemcheckbox", { name: "Входит в плагин" }),
     );
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "BB Official" }),
+      screen.getByRole("menuitemcheckbox", { name: "Официальный BB" }),
     );
     expect(await screen.findByText("official-skill")).toBeTruthy();
     expect(screen.getByText("automations")).toBeTruthy();
     fireEvent.keyDown(document, { key: "Escape" });
-    expect(screen.getByRole("button", { name: /^Filters/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /^Фильтры/ })).toBeTruthy();
   });
 
   it("uses filter-neutral copy when a Type selection removes every skill", async () => {
@@ -506,13 +506,13 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
     fireEvent.click(
-      screen.getByRole("menuitemcheckbox", { name: "Included in plugin" }),
+      screen.getByRole("menuitemcheckbox", { name: "Входит в плагин" }),
     );
 
     expect(
-      await screen.findByText("No skills match these filters."),
+      await screen.findByText("По заданным фильтрам навыки не найдены."),
     ).toBeTruthy();
     expect(screen.queryByText("No skills match these providers.")).toBeNull();
   });
@@ -586,7 +586,7 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
 
     await waitFor(() => {
       expect(
@@ -619,7 +619,7 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
 
     await waitFor(() => {
       expect(
@@ -666,7 +666,7 @@ describe("SkillsOverview", () => {
 
     expect(screen.getByText("codex-skill")).toBeTruthy();
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
     expect(
       screen
         .getByRole("menuitemcheckbox", { name: "bb" })
@@ -695,7 +695,7 @@ describe("SkillsOverview", () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
+    fireEvent.pointerDown(screen.getByRole("button", { name: /^Фильтры/ }));
     fireEvent.click(
       screen.getByRole("menuitemcheckbox", { name: "Claude Code" }),
     );
@@ -705,7 +705,7 @@ describe("SkillsOverview", () => {
       expect(screen.getByText("claude-skill")).toBeTruthy();
       expect(screen.queryByText("bb-skill")).toBeNull();
       expect(
-        screen.getByRole("button", { name: /Provider: Claude Code/ }),
+        screen.getByRole("button", { name: /Провайдер: Claude Code/ }),
       ).toBeTruthy();
     });
 
@@ -789,8 +789,8 @@ describe("SkillsLibrary library detail routing", () => {
 
     renderLibrarySkillRoute();
 
-    expect(screen.getByText("Loading skill")).toBeTruthy();
-    expect(screen.queryByText("New bb skill")).toBeNull();
+    expect(screen.getByText("Загрузка навыка")).toBeTruthy();
+    expect(screen.queryByText("Новый навык bb")).toBeNull();
   });
 
   it("shows a retryable detail error when the skill library fails to load", async () => {
@@ -800,9 +800,9 @@ describe("SkillsLibrary library detail routing", () => {
 
     renderLibrarySkillRoute();
 
-    expect(await screen.findByText("Couldn't load skill.")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Retry" })).toBeTruthy();
-    expect(screen.queryByText("New bb skill")).toBeNull();
+    expect(await screen.findByText("Не удалось загрузить навык.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Повторить" })).toBeTruthy();
+    expect(screen.queryByText("Новый навык bb")).toBeNull();
   });
 
   it("shows not found on an unknown library skill detail route", async () => {
@@ -810,9 +810,9 @@ describe("SkillsLibrary library detail routing", () => {
 
     const fetchMock = renderLibrarySkillRoute();
 
-    const notFound = await screen.findByText("Skill not found.");
+    const notFound = await screen.findByText("Навык не найден.");
     expect(notFound.closest("[data-resource-detail-state]")).not.toBeNull();
-    expect(screen.queryByText("New bb skill")).toBeNull();
+    expect(screen.queryByText("Новый навык bb")).toBeNull();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });
@@ -826,7 +826,7 @@ describe("SkillsLibrary registry detail lifecycle", () => {
 
     expect(
       await screen.findByText(
-        "This registry skill is no longer available from its source.",
+        "Этот навык больше недоступен в источнике.",
       ),
     ).toBeTruthy();
     expect(
@@ -860,7 +860,7 @@ describe("SkillsLibrary registry detail lifecycle", () => {
       );
 
       let forkButton = await screen.findByRole("button", {
-        name: "Fork Useful skill into a new bb skill",
+        name: "Создать новый навык bb на основе Useful skill",
       });
       expect(screen.queryByRole("tab")).toBeNull();
       const registryListRequests = () =>
@@ -875,11 +875,11 @@ describe("SkillsLibrary registry detail lifecycle", () => {
 
       fireEvent.click(screen.getByText("go-library"));
       expect(
-        await screen.findByRole("textbox", { name: "Search skills" }),
+        await screen.findByRole("textbox", { name: "Поиск навыков" }),
       ).toBeTruthy();
       fireEvent.click(screen.getByText("go-browse"));
       forkButton = await screen.findByRole("button", {
-        name: "Fork Useful skill into a new bb skill",
+        name: "Создать новый навык bb на основе Useful skill",
       });
       expect(registryListRequests()).toHaveLength(1);
 
@@ -921,8 +921,8 @@ describe("SkillsLibrary registry detail lifecycle", () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByLabelText("9.0K installs")).toBeTruthy();
-    expect(screen.queryByLabelText("42 installs")).toBeNull();
+    expect(await screen.findByLabelText("Установок: 9.0K")).toBeTruthy();
+    expect(screen.queryByLabelText("Установок: 42")).toBeNull();
   });
 
   it("shows no install count rather than the window count when the entry lookup fails", async () => {
@@ -942,10 +942,10 @@ describe("SkillsLibrary registry detail lifecycle", () => {
 
     expect(
       await screen.findByRole("button", {
-        name: "View details for Useful skill",
+        name: "Посмотреть сведения о Useful skill",
       }),
     ).toBeTruthy();
-    expect(screen.queryByLabelText("42 installs")).toBeNull();
+    expect(screen.queryByLabelText("Установок: 42")).toBeNull();
     expect(screen.queryByLabelText(/installs$/)).toBeNull();
   });
 
@@ -987,8 +987,8 @@ describe("SkillsLibrary registry detail lifecycle", () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByLabelText("9.0K installs")).toBeTruthy();
-    expect(await screen.findByLabelText("654 stars")).toBeTruthy();
+    expect(await screen.findByLabelText("Установок: 9.0K")).toBeTruthy();
+    expect(await screen.findByLabelText("Звёзд: 654")).toBeTruthy();
   });
 
   it("reveals registry cards only after repository stars finish loading", async () => {
@@ -1059,17 +1059,17 @@ describe("SkillsLibrary registry detail lifecycle", () => {
     expect(screen.queryByText("First skill")).toBeNull();
     expect(screen.queryByText("Second skill")).toBeNull();
     expect(
-      screen.getByRole("status", { name: "Loading First skill" }),
+      screen.getByRole("status", { name: "Загрузка First skill" }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("status", { name: "Loading Second skill" }),
+      screen.getByRole("status", { name: "Загрузка Second skill" }),
     ).toBeTruthy();
 
     resolveStars?.(Response.json({ stars: 27_053 }));
 
     expect(await screen.findByText("First skill")).toBeTruthy();
     expect(screen.getByText("Second skill")).toBeTruthy();
-    expect(await screen.findAllByLabelText("27.1K stars")).toHaveLength(2);
+    expect(await screen.findAllByLabelText("Звёзд: 27.1K")).toHaveLength(2);
   });
 
   it("resolves every card's entry through one batch request", async () => {
@@ -1137,7 +1137,7 @@ describe("SkillsLibrary registry detail lifecycle", () => {
     ).toHaveLength(0);
     expect(screen.queryByText("First skill")).toBeNull();
     expect(
-      screen.getByRole("status", { name: "Loading Second skill" }),
+      screen.getByRole("status", { name: "Загрузка Second skill" }),
     ).toBeTruthy();
 
     resolveEntries?.(
@@ -1181,25 +1181,25 @@ describe("RegistrySkillsBrowsePage", () => {
       onSelect,
     });
     fireEvent.click(
-      screen.getByRole("button", { name: "View details for Alpha" }),
+      screen.getByRole("button", { name: "Посмотреть сведения о Alpha" }),
     );
     expect(onSelect).toHaveBeenCalledWith(alpha);
-    expect(screen.getByRole("textbox", { name: "Search skills" })).toBeTruthy();
-    expect(screen.getByLabelText("10 installs")).toBeTruthy();
-    expect(screen.getAllByText("by owner/repo").length).toBeGreaterThan(0);
+    expect(screen.getByRole("textbox", { name: "Поиск навыков" })).toBeTruthy();
+    expect(screen.getByLabelText("Установок: 10")).toBeTruthy();
+    expect(screen.getAllByText("от owner/repo").length).toBeGreaterThan(0);
     expect(
       screen.getByRole("button", {
-        name: "Fork Alpha into a new bb skill",
+        name: "Создать новый навык bb на основе Alpha",
       }).textContent,
     ).toBe("");
     const zuluCreate = screen.getByRole("button", {
-      name: "Fork Zulu into a new bb skill",
+      name: "Создать новый навык bb на основе Zulu",
     });
     fireEvent.click(zuluCreate);
     expect(onFork).toHaveBeenCalledWith(zulu);
     expect(screen.queryByRole("button", { name: /Save .* to bb/ })).toBeNull();
 
-    expect(screen.queryByRole("button", { name: "Sort" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Сортировка" })).toBeNull();
     const alphaTitle = screen.getByText("Alpha");
     const zuluTitle = screen.getByText("Zulu");
     expect(
@@ -1231,8 +1231,8 @@ describe("RegistrySkillsBrowsePage", () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByLabelText("42 installs")).toBeTruthy();
-    expect(screen.queryByLabelText("9.0K installs")).toBeNull();
+    expect(await screen.findByLabelText("Установок: 42")).toBeTruthy();
+    expect(screen.queryByLabelText("Установок: 9.0K")).toBeNull();
   });
 });
 
@@ -1306,7 +1306,7 @@ describe("SkillsLibrary registry browse paging", () => {
     fireSentinel();
 
     const alert = await screen.findByRole("alert");
-    expect(alert.textContent).toContain("Couldn't load more from skills.sh.");
+    expect(alert.textContent).toContain("Не удалось загрузить другие навыки с skills.sh.");
     expect(screen.getByText("Alpha")).toBeTruthy();
 
     const pageTwoCalls = () =>
@@ -1314,7 +1314,7 @@ describe("SkillsLibrary registry browse paging", () => {
         requestPath(input).includes("page=1"),
       ).length;
     expect(pageTwoCalls()).toBe(1);
-    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
     await waitFor(() => expect(pageTwoCalls()).toBe(2));
     expect(screen.getByText("Alpha")).toBeTruthy();
   });
@@ -1389,9 +1389,9 @@ describe("RegistrySkillDetailView reference creation", () => {
     const view = renderDom(<RegistrySkillDetailView {...props} />);
 
     const forkButton = screen.getByRole("button", {
-      name: "Fork Useful skill into a new bb skill",
+      name: "Создать новый навык bb на основе Useful skill",
     });
-    expect(forkButton.textContent).toContain("Fork");
+    expect(forkButton.textContent).toContain("Создать копию");
     fireEvent.click(forkButton);
     expect(onFork).toHaveBeenCalledWith(registrySkill);
     expect(screen.queryByRole("button", { name: /Save .* to bb/ })).toBeNull();
@@ -1410,7 +1410,7 @@ describe("RegistrySkillDetailView reference creation", () => {
     );
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Fork Useful skill into a new bb skill",
+        name: "Создать новый навык bb на основе Useful skill",
       }),
     );
     expect(onFork).toHaveBeenCalledTimes(2);
@@ -1427,12 +1427,12 @@ describe("SkillDetailDialogView", () => {
     });
     renderSkillDetailDialog(skill);
 
-    const official = screen.getByLabelText("bb-cli is BB Official");
-    expect(official.textContent).toBe("BB Official");
+    const official = screen.getByLabelText("Навык bb-cli — официальный навык BB");
+    expect(official.textContent).toBe("Официальный BB");
     expect(screen.queryByRole("button", { name: "bb-cli actions" })).toBeNull();
     fireEvent.pointerMove(official);
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Ships with bb",
+      "Входит в bb",
     );
   });
 
@@ -1445,8 +1445,8 @@ describe("SkillDetailDialogView", () => {
         pluginId: "documents",
         manageable: false,
       }),
-      accessibleLabel: "documents is included with Documents (Codex plugin)",
-      tooltipName: "Documents plugin.",
+      accessibleLabel: "Навык documents входит в Documents (плагин Codex)",
+      tooltipName: "Плагин Documents.",
       providerIcon: "codex",
     },
     {
@@ -1458,21 +1458,21 @@ describe("SkillDetailDialogView", () => {
         manageable: false,
       }),
       accessibleLabel:
-        "plugin-notes is included with Skill catalog fixture (bb plugin)",
-      tooltipName: "Skill catalog fixture plugin.",
+        "Навык plugin-notes входит в Skill catalog fixture (плагин bb)",
+      tooltipName: "Плагин Skill catalog fixture.",
       providerIcon: "bb",
     },
   ])("presents $skill.name as plugin-provided", async (example) => {
     renderSkillDetailDialog(example.skill);
 
     const included = screen.getByLabelText(example.accessibleLabel);
-    expect(included.textContent).toBe("Included");
+    expect(included.textContent).toBe("Входит в комплект");
     expect(
       screen.queryByRole("button", { name: `${example.skill.name} actions` }),
     ).toBeNull();
     fireEvent.pointerMove(included);
     const tooltip = await screen.findByRole("tooltip");
-    expect(tooltip.textContent).toContain("Included with");
+    expect(tooltip.textContent).toContain("Входит в");
     expect(tooltip.textContent).toContain(example.tooltipName);
     const providerIcon = tooltip.querySelector(
       `[data-provider-icon="${example.providerIcon}"]`,
@@ -1495,12 +1495,12 @@ describe("SkillDetailDialogView", () => {
     renderSkillDetailDialog(skill, { canEdit: true, canDelete: true });
 
     const imported = screen.getByLabelText(
-      "code-review is imported from Claude Code",
+      "Навык code-review импортирован из Claude Code",
     );
-    expect(imported.textContent).toBe("Imported");
+    expect(imported.textContent).toBe("Импортирован");
     fireEvent.pointerMove(imported);
     const tooltip = await screen.findByRole("tooltip");
-    expect(tooltip.textContent).toContain("Discovered from");
+    expect(tooltip.textContent).toContain("Обнаружен у");
     expect(tooltip.textContent).toContain("Claude Code");
     expect(
       tooltip.querySelector('[data-provider-icon="claude-code"]'),
@@ -1523,17 +1523,17 @@ describe("SkillDetailDialogView", () => {
     });
 
     screen.getByRole("button", {
-      name: "Copy skill path: /home/u/.bb/skills/bb-skill",
+      name: "Скопировать путь к навыку: /home/u/.bb/skills/bb-skill",
     });
     expect(screen.getByText("~/.bb/skills/bb-skill")).toBeTruthy();
-    expect(screen.queryByText("BB Official", { exact: true })).toBeNull();
-    expect(screen.queryByText("Included", { exact: true })).toBeNull();
-    expect(screen.queryByText("Imported", { exact: true })).toBeNull();
+    expect(screen.queryByText("Официальный BB", { exact: true })).toBeNull();
+    expect(screen.queryByText("Входит в комплект", { exact: true })).toBeNull();
+    expect(screen.queryByText("Импортирован", { exact: true })).toBeNull();
     expect(screen.queryByText("Editable", { exact: true })).toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "bb-skill actions" }),
+      screen.getByRole("button", { name: "Действия с навыком bb-skill" }),
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: "Edit" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Редактировать" }));
     expect(onEdit).toHaveBeenCalledOnce();
     expect(screen.queryByRole("textbox", { name: "Edit SKILL.md" })).toBeNull();
   });
@@ -1555,7 +1555,7 @@ describe("SkillDetailView registry states", () => {
     );
 
     const sourceLink = screen.getByRole("link", {
-      name: "Open skills.sh/vercel-labs/skills/find-skills in a new tab",
+      name: "Открыть skills.sh/vercel-labs/skills/find-skills в новой вкладке",
     });
     expect(sourceLink.getAttribute("href")).toBe(
       "https://www.skills.sh/vercel-labs/skills/find-skills",

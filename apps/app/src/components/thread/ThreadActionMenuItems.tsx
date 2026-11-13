@@ -251,7 +251,7 @@ function ThreadActionDrawerStep({
         }}
       >
         <Icon name="ChevronLeft" aria-hidden="true" />
-        Back
+        Назад
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuLabel>

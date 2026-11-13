@@ -393,7 +393,7 @@ function openThreadSearch(): KeyboardEvent {
 }
 
 const searchField = () => screen.getByRole("combobox");
-const commandList = () => screen.getByRole("listbox", { name: "Commands" });
+const commandList = () => screen.getByRole("listbox", { name: "Команды" });
 const bucketGroup = (name: string) =>
   within(commandList()).getByRole("group", { name });
 const optionTitles = () =>
@@ -450,7 +450,7 @@ describe("CommandPalette", () => {
       openThreadSearch();
       await screen.findByRole("option", { name: /Title first/ });
       fireEvent.keyDown(searchField(), { key: "ArrowDown" });
-      const button = screen.getByRole("button", { name: "Open in split" });
+      const button = screen.getByRole("button", { name: "Открыть в отдельной области" });
       expect(button.querySelectorAll("kbd")).toHaveLength(1);
       expectClasses(button.querySelector("kbd"), "bg-state-hover/50");
       expect(
@@ -459,11 +459,11 @@ describe("CommandPalette", () => {
       ).toContain("Title second");
       expect(button.closest('[role="option"]')).toBeNull();
       expect(
-        screen.getAllByRole("button", { name: "Open in split" }),
+        screen.getAllByRole("button", { name: "Открыть в отдельной области" }),
       ).toHaveLength(1);
       expect(
         document.querySelectorAll(
-          'button[aria-label="Open in split"][aria-hidden="true"]',
+          'button[aria-label="Открыть в отдельной области"][aria-hidden="true"]',
         ),
       ).toHaveLength(1);
       expect(document.querySelector("[data-palette-footer]")).toBeNull();
@@ -517,15 +517,15 @@ describe("CommandPalette", () => {
       openThreadSearch();
       await screen.findByRole("option");
       expect(
-        screen.queryByRole("button", { name: "Open in split" }),
+        screen.queryByRole("button", { name: "Открыть в отдельной области" }),
       ).toBeNull();
       if (reason === "compact") {
         expect(document.querySelector("kbd")).toBeNull();
         const close = screen.getByRole("button", {
-          name: "Return to commands",
+          name: "Вернуться к командам",
         });
         act(() => close.focus());
-        expectText(await screen.findByRole("tooltip"), "Return to commands");
+        expectText(await screen.findByRole("tooltip"), "Вернуться к командам");
         expect(screen.getByRole("tooltip").textContent).not.toContain("Esc");
       }
     },
@@ -540,17 +540,17 @@ describe("CommandPalette", () => {
     openThreadSearch();
     await screen.findByRole("option", { name: /Title origin/ });
     const reservedColumns = () =>
-      document.querySelectorAll('button[aria-label="Open in split"]');
+      document.querySelectorAll('button[aria-label="Открыть в отдельной области"]');
     expect(reservedColumns()).toHaveLength(2);
-    expect(screen.queryByRole("button", { name: "Open in split" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Открыть в отдельной области" })).toBeNull();
     fireEvent.keyDown(searchField(), { key: "ArrowDown" });
     expect(reservedColumns()).toHaveLength(2);
     expect(
-      screen.getAllByRole("button", { name: "Open in split" }),
+      screen.getAllByRole("button", { name: "Открыть в отдельной области" }),
     ).toHaveLength(1);
   });
 
-  it("expands Show more on modifier Enter without opening a split, and hides the action for no matches", async () => {
+  it("expands Показать ещё on modifier Enter without opening a split, and hides the action for no matches", async () => {
     modeState.searchResponse = {
       active: {
         total: 8,
@@ -563,11 +563,11 @@ describe("CommandPalette", () => {
     };
     renderPalette({ layout: splitLayout });
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
     fireEvent.change(searchField(), { target: { value: "match" } });
     fireEvent.keyDown(searchField(), { key: "End" });
-    expect(selectedOption()?.textContent).toContain("Show more");
-    expect(screen.queryByRole("button", { name: "Open in split" })).toBeNull();
+    expect(selectedOption()?.textContent).toContain("Показать ещё");
+    expect(screen.queryByRole("button", { name: "Открыть в отдельной области" })).toBeNull();
     fireEvent.keyDown(searchField(), { key: "Enter", metaKey: true });
     expect(screen.getAllByRole("option")).toHaveLength(8);
     expect(openThreadInSplitMock).not.toHaveBeenCalled();
@@ -576,8 +576,8 @@ describe("CommandPalette", () => {
       archived: { total: 0, results: [] },
     };
     fireEvent.change(searchField(), { target: { value: "missing" } });
-    await screen.findByText("No matching threads");
-    expect(screen.queryByRole("button", { name: "Open in split" })).toBeNull();
+    await screen.findByText("Подходящих чатов не найдено");
+    expect(screen.queryByRole("button", { name: "Открыть в отдельной области" })).toBeNull();
   });
 
   it("preserves archived message anchors for split opening", async () => {
@@ -602,7 +602,7 @@ describe("CommandPalette", () => {
     };
     renderPalette({ layout: splitLayout, lifecycles: ["archived"] });
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
     fireEvent.change(searchField(), { target: { value: "matching" } });
     fireEvent.keyDown(searchField(), { key: "Enter", metaKey: true });
     await waitFor(() => expect(openThreadInSplitMock).toHaveBeenCalledTimes(1));
@@ -654,13 +654,13 @@ describe("CommandPalette", () => {
     openThreadSearch();
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search threads" }),
+        screen.getByRole("combobox", { name: "Поиск чатов" }),
       ).toBeTruthy(),
     );
     openPalette();
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search commands" }),
+        screen.getByRole("combobox", { name: "Поиск команд" }),
       ).toBeTruthy(),
     );
     expect(fireEvent.keyDown(searchField(), { key: "a", ctrlKey: true })).toBe(
@@ -708,7 +708,7 @@ describe("CommandPalette", () => {
         compact ? 0 : 3,
       );
       expect(
-        optionTitles().some((title) => title?.includes("New thread")),
+        optionTitles().some((title) => title?.includes("Новый чат")),
       ).toBe(true);
       fireEvent.change(searchField(), { target: { value: "linear" } });
       const row = screen.getByRole("option");
@@ -723,12 +723,12 @@ describe("CommandPalette", () => {
     await waitFor(() => expect(searchField()).toBeTruthy());
     expect(event.defaultPrevented).toBe(true);
     const titles = optionTitles();
-    expect(titles?.[0]).toContain("New thread");
+    expect(titles?.[0]).toContain("Новый чат");
     expect(titles).toEqual(
       expect.arrayContaining([
-        expect.stringContaining("Search threads"),
-        expect.stringContaining("General settings"),
-        expect.stringContaining("Open terminal"),
+        expect.stringContaining("Поиск чатов"),
+        expect.stringContaining("Настройки: Основные"),
+        expect.stringContaining("Открыть терминал"),
       ]),
     );
     expect(titles.length).toBeGreaterThan(5);
@@ -803,33 +803,33 @@ describe("CommandPalette", () => {
     expect(rootDescriptionId).not.toBeNull();
     expectText(
       document.getElementById(rootDescriptionId ?? ""),
-      "Use Escape to close the command palette.",
+      "Нажмите Escape, чтобы закрыть палитру команд.",
     );
 
     const threadRows = within(bucketGroup("Threads")).getAllByRole("option");
     expect(threadRows.map((row) => row.textContent)).toEqual([
-      expect.stringContaining("New thread"),
-      expect.stringContaining("Search threads"),
-      expect.stringContaining("Next thread"),
+      expect.stringContaining("Новый чат"),
+      expect.stringContaining("Поиск чатов"),
+      expect.stringContaining("Следующий чат"),
     ]);
     for (const row of threadRows) {
-      expect(within(row).queryByText("Threads")).toBeNull();
+      expect(within(row).queryByText("Чаты")).toBeNull();
     }
     const searchThreadsRow = threadRows[1] as HTMLElement;
     expectClasses(searchThreadsRow.querySelector("kbd"), "bg-state-hover/50");
     expectNoClasses(searchThreadsRow.querySelector("kbd"), "opacity-60");
     expectAttribute(searchThreadsRow, "data-palette-action-kind", "drill-in");
-    expectText(searchThreadsRow, "Search threads…");
+    expectText(searchThreadsRow, "Поиск чатов…");
     expect(
       searchThreadsRow.querySelector('[data-icon="ChevronRight"]'),
     ).toBeNull();
-    expect(searchThreadsRow.textContent).toContain("Opens a search view");
+    expect(searchThreadsRow.textContent).toContain("Открывает окно поиска");
 
     const actionRows = within(bucketGroup("Actions")).getAllByRole("option");
     expect(actionRows[0]?.textContent).not.toContain("Window and layout");
-    expect(actionRows[1]?.textContent).not.toContain("Workspace");
+    expect(actionRows[1]?.textContent).not.toContain("Рабочая область");
     expect(actionRows[2]?.textContent).not.toContain("Composer and models");
-    expect(actionRows[3]?.textContent).toContain("Browser");
+    expect(actionRows[3]?.textContent).toContain("Браузер");
     for (const row of [...threadRows, ...actionRows]) {
       expectClasses(row, "px-2", "py-1.5", "min-h-8");
     }
@@ -850,36 +850,36 @@ describe("CommandPalette", () => {
     const event = openThreadSearch();
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search threads" }),
+        screen.getByRole("combobox", { name: "Поиск чатов" }),
       ).toBeTruthy(),
     );
     expect(event.defaultPrevented).toBe(true);
-    const modeSelect = screen.getByRole("button", { name: "Threads search" });
+    const modeSelect = screen.getByRole("button", { name: "Поиск: Чаты" });
     expectAttribute(modeSelect, "aria-pressed", "true");
     expect(modeSelect.querySelector('[data-icon="Search"]')).not.toBeNull();
     expectClasses(modeSelect.parentElement, "bg-state-active");
     expectNoClasses(modeSelect.parentElement, "bg-background/70");
     expectAttribute(
-      screen.getByRole("button", { name: "Return to commands" }),
+      screen.getByRole("button", { name: "Вернуться к командам" }),
       "data-tab-pill-close",
     );
     expect(screen.queryByRole("button", { name: "Thread scope" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Open in split" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Открыть в отдельной области" })).toBeNull();
     expect(document.querySelector("[data-palette-footer]")).toBeNull();
     const threadInput = screen.getByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     const threadDescriptionId = threadInput.getAttribute("aria-describedby");
     expect(threadDescriptionId).not.toBeNull();
     expectText(
       document.getElementById(threadDescriptionId ?? ""),
-      "Use Escape to return to commands.",
+      "Нажмите Escape, чтобы вернуться к командам.",
     );
 
     fireEvent.keyDown(screen.getByRole("combobox"), { key: "Escape" });
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search commands" }),
+        screen.getByRole("combobox", { name: "Поиск команд" }),
       ).toBeTruthy(),
     );
     expect(screen.queryByRole("button", { name: "Thread scope" })).toBeNull();
@@ -894,12 +894,12 @@ describe("CommandPalette", () => {
     openThreadSearch();
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search threads" }),
+        screen.getByRole("combobox", { name: "Поиск чатов" }),
       ).toBeTruthy(),
     );
 
     const clearMode = screen.getByRole("button", {
-      name: "Return to commands",
+      name: "Вернуться к командам",
     });
     expect(clearMode.querySelector('[data-icon="X"]')).not.toBeNull();
     expectClasses(
@@ -911,15 +911,15 @@ describe("CommandPalette", () => {
     fireEvent.click(clearMode);
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search commands" }),
+        screen.getByRole("combobox", { name: "Поиск команд" }),
       ).toBeTruthy(),
     );
     expect(testState.calls).toEqual([]);
     const commandsAfterExit = optionTitles();
     expect(commandsAfterExit).toEqual(
       expect.arrayContaining([
-        expect.stringContaining("New thread"),
-        expect.stringContaining("General settings"),
+        expect.stringContaining("Новый чат"),
+        expect.stringContaining("Настройки: Основные"),
       ]),
     );
     expect(
@@ -930,15 +930,15 @@ describe("CommandPalette", () => {
 
     const searchCommand = within(bucketGroup("Threads"))
       .getAllByRole("option")
-      .find((row) => row.textContent?.includes("Search threads"));
+      .find((row) => row.textContent?.includes("Поиск чатов"));
     fireEvent.click(searchCommand as HTMLElement);
     const clearAfterCommand = await screen.findByRole("button", {
-      name: "Return to commands",
+      name: "Вернуться к командам",
     });
     fireEvent.click(clearAfterCommand);
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search commands" }),
+        screen.getByRole("combobox", { name: "Поиск команд" }),
       ).toBeTruthy(),
     );
     expect(testState.calls).toEqual([]);
@@ -954,10 +954,10 @@ describe("CommandPalette", () => {
     async (query) => {
       renderPalette();
       openThreadSearch();
-      await screen.findByRole("combobox", { name: "Search threads" });
+      await screen.findByRole("combobox", { name: "Поиск чатов" });
       fireEvent.change(searchField(), { target: { value: query } });
       const message = await screen.findByText(
-        query === "" ? "No threads" : "No matching threads",
+        query === "" ? "Нет чатов" : "Подходящих чатов не найдено",
       );
       expectClasses(message.parentElement, "justify-center", "px-3", "py-4");
       expectClasses(message, "text-xs", "text-subtle-foreground/60");
@@ -965,11 +965,11 @@ describe("CommandPalette", () => {
         message.parentElement?.querySelector('[data-icon="MessageSquare"]'),
       ).not.toBeNull();
       const palette = screen.getByTestId("command-palette");
-      expect(within(palette).queryByText("New thread")).toBeNull();
+      expect(within(palette).queryByText("Новый чат")).toBeNull();
       expect(screen.queryByRole("option")).toBeNull();
-      const results = screen.getByRole("listbox", { name: "Threads" });
+      const results = screen.getByRole("listbox", { name: "Чаты" });
       expect(within(results).queryAllByRole("group")).toHaveLength(0);
-      for (const heading of ["Recent", "Threads", "Archived"]) {
+      for (const heading of ["Недавние", "Чаты", "Архивные"]) {
         expect(
           within(results).queryByText(heading, { exact: true }),
         ).toBeNull();
@@ -980,7 +980,7 @@ describe("CommandPalette", () => {
       fireEvent.keyDown(searchField(), { key: "Enter", metaKey: true });
       fireEvent.keyDown(searchField(), { key: "Enter", ctrlKey: true });
       expect(
-        screen.getByRole("combobox", { name: "Search threads" }),
+        screen.getByRole("combobox", { name: "Поиск чатов" }),
       ).toBeTruthy();
       expect(testState.calls).toEqual([]);
       expect(routeNavigateMock).not.toHaveBeenCalled();
@@ -988,8 +988,8 @@ describe("CommandPalette", () => {
   );
 
   it.each([
-    ["loading", "Loading threads"],
-    ["error", "Couldn’t load threads"],
+    ["loading", "Загрузка чатов"],
+    ["error", "Не удалось загрузить чаты"],
   ])(
     "does not mistake %s for a genuinely empty account",
     async (state, message) => {
@@ -1013,27 +1013,27 @@ describe("CommandPalette", () => {
     renderPalette();
     openThreadSearch();
     const close = await screen.findByRole("button", {
-      name: "Return to commands",
+      name: "Вернуться к командам",
     });
     act(() => close.focus());
-    expectText(await screen.findByRole("tooltip"), "Return to commands (Esc)");
+    expectText(await screen.findByRole("tooltip"), "Вернуться к командам (Esc)");
     expect(document.querySelector("[data-palette-footer]")).toBeNull();
     fireEvent.keyDown(close, { key: "Escape" });
-    await screen.findByRole("combobox", { name: "Search commands" });
+    await screen.findByRole("combobox", { name: "Поиск команд" });
   });
 
   it("returns from an empty thread query with Backspace", async () => {
     renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
 
     fireEvent.keyDown(input, { key: "Backspace" });
 
     await waitFor(() =>
       expect(
-        screen.getByRole("combobox", { name: "Search commands" }),
+        screen.getByRole("combobox", { name: "Поиск команд" }),
       ).toBeTruthy(),
     );
     expect(testState.calls).toEqual([]);
@@ -1060,8 +1060,8 @@ describe("CommandPalette", () => {
     };
     renderPalette();
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
-    const results = screen.getByRole("listbox", { name: "Threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
+    const results = screen.getByRole("listbox", { name: "Чаты" });
     const rows = within(results).getAllByRole("option");
     expect(rows.map((row) => row.textContent)).toEqual([
       expect.stringContaining("Title newer"),
@@ -1077,7 +1077,7 @@ describe("CommandPalette", () => {
     expect(rows[0].querySelector('[data-icon="Edit"]')).not.toBeNull();
     expect(results.querySelectorAll('[data-icon="Folder"]')).toHaveLength(3);
     expectClasses(results, "p-1");
-    expectClasses(within(results).getByText("Active"), "px-2", "py-1");
+    expectClasses(within(results).getByText("Активные"), "px-2", "py-1");
     for (const row of rows) {
       const metadata = row.querySelector("[data-palette-thread-metadata]");
       expectText(metadata, "Palette project");
@@ -1095,7 +1095,7 @@ describe("CommandPalette", () => {
     const { store } = renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.keyDown(input, { key: "ArrowDown" });
     expectText(selectedOption(), "Title selected");
@@ -1104,7 +1104,7 @@ describe("CommandPalette", () => {
       screen
         .getAllByRole("group")
         .map((group) => group.textContent?.split("Title")[0]),
-    ).toEqual(["Active", "Archived"]);
+    ).toEqual(["Активные", "Архивные"]);
     expectText(selectedOption(), "Title selected");
     act(() => store.set(paletteThreadLifecyclesAtom, ["archived"]));
     expectText(selectedOption(), "Title archived");
@@ -1116,7 +1116,7 @@ describe("CommandPalette", () => {
   it("loads archived recents only while Archived is selected and the query is empty", async () => {
     const { store } = renderPalette();
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
     expect(modeState.archivedRecentsEnabled).toBe(false);
 
     act(() => store.set(paletteThreadLifecyclesAtom, ["active", "archived"]));
@@ -1133,15 +1133,15 @@ describe("CommandPalette", () => {
     modeState.activeRecents = [makeThread("active")];
     const { store } = renderPalette();
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
     const trigger = screen.getByRole("button", {
-      name: "Filter and sort: Active, Relevance",
+      name: "Фильтр и сортировка: Активные, По релевантности",
     });
     expectClasses(trigger, "text-subtle-foreground");
     act(() => trigger.focus());
     fireEvent.keyDown(trigger, { key: "ArrowDown" });
     const archived = await screen.findByRole("menuitemcheckbox", {
-      name: "Archived",
+      name: "Архивные",
     });
     act(() => archived.focus());
     fireEvent.keyDown(archived, { key: "Enter" });
@@ -1150,13 +1150,13 @@ describe("CommandPalette", () => {
       "archived",
     ]);
     expect(trigger.getAttribute("aria-label")).toBe(
-      "Filter and sort: All, Relevance",
+      "Фильтр и сортировка: Все, По релевантности",
     );
     expect(routeNavigateMock).not.toHaveBeenCalled();
     fireEvent.keyDown(archived, { key: "Escape" });
     await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
     expect(
-      screen.getByRole("combobox", { name: "Search threads" }),
+      screen.getByRole("combobox", { name: "Поиск чатов" }),
     ).toBeTruthy();
   });
 
@@ -1186,37 +1186,37 @@ describe("CommandPalette", () => {
       const { store } = renderPalette({ lifecycles: ["active", "archived"] });
       openThreadSearch();
       const input = await screen.findByRole("combobox", {
-        name: "Search threads",
+        name: "Поиск чатов",
       });
       fireEvent.change(input, { target: { value: query } });
       expect(screen.queryByRole("group", { name: "Drafts" })).toBeNull();
       expect(
-        within(screen.getByRole("group", { name: "Active" })).getAllByRole(
+        within(screen.getByRole("group", { name: "Активные" })).getAllByRole(
           "option",
         ),
       ).toHaveLength(7);
       expect(
-        within(screen.getByRole("group", { name: "Archived" })).getAllByRole(
+        within(screen.getByRole("group", { name: "Архивные" })).getAllByRole(
           "option",
         ),
       ).toHaveLength(4);
       fireEvent.click(
-        screen.getByRole("option", { name: "Show more threads" }),
+        screen.getByRole("option", { name: "Показать больше чатов" }),
       );
       expect(
-        within(screen.getByRole("group", { name: "Active" })).getAllByRole(
+        within(screen.getByRole("group", { name: "Активные" })).getAllByRole(
           "option",
         ),
       ).toHaveLength(7);
       expect(
-        within(screen.getByRole("group", { name: "Archived" })).getAllByRole(
+        within(screen.getByRole("group", { name: "Архивные" })).getAllByRole(
           "option",
         ),
       ).toHaveLength(4);
       expectText(selectedOption(), "Title active-6");
       act(() => store.set(paletteThreadLifecyclesAtom, ["active"]));
       expect(
-        screen.getByRole("option", { name: "Show more threads" }),
+        screen.getByRole("option", { name: "Показать больше чатов" }),
       ).toBeTruthy();
       expect(document.querySelector("[data-palette-footer]")).toBeNull();
     },
@@ -1250,10 +1250,10 @@ describe("CommandPalette", () => {
     renderPalette({ lifecycles: ["active", "archived"] });
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "match" } });
-    const results = screen.getByRole("listbox", { name: "Threads" });
+    const results = screen.getByRole("listbox", { name: "Чаты" });
     const rows = within(results).getAllByRole("option");
     expect(rows).toHaveLength(2);
     const match = rows[0].querySelector("mark");
@@ -1264,11 +1264,11 @@ describe("CommandPalette", () => {
       within(rows[1]).getByRole("img", { name: "Unread thread succeeded" }),
     ).toBeTruthy();
     expect(results.querySelector('[data-icon="Archive"]')).toBeNull();
-    expectClasses(within(results).getByText("Active"), "px-2", "py-1");
-    expectClasses(within(results).getByText("Archived"), "px-2", "py-1");
+    expectClasses(within(results).getByText("Активные"), "px-2", "py-1");
+    expectClasses(within(results).getByText("Архивные"), "px-2", "py-1");
     const groups = within(results).getAllByRole("group");
     expect(groups).toHaveLength(2);
-    for (const [index, name] of ["Active", "Archived"].entries()) {
+    for (const [index, name] of ["Активные", "Архивные"].entries()) {
       const group = within(results).getByRole("group", { name });
       expect(within(group).getAllByRole("option")).toEqual([rows[index]]);
       const label = within(group).getByText(name);
@@ -1278,8 +1278,8 @@ describe("CommandPalette", () => {
     }
     expect(
       rows[1].querySelector("[data-palette-thread-metadata]")?.textContent,
-    ).toBe("Palette project · just now");
-    expect(within(results).queryByText("Recent")).toBeNull();
+    ).toBe("Palette project · только что");
+    expect(within(results).queryByText("Недавние")).toBeNull();
     expect(
       results.querySelectorAll("[data-palette-thread-status]"),
     ).toHaveLength(1);
@@ -1311,13 +1311,13 @@ describe("CommandPalette", () => {
     renderPalette({ lifecycles: ["active", "archived"] });
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     expect(screen.getAllByRole("option")).toHaveLength(7);
-    expect(screen.getByText("Show more")).toBeTruthy();
+    expect(screen.getByText("Показать ещё")).toBeTruthy();
     fireEvent.change(input, { target: { value: "match" } });
-    const activeGroup = screen.getByRole("group", { name: "Active" });
-    const archivedGroup = screen.getByRole("group", { name: "Archived" });
+    const activeGroup = screen.getByRole("group", { name: "Активные" });
+    const archivedGroup = screen.getByRole("group", { name: "Архивные" });
     expect(
       within(activeGroup)
         .getAllByRole("option")
@@ -1326,17 +1326,17 @@ describe("CommandPalette", () => {
       ...Array.from({ length: 6 }, (_, index) =>
         expect.stringContaining(`Title active-${index}`),
       ),
-      "Show more",
+      "Показать ещё",
     ]);
     expect(within(archivedGroup).getAllByRole("option")).toHaveLength(4);
     expectClasses(activeGroup, "not-last:mb-2");
     const more = within(activeGroup).getByRole("option", {
-      name: "Show more threads",
+      name: "Показать больше чатов",
     });
     expectClasses(more, "text-xs", "text-subtle-foreground");
     expectNoClasses(more, "font-medium");
     expectClasses(
-      within(activeGroup).getByText("Active", { selector: "div" }),
+      within(activeGroup).getByText("Активные", { selector: "div" }),
       "text-xs",
       "font-normal",
       "text-subtle-foreground",
@@ -1363,7 +1363,7 @@ describe("CommandPalette", () => {
     expect(within(activeGroup).getAllByRole("option")).toHaveLength(7);
     fireEvent.click(
       within(archivedGroup).getByRole("option", {
-        name: "Show more archived threads",
+        name: "Показать больше архивных чатов",
       }),
     );
     expect(within(activeGroup).getAllByRole("option")).toHaveLength(7);
@@ -1372,9 +1372,9 @@ describe("CommandPalette", () => {
       within(archivedGroup).getAllByRole("option")[3].id,
     );
     fireEvent.change(input, { target: { value: "" } });
-    expect(screen.getByRole("group", { name: "Active" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Активные" })).toBeTruthy();
     expect(screen.getAllByRole("option")).toHaveLength(7);
-    expect(screen.getByText("Show more")).toBeTruthy();
+    expect(screen.getByText("Показать ещё")).toBeTruthy();
   });
 
   it("matches loaded titles on the first character and keeps the highlight when server rows merge in", async () => {
@@ -1389,7 +1389,7 @@ describe("CommandPalette", () => {
     const { rerenderPalette } = renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "f" } });
     expect(optionTitles()).toHaveLength(6);
@@ -1437,7 +1437,7 @@ describe("CommandPalette", () => {
       expect.stringContaining("Fix 3"),
       expect.stringContaining("Fix 4"),
       expect.stringContaining("Fix 5"),
-      "Show more",
+      "Показать ещё",
     ]);
     expectText(selectedOption(), "Fix 1");
     fireEvent.keyDown(input, { key: "ArrowDown" });
@@ -1462,7 +1462,7 @@ describe("CommandPalette", () => {
     const { rerenderPalette } = renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "fx" } });
     for (let index = 0; index < 5; index++)
@@ -1492,7 +1492,7 @@ describe("CommandPalette", () => {
     fireEvent.keyDown(input, { key: "ArrowUp" });
     expectText(selectedOption(), "Fix 4");
     expect(optionTitles()).toContainEqual(expect.stringContaining("Fix 5"));
-    expect(optionTitles()).not.toContain("Show more");
+    expect(optionTitles()).not.toContain("Показать ещё");
     fireEvent.keyDown(input, { key: "ArrowDown" });
     expectText(selectedOption(), "Fix 5");
     fireEvent.keyDown(input, { key: "Enter" });
@@ -1595,7 +1595,7 @@ describe("CommandPalette", () => {
     renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
 
     fireEvent.change(input, { target: { value: "moss" } });
@@ -1635,13 +1635,13 @@ describe("CommandPalette", () => {
     renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "fix" } });
     expect(optionTitles()).toEqual([expect.stringContaining("Fix it")]);
-    expect(screen.queryByText("Couldn’t load threads")).toBeNull();
+    expect(screen.queryByText("Не удалось загрузить чаты")).toBeNull();
     fireEvent.change(input, { target: { value: "zz" } });
-    await screen.findByText("Couldn’t load threads");
+    await screen.findByText("Не удалось загрузить чаты");
   });
 
   it("highlights the project name for threads listed by project", async () => {
@@ -1649,7 +1649,7 @@ describe("CommandPalette", () => {
     renderPalette();
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "pal" } });
     const metadata = screen
@@ -1659,8 +1659,8 @@ describe("CommandPalette", () => {
   });
 
   it.each([
-    [["active"], "No matching threads"],
-    [["archived"], "Type at least 2 characters"],
+    [["active"], "Подходящих чатов не найдено"],
+    [["archived"], "Введите не менее двух символов"],
   ] as const)(
     "explains a one-character miss with lifecycles %j",
     async (lifecycles, message) => {
@@ -1668,7 +1668,7 @@ describe("CommandPalette", () => {
       renderPalette({ lifecycles: [...lifecycles] });
       openThreadSearch();
       const input = await screen.findByRole("combobox", {
-        name: "Search threads",
+        name: "Поиск чатов",
       });
       fireEvent.change(input, { target: { value: "z" } });
       await screen.findByText(message);
@@ -1695,17 +1695,17 @@ describe("CommandPalette", () => {
       renderPalette({ lifecycles: [lifecycle] });
       openThreadSearch();
       const input = await screen.findByRole("combobox", {
-        name: "Search threads",
+        name: "Поиск чатов",
       });
       fireEvent.change(input, { target: { value: "match" } });
       expect(screen.getAllByRole("group")).toHaveLength(1);
       const rows = screen.getAllByRole("option");
       expect(rows).toHaveLength(7);
       expect(rows[5].textContent).toContain(`Title ${lifecycle}-5`);
-      expect(rows[6].textContent).toBe("Show more");
+      expect(rows[6].textContent).toBe("Показать ещё");
       fireEvent.keyDown(input, { key: "End" });
       fireEvent.keyDown(input, { key: "Enter" });
-      expect(screen.queryByText("Show more")).toBeNull();
+      expect(screen.queryByText("Показать ещё")).toBeNull();
       expect(screen.getAllByRole("option")).toHaveLength(7);
       expect(screen.getAllByRole("option")[6].textContent).toContain(
         `Title ${lifecycle}-6`,
@@ -1736,11 +1736,11 @@ describe("CommandPalette", () => {
     renderPalette({ lifecycles: ["active", "archived"] });
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "match" } });
 
-    const results = screen.getByRole("listbox", { name: "Threads" });
+    const results = screen.getByRole("listbox", { name: "Чаты" });
     const rows = within(results).getAllByRole("option");
     expect(rows).toHaveLength(2);
     expect(rows[0]?.textContent).toContain("Title active");
@@ -1749,7 +1749,7 @@ describe("CommandPalette", () => {
     expect(rows[1]?.getAttribute("aria-selected")).toBe("true");
     expect(input.getAttribute("aria-activedescendant")).toBe(rows[1].id);
     expect(rows[1].closest('[role="group"]')).toBe(
-      within(results).getByRole("group", { name: "Archived" }),
+      within(results).getByRole("group", { name: "Архивные" }),
     );
     fireEvent.keyDown(input, { key: "ArrowDown" });
     expect(rows[0]?.getAttribute("aria-selected")).toBe("true");
@@ -1761,15 +1761,15 @@ describe("CommandPalette", () => {
     expect(
       within(results).getByRole("option").getAttribute("aria-selected"),
     ).toBe("true");
-    expect(within(results).getByText("Active")).toBeTruthy();
+    expect(within(results).getByText("Активные")).toBeTruthy();
     expect(within(results).getAllByRole("group")).toHaveLength(1);
     expect(
-      within(within(results).getByRole("group", { name: "Active" })).getByRole(
+      within(within(results).getByRole("group", { name: "Активные" })).getByRole(
         "option",
       ),
     ).toBe(within(results).getByRole("option"));
-    expect(within(results).queryByText("Threads", { exact: true })).toBeNull();
-    expect(within(results).queryByText("Archived")).toBeNull();
+    expect(within(results).queryByText("Чаты", { exact: true })).toBeNull();
+    expect(within(results).queryByText("Архивные")).toBeNull();
   });
 
   it.each(["", "match"])(
@@ -1805,10 +1805,10 @@ describe("CommandPalette", () => {
       renderPalette();
       openThreadSearch();
       const input = await screen.findByRole("combobox", {
-        name: "Search threads",
+        name: "Поиск чатов",
       });
       fireEvent.change(input, { target: { value: query } });
-      const results = screen.getByRole("listbox", { name: "Threads" });
+      const results = screen.getByRole("listbox", { name: "Чаты" });
       await waitFor(() =>
         expect(within(results).getAllByRole("option")).toHaveLength(5),
       );
@@ -1861,8 +1861,8 @@ describe("CommandPalette", () => {
           row.querySelector("[data-palette-thread-metadata]")?.textContent,
         ).toContain("Palette project");
       }
-      expect(within(results).getByText("Active")).toBeTruthy();
-      expect(within(results).queryByText("Archived")).toBeNull();
+      expect(within(results).getByText("Активные")).toBeTruthy();
+      expect(within(results).queryByText("Архивные")).toBeNull();
     },
   );
 
@@ -1879,7 +1879,7 @@ describe("CommandPalette", () => {
     setPluginThreadRowStatus("waiting", "checks", pluginStatus);
     renderPalette();
     openThreadSearch();
-    await screen.findByRole("combobox", { name: "Search threads" });
+    await screen.findByRole("combobox", { name: "Поиск чатов" });
     const row = screen.getByRole("option", { name: /Title plugin/ });
     expect(within(row).queryByRole("img")).toBeNull();
     act(() => setPluginThreadRowStatus("plugin", "checks", pluginStatus));
@@ -1930,18 +1930,18 @@ describe("CommandPalette", () => {
     renderPalette({ lifecycles: ["archived"] });
     openThreadSearch();
     const input = await screen.findByRole("combobox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(input, { target: { value: "matching" } });
-    const results = screen.getByRole("listbox", { name: "Threads" });
-    expect(within(results).getByText("Archived")).toBeTruthy();
+    const results = screen.getByRole("listbox", { name: "Чаты" });
+    expect(within(results).getByText("Архивные")).toBeTruthy();
     expect(within(results).getAllByRole("group")).toHaveLength(1);
     expect(
       within(
-        within(results).getByRole("group", { name: "Archived" }),
+        within(results).getByRole("group", { name: "Архивные" }),
       ).getByRole("option"),
     ).toBe(screen.getByRole("option"));
-    expect(within(results).queryByText("Threads", { exact: true })).toBeNull();
+    expect(within(results).queryByText("Чаты", { exact: true })).toBeNull();
     expect(results.querySelector('[data-icon="Archive"]')).toBeNull();
     expect(screen.getByRole("option").querySelector("mark")?.textContent).toBe(
       "matching",
@@ -1974,11 +1974,11 @@ describe("CommandPalette", () => {
 
     fireEvent.keyDown(searchField(), { key: "ArrowDown" });
     fireEvent.keyDown(searchField(), { key: "ArrowDown" });
-    fireEvent.change(searchField(), { target: { value: "terminal" } });
+    fireEvent.change(searchField(), { target: { value: "терминал" } });
 
     await waitFor(() => expect(optionTitles()).toHaveLength(1));
-    expect(selectedOption()?.textContent).toContain("Open terminal");
-    expect(selectedOption()?.textContent).not.toContain("Workspace");
+    expect(selectedOption()?.textContent).toContain("Открыть терминал");
+    expect(selectedOption()?.textContent).not.toContain("Рабочая область");
     expect(within(commandList()).queryAllByRole("group")).toHaveLength(0);
   });
 
@@ -1988,9 +1988,9 @@ describe("CommandPalette", () => {
     await waitFor(() => expect(searchField()).toBeTruthy());
 
     for (const [query, title] of [
-      ["window and layout", "Toggle panel"],
-      ["workspace", "Open terminal"],
-      ["composer and models", "Focus composer"],
+      ["окно и расположение", "Показать или скрыть панель"],
+      ["рабочая область", "Открыть терминал"],
+      ["поле ввода и модели", "Выбрать поле ввода"],
     ]) {
       fireEvent.change(searchField(), { target: { value: query } });
       await waitFor(() => expect(optionTitles()).toHaveLength(1));
@@ -1999,10 +1999,10 @@ describe("CommandPalette", () => {
       expect(within(commandList()).queryAllByRole("group")).toHaveLength(0);
     }
 
-    fireEvent.change(searchField(), { target: { value: "reload" } });
+    fireEvent.change(searchField(), { target: { value: "перезагрузить" } });
     await waitFor(() => expect(optionTitles()).toHaveLength(1));
-    expect(selectedOption()?.textContent).toContain("Reload page");
-    expect(selectedOption()?.textContent).toContain("Browser");
+    expect(selectedOption()?.textContent).toContain("Перезагрузить страницу");
+    expect(selectedOption()?.textContent).toContain("Браузер");
   });
 
   it("finds commands when the query starts with a space", async () => {
@@ -2010,10 +2010,10 @@ describe("CommandPalette", () => {
     openPalette();
     await waitFor(() => expect(searchField()).toBeTruthy());
 
-    fireEvent.change(searchField(), { target: { value: "> new thread" } });
+    fireEvent.change(searchField(), { target: { value: "> новый чат" } });
 
     await waitFor(() => expect(optionTitles()).toHaveLength(1));
-    expect(selectedOption()?.textContent).toContain("New thread");
+    expect(selectedOption()?.textContent).toContain("Новый чат");
   });
 
   it("wraps at both ends of the list", async () => {
@@ -2026,7 +2026,7 @@ describe("CommandPalette", () => {
     expect(selectedOption()?.textContent).toBe(lastTitle);
 
     fireEvent.keyDown(searchField(), { key: "ArrowDown" });
-    expect(selectedOption()?.textContent).toContain("New thread");
+    expect(selectedOption()?.textContent).toContain("Новый чат");
   });
 
   it.each(["Enter", "ArrowDown", "ArrowUp", "Home", "End"])(
@@ -2081,9 +2081,9 @@ describe("CommandPalette", () => {
     openPalette();
     await waitFor(() => expect(searchField()).toBeTruthy());
 
-    fireEvent.change(searchField(), { target: { value: "toggle panel" } });
+    fireEvent.change(searchField(), { target: { value: "показать или скрыть панель" } });
     await waitFor(() =>
-      expect(selectedOption()?.textContent).toContain("Toggle panel"),
+      expect(selectedOption()?.textContent).toContain("Показать или скрыть панель"),
     );
     const input = searchField();
     fireEvent.compositionStart(input);
@@ -2117,9 +2117,9 @@ describe("CommandPalette", () => {
     openPalette();
     await waitFor(() => expect(searchField()).toBeTruthy());
     const initialTitles = optionTitles();
-    fireEvent.change(searchField(), { target: { value: "toggle panel" } });
+    fireEvent.change(searchField(), { target: { value: "показать или скрыть панель" } });
     await waitFor(() =>
-      expect(selectedOption()?.textContent).toContain("Toggle panel"),
+      expect(selectedOption()?.textContent).toContain("Показать или скрыть панель"),
     );
     fireEvent.keyDown(searchField(), { key: "Enter" });
     await waitFor(() => expect(screen.queryByRole("combobox")).toBeNull());
@@ -2255,16 +2255,16 @@ describe("CommandPalette", () => {
   });
 
   it.each([false, true])(
-    "opens Installed plugins in Settings (compact: %s)",
+    "opens Настройки: Установленные плагины in Settings (compact: %s)",
     async (compact) => {
       renderPalette({ compact });
       openPalette();
       await waitFor(() => expect(searchField()).toBeTruthy());
       fireEvent.change(searchField(), {
-        target: { value: "installed plugins" },
+        target: { value: "установленные плагины" },
       });
       await waitFor(() =>
-        expect(selectedOption()?.textContent).toContain("Installed plugins"),
+        expect(selectedOption()?.textContent).toContain("Настройки: Установленные плагины"),
       );
       fireEvent.keyDown(searchField(), { key: "Enter" });
       await waitFor(() =>
@@ -2275,13 +2275,13 @@ describe("CommandPalette", () => {
     },
   );
 
-  it("only includes Files settings when local helper access is available", async () => {
+  it("only includes Настройки: Файлы when local helper access is available", async () => {
     renderPalette();
     openPalette();
     await waitFor(() => expect(searchField()).toBeTruthy());
 
     fireEvent.change(searchField(), {
-      target: { value: "files settings" },
+      target: { value: "настройки файлы" },
     });
     await waitFor(() =>
       expect(screen.queryAllByRole("option")).toHaveLength(0),
@@ -2293,11 +2293,11 @@ describe("CommandPalette", () => {
     openPalette();
     await waitFor(() => expect(searchField()).toBeTruthy());
     fireEvent.change(searchField(), {
-      target: { value: "files settings" },
+      target: { value: "настройки файлы" },
     });
 
     await waitFor(() =>
-      expect(selectedOption()?.textContent).toContain("Files settings"),
+      expect(selectedOption()?.textContent).toContain("Настройки: Файлы"),
     );
   });
 
@@ -2315,15 +2315,15 @@ describe("CommandPalette", () => {
 
     const pluginSettingsRow = await within(bucketGroup("Settings")).findByRole(
       "option",
-      { name: "Linear settings" },
+      { name: "Настройки: Linear" },
     );
-    expect(pluginSettingsRow.textContent).not.toContain("Plugin settings");
+    expect(pluginSettingsRow.textContent).not.toContain("Настройки плагина");
 
     fireEvent.change(searchField(), {
-      target: { value: "linear settings" },
+      target: { value: "настройки linear" },
     });
     await waitFor(() =>
-      expect(selectedOption()?.textContent).toContain("Linear settings"),
+      expect(selectedOption()?.textContent).toContain("Настройки: Linear"),
     );
     expect(selectedOption()?.textContent).not.toContain("Plugin settings");
     fireEvent.keyDown(searchField(), { key: "Enter" });
@@ -2432,9 +2432,9 @@ describe("CommandPalette", () => {
     fireEvent.change(searchField(), { target: { value: "zzzzz" } });
 
     await waitFor(() =>
-      expect(screen.getByText("No matching commands")).toBeTruthy(),
+      expect(screen.getByText("Подходящих команд не найдено")).toBeTruthy(),
     );
-    expectClasses(screen.getByText("No matching commands"), "px-3", "py-4");
+    expectClasses(screen.getByText("Подходящих команд не найдено"), "px-3", "py-4");
     fireEvent.keyDown(searchField(), { key: "Enter" });
     expect(testState.calls).toEqual([]);
   });

@@ -90,7 +90,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
       await bb.storage.kv.get(keyFor(threadId, sessionId)),
     );
     if (record.session.threadId !== threadId || record.session.id !== sessionId)
-      throw new Error("Session does not belong to this thread");
+      throw new Error("Сеанс не принадлежит этому чату");
     return active.get(sessionId) ?? record;
   }
   async function releaseDesktop(
@@ -191,7 +191,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
           `Browser Automation cleanup on host ${session.hostId} failed: ${reasons}`,
         );
         throw new Error(
-          `Browser session ${state}, but cleanup on host ${session.hostId} failed: ${reasons}. Run close to retry.`,
+          `Сеанс браузера ${state === "closed" ? "закрыт" : "остановлен"}, но очистка на хосте ${session.hostId} не удалась: ${reasons}. Повторите команду close.`,
         );
       }
       return session;
@@ -235,7 +235,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
     await bb.sdk.threads.get({ threadId: input.threadId });
     if (active.size >= 64)
       throw new Error(
-        "Browser session limit reached; close an existing session",
+        "Достигнут лимит сеансов браузера; закройте существующий сеанс",
       );
     const now = Date.now();
     const session: Session = {
@@ -275,7 +275,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
         );
         if (!instance)
           throw new Error(
-            "Selected desktop is unavailable; choose a connected instance explicitly",
+            "Выбранный настольный браузер недоступен; явно укажите подключённый экземпляр",
           );
         const scope = {
           hostId: selection.hostId,
@@ -312,7 +312,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
         });
         if (connection.hostId !== scope.hostId)
           throw new Error(
-            "Desktop connection returned a different execution host",
+            "Настольное подключение вернуло другой хост выполнения",
           );
         connectionUrl = connection.wsEndpoint;
         session.expiresAt = Math.min(
@@ -404,7 +404,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
       Date.now() >= hardDeadline(record.session) ||
       (!busy.get(input.sessionId) && Date.now() >= record.session.expiresAt)
     )
-      throw new Error("Session stopped or expired; open a new session");
+      throw new Error("Сеанс остановлен или истёк; откройте новый сеанс");
     busy.set(input.sessionId, (busy.get(input.sessionId) ?? 0) + 1);
     try {
       await touch(record);
@@ -542,23 +542,23 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
           ? [idMatch]
           : hosts.filter((candidate) => candidate.name === target);
         if (matches.length === 0)
-          throw new Error(`Machine '${target}' was not found`);
+          throw new Error(`Машина «${target}» не найдена`);
         if (matches.length > 1)
           throw new Error(
-            `Machine name '${target}' is ambiguous; use an exact host ID`,
+            `Имя машины «${target}» неоднозначно; укажите точный ID хоста`,
           );
         input.selection = { ...input.selection, hostId: matches[0].id };
       }
       if (request.scriptFile) {
         if (!request.scriptHost)
-          throw new Error("Script file requires an explicit source host");
+          throw new Error("Для файла скрипта нужно явно указать исходный хост");
         const path = resolveHostPath({
           rootPath: context.cwd ?? "",
           path: request.scriptFile,
         });
         if (path === null)
           throw new Error(
-            "Invalid script file path; relative paths require the invoking CLI working directory",
+            "Недопустимый путь к файлу скрипта; относительный путь требует рабочего каталога CLI",
           );
         const file = await bb.sdk.files.read({
           hostId: request.scriptHost,
@@ -566,7 +566,7 @@ export default async function browserAutomationPlugin(bb: BbPluginApi) {
           signal: context.signal,
         });
         if (file.contentEncoding !== "utf8")
-          throw new Error("Script file must be UTF-8 text");
+          throw new Error("Файл скрипта должен быть текстом в кодировке UTF-8");
         input.script = file.content;
       }
       const result = await dispatch(

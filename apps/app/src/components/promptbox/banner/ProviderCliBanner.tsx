@@ -17,15 +17,15 @@ function versionRequirementCopy(
   minimumSupportedVersion: string | null,
 ): string {
   if (currentVersion !== null && minimumSupportedVersion !== null) {
-    return `Installed ${currentVersion}; version ${minimumSupportedVersion} or newer is required.`;
+    return `Установлена версия ${currentVersion}; требуется версия ${minimumSupportedVersion} или новее.`;
   }
   if (currentVersion !== null) {
-    return `Installed ${currentVersion}; a newer version is required.`;
+    return `Установлена версия ${currentVersion}; требуется более новая версия.`;
   }
   if (minimumSupportedVersion !== null) {
-    return `Version ${minimumSupportedVersion} or newer is required.`;
+    return `Требуется версия ${minimumSupportedVersion} или новее.`;
   }
-  return "A newer version is required.";
+  return "Требуется более новая версия.";
 }
 
 export function providerCliBlockedReason({
@@ -35,7 +35,7 @@ export function providerCliBlockedReason({
   displayName: string;
   installed: boolean;
 }): string {
-  return `${installed ? "Update" : "Install"} ${displayName} before starting a thread.`;
+  return `${installed ? "Обновите" : "Установите"} ${displayName}, прежде чем создавать чат.`;
 }
 
 export function ProviderCliBanner({
@@ -52,8 +52,8 @@ export function ProviderCliBanner({
     <ProviderRequirementBanner
       title={
         installed
-          ? `${displayName} update required`
-          : `${displayName} not installed`
+          ? `Требуется обновить ${displayName}`
+          : `${displayName} не установлен`
       }
       description={
         installed ? (
@@ -77,10 +77,10 @@ export function ProviderCliBanner({
             {actionRunning ? (
               <>
                 <Icon name="Spinner" className="animate-spin" />
-                {installed ? "Updating…" : "Installing…"}
+                {installed ? "Обновление…" : "Установка…"}
               </>
             ) : (
-              `${installed ? "Update" : "Install"} ${displayName}`
+              `${installed ? "Обновить" : "Установить"} ${displayName}`
             )}
           </Button>
         ) : null

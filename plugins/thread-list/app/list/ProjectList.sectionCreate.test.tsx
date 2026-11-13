@@ -68,7 +68,7 @@ function renderCustomSections(pinned = false) {
           makePluginProject(),
           makePluginProject({
             id: "proj_personal",
-            name: "Personal",
+            name: "Личное",
             isPersonal: true,
           }),
         ],
@@ -92,17 +92,17 @@ async function createSectionFrom(actionsLabel: string) {
     await screen.findByRole("button", { name: actionsLabel }),
     { button: 0 },
   );
-  fireEvent.click(await screen.findByRole("menuitem", { name: "New section" }));
-  const input = await screen.findByRole("textbox", { name: "Section name" });
+  fireEvent.click(await screen.findByRole("menuitem", { name: "Новый раздел" }));
+  const input = await screen.findByRole("textbox", { name: "Название раздела" });
   fireEvent.change(input, { target: { value: "Gamma" } });
-  fireEvent.click(screen.getByRole("button", { name: "Create section" }));
+  fireEvent.click(screen.getByRole("button", { name: "Создать раздел" }));
 }
 
 describe("creating a sidebar section", () => {
   it("pins new threads from the Pinned header", async () => {
     const { inspection } = renderCustomSections(true);
     fireEvent.click(
-      await screen.findByRole("button", { name: "New thread in Pinned" }),
+      await screen.findByRole("button", { name: "Новый чат в Закреплённые" }),
     );
     expect(inspection.navigateCalls).toContainEqual({
       method: "toCompose",
@@ -117,7 +117,7 @@ describe("creating a sidebar section", () => {
     const { inspection } = renderCustomSections();
     fireEvent.click(
       await screen.findByRole("button", {
-        name: "New thread in Alpha section",
+        name: "Новый чат в Раздел Alpha",
       }),
     );
 
@@ -133,18 +133,18 @@ describe("creating a sidebar section", () => {
   it("shows one divider before the built-in section visibility actions", async () => {
     renderCustomSections();
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "Threads actions" }),
+      await screen.findByRole("button", { name: "Действия: Чаты" }),
       { button: 0 },
     );
     const menu = screen
-      .getByRole("menuitem", { name: "Hide from list" })
+      .getByRole("menuitem", { name: "Скрыть из списка" })
       .closest('[role="menu"]');
     expect(menu?.querySelectorAll('[role="separator"]')).toHaveLength(2);
   });
 
   it("places the new section directly below the section it was created from", async () => {
     const { store } = renderCustomSections();
-    await createSectionFrom("Alpha section actions");
+    await createSectionFrom("Действия: Раздел Alpha");
     await waitFor(() =>
       expect(store.get(sidebarManualSectionOrderAtom)).toEqual([
         "pinned",
@@ -158,7 +158,7 @@ describe("creating a sidebar section", () => {
 
   it("places the new section directly below a built-in section", async () => {
     const { store } = renderCustomSections();
-    await createSectionFrom("Threads actions");
+    await createSectionFrom("Действия: Чаты");
     await waitFor(() =>
       expect(store.get(sidebarManualSectionOrderAtom)).toEqual([
         "pinned",

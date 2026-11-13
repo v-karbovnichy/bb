@@ -178,7 +178,7 @@ export function InfoList<T>({
       ))}
       {canToggle ? (
         <InfoListMoreRow
-          label={isExpanded ? "Show less" : `${items.length - limit} more`}
+          label={isExpanded ? "Показать меньше" : `${items.length - limit} more`}
           expanded={isExpanded}
           onToggle={() => setIsExpanded((value) => !value)}
         />

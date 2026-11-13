@@ -30,7 +30,7 @@ describe("VoiceInputSettingsSectionContent", () => {
     );
 
     const refreshAction = screen.getByRole("button", {
-      name: "Load microphones",
+      name: "Загрузить микрофоны",
     });
     const sectionHeader = refreshAction.parentElement?.parentElement;
     expect(sectionHeader?.classList.contains("flex-row")).toBe(true);
@@ -51,29 +51,29 @@ describe("VoiceInputSettingsSectionContent", () => {
       </TooltipProvider>
     );
     const { rerender } = render(content(devices));
-    expect(screen.getByRole("button", { name: "Microphone" }).textContent).toBe(
+    expect(screen.getByRole("button", { name: "Микрофон" }).textContent).toBe(
       "Studio Display Microphone",
     );
 
     rerender(
       content(devices.filter((device) => device.deviceId !== "studio-mic")),
     );
-    expect(screen.getByRole("button", { name: "Microphone" }).textContent).toBe(
-      "System default",
+    expect(screen.getByRole("button", { name: "Микрофон" }).textContent).toBe(
+      "Системный по умолчанию",
     );
     expect(
       screen.getByText(
-        "Preferred microphone is disconnected. Using another input until it reconnects.",
+        "Предпочтительный микрофон отключён. До его подключения используется другой вход.",
       ),
     ).toBeDefined();
 
     rerender(content([]));
     expect(
-      screen.getByRole("button", { name: "Check microphone access" }),
+      screen.getByRole("button", { name: "Проверить доступ к микрофону" }),
     ).toBeDefined();
 
     rerender(content(devices));
-    expect(screen.getByRole("button", { name: "Microphone" }).textContent).toBe(
+    expect(screen.getByRole("button", { name: "Микрофон" }).textContent).toBe(
       "Studio Display Microphone",
     );
   });
@@ -109,7 +109,7 @@ describe("VoiceInputSettingsSectionContent", () => {
       </TooltipProvider>,
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Check microphone access" }),
+      screen.getByRole("button", { name: "Проверить доступ к микрофону" }),
     );
     expect(onRefresh).toHaveBeenCalledExactlyOnceWith(true);
   });

@@ -802,7 +802,7 @@ describe("prompt library server", () => {
   it("rejects saving a prompt with no text", async () => {
     const { call } = await setup([]);
     await expect(call("star", { prompt: draft("   ") })).rejects.toThrow(
-      "A starred prompt needs some text.",
+      "Для добавления шаблона в избранное нужен текст.",
     );
   });
 
@@ -839,7 +839,7 @@ describe("prompt library server", () => {
       harness.behavior.runCli(["unstar", id]),
     ).resolves.toMatchObject({
       exitCode: 0,
-      stdout: `Unstarred ${id}`,
+      stdout: `${id} убран из избранного`,
     });
     await expect(
       harness.behavior.runCli(["unstar", id]),

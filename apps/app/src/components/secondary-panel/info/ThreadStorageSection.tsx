@@ -54,7 +54,7 @@ function describeStorageError(error: Error): string {
       : null) ??
     getMutationErrorMessage({
       error,
-      fallbackMessage: "Failed to load thread storage",
+      fallbackMessage: "Не удалось загрузить хранилище чата",
       lifecycleOperation: "load_thread_storage",
     })
   );
@@ -173,7 +173,7 @@ export function ThreadStorageSection({
         actions={[
           {
             icon: "ExternalLink",
-            label: "Open file in tab",
+            label: "Открыть файл во вкладке",
             onSelect: () => selectPath(node.path),
           },
         ]}
@@ -187,15 +187,15 @@ export function ThreadStorageSection({
   const searchable = infoListCollapses(loadedFiles.length);
   return (
     <InfoSection
-      label="Thread storage"
+      label="Хранилище чата"
       count={loadedFiles.length}
       trailing={
         !searchable ? null : isSearchOpen ? (
           <div className="flex min-w-0 flex-1 items-center gap-1">
             <Input
               autoFocus
-              aria-label="Search files"
-              placeholder="Search files"
+              aria-label="Поиск файлов"
+              placeholder="Поиск файлов"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               onBlur={() => {
@@ -214,7 +214,7 @@ export function ThreadStorageSection({
             />
             <button
               type="button"
-              aria-label="Close search"
+              aria-label="Закрыть поиск"
               onClick={closeSearch}
               className={STORAGE_SEARCH_BUTTON_CLASS}
             >
@@ -224,7 +224,7 @@ export function ThreadStorageSection({
         ) : (
           <button
             type="button"
-            aria-label="Search files"
+            aria-label="Поиск файлов"
             onClick={() => setIsSearchOpen(true)}
             className={STORAGE_SEARCH_BUTTON_CLASS}
           >
@@ -239,7 +239,7 @@ export function ThreadStorageSection({
           messageClassName="text-destructive"
         />
       ) : filteredFiles.length === 0 ? (
-        <EmptyState message="No files match search." />
+        <EmptyState message="По запросу не найдено файлов." />
       ) : isSearching ? (
         <InfoList
           items={searchRows}

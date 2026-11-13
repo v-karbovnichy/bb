@@ -95,7 +95,7 @@ it.each([false, true])(
       await vi.advanceTimersByTimeAsync(1);
     });
     const outside = screen.getByRole("button", { name: "Outside" });
-    const close = screen.getByRole("button", { name: "Hide notifications" });
+    const close = screen.getByRole("button", { name: "Скрыть уведомления" });
     act(() => {
       close.focus();
     });

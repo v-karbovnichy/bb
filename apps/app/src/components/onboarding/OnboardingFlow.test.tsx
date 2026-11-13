@@ -183,8 +183,8 @@ describe("OnboardingFlow", () => {
     const onClose = vi.fn();
     const { setClosing } = renderFlow({ initialStep: "devices", onClose });
 
-    fireEvent.click(button(/Start using bb/u));
-    fireEvent.click(button(/Start using bb/u));
+    fireEvent.click(button(/Начать работу с bb/u));
+    fireEvent.click(button(/Начать работу с bb/u));
     expect(onClose).toHaveBeenCalledTimes(1);
     setClosing(true);
     act(() => {
@@ -195,8 +195,8 @@ describe("OnboardingFlow", () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
     expect(finishedOutcomes()).toEqual(["completed"]);
-    button(/Start using bb/u);
-    fireEvent.click(button(/Start using bb/u));
+    button(/Начать работу с bb/u);
+    fireEvent.click(button(/Начать работу с bb/u));
     expect(onClose).toHaveBeenCalledTimes(2);
     expect(finishedOutcomes()).toEqual(["completed", "completed"]);
   });
@@ -239,30 +239,30 @@ describe("OnboardingFlow", () => {
     vi.useFakeTimers();
     renderFlow({ initialStep: "agent" });
 
-    expect(button(/Continue/u).disabled).toBe(true);
-    expect(screen.queryByRole("button", { name: "Retry" })).toBeNull();
+    expect(button(/Продолжить/u).disabled).toBe(true);
+    expect(screen.queryByRole("button", { name: "Повторить" })).toBeNull();
 
     act(() => {
       vi.advanceTimersByTime(10_000);
     });
 
     expect(
-      screen.getByText("Provider readiness could not be checked."),
+      screen.getByText("Не удалось проверить готовность провайдера."),
     ).toBeTruthy();
-    expect(button(/Continue/u).disabled).toBe(false);
+    expect(button(/Продолжить/u).disabled).toBe(false);
     expect(agentLoadFailures()).toEqual(["timed_out"]);
 
     const requestsBeforeRetry = providerStateRequests();
-    fireEvent.click(button(/^Retry$/u));
+    fireEvent.click(button(/^Повторить$/u));
     expect(providerStateRequests()).toBe(requestsBeforeRetry + 1);
-    expect(screen.queryByRole("button", { name: "Retry" })).toBeNull();
-    expect(button(/Continue/u).disabled).toBe(true);
+    expect(screen.queryByRole("button", { name: "Повторить" })).toBeNull();
+    expect(button(/Продолжить/u).disabled).toBe(true);
 
     act(() => {
       vi.advanceTimersByTime(10_000);
     });
-    expect(button(/^Retry$/u)).toBeTruthy();
-    expect(button(/Continue/u).disabled).toBe(false);
+    expect(button(/^Повторить$/u)).toBeTruthy();
+    expect(button(/Продолжить/u).disabled).toBe(false);
     expect(agentLoadFailures()).toEqual(["timed_out"]);
   });
 

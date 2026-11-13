@@ -147,7 +147,7 @@ export function NewChatPage({ subPath }: PluginNavPanelProps) {
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-3 overflow-y-auto px-6 py-5 text-sm text-muted-foreground">
           <p>
-            New chat in{" "}
+            Новый чат в{" "}
             <code className="font-mono text-foreground">
               /{workspace.label}
             </code>
@@ -155,7 +155,7 @@ export function NewChatPage({ subPath }: PluginNavPanelProps) {
           </p>
           {workspace.chats.length === 0 ? null : (
             <div className="flex flex-col gap-2">
-              <p>Add chat transcripts:</p>
+              <p>Добавить расшифровки чатов:</p>
               <TranscriptChips
                 chats={workspace.chats}
                 draftKey={draftKeyFor(environmentId)}
@@ -171,7 +171,7 @@ export function NewChatPage({ subPath }: PluginNavPanelProps) {
             defaultProjectId={workspace.projectId}
             defaultEnvironment={defaultEnvironment}
             focusRequest={focusRequest}
-            placeholder="Ask to make changes, @mention files, run /commands"
+            placeholder="Попросите внести изменения, упомяните файлы через @ или запустите /команды"
             onSubmit={submit}
           />
         </div>

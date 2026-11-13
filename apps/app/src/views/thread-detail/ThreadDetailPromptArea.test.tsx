@@ -641,7 +641,7 @@ describe("ThreadDetailPromptArea", () => {
 
     await expect(
       mocks.composerModifierSubmit?.({ sendAt: 1234567890 }),
-    ).rejects.toThrow("There is no new message to schedule or attach data to.");
+    ).rejects.toThrow("Нет нового сообщения для планирования или добавления вложений.");
     expect(mocks.sendQueuedMessageMutateAsync).not.toHaveBeenCalled();
   });
 
@@ -705,9 +705,9 @@ describe("ThreadDetailPromptArea", () => {
 
     renderPromptArea({ queuedMessageCount: 1 });
 
-    screen.getByRole("status", { name: "Loading queued messages" });
-    expect(screen.getByLabelText("Queued messages").textContent).toContain(
-      "Queue1",
+    screen.getByRole("status", { name: "Загрузка сообщений в очереди" });
+    expect(screen.getByLabelText("Сообщения в очереди").textContent).toContain(
+      "Очередь1",
     );
   });
 
@@ -744,13 +744,13 @@ describe("ThreadDetailPromptArea", () => {
     });
 
     const inlineEditor = within(hostElement);
-    const editingLabel = inlineEditor.getByText("Editing message");
+    const editingLabel = inlineEditor.getByText("Редактирование сообщения");
     const editingFrame = editingLabel.closest(
       '[data-inline-message-editor-frame="cap"]',
     );
     expect(editingFrame).not.toBeNull();
     expect(inlineEditor.getByTestId("submit-title").textContent).toBe(
-      "Submit edit (Enter)",
+      "Сохранить изменения (Enter)",
     );
     expect(
       inlineEditor.getByTestId("plugin-customizations-suppressed").textContent,
@@ -809,7 +809,7 @@ describe("ThreadDetailPromptArea", () => {
 
     fireEvent.click(
       inlineEditor.getByRole("button", {
-        name: "Stop editing sent message",
+        name: "Завершить редактирование отправленного сообщения",
       }),
     );
     expect(onCancel).toHaveBeenCalledTimes(1);
@@ -1513,7 +1513,7 @@ describe("ThreadDetailPromptArea", () => {
 
     await waitFor(() =>
       expect(mocks.toastError).toHaveBeenCalledWith(
-        "Failed to update queued message",
+        "Не удалось обновить сообщение в очереди",
         {
           description: "Queued message changed",
         },
@@ -1561,7 +1561,7 @@ describe("ThreadDetailPromptArea", () => {
     });
 
     const stack = screen.getByRole("button", {
-      name: "2 workflows running. Show all",
+      name: "Работают процессы: 2. Показать все",
     });
     expect(stack.getAttribute("aria-expanded")).toBe("false");
     expect(screen.getByTestId("workflow-summary").textContent).toBe(
@@ -1571,7 +1571,7 @@ describe("ThreadDetailPromptArea", () => {
 
     fireEvent.click(stack);
     const collapse = screen.getByRole("button", {
-      name: "Collapse 2 workflows",
+      name: "Свернуть процессы (2)",
     });
     expect(collapse.getAttribute("aria-expanded")).toBe("true");
     expect(document.activeElement).toBe(collapse);
@@ -1589,11 +1589,11 @@ describe("ThreadDetailPromptArea", () => {
     ).toEqual(["false", "true"]);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Collapse 2 workflows" }),
+      screen.getByRole("button", { name: "Свернуть процессы (2)" }),
     );
     expect(screen.queryAllByTestId("workflow-card")).toHaveLength(0);
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "2 workflows running. Show all" }),
+      screen.getByRole("button", { name: "Работают процессы: 2. Показать все" }),
     );
   });
 
@@ -1613,20 +1613,20 @@ describe("ThreadDetailPromptArea", () => {
     const { rerender } = renderPromptArea({ activeWorkflows: [first, second] });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "2 workflows running. Show all" }),
+      screen.getByRole("button", { name: "Работают процессы: 2. Показать все" }),
     );
     expect(
-      screen.getByRole("button", { name: "Collapse 2 workflows" }),
+      screen.getByRole("button", { name: "Свернуть процессы (2)" }),
     ).toBeTruthy();
 
     rerender(buildPromptAreaElement({ activeWorkflows: [first] }));
     rerender(buildPromptAreaElement({ activeWorkflows: [first, second] }));
 
     expect(
-      screen.getByRole("button", { name: "2 workflows running. Show all" }),
+      screen.getByRole("button", { name: "Работают процессы: 2. Показать все" }),
     ).toBeTruthy();
     expect(
-      screen.queryByRole("button", { name: "Collapse 2 workflows" }),
+      screen.queryByRole("button", { name: "Свернуть процессы (2)" }),
     ).toBeNull();
   });
 
@@ -1757,7 +1757,7 @@ describe("ThreadDetailPromptArea", () => {
     expect(screen.getByTestId("selected-model").textContent).toBe(
       "claude-opus-4-8",
     );
-    expect(screen.getByText("Model fallback")).toBeTruthy();
+    expect(screen.getByText("Резервная модель")).toBeTruthy();
   });
 
   async function settledSelection(
@@ -1839,7 +1839,7 @@ describe("ThreadDetailPromptArea", () => {
       permissionMode: "auto",
     });
     expect(host!.getSelection?.()).toEqual(result);
-    expect(screen.getByTestId("submit-label").textContent).toBe("New thread");
+    expect(screen.getByTestId("submit-label").textContent).toBe("Новый чат");
     expect(screen.getByTestId("command-suggestions").textContent).toBe(
       "claude-code:new-thread",
     );
@@ -1923,7 +1923,7 @@ describe("ThreadDetailPromptArea", () => {
     fireEvent.click(
       screen.getByRole("button", { name: "Same provider handoff" }),
     );
-    expect(screen.getByTestId("submit-label").textContent).toBe("New thread");
+    expect(screen.getByTestId("submit-label").textContent).toBe("Новый чат");
     expect(screen.getByTestId("command-suggestions").textContent).toBe(
       "codex:new-thread",
     );
@@ -2000,7 +2000,7 @@ describe("ThreadDetailPromptArea", () => {
     mocks.promptDraft.text = "Keep going";
     renderPromptArea();
     fireEvent.click(screen.getByRole("button", { name: "Start handoff" }));
-    expect(screen.getByTestId("submit-label").textContent).toBe("New thread");
+    expect(screen.getByTestId("submit-label").textContent).toBe("Новый чат");
     fireEvent.click(
       screen.getByRole("button", { name: "Same provider handoff" }),
     );
@@ -2024,12 +2024,12 @@ describe("ThreadDetailPromptArea", () => {
 
       fireEvent.click(screen.getByRole("button", { name: entryAction }));
 
-      expect(screen.getByTestId("submit-label").textContent).toBe("New thread");
+      expect(screen.getByTestId("submit-label").textContent).toBe("Новый чат");
       expect(screen.getByTestId("submit-icon").textContent).toBe(
         "MessageSquarePlus",
       );
       expect(screen.getByTestId("submit-title").textContent).toBe(
-        "Create new thread (Enter)",
+        "Создать новый чат (Enter)",
       );
       expect(screen.getByTestId("selected-model").textContent).toBe(
         "claude-opus-5",

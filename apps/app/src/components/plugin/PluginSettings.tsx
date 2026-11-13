@@ -166,7 +166,7 @@ function PluginSettingField({
         valueLabel={
           value.length > 0
             ? (descriptor.experimental_optionLabels?.[value] ?? value)
-            : "Select…"
+            : "Выбрать…"
         }
         options={descriptor.options.map((option) => ({
           label: descriptor.experimental_optionLabels?.[option] ?? option,
@@ -199,7 +199,7 @@ function PluginSettingField({
       : [];
     const valueLabel =
       options.find((option) => option.value === value)?.label ??
-      (value.length > 0 ? value : "Select a project…");
+      (value.length > 0 ? value : "Выберите проект…");
     return (
       <SettingOptionPicker
         ariaDescribedBy={ariaDescribedBy}
@@ -272,7 +272,7 @@ function PluginSettingField({
       aria-label={descriptor.label}
       aria-describedby={ariaDescribedBy}
       aria-invalid={ariaInvalid}
-      placeholder={isSecret ? (secretIsSet ? "[set]" : "[not set]") : undefined}
+      placeholder={isSecret ? (secretIsSet ? "[задано]" : "[не задано]") : undefined}
       onChange={(event) => onChange(event.target.value)}
       onBlur={onBlur}
       className="h-7 w-full text-xs @min-[36rem]/settings:w-64"
@@ -319,13 +319,13 @@ function AutosavingPluginSetting({
     scope: { id: `plugin-setting:${pluginId}:${settingKey}` },
     mutationFn: (value: string | boolean | typeof INVALID_NUMBER_DRAFT) => {
       if (value === INVALID_NUMBER_DRAFT)
-        throw new Error("Enter a finite number");
+        throw new Error("Введите конечное число");
       let settingValue: string | number | boolean | null = value;
       if (descriptor.type === "number") {
         const trimmed = typeof value === "string" ? value.trim() : "";
         const parsed = Number(trimmed);
         if (trimmed.length > 0 && !Number.isFinite(parsed)) {
-          throw new Error("Enter a finite number");
+          throw new Error("Введите конечное число");
         }
         settingValue = trimmed.length === 0 ? null : parsed;
       }
@@ -393,7 +393,7 @@ function AutosavingPluginSetting({
   const saveError = save.isError
     ? getMutationErrorMessage({
         error: save.error,
-        fallbackMessage: "Could not save this setting",
+        fallbackMessage: "Не удалось сохранить настройку",
       })
     : null;
   return (
@@ -476,7 +476,7 @@ function PluginSettingsPageSkeleton() {
       role="status"
       aria-busy="true"
     >
-      <span className="sr-only">Loading plugin settings…</span>
+      <span className="sr-only">Загрузка настроек плагина…</span>
       <div aria-hidden>
         <header className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 items-start gap-3">
@@ -527,7 +527,7 @@ export function PluginSettingsPage({
   if (listQuery.data === undefined && listQuery.isError) {
     return (
       <p className="text-sm text-muted-foreground" role="status">
-        Could not load plugin settings.
+        Не удалось загрузить настройки плагина.
       </p>
     );
   }
@@ -557,7 +557,7 @@ function PluginSettingsDetailsLink({
   const content = (
     <>
       <Icon name="ChevronLeft" className="size-3.5" aria-hidden />
-      Plugin details
+      Сведения о плагине
     </>
   );
   const className =
@@ -626,7 +626,7 @@ function PluginSettingsContent({
           checked={enabled}
           disabled={toggle.isPending}
           onCheckedChange={(next) => toggle.mutate(next)}
-          aria-label={`${enabled ? "Disable" : "Enable"} ${plugin.id}`}
+          aria-label={`${enabled ? "Отключить" : "Включить"} ${plugin.id}`}
         />
       </header>
       <ResourceDetailStack className="mt-6">
@@ -634,7 +634,7 @@ function PluginSettingsContent({
           <PluginMachineServerAccessNotice pluginId={plugin.id} />
         ) : null}
         {enabled && plugin.enabled && hasAvailableSettings ? (
-          <ResourceDetailConfigurationSection label="Configuration">
+          <ResourceDetailConfigurationSection label="Настройки">
             <PluginSettingsDetail plugin={plugin} />
           </ResourceDetailConfigurationSection>
         ) : null}
@@ -661,7 +661,7 @@ export function PluginSettingsDetail({ plugin }: { plugin: PluginListItem }) {
             <p className="text-xs text-muted-foreground">
               {plugin.enabled
                 ? `Settings are unavailable while the plugin is ${plugin.status}.`
-                : "Enable this plugin to edit its settings."}
+                : "Включите плагин, чтобы изменить его настройки."}
             </p>
           )}
         </ResourceDetailPanel>

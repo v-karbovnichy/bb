@@ -172,11 +172,11 @@ describe("desktop context menu", () => {
     });
 
     expect(template[0]).toMatchObject({
-      label: "No Spelling Suggestions",
+      label: "Нет вариантов написания",
       enabled: false,
     });
     expect(template[1]).toMatchObject({
-      label: 'Add "bbapp" to Dictionary',
+      label: 'Добавить «bbapp» в словарь',
     });
 
     clickMenuItem(template[1]);
@@ -225,8 +225,8 @@ describe("desktop context menu", () => {
     });
 
     expect(template).toEqual([
-      { label: "Open in Browser", click: expect.any(Function) },
-      { label: "Copy Link", click: expect.any(Function) },
+      { label: "Открыть в браузере", click: expect.any(Function) },
+      { label: "Скопировать ссылку", click: expect.any(Function) },
     ]);
 
     clickMenuItem(template[0]);
@@ -242,7 +242,7 @@ describe("desktop context menu", () => {
       "http://localhost:38886/threads/thr_2",
       "http://localhost:38886/threads/thr_1",
     ],
-  ])("offers only Copy Link for non-web link %s", (linkURL, pageURL) => {
+  ])("offers only Скопировать ссылку for non-web link %s", (linkURL, pageURL) => {
     const template = buildDesktopContextMenuTemplate({
       allowSameOriginLinks: false,
       webContents: createFakeWebContents(),
@@ -250,7 +250,7 @@ describe("desktop context menu", () => {
     });
 
     expect(template).toEqual([
-      { label: "Copy Link", click: expect.any(Function) },
+      { label: "Скопировать ссылку", click: expect.any(Function) },
     ]);
   });
 
@@ -270,8 +270,8 @@ describe("desktop context menu", () => {
     });
 
     expect(template).toEqual([
-      { label: "Copy Image", enabled: true, click: expect.any(Function) },
-      { label: "Save Image As…", click: expect.any(Function) },
+      { label: "Скопировать изображение", enabled: true, click: expect.any(Function) },
+      { label: "Сохранить изображение как…", click: expect.any(Function) },
     ]);
 
     clickMenuItem(template[0]);
@@ -294,11 +294,11 @@ describe("desktop context menu", () => {
     });
 
     expect(template).toMatchObject([
-      { label: "Open in Browser" },
-      { label: "Copy Link" },
+      { label: "Открыть в браузере" },
+      { label: "Скопировать ссылку" },
       { type: "separator" },
-      { label: "Copy Image", enabled: false },
-      { label: "Save Image As…" },
+      { label: "Скопировать изображение", enabled: false },
+      { label: "Сохранить изображение как…" },
     ]);
   });
 
@@ -340,8 +340,8 @@ describe("desktop context menu", () => {
     });
 
     expect(template).toMatchObject([
-      { label: "Open in Browser" },
-      { label: "Copy Link" },
+      { label: "Открыть в браузере" },
+      { label: "Скопировать ссылку" },
       { type: "separator" },
       { role: "copy", enabled: true },
       { role: "selectAll", enabled: true },

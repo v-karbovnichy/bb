@@ -76,7 +76,7 @@ export function PermissionModePicker({
   }
   return (
     <OptionPicker
-      label="Permission mode"
+      label="Режим разрешений"
       value={value}
       options={compactOptions}
       onChange={onChange}

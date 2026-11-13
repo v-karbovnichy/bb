@@ -30,15 +30,15 @@ export function usePluginRemoval() {
         plugin.provenance === "builtin" ||
         plugin.source.startsWith("builtin:")
       ) {
-        throw new Error("Included plugins cannot be uninstalled.");
+        throw new Error("Плагины, входящие в комплект, нельзя удалить.");
       }
       return removePlugin(fetch, plugin.id);
     },
     onSuccess: (_data, plugin) => {
       pluginToast.success(
         pluginIsLocalSource(plugin)
-          ? "Plugin removed from bb"
-          : "Plugin uninstalled",
+          ? "Плагин удалён из bb"
+          : "Плагин удалён",
         plugin,
         "catalog",
       );
@@ -49,8 +49,8 @@ export function usePluginRemoval() {
     onError: (error, plugin) => {
       pluginToast.error(
         pluginIsLocalSource(plugin)
-          ? "Plugin removal failed"
-          : "Plugin uninstall failed",
+          ? "Не удалось удалить плагин из bb"
+          : "Не удалось удалить плагин",
         plugin,
         "installed",
         pluginAdminErrorMessage(error),
@@ -93,8 +93,8 @@ export function PluginRemovalDialog({ removal }: PluginRemovalDialogProps) {
         <ConfirmDeleteDialogContent
           title={
             pluginIsLocalSource(removal.target)
-              ? "Remove plugin from bb?"
-              : "Uninstall plugin?"
+              ? "Удалить плагин из bb?"
+              : "Удалить плагин?"
           }
           description={pluginRemovalDescription(removal.target)}
           confirmLabel={pluginRemovalLabel(removal.target)}

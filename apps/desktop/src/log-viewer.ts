@@ -270,7 +270,7 @@ export function createLogViewerViewUrl(
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>bb - Local Logs</title>
+  <title>bb — локальные журналы</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -385,15 +385,15 @@ export function createLogViewerViewUrl(
 <body>
   <header>
     <div>
-      <h1>Local Logs</h1>
+      <h1>Локальные журналы</h1>
       <div class="path" title="${escapedLogDir}">${escapedLogDir}</div>
     </div>
     <div class="actions">
-      <label><input id="autoscroll" type="checkbox" checked> Auto-scroll</label>
-      <button id="copy" type="button">Copy Logs</button>
-      <button id="open" type="button">Open Logs Folder</button>
-      <button id="clear" type="button">Clear</button>
-      <div id="status" class="status">0 lines</div>
+      <label><input id="autoscroll" type="checkbox" checked> Автопрокрутка</label>
+      <button id="copy" type="button">Скопировать журналы</button>
+      <button id="open" type="button">Открыть папку журналов</button>
+      <button id="clear" type="button">Очистить</button>
+      <div id="status" class="status">0 строк</div>
     </div>
   </header>
   <main>
@@ -417,7 +417,7 @@ export function createLogViewerViewUrl(
 
     function render(stickToBottom) {
       logElement.textContent = lines.join("\\n");
-      statusElement.textContent = String(lines.length) + " lines";
+      statusElement.textContent = String(lines.length) + " строк";
       if (stickToBottom) {
         logElement.scrollTop = logElement.scrollHeight;
       }
@@ -451,7 +451,7 @@ export function createLogViewerViewUrl(
     copyButton.addEventListener("click", async () => {
       await api.copyLogs({ text: lines.join("\\n") });
       const previousLabel = copyButton.textContent;
-      copyButton.textContent = "Copied";
+      copyButton.textContent = "Скопировано";
       setTimeout(() => {
         copyButton.textContent = previousLabel;
       }, 900);

@@ -49,7 +49,7 @@ describe("ThreadMachineStatusBanner", () => {
     expect(status.querySelector('[data-icon="Cloud"]')).not.toBeNull();
     expect(markup).not.toContain("Modal sandbox ugxe6e");
     expect(markup).not.toContain(provider.displayName);
-    expect(buttons.map((button) => button.textContent)).toEqual(["Resume"]);
+    expect(buttons.map((button) => button.textContent)).toEqual(["Возобновить"]);
     expect(buttons[0]?.hasAttribute("disabled")).toBe(false);
   });
 

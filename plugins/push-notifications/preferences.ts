@@ -51,10 +51,10 @@ export const UNSET_THREAD_NOTIFICATIONS: ThreadNotificationInputs = {
 };
 
 export const NOTIFICATION_LEVEL_LABELS: Record<OwnNotificationLevel, string> = {
-  inherit: "Same as default",
-  all: "All activity",
-  "input-only": "Needs input only",
-  muted: "Muted",
+  inherit: "Как по умолчанию",
+  all: "Все события",
+  "input-only": "Только когда требуется ответ",
+  muted: "Без уведомлений",
 };
 
 export type PushNotificationKind =
@@ -108,11 +108,11 @@ export function resolveThreadNotifications(
 }
 
 export function describeNotificationSource(row: ThreadNotifications): string {
-  if (row.source === "self") return "set on this thread";
-  if (row.source === "parent") return "limited by parent";
-  if (row.source === "ancestor") return "limited by an ancestor";
-  if (row.source === "child-default") return "child-thread default";
-  return "default";
+  if (row.source === "self") return "задано для этого чата";
+  if (row.source === "parent") return "ограничено родительским чатом";
+  if (row.source === "ancestor") return "ограничено вышестоящим чатом";
+  if (row.source === "child-default") return "по умолчанию для дочерних чатов";
+  return "по умолчанию";
 }
 
 function isUnset(inputs: ThreadNotificationInputs): boolean {

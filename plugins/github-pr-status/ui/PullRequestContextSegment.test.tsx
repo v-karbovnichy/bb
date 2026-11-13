@@ -19,7 +19,7 @@ import {
 const sdk = vi.hoisted(() => ({
   rows: {} as Record<string, EnvironmentPullRequest>,
   settings: { showPullRequest: true } as Record<string, boolean> | undefined,
-  mutate: vi.fn(async () => ({ message: "Merged" })),
+  mutate: vi.fn(async () => ({ message: "Объединён" })),
   isPending: false,
   threadContextKind: "banner" as "banner" | "card",
 }));
@@ -210,15 +210,15 @@ describe("pull request context segment", () => {
     const { container } = renderPart("summary");
 
     expect(container.textContent).toContain("PR #128");
-    expect(container.textContent).not.toContain("· Open");
-    expect(container.textContent).not.toContain("Ready to merge");
+    expect(container.textContent).not.toContain("· Открыт");
+    expect(container.textContent).not.toContain("Готов к объединению");
     expect(container.querySelector("[data-promptbox-hide-compact]")).toBeNull();
   });
 
   it("keeps a standalone terminal state label", () => {
     show({ ...PULL_REQUEST, state: "closed", attention: "closed" });
     expect(renderPart("summary").container.textContent).toContain(
-      "PR #128 · Closed",
+      "PR #128 · Закрыт",
     );
   });
 
@@ -229,10 +229,10 @@ describe("pull request context segment", () => {
   ] as const)("sizes the label %s", (_, segments, label, hiddenInCompact) => {
     show({ ...PULL_REQUEST, state: "closed", attention: "closed" });
     const { container } = renderPart("summary", segments);
-    const link = screen.getByRole("link", { name: /Pull request 128:/ });
+    const link = screen.getByRole("link", { name: /Пул-реквест 128:/ });
     if (label) {
       expect(container.textContent).toContain(label);
-      expect(container.textContent).not.toContain("Closed");
+      expect(container.textContent).not.toContain("Закрыт");
     } else {
       expect(link.textContent).not.toContain("PR #128");
     }
@@ -244,10 +244,10 @@ describe("pull request context segment", () => {
   it.each([
     ["checks_pending", false, null],
     ["checks_failed", false, null],
-    ["checks_failed", true, "Auto-merge"],
-    ["checks_pending", true, "Auto-merge"],
-    ["ready_to_merge", true, "Auto-merge"],
-    ["queued", true, "Queued to merge"],
+    ["checks_failed", true, "Автообъединение"],
+    ["checks_pending", true, "Автообъединение"],
+    ["ready_to_merge", true, "Автообъединение"],
+    ["queued", true, "В очереди на объединение"],
   ] as const)(
     "shows the next step and auto-merge for %s with auto-merge %s",
     (attention, autoMerge, label) => {
@@ -272,8 +272,8 @@ describe("pull request context segment", () => {
       } else {
         expect(markup).not.toContain('aria-hidden="true">·</span>');
       }
-      expect(markup.includes(">Auto-merge</span>")).toBe(
-        label === "Auto-merge",
+      expect(markup.includes(">Автообъединение</span>")).toBe(
+        label === "Автообъединение",
       );
       expect(markup).toContain(
         attention === "checks_failed"
@@ -297,8 +297,8 @@ describe("pull request context segment", () => {
     });
     const markup = renderPart("summary").container.innerHTML;
 
-    expect(markup).not.toContain(">Checks failing</span>");
-    expect(markup).toContain('title="Open, Checks failing"');
+    expect(markup).not.toContain(">Проверки не пройдены</span>");
+    expect(markup).toContain('title="Открыт, Проверки не пройдены"');
   });
 
   it.each([
@@ -315,16 +315,16 @@ describe("pull request context segment", () => {
   ])("reserves the pill width a %s pull request needs", (_, pr, width) => {
     show(pr);
     renderPart("summary", [SELF, CHANGED_FILES]);
-    const link = screen.getByRole("link", { name: /Pull request 128:/ });
+    const link = screen.getByRole("link", { name: /Пул-реквест 128:/ });
     expect(
       ["min-w-8", "min-w-13"].filter((name) => link.classList.contains(name)),
     ).toEqual([width]);
   });
 
-  it("offers Mark ready for a draft", () => {
+  it("offers Готов к ревью for a draft", () => {
     show({ ...PULL_REQUEST, state: "draft", attention: "draft" });
     renderPart("action");
-    fireEvent.click(screen.getByRole("button", { name: "Mark ready" }));
+    fireEvent.click(screen.getByRole("button", { name: "Готов к ревью" }));
     expect(sdk.mutate).toHaveBeenCalledWith({ environmentId: "env_1" });
   });
 
@@ -332,7 +332,7 @@ describe("pull request context segment", () => {
     window.localStorage.setItem("bb.pullRequest.mergeMethod", "squash");
     show(PULL_REQUEST);
     renderPart("action", [SELF, CHANGED_FILES]);
-    fireEvent.click(screen.getByRole("button", { name: "Squash merge" }));
+    fireEvent.click(screen.getByRole("button", { name: "Объединить со сжатием" }));
     expect(sdk.mutate).toHaveBeenCalledWith({
       environmentId: "env_1",
       method: "squash",
@@ -345,7 +345,7 @@ describe("pull request context segment", () => {
     renderPart("action");
     expect(
       screen
-        .getByRole("button", { name: "Marking..." })
+        .getByRole("button", { name: "Отмечаем..." })
         .hasAttribute("disabled"),
     ).toBe(true);
   });

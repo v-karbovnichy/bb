@@ -60,7 +60,7 @@ export function Commit() {
     <OpenDialog>
       <CommitDialogContent
         branchName="feat/sidebar-rail"
-        gitStatusDisplay={{ label: "Dirty", summary: "" }}
+        gitStatusDisplay={{ label: "Есть изменения", summary: "" }}
         changedFilesSection={changedFilesSection}
         onCommit={noop}
       />

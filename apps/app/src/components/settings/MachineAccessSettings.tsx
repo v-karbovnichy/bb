@@ -90,12 +90,12 @@ function useMachineAccess(): MachineAccessState {
           parsed.username ||
           parsed.password
         ) {
-          setError("Enter a valid HTTP or HTTPS URL without credentials");
+          setError("Введите корректный HTTP- или HTTPS-адрес без учётных данных");
           return;
         }
         if (isLocalOnlyUrl(url)) {
           setError(
-            "Other machines cannot reach localhost. Use a domain or shared-network address.",
+            "Другие машины не могут обратиться к localhost. Укажите домен или адрес в общей сети.",
           );
           return;
         }
@@ -106,7 +106,7 @@ function useMachineAccess(): MachineAccessState {
         setError(
           getMutationErrorMessage({
             error: saveError,
-            fallbackMessage: "Couldn't save the address.",
+            fallbackMessage: "Не удалось сохранить адрес.",
           }),
         );
         return;
@@ -119,7 +119,7 @@ function useMachineAccess(): MachineAccessState {
 
 export function MachineAccessSettings({
   children,
-  title = "Machine access",
+  title = "Доступ с машин",
 }: {
   children?: (pluginId: string | null) => ReactNode;
   title?: string;
@@ -139,7 +139,7 @@ export function MachineAccessSettings({
 export function MachineAccessSettingsContent({
   machineAccess,
   children,
-  title = "Machine access",
+  title = "Доступ с машин",
 }: {
   machineAccess: MachineAccessState;
   children?: ReactNode;
@@ -150,7 +150,7 @@ export function MachineAccessSettingsContent({
       <div>
         <h2 className="text-sm font-semibold">{title}</h2>
         <p className="mt-1 text-xs text-subtle-foreground">
-          Choose how your devices reach this bb server.
+          Выберите способ подключения устройств к этому серверу bb.
         </p>
       </div>
       <div className="overflow-hidden rounded-lg border border-border bg-card">
@@ -161,7 +161,7 @@ export function MachineAccessSettingsContent({
               className="flex h-8 items-center gap-2 text-xs text-subtle-foreground"
             >
               <Icon name="Spinner" className="size-3.5 animate-spin" />
-              Loading connection settings…
+              Загрузка настроек подключения…
             </p>
           ) : (
             <>
@@ -221,7 +221,7 @@ export function MachineAccessControlsContent({
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-normal text-foreground">
-          Connection method
+          Способ подключения
         </span>
         <MachineAccessMethodPicker machineAccess={machineAccess} />
       </div>
@@ -244,11 +244,11 @@ function MachineAccessMethodPicker({
   return (
     <OptionPicker
       modal={false}
-      label="Connection method"
+      label="Способ подключения"
       value={selected}
       displayOverride={
         access && !machineAccess.effective
-          ? { label: "Unavailable method" }
+          ? { label: "Недоступный способ" }
           : undefined
       }
       disabled={disabled}
@@ -284,19 +284,19 @@ function MachineAccessDetails({
       )}
       {selected !== "direct" && effective === undefined && (
         <p className="text-xs text-subtle-foreground">
-          This connection method is not installed. Choose another method above.
+          Этот способ подключения не установлен. Выберите другой способ выше.
         </p>
       )}
       {selected === "direct" && (
         <SettingsWithControl
-          label="Server address"
-          description="Use your own domain or an address on a shared network. Your devices must be able to reach this address; localhost won’t work."
+          label="Адрес сервера"
+          description="Укажите свой домен или адрес в общей сети. Устройства должны иметь доступ к этому адресу; localhost не подойдёт."
           controlPlacement="below"
         >
           <div className="flex flex-wrap items-center gap-2">
             <Input
               className="min-w-0 flex-1 basis-48"
-              aria-label="Server address"
+              aria-label="Адрес сервера"
               aria-invalid={error !== null}
               value={draft ?? value}
               placeholder={access?.effectiveUrl ?? "https://bb.example.com"}
@@ -312,7 +312,7 @@ function MachineAccessDetails({
               disabled={disabled || draft === null || draft.trim() === value}
               onClick={() => void machineAccess.commitUrl()}
             >
-              {saving ? "Saving…" : "Save"}
+              {saving ? "Сохранение…" : "Сохранить"}
             </Button>
           </div>
           {error !== null && (
@@ -375,11 +375,11 @@ function MachineAccessStatus({
             >
               {setup ? (
                 <>
-                  Set up {effective.displayName}
+                  Настроить {effective.displayName}
                   <Icon name="ArrowRight" />
                 </>
               ) : (
-                "Manage"
+                "Управлять"
               )}
             </Link>
           </Button>
@@ -394,14 +394,14 @@ function MachineAccessStatus({
                 aria-hidden="true"
               />
             ) : null}
-            {ready ? "Ready" : "Unavailable"}
+            {ready ? "Готово" : "Недоступно"}
           </p>
           <p className="min-w-0 break-words text-subtle-foreground [overflow-wrap:anywhere]">
             {configurationMessage ??
               (effective.availability?.status === "available"
                 ? effective.availability.serverUrl
                 : null) ??
-              "Ready to connect devices."}
+              "Можно подключать устройства."}
           </p>
         </div>
       )}

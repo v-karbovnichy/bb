@@ -8,10 +8,10 @@ beforeEach(() => open.mockReset().mockResolvedValue(undefined));
 
 it("validates at the native boundary and passes the original URL to the OS", async () => {
   await expect(openApplicationUrl("javascript:alert(1)")).rejects.toThrow(
-    "blocked or invalid",
+    "заблокирована или недействительна",
   );
   await expect(openApplicationUrl("file:///tmp/example")).rejects.toThrow(
-    "blocked or invalid",
+    "заблокирована или недействительна",
   );
   expect(open).not.toHaveBeenCalled();
   await openApplicationUrl("reflect://note/Project%20X");

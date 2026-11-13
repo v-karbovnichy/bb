@@ -391,7 +391,7 @@ export function SidebarNavigationModelProvider({
           );
           appToast.success(`${item.label} disabled`);
         } catch (error) {
-          appToast.error(`Failed to disable ${item.label}`, {
+          appToast.error(`Не удалось отключить ${item.label}`, {
             description: error instanceof Error ? error.message : String(error),
           });
           throw error;

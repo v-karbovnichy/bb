@@ -164,7 +164,7 @@ export function MobilePanelTabPager({
           variant="ghost"
           size="icon"
           className={`${PANEL_TAB_CONTROL_CLASS} text-muted-foreground/70`}
-          aria-label="Previous tab"
+          aria-label="Предыдущая вкладка"
           disabled={previousTab === undefined}
           onClick={() => previousTab?.onSelect()}
         >
@@ -241,7 +241,7 @@ export function MobilePanelTabPager({
                       ? null
                       : {
                           onClose: displayedTab.onClose,
-                          closeLabel: `Close ${displayedTab.label}`,
+                          closeLabel: `Закрыть ${displayedTab.label}`,
                         }
                   }
                 />
@@ -253,7 +253,7 @@ export function MobilePanelTabPager({
           variant="ghost"
           size="icon"
           className={`${PANEL_TAB_CONTROL_CLASS} text-muted-foreground/70`}
-          aria-label="Next tab"
+          aria-label="Следующая вкладка"
           disabled={nextTab === undefined}
           onClick={() => nextTab?.onSelect()}
         >

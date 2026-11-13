@@ -109,7 +109,7 @@ export function UsedByList({
       <div
         ref={viewportRef}
         {...(scrollable
-          ? { tabIndex: 0, role: "group", "aria-label": "Used by" }
+          ? { tabIndex: 0, role: "group", "aria-label": "Используется в" }
           : {})}
         onKeyDown={(event) => {
           if (
@@ -159,7 +159,7 @@ export function UsedByPager({
   return (
     <div
       role="group"
-      aria-label="Example plugins"
+      aria-label="Примеры плагинов"
       className="flex min-w-0 flex-1 items-center gap-1"
       onKeyDown={(event) => {
         if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
@@ -174,7 +174,7 @@ export function UsedByPager({
       {items.length > 1 ? (
         <button
           type="button"
-          aria-label="Previous example plugin"
+          aria-label="Предыдущий пример плагина"
           disabled={currentIndex === 0}
           onClick={() => setIndex(currentIndex - 1)}
           className={`inline-flex size-9 @2xl/guide:size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground disabled:cursor-default disabled:opacity-35 ${FOCUS_RING_CLASS}`}
@@ -183,13 +183,13 @@ export function UsedByPager({
         </button>
       ) : null}
       <div className="min-w-0 flex-1" aria-live="polite" aria-atomic="true">
-        <span className="sr-only">Example {currentIndex + 1} of {items.length}: </span>
+        <span className="sr-only">Пример {currentIndex + 1} из {items.length}: </span>
         {renderItem(item)}
       </div>
       {items.length > 1 ? (
         <button
           type="button"
-          aria-label="Next example plugin"
+          aria-label="Следующий пример плагина"
           disabled={currentIndex === items.length - 1}
           onClick={() => setIndex(currentIndex + 1)}
           className={`inline-flex size-9 @2xl/guide:size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground disabled:cursor-default disabled:opacity-35 ${FOCUS_RING_CLASS}`}

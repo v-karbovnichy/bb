@@ -270,10 +270,10 @@ export function ConversationAttachments({
         </div>
       ) : null}
       <ImageLightbox
-        title="Attached media preview"
+        title="Просмотр вложения"
         mediaType={currentImageItem?.mediaType}
         imageSrc={currentImageItem?.src ?? null}
-        imageAlt={currentImageItem?.alt ?? "Attached image"}
+        imageAlt={currentImageItem?.alt ?? "Прикреплённое изображение"}
         hasMultipleImages={hasMultipleImages}
         onPrevious={() => {
           setExpandedImageIndex(

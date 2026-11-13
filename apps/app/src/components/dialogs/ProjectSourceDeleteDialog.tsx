@@ -47,9 +47,9 @@ export function ProjectSourceDeleteDialogContent({
 }: ProjectSourceDeleteDialogContentProps) {
   return (
     <ConfirmDeleteDialogContent
-      title="Remove source?"
-      description={`Remove "${target.label}" from this project? This cannot be undone.`}
-      confirmLabel="Remove source"
+      title="Удалить источник?"
+      description={`Удалить «${target.label}» из этого проекта? Это действие нельзя отменить.`}
+      confirmLabel="Удалить источник"
       pending={pending}
       onConfirm={() => onDelete(target.id)}
     />

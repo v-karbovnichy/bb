@@ -19,9 +19,9 @@ describe("resuming machine status", () => {
   });
 
   it("keeps lifecycle status ahead of the transport connection", () => {
-    expect(machinePhaseLabel(host.lifecycle)).toBe("Resuming");
+    expect(machinePhaseLabel(host.lifecycle)).toBe("Возобновление");
     expect(machineStatusLabel({ host, now: 2 })).toBe(
-      "Resuming · Restoring compute",
+      "Возобновление · Restoring compute",
     );
     expect(machineStatusTone(host)).toBe("attention");
   });

@@ -274,25 +274,25 @@ function getFilePreviewToggleKind(
 function getToggleAriaLabel(kind: FilePreviewToggleKind): string {
   switch (kind) {
     case "csv":
-      return "CSV view mode";
+      return "Режим просмотра CSV";
     case "html":
-      return "HTML view mode";
+      return "Режим просмотра HTML";
     case "markdown":
-      return "Markdown view mode";
+      return "Режим просмотра Markdown";
   }
 }
 
 function getFileContentsCopyLabel(kind: FilePreviewToggleKind | null): string {
   if (kind === "csv") {
-    return "Copy CSV";
+    return "Скопировать CSV";
   }
   if (kind === "markdown") {
-    return "Copy markdown";
+    return "Скопировать Markdown";
   }
   if (kind === "html") {
-    return "Copy HTML source";
+    return "Скопировать исходный HTML";
   }
-  return "Copy file contents";
+  return "Скопировать содержимое файла";
 }
 
 function getFilePreviewLineRange(
@@ -440,15 +440,15 @@ export function getCsvTruncationNote(
 ): string | null {
   const limits: string[] = [];
   if (preview.truncatedRows) {
-    limits.push(`${dataRowCount.toLocaleString()} rows`);
+    limits.push(`${dataRowCount.toLocaleString()} строк`);
   }
   if (preview.truncatedColumns) {
-    limits.push(`${preview.columnCount.toLocaleString()} columns`);
+    limits.push(`${preview.columnCount.toLocaleString()} столбцов`);
   }
   if (limits.length === 0) {
     return null;
   }
-  return `Showing the first ${limits.join(" and ")}.`;
+  return `Показаны первые ${limits.join(" и ")}.`;
 }
 
 export function FilePreview({
@@ -626,15 +626,15 @@ function FilePreviewBody({
     return <SourceLoadingSkeleton />;
   }
   if (state.kind === "empty") {
-    return <FilePreviewMessage message="Empty file." />;
+    return <FilePreviewMessage message="Пустой файл." />;
   }
   if (state.kind === "not-found") {
-    return <FilePreviewMessage message="File not found." role="alert" />;
+    return <FilePreviewMessage message="Файл не найден." role="alert" />;
   }
   if (state.kind === "error") {
     return (
       <FilePreviewMessage
-        message={state.message ?? "Failed to load file"}
+        message={state.message ?? "Не удалось загрузить файл"}
         role="alert"
       />
     );
@@ -744,14 +744,14 @@ function FilePreviewHeader({
                       onClick={onRefresh}
                       disabled={isRefreshing}
                       aria-label={
-                        isRefreshing ? "Refreshing file" : "Refresh file"
+                        isRefreshing ? "Обновление файла" : "Обновить файл"
                       }
                     >
                       <Icon name="RotateCcw" aria-hidden />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">
-                    {isRefreshing ? "Refreshing file" : "Refresh file"}
+                    {isRefreshing ? "Обновление файла" : "Обновить файл"}
                   </TooltipContent>
                 </Tooltip>
               ) : null}
@@ -764,12 +764,12 @@ function FilePreviewHeader({
                       size="icon"
                       className={FILE_PREVIEW_HEADER_ICON_BUTTON_CLASS}
                       onClick={() => void saveFile(download)}
-                      aria-label="Download"
+                      aria-label="Скачать"
                     >
                       <Icon name="Download" aria-hidden />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="bottom">Download</TooltipContent>
+                  <TooltipContent side="bottom">Скачать</TooltipContent>
                 </Tooltip>
               ) : null}
               {rawContents === null ? null : (
@@ -807,13 +807,13 @@ function FilePreviewHeader({
                           toAbsolutePreviewUrl(externalUrl),
                         );
                       }}
-                      aria-label="Open in external browser"
+                      aria-label="Открыть во внешнем браузере"
                     >
                       <Icon name="Globe" aria-hidden />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">
-                    Open in external browser
+                    Открыть во внешнем браузере
                   </TooltipContent>
                 </Tooltip>
               )}
@@ -826,16 +826,16 @@ function FilePreviewHeader({
                         className={FILE_PREVIEW_HEADER_ICON_BUTTON_CLASS}
                         label={
                           openShortcut
-                            ? `Open in editor (${openShortcut.label})`
-                            : "Open in editor"
+                            ? `Открыть в редакторе (${openShortcut.label})`
+                            : "Открыть в редакторе"
                         }
                         aria-keyshortcuts={openShortcut?.ariaKeyshortcuts}
                       />
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
                       {openShortcut
-                        ? `Open in editor (${openShortcut.label})`
-                        : "Open in editor"}
+                        ? `Открыть в редакторе (${openShortcut.label})`
+                        : "Открыть в редакторе"}
                     </TooltipContent>
                   </Tooltip>
                   <AppCommandShortcutHint shortcut={openShortcut} />
@@ -867,7 +867,7 @@ function FilePreviewHeader({
                   onClick={() => onViewModeChange("preview")}
                   aria-pressed={viewMode === "preview"}
                 >
-                  Preview
+                  Предпросмотр
                 </Button>
                 <Button
                   type="button"
@@ -880,7 +880,7 @@ function FilePreviewHeader({
                   onClick={() => onViewModeChange("source")}
                   aria-pressed={viewMode === "source"}
                 >
-                  Raw
+                  Исходный текст
                 </Button>
               </div>
             ) : null}
@@ -894,14 +894,14 @@ function FilePreviewHeader({
                       FILE_PREVIEW_HEADER_ICON_BUTTON_CLASS,
                       "shrink-0 max-md:pointer-coarse:size-10",
                     )}
-                    aria-label="File actions"
+                    aria-label="Действия с файлом"
                   >
                     <Icon name="MoreHorizontal" aria-hidden />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  mobileTitle="File actions"
+                  mobileTitle="Действия с файлом"
                   className="max-md:pointer-coarse:[&_[role=menuitem]]:min-h-11 max-md:pointer-coarse:[&_[role=menuitem]]:text-sm max-md:pointer-coarse:[&_[role=menuitemcheckbox]]:min-h-11 max-md:pointer-coarse:[&_[role=menuitemcheckbox]]:text-sm"
                 >
                   <DropdownMenuLabel className="max-w-80 break-all font-mono">
@@ -911,19 +911,19 @@ function FilePreviewHeader({
                   <DropdownMenuItem
                     onSelect={() => {
                       void copyToClipboardWithToast(copyPath ?? path, {
-                        successMessage: "File path copied",
-                        errorMessage: "Failed to copy file path",
+                        successMessage: "Путь к файлу скопирован",
+                        errorMessage: "Не удалось скопировать путь к файлу",
                       });
                     }}
                   >
-                    <Icon name="Copy" aria-hidden /> Copy file path
+                    <Icon name="Copy" aria-hidden /> Скопировать путь к файлу
                   </DropdownMenuItem>
                   {rawContents !== null ? (
                     <DropdownMenuItem
                       onSelect={() => {
                         void copyToClipboardWithToast(rawContents, {
-                          successMessage: "Copied to clipboard",
-                          errorMessage: "Failed to copy file contents",
+                          successMessage: "Скопировано в буфер обмена",
+                          errorMessage: "Не удалось скопировать содержимое файла",
                         });
                       }}
                     >
@@ -932,7 +932,7 @@ function FilePreviewHeader({
                   ) : null}
                   {download !== null ? (
                     <DropdownMenuItem onSelect={() => void saveFile(download)}>
-                      <Icon name="Download" aria-hidden /> Download
+                      <Icon name="Download" aria-hidden /> Скачать
                     </DropdownMenuItem>
                   ) : null}
                   {onRefresh ? (
@@ -941,12 +941,12 @@ function FilePreviewHeader({
                       onSelect={onRefresh}
                     >
                       <Icon name="RotateCcw" aria-hidden />{" "}
-                      {isRefreshing ? "Refreshing file" : "Refresh file"}
+                      {isRefreshing ? "Обновление файла" : "Обновить файл"}
                     </DropdownMenuItem>
                   ) : null}
                   {onOpenInEditor ? (
                     <DropdownMenuItem onSelect={() => onOpenInEditor(path)}>
-                      <Icon name="ExternalLink" aria-hidden /> Open in editor
+                      <Icon name="ExternalLink" aria-hidden /> Открыть в редакторе
                     </DropdownMenuItem>
                   ) : null}
                   {showLineOverflowToggle ? (
@@ -1143,7 +1143,7 @@ function CsvFilePreview({ file, onSelectionAddToChat }: CsvFilePreviewProps) {
                     title={column.label}
                   >
                     <span className="block max-w-full truncate">
-                      {column.label || `Column ${column.index + 1}`}
+                      {column.label || `Столбец ${column.index + 1}`}
                     </span>
                   </th>
                 ))}
@@ -1220,7 +1220,7 @@ function FilePreviewImage({ url, alt }: FilePreviewImageProps) {
       <button
         type="button"
         className="block w-full cursor-zoom-in"
-        aria-label={`Open ${alt} in full screen preview`}
+        aria-label={`Открыть ${alt} в полноэкранном предпросмотре`}
         onClick={() => {
           if (imageTabLightbox) {
             imageTabLightbox.open({ alt, src: url });
@@ -1288,7 +1288,7 @@ function FilePreviewIcon({ loading }: { loading: boolean }) {
       />
       {spinning ? (
         <span role="status" className="sr-only">
-          Loading preview…
+          Загрузка предпросмотра…
         </span>
       ) : null}
     </span>
@@ -1309,7 +1309,7 @@ function IframeFilePreview({
     return (
       <div className="min-h-0 flex-1 overflow-hidden">
         <FilePreviewMessage
-          message="Failed to load HTML preview."
+          message="Не удалось загрузить предпросмотр HTML."
           role="alert"
         />
       </div>
@@ -1346,8 +1346,8 @@ function UnsupportedFilePreview({ file }: UnsupportedFilePreviewProps) {
       </div>
       <p className="text-sm text-muted-foreground">
         {file.reason === "too-large"
-          ? "This file is too large to preview."
-          : "This file type can't be previewed."}
+          ? "Этот файл слишком велик для предпросмотра."
+          : "Предпросмотр этого типа файла недоступен."}
       </p>
       <Button asChild variant="outline" size="sm">
         <a
@@ -1359,7 +1359,7 @@ function UnsupportedFilePreview({ file }: UnsupportedFilePreviewProps) {
           }}
         >
           <Icon name="Download" aria-hidden />
-          Download
+          Скачать
         </a>
       </Button>
     </div>

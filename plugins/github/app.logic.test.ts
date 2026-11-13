@@ -97,9 +97,9 @@ describe("github panel query engine", () => {
       );
 
     expect(compact("is:", "pr")).toEqual([
-      { insert: "is:open ", label: "open" },
-      { insert: "is:closed ", label: "closed" },
-      { insert: "is:merged ", label: "merged" },
+      { insert: "is:open ", label: "открыто" },
+      { insert: "is:closed ", label: "закрыто" },
+      { insert: "is:merged ", label: "объединено" },
     ]);
     expect(compact("label:good", "issue")).toEqual([
       {

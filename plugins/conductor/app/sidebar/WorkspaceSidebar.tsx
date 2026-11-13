@@ -118,22 +118,22 @@ const PULL_REQUEST_GLYPHS: Record<
   open: {
     icon: "GitPullRequest",
     className: "text-success-foreground",
-    label: "Pull request open",
+    label: "Запрос на слияние открыт",
   },
   draft: {
     icon: "GitPullRequestDraft",
     className: "text-muted-foreground",
-    label: "Draft pull request",
+    label: "Черновик запроса на слияние",
   },
   merged: {
     icon: "GitMerge",
     className: "text-pr-merged",
-    label: "Pull request merged",
+    label: "Запрос на слияние принят",
   },
   closed: {
     icon: "GitPullRequestClosed",
     className: "text-destructive",
-    label: "Pull request closed",
+    label: "Запрос на слияние закрыт",
   },
 };
 
@@ -179,7 +179,7 @@ function WorkspaceGlyph({
         ? {
             icon: "CircleX",
             className: "text-destructive",
-            label: "Pull request needs attention",
+            label: "Запрос на слияние требует внимания",
           }
         : PULL_REQUEST_GLYPHS[pullRequest.state];
     return (
@@ -286,7 +286,7 @@ function WorkspaceRow({
             {chatCount > 1 ? (
               <span
                 className="shrink-0 text-xs tabular-nums text-subtle-foreground"
-                aria-label={`${chatCount} chats`}
+                aria-label={`Чатов: ${chatCount}`}
               >
                 {chatCount}
               </span>
@@ -296,7 +296,7 @@ function WorkspaceRow({
           {workspace.environmentId === null ? null : (
             <span className="absolute right-0 hidden items-center group-hover/workspace:flex group-focus-within/workspace:flex">
               <IconButton
-                label={archiving ? "Archiving…" : "Archive workspace"}
+                label={archiving ? "Архивация…" : "Архивировать рабочую область"}
                 icon="Archive"
                 onClick={() => {
                   const environmentId = workspace.environmentId;
@@ -335,7 +335,7 @@ function ProjectBlock({
   onNavigate(): void;
 }) {
   const navigate = useBbNavigate();
-  const name = project.isPersonal ? "Personal" : project.name;
+  const name = project.isPersonal ? "Личное" : project.name;
   return (
     <div data-conductor-project={project.id} className="flex flex-col gap-px">
       <div
@@ -348,7 +348,7 @@ function ProjectBlock({
         <button
           type="button"
           aria-expanded={expanded}
-          aria-label={`${expanded ? "Collapse" : "Expand"} ${name}`}
+          aria-label={`${expanded ? "Свернуть" : "Развернуть"} ${name}`}
           className="absolute inset-0 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
           onClick={() => setProjectExpanded(project.id, !expanded)}
         />
@@ -368,7 +368,7 @@ function ProjectBlock({
         </span>
         <span className="relative flex shrink-0 items-center opacity-0 transition-opacity group-hover/project:opacity-100 group-focus-within/project:opacity-100 [@media(hover:none)]:opacity-100">
           <IconButton
-            label={`New workspace in ${name}`}
+            label={`Новая рабочая область в ${name}`}
             icon="Plus"
             onClick={() => {
               setProjectExpanded(project.id, true);
@@ -465,13 +465,13 @@ export function WorkspaceSidebar({
 
   return (
     <nav
-      aria-label="Workspaces"
+      aria-label="Рабочие области"
       data-conductor-sidebar=""
       className="flex flex-col gap-3 px-2 pb-4 pt-1 text-sm"
     >
       {model.pinned.length > 0 ? (
         <section className="flex flex-col gap-px">
-          <SectionLabel label="Pinned" />
+          <SectionLabel label="Закреплённые" />
           {model.pinned.map((workspace) => (
             <WorkspaceRow
               key={workspace.key}
@@ -494,7 +494,7 @@ export function WorkspaceSidebar({
         </section>
       ) : null}
       <section className="flex flex-col gap-0.5">
-        <SectionLabel label="Projects" />
+        <SectionLabel label="Проекты" />
         {model.projects.map((group) => (
           <ProjectBlock
             key={group.project.id}

@@ -146,7 +146,7 @@ async function run() {
   if (scenario === "crashed") {
     const desktopLog = join(process.env.BB_DATA_DIR, "logs", "desktop.log");
     await until(async () =>
-      (await readFile(desktopLog, "utf8")).includes("Could not start bb"),
+      (await readFile(desktopLog, "utf8")).includes("Не удалось запустить bb"),
     );
     const savedLogs = await readFile(desktopLog, "utf8");
     assert.ok(
@@ -159,10 +159,10 @@ async function run() {
   }
   const errorTitle =
     scenario === "fatal"
-      ? "Port conflict"
+      ? "Конфликт порта"
       : scenario === "connect"
-        ? "Could not authenticate with bb Connect"
-        : "Could not reach this bb server";
+        ? "Не удалось войти через bb Connect"
+        : "Не удалось связаться с сервером bb";
   const hasError = () =>
     contents?.getURL().startsWith("data:") &&
     contents.executeJavaScript(
@@ -178,10 +178,10 @@ async function run() {
     "Startup failures must be persisted without relying on stderr",
   );
   const viewMenu = Menu.getApplicationMenu().items.find(
-    (item) => item.label === "View",
+    (item) => item.label === "Вид",
   );
   const logsItem = viewMenu.submenu.items.find(
-    (item) => item.label === "Local Logs",
+    (item) => item.label === "Локальные журналы",
   );
   assert.equal(logsItem.enabled, true);
   logsItem.click();
@@ -324,7 +324,7 @@ async function run() {
 async function verifyLocalLogs() {
   await until(() => {
     logsWindow = BrowserWindow.getAllWindows().find(
-      (window) => window.getTitle() === "bb - Local Logs",
+      (window) => window.getTitle() === "bb — локальные журналы",
     );
     return logsWindow && !logsWindow.webContents.isLoading();
   });

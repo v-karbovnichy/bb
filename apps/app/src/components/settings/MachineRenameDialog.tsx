@@ -71,7 +71,7 @@ function MachineRenameDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Rename machine</DialogTitle>
+        <DialogTitle>Переименовать машину</DialogTitle>
         <DialogDescription>
           Choose a new name for {target.name}.
         </DialogDescription>
@@ -80,7 +80,7 @@ function MachineRenameDialogContent({
         <div className="space-y-2">
           <Input
             ref={inputRef}
-            aria-label="Machine name"
+            aria-label="Имя машины"
             value={nextName}
             maxLength={HOST_NAME_MAX_LENGTH}
             autoCorrect="off"
@@ -97,7 +97,7 @@ function MachineRenameDialogContent({
             type="submit"
             disabled={pending || nextName.trim().length === 0}
           >
-            Rename machine
+            Переименовать машину
           </Button>
         </DialogFooter>
       </form>

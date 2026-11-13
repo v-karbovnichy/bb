@@ -1008,7 +1008,7 @@ function isIPadHardwareEnterCandidate(event: KeyboardEvent): boolean {
 export function PromptBoxInternal({
   id,
   onEscape,
-  placeholder = "Ask anything. @ to mention files, folders, or sections",
+  placeholder = "Спросите о чём угодно. Используйте @ для упоминания файлов, папок или разделов",
   autoFocus = true,
   handoff,
   executionControls,
@@ -1050,7 +1050,7 @@ export function PromptBoxInternal({
     disabledReason: submitDisabledReason,
     label: submitLabel,
     icon: submitIcon,
-    title: submitTitle = "Submit (Enter)",
+    title: submitTitle = "Отправить (Enter)",
     isRunning = false,
     onStop,
     enter: primarySubmitAction,
@@ -1913,7 +1913,7 @@ export function PromptBoxInternal({
                       window.location.href === href
                     )
                       rendererRef.current.showError(
-                        "The copied image could not be attached",
+                        "Не удалось прикрепить скопированное изображение",
                       );
                   })
                   .finally(() => clearTimeout(timer));
@@ -2959,7 +2959,7 @@ export function PromptBoxInternal({
     setVoiceActionTransition("exiting");
     voice?.cancel();
   }, [voice]);
-  const attachmentUploadTitle = "Uploading attachments...";
+  const attachmentUploadTitle = "Загрузка вложений...";
   const effectiveSubmitTitle = isAttaching
     ? attachmentUploadTitle
     : !canSubmit && submitDisabledReason
@@ -3437,7 +3437,7 @@ export function PromptBoxInternal({
                         event.preventDefault();
                       }}
                       onClick={collapsePromptBox}
-                      aria-label="Collapse prompt box"
+                      aria-label="Свернуть поле ввода"
                       className={cn(
                         CHROME_SUBTLE_ICON_BUTTON_FOREGROUND_CLASS,
                         COARSE_POINTER_PROMPT_ICON_ACTION_BUTTON_CLASS,
@@ -3471,7 +3471,7 @@ export function PromptBoxInternal({
             <ComposerPopupHost
               open={composerMenuOpen}
               placement={mentionMenuPlacement}
-              label={popupContribution?.popup.label ?? "Suggestions"}
+              label={popupContribution?.popup.label ?? "Подсказки"}
               interactive={popupContribution !== null}
               popupKey={popupContribution?.key ?? null}
               popupRef={typeaheadMenuRef}
@@ -3610,7 +3610,7 @@ export function PromptBoxInternal({
                           aria-label={
                             !voice.isSupported
                               ? voice.unsupportedMessage
-                              : "Start voice input"
+                              : "Начать голосовой ввод"
                           }
                           disabled={!canStartVoiceInput}
                           onPointerDown={handleVoicePointerDown}
@@ -3636,7 +3636,7 @@ export function PromptBoxInternal({
                         type="button"
                         size="icon"
                         variant="secondary"
-                        aria-label="Stop run"
+                        aria-label="Остановить выполнение"
                         onClick={onStop}
                         className={
                           showCompactLayout
@@ -3656,7 +3656,7 @@ export function PromptBoxInternal({
                         type="button"
                         size={showCompactLayout ? "icon" : "sm"}
                         variant="default"
-                        aria-label="Start voice input"
+                        aria-label="Начать голосовой ввод"
                         onPointerDown={handleVoicePointerDown}
                         onClick={startVoiceInput}
                         className={cn(

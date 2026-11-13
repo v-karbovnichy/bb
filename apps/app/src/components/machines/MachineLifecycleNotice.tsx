@@ -14,7 +14,7 @@ export function MachineLifecycleNoticeContent({
   return (
     <p
       role="status"
-      aria-label="Machine maintenance"
+      aria-label="Обслуживание машины"
       className={cn(
         "min-w-0 text-xs",
         notice.phase === "suspending" || notice.phase === "resuming"

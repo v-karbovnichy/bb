@@ -78,13 +78,13 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    expect(screen.getByText("Update Linear to 1.7.0?")).toBeTruthy();
+    expect(screen.getByText("Обновить Linear до 1.7.0?")).toBeTruthy();
     expect(screen.getByTestId("rollback-note").textContent).toContain(
-      "if 1.7.0 fails to start, bb restores 1.6.2",
+      "Если версия 1.7.0 не запустится, bb автоматически восстановит версию 1.6.2",
     );
     expect(
       screen
-        .getByRole("button", { name: /details — source/i })
+        .getByRole("button", { name: /Сведения — источник/i })
         .getAttribute("aria-expanded"),
     ).toBe("false");
   });
@@ -106,17 +106,17 @@ describe("UpdatePluginDialog", () => {
     );
 
     expect(
-      screen.getByText("1.9.0 isn’t compatible with this bb"),
+      screen.getByText("Версия 1.9.0 несовместима с этой версией bb"),
     ).toBeTruthy();
     expect(screen.getByText("needs bb >= 0.15 — you have 0.14.1")).toBeTruthy();
     expect(
       screen.getByText(
-        "Keep using 1.6.2 and check again when a compatible plugin version is available.",
+        "Продолжайте использовать версию 1.6.2 и проверьте наличие совместимой версии плагина позже.",
       ),
     ).toBeTruthy();
     expect(screen.queryByText(/once this bb meets/i)).toBeNull();
     expect(
-      (screen.getByRole("button", { name: "Update" }) as HTMLButtonElement)
+      (screen.getByRole("button", { name: "Обновить" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
   });
@@ -158,17 +158,17 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    expect(screen.getByRole("heading", { name: "Update failed" })).toBeTruthy();
-    expect(screen.getByText("Failed on Jul 22, 2026.")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Ошибка обновления" })).toBeTruthy();
+    expect(screen.getByText("Ошибка Jul 22, 2026.")).toBeTruthy();
     expect(
       screen.getByText(
-        "bb couldn’t activate 1.7.0. It restored 1.6.2 and its data.",
+        "bb не удалось запустить 1.7.0. Восстановлена версия 1.6.2 и её данные.",
       ),
     ).toBeTruthy();
     expect(screen.getByText("factory threw during activation")).toBeTruthy();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Retry update to 1.8.0" }),
+      screen.getByRole("button", { name: "Повторить обновление до 1.8.0" }),
     );
 
     await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -194,8 +194,8 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    expect(screen.getByText(/Try again when a compatible update/)).toBeTruthy();
-    expect(screen.queryByRole("button", { name: /Retry update/ })).toBeNull();
+    expect(screen.getByText(/Повторите попытку, когда появится совместимое обновление/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /Повторить обновление/ })).toBeNull();
   });
 
   it("closes on job acceptance without waiting for the update to finish", async () => {
@@ -220,7 +220,7 @@ describe("UpdatePluginDialog", () => {
       />,
       { wrapper },
     );
-    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить" }));
     await vi.waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
     expect(queryClient.getQueryData(pluginUpdateJobsQueryKey())).toEqual([job]);
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -268,15 +268,15 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    expect(screen.getByText("Update Linear to 2.0.0?")).toBeTruthy();
+    expect(screen.getByText("Обновить Linear до 2.0.0?")).toBeTruthy();
     expect(
-      screen.getByText(/so updating changes it to \^2\.0\.0/),
+      screen.getByText(/изменит диапазон на \^2\.0\.0/),
     ).toBeTruthy();
     expect(
-      screen.getByText(/2\.0\.0 may include breaking changes/),
+      screen.getByText(/2\.0\.0 может содержать несовместимые изменения/),
     ).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Update to 2.0.0" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить до 2.0.0" }));
 
     await vi.waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
     expect(JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))).toEqual({
@@ -305,13 +305,13 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить" }));
 
     await vi.waitFor(() => {
       expect(getNotifications()).toHaveLength(1);
     });
     const notification = getNotifications()[0];
-    expect(notification?.title).toBe("Plugin update failed");
+    expect(notification?.title).toBe("Не удалось обновить плагин");
 
     expect(notification?.description).toBe(
       "Linear — plugin source is unavailable",
@@ -333,20 +333,20 @@ describe("UpdatePluginDialog", () => {
       { wrapper },
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить" }));
 
     await vi.waitFor(() => {
       expect(getNotifications()).toHaveLength(1);
     });
-    expect(getNotifications()[0]?.title).toBe("Plugin update failed");
+    expect(getNotifications()[0]?.title).toBe("Не удалось обновить плагин");
 
     await vi.waitFor(() => {
       expect(
-        (screen.getByRole("button", { name: "Update" }) as HTMLButtonElement)
+        (screen.getByRole("button", { name: "Обновить" }) as HTMLButtonElement)
           .disabled,
       ).toBe(false);
     });
-    expect(screen.getByText("Update Linear to 1.7.0?")).toBeTruthy();
-    expect(screen.queryByRole("heading", { name: "Update failed" })).toBeNull();
+    expect(screen.getByText("Обновить Linear до 1.7.0?")).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: "Ошибка обновления" })).toBeNull();
   });
 });

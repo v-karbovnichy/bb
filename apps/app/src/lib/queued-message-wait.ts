@@ -7,7 +7,7 @@ import {
 import type { IconName } from "@bb/shared-ui/icon";
 import { formatScheduledTime } from "@/lib/relative-time";
 
-const SUPERSEDED_WAIT_LINE = "Not sent · a newer message was sent after it";
+const SUPERSEDED_WAIT_LINE = "Не отправлено · после него отправлено более новое сообщение";
 const MINUTE_MS = 60 * 1000;
 const HOUR_MS = 60 * MINUTE_MS;
 const DAY_MS = 24 * HOUR_MS;
@@ -17,15 +17,15 @@ export function formatQueuedMessageCountdown(
 ): string | null {
   if (remainingMs <= 0) return null;
   if (remainingMs < MINUTE_MS) {
-    return `in ${Math.ceil(remainingMs / 1000)}s`;
+    return `через ${Math.ceil(remainingMs / 1000)} с`;
   }
   if (remainingMs < HOUR_MS) {
-    return `in ${Math.floor(remainingMs / MINUTE_MS)}m`;
+    return `через ${Math.floor(remainingMs / MINUTE_MS)} мин`;
   }
   if (remainingMs < DAY_MS) {
-    return `in ${Math.floor(remainingMs / HOUR_MS)}h`;
+    return `через ${Math.floor(remainingMs / HOUR_MS)} ч`;
   }
-  return `in ${Math.floor(remainingMs / DAY_MS)}d`;
+  return `через ${Math.floor(remainingMs / DAY_MS)} дн`;
 }
 
 export function isQueuedMessageSendNowAllowed({
@@ -110,11 +110,11 @@ export function queuedMessageFallbackTitle(args: {
   now: number;
   payload: QueuedMessagePayload;
 }): string {
-  if (args.payload.kind !== "retry") return "Queued message";
+  if (args.payload.kind !== "retry") return "Сообщение в очереди";
   if (args.payload.reason === RESTART_RESUME_RETRY_REASON) {
-    return `Resume after ${RESTART_RESUME_RETRY_REASON}`;
+    return "Продолжить после перезапуска";
   }
-  return `Retry failed turn from ${formatScheduledTime({
+  return `Повторить неудачный ответ от ${formatScheduledTime({
     now: args.now,
     timestamp: args.createdAt,
   })}`;
@@ -131,15 +131,15 @@ export function describeQueuedMessageWait(
     const parts: string[] = resume ? [] : [args.payload.reason];
     if (args.waitingOn?.kind === "plugin") {
       parts.push(
-        `held by ${args.pluginDisplayName ?? args.waitingOn.pluginId} · ${args.waitingOn.reason}`,
+        `Удерживает ${args.pluginDisplayName ?? args.waitingOn.pluginId} · ${args.waitingOn.reason}`,
       );
     }
     if (args.sendAt !== null) {
       parts.push(
-        `${resume ? "resuming" : "retrying"} at ${formatScheduledTime({ now: args.now, timestamp: args.sendAt })}`,
+        `${resume ? "Продолжение" : "Повторная попытка"} в ${formatScheduledTime({ now: args.now, timestamp: args.sendAt })}`,
       );
     }
-    parts.push(`attempt ${args.payload.attempt}`);
+    parts.push(`попытка ${args.payload.attempt}`);
     return parts.join(" · ");
   }
 
@@ -150,24 +150,24 @@ export function describeQueuedMessageWait(
       return null;
     case "turn-starting":
       return args.threadStatus === "error"
-        ? "Turn didn't start · sends on the next turn"
-        : "Waiting for turn to start";
+        ? "Ответ не начался · отправится при следующем ответе"
+        : "Ожидание начала ответа";
     case "stopping":
-      return "Sending when the thread stops";
+      return "Отправится после остановки чата";
     case "time":
       return args.sendAt === null
-        ? "Scheduled"
-        : `Scheduled for ${formatScheduledTime({ now: args.now, timestamp: args.sendAt })}`;
+        ? "Запланировано"
+        : `Запланировано на ${formatScheduledTime({ now: args.now, timestamp: args.sendAt })}`;
     case "provisioning":
-      return "Waiting for workspace";
+      return "Ожидание рабочего пространства";
     case "host-offline":
-      return `Waiting for ${args.waitingOn.hostName} to be ready`;
+      return `Ожидание готовности ${args.waitingOn.hostName}`;
     case "interaction":
-      return "Waiting for your reply";
+      return "Ожидание вашего ответа";
     case "app-update":
-      return "Sending after bb restarts to update";
+      return "Отправится после перезапуска bb для обновления";
     case "plugin":
-      return `Held by ${args.pluginDisplayName ?? args.waitingOn.pluginId} · ${args.waitingOn.reason}`;
+      return `Удерживает ${args.pluginDisplayName ?? args.waitingOn.pluginId} · ${args.waitingOn.reason}`;
   }
 }
 

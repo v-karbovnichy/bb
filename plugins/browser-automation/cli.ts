@@ -38,7 +38,7 @@ export interface BrowserCliRequest {
 
 const SESSION_POSITIONAL = {
   name: "session-id",
-  description: "Session id returned by `bb browser-automation open`",
+  description: "ID сеанса, полученный от `bb browser-automation open`",
   required: true,
 } as const;
 
@@ -46,16 +46,16 @@ const THREAD_OPTION = {
   type: "string",
   placeholder: "id",
   description:
-    "Thread that owns the session; defaults to the invoking thread and cannot name another",
+    "Чат, которому принадлежит сеанс; по умолчанию текущий чат. Другой чат указать нельзя",
 } as const;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для программной обработки",
 } as const;
 
 const REOPEN_HINT =
-  "Open a new session with `bb browser-automation open --backend <desktop|local> --machine <host-id>`.";
+  "Откройте новый сеанс: `bb browser-automation open --backend <desktop|local> --machine <host-id>`.";
 
 function resolveThreadId(
   option: string | undefined,
@@ -63,13 +63,13 @@ function resolveThreadId(
 ): string {
   const threadId = option ?? ctx.threadId;
   if (threadId === undefined || threadId === "") {
-    throw new PluginCliError("Run from a BB thread or pass --thread <id>", {
+    throw new PluginCliError("Запустите команду из чата BB или укажите --thread <id>", {
       code: "thread_required",
     });
   }
   if (ctx.threadId !== undefined && threadId !== ctx.threadId) {
     throw new PluginCliError(
-      "CLI calls from a thread cannot access another thread's browser session",
+      "Команда из чата не может получить доступ к сеансу браузера другого чата",
       { code: "cross_thread" },
     );
   }
@@ -84,42 +84,42 @@ export function createBrowserAutomationCli(deps: {
 }): PluginCliRegistration {
   return defineCli({
     name: "browser-automation",
-    summary: "Persistent DevBrowser desktop and headless sessions",
+    summary: "Постоянные сеансы DevBrowser: настольные и без интерфейса",
     description:
-      "Sessions belong to the thread that opened them. run, pages, and screenshot renew expiry to 30 minutes after use, capped at 8 hours from creation.\nDesktop sessions also expire at their non-renewable control lease/connection deadline (at most 30 minutes).\nlist and live preview do not renew expiry. A stopped or expired session cannot be resumed; open a new one.",
+      "Сеанс принадлежит открывшему его чату. run, pages и screenshot продлевают срок действия до 30 минут после использования, но не более чем до 8 часов с момента создания.\nНастольные сеансы также завершаются по истечении непродлеваемого срока управления или подключения (не более 30 минут).\nlist и просмотр в реальном времени не продлевают срок действия. Остановленный или истёкший сеанс нельзя возобновить; откройте новый.",
     commands: {
       open: cliCommand({
         summary:
-          "Open a desktop or local headless session; --tab takes over an existing tab",
+          "Открыть настольный или локальный сеанс без интерфейса; --tab подключается к существующей вкладке",
         options: {
           backend: {
             type: "enum",
             values: ["desktop", "local"],
             required: true,
             description:
-              "desktop drives a connected browser instance; local runs headless on the host",
+              "desktop управляет подключённым браузером; local запускает браузер без интерфейса на хосте",
           },
           machine: {
             type: "string",
             required: true,
             placeholder: "name-or-id",
             description:
-              "Host that runs the browser: exact ID or unambiguous name",
+              "Хост, запускающий браузер: точный ID или однозначное имя",
           },
           desktop: {
             type: "string",
             placeholder: "instance-id",
-            description: "Desktop instance to drive (desktop backend only)",
+            description: "Экземпляр настольного браузера (только для desktop)",
           },
           tab: {
             type: "string",
             placeholder: "tab-id",
             description:
-              "Existing desktop tab to control instead of opening one (desktop backend only)",
+              "Существующая вкладка вместо открытия новой (только для desktop)",
           },
           headless: {
             type: "boolean",
-            description: "Required by the local backend, rejected by desktop",
+            description: "Обязательно для local и недопустимо для desktop",
           },
           thread: THREAD_OPTION,
           json: JSON_OPTION,
@@ -134,7 +134,7 @@ export function createBrowserAutomationCli(deps: {
               input.options.tab !== undefined
             ) {
               throw new PluginCliError(
-                "Local sessions require --headless and cannot select desktop tabs",
+                "Для локальных сеансов требуется --headless; настольные вкладки выбрать нельзя",
                 { code: "invalid_selection" },
               );
             }
@@ -149,7 +149,7 @@ export function createBrowserAutomationCli(deps: {
           const instanceId = input.options.desktop;
           if (instanceId === undefined || input.options.headless) {
             throw new PluginCliError(
-              "Desktop sessions require --desktop <instance-id> and cannot use --headless",
+              "Для настольных сеансов требуется --desktop <instance-id>; --headless недопустим",
               { code: "invalid_selection" },
             );
           }
@@ -173,7 +173,7 @@ export function createBrowserAutomationCli(deps: {
         },
       }),
       list: cliCommand({
-        summary: "List this thread's browser sessions",
+        summary: "Показать сеансы браузера этого чата",
         options: { thread: THREAD_OPTION, json: JSON_OPTION },
         run: (input, ctx) =>
           deps.execute(
@@ -185,9 +185,9 @@ export function createBrowserAutomationCli(deps: {
           ),
       }),
       run: cliCommand({
-        summary: "Run a trusted DevBrowser script; runs serialize per session",
+        summary: "Выполнить доверенный скрипт DevBrowser; запуски в одном сеансе выполняются по очереди",
         description:
-          "Scripts may return at most 4 screenshots per run, JPEG only, 500 KB combined;\nanything larger or in another format fails the run.",
+          "За один запуск скрипт может вернуть не более 4 снимков экрана в JPEG общим размером до 500 КБ;\nпревышение лимита или другой формат завершает запуск ошибкой.",
         positionals: [SESSION_POSITIONAL],
         constraints: [
           { kind: "exactly-one", options: ["script", "script-file"] },
@@ -199,24 +199,24 @@ export function createBrowserAutomationCli(deps: {
           script: {
             type: "string",
             placeholder: "code",
-            description: "DevBrowser script source",
+            description: "Исходный код скрипта DevBrowser",
           },
           "script-file": {
             type: "string",
             placeholder: "path",
-            description: "File holding the script, read from --script-host",
+            description: "Файл скрипта, считываемый с --script-host",
           },
           "script-host": {
             type: "string",
             placeholder: "host-id",
-            description: "Host that holds --script-file",
+            description: "Хост, на котором находится --script-file",
           },
           "timeout-ms": {
             type: "integer",
             min: 1000,
             max: 120_000,
             default: 30_000,
-            description: "Run timeout in milliseconds",
+            description: "Тайм-аут запуска в миллисекундах",
           },
           timeout: {
             type: "duration",
@@ -225,7 +225,7 @@ export function createBrowserAutomationCli(deps: {
             min: 1000,
             max: 120_000,
             description:
-              "Run timeout as a duration (90s, 2m, 1500ms); a bare number is seconds (1-120) or milliseconds (1000-120000)",
+              "Тайм-аут запуска как длительность (90s, 2m, 1500ms); число без единиц означает секунды (1–120) или миллисекунды (1000–120000)",
           },
           thread: THREAD_OPTION,
           json: JSON_OPTION,
@@ -253,7 +253,7 @@ export function createBrowserAutomationCli(deps: {
         },
       }),
       pages: cliCommand({
-        summary: "Inspect persistent named pages",
+        summary: "Показать сохранённые именованные страницы",
         positionals: [SESSION_POSITIONAL],
         options: { thread: THREAD_OPTION, json: JSON_OPTION },
         run: (input, ctx) =>
@@ -270,14 +270,14 @@ export function createBrowserAutomationCli(deps: {
       }),
       screenshot: cliCommand({
         summary:
-          "Save a bounded JPEG in session tmp; return its path and host ID",
+          "Сохранить JPEG ограниченного размера во временной папке сеанса; вернуть путь и ID хоста",
         positionals: [SESSION_POSITIONAL],
         options: {
           page: {
             type: "string",
             placeholder: "name",
             default: "main",
-            description: "Named page to capture",
+            description: "Именованная страница для снимка",
           },
           thread: THREAD_OPTION,
           json: JSON_OPTION,
@@ -297,7 +297,7 @@ export function createBrowserAutomationCli(deps: {
       }),
       preview: cliCommand({
         summary:
-          "Describe the live preview frame of a local headless session, without image bytes",
+          "Описать текущий кадр локального сеанса без интерфейса, не возвращая данные изображения",
         positionals: [SESSION_POSITIONAL],
         options: {
           after: {
@@ -305,7 +305,7 @@ export function createBrowserAutomationCli(deps: {
             min: 0,
             max: Number.MAX_SAFE_INTEGER,
             default: 0,
-            description: "Only report a frame newer than this sequence number",
+            description: "Показывать только кадры новее указанного порядкового номера",
           },
           thread: THREAD_OPTION,
           json: JSON_OPTION,
@@ -325,7 +325,7 @@ export function createBrowserAutomationCli(deps: {
       }),
       stop: cliCommand({
         summary:
-          "Cancel queued and running work and release control; open a new session to resume",
+          "Отменить ожидающие и выполняемые задачи и освободить управление; для продолжения откройте новый сеанс",
         positionals: [SESSION_POSITIONAL],
         options: { thread: THREAD_OPTION, json: JSON_OPTION },
         run: (input, ctx) =>
@@ -341,7 +341,7 @@ export function createBrowserAutomationCli(deps: {
           ),
       }),
       close: cliCommand({
-        summary: "Dispose owned browsers and tabs, preserving handed-off tabs",
+        summary: "Закрыть принадлежащие сеансу браузеры и вкладки, сохранив переданные вкладки",
         positionals: [SESSION_POSITIONAL],
         options: { thread: THREAD_OPTION, json: JSON_OPTION },
         run: (input, ctx) =>
@@ -363,17 +363,17 @@ export function createBrowserAutomationCli(deps: {
 export function browserCliFailure(error: unknown): PluginCliError {
   if (error instanceof PluginCliError) return error;
   const message =
-    error instanceof Error ? error.message : "Browser command failed";
-  if (/stopped or expired|does not belong to this thread/u.test(message)) {
+    error instanceof Error ? error.message : "Не удалось выполнить команду браузера";
+  if (/stopped or expired|does not belong to this thread|остановлен или истёк|не принадлежит этому чату/u.test(message)) {
     return new PluginCliError(message, {
       code: "session_unavailable",
       hint: REOPEN_HINT,
     });
   }
-  if (/screenshot|JPEG/iu.test(message)) {
+  if (/screenshot|JPEG|снимок экрана|снимков экрана/iu.test(message)) {
     return new PluginCliError(message, {
       code: "screenshot_limit",
-      hint: "Return at most 4 JPEG screenshots per run, 500 KB combined.",
+      hint: "Возвращайте не более 4 снимков экрана в JPEG за запуск, общим размером до 500 КБ.",
     });
   }
   return new PluginCliError(message, { code: "command_failed" });

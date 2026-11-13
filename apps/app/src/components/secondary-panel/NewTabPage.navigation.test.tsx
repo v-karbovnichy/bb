@@ -73,7 +73,7 @@ function mountPage({
               onGlobalTabReorder={() => {}}
               onToggleFullScreen={() => {}}
               panelStateId="new-tab-items"
-              tabs={[{ id: "new-tab", label: "New tab", restoresPlacementAfterRemoval: false }]}
+              tabs={[{ id: "new-tab", label: "Новая вкладка", restoresPlacementAfterRemoval: false }]}
               renderPane={() => selected ? (
                 <NewTabPage
                   autoFocus={false}
@@ -111,7 +111,7 @@ function move(key: "ArrowUp" | "ArrowDown") {
 it("moves focus through search, actions and recents, skipping reorder handles", () => {
   const onSelect = mountPage();
   const search = screen.getByRole("combobox");
-  const terminal = screen.getByRole("button", { name: "Start terminal" });
+  const terminal = screen.getByRole("button", { name: "Открыть терминал" });
   const sideChat = screen.getByRole("button", { name: "Start side chat" });
   const [firstRecent, lastRecent] = screen.getAllByRole("option");
   act(() => search.focus());
@@ -145,8 +145,8 @@ it("searches actions and opens the selected match with Enter", () => {
   const onStartSideChat = vi.fn();
   mountPage({ onStartTerminal, onStartSideChat });
   const search = screen.getByRole("combobox");
-  fireEvent.change(search, { target: { value: "terminal" } });
-  expect(screen.getAllByRole("option").map((option) => option.textContent)).toEqual(["Start terminal"]);
+  fireEvent.change(search, { target: { value: "терминал" } });
+  expect(screen.getAllByRole("option").map((option) => option.textContent)).toEqual(["Открыть терминал"]);
   expect(search.getAttribute("aria-activedescendant")).toBe("file-search-result-start-terminal");
   fireEvent.keyDown(search, { key: "Enter" });
   expect(onStartTerminal).toHaveBeenCalledOnce();
@@ -162,9 +162,10 @@ it("shows disabled matching actions without selecting them", () => {
   const onStartTerminal = vi.fn();
   mountPage({ disabled: true, onStartTerminal });
   const search = screen.getByRole("combobox");
-  fireEvent.change(search, { target: { value: "start" } });
-  const terminal = screen.getByRole("option", { name: "Start terminal" });
+  fireEvent.change(search, { target: { value: "терминал" } });
+  const terminal = screen.getByRole("option", { name: "Открыть терминал" });
   expect(terminal.hasAttribute("disabled")).toBe(true);
+  fireEvent.change(search, { target: { value: "start" } });
   expect(search.getAttribute("aria-activedescendant")).toBe("side-chat");
   fireEvent.keyDown(search, { key: "ArrowDown" });
   expect(search.getAttribute("aria-activedescendant")).toBe("side-chat");

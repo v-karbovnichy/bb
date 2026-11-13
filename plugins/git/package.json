@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Git status, changed files and the Diff tab for each environment",
+  "description": "Статус Git, изменённые файлы и вкладка изменений для каждого окружения",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.6.90"
   },
   "bb": {
     "name": "Git",
-    "description": "Git status, changed files and the Diff tab for each environment",
+    "description": "Статус Git, изменённые файлы и вкладка изменений для каждого окружения",
     "branding": {
       "icon": "GitBranch"
     },

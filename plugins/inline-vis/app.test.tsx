@@ -174,7 +174,7 @@ describe("InlineVisDirective", () => {
       const second = renderSlot(app.messageDirectives[0]!, props, options);
       if (failure === "not-found") {
         expect((await second.findByRole("alert")).textContent).toContain(
-          "Preview file not found: notes.md",
+          "Файл предпросмотра не найден: notes.md",
         );
         expect(second.queryByText("Previously loaded notes")).toBeNull();
         second.unmount();
@@ -189,7 +189,7 @@ describe("InlineVisDirective", () => {
     },
   );
 
-  it("requires a file attribute without calling rpc", async () => {
+  it("нужен атрибут file without calling rpc", async () => {
     const slot = renderSlot(
       app.messageDirectives[0]!,
       {
@@ -202,7 +202,7 @@ describe("InlineVisDirective", () => {
     );
 
     await slot.findByRole("alert");
-    expect(slot.getByText(/requires a file attribute/i)).toBeTruthy();
+    expect(slot.getByText(/нужен атрибут file/i)).toBeTruthy();
     expect(slot.rpcCalls).toEqual([]);
   });
 
@@ -268,7 +268,7 @@ describe("InlineVisDirective", () => {
     );
 
     await slot.findByRole("status", {
-      name: "Loading visualization charts/demo file.html",
+      name: "Загрузка визуализации charts/demo file.html",
     });
     const iframe = await findFrame(slot);
 
@@ -287,7 +287,7 @@ describe("InlineVisDirective", () => {
     expect(slot.queryByText("inline-vis")).toBeNull();
 
     const open = slot.getByRole("link", {
-      name: "Open charts/demo file.html in sidebar",
+      name: "Открыть charts/demo file.html в боковой панели",
     });
     expect(frameBox(iframe).contains(open)).toBe(true);
     expect(frameBox(iframe).classList.contains("group/inline-vis")).toBe(true);
@@ -364,7 +364,7 @@ describe("InlineVisDirective", () => {
     );
     fireEvent.click(
       slot.getByRole("link", {
-        name: "Open reports/result file.html in sidebar",
+        name: "Открыть reports/result file.html в боковой панели",
       }),
     );
     expect(slot.navigateCalls).toEqual([
@@ -391,7 +391,7 @@ describe("InlineVisDirective", () => {
     );
 
     const open = await slot.findByRole("link", {
-      name: "Open demo.html in sidebar",
+      name: "Открыть demo.html в боковой панели",
     });
     expect(open.getAttribute("href")).toBe(
       "/api/v1/environments/env_1/files/demo.html",
@@ -534,14 +534,14 @@ describe("InlineVisDirective", () => {
     heights.report(900);
 
     expect(documentBody(first).style.maxHeight).toBe("256px");
-    const more = first.getByRole("button", { name: "Show more" });
+    const more = first.getByRole("button", { name: "Показать больше" });
     expect(more.getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(more);
 
     expect(documentBody(first).style.maxHeight).toBe("");
     expect(
       first
-        .getByRole("button", { name: "Show less" })
+        .getByRole("button", { name: "Показать меньше" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
     expect(first.getByTestId("bb-markdown")).toBeTruthy();
@@ -552,7 +552,7 @@ describe("InlineVisDirective", () => {
     heights.report(900);
     expect(documentBody(second).style.maxHeight).toBe("");
 
-    fireEvent.click(second.getByRole("button", { name: "Show less" }));
+    fireEvent.click(second.getByRole("button", { name: "Показать меньше" }));
     expect(documentBody(second).style.maxHeight).toBe("256px");
     second.unmount();
 
@@ -575,11 +575,11 @@ describe("InlineVisDirective", () => {
     heights.report(300);
 
     expect(documentBody(slot).style.maxHeight).toBe("");
-    expect(slot.queryByRole("button", { name: "Show more" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Показать больше" })).toBeNull();
 
     heights.report(321);
     expect(documentBody(slot).style.maxHeight).toBe("256px");
-    expect(slot.getByRole("button", { name: "Show more" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Показать больше" })).toBeTruthy();
   });
 
   it("uses the height attribute as the Markdown preview height", async () => {
@@ -609,11 +609,11 @@ describe("InlineVisDirective", () => {
       },
     );
     await slot.findByTestId("bb-markdown");
-    const copy = slot.getByRole("button", { name: "Copy copy.md" });
+    const copy = slot.getByRole("button", { name: "Копировать copy.md" });
     fireEvent.click(copy);
 
     expect(writeText).toHaveBeenCalledWith("# Copy\n\nBody");
-    await waitFor(() => expect(copy.getAttribute("title")).toBe("Copied"));
+    await waitFor(() => expect(copy.getAttribute("title")).toBe("Скопировано"));
   });
 
   it("reserves blank space with no card while an HTML page loads", async () => {
@@ -630,7 +630,7 @@ describe("InlineVisDirective", () => {
     );
 
     const loading = await slot.findByRole("status", {
-      name: "Loading visualization pending.html",
+      name: "Загрузка визуализации pending.html",
     });
     expect(loading.getAttribute("aria-busy")).toBe("true");
     expect(loading.style.height).toBe("480px");
@@ -688,7 +688,7 @@ describe("InlineVisDirective", () => {
 
     fireEvent.click(
       slot.getByRole("button", {
-        name: "Open reports/notes.md in sidebar",
+        name: "Открыть reports/notes.md в боковой панели",
       }),
     );
     expect(slot.navigateCalls).toEqual([
@@ -738,7 +738,7 @@ describe("InlineVisDirective", () => {
     expect(slot.container.querySelector("iframe")).toBeNull();
     fireEvent.click(
       slot.getByRole("button", {
-        name: "Open reports/notes.md in sidebar",
+        name: "Открыть reports/notes.md в боковой панели",
       }),
     );
     expect(slot.navigateCalls).toEqual([
@@ -770,11 +770,11 @@ describe("InlineVisDirective", () => {
 
     const loading = await slot.findByRole("status");
     expect(loading.getAttribute("aria-label")).toBe(
-      "Loading document notes.md",
+      "Загрузка документа notes.md",
     );
     const loadingCard = slot.getByRole("region", { name: "notes.md" });
     expect(loadingCard.contains(loading)).toBe(true);
-    expect(slot.queryByRole("button", { name: "Copy notes.md" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Копировать notes.md" })).toBeNull();
 
     resolvePreview(markdownPreview("notes.md", "# Notes"));
 
@@ -875,7 +875,7 @@ describe("InlineVisFence", () => {
     const slot = renderSlot(app.codeFenceRenderers[0]!, fenceProps());
     const iframe = await findFrame(slot);
 
-    const show = slot.getByRole("button", { name: "Show source" });
+    const show = slot.getByRole("button", { name: "Показать исходный код" });
     expect(show.getAttribute("aria-pressed")).toBe("false");
     expect(frameBox(iframe).contains(show)).toBe(true);
     fireEvent.click(show);
@@ -883,12 +883,12 @@ describe("InlineVisFence", () => {
     const original = slot.getByTestId("original");
     expect(frameBox(iframe).nextElementSibling).toBe(original);
     expect(slot.container.querySelector("iframe")).toBe(iframe);
-    const hide = slot.getByRole("button", { name: "Hide source" });
+    const hide = slot.getByRole("button", { name: "Скрыть исходный код" });
     expect(hide.getAttribute("aria-pressed")).toBe("true");
     fireEvent.click(hide);
 
     expect(slot.queryByTestId("original")).toBeNull();
-    expect(slot.getByRole("button", { name: "Show source" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Показать исходный код" })).toBeTruthy();
   });
 
   it("resizes to the height its own page reports and remembers it per message fence", async () => {

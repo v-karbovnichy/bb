@@ -18,7 +18,7 @@ const ready: DesktopBrowserImportSource = {
   id: "chrome",
   name: "Google Chrome",
   profiles: [
-    { directory: "Default", name: "Person 1", cookieCount: 4812 },
+    { directory: "По умолчанию", name: "Person 1", cookieCount: 4812 },
     { directory: "Profile 1", name: "Work", cookieCount: 1 },
   ],
 };
@@ -73,7 +73,7 @@ describe("browser import dialog steps", () => {
     expect(
       needsProfileChoice({ ...ready, profiles: ready.profiles.slice(0, 1) }),
     ).toBe(false);
-    expect(preferredSourceProfileDirectory("gone", ready)).toBe("Default");
+    expect(preferredSourceProfileDirectory("gone", ready)).toBe("По умолчанию");
     expect(
       listedSources([
         ready,
@@ -95,19 +95,19 @@ describe("browser import dialog steps", () => {
         undefined,
       ),
     ).toMatchObject({
-      status: "Ready",
+      status: "Готово",
       action: "import",
-      details: ["1 profile"],
+      details: ["Профилей: 1"],
     });
   });
 
   it("presents rows by state and last import", () => {
     expect(presentSourceRow(ready, undefined)).toEqual({
-      status: "Ready",
+      status: "Готово",
       tone: "ready",
-      details: ["2 profiles", "4,813 cookies"],
+      details: ["Профилей: 2", "Файлов cookie: 4,813"],
       action: "import",
-      actionLabel: "Import…",
+      actionLabel: "Импортировать…",
     });
     expect(
       presentSourceRow(ready, {
@@ -117,7 +117,7 @@ describe("browser import dialog steps", () => {
         skipped: 2,
         skippedDomains: ["a.test", "b.test"],
       }).details,
-    ).toEqual(["Work · 10 cookies imported", "2 skipped (a.test and b.test)"]);
+    ).toEqual(["Work · импортировано: Файлов cookie: 10", "Пропущено: 2 (a.test и b.test)"]);
     expect(
       presentSourceRow({ ...ready, unavailable: "browserRunning" }, undefined),
     ).toMatchObject({ action: "recheck", tone: "attention" });
@@ -126,13 +126,13 @@ describe("browser import dialog steps", () => {
         { ...ready, unavailable: "needsFullDiskAccess" },
         undefined,
       ),
-    ).toMatchObject({ action: "grant", actionLabel: "Grant access…" });
+    ).toMatchObject({ action: "grant", actionLabel: "Предоставить доступ…" });
     expect(
       presentSourceRow(
         { ...ready, profiles: [{ directory: "d", name: "n", cookieCount: 0 }] },
         undefined,
       ),
-    ).toMatchObject({ status: "No cookies yet", action: "none" });
+    ).toMatchObject({ status: "Пока нет файлов cookie", action: "none" });
   });
 
   it("reads persisted import records defensively", () => {
@@ -164,7 +164,7 @@ describe("browser import dialog steps", () => {
       },
     });
     expect(formatSkippedDomains(["a", "b", "c", "d"])).toBe(
-      "a, b, c and 1 more",
+      "a, b, c и ещё 1",
     );
   });
 });

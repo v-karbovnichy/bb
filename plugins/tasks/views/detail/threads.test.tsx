@@ -114,7 +114,7 @@ describe("task detail pull request pills", () => {
     );
 
     const link = (await slot.findByRole("link", {
-      name: "Pull request #12: Ship the PR pill (Merged)",
+      name: "Запрос на слияние №12: Ship the PR pill (Объединён)",
     })) as HTMLAnchorElement;
     expect(link.href).toBe("https://github.com/acme/bb/pull/12");
     expect(link.target).toBe("_blank");
@@ -169,8 +169,8 @@ describe("task detail pull request pills", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Detach Worker" }));
-    fireEvent.click(await slot.findByRole("button", { name: "Detach" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Открепить Worker" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Открепить" }));
 
     await waitFor(() => {
       expect(slot.rpcCalls).toContainEqual({
@@ -213,7 +213,7 @@ describe("task detail pull request pills", () => {
     );
 
     await slot.findByRole("link", {
-      name: "Pull request #12: Ship the PR pill (Open)",
+      name: "Запрос на слияние №12: Ship the PR pill (Открыт)",
     });
 
     window.dispatchEvent(new Event("focus"));
@@ -221,7 +221,7 @@ describe("task detail pull request pills", () => {
     await waitFor(() => {
       expect(
         slot.getByRole("link", {
-          name: "Pull request #12: Ship the PR pill (Merged)",
+          name: "Запрос на слияние №12: Ship the PR pill (Объединён)",
         }),
       ).toBeTruthy();
     });

@@ -56,7 +56,7 @@ export function ResourcePromptPreview({
       <div
         data-resource-prompt-content=""
         role="textbox"
-        aria-label="Saved prompt"
+        aria-label="Сохранённый запрос"
         aria-readonly="true"
         aria-disabled={disabled || undefined}
         className={cn(

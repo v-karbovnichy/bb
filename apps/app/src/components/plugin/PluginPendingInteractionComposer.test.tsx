@@ -196,16 +196,16 @@ describe("PluginPendingInteractionComposer", () => {
     });
     fireEvent.keyDown(window, { key: "1" });
     expect(onShortcut).toHaveBeenCalledTimes(1);
-    const toggle = screen.getByRole("button", { name: "Hide details" });
+    const toggle = screen.getByRole("button", { name: "Скрыть подробности" });
     toggle.focus();
     fireEvent.click(toggle);
     expect(screen.queryByRole("textbox")).toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Show details" }),
+      screen.getByRole("button", { name: "Показать подробности" }),
     );
     fireEvent.keyDown(window, { key: "2" });
     expect(onShortcut).toHaveBeenCalledTimes(1);
-    fireEvent.click(screen.getByRole("button", { name: "Show details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать подробности" }));
     expect(screen.getByRole("textbox").getAttribute("value")).toBe(
       "Keep my draft",
     );
@@ -214,9 +214,9 @@ describe("PluginPendingInteractionComposer", () => {
     fireEvent.keyDown(screen.getByRole("textbox"), { key: "Escape" });
     expect(screen.queryByRole("textbox")).toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Show details" }),
+      screen.getByRole("button", { name: "Показать подробности" }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Show details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать подробности" }));
     expect(screen.getByRole("textbox").getAttribute("value")).toBe(
       "Keep my draft",
     );
@@ -257,12 +257,12 @@ describe("PluginPendingInteractionComposer", () => {
     fireEvent.change(screen.getByRole("textbox"), {
       target: { value: "Previous answer" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Hide details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть подробности" }));
     view.rerender(composer("pint_new"));
     expect(screen.getByRole("textbox").getAttribute("value")).toBe("");
     expect(
       screen
-        .getByRole("button", { name: "Hide details" })
+        .getByRole("button", { name: "Скрыть подробности" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
   });
@@ -305,7 +305,7 @@ describe("PluginPendingInteractionComposer", () => {
     expect(
       screen.getByRole("button", { name: "Deny" }).getAttribute("aria-pressed"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отправить ответ" }));
     await vi.waitFor(() =>
       expect(respond).toHaveBeenCalledWith({
         interactionId: "pint_provider",

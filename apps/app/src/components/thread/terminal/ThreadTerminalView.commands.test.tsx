@@ -171,7 +171,7 @@ it("finds scrollback without copying matches, navigates them, and returns focus 
   const { textarea } = await mount();
   fireEvent.keyDown(textarea, { key: "f", metaKey: true, keyCode: 70 });
   const input = await screen.findByRole("textbox", {
-    name: "Find in terminal",
+    name: "Найти в терминале",
   });
   expect(document.activeElement).toBe(input);
   fireEvent.change(input, { target: { value: "needle" } });
@@ -188,9 +188,9 @@ it("finds scrollback without copying matches, navigates them, and returns focus 
   expect(screen.getByRole("status").textContent).toBe("2 of 2");
   fireEvent.keyDown(input, { key: "Enter", shiftKey: true });
   expect(terminal.getSelectionPosition()).toEqual(first);
-  fireEvent.click(screen.getByRole("button", { name: "Match case" }));
+  fireEvent.click(screen.getByRole("button", { name: "Учитывать регистр" }));
   fireEvent.change(input, { target: { value: "NEEDLE" } });
-  expect(screen.getByText("No results")).toBeTruthy();
+  expect(screen.getByText("Нет результатов")).toBeTruthy();
   await act(
     () => new Promise((resolve) => requestAnimationFrame(() => resolve(null))),
   );
@@ -223,7 +223,7 @@ it("leaves Ctrl+letter shell keys to the shell on Linux and finds with Ctrl+Shif
     keyCode: 70,
   });
   expect(
-    await screen.findByRole("textbox", { name: "Find in terminal" }),
+    await screen.findByRole("textbox", { name: "Найти в терминале" }),
   ).toBe(document.activeElement);
   expect(state.input).toHaveBeenCalledTimes(3);
 });

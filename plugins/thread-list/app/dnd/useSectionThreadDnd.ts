@@ -647,7 +647,7 @@ function getSelectionDragPreviewThread(
   thread: SidebarThread,
   count: number,
 ): SidebarThread & { displayTitle: string } {
-  const title = `${count} threads`;
+  const title = `${count} чатов`;
   return { ...thread, title, titleFallback: title, displayTitle: title };
 }
 
@@ -655,7 +655,7 @@ function getGroupDragPreviewThread(
   thread: SidebarThread,
   groupThreads: readonly SidebarThread[],
 ): SidebarThread & { displayTitle: string } {
-  const title = `${thread.environment?.name ?? thread.environment?.branchName ?? "Worktree group"} (${groupThreads.length} threads)`;
+  const title = `${thread.environment?.name ?? thread.environment?.branchName ?? "Группа рабочих копий"} (${groupThreads.length} чатов)`;
   return { ...thread, title, titleFallback: title, displayTitle: title };
 }
 
@@ -775,7 +775,7 @@ export function resolveSectionThreadDropDecision(
 }
 
 function describeThreadCount(threadIds: readonly string[]): string {
-  return threadIds.length === 1 ? "thread" : "threads";
+  return threadIds.length === 1 ? "чат" : "чата";
 }
 
 function insertPinnedThreads(
@@ -1473,7 +1473,7 @@ export function useSectionThreadDnd({
           settle(
             commitDropChanges(
               decision,
-              `Failed to move ${describeThreadCount(decision.threadIds)}.`,
+              `Не удалось переместить ${describeThreadCount(decision.threadIds)}.`,
             ),
           );
           break;
@@ -1484,7 +1484,7 @@ export function useSectionThreadDnd({
           settle(
             commitDropChanges(
               decision,
-              `Failed to pin ${describeThreadCount(decision.threadIds)}.`,
+              `Не удалось закрепить ${describeThreadCount(decision.threadIds)}.`,
             ).then(() => {
               void insertPinnedThreads(insertRequests, onReorderPinnedThread);
             }),

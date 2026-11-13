@@ -27,7 +27,7 @@ describe("idle hibernation", () => {
     expect(resolveSettings(settings({ idleMinutes: 1.5 }))).toEqual({
       ok: false,
       message:
-        "idleMinutes must be a whole number between 0 and 1440, not 1.5.",
+        "idleMinutes должен быть целым числом от 0 до 1440, получено: 1.5.",
     });
   });
 });

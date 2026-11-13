@@ -20,10 +20,10 @@ function errorMessage(error: unknown): string {
 }
 
 const STATUS_BADGES: Partial<Record<RegistryAgent["status"], string>> = {
-  added: "Added",
-  "update-available": "Update available",
-  "built-in": "Built in",
-  "manual-install": "Manual install",
+  added: "Добавлен",
+  "update-available": "Доступно обновление",
+  "built-in": "Встроен",
+  "manual-install": "Ручная установка",
 };
 
 function matchesQuery(agent: RegistryAgent, query: string): boolean {
@@ -38,12 +38,12 @@ function matchesQuery(agent: RegistryAgent, query: string): boolean {
 
 function agentNote(agent: RegistryAgent): string | null {
   if (agent.status === "built-in") {
-    return "bb already ships this agent as a provider.";
+    return "Этот агент уже входит в bb как провайдер.";
   }
   if (agent.status === "manual-install") {
-    return "Ships only as a downloadable binary. Install it yourself, then add it under Custom agents with its command.";
+    return "Доступен только как исполняемый файл. Установите его и добавьте команду в разделе пользовательских агентов.";
   }
-  return agent.command === null ? null : `Runs ${agent.command}`;
+  return agent.command === null ? null : `Команда: ${agent.command}`;
 }
 
 function AcpRegistrySettings() {
@@ -94,12 +94,12 @@ function AcpRegistrySettings() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-sm font-medium text-foreground">
-            Agent registry
+            Каталог агентов
           </h3>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            Agents from the official ACP registry. Adding one makes it a
-            provider in the thread composer; it runs through npx or uvx on the
-            machine that hosts the thread.
+            Агенты из официального каталога ACP. После добавления агент
+            появится среди провайдеров в новом чате и будет запускаться через
+            npx или uvx на компьютере, где работает чат.
           </p>
         </div>
         <Button
@@ -111,28 +111,28 @@ function AcpRegistrySettings() {
             run("refresh", () => rpc.call("listRegistry", { refresh: true }))
           }
         >
-          {busy === "refresh" ? "Refreshing…" : "Refresh"}
+          {busy === "refresh" ? "Обновление…" : "Обновить"}
         </Button>
       </div>
 
       <Input
         type="search"
         value={query}
-        placeholder="Search agents"
-        aria-label="Search agents"
+        placeholder="Поиск агентов"
+        aria-label="Поиск агентов"
         onChange={(event) => setQuery(event.target.value)}
       />
 
       <div className="overflow-hidden rounded-md border border-border/60">
         {view === null ? (
           <p className="px-3 py-4 text-sm text-muted-foreground">
-            {error === null ? "Loading the registry…" : "No agents to show."}
+            {error === null ? "Загрузка каталога…" : "Агентов пока нет."}
           </p>
         ) : agents.length === 0 ? (
           <p className="px-3 py-4 text-sm text-muted-foreground">
             {view.agents.length === 0
-              ? "No agents to show."
-              : "No agent matches that search."}
+              ? "Агентов пока нет."
+              : "Подходящие агенты не найдены."}
           </p>
         ) : (
           <div className="divide-y divide-border/60">
@@ -182,14 +182,14 @@ function AcpRegistrySettings() {
                         type="button"
                         size="sm"
                         disabled={busy !== null}
-                        aria-label={`${agent.status === "available" ? "Add" : "Update"} ${agent.name}`}
+                        aria-label={`${agent.status === "available" ? "Добавить" : "Обновить"} ${agent.name}`}
                         onClick={() =>
                           run(agent.id, () =>
                             rpc.call("addRegistryAgent", { id: agent.id }),
                           )
                         }
                       >
-                        {agent.status === "available" ? "Add" : "Update"}
+                        {agent.status === "available" ? "Добавить" : "Обновить"}
                       </Button>
                     ) : null}
                     {canRemove ? (
@@ -198,14 +198,14 @@ function AcpRegistrySettings() {
                         variant="outline"
                         size="sm"
                         disabled={busy !== null}
-                        aria-label={`Remove ${agent.name}`}
+                        aria-label={`Удалить ${agent.name}`}
                         onClick={() =>
                           run(agent.id, () =>
                             rpc.call("removeAgent", { id: agent.id }),
                           )
                         }
                       >
-                        Remove
+                        Удалить
                       </Button>
                     ) : null}
                   </div>
@@ -224,8 +224,8 @@ function AcpRegistrySettings() {
         ) : view?.error != null ? (
           <span className="text-xs text-muted-foreground" role="status">
             {view.agents.length === 0
-              ? `The registry could not be reached: ${view.error}`
-              : `Showing a saved copy. The registry could not be reached: ${view.error}`}
+              ? `Не удалось связаться с каталогом: ${view.error}`
+              : `Показана сохранённая копия. Не удалось связаться с каталогом: ${view.error}`}
           </span>
         ) : null}
       </div>

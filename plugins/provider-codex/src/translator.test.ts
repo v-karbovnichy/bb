@@ -747,7 +747,7 @@ describe("codex subagent activity correlation", () => {
           status: "pending",
           background: false,
           presentation: {
-            label: { pending: "Running agent", completed: "Agent finished" },
+            label: { pending: "Работа агента", completed: "Агент завершил работу" },
             icon: { glyph: "UserRound" },
             title: "/root/lifecycle_child",
           },

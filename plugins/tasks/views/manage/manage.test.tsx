@@ -87,16 +87,16 @@ describe("derivePrefix", () => {
 describe("NewTaskDialog", () => {
   it.each([
     {
-      field: "Project",
+      field: "Проект",
       option: "Personal",
       expected: { projectId: "01HZZZZZZZZZZZZZZZZZZZZZP2" },
     },
     {
-      field: "Status",
-      option: "In Progress",
+      field: "Статус",
+      option: "В работе",
       expected: { status: "in_progress" },
     },
-    { field: "Priority", option: "High", expected: { priority: "high" } },
+    { field: "Приоритет", option: "Высокий", expected: { priority: "high" } },
   ])(
     "keeps the compact task form accessible while choosing $field",
     async ({ field, option: optionName, expected }) => {
@@ -140,7 +140,7 @@ describe("NewTaskDialog", () => {
           },
         );
         fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-        const title = await slot.findByLabelText("Task title");
+        const title = await slot.findByLabelText("Название задачи");
         fireEvent.change(title, { target: { value: "Keep this draft open" } });
         fireEvent.click(slot.getByLabelText(field));
         const option = await slot.findByRole("option", { name: optionName });
@@ -149,7 +149,7 @@ describe("NewTaskDialog", () => {
         await waitFor(() =>
           expect(
             slot
-              .getByRole("textbox", { name: "Task title" })
+              .getByRole("textbox", { name: "Название задачи" })
               .getAttribute("value"),
           ).toBe("Keep this draft open"),
         );
@@ -173,25 +173,25 @@ describe("NewTaskDialog", () => {
   it.each([
     {
       name: "Ctrl+Enter in title",
-      field: "Task title",
+      field: "Название задачи",
       ctrlKey: true,
       metaKey: false,
     },
     {
       name: "Meta+Enter in title",
-      field: "Task title",
+      field: "Название задачи",
       ctrlKey: false,
       metaKey: true,
     },
     {
       name: "Enter in title",
-      field: "Task title",
+      field: "Название задачи",
       ctrlKey: false,
       metaKey: false,
     },
     {
       name: "Ctrl+Enter in due date",
-      field: "Due date",
+      field: "Срок",
       ctrlKey: true,
       metaKey: false,
     },
@@ -217,7 +217,7 @@ describe("NewTaskDialog", () => {
       },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await slot.findByLabelText("Task title"), {
+    fireEvent.change(await slot.findByLabelText("Название задачи"), {
       target: { value: "Keyboard submission" },
     });
     fireEvent.keyDown(slot.getByLabelText(field), {
@@ -252,7 +252,7 @@ describe("NewTaskDialog", () => {
       },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    const title = await slot.findByLabelText("Task title");
+    const title = await slot.findByLabelText("Название задачи");
     fireEvent.change(title, { target: { value: "  Ship the dialog  " } });
     fireEvent.click(slot.getByRole("button", { name: "Create task" }));
 
@@ -297,12 +297,12 @@ describe("NewTaskDialog", () => {
       },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.click(await slot.findByRole("checkbox", { name: "Create more" }));
-    const title = await slot.findByLabelText("Task title");
+    fireEvent.click(await slot.findByRole("checkbox", { name: "Создать ещё" }));
+    const title = await slot.findByLabelText("Название задачи");
     fireEvent.change(title, { target: { value: "First" } });
     fireEvent.click(slot.getByRole("button", { name: "Create task" }));
     await waitFor(() => expect(createCalls).toHaveLength(1));
-    expect((slot.getByLabelText("Task title") as HTMLInputElement).value).toBe(
+    expect((slot.getByLabelText("Название задачи") as HTMLInputElement).value).toBe(
       "",
     );
     expect(slot.navigateCalls).toEqual([]);
@@ -331,12 +331,12 @@ describe("NewTaskDialog", () => {
       },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await slot.findByLabelText("Task title"), {
+    fireEvent.change(await slot.findByLabelText("Название задачи"), {
       target: { value: "Nested" },
     });
     fireEvent.click(slot.getByRole("button", { name: "Create task" }));
     await slot.findByText("Sub-tasks cannot have their own sub-tasks");
-    expect(slot.getByLabelText("Task title")).toBeDefined();
+    expect(slot.getByLabelText("Название задачи")).toBeDefined();
   });
 
   it("offers a compact create-label action when the query matches no label", async () => {
@@ -378,7 +378,7 @@ describe("NewTaskDialog", () => {
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
     fireEvent.click(await slot.findByRole("button", { name: /Labels/ }));
-    const search = await slot.findByPlaceholderText("Add labels…");
+    const search = await slot.findByPlaceholderText("Добавить метки…");
     fireEvent.change(search, { target: { value: "  dank  " } });
 
     const createBtn = await slot.findByRole("button", {
@@ -417,9 +417,9 @@ describe("NewTaskDialog drafts", () => {
 
   async function reopen(slot: ReturnType<typeof renderSlot>) {
     fireEvent.keyDown(document.body, { key: "Escape" });
-    await waitFor(() => expect(slot.queryByLabelText("Task title")).toBeNull());
+    await waitFor(() => expect(slot.queryByLabelText("Название задачи")).toBeNull());
     fireEvent.click(slot.getAllByRole("button", { name: /New task/ })[0]!);
-    return (await slot.findByLabelText("Task title")) as HTMLInputElement;
+    return (await slot.findByLabelText("Название задачи")) as HTMLInputElement;
   }
 
   it("restores an unsaved draft after the dialog is dismissed", async () => {
@@ -430,7 +430,7 @@ describe("NewTaskDialog drafts", () => {
       { rpc: draftRpc(createCalls) },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await slot.findByLabelText("Task title"), {
+    fireEvent.change(await slot.findByLabelText("Название задачи"), {
       target: { value: "Twenty minutes of drafting" },
     });
 
@@ -468,10 +468,10 @@ describe("NewTaskDialog drafts", () => {
     };
     const initial = renderSlot(app.navPanels[0]!, { subPath: "all" }, { rpc });
     fireEvent.click(await initial.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await initial.findByLabelText("Task title"), {
+    fireEvent.change(await initial.findByLabelText("Название задачи"), {
       target: { value: "Preserve my project" },
     });
-    fireEvent.click(initial.getByRole("button", { name: "Labels" }));
+    fireEvent.click(initial.getByRole("button", { name: "Метки" }));
     fireEvent.click(await initial.findByRole("option", { name: "Automation" }));
     initial.unmount();
     const restored = renderSlot(
@@ -480,7 +480,7 @@ describe("NewTaskDialog drafts", () => {
       { rpc },
     );
     fireEvent.click(await restored.findByRole("button", { name: /New task/ }));
-    await restored.findByLabelText("Task title");
+    await restored.findByLabelText("Название задачи");
     fireEvent.click(restored.getByRole("button", { name: "Create task" }));
     await waitFor(() => expect(createCalls).toHaveLength(1));
     expect(createCalls[0]).toMatchObject({
@@ -510,7 +510,7 @@ describe("NewTaskDialog drafts", () => {
       },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await slot.findByLabelText("Task title"), {
+    fireEvent.change(await slot.findByLabelText("Название задачи"), {
       target: { value: "Started before projects loaded" },
     });
     resolveProjects({ projects: [project] });
@@ -563,7 +563,7 @@ describe("NewTaskDialog drafts", () => {
         },
       );
       fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-      await slot.findByLabelText("Task title");
+      await slot.findByLabelText("Название задачи");
       await waitFor(() =>
         expect(
           slot.getByRole("button", { name: "Create task" }),
@@ -587,11 +587,11 @@ describe("NewTaskDialog drafts", () => {
       { rpc: draftRpc([]) },
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    fireEvent.change(await slot.findByLabelText("Task title"), {
+    fireEvent.change(await slot.findByLabelText("Название задачи"), {
       target: { value: "Throwaway" },
     });
     fireEvent.click(slot.getByRole("button", { name: "Discard draft" }));
-    expect((slot.getByLabelText("Task title") as HTMLInputElement).value).toBe(
+    expect((slot.getByLabelText("Название задачи") as HTMLInputElement).value).toBe(
       "",
     );
     expect(slot.queryByRole("button", { name: "Discard draft" })).toBeNull();
@@ -612,7 +612,7 @@ describe("NewTaskDialog drafts", () => {
     );
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
     const title = (await slot.findByLabelText(
-      "Task title",
+      "Название задачи",
     )) as HTMLInputElement;
     expect(title.value).toBe("");
   });
@@ -678,7 +678,7 @@ describe("NewTaskDialog attachments", () => {
     title: string,
   ) => {
     fireEvent.click(await slot.findByRole("button", { name: /New task/ }));
-    const titleInput = await slot.findByLabelText("Task title");
+    const titleInput = await slot.findByLabelText("Название задачи");
     fireEvent.change(titleInput, { target: { value: title } });
     return titleInput;
   };
@@ -894,7 +894,7 @@ describe("NewTaskDialog attachments", () => {
     });
     fireEvent.click(retryButton);
     fireEvent.click(retryButton);
-    await slot.findByText("Retrying…");
+    await slot.findByText("Повторная попытка…");
     release();
     await waitFor(() =>
       expect(slot.navigateCalls).toContainEqual({
@@ -950,7 +950,7 @@ describe("describePresetEnvironment", () => {
         presetRow({ environmentKind: "project-default" }) as never,
         MACHINES,
       ),
-    ).toBe("Project default");
+    ).toBe("Окружение проекта по умолчанию");
   });
 });
 
@@ -1052,11 +1052,11 @@ describe("PresetDialog environment section", () => {
       slot.getByRole("button", { name: "Edit preset FB3 BE live worktree" }),
     );
     const branch = (await slot.findByLabelText(
-      "Base branch",
+      "Базовая ветка",
     )) as HTMLInputElement;
     expect(branch.value).toBe("main");
     expect(branch.placeholder).toBe("project default base — leave empty");
-    expect(slot.getByLabelText("Machine")).toBeDefined();
+    expect(slot.getByLabelText("Машина")).toBeDefined();
     await waitFor(() =>
       expect(
         (slot.getByLabelText("Reasoning level") as HTMLInputElement).value,
@@ -1083,13 +1083,13 @@ describe("PresetDialog environment section", () => {
       }),
     ]);
     fireEvent.mouseDown(await slot.findByRole("tab", { name: "Presets" }));
-    await slot.findByText("Project default");
+    await slot.findByText("Окружение проекта по умолчанию");
     fireEvent.click(
       slot.getByRole("button", { name: "Edit preset Default env" }),
     );
-    await slot.findByLabelText("Execution environment");
-    expect(slot.queryByLabelText("Base branch")).toBeNull();
-    expect(slot.queryByLabelText("Machine")).toBeNull();
+    await slot.findByLabelText("Окружение выполнения");
+    expect(slot.queryByLabelText("Базовая ветка")).toBeNull();
+    expect(slot.queryByLabelText("Машина")).toBeNull();
   });
 
   it("saves the host picker's provider, model, reasoning, and tier together", async () => {
@@ -1111,19 +1111,19 @@ describe("PresetDialog environment section", () => {
     fireEvent.change(await slot.findByLabelText("Provider ID"), {
       target: { value: "codex" },
     });
-    fireEvent.change(slot.getByLabelText("Model"), {
+    fireEvent.change(slot.getByLabelText("Модель"), {
       target: { value: "gpt-5.6-sol" },
     });
     fireEvent.change(slot.getByLabelText("Reasoning level"), {
       target: { value: "high" },
     });
-    fireEvent.change(slot.getByLabelText("Service tier"), {
+    fireEvent.change(slot.getByLabelText("Уровень сервиса"), {
       target: { value: "fast" },
     });
     fireEvent.click(
       slot.getByRole("button", { name: "Apply execution selection" }),
     );
-    fireEvent.click(slot.getByRole("button", { name: "Save preset" }));
+    fireEvent.click(slot.getByRole("button", { name: "Сохранить пресет" }));
 
     await waitFor(() => expect(updates).toHaveLength(1));
     expect(updates[0]).toMatchObject({
@@ -1181,7 +1181,7 @@ describe("Manage folders", () => {
         };
       },
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder bb" }),
     );
@@ -1189,7 +1189,7 @@ describe("Manage folders", () => {
     await slot.findByText(
       "1 project and 1 subfolder move to the top level. No tasks are deleted.",
     );
-    fireEvent.click(slot.getByRole("button", { name: "Delete folder" }));
+    fireEvent.click(slot.getByRole("button", { name: "Удалить папку" }));
     await waitFor(() => expect(deleteCalls).toHaveLength(1));
     expect(deleteCalls[0]).toMatchObject({ folderId: parentFolder.id });
   });
@@ -1214,14 +1214,14 @@ describe("Manage folders", () => {
         };
       },
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder bb" }),
     );
 
-    await slot.findByText("Checking what the folder contains…");
+    await slot.findByText("Проверка содержимого папки…");
     expect(slot.queryByText(/The folder is empty/)).toBeNull();
-    const confirm = slot.getByRole("button", { name: "Delete folder" });
+    const confirm = slot.getByRole("button", { name: "Удалить папку" });
     expect(confirm).toHaveProperty("disabled", true);
     fireEvent.click(confirm);
     expect(deleteCalls).toHaveLength(0);
@@ -1232,10 +1232,10 @@ describe("Manage folders", () => {
     );
     await waitFor(() =>
       expect(
-        slot.getByRole("button", { name: "Delete folder" }),
+        slot.getByRole("button", { name: "Удалить папку" }),
       ).toHaveProperty("disabled", false),
     );
-    fireEvent.click(slot.getByRole("button", { name: "Delete folder" }));
+    fireEvent.click(slot.getByRole("button", { name: "Удалить папку" }));
     await waitFor(() => expect(deleteCalls).toHaveLength(1));
   });
 
@@ -1245,14 +1245,14 @@ describe("Manage folders", () => {
         throw new Error("projects unavailable");
       },
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder bb" }),
     );
     await slot.findByText(
       "Could not load the folder's contents: projects unavailable",
     );
-    expect(slot.getByRole("button", { name: "Delete folder" })).toHaveProperty(
+    expect(slot.getByRole("button", { name: "Удалить папку" })).toHaveProperty(
       "disabled",
       true,
     );
@@ -1271,7 +1271,7 @@ describe("Manage folders", () => {
         return { deleted: true, movedProjectIds: [], movedFolderIds: [] };
       },
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder bb" }),
     );
@@ -1289,7 +1289,7 @@ describe("Manage folders", () => {
       "Could not load the folder's contents: projects unavailable",
     );
     expect(slot.queryByText(/move to the top level/)).toBeNull();
-    const confirm = slot.getByRole("button", { name: "Delete folder" });
+    const confirm = slot.getByRole("button", { name: "Удалить папку" });
     expect(confirm).toHaveProperty("disabled", true);
     fireEvent.click(confirm);
     expect(deleteCalls).toHaveLength(0);
@@ -1301,12 +1301,12 @@ describe("Manage folders", () => {
         throw new Error("Folder not found");
       },
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder archive" }),
     );
-    await slot.findByText("The folder is empty.");
-    fireEvent.click(slot.getByRole("button", { name: "Delete folder" }));
+    await slot.findByText("Папка пуста.");
+    fireEvent.click(slot.getByRole("button", { name: "Удалить папку" }));
     await slot.findByRole("alert");
   });
 
@@ -1323,13 +1323,13 @@ describe("Manage folders", () => {
         movedFolderIds: [],
       }),
     });
-    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Folders" }));
+    fireEvent.mouseDown(await slot.findByRole("tab", { name: "Папки" }));
     fireEvent.click(
       await slot.findByRole("button", { name: "Delete folder archive" }),
     );
-    await slot.findByText("The folder is empty.");
+    await slot.findByText("Папка пуста.");
     const callsBeforeDelete = folderCalls;
-    fireEvent.click(slot.getByRole("button", { name: "Delete folder" }));
+    fireEvent.click(slot.getByRole("button", { name: "Удалить папку" }));
     const alert = await slot.findByRole("alert");
     expect(alert.textContent).toBe("Folder “archive” was already deleted.");
     await waitFor(() => expect(folderCalls).toBeGreaterThan(callsBeforeDelete));
@@ -1362,14 +1362,14 @@ describe("NewProjectDialog", () => {
         return { project: { ...project, ...input, id: PROJECT_ID } };
       },
     });
-    fireEvent.click(await slot.findByRole("button", { name: /New project/ }));
-    fireEvent.change(await slot.findByPlaceholderText("e.g. Tasks Plugin"), {
+    fireEvent.click(await slot.findByRole("button", { name: /Новый проект/ }));
+    fireEvent.change(await slot.findByPlaceholderText("например, плагин задач"), {
       target: { value: "Home Lab" },
     });
     expect((slot.getByPlaceholderText("TSK") as HTMLInputElement).value).toBe(
       "HL",
     );
-    fireEvent.click(slot.getByRole("button", { name: "Create project" }));
+    fireEvent.click(slot.getByRole("button", { name: "Создать проект" }));
     await waitFor(() => expect(createCalls).toHaveLength(1));
     expect(createCalls[0]).toMatchObject({
       name: "Home Lab",
@@ -1388,17 +1388,17 @@ describe("NewProjectDialog", () => {
 
   it("flags malformed prefixes before submit", async () => {
     const slot = renderEmptyState();
-    fireEvent.click(await slot.findByRole("button", { name: /New project/ }));
+    fireEvent.click(await slot.findByRole("button", { name: /Новый проект/ }));
     const prefix = slot.getByPlaceholderText("TSK");
     fireEvent.change(prefix, { target: { value: "9x" } });
     expect((prefix as HTMLInputElement).value).toBe("9X");
     await slot.findByText(
-      "Use 1–10 uppercase letters and digits, starting with a letter.",
+      "Используйте от 1 до 10 заглавных латинских букв и цифр; начните с буквы.",
     );
     expect(
       (
         slot.getByRole("button", {
-          name: "Create project",
+          name: "Создать проект",
         }) as HTMLButtonElement
       ).disabled,
     ).toBe(true);
@@ -1415,13 +1415,13 @@ describe("NewProjectDialog", () => {
         return { project: { ...project, ...input, id: PROJECT_ID } };
       },
     });
-    fireEvent.click(await slot.findByRole("button", { name: /New project/ }));
-    fireEvent.change(await slot.findByPlaceholderText("e.g. Tasks Plugin"), {
+    fireEvent.click(await slot.findByRole("button", { name: /Новый проект/ }));
+    fireEvent.change(await slot.findByPlaceholderText("например, плагин задач"), {
       target: { value: "Personal Tasks" },
     });
-    fireEvent.click(slot.getByLabelText("Linked bb project"));
+    fireEvent.click(slot.getByLabelText("Связанный проект bb"));
     fireEvent.click(await slot.findByRole("option", { name: "Personal" }));
-    fireEvent.click(slot.getByRole("button", { name: "Create project" }));
+    fireEvent.click(slot.getByRole("button", { name: "Создать проект" }));
 
     await waitFor(() => expect(createCalls).toHaveLength(1));
     expect(createCalls[0]).toMatchObject({

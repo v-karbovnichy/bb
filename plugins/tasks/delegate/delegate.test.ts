@@ -106,14 +106,14 @@ describe("task delegation", () => {
       expect.arrayContaining([
         expect.objectContaining({
           kind: "system",
-          authorName: "Tasks",
+          authorName: "Задачи",
           presetName: "Test worker",
           threadId: "thr_delegated",
           body: "Status changed to In Progress · dispatched to Test worker",
         }),
         expect.objectContaining({
           kind: "system",
-          authorName: "Tasks",
+          authorName: "Задачи",
           presetName: "Test worker",
           threadId: "thr_delegated",
           body: "Dispatched to Test worker",
@@ -383,7 +383,7 @@ describe("task delegation", () => {
     });
     const store = createStore(bb);
     const project = store.tasks.createProject({
-      name: "Manual",
+      name: "Вручную",
       prefix: "MAN",
       color: "blue",
     });
@@ -436,7 +436,7 @@ describe("task thread detach", () => {
     });
     const store = createStore(bb);
     const project = store.tasks.createProject({
-      name: "Manual",
+      name: "Вручную",
       prefix: "MAN",
       color: "blue",
     });

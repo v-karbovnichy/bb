@@ -23,7 +23,7 @@ export function ThreadChatLoadingBody({
   return (
     <div
       role="status"
-      aria-label="Loading conversation"
+      aria-label="Загрузка беседы"
       className={cn(
         variant === "timeline"
           ? "px-2 pb-3 pt-3"

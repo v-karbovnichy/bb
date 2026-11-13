@@ -76,12 +76,12 @@ function NotificationSettings() {
   const enabled = values?.[`${channel}Enabled`] === true;
   const status =
     permission === "unsupported"
-      ? "System notifications are unavailable here. Use a supported browser over HTTPS or localhost."
+      ? "Системные уведомления здесь недоступны. Используйте поддерживаемый браузер через HTTPS или localhost."
       : permission === "denied"
-        ? "Notifications are blocked. Allow them in your browser or system notification settings, then return here."
+        ? "Уведомления заблокированы. Разрешите их в настройках браузера или системы и вернитесь сюда."
         : permission === "granted"
-          ? "Notifications allowed. Your system notification settings also apply."
-          : "Allow notifications on this device to receive thread updates.";
+          ? "Уведомления разрешены. Настройки системы также действуют."
+          : "Разрешите уведомления на этом устройстве, чтобы получать обновления чатов.";
 
   async function requestPermission() {
     setBusy(true);
@@ -102,7 +102,7 @@ function NotificationSettings() {
     try {
       await rpc.call("notifications.test", { channel });
       setMessage(
-        `Test sent to connected ${channel} clients with notification permission.`,
+        `Тестовое уведомление отправлено подключённым клиентам ${channel} с разрешением на уведомления.`,
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : String(error));
@@ -114,7 +114,7 @@ function NotificationSettings() {
   return (
     <div className="space-y-3 text-sm">
       <h3 className="font-medium">
-        {channel === "desktop" ? "This desktop app" : "This browser"}
+        {channel === "desktop" ? "Это приложение для компьютера" : "Этот браузер"}
       </h3>
       <p className="text-muted-foreground" role="status">
         {status}
@@ -126,7 +126,7 @@ function NotificationSettings() {
           disabled={busy || !enabled}
           onClick={() => void requestPermission()}
         >
-          Allow notifications
+          Разрешить уведомления
         </button>
       ) : null}
       {permission === "granted" ? (
@@ -136,12 +136,12 @@ function NotificationSettings() {
           disabled={busy || !enabled}
           onClick={() => void testNotification()}
         >
-          Send test notification
+          Отправить тестовое уведомление
         </button>
       ) : null}
       {!enabled ? (
         <p className="text-muted-foreground">
-          Enable {channel} notifications above to receive updates.
+          Включите уведомления {channel} выше, чтобы получать обновления.
         </p>
       ) : null}
       {message ? (
@@ -150,8 +150,8 @@ function NotificationSettings() {
         </p>
       ) : null}
       <p className="text-xs text-muted-foreground">
-        Channel settings apply to this bb server. Each browser needs permission.
-        Click a notification to open its thread.
+        Настройки канала действуют для этого сервера bb. В каждом браузере нужно разрешить уведомления.
+        Нажмите на уведомление, чтобы открыть чат.
       </p>
     </div>
   );

@@ -119,7 +119,7 @@ async function deleteThreadQueuedMessageOrConfirmMissing({
 export function createThreadMutationOptions(queryClient: QueryClient) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to create thread.",
+      errorMessage: "Не удалось создать чат.",
       lifecycleOperation: "create_thread",
     },
     mutationFn: (request: AppCreateThreadRequest) =>
@@ -163,7 +163,7 @@ export function useCreateThread() {
 export function sendThreadMessageMutationOptions(queryClient: QueryClient) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to send message.",
+      errorMessage: "Не удалось отправить сообщение.",
       lifecycleOperation: "send_message",
       showErrorToast: false,
     },
@@ -202,7 +202,7 @@ export function useSendThreadMessage() {
 export function editThreadMessageMutationOptions(queryClient: QueryClient) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to edit the message.",
+      errorMessage: "Не удалось изменить сообщение.",
       lifecycleOperation: "edit_message",
       showErrorToast: false,
     },
@@ -230,7 +230,7 @@ export function useUpdateThreadQueuedMessage() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to update queued message.",
+      errorMessage: "Не удалось обновить сообщение в очереди.",
       lifecycleOperation: "update_queued_message",
       showErrorToast: false,
     },
@@ -266,7 +266,7 @@ export function sendThreadQueuedMessageMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to send queued message.",
+      errorMessage: "Не удалось отправить сообщение из очереди.",
       lifecycleOperation: "send_queued_message",
       showErrorToast: false,
     },
@@ -309,7 +309,7 @@ export function useReorderThreadQueuedMessage() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to reorder queued message.",
+      errorMessage: "Не удалось изменить порядок сообщения в очереди.",
       lifecycleOperation: "reorder_queued_message",
       showErrorToast: false,
     },
@@ -354,7 +354,7 @@ export function setThreadQueuedMessageGroupBoundaryMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to group queued messages.",
+      errorMessage: "Не удалось сгруппировать сообщения в очереди.",
       lifecycleOperation: "set_queued_message_group_boundary",
       showErrorToast: false,
     },
@@ -407,7 +407,7 @@ export function deleteThreadQueuedMessageMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to delete queued message.",
+      errorMessage: "Не удалось удалить сообщение из очереди.",
       showErrorToast: false,
     },
     mutationFn: deleteThreadQueuedMessageOrConfirmMissing,
@@ -442,7 +442,7 @@ export function useStopThread() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to stop thread.",
+      errorMessage: "Не удалось остановить чат.",
       lifecycleOperation: "stop_thread",
     },
     mutationFn: async (threadId: string) => {

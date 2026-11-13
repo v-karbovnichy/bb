@@ -19,10 +19,10 @@ const ARRANGEMENT_ACTIONS: ReadonlyArray<{
   label: string;
   side: SplitSide;
 }> = [
-  { label: "Move left", side: "left" },
-  { label: "Move right", side: "right" },
-  { label: "Move top", side: "top" },
-  { label: "Move bottom", side: "bottom" },
+  { label: "Переместить влево", side: "left" },
+  { label: "Переместить вправо", side: "right" },
+  { label: "Переместить вверх", side: "top" },
+  { label: "Переместить вниз", side: "bottom" },
 ];
 
 const MENU_ITEM_CLASS =
@@ -43,9 +43,9 @@ function resolvePaneArrangementLabel({
   isFullScreen: boolean;
 }): string {
   if (isDesktopApp) {
-    return isFullScreen ? "Exit Full Screen" : "Full Screen";
+    return isFullScreen ? "Выйти из полноэкранного режима" : "На весь экран";
   }
-  return isFullScreen ? "Restore split" : "Maximize pane";
+  return isFullScreen ? "Восстановить разделение" : "Развернуть панель";
 }
 
 function ArrangementGlyph({ side }: { side: SplitSide }) {
@@ -166,7 +166,7 @@ export function PaneArrangementButton({
       <PopoverContent
         ref={menuRef}
         role="menu"
-        aria-label="Pane arrangement"
+        aria-label="Расположение панелей"
         side="bottom"
         align="end"
         sideOffset={6}
@@ -191,9 +191,9 @@ export function PaneArrangementButton({
         {onMoveToSide ? (
           <div className="border-t border-border-hairline pt-1.5">
             <div className="px-2 pb-0.5 text-2xs font-medium text-subtle-foreground">
-              Move
+              Переместить
             </div>
-            <div className="grid grid-cols-4 gap-1" aria-label="Move pane">
+            <div className="grid grid-cols-4 gap-1" aria-label="Переместить панель">
               {ARRANGEMENT_ACTIONS.map((action) => (
                 <Tooltip key={action.side}>
                   <TooltipTrigger asChild>

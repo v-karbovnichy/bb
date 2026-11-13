@@ -67,7 +67,7 @@ export function ParentThreadPicker({
     [options, resolveTitle, searchQuery],
   );
   const selectedLabel =
-    options.find((option) => option.value === value)?.label ?? "None";
+    options.find((option) => option.value === value)?.label ?? "Нет";
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
       setOpen(nextOpen);
@@ -104,16 +104,16 @@ export function ParentThreadPicker({
         mobileClassName={PICKER_MOBILE_CLASS_NAME}
         align="start"
         className="flex min-h-0 w-72 flex-col p-0 max-md:flex-1"
-        mobileTitle="Assign parent thread"
+        mobileTitle="Назначить родительский чат"
       >
         <Command
-          label="Search parent threads"
+          label="Поиск родительских чатов"
           shouldFilter={false}
           className="min-h-0"
         >
           <CommandInput
-            aria-label="Search parent threads"
-            placeholder="Search threads…"
+            aria-label="Поиск родительских чатов"
+            placeholder="Поиск чатов…"
             value={searchQuery}
             onValueChange={setSearchQuery}
           />
@@ -122,7 +122,7 @@ export function ParentThreadPicker({
             className="min-h-0 max-h-72 max-md:max-h-none max-md:flex-1"
           >
             {isLoading ? (
-              <ListLoadingPlaceholder label="Loading threads…" />
+              <ListLoadingPlaceholder label="Загрузка чатов…" />
             ) : isError ? (
               <CommandGroup>
                 <CommandItem
@@ -133,14 +133,14 @@ export function ParentThreadPicker({
                     handleOpenChange(false);
                   }}
                 >
-                  Retry loading threads
+                  Повторить загрузку чатов
                 </CommandItem>
               </CommandGroup>
             ) : (
               <>
                 {filteredOptions.length === 0 ? (
                   <div className="py-6 text-center text-sm">
-                    No matching threads.
+                    Подходящие чаты не найдены.
                   </div>
                 ) : (
                   <CommandGroup>

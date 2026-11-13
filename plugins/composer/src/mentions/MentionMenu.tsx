@@ -53,9 +53,9 @@ type SecondaryContextKind = "path" | "project";
 
 function getPathSectionLabel(item: PathMentionSuggestion): string {
   if (item.mention.source === "thread-storage") {
-    return "Thread storage";
+    return "Хранилище чатов";
   }
-  return "Workspace";
+  return "Рабочая область";
 }
 
 function directoryFromPath(path: string): string {
@@ -67,20 +67,20 @@ const THREAD_MENTION_RELATION_LABEL: Record<
   ExperimentalComposerThreadRelation,
   string
 > = {
-  parent: "parent",
-  child: "child thread",
-  "same-parent": "same parent",
-  "same-environment": "same environment",
+  parent: "родительский чат",
+  child: "дочерний чат",
+  "same-parent": "общий родитель",
+  "same-environment": "общая среда",
 };
 
 const THREAD_MENTION_RELATION_COMPACT_LABEL: Record<
   ExperimentalComposerThreadRelation,
   string
 > = {
-  parent: "parent",
-  child: "child thread",
-  "same-parent": "same parent",
-  "same-environment": "same env",
+  parent: "родительский чат",
+  child: "дочерний чат",
+  "same-parent": "общий родитель",
+  "same-environment": "общая среда",
 };
 
 function threadMentionRelationLabel(
@@ -121,11 +121,11 @@ function getMentionTitle(item: MenuMentionSuggestion): string {
   }
 
   if (item.kind === "project") {
-    return `Project: ${item.mention.label}`;
+    return `Проект: ${item.mention.label}`;
   }
 
   if (item.kind === "section") {
-    return `Section: ${item.mention.label}`;
+    return `Раздел: ${item.mention.label}`;
   }
 
   if (item.kind === "plugin") {
@@ -133,7 +133,7 @@ function getMentionTitle(item: MenuMentionSuggestion): string {
   }
 
   if (item.kind === "attachment") {
-    return `Attachment: ${item.mention.label}`;
+    return `Вложение: ${item.mention.label}`;
   }
 
   return `${getPathSectionLabel(item)}: ${item.mention.path}`;
@@ -245,7 +245,7 @@ function ThreadSuggestionRow({
 }: Omit<SuggestionRowProps, "primary" | "title"> & {
   item: ThreadMentionSuggestion;
 }) {
-  const threadTitle = item.title || "Untitled thread";
+  const threadTitle = item.title || "Чат без названия";
   const displayTitle = useThreadTitleDisplayText(threadTitle);
   return (
     <SuggestionRow
@@ -260,7 +260,7 @@ function CloseSuggestionsButton({ onDismiss }: { onDismiss: () => void }) {
   return (
     <button
       type="button"
-      aria-label="Close suggestions"
+      aria-label="Закрыть подсказки"
       onMouseDown={(event) => event.preventDefault()}
       onClick={onDismiss}
       className="flex size-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground"
@@ -317,7 +317,7 @@ function MenuSectionHeader({
         <span>{label}</span>
         <span
           role="status"
-          aria-label={refreshing ? "Updating results" : undefined}
+          aria-label={refreshing ? "Обновление результатов" : undefined}
           className={cn("flex", !refreshing && "invisible")}
         >
           <Icon name="Spinner" className="size-3 animate-spin" aria-hidden />
@@ -349,7 +349,7 @@ function MentionResults({
   if (groups.length === 0) {
     return (
       <MenuStatusRow onDismiss={onDismiss} className="text-muted-foreground">
-        No matching mentions
+        Совпадений не найдено
       </MenuStatusRow>
     );
   }
@@ -374,7 +374,7 @@ function MentionResults({
                 let secondaryContextKind: SecondaryContextKind | null = null;
 
                 if (item.kind === "thread") {
-                  primary = item.title || "Untitled thread";
+                  primary = item.title || "Чат без названия";
                   secondaryContext = item.projectName;
                   secondaryContextKind =
                     item.projectName === null ? null : "project";
@@ -533,7 +533,7 @@ export function MentionMenu({
             onDismiss={onDismiss}
             className="text-muted-foreground"
           >
-            Type to search mentions
+            Введите текст для поиска упоминаний
           </MenuStatusRow>
         ) : innerState.kind === "loading" ? (
           <MenuStatusRow
@@ -543,15 +543,15 @@ export function MentionMenu({
             <Icon name="Spinner" className="size-3.5 animate-spin" />
             <span>
               {state.trigger === "command"
-                ? "Searching commands…"
-                : "Searching mentions…"}
+                ? "Поиск команд…"
+                : "Поиск упоминаний…"}
             </span>
           </MenuStatusRow>
         ) : innerState.kind === "error" ? (
           <MenuStatusRow onDismiss={onDismiss} className="text-destructive">
             {state.trigger === "command"
-              ? "Failed to load commands"
-              : "Failed to load suggestions"}
+              ? "Не удалось загрузить команды"
+              : "Не удалось загрузить подсказки"}
           </MenuStatusRow>
         ) : state.trigger === "command" ? (
           state.state.kind === "results" ? (

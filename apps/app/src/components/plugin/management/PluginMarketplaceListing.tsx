@@ -58,7 +58,7 @@ export function PluginMarketplaceByline({
                 shelf: `category:${entry.categoryId}`,
               }).toString(),
             }}
-            aria-label={`Browse ${entry.category} plugins`}
+            aria-label={`Смотреть плагины категории ${entry.category}`}
             className="min-w-0 truncate rounded-sm underline decoration-border underline-offset-2 hover:text-foreground hover:decoration-current focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             {entry.category}
@@ -96,12 +96,12 @@ export function PluginMarketplaceDetailMetadata({
   return (
     <>
       {entry.marketplace === "bb-official" ? null : (
-        <PluginDetailMetadataItem label="Marketplace">
+        <PluginDetailMetadataItem label="Каталог">
           {entry.marketplaceDisplayName}
         </PluginDetailMetadataItem>
       )}
       {entry.publishedAt === undefined ? null : (
-        <PluginDetailMetadataItem label="Listed">
+        <PluginDetailMetadataItem label="Опубликован">
           <time dateTime={entry.publishedAt}>
             {new Date(entry.publishedAt).toLocaleDateString(undefined, {
               month: "short",
@@ -122,7 +122,7 @@ export function PluginMarketplaceSource({
 }) {
   if (entry.repositoryUrl === null) return null;
   return (
-    <ResourceDefinitionSection label="Source">
+    <ResourceDefinitionSection label="Источник">
       <a
         href={entry.repositoryUrl}
         target="_blank"
@@ -138,7 +138,7 @@ export function PluginMarketplaceSource({
         ) : null}
         <span className="truncate">{formatUrlLabel(entry.repositoryUrl)}</span>
         <Icon name="ExternalLink" className="size-3.5 shrink-0" aria-hidden />
-        <span className="sr-only">Opens in a new tab</span>
+        <span className="sr-only">Откроется в новой вкладке</span>
       </a>
     </ResourceDefinitionSection>
   );
@@ -170,7 +170,7 @@ function PluginScreenshotGallery({
       <Carousel
         setApi={setApi}
         opts={{ align: "start", containScroll: "trimSnaps" }}
-        aria-label={`${entry.displayName} screenshots`}
+        aria-label={`Скриншоты ${entry.displayName}`}
         className={cn("w-full", entry.screenshots.length > 1 && "px-11")}
       >
         <CarouselContent
@@ -181,7 +181,7 @@ function PluginScreenshotGallery({
             <CarouselItem key={screenshot} className="basis-auto pl-3">
               <img
                 src={screenshot}
-                alt={`${entry.displayName} screenshot ${index + 1}`}
+                alt={`Скриншот ${index + 1} плагина ${entry.displayName}`}
                 referrerPolicy="no-referrer"
                 loading="lazy"
                 className="h-auto w-auto rounded-md border border-border object-contain"
@@ -203,7 +203,7 @@ function PluginScreenshotGallery({
       {entry.screenshots.length > 1 ? (
         <div
           className="flex justify-center gap-1.5"
-          aria-label={`Screenshot ${selectedIndex + 1} of ${entry.screenshots.length}`}
+          aria-label={`Скриншот ${selectedIndex + 1} из ${entry.screenshots.length}`}
           role="status"
         >
           {entry.screenshots.map((screenshot, index) => (
@@ -248,7 +248,7 @@ export function PluginMarketplaceOverview({
         {entry.overview === undefined ? null : (
           <>
             <hr className="border-t border-border" />
-            <h2 className="text-sm font-medium text-foreground">Overview</h2>
+            <h2 className="text-sm font-medium text-foreground">Обзор</h2>
             <PluginOverviewMarkdown markdown={entry.overview} />
           </>
         )}
@@ -268,7 +268,7 @@ export function PluginMarketplaceListingSections({
       <PluginMarketplaceSource entry={entry} />
       {entry.marketplace === "bb-official" &&
       entry.publishedAt === undefined ? null : (
-        <ResourceDefinitionSection label="Details">
+        <ResourceDefinitionSection label="Сведения">
           <PluginDetailMetadata>
             <PluginMarketplaceDetailMetadata entry={entry} />
           </PluginDetailMetadata>
@@ -309,7 +309,7 @@ export function PluginMoreFromAuthorSection({
   );
   if (moreEntries.length === 0) return null;
   return (
-    <ResourceDefinitionSection label="More from this author">
+    <ResourceDefinitionSection label="Другие плагины автора">
       <ResourceListPanel className="py-0">
         {moreEntries.map((candidate) => {
           const title = splitPluginDisplayName(candidate.displayName);
@@ -323,7 +323,7 @@ export function PluginMoreFromAuthorSection({
               }
               description={candidate.description || undefined}
               trailingVisual={<ResourceRowDetailChevron />}
-              openLabel={`Open ${candidate.displayName} details`}
+              openLabel={`Открыть сведения о ${candidate.displayName}`}
               onOpen={() => onOpenPlugin(catalogEntryDetailKey(candidate))}
             />
           );

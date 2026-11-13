@@ -104,14 +104,14 @@ export function SidebarHistoryNavigationControls({
         <SidebarHistoryNavButton
           command="history.back"
           icon="ChevronLeft"
-          label="Go back"
+          label="Назад"
           disabled={!canGoBack}
           onClick={handleBack}
         />
         <SidebarHistoryNavButton
           command="history.forward"
           icon="ChevronRight"
-          label="Go forward"
+          label="Вперёд"
           disabled={!canGoForward}
           onClick={handleForward}
         />

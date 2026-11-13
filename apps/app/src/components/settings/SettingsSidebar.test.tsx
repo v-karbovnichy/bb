@@ -86,7 +86,7 @@ describe("SettingsSidebarContent plugin navigation", () => {
     renderSidebar();
     expect(
       screen
-        .getByRole("link", { name: "Installed plugins" })
+        .getByRole("link", { name: "Установленные плагины" })
         .getAttribute("href"),
     ).toBe("/settings/plugins");
     expect(
@@ -106,7 +106,7 @@ describe("SettingsSidebarContent plugin navigation", () => {
 });
 
 function searchInput(): HTMLElement {
-  return screen.getByRole("combobox", { name: "Search settings" });
+  return screen.getByRole("combobox", { name: "Поиск настроек" });
 }
 
 function search(query: string): HTMLElement {
@@ -134,10 +134,10 @@ function resultNames(): (string | null)[] {
 describe("SettingsSidebarContent search", () => {
   it("replaces the section list with matching settings while searching", () => {
     renderSidebar();
-    search("theme");
+    search("тема");
 
-    expect(resultNames()).toEqual(["ThemeAppearance", "PaletteAppearance"]);
-    expect(screen.queryByRole("link", { name: "General" })).toBeNull();
+    expect(resultNames()).toEqual(["ТемаВнешний вид", "ПалитраВнешний вид"]);
+    expect(screen.queryByRole("link", { name: "Основные" })).toBeNull();
     expect(
       screen.getAllByRole("option")[0]?.getAttribute("aria-selected"),
     ).toBe("true");
@@ -145,7 +145,7 @@ describe("SettingsSidebarContent search", () => {
 
   it("opens the highlighted setting with Enter and returns to the section list", () => {
     renderSidebar();
-    const input = search("theme");
+    const input = search("тема");
     fireEvent.keyDown(input, { key: "ArrowDown" });
     expect(input.getAttribute("aria-activedescendant")).toBe(
       screen.getAllByRole("option")[1]?.id,
@@ -154,18 +154,18 @@ describe("SettingsSidebarContent search", () => {
 
     const location = screen.getByTestId("location");
     expect(location.textContent).toBe("/settings/appearance");
-    expect(location.dataset.anchor).toBe("Palette");
+    expect(location.dataset.anchor).toBe("Палитра");
     expect((input as HTMLInputElement).value).toBe("");
-    expect(screen.getByRole("link", { name: "General" })).toBeDefined();
+    expect(screen.getByRole("link", { name: "Основные" })).toBeDefined();
   });
 
   it("wraps from the first result to the last with ArrowUp", () => {
     renderSidebar();
-    const input = search("theme");
+    const input = search("тема");
     fireEvent.keyDown(input, { key: "ArrowUp" });
     fireEvent.keyDown(input, { key: "Enter" });
 
-    expect(screen.getByTestId("location").dataset.anchor).toBe("Palette");
+    expect(screen.getByTestId("location").dataset.anchor).toBe("Палитра");
   });
 
   it("opens a clicked result, including a plugin settings page", () => {
@@ -230,14 +230,14 @@ describe("SettingsSidebarContent search", () => {
         </SidebarProvider>
       </MemoryRouter>,
     );
-    expect(screen.getByRole("status").textContent).toBe("No settings found");
+    expect(screen.getByRole("status").textContent).toBe("Настройки не найдены");
   });
 
   it("says when nothing matches", () => {
     renderSidebar();
     search("zzzz");
 
-    expect(screen.getByRole("status").textContent).toBe("No settings found");
+    expect(screen.getByRole("status").textContent).toBe("Настройки не найдены");
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(searchInput().getAttribute("aria-expanded")).toBe("false");
   });
@@ -247,7 +247,7 @@ describe("SettingsSidebarContent search", () => {
     const input = search("theme");
 
     expect(pressKey(input, "Escape").defaultPrevented).toBe(true);
-    expect(screen.getByRole("link", { name: "General" })).toBeDefined();
+    expect(screen.getByRole("link", { name: "Основные" })).toBeDefined();
     expect(pressKey(input, "Escape").defaultPrevented).toBe(false);
   });
 
@@ -255,7 +255,7 @@ describe("SettingsSidebarContent search", () => {
     renderSidebar();
     const input = search("theme");
     fireEvent.click(
-      screen.getByRole("button", { name: "Clear settings search" }),
+      screen.getByRole("button", { name: "Очистить поиск настроек" }),
     );
 
     expect((input as HTMLInputElement).value).toBe("");

@@ -69,10 +69,10 @@ import {
 } from "@/lib/route-paths";
 
 const CHECKOUTS_DESCRIPTION =
-  "Where this project lives on each machine. A machine needs a checkout before it can run threads for this project.";
+  "Расположение проекта на каждой машине. Чтобы запускать чаты проекта, машине нужна локальная копия.";
 
 const DEFAULTS_DESCRIPTION =
-  "What new threads in this project start with. bb remembers the last options you used here.";
+  "Начальные параметры новых чатов проекта. bb запоминает последние выбранные здесь параметры.";
 
 interface CheckoutRowProps {
   host: Host;
@@ -116,14 +116,14 @@ function CheckoutRow({
           >
             {host.name}
           </Link>
-          {isPrimary ? <SettingsBadge>primary</SettingsBadge> : null}
+          {isPrimary ? <SettingsBadge>основная</SettingsBadge> : null}
           {isPathInvalid ? (
-            <Pill variant="destructive">Path not found</Pill>
+            <Pill variant="destructive">Путь не найден</Pill>
           ) : null}
         </div>
         <div className="min-w-0 truncate font-mono text-xs text-subtle-foreground/75">
           {source === null ? (
-            <span className="font-sans italic">Not set up on this machine</span>
+            <span className="font-sans italic">Не настроено на этой машине</span>
           ) : (
             source.path
           )}
@@ -138,28 +138,28 @@ function CheckoutRow({
             disabled={pending || !connected}
             onClick={onSetUp}
           >
-            {connected ? "Set up" : "Offline"}
+            {connected ? "Настроить" : "Не в сети"}
           </Button>
         ) : (
           <ResourceOverflowMenu
-            label={`${host.name} checkout actions`}
+            label={`Действия с локальной копией на ${host.name}`}
             items={[
               {
-                label: "Change folder",
+                label: "Изменить папку",
                 icon: "Folder",
                 disabled: !connected || pending,
                 disabledReason: connected
                   ? undefined
-                  : "Bring this machine online to change its folder.",
+                  : "Подключите машину к сети, чтобы изменить папку.",
                 onSelect: onChangePath,
               },
               {
-                label: "Remove checkout",
+                label: "Удалить локальную копию",
                 icon: "Trash2",
                 tone: "destructive",
                 disabled: isOnlySource || pending,
                 disabledReason: isOnlySource
-                  ? "A project needs at least one checkout."
+                  ? "У проекта должна быть хотя бы одна локальная копия."
                   : undefined,
                 onSelect: onRemove,
               },
@@ -180,7 +180,7 @@ function LoadingShell({ children }: { children: ReactNode }) {
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <Icon name="ChevronLeft" className="size-3.5" />
-          Projects
+          Проекты
         </Link>
         {children}
       </div>
@@ -294,7 +294,7 @@ export function ProjectDetailSettingsView() {
     return (
       <LoadingShell>
         <p className="text-sm text-destructive" role="alert">
-          Couldn't load this project.
+          Не удалось загрузить проект.
         </p>
       </LoadingShell>
     );
@@ -303,7 +303,7 @@ export function ProjectDetailSettingsView() {
   if (projects === undefined || hostsQuery.data === undefined) {
     return (
       <LoadingShell>
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Загрузка…</p>
       </LoadingShell>
     );
   }
@@ -312,7 +312,7 @@ export function ProjectDetailSettingsView() {
     return (
       <LoadingShell>
         <p className="text-sm text-muted-foreground">
-          This project no longer exists.
+          Этого проекта больше нет.
         </p>
       </LoadingShell>
     );
@@ -344,7 +344,7 @@ export function ProjectDetailSettingsView() {
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
           >
             <Icon name="ChevronLeft" className="size-3.5" />
-            Projects
+            Проекты
           </Link>
           <div className="flex min-w-0 items-start justify-between gap-3">
             <div className="min-w-0">
@@ -357,24 +357,24 @@ export function ProjectDetailSettingsView() {
                   {project.name}
                 </h1>
                 {configuredCount === 0 ? (
-                  <SettingsBadge>needs setup</SettingsBadge>
+                  <SettingsBadge>требуется настройка</SettingsBadge>
                 ) : null}
               </div>
               <p className="mt-1 min-w-0 truncate text-xs text-subtle-foreground/75">
-                {remoteLabel ?? "No git remote"}
+                {remoteLabel ?? "Нет удалённого Git-репозитория"}
                 {" · "}
                 {hosts.length > 1
-                  ? `${configuredCount} of ${pluralize(hosts.length, "machine")}`
+                  ? `${configuredCount} из ${pluralize(hosts.length, "machine")}`
                   : pluralize(configuredCount, "machine")}
                 {" · "}
                 {pluralize(project.threads.length, "thread")}
               </p>
             </div>
             <ResourceOverflowMenu
-              label={`${project.name} actions`}
+              label={`Действия с проектом ${project.name}`}
               items={[
                 {
-                  label: "Rename",
+                  label: "Переименовать",
                   icon: "Edit",
                   onSelect: () => {
                     updateProject.reset();
@@ -389,10 +389,10 @@ export function ProjectDetailSettingsView() {
           </div>
         </div>
 
-        <SettingsSection title="Checkouts" description={CHECKOUTS_DESCRIPTION}>
+        <SettingsSection title="Локальные копии" description={CHECKOUTS_DESCRIPTION}>
           {hosts.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No machines are paired yet.
+              Пока нет подключённых машин.
             </p>
           ) : (
             <SettingsRowList>
@@ -455,60 +455,60 @@ export function ProjectDetailSettingsView() {
                 aria-hidden
               />
               <span>
-                {showAllMachines ? "Show fewer machines" : "Show all machines"}
+                {showAllMachines ? "Показать меньше машин" : "Показать все машины"}
               </span>
             </button>
           ) : null}
         </SettingsSection>
 
         <SettingsSection
-          title="Thread defaults"
+          title="Параметры чатов по умолчанию"
           description={DEFAULTS_DESCRIPTION}
         >
           {defaultsQuery.isError ? (
             <p className="text-sm text-destructive" role="alert">
-              Couldn't load thread defaults.
+              Не удалось загрузить параметры чатов по умолчанию.
             </p>
           ) : defaultsQuery.isPending ? (
-            <p className="text-sm text-muted-foreground">Loading…</p>
+            <p className="text-sm text-muted-foreground">Загрузка…</p>
           ) : defaults === null ? (
             <p className="text-sm text-muted-foreground">
-              No threads have run here yet. The first thread's options become
-              the defaults.
+              Здесь ещё не запускались чаты. Параметры первого чата станут
+              настройками по умолчанию.
             </p>
           ) : (
             <SettingsRowList>
-              <SettingsDetailRow label="Provider">
+              <SettingsDetailRow label="Провайдер">
                 <span>{defaults.providerId}</span>
               </SettingsDetailRow>
-              <SettingsDetailRow label="Model">
+              <SettingsDetailRow label="Модель">
                 <span className="font-mono text-xs">{defaults.model}</span>
               </SettingsDetailRow>
-              <SettingsDetailRow label="Permission mode">
+              <SettingsDetailRow label="Режим разрешений">
                 <span>{permissionLabel}</span>
               </SettingsDetailRow>
-              <SettingsDetailRow label="Reasoning">
+              <SettingsDetailRow label="Уровень рассуждения">
                 <span>{defaults.reasoningLevel}</span>
               </SettingsDetailRow>
             </SettingsRowList>
           )}
         </SettingsSection>
 
-        <SettingsSection title="Project information">
+        <SettingsSection title="Сведения о проекте">
           <SettingsRowList>
-            <SettingsDetailRow label="Git remote">
+            <SettingsDetailRow label="Удалённый Git-репозиторий">
               {project.gitRemoteUrl === null ? (
-                <span>None detected</span>
+                <span>Не найден</span>
               ) : (
                 <span className="min-w-0 truncate font-mono text-xs">
                   {project.gitRemoteUrl}
                 </span>
               )}
             </SettingsDetailRow>
-            <SettingsDetailRow label="Project ID">
+            <SettingsDetailRow label="ID проекта">
               <span className="font-mono text-xs">{project.id}</span>
             </SettingsDetailRow>
-            <SettingsDetailRow label="Created">
+            <SettingsDetailRow label="Создан">
               <span>
                 {formatRelativeTime({ timestamp: project.createdAt, now })}
               </span>
@@ -519,8 +519,8 @@ export function ProjectDetailSettingsView() {
         <ScopedMachineEnvironmentSettings projectId={project.id} />
 
         <SettingsSection
-          title="Danger zone"
-          description={`Deleting ${project.name} removes the project and every thread in it, including archived ones. Checkouts stay on disk.`}
+          title="Опасная зона"
+          description={`При удалении проекта ${project.name} удалятся все его чаты, включая архивные. Локальные копии останутся на диске.`}
         >
           <SettingsRowList>
             <SettingsRow>
@@ -533,7 +533,7 @@ export function ProjectDetailSettingsView() {
                   setDeleteTarget({ id: project.id, name: project.name });
                 }}
               >
-                Delete project
+                Удалить проект
               </Button>
             </SettingsRow>
           </SettingsRowList>

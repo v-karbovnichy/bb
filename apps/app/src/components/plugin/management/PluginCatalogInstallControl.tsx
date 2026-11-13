@@ -14,7 +14,7 @@ import {
 } from "./plugin-ui";
 
 const INSTALL_JOB_LABELS = {
-  queued: "Queued",
+  queued: "В очереди",
   running: "Installing…",
   cancelling: "Cancelling…",
 } as const;
@@ -30,10 +30,10 @@ function PluginInstallJobControl({
 }) {
   const cancelling = job.state === "cancelling";
   const tooltip = cancelling
-    ? `Cancelling the ${displayName} install`
+    ? `Отмена установки ${displayName}`
     : job.state === "queued"
-      ? "Waiting for another install to finish. Click to cancel."
-      : `Installing ${displayName}. Click to cancel.`;
+      ? "Ожидание завершения другой установки. Нажмите, чтобы отменить."
+      : `Установка ${displayName}. Нажмите, чтобы отменить.`;
   return (
     <TooltipProvider delayDuration={250}>
       <Tooltip>
@@ -45,8 +45,8 @@ function PluginInstallJobControl({
             aria-disabled={cancelling}
             aria-label={
               cancelling
-                ? `Cancelling ${displayName} install`
-                : `Cancel installing ${displayName}`
+                ? `Отмена установки ${displayName}`
+                : `Отменить установку ${displayName}`
             }
             className={cn(
               "group/install h-7 min-w-7 shrink-0 gap-1.5 px-2 text-xs font-normal text-subtle-foreground shadow-none",
@@ -119,12 +119,12 @@ export function PluginCatalogInstallControl(
     ? included || props.onUninstall === undefined
     : props.disabled;
   const tooltip = included
-    ? "Included with BB"
+    ? "Входит в BB"
     : installed
-      ? "Installed"
+      ? "Установлен"
       : disabled
-        ? (props.unavailableReason ?? "Unavailable for this version of BB.")
-        : `Install ${displayName}`;
+        ? (props.unavailableReason ?? "Недоступно для этой версии BB.")
+        : `Установить ${displayName}`;
   const stateIcon = installed
     ? "Check"
     : disabled
@@ -140,7 +140,7 @@ export function PluginCatalogInstallControl(
             variant={installed || props.subtle ? "ghost" : "outline"}
             size="sm"
             aria-disabled={disabled}
-            aria-label={`${installed ? `${displayName} installed` : `Install ${displayName}`}${
+            aria-label={`${installed ? `${displayName} установлен` : `Установить ${displayName}`}${
               count === undefined ? "" : ` — ${count.accessibleLabel}`
             }`}
             className={cn(
@@ -184,7 +184,7 @@ export function PluginCatalogInstallControl(
                 />
               ) : null}
             </span>
-            {props.showLabel ? (installed ? "Installed" : "Install") : null}
+            {props.showLabel ? (installed ? "Установлен" : "Установить") : null}
             {count === undefined ? null : (
               <span
                 aria-hidden

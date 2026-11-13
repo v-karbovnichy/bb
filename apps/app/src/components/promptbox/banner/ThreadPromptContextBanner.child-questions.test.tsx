@@ -150,7 +150,7 @@ function shownSource(): string | null {
   return screen.getByRole("link", { name: /^Child thr_/ }).textContent;
 }
 
-function press(name: "Previous question" | "Next question") {
+function press(name: "Предыдущий вопрос" | "Следующий вопрос") {
   const button = screen.getByRole("button", { name });
   button.focus();
   fireEvent.click(button);
@@ -168,7 +168,7 @@ describe("ThreadPromptContextBanner child questions", () => {
 
     rerender(bannerElement(section([newest, middle, oldest]), false));
 
-    expect(screen.getByText("Active child threads")).toBeTruthy();
+    expect(screen.getByText("Активные дочерние чаты")).toBeTruthy();
     expect(
       screen.getByRole("button", { name: /Child thr_b/ }).textContent,
     ).toBe("Child thr_b: Which size?");
@@ -182,15 +182,15 @@ describe("ThreadPromptContextBanner child questions", () => {
     fireEvent.click(screen.getByRole("button", { name: /Child thr_c/ }));
 
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Back to active child threads" }),
+      screen.getByRole("button", { name: "К активным дочерним чатам" }),
     );
     const form = openForm();
     expect(form?.getAttribute("data-presentation")).toBe("inline");
     expect(shownSource()).toBe("Child thr_c");
     expect(screen.getByText("2 of 3")).toBeTruthy();
     expect(screen.getAllByText("Which shape?").length).toBeGreaterThan(0);
-    expect(screen.getByRole("button", { name: "Cancel" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Submit" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Отмена" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Отправить" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Submit answer" })).toBe(null);
     expect(screen.queryByText("Investigate failing checks")).toBe(null);
   });
@@ -198,12 +198,12 @@ describe("ThreadPromptContextBanner child questions", () => {
   it("expands to the row list from the collapsed header without opening a question", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(
-      screen.getByRole("button", { name: "4 active child threads" }),
+      screen.getByRole("button", { name: "Активные дочерние чаты: 4" }),
     );
     expect(openForm()).toBe(null);
 
     const header = screen.getByRole("button", {
-      name: "4 active child threads, needs input: Child thr_b: Which size?",
+      name: "Активные дочерние чаты: 4, нужен ответ: Child thr_b: Which size?",
     });
     fireEvent.click(header);
 
@@ -215,19 +215,19 @@ describe("ThreadPromptContextBanner child questions", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(screen.getByRole("button", { name: /Child thr_b/ }));
 
-    press("Next question");
+    press("Следующий вопрос");
     expect(shownSource()).toBe("Child thr_c");
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Next question" }),
+      screen.getByRole("button", { name: "Следующий вопрос" }),
     );
-    press("Next question");
-    press("Next question");
+    press("Следующий вопрос");
+    press("Следующий вопрос");
     expect(shownSource()).toBe("Child thr_b");
-    press("Previous question");
+    press("Предыдущий вопрос");
     expect(shownSource()).toBe("Child thr_a");
     expect(screen.getByText("3 of 3")).toBeTruthy();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Previous question" }),
+      screen.getByRole("button", { name: "Предыдущий вопрос" }),
     );
   });
 
@@ -243,22 +243,22 @@ describe("ThreadPromptContextBanner child questions", () => {
 
     expect(shownSource()).toBe("Child thr_b");
     expect(
-      screen.queryByRole("button", { name: "Back to active child threads" }),
+      screen.queryByRole("button", { name: "К активным дочерним чатам" }),
     ).toBe(null);
   });
 
   it("drops the stepper and the collapse row for a single open question", () => {
     render(bannerElement(section([newest])));
     expect(
-      screen.getByRole("button", { name: /^Collapse \d+ child threads?$/ }),
+      screen.getByRole("button", { name: /^Свернуть: \d+ дочерн/ }),
     ).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: /Child thr_b/ }));
 
     expect(shownSource()).toBe("Child thr_b");
-    expect(screen.queryByRole("button", { name: "Next question" })).toBe(null);
+    expect(screen.queryByRole("button", { name: "Следующий вопрос" })).toBe(null);
     expect(screen.queryByText(/^\d+ of \d+$/)).toBe(null);
     expect(
-      screen.queryByRole("button", { name: /^Collapse \d+ child threads?$/ }),
+      screen.queryByRole("button", { name: /^Свернуть: \d+ дочерн/ }),
     ).toBe(null);
   });
 
@@ -269,14 +269,14 @@ describe("ThreadPromptContextBanner child questions", () => {
         {bannerElement(section([newest, middle, oldest]))}
       </>,
     );
-    const [, second] = screen.getAllByRole("region", { name: "Child threads" });
+    const [, second] = screen.getAllByRole("region", { name: "Дочерние чаты" });
     if (!second) throw new Error("expected two banners");
     fireEvent.click(
       within(second).getByRole("button", { name: /Child thr_c/ }),
     );
     fireEvent.click(
       within(second).getByRole("button", {
-        name: "Back to active child threads",
+        name: "К активным дочерним чатам",
       }),
     );
 
@@ -289,7 +289,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(screen.getByRole("button", { name: /Child thr_b/ }));
 
-    fireEvent.keyDown(screen.getByRole("button", { name: "Submit" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Отправить" }), {
       key: "Escape",
     });
 
@@ -320,7 +320,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(screen.getByRole("button", { name: /Child thr_c/ }));
 
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
 
     expect(openForm()).toBe(null);
     expect(
@@ -335,7 +335,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(screen.getByRole("button", { name: /Child thr_b/ }));
 
-    fireEvent.keyDown(screen.getByRole("button", { name: "Submit" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Отправить" }), {
       key: "Escape",
       isComposing: true,
     });
@@ -347,7 +347,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     render(bannerElement(section([newest, middle, oldest])));
     fireEvent.click(screen.getByRole("button", { name: /Child thr_c/ }));
     fireEvent.click(screen.getByRole("button", { name: /^Alpha/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отправить" }));
 
     await waitFor(() => expect(mocks.resolve).toHaveBeenCalledTimes(1));
     expect(mocks.resolveHook).toHaveBeenLastCalledWith("thr_c");
@@ -383,7 +383,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     rerender(bannerElement(section([middle])));
     expect(shownSource()).toBe("Child thr_c");
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Back to active child threads" }),
+      screen.getByRole("button", { name: "К активным дочерним чатам" }),
     );
 
     screen.getByRole("button", { name: /^Alpha/ }).focus();
@@ -391,7 +391,7 @@ describe("ThreadPromptContextBanner child questions", () => {
     expect(openForm()).toBe(null);
     expect(screen.getByText("Investigate failing checks")).toBeTruthy();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "1 active child thread" }),
+      screen.getByRole("button", { name: "Активные дочерние чаты: 1" }),
     );
   });
 });

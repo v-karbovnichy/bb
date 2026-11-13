@@ -13,7 +13,7 @@ export function BbProjectLinkPicker({
   value,
   onChange,
   bbProjects,
-  noneLabel = "Not linked",
+  noneLabel = "Не связан",
 }: {
   value: string | null;
   onChange: (value: string | null) => void;
@@ -29,7 +29,7 @@ export function BbProjectLinkPicker({
       value={value ?? NO_LINK}
       onValueChange={(next) => onChange(next === NO_LINK ? null : next)}
     >
-      <SelectTrigger aria-label="Linked bb project" className="h-8">
+      <SelectTrigger aria-label="Связанный проект bb" className="h-8">
         <SelectValue>
           {bbProjects.find((project) => project.id === value)?.name ??
             unavailableSelection ??

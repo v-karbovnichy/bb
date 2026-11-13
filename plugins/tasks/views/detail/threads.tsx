@@ -45,7 +45,7 @@ function ThreadPullRequestPill({
         target="_blank"
         rel="noopener noreferrer"
         title={`${pullRequest.title} (${meta.label})`}
-        aria-label={`Pull request #${pullRequest.number}: ${pullRequest.title} (${meta.label})`}
+        aria-label={`Запрос на слияние №${pullRequest.number}: ${pullRequest.title} (${meta.label})`}
         className="flex shrink-0 items-center gap-1 rounded-full border border-border bg-secondary px-2 py-0.5 text-xs font-medium shadow-2xs hover:border-input"
       >
         <Icon name={meta.icon} className={cn("size-3", meta.textClassName)} />#
@@ -56,7 +56,7 @@ function ThreadPullRequestPill({
   if (unavailable) {
     return (
       <span
-        title="Couldn't check this thread's pull request"
+        title="Не удалось проверить запрос на слияние этого чата"
         className="shrink-0 text-xs text-muted-foreground"
       >
         PR unavailable
@@ -110,13 +110,13 @@ function ThreadCard({
         className="flex shrink-0 items-center gap-1 text-xs font-medium underline decoration-input underline-offset-2 hover:decoration-current"
         onClick={() => navigate.toThread(thread.threadId)}
       >
-        Open thread
+        Открыть чат
         <Icon name="ArrowUpRight" className="size-3" />
       </button>
       <button
         type="button"
-        aria-label={`Detach ${thread.title}`}
-        title="Detach from task"
+        aria-label={`Открепить ${thread.title}`}
+        title="Открепить от задачи"
         disabled={busy}
         className="shrink-0 rounded p-0.5 text-muted-foreground hover:bg-state-hover hover:text-foreground disabled:opacity-70"
         onClick={onDetach}
@@ -231,14 +231,14 @@ export function DispatchControl({
           }}
         >
           <span className="truncate">
-            {dispatching ? "Dispatching…" : (current?.name ?? "Dispatch")}
+            {dispatching ? "Запуск…" : (current?.name ?? "Запустить")}
           </span>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild disabled={dispatching || !current}>
             <Button
               size="sm"
-              aria-label="Choose dispatch preset"
+              aria-label="Выбрать пресет запуска"
               className={cn(
                 "h-7 shrink-0 rounded-l-none border-l border-primary-foreground/25 px-1",
                 primarySegment,
@@ -248,7 +248,7 @@ export function DispatchControl({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align={align}>
-            <DropdownMenuLabel>Dispatch with preset</DropdownMenuLabel>
+            <DropdownMenuLabel>Запустить с пресетом</DropdownMenuLabel>
             {(presets ?? []).map((preset) => (
               <DropdownMenuItem
                 key={preset.id}
@@ -315,9 +315,9 @@ export function ThreadsSection({
   return (
     <section>
       <div className="mb-2 flex items-center gap-2 pt-1.5 text-xs font-semibold text-muted-foreground">
-        Agent threads
+        Чаты агентов
         {activeCount > 0 ? (
-          <span className="font-normal">{activeCount} working now</span>
+          <span className="font-normal">Сейчас в работе: {activeCount}</span>
         ) : null}
       </div>
       {threads.map((thread) => (
@@ -339,9 +339,9 @@ export function ThreadsSection({
       >
         {confirm ? (
           <ConfirmDeleteDialogContent
-            title="Detach thread?"
+            title="Открепить чат?"
             description={`"${confirm.title}" will no longer be listed on this task. The thread itself is not deleted; re-attach it with bb tasks attach.`}
-            confirmLabel="Detach"
+            confirmLabel="Открепить"
             pending={false}
             size="sm"
             onCancel={() => setConfirm(null)}

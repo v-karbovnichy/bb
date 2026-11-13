@@ -95,7 +95,7 @@ function buildStopRequestedTimelineRow({
     kind: "system",
     systemKind: "operation",
     operationKind: "thread-interrupted",
-    title: "Stop requested",
+    title: "Запрошена остановка",
     detail: null,
     status: "pending",
     completedAt: null,
@@ -215,7 +215,7 @@ export function ThreadTimelineSurface({
           (loadingContent ?? <DelayedThreadLoadingIndicator />)
         ) : timelineError ? (
           <TimelineStatusIndicator
-            label="Failed to load timeline"
+            label="Не удалось загрузить историю"
             className={timelineErrorClassName}
           />
         ) : timelineRowsWithPendingStop.length > 0 ? (
@@ -294,7 +294,7 @@ function LoadOlderMessages({
           aria-live="polite"
           role="status"
         >
-          {isLoadingOlderTimelineRows ? "Loading older messages…" : " "}
+          {isLoadingOlderTimelineRows ? "Загрузка предыдущих сообщений…" : " "}
         </span>
       ) : (
         <Button
@@ -306,8 +306,8 @@ function LoadOlderMessages({
         >
           <Icon name="ChevronUp" aria-hidden="true" />
           {isLoadingOlderTimelineRows
-            ? "Loading older messages..."
-            : "Load older messages"}
+            ? "Загрузка предыдущих сообщений..."
+            : "Загрузить предыдущие сообщения"}
         </Button>
       )}
     </div>
@@ -315,7 +315,7 @@ function LoadOlderMessages({
 }
 
 const LOADING_INDICATOR_REVEAL_DELAY_MS = 200;
-const CATCH_UP_INDICATOR_LABEL = "Loading latest messages…";
+const CATCH_UP_INDICATOR_LABEL = "Загрузка последних сообщений…";
 
 const CATCH_UP_INDICATOR_REVEAL_DELAY_MS = 1_000;
 

@@ -61,7 +61,7 @@ export function MachineServerAccessNoticeContent({
           className="w-full shrink-0 @md:w-auto"
         >
           <Link to={getSettingsRoutePath("machines")}>
-            Set up machine access
+            Настроить доступ машин
             <Icon name="ArrowRight" />
           </Link>
         </Button>

@@ -208,7 +208,7 @@ function renderQueuedMessagesWithExpandedSpy(
 
 function expandQueue() {
   fireEvent.click(
-    screen.getByRole("button", { name: "Toggle queued messages" }),
+    screen.getByRole("button", { name: "Показать или скрыть очередь сообщений" }),
   );
 }
 
@@ -252,7 +252,7 @@ describe("QueuedMessagesList", () => {
     );
     expandQueue();
     expect(getByText("Provider unavailable")).toBeTruthy();
-    const button = getByRole("button", { name: "Send queued message 1 now" });
+    const button = getByRole("button", { name: "Отправить сообщение 1 из очереди сейчас" });
     expect(button.hasAttribute("disabled")).toBe(false);
     fireEvent.click(button);
     expect(onSend).toHaveBeenCalledWith("failed-row");
@@ -312,7 +312,7 @@ describe("QueuedMessagesList", () => {
       container.querySelector(
         '[data-queued-message-id="q_system"] [data-queued-message-wait]',
       )?.textContent,
-    ).toContain("Waiting for workspace");
+    ).toContain("Ожидание рабочего пространства");
     expect(
       getByText("thr_sender").closest(".prompt-mention-pill"),
     ).not.toBeNull();
@@ -322,10 +322,10 @@ describe("QueuedMessagesList", () => {
       ]);
     });
     await waitFor(() => expect(getByText("Code review")).toBeTruthy());
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
-    fireEvent.click(getByRole("button", { name: "Toggle queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
+    fireEvent.click(getByRole("button", { name: "Показать или скрыть очередь сообщений" }));
     expect(getByText("Code review")).toBeTruthy();
-    expect(getByText("3 threads updated")).toBeTruthy();
+    expect(getByText("Обновлено чатов: 3")).toBeTruthy();
     queryClient.clear();
   });
 
@@ -365,7 +365,7 @@ describe("QueuedMessagesList", () => {
     expandQueue();
     expect(
       container.querySelector<HTMLElement>(
-        'section[aria-label="Queued messages"]',
+        'section[aria-label="Сообщения в очереди"]',
       )?.style.height,
     ).toBe(height);
   });
@@ -376,7 +376,7 @@ describe("QueuedMessagesList", () => {
       false,
     );
     const surface = container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     );
 
     expect(surface?.classList.contains("mb-0")).toBe(true);
@@ -394,11 +394,11 @@ describe("QueuedMessagesList", () => {
       "[data-queued-messages-mode]",
     );
     const surface = container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     );
-    const toggle = getByRole("button", { name: "Toggle queued messages" });
+    const toggle = getByRole("button", { name: "Показать или скрыть очередь сообщений" });
 
-    expect(getByText("Queue")).not.toBeNull();
+    expect(getByText("Очередь")).not.toBeNull();
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("collapsed");
     expect(surface?.style.height).toBe("44px");
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
@@ -407,15 +407,15 @@ describe("QueuedMessagesList", () => {
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("drawer");
     expect(surface?.style.height).toBe("135px");
     expect(
-      getByRole("button", { name: "Collapse queued messages" }).querySelector(
+      getByRole("button", { name: "Свернуть очередь сообщений" }).querySelector(
         '[data-icon="ChevronUp"]',
       ),
     ).not.toBeNull();
     expect(document.activeElement).toBe(
-      getByRole("button", { name: "Collapse queued messages" }),
+      getByRole("button", { name: "Свернуть очередь сообщений" }),
     );
 
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("collapsed");
     expect(surface?.style.height).toBe("44px");
     expect(document.activeElement).toBe(toggle);
@@ -435,7 +435,7 @@ describe("QueuedMessagesList", () => {
     ]);
     expandQueue();
     const plainHeight = plain.container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     )?.style.height;
     cleanup();
 
@@ -452,7 +452,7 @@ describe("QueuedMessagesList", () => {
     ]);
     expandQueue();
     const waitingHeight = waiting.container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     )?.style.height;
 
     expect(plainHeight).toBe("102px");
@@ -470,9 +470,9 @@ describe("QueuedMessagesList", () => {
     );
 
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("collapsed");
-    fireEvent.click(getByRole("button", { name: "Toggle queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Показать или скрыть очередь сообщений" }));
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("drawer");
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
     expect(header?.getAttribute("data-queued-messages-mode")).toBe("collapsed");
   });
 
@@ -519,7 +519,7 @@ describe("QueuedMessagesList", () => {
     ).toBe("collapsed");
     expect(
       container.querySelector<HTMLElement>(
-        'section[aria-label="Queued messages"]',
+        'section[aria-label="Сообщения в очереди"]',
       )?.style.height,
     ).toBe("44px");
     expect(count()?.classList.contains("bb-count-flash")).toBe(true);
@@ -661,7 +661,7 @@ describe("QueuedMessagesList", () => {
       />,
     );
     expect(headerWait()?.textContent).toMatch(
-      /^Rate limited · retrying at .* · attempt 2$/u,
+      /^Rate limited · Повторная попытка в .* · попытка 2$/u,
     );
 
     rerender(
@@ -702,11 +702,11 @@ describe("QueuedMessagesList", () => {
         .querySelector("[data-queued-messages-mode]")
         ?.getAttribute("data-queued-messages-mode");
 
-    fireEvent.click(getByRole("button", { name: "Toggle queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Показать или скрыть очередь сообщений" }));
     expect(onExpandedChange).toHaveBeenLastCalledWith(true);
     expect(mode()).toBe("drawer");
 
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
     expect(onExpandedChange).toHaveBeenLastCalledWith(false);
     expect(mode()).toBe("collapsed");
   });
@@ -719,17 +719,17 @@ describe("QueuedMessagesList", () => {
     expandQueue();
 
     const sendButton = getByRole("button", {
-      name: "Send queued message 1 now",
+      name: "Отправить сообщение 1 из очереди сейчас",
     });
     const editButton = getByRole("button", {
-      name: "Edit queued message 1",
+      name: "Редактировать сообщение 1 в очереди",
     });
     const deleteButton = getByRole("button", {
-      name: "Delete queued message 1",
+      name: "Удалить сообщение 1 из очереди",
     });
 
     expect(
-      getByRole("button", { name: "Queued message 1 actions" }),
+      getByRole("button", { name: "Действия с сообщением 1 в очереди" }),
     ).toBeTruthy();
     expect(editButton).toBeTruthy();
     expect(deleteButton).toBeTruthy();
@@ -744,9 +744,9 @@ describe("QueuedMessagesList", () => {
     ).not.toBeNull();
 
     for (const [button, label] of [
-      [sendButton, "Send now"],
-      [editButton, "Edit"],
-      [deleteButton, "Delete"],
+      [sendButton, "Отправить сейчас"],
+      [editButton, "Редактировать"],
+      [deleteButton, "Удалить"],
     ] as const) {
       focusWithKeyboard(button);
       expect((await findByRole("tooltip")).textContent).toBe(label);
@@ -789,17 +789,17 @@ describe("QueuedMessagesList", () => {
     expandQueue();
 
     expect(
-      queryByRole("button", { name: "Change when queued message 1 sends" }),
+      queryByRole("button", { name: "Изменить время отправки сообщения 1 из очереди" }),
     ).toBeNull();
     const openDialog = () =>
       fireEvent.click(
-        getByRole("button", { name: "Change when queued message 2 sends" }),
+        getByRole("button", { name: "Изменить время отправки сообщения 2 из очереди" }),
       );
 
     openDialog();
-    expect((getByLabelText("Time") as HTMLInputElement).value).toBe("14:30");
-    fireEvent.change(getByLabelText("Time"), { target: { value: "10:15" } });
-    fireEvent.click(getByRole("button", { name: "Save" }));
+    expect((getByLabelText("Время") as HTMLInputElement).value).toBe("14:30");
+    fireEvent.change(getByLabelText("Время"), { target: { value: "10:15" } });
+    fireEvent.click(getByRole("button", { name: "Сохранить" }));
     const moved = new Date(sendAtDate);
     moved.setHours(10, 15, 0, 0);
     await waitFor(() =>
@@ -812,7 +812,7 @@ describe("QueuedMessagesList", () => {
     await waitFor(() => expect(queryByRole("dialog")).toBeNull());
 
     openDialog();
-    fireEvent.click(getByRole("button", { name: "Remove send time" }));
+    fireEvent.click(getByRole("button", { name: "Убрать время отправки" }));
     await waitFor(() =>
       expect(onChangeSendTime).toHaveBeenLastCalledWith({
         expectedUpdatedAt: 42,
@@ -826,7 +826,7 @@ describe("QueuedMessagesList", () => {
       new Error("Queued message is already being sent"),
     );
     openDialog();
-    fireEvent.click(getByRole("button", { name: "Save" }));
+    fireEvent.click(getByRole("button", { name: "Сохранить" }));
     expect((await findByRole("alert")).textContent).toBe(
       "Queued message is already being sent",
     );
@@ -851,10 +851,10 @@ describe("QueuedMessagesList", () => {
     ]);
     expandQueue();
     const firstActions = getByRole("button", {
-      name: "Queued message 1 actions",
+      name: "Действия с сообщением 1 в очереди",
     });
     const secondActions = getByRole("button", {
-      name: "Queued message 2 actions",
+      name: "Действия с сообщением 2 в очереди",
     });
 
     fireEvent.click(firstActions);
@@ -872,14 +872,14 @@ describe("QueuedMessagesList", () => {
     expect(secondActions.getAttribute("aria-expanded")).toBe("false");
 
     fireEvent.click(firstActions);
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
-    fireEvent.click(getByRole("button", { name: "Toggle queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
+    fireEvent.click(getByRole("button", { name: "Показать или скрыть очередь сообщений" }));
     expect(firstActions.getAttribute("aria-expanded")).toBe("false");
   });
 
   it.each([
-    { sendDisabled: false, expectedAction: "Send queued message 1 now" },
-    { sendDisabled: true, expectedAction: "Edit queued message 1" },
+    { sendDisabled: false, expectedAction: "Отправить сообщение 1 из очереди сейчас" },
+    { sendDisabled: true, expectedAction: "Редактировать сообщение 1 в очереди" },
   ])(
     "focuses $expectedAction after keyboard expansion",
     ({ sendDisabled, expectedAction }) => {
@@ -900,7 +900,7 @@ describe("QueuedMessagesList", () => {
       );
       expandQueue();
       const trigger = getByRole("button", {
-        name: "Queued message 1 actions",
+        name: "Действия с сообщением 1 в очереди",
       });
 
       focusWithKeyboard(trigger);
@@ -918,11 +918,11 @@ describe("QueuedMessagesList", () => {
     ]);
     expandQueue();
     const reorderButton = getByRole("button", {
-      name: "Reorder queued message 1",
+      name: "Изменить порядок сообщения 1 в очереди",
     });
     focusWithKeyboard(reorderButton);
 
-    fireEvent.click(getByRole("button", { name: "Queued message 1 actions" }), {
+    fireEvent.click(getByRole("button", { name: "Действия с сообщением 1 в очереди" }), {
       detail: 1,
     });
 
@@ -983,14 +983,14 @@ describe("QueuedMessagesList", () => {
         item.hasAttribute("data-queued-message-inline-editor"),
       ),
     ).toBe(true);
-    const editingLabel = getByText(/Editing queued message/u);
+    const editingLabel = getByText(/Редактирование сообщения/u);
     expect(
       editingLabel.closest('[data-inline-message-editor-frame="embedded"]'),
     ).not.toBeNull();
     expect(getByTestId("inline-queue-editor")).toBeTruthy();
 
     fireEvent.click(
-      getByRole("button", { name: "Stop editing queued message" }),
+      getByRole("button", { name: "Завершить редактирование сообщения в очереди" }),
     );
     expect(onDismiss).toHaveBeenCalledOnce();
   });
@@ -1063,7 +1063,7 @@ describe("QueuedMessagesList", () => {
       />,
     );
     const surface = container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     );
 
     expect(surface?.style.height).toBe("240px");
@@ -1111,7 +1111,7 @@ describe("QueuedMessagesList", () => {
       />,
     );
 
-    fireEvent.click(getByRole("button", { name: "Collapse queued messages" }));
+    fireEvent.click(getByRole("button", { name: "Свернуть очередь сообщений" }));
     expect(onDismiss).toHaveBeenCalledOnce();
 
     rerender(<QueuedMessagesList {...sharedProps} />);
@@ -1137,7 +1137,7 @@ describe("QueuedMessagesList", () => {
         if (this.hasAttribute("data-queue-test-footer")) {
           return new DOMRect(0, 0, 600, 420);
         }
-        if (this.getAttribute("aria-label") === "Queued messages") {
+        if (this.getAttribute("aria-label") === "Сообщения в очереди") {
           return new DOMRect(0, 0, 600, 240);
         }
         return nativeGetBoundingClientRect.call(this);
@@ -1184,7 +1184,7 @@ describe("QueuedMessagesList", () => {
     );
     const { container, rerender } = render(renderSurface(true));
     const surface = container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     );
     const composer = container.querySelector("[data-test-bottom-composer]");
 
@@ -1217,7 +1217,7 @@ describe("QueuedMessagesList", () => {
         if (this.hasAttribute("data-queue-test-footer")) {
           return new DOMRect(0, 0, 600, 340);
         }
-        if (this.getAttribute("aria-label") === "Queued messages") {
+        if (this.getAttribute("aria-label") === "Сообщения в очереди") {
           return new DOMRect(0, 0, 600, 240);
         }
         if (this.hasAttribute("data-queued-messages-scroll")) {
@@ -1270,7 +1270,7 @@ describe("QueuedMessagesList", () => {
       </div>,
     );
     const surface = container.querySelector<HTMLElement>(
-      'section[aria-label="Queued messages"]',
+      'section[aria-label="Сообщения в очереди"]',
     );
 
     await waitFor(() => expect(surface?.style.height).toBe("360px"));
@@ -1301,7 +1301,7 @@ describe("QueuedMessagesList", () => {
         if (this.hasAttribute("data-queue-test-footer")) {
           return new DOMRect(0, 0, 600, 340);
         }
-        if (this.getAttribute("aria-label") === "Queued messages") {
+        if (this.getAttribute("aria-label") === "Сообщения в очереди") {
           return new DOMRect(0, 0, 600, 240);
         }
         if (this.hasAttribute("data-queued-messages-scroll")) {
@@ -1408,7 +1408,7 @@ describe("QueuedMessagesList", () => {
         if (this.hasAttribute("data-queue-test-footer")) {
           return new DOMRect(0, 0, 600, 340);
         }
-        if (this.getAttribute("aria-label") === "Queued messages") {
+        if (this.getAttribute("aria-label") === "Сообщения в очереди") {
           return new DOMRect(0, 0, 600, 240);
         }
         if (this.hasAttribute("data-queued-messages-scroll")) {
@@ -1462,7 +1462,7 @@ describe("QueuedMessagesList", () => {
         </div>,
       );
       const surface = container.querySelector<HTMLElement>(
-        'section[aria-label="Queued messages"]',
+        'section[aria-label="Сообщения в очереди"]',
       );
       const scroll = container.querySelector<HTMLElement>(
         "[data-queued-messages-scroll]",
@@ -1478,7 +1478,7 @@ describe("QueuedMessagesList", () => {
         '[data-inline-message-editor-frame="embedded"]',
       );
       expect(editorFrame?.firstElementChild?.textContent).toContain(
-        "Editing queued message",
+        "Редактирование сообщения",
       );
       expect(scroll?.scrollTop).toBe(expectedScrollTop);
     },
@@ -1607,9 +1607,9 @@ describe("QueuedMessagesList", () => {
     );
     expandQueue();
 
-    const attachment = getByRole("img", { name: "2 attachments" });
+    const attachment = getByRole("img", { name: "Вложений: 2" });
     expect(attachment.textContent).toBe("2");
-    expect(getByText("Sending…")).not.toBeNull();
+    expect(getByText("Отправка…")).not.toBeNull();
   });
 
   it("renders prompt mentions as pills in queued previews", () => {
@@ -1738,7 +1738,7 @@ describe("QueuedMessagesList", () => {
       makeGroupedQueuedMessages(),
     );
 
-    expect(getByLabelText("Messages above send together")).not.toBeNull();
+    expect(getByLabelText("Сообщения выше отправятся вместе")).not.toBeNull();
     expect(container.textContent).not.toContain("grouped");
     expect(
       container.querySelectorAll("[data-queued-message-row]"),
@@ -2167,7 +2167,7 @@ describe("queued row affordances", () => {
     ]);
     expandQueue();
 
-    const waitLine = getByText("Held by Drafts · Draft").closest(
+    const waitLine = getByText("Удерживает Drafts · Draft").closest(
       "[data-queued-message-wait]",
     );
     expect(waitLine?.querySelector("[data-icon=EditFile]")).not.toBeNull();
@@ -2185,7 +2185,7 @@ describe("queued row affordances", () => {
         waitingOn: { kind: "provisioning" },
       },
       {
-        ...makeQueuedMessage("q_plugin", "Held by a limiter"),
+        ...makeQueuedMessage("q_plugin", "Удерживает a limiter"),
         waitingOn: {
           kind: "plugin",
           pluginId: "concurrency-limit",
@@ -2195,9 +2195,9 @@ describe("queued row affordances", () => {
     ]);
     expandQueue();
 
-    expect(getByText("Waiting for workspace")).toBeDefined();
+    expect(getByText("Ожидание рабочего пространства")).toBeDefined();
     expect(
-      getByText("Held by concurrency-limit · 4 of 4 running"),
+      getByText("Удерживает concurrency-limit · 4 of 4 running"),
     ).toBeDefined();
     expect(queryByText("Waiting for the current turn")).toBeNull();
     expect(
@@ -2212,7 +2212,7 @@ describe("queued row affordances", () => {
         waitingOn: { kind: "thread-busy" },
       },
     ]);
-    expect(queryByLabelText("Send queued message 1 now")).not.toBeNull();
+    expect(queryByLabelText("Отправить сообщение 1 из очереди сейчас")).not.toBeNull();
 
     cleanup();
     const queued = renderQueuedMessages([
@@ -2221,7 +2221,7 @@ describe("queued row affordances", () => {
         waitingOn: { kind: "interaction" },
       },
     ]);
-    expect(queued.queryByLabelText("Send queued message 1 now")).toBeNull();
+    expect(queued.queryByLabelText("Отправить сообщение 1 из очереди сейчас")).toBeNull();
   });
 
   it("offers to steer a provisioning row when the thread is ready", () => {
@@ -2248,7 +2248,7 @@ describe("queued row affordances", () => {
       />,
     );
 
-    fireEvent.click(getByLabelText("Steer queued message 1 when ready"));
+    fireEvent.click(getByLabelText("Направить сообщение 1 из очереди, когда будет готово"));
     expect(onSend).toHaveBeenCalledWith("q_provisioning");
   });
 
@@ -2260,8 +2260,8 @@ describe("queued row affordances", () => {
       },
     ]);
     expandQueue();
-    expect(getByText("Waiting for M4 to be ready")).toBeDefined();
-    expect(queryByLabelText("Send queued message 1 now")).toBeNull();
+    expect(getByText("Ожидание готовности M4")).toBeDefined();
+    expect(queryByLabelText("Отправить сообщение 1 из очереди сейчас")).toBeNull();
   });
 
   it("lets a drain failure take over the line the wait would have used", () => {
@@ -2276,7 +2276,7 @@ describe("queued row affordances", () => {
     expect(
       getByText("Thread stopped before the message could dispatch"),
     ).toBeDefined();
-    expect(queryByText("Waiting for workspace")).toBeNull();
+    expect(queryByText("Ожидание рабочего пространства")).toBeNull();
     expect(
       container.querySelector("[data-queued-message-failed]"),
     ).not.toBeNull();
@@ -2306,9 +2306,9 @@ describe("queued row affordances", () => {
       },
     ]);
     expandQueue();
-    expect(getByText(/^Retry failed turn from /u)).toBeDefined();
+    expect(getByText(/^Повторить неудачный ответ от /u)).toBeDefined();
     expect(
-      getByText(/^Rate limited · retrying at .* · attempt 2$/u),
+      getByText(/^Rate limited · Повторная попытка в .* · попытка 2$/u),
     ).toBeDefined();
   });
 
@@ -2330,7 +2330,7 @@ describe("queued row affordances", () => {
     expandQueue();
     expect(container.querySelector("[data-queued-message-sender]")).toBeNull();
     expect(
-      getByText(/^Rate limited · retrying at .* · attempt 2$/u),
+      getByText(/^Rate limited · Повторная попытка в .* · попытка 2$/u),
     ).toBeDefined();
   });
 
@@ -2350,8 +2350,8 @@ describe("queued row affordances", () => {
       },
     ]);
     expandQueue();
-    expect(queryByLabelText("Edit queued message 1")).toBeNull();
-    expect(queryByLabelText("Delete queued message 1")).not.toBeNull();
+    expect(queryByLabelText("Редактировать сообщение 1 в очереди")).toBeNull();
+    expect(queryByLabelText("Удалить сообщение 1 из очереди")).not.toBeNull();
   });
 
   it("shows a bb notice by its title and offers only send and delete", () => {
@@ -2378,18 +2378,18 @@ describe("queued row affordances", () => {
       makeQueuedMessage("q_user", "User follow-up"),
     ]);
     expandQueue();
-    expect(getByText("2 threads updated")).toBeDefined();
+    expect(getByText("Обновлено чатов: 2")).toBeDefined();
     expect(container.textContent).not.toContain("[bb system]");
     expect(container.textContent).not.toContain("From");
-    expect(queryByLabelText("Send queued message 1 now")).not.toBeNull();
-    expect(queryByLabelText("Delete queued message 1")).not.toBeNull();
-    expect(queryByLabelText("Edit queued message 1")).toBeNull();
-    expect(queryByLabelText("Change when queued message 1 sends")).toBeNull();
+    expect(queryByLabelText("Отправить сообщение 1 из очереди сейчас")).not.toBeNull();
+    expect(queryByLabelText("Удалить сообщение 1 из очереди")).not.toBeNull();
+    expect(queryByLabelText("Редактировать сообщение 1 в очереди")).toBeNull();
+    expect(queryByLabelText("Изменить время отправки сообщения 1 из очереди")).toBeNull();
     expect(
-      queryByLabelText("Reorder queued message 1")?.hasAttribute("disabled"),
+      queryByLabelText("Изменить порядок сообщения 1 в очереди")?.hasAttribute("disabled"),
     ).toBe(true);
     expect(
-      queryByLabelText("Reorder queued message 2")?.hasAttribute("disabled"),
+      queryByLabelText("Изменить порядок сообщения 2 в очереди")?.hasAttribute("disabled"),
     ).toBe(false);
   });
 
@@ -2416,6 +2416,6 @@ describe("queued row affordances", () => {
     ).toBe("· 1 from bb");
     expect(
       header?.querySelector("[data-queued-message-wait]")?.textContent,
-    ).toMatch(/^Scheduled for /u);
+    ).toMatch(/^Запланировано на /u);
   });
 });

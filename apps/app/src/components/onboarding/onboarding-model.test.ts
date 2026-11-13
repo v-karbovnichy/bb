@@ -195,7 +195,7 @@ describe("resolveAgentSetupState", () => {
       }),
     ).toEqual({
       status: "update",
-      detail: "Needs version 2.0.0 or newer",
+      detail: "Нужна версия 2.0.0 или новее",
       canInstall: true,
     });
     expect(
@@ -288,7 +288,7 @@ describe("resolveAgentSetupState", () => {
       }),
     ).toEqual({
       status: "update",
-      detail: "Needs version 0.84.0 or newer",
+      detail: "Нужна версия 0.84.0 или новее",
       canInstall: true,
     });
     expect(
@@ -468,7 +468,7 @@ describe("connectAccessUrl", () => {
         access([
           {
             ...connect,
-            availability: { status: "setup-required", message: "Sign in" },
+            availability: { status: "setup-required", message: "Войти" },
           },
         ]),
       ),

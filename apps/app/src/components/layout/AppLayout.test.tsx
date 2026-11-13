@@ -353,7 +353,9 @@ describe("mobile workspace sidebar access", () => {
           </MemoryRouter>
         </CompactViewportOverrideProvider>,
       );
-      const toggle = screen.getByRole("button", { name: /^Toggle sidebar/ });
+      const toggle = screen.getByRole("button", {
+        name: /^Показать или скрыть боковую панель/,
+      });
       expect(toggle.getAttribute("aria-expanded")).toBe("false");
       fireEvent.click(toggle);
       await waitFor(() =>

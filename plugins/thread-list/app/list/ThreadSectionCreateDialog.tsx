@@ -59,7 +59,7 @@ function ThreadSectionDialogContent({
     null,
   );
   const { validationMessage, validate, clearMessage } = useNameValidation({
-    emptyMessage: "Section name cannot be empty.",
+    emptyMessage: "Введите название раздела.",
   });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -79,15 +79,15 @@ function ThreadSectionDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>New section</DialogTitle>
-        <DialogDescription>Create a section for threads.</DialogDescription>
+        <DialogTitle>Новый раздел</DialogTitle>
+        <DialogDescription>Создайте раздел для чатов.</DialogDescription>
       </DialogHeader>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Input
             ref={inputRef}
             id={inputId}
-            aria-label="Section name"
+            aria-label="Название раздела"
             value={name}
             autoCapitalize="sentences"
             autoCorrect="off"
@@ -105,7 +105,7 @@ function ThreadSectionDialogContent({
         </div>
         <DialogFooter>
           <Button type="submit" disabled={pending}>
-            Create section
+            Создать раздел
           </Button>
         </DialogFooter>
       </form>

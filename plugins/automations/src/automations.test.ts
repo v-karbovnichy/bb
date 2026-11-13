@@ -210,7 +210,7 @@ function createAutomationServiceBb() {
           return {
             id: projectId,
             kind: personal ? ("personal" as const) : ("standard" as const),
-            name: personal ? "Personal" : "Test Project",
+            name: personal ? "Личный" : "Test Project",
             gitRemoteUrl: null,
             createdAt: 1,
             updatedAt: 1,
@@ -1259,7 +1259,7 @@ describe("automation service", () => {
             workingDirectory: { type: "path", path: "relative/path" },
           },
         }),
-      ).rejects.toThrow("absolute path on the bb server host");
+      ).rejects.toThrow("абсолютным путём на хосте сервера bb");
       await expect(
         service.update({
           projectId: "proj_test",
@@ -1357,7 +1357,7 @@ describe("automation service", () => {
         },
         origin: "human",
       }),
-    ).rejects.toThrow("Project proj_missing is not available");
+    ).rejects.toThrow("Проект proj_missing недоступен");
     expect(listAutomationsForProject(db, "proj_missing")).toHaveLength(0);
   });
 
@@ -1653,7 +1653,7 @@ describe("automation CLI --script-file", () => {
   }
 
   function idFrom(stdout: string | undefined): string {
-    const id = /Automation created: (\S+)/.exec(stdout ?? "")?.[1];
+    const id = /Автоматизация создана: (\S+)/.exec(stdout ?? "")?.[1];
     if (!id) throw new Error(`no id in: ${stdout}`);
     return id;
   }
@@ -1703,7 +1703,7 @@ describe("automation CLI --script-file", () => {
       );
       expect(conflict.exitCode).not.toBe(0);
       expect(conflict.stderr).toContain(
-        "Cannot combine --service-tier and --clear-service-tier",
+        "Нельзя одновременно указать --service-tier и --clear-service-tier",
       );
       const cleared = await t.cli.run(
         [
@@ -1767,20 +1767,20 @@ describe("automation CLI --script-file", () => {
         automationScriptDir(t.pluginDataDir, automationId),
         "hello.sh",
       );
-      expect(created.stdout).toContain(`Script:    ${storedPath}`);
-      expect(created.stdout).toContain(`Copied ${sourcePath}`);
-      expect(created.stdout).toContain(`to ${storedPath}`);
+      expect(created.stdout).toContain(`Скрипт:    ${storedPath}`);
+      expect(created.stdout).toContain(`Скопировано из ${sourcePath}`);
+      expect(created.stdout).toContain(`в ${storedPath}`);
       expect(created.stdout).toContain(
         `bb automation update ${automationId} --project proj_test --script-file ${pastedShellArg(sourcePath)}\n`,
       );
-      expect(created.stdout).toContain("Working dir: /server/project");
+      expect(created.stdout).toContain("Рабочая папка: /server/project");
 
       const shown = await t.cli.run(
         ["show", automationId, "--project", "proj_test"],
         {},
       );
-      expect(shown.stdout).toContain(`Script:    ${storedPath}`);
-      expect(shown.stdout).toContain("Working dir: /server/project");
+      expect(shown.stdout).toContain(`Скрипт:    ${storedPath}`);
+      expect(shown.stdout).toContain("Рабочая папка: /server/project");
       const shownJson = await t.cli.run(
         ["show", automationId, "--project", "proj_test", "--json"],
         {},
@@ -1840,7 +1840,7 @@ describe("automation CLI --script-file", () => {
         { cwd: t.srcDir },
       );
       expect(updated.exitCode).toBe(0);
-      expect(updated.stdout).toContain(`Copied ${sourcePath}`);
+      expect(updated.stdout).toContain(`Скопировано из ${sourcePath}`);
       const updatedJson = await t.cli.run(
         ["show", automationId, "--project", "proj_test", "--json"],
         {},
@@ -1858,7 +1858,7 @@ describe("automation CLI --script-file", () => {
           automationScriptDir(t.pluginDataDir, automationId),
         ),
       ).toBe(true);
-      expect(updated.stdout).toContain(`to ${refreshedPath}`);
+      expect(updated.stdout).toContain(`в ${refreshedPath}`);
       await expect(readFile(refreshedPath, "utf8")).resolves.toContain(
         "VERSION 2",
       );
@@ -1892,7 +1892,7 @@ describe("automation CLI --script-file", () => {
         path: sourcePath,
       });
       expect(inThread.stdout).toContain(
-        `Copied ${sourcePath} (host host_laptop)`,
+        `Скопировано из ${sourcePath} (хост host_laptop)`,
       );
       expect(inThread.stdout).toContain(
         `--script-file ${pastedShellArg(sourcePath)} --host host_laptop\n`,
@@ -1935,7 +1935,7 @@ describe("automation CLI --script-file", () => {
         { threadId: "thr_bare" },
       );
       expect(noEnv.exitCode).toBe(1);
-      expect(noEnv.stderr).toContain("pass --host <name-or-id>");
+      expect(noEnv.stderr).toContain("укажите --host <name-or-id>");
 
       const hostOnly = await t.cli.run(
         [
@@ -1954,7 +1954,7 @@ describe("automation CLI --script-file", () => {
         {},
       );
       expect(hostOnly.exitCode).toBe(1);
-      expect(hostOnly.stderr).toContain("--host requires --script-file");
+      expect(hostOnly.stderr).toContain("Для --host требуется --script-file");
     } finally {
       await t.cleanup();
     }
@@ -2043,7 +2043,7 @@ describe("automation CLI --script-file", () => {
       );
       expect(emptyCreate.exitCode).toBe(1);
       expect(emptyCreate.stderr).toContain(
-        "Missing required option --working-directory <value>.",
+        "Отсутствует обязательный параметр --working-directory <value>.",
       );
 
       const created = await t.cli.run(
@@ -2075,7 +2075,7 @@ describe("automation CLI --script-file", () => {
       );
       expect(emptyReplacement.exitCode).toBe(1);
       expect(emptyReplacement.stderr).toContain(
-        "Missing required option --working-directory <value>.",
+        "Отсутствует обязательный параметр --working-directory <value>.",
       );
     } finally {
       await t.cleanup();
@@ -2605,7 +2605,7 @@ describe("script project context", () => {
       });
       expect(result.closed).toMatchObject({
         status: "failed",
-        error: "Project proj_test has no source on the bb server host",
+        error: "У проекта proj_test нет исходного каталога на хосте сервера bb",
       });
     } finally {
       await rm(remoteProjectDir, { recursive: true, force: true });
@@ -2621,7 +2621,7 @@ describe("script project context", () => {
     });
     expect(result.closed).toMatchObject({
       status: "failed",
-      error: "Project proj_test has no source on the bb server host",
+      error: "У проекта proj_test нет исходного каталога на хосте сервера bb",
     });
   });
 
@@ -2665,7 +2665,7 @@ describe("script project context", () => {
     });
     expect(result.closed).toMatchObject({
       status: "failed",
-      error: expect.stringContaining("is not an existing directory"),
+      error: expect.stringContaining("не существует"),
     });
   });
 

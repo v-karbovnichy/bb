@@ -484,10 +484,10 @@ function buildGitDiffCardImageSides(
   const showSideLabels = oldImageUrl !== null && newImageUrl !== null;
   const sides: GitDiffCardImageSide[] = [];
   if (oldImageUrl !== null) {
-    sides.push({ url: oldImageUrl, caption: showSideLabels ? "Old" : null });
+    sides.push({ url: oldImageUrl, caption: showSideLabels ? "Было" : null });
   }
   if (newImageUrl !== null) {
-    sides.push({ url: newImageUrl, caption: showSideLabels ? "New" : null });
+    sides.push({ url: newImageUrl, caption: showSideLabels ? "Стало" : null });
   }
   return sides;
 }
@@ -561,7 +561,7 @@ export function GitDiffCardImagePreviewBody({
   if (imageSides.length === 0) {
     return (
       <div className="px-3 py-3 text-xs text-muted-foreground">
-        No preview available for this image.
+        Предпросмотр этого изображения недоступен.
       </div>
     );
   }
@@ -622,7 +622,7 @@ export function GitDiffCardImagePreviewBody({
         </div>
       </div>
       <GitDiffImageLightbox
-        title={`${fileDiffLabel} image preview`}
+        title={`Предпросмотр изображения ${fileDiffLabel}`}
         imageSrc={expandedImageSide?.url ?? null}
         imageAlt={
           expandedImageSide
@@ -650,7 +650,7 @@ function GitDiffCardImageBody({
   if (preview === null) {
     return (
       <div className="px-3 py-3 text-xs text-muted-foreground">
-        No preview available for this image.
+        Предпросмотр этого изображения недоступен.
       </div>
     );
   }
@@ -746,7 +746,7 @@ export function GitDiffCardBody({
             <span aria-hidden className="w-8 shrink-0" />
           ) : null}
           <span className="pl-[1ch]">
-            <span>This file was deleted.</span>{" "}
+            <span>Этот файл был удалён.</span>{" "}
             <Button
               type="button"
               variant="link"
@@ -754,7 +754,7 @@ export function GitDiffCardBody({
               className="h-auto p-0 text-xs underline underline-offset-4 hover:underline"
               onClick={loadDeletedDiff}
             >
-              Load diff
+              Загрузить изменения
             </Button>
           </span>
         </div>
@@ -817,13 +817,13 @@ function GitDiffCardContextExpansionFooter({
       ) : null}
       <span className="pl-[1ch]">
         {status === "loading" ? (
-          <span role="status">Loading context…</span>
+          <span role="status">Загрузка контекста…</span>
         ) : (
           <>
             {status === "error" ? (
               <>
                 <span className="text-destructive">
-                  Couldn&apos;t load surrounding context.
+                  Не удалось загрузить соседние строки.
                 </span>{" "}
               </>
             ) : null}
@@ -834,7 +834,7 @@ function GitDiffCardContextExpansionFooter({
               className="h-auto p-0 text-xs underline underline-offset-4 hover:underline"
               onClick={request}
             >
-              {status === "error" ? "Retry" : "Expand context"}
+              {status === "error" ? "Повторить" : "Показать контекст"}
             </Button>
           </>
         )}

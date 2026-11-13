@@ -706,22 +706,22 @@ const STATUS_PILL: Record<
   { label: string; className: string; icon: IconName | null }
 > = {
   queued: {
-    label: "Queued",
+    label: "В очереди",
     className: "bg-surface-recessed text-muted-foreground",
     icon: null,
   },
   completed: {
-    label: "Complete",
+    label: "Завершено",
     className: "bg-success/10 text-success",
     icon: "Check",
   },
   failed: {
-    label: "Failed",
+    label: "Ошибка",
     className: "bg-destructive/10 text-destructive-text",
     icon: "X",
   },
   cancelled: {
-    label: "Cancelled",
+    label: "Отменено",
     className: "bg-surface-recessed text-subtle-foreground",
     icon: "Pause",
   },

@@ -100,7 +100,7 @@ describe("reply-in-side-chat message action", () => {
         context: { kind: "thread" },
         availability: "action",
       },
-      title: "Side chat",
+      title: "Боковой чат",
       params: {
         threadId: "thr_fork",
         sourceThreadId: "thr_src",
@@ -156,7 +156,7 @@ describe("reply-in-side-chat message action", () => {
 
     expect(experimental_panel.openTab).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: "Side chat",
+        title: "Боковой чат",
         params: expect.objectContaining({
           sourceMessageText: "just this part",
         }),

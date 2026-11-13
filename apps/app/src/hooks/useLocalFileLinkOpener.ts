@@ -65,7 +65,7 @@ export function useLocalFileLinkOpener({
         case "app-route":
           return false;
         case "error":
-          appToast.error("Failed to open file locally", {
+          appToast.error("Не удалось открыть файл на этом компьютере", {
             description: resolution.description,
           });
           return true;

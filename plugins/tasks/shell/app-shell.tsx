@@ -187,12 +187,12 @@ function TasksAppShellContent({ subPath }: PluginNavPanelProps) {
           {noProjects && route.kind !== "task" && route.kind !== "manage" ? (
             <EmptyState
               icon="ListTodo"
-              title="No projects yet"
-              description="Create a project to start tracking tasks and dispatching work to agents."
+              title="Проектов пока нет"
+              description="Создайте проект, чтобы отслеживать задачи и назначать работу агентам."
               action={
                 <Button size="sm" onClick={() => setNewProjectOpen(true)}>
                   <Icon name="Plus" className="size-3.5" />
-                  New project
+                  Новый проект
                 </Button>
               }
             />

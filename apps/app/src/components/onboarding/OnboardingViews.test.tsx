@@ -69,13 +69,13 @@ describe("AgentStep", () => {
       agent("claude-code", { status: "install", canInstall: true }),
       agent("codex", {
         status: "installFailed",
-        message: "Install failed",
+        message: "Не удалось установить",
         canInstall: true,
       }),
       agent("pi", { status: "installing", update: false }),
     ]);
 
-    fireEvent.click(screen.getByRole("button", { name: "View log" }));
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть журнал" }));
 
     expect(handlers.onViewInstallLog).toHaveBeenCalledExactlyOnceWith("codex");
     expect(handlers.onInstall).not.toHaveBeenCalled();
@@ -85,13 +85,13 @@ describe("AgentStep", () => {
     const handlers = renderAgents([
       agent("codex", {
         status: "installFailed",
-        message: "Install failed",
+        message: "Не удалось установить",
         canInstall: false,
       }),
     ]);
 
-    expect(screen.queryByRole("button", { name: "Retry" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "View log" }));
+    expect(screen.queryByRole("button", { name: "Повторить" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Посмотреть журнал" }));
 
     expect(handlers.onViewInstallLog).toHaveBeenCalledExactlyOnceWith("codex");
   });
@@ -108,7 +108,7 @@ describe("AgentStep in the redesigned guide", () => {
           agents={[
             agent("codex", {
               status: "installFailed",
-              message: "Couldn't install. Check your connection and retry.",
+              message: "Не удалось установить. Проверьте подключение и попробуйте ещё раз.",
               canInstall: true,
             }),
             agent("claude-code", { status: "signingIn" }),
@@ -123,15 +123,15 @@ describe("AgentStep in the redesigned guide", () => {
       </TooltipProvider>,
     );
 
-    expect(screen.getByRole("button", { name: /Retry/u })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "View log" })).toBeNull();
+    expect(screen.getByRole("button", { name: /Повторить/u })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Посмотреть журнал" })).toBeNull();
     fireEvent.click(
-      screen.getByRole("button", { name: "Cancel signing in to claude-code" }),
+      screen.getByRole("button", { name: "Отменить вход в claude-code" }),
     );
     expect(onCancelSignIn).toHaveBeenCalledExactlyOnceWith("claude-code");
     expect(
       screen.getByText(
-        "Don't see your agent? bb picks up other ACP agents once you have them installed.",
+        "Не видите своего агента? bb обнаружит другие ACP-агенты после их установки.",
       ),
     ).toBeTruthy();
   });
@@ -146,9 +146,9 @@ describe("OnboardingLayout stepper", () => {
         composition="centered"
         showSkipAll={false}
         skippedSteps={skipped}
-        title="Make bb yours"
+        title="Настройте bb под себя"
         description=""
-        primaryLabel="Continue"
+        primaryLabel="Продолжить"
         onPrimary={vi.fn()}
         onSelectStep={onSelectStep}
         onSkipAll={vi.fn()}
@@ -162,11 +162,11 @@ describe("OnboardingLayout stepper", () => {
   it("marks a step passed without finishing as skipped and still lets people go back to it", () => {
     const onSelectStep = renderAt(new Set(["projects"]));
 
-    fireEvent.click(screen.getByRole("button", { name: "Projects (skipped)" }));
+    fireEvent.click(screen.getByRole("button", { name: "Проекты (пропущено)" }));
 
     expect(onSelectStep).toHaveBeenCalledExactlyOnceWith("projects");
-    expect(screen.getByRole("button", { name: "Agent" })).toBeTruthy();
-    expect(screen.queryByText("Skip setup")).toBeNull();
+    expect(screen.getByRole("button", { name: "Агент" })).toBeTruthy();
+    expect(screen.queryByText("Пропустить настройку")).toBeNull();
   });
 });
 
@@ -209,9 +209,9 @@ describe("ProjectsStep selection", () => {
   it("keeps today's count line by default", () => {
     renderProjects({ repos: [repo("a"), repo("b")], selectedIds: ["a"] });
 
-    expect(screen.getByText("1 of 2 selected")).toBeTruthy();
+    expect(screen.getByText("Выбрано 1 из 2")).toBeTruthy();
     expect(
-      screen.queryByRole("checkbox", { name: "Select all projects" }),
+      screen.queryByRole("checkbox", { name: "Выбрать все проекты" }),
     ).toBeNull();
   });
 
@@ -224,7 +224,7 @@ describe("ProjectsStep selection", () => {
 
     expect(screen.queryByText(/selected/u)).toBeNull();
     const header = screen.getByRole("checkbox", {
-      name: "Select all projects",
+      name: "Выбрать все проекты",
     });
     expect(header.getAttribute("data-state")).toBe("indeterminate");
     expect(header.className).toContain(
@@ -247,7 +247,7 @@ describe("ProjectsStep selection", () => {
     });
 
     const header = screen.getByRole("checkbox", {
-      name: "Clear project selection",
+      name: "Снять выделение проектов",
     });
     expect(header.getAttribute("data-state")).toBe("checked");
     fireEvent.click(header);
@@ -263,7 +263,7 @@ describe("ProjectsStep selection", () => {
     });
 
     const header = screen.getByRole("checkbox", {
-      name: "Select all projects",
+      name: "Выбрать все проекты",
     });
     expect(header.getAttribute("data-state")).toBe("unchecked");
     expect(header.hasAttribute("disabled")).toBe(true);
@@ -276,10 +276,10 @@ describe("ProjectsStep selection", () => {
       selectedIds: ["a"],
     });
 
-    const label = screen.getByText("Last active");
+    const label = screen.getByText("Последняя активность");
     expect(label.closest("label")).toBeNull();
     expect(
-      label.closest("li")?.querySelector('[aria-label="Select all projects"]'),
+      label.closest("li")?.querySelector('[aria-label="Выбрать все проекты"]'),
     ).not.toBeNull();
   });
 });
@@ -321,21 +321,21 @@ describe("AgentSignInInstruction", () => {
     const line = renderInstruction("https://www.cursor.com/login");
 
     expect(screen.getByRole("link", { name: "cursor.com" })).toBeTruthy();
-    expect(line.textContent).toBe("Sign in on cursor.com.");
+    expect(line.textContent).toBe("Войдите на cursor.com.");
   });
 
   it("names the website for paste sign-ins", () => {
     expect(
       renderInstruction("https://claude.ai/oauth/authorize", { paste: true })
         .textContent,
-    ).toBe("Sign in on claude.ai, then paste the code it shows you.");
+    ).toBe("Войдите на claude.ai, затем вставьте показанный код.");
   });
 
   it("links the browser when the URL has no website", () => {
     const url = "file:///tmp/sign-in";
-    expect(renderInstruction(url).textContent).toBe("Sign in in your browser.");
+    expect(renderInstruction(url).textContent).toBe("Войдите в вашем браузере.");
     expect(
-      screen.getByRole("link", { name: "your browser" }).getAttribute("href"),
+      screen.getByRole("link", { name: "вашем браузере" }).getAttribute("href"),
     ).toBe(url);
   });
 
@@ -348,7 +348,7 @@ describe("AgentSignInInstruction", () => {
       onOpenUrl,
     });
 
-    expect(line.textContent).toBe("Enter this code on auth.openai.com.");
+    expect(line.textContent).toBe("Введите этот код на auth.openai.com.");
     expect(within(line).queryByRole("button")).toBeNull();
     const link = screen.getByRole("link", { name: "auth.openai.com" });
     expect(link.getAttribute("href")).toBe(url);
@@ -383,7 +383,7 @@ describe("AgentSignInPanel", () => {
     );
 
     expect(
-      screen.getByRole("textbox", { name: "Claude Code authorization code" }),
+      screen.getByRole("textbox", { name: "Код авторизации Claude Code" }),
     ).toBeTruthy();
     expect(screen.queryByText(/paste the code it shows you/u)).toBeNull();
     expect(screen.queryByText(/continues automatically/u)).toBeNull();
@@ -414,8 +414,8 @@ describe("AgentSignInPanel", () => {
     );
 
     expect(screen.queryByRole("link")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Copy link" })).toBeNull();
-    expect(screen.getByText("Show terminal")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Скопировать ссылку" })).toBeNull();
+    expect(screen.getByText("Показать терминал")).toBeTruthy();
   });
 
   it("leaves Pi's sign-in to its terminal even when Pi asks for a code", () => {
@@ -443,10 +443,10 @@ describe("AgentSignInPanel", () => {
     );
 
     expect(screen.getByText("pi terminal")).toBeTruthy();
-    expect(screen.getByText("Hide terminal")).toBeTruthy();
+    expect(screen.getByText("Скрыть терминал")).toBeTruthy();
     expect(screen.queryByRole("textbox")).toBeNull();
     expect(screen.queryByText("ABCD-EFGH")).toBeNull();
-    expect(screen.queryByText("Finishing sign-in…")).toBeNull();
+    expect(screen.queryByText("Завершаем вход…")).toBeNull();
     expect(screen.queryByRole("link")).toBeNull();
   });
 });
@@ -491,10 +491,10 @@ describe("AgentStep progress in the redesign", () => {
     ]);
 
     expect(
-      within(rowOf("pi")).getByText("Choose a provider and sign in below."),
+      within(rowOf("pi")).getByText("Выберите провайдера и войдите ниже."),
     ).toBeTruthy();
     within(rowOf("pi")).getByRole("button", {
-      name: "Cancel signing in to pi",
+      name: "Отменить вход в pi",
     });
   });
 
@@ -525,9 +525,9 @@ describe("AgentStep progress in the redesign", () => {
     expect(hasSubtitle("amp")).toBe(true);
     within(
       document.querySelector<HTMLElement>('[data-agent-id="pi"]')!,
-    ).getByRole("button", { name: "Sign in" });
+    ).getByRole("button", { name: "Войти" });
     expect(screen.getByText("me@example.com · Pro")).toBeTruthy();
-    expect(screen.getByText("Update needed")).toBeTruthy();
+    expect(screen.getByText("Требуется обновление")).toBeTruthy();
     expect(
       screen.queryByText(/not signed in|Not installed|no model/u),
     ).toBeNull();
@@ -541,18 +541,18 @@ describe("AgentStep progress in the redesign", () => {
     ]);
 
     expect(hasSubtitle("claude-code")).toBe(false);
-    within(rowOf("claude-code")).getByText("Ready");
-    expect(screen.queryByText("Signed in")).toBeNull();
+    within(rowOf("claude-code")).getByText("Готов");
+    expect(screen.queryByText("Вход выполнен")).toBeNull();
     within(rowOf("cursor")).getByText("you@example.com · Pro");
     expect(hasSubtitle("pi")).toBe(false);
-    within(rowOf("pi")).getByText("Ready");
+    within(rowOf("pi")).getByText("Готов");
   });
 
   it("shows Installing… in the same disabled button", () => {
     const { rerender } = renderQuiet([
       agent("codex", { status: "install", canInstall: true }),
     ]);
-    screen.getByRole("button", { name: "Install" });
+    screen.getByRole("button", { name: "Установить" });
 
     rerender(
       <TooltipProvider>
@@ -569,15 +569,15 @@ describe("AgentStep progress in the redesign", () => {
         />
       </TooltipProvider>,
     );
-    const busy = screen.getByRole("button", { name: "Installing…" });
+    const busy = screen.getByRole("button", { name: "Установка…" });
     expect((busy as HTMLButtonElement).disabled).toBe(true);
     expect(busy.querySelector('[data-icon="Spinner"]')).not.toBeNull();
-    expect(busy.textContent).toBe("Installing…");
+    expect(busy.textContent).toBe("Установка…");
   });
 
   it("shows Updating… while an update installs", () => {
     renderQuiet([agent("codex", { status: "installing", update: true })]);
-    const busy = screen.getByRole("button", { name: "Updating…" });
+    const busy = screen.getByRole("button", { name: "Обновление…" });
     expect((busy as HTMLButtonElement).disabled).toBe(true);
   });
 
@@ -603,15 +603,15 @@ describe("AgentStep progress in the redesign", () => {
     ]);
 
     within(rowOf("claude-code")).getByRole("button", {
-      name: "Cancel signing in to claude-code",
+      name: "Отменить вход в claude-code",
     });
     expect(screen.queryByRole("button", { name: "Starting…" })).toBeNull();
-    const loading = within(rowOf("claude-code")).getByText("Starting sign in…");
+    const loading = within(rowOf("claude-code")).getByText("Начинаем вход…");
     expect(
       loading.closest("span.flex")?.querySelector('[data-icon="Spinner"]'),
     ).not.toBeNull();
     expect(
-      within(rowOf("claude-code")).queryByText("Show terminal"),
+      within(rowOf("claude-code")).queryByText("Показать терминал"),
     ).toBeNull();
     expect(rowOf("claude-code").childElementCount).toBe(1);
   });
@@ -623,7 +623,7 @@ describe("AgentStep progress in the redesign", () => {
         subline: "Finish signing in on claude.ai.",
       },
     ]);
-    screen.getByRole("button", { name: "Cancel signing in to claude-code" });
+    screen.getByRole("button", { name: "Отменить вход в claude-code" });
     const subtitle = screen.getByText("Finish signing in on claude.ai.");
     expect(
       subtitle.closest("span.flex")?.querySelector('[data-icon="Spinner"]'),
@@ -640,25 +640,25 @@ describe("AgentStep progress in the redesign", () => {
       agent("pi", { status: "installing", update: false }),
       agent("codex", { status: "ready", detail: null }),
     ]);
-    expect(screen.getByText("Installed · not signed in")).toBeTruthy();
-    expect(screen.getByText("Signed in")).toBeTruthy();
-    expect(screen.getByText("Installing…")).toBeTruthy();
+    expect(screen.getByText("Установлен · вход не выполнен")).toBeTruthy();
+    expect(screen.getByText("Вход выполнен")).toBeTruthy();
+    expect(screen.getByText("Установка…")).toBeTruthy();
   });
 });
 
 describe("Agent step header and install details in the redesign", () => {
   it("shows the machine line without Check again", () => {
     renderQuiet([agent("codex", { status: "install", canInstall: true })]);
-    expect(screen.getByText("On bee")).toBeTruthy();
+    expect(screen.getByText("На компьютере bee")).toBeTruthy();
     expect(screen.queryByRole("button", { name: /Check again/u })).toBeNull();
   });
 
   it("opens the install output from the details strip", () => {
     render(<AgentInstallErrorDetails log="npm ERR! code ECONNRESET" />);
     expect(screen.queryByText("npm ERR! code ECONNRESET")).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: /Show details/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Показать подробности/u }));
     expect(screen.getByText("npm ERR! code ECONNRESET")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: /Hide details/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Скрыть подробности/u }));
     expect(screen.queryByText("npm ERR! code ECONNRESET")).toBeNull();
   });
 
@@ -668,7 +668,7 @@ describe("Agent step header and install details in the redesign", () => {
         log={"\u001b[31mnpm error\u001b[39m code ECONNREFUSED\r\n"}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: /Show details/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Показать подробности/u }));
     const output = screen.getByText(/npm error code ECONNREFUSED/u);
     expect(output.textContent).toBe("npm error code ECONNREFUSED\n");
     expect(output.className).toContain("wrap-anywhere");
@@ -684,7 +684,7 @@ describe("Agent step header and install details in the redesign", () => {
       installLog: "npm error code ECONNREFUSED",
     };
     const { rerender, handlers } = renderQuiet([failed]);
-    within(rowOf("codex")).getByRole("button", { name: /Show details/u });
+    within(rowOf("codex")).getByRole("button", { name: /Показать подробности/u });
 
     rerender(
       <TooltipProvider>
@@ -703,9 +703,9 @@ describe("Agent step header and install details in the redesign", () => {
         />
       </TooltipProvider>,
     );
-    within(rowOf("codex")).getByRole("button", { name: "Waiting…" });
+    within(rowOf("codex")).getByRole("button", { name: "Ожидание…" });
     expect(
-      within(rowOf("codex")).queryByRole("button", { name: /Show details/u }),
+      within(rowOf("codex")).queryByRole("button", { name: /Показать подробности/u }),
     ).toBeNull();
   });
 });
@@ -720,9 +720,9 @@ describe("Agent rows active at once in the redesign", () => {
       },
     ]);
 
-    within(rowOf("pi")).getByRole("button", { name: "Installing…" });
+    within(rowOf("pi")).getByRole("button", { name: "Установка…" });
     const waiting = within(rowOf("codex")).getByRole("button", {
-      name: "Waiting…",
+      name: "Ожидание…",
     });
     expect((waiting as HTMLButtonElement).disabled).toBe(true);
     expect(waiting.querySelector('[data-icon="Spinner"]')).not.toBeNull();
@@ -743,27 +743,27 @@ describe("RedesignedDevicesStep", () => {
         <RedesignedDevicesStep {...props} showMachines={false} />
       </TooltipProvider>,
     );
-    expect(screen.queryByText("Where agents run")).toBeNull();
-    expect(screen.queryByText("Add another machine")).toBeNull();
-    expect(screen.getByText("Where you use bb").className).toContain("sr-only");
+    expect(screen.queryByText("Где работают агенты")).toBeNull();
+    expect(screen.queryByText("Добавить компьютер")).toBeNull();
+    expect(screen.getByText("Где вы используете bb").className).toContain("sr-only");
 
     rerender(
       <TooltipProvider>
         <RedesignedDevicesStep {...props} showMachines />
       </TooltipProvider>,
     );
-    screen.getByText("Where agents run");
-    expect(screen.getByText("Where you use bb").className).not.toContain(
+    screen.getByText("Где работают агенты");
+    expect(screen.getByText("Где вы используете bb").className).not.toContain(
       "sr-only",
     );
     expect(
       screen
         .getByText("bb connect")
-        .compareDocumentPosition(screen.getByText("Add another machine")) &
+        .compareDocumentPosition(screen.getByRole("button", { name: "Добавить компьютер" })) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
     expect(screen.queryByRole("dialog")).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Add a machine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить компьютер" }));
     expect(props.onAddMachine).toHaveBeenCalledOnce();
   });
 
@@ -781,9 +781,9 @@ describe("RedesignedDevicesStep", () => {
       </TooltipProvider>,
     );
 
-    expect(screen.queryByText("Where you use bb")).toBeNull();
+    expect(screen.queryByText("Где вы используете bb")).toBeNull();
     expect(screen.queryByText(/turned off on this server/u)).toBeNull();
-    expect(screen.queryByText("Add another machine")).toBeNull();
-    expect(screen.queryByText("Get the mobile app")).toBeNull();
+    expect(screen.queryByText("Добавить компьютер")).toBeNull();
+    expect(screen.queryByText("Установить мобильное приложение")).toBeNull();
   });
 });

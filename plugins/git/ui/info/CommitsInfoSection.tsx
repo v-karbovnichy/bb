@@ -20,8 +20,8 @@ import type { WorkspaceStatus } from "../../contract.js";
 
 function copyCommitSha(sha: string): void {
   void experimental_copyToClipboard({ text: sha }).then((written) => {
-    if (written) toast.success("Commit SHA copied");
-    else toast.error("Failed to copy commit SHA");
+    if (written) toast.success("SHA коммита скопирован");
+    else toast.error("Не удалось скопировать SHA коммита");
   });
 }
 
@@ -36,7 +36,7 @@ export function CommitsSectionView({
   const committedFiles = selectChangedFilesSection(workspace, "committed");
   if (commits.length === 0 && committedFiles === undefined) return null;
   return (
-    <InfoSection label="Commits" count={commits.length}>
+    <InfoSection label="Коммиты" count={commits.length}>
       <InfoListRail count={commits.length}>
         <InfoList
           items={commits}
@@ -55,12 +55,12 @@ export function CommitsSectionView({
               actions={[
                 {
                   icon: "ExternalLink",
-                  label: "Open diff",
+                  label: "Открыть изменения",
                   onSelect: () => actions.onCommitClick(commit.sha),
                 },
                 {
                   icon: "Copy",
-                  label: "Copy commit SHA",
+                  label: "Скопировать SHA коммита",
                   onSelect: () => copyCommitSha(commit.sha),
                 },
               ]}
@@ -77,7 +77,7 @@ export function CommitsSectionView({
       {committedFiles ? (
         <>
           <InfoSubheading
-            label="Files changed"
+            label="Изменённые файлы"
             count={committedFiles.stats.fileCount}
             trailing={<ChangedFilesTally section={committedFiles} />}
           />

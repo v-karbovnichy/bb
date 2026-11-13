@@ -234,8 +234,8 @@ describe("server session ownership", () => {
   });
 
   it.each([
-    ["Shared lab", "ambiguous"],
-    ["Missing lab", "not found"],
+    ["Shared lab", "неоднозначно"],
+    ["Missing lab", "не найдена"],
   ])(
     "rejects machine selector %s before creating a session",
     async (target, message) => {
@@ -415,7 +415,7 @@ describe("server session ownership", () => {
         { threadId: "other" },
       );
       expect(denied.exitCode).toBe(1);
-      expect(denied.stderr).toContain("another thread");
+      expect(denied.stderr).toContain("другого чата");
       expect(
         h.worker.mock.calls.filter(([call]) => call.method === "run"),
       ).toHaveLength(0);
@@ -673,7 +673,7 @@ describe("server session cleanup", () => {
       finishRun();
       await running;
       await expect(h.harness.behavior.callRpc("run", input)).rejects.toThrow(
-        "stopped or expired",
+        "остановлен или истёк",
       );
     } finally {
       await h.harness.lifecycle.dispose();
@@ -694,7 +694,7 @@ describe("server session cleanup", () => {
           ...(method === "run" ? { script: "1" } : {}),
         });
         if (method === "run")
-          await expect(operation).rejects.toThrow("expired");
+          await expect(operation).rejects.toThrow("истёк");
         else expect(await operation).toMatchObject({ frame: null });
         expect(hostCalls(h, method)).toHaveLength(0);
         expect((await listed(h, session.id))?.expiresAt).toBe(
@@ -773,10 +773,10 @@ describe("server session cleanup", () => {
           ...ownedBy(flaky.id),
           script: "1",
         }),
-      ).rejects.toThrow("stopped or expired");
+      ).rejects.toThrow("остановлен или истёк");
       await expect(
         h.harness.behavior.callRpc("stop", ownedBy(flaky.id)),
-      ).rejects.toThrow("Browser session closed");
+      ).rejects.toThrow("Сеанс браузера закрыт");
       h.worker.mockImplementation(async () => null);
       expect(
         await h.harness.behavior.callRpc("close", ownedBy(flaky.id)),

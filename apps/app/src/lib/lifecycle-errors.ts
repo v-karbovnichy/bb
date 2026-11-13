@@ -92,37 +92,37 @@ interface DispatchHookFailedDescriptionArgs {
 function operationTitle(operation: LifecycleErrorOperation): string {
   switch (operation) {
     case "archive_thread":
-      return "Failed to archive thread";
+      return "Не удалось архивировать чат";
     case "create_thread":
-      return "Failed to create thread";
+      return "Не удалось создать чат";
     case "edit_message":
-      return "Failed to edit message";
+      return "Не удалось изменить сообщение";
     case "load_diff":
-      return "Failed to load diff";
+      return "Не удалось загрузить изменения";
     case "load_git_status":
-      return "Workspace status unavailable";
+      return "Статус рабочего пространства недоступен";
     case "load_thread_storage":
-      return "Failed to load thread storage";
+      return "Не удалось загрузить файлы чата";
     case "open_terminal":
-      return "Failed to open terminal";
+      return "Не удалось открыть терминал";
     case "queue_message":
-      return "Failed to queue message";
+      return "Не удалось добавить сообщение в очередь";
     case "reorder_queued_message":
-      return "Failed to reorder queued message";
+      return "Не удалось изменить порядок сообщений в очереди";
     case "resolve_interaction":
-      return "Failed to submit response";
+      return "Не удалось отправить ответ";
     case "send_message":
-      return "Failed to send message";
+      return "Не удалось отправить сообщение";
     case "send_queued_message":
-      return "Failed to send queued message";
+      return "Не удалось отправить сообщение из очереди";
     case "set_queued_message_group_boundary":
-      return "Failed to group queued messages";
+      return "Не удалось сгруппировать сообщения в очереди";
     case "stop_thread":
-      return "Failed to stop thread";
+      return "Не удалось остановить чат";
     case "update_queued_message":
-      return "Failed to update queued message";
+      return "Не удалось обновить сообщение в очереди";
     case "update_merge_base":
-      return "Failed to update merge base";
+      return "Не удалось обновить базу слияния";
     default:
       return assertNever(operation);
   }
@@ -175,26 +175,26 @@ function describeEnvironmentNotReady({
     case "provisioning":
       return info({
         operation,
-        title: "Workspace starting",
-        body: "Workspace is still starting.",
+        title: "Рабочее пространство запускается",
+        body: "Рабочее пространство ещё запускается.",
       });
     case "ready":
       return warning({
         operation,
-        title: "Workspace unavailable",
-        body: "Workspace is unavailable.",
+        title: "Рабочее пространство недоступно",
+        body: "Рабочее пространство недоступно.",
       });
     case "error":
       return errorDescription({
         operation,
-        title: "Workspace setup failed",
-        body: "Workspace setup failed.",
+        title: "Не удалось настроить рабочее пространство",
+        body: "Не удалось настроить рабочее пространство.",
       });
     case "destroyed":
       return warning({
         operation,
-        title: "Workspace unavailable",
-        body: "Workspace no longer exists.",
+        title: "Рабочее пространство недоступно",
+        body: "Рабочее пространство больше не существует.",
       });
     default:
       return assertNever(details.environmentStatus);
@@ -210,26 +210,26 @@ function describeThreadEnvironmentUnavailable({
     case "never_attached":
       return info({
         operation,
-        title: "Workspace unavailable",
-        body: "Workspace is not available yet.",
+        title: "Рабочее пространство недоступно",
+        body: "Рабочее пространство пока недоступно.",
       });
     case "destroyed":
       return warning({
         operation,
-        title: "Workspace unavailable",
-        body: "Workspace no longer exists.",
+        title: "Рабочее пространство недоступно",
+        body: "Рабочее пространство больше не существует.",
       });
     case "provisioning":
       return info({
         operation,
-        title: "Workspace starting",
-        body: "Workspace is still starting.",
+        title: "Рабочее пространство запускается",
+        body: "Рабочее пространство ещё запускается.",
       });
     case "errored":
       return errorDescription({
         operation,
-        title: "Workspace setup failed",
-        body: "Workspace setup failed.",
+        title: "Не удалось настроить рабочее пространство",
+        body: "Не удалось настроить рабочее пространство.",
       });
     default:
       return assertNever(details.reason);
@@ -245,50 +245,50 @@ function describeThreadNotWritable({
     case "archived":
       return info({
         operation,
-        title: "Thread archived",
-        body: "Unarchive the thread first.",
+        title: "Чат архивирован",
+        body: "Сначала извлеките чат из архива.",
       });
     case "stopping":
       return warning({
         operation,
-        title: "Thread stopping",
-        body: "The thread is stopping.",
+        title: "Чат останавливается",
+        body: "Чат останавливается.",
       });
     case "deleted":
       return errorDescription({
         operation,
-        title: "Thread deleted",
-        body: "This thread was deleted.",
+        title: "Чат удалён",
+        body: "Этот чат удалён.",
       });
     case "not_started":
       return info({
         operation,
-        title: "Thread starting",
-        body: "The thread is still starting.",
+        title: "Чат запускается",
+        body: "Чат ещё запускается.",
       });
     case "not_active":
       return warning({
         operation,
-        title: "Thread not running",
-        body: "The thread is not running.",
+        title: "Чат не запущен",
+        body: "Чат не запущен.",
       });
     case "errored":
       return errorDescription({
         operation,
-        title: "Thread failed",
-        body: "This thread failed and cannot continue.",
+        title: "Ошибка чата",
+        body: "В этом чате произошла ошибка; продолжить его нельзя.",
       });
     case "already_active":
       return warning({
         operation,
-        title: "Thread already running",
-        body: "The thread is already running.",
+        title: "Чат уже работает",
+        body: "Чат уже работает.",
       });
     case "still_starting":
       return info({
         operation,
-        title: "Thread starting",
-        body: "The thread is still starting.",
+        title: "Чат запускается",
+        body: "Чат ещё запускается.",
       });
     default:
       return assertNever(details.reason);
@@ -304,20 +304,20 @@ function describeHostUnavailable({
     case "suspended":
       return warning({
         operation,
-        title: "Host paused",
-        body: "Host is paused.",
+        title: "Компьютер приостановлен",
+        body: "Компьютер приостановлен.",
       });
     case "disconnected":
       return warning({
         operation,
-        title: "Host offline",
-        body: "Host is offline.",
+        title: "Компьютер не в сети",
+        body: "Компьютер не в сети.",
       });
     case "destroyed":
       return errorDescription({
         operation,
-        title: "Host removed",
-        body: "Host was removed.",
+        title: "Компьютер удалён",
+        body: "Компьютер удалён.",
       });
     default:
       return assertNever(details.reason);
@@ -332,14 +332,14 @@ function describeProjectUnavailable({
     case "pending_deletion":
       return info({
         operation,
-        title: "Project deletion in progress",
-        body: "This project is being deleted.",
+        title: "Проект удаляется",
+        body: "Этот проект удаляется.",
       });
     case "deleted":
       return errorDescription({
         operation,
-        title: "Project deleted",
-        body: "This project was deleted.",
+        title: "Проект удалён",
+        body: "Этот проект удалён.",
       });
     default:
       return assertNever(error.details.reason);
@@ -352,8 +352,8 @@ function describeParentThreadInvalid({
 }: ParentThreadInvalidDescriptionArgs): LifecycleErrorDescription {
   const isSenderThread = error.details.subject === "sender";
   const title = isSenderThread
-    ? "Sender thread unavailable"
-    : "Parent thread unavailable";
+    ? "Чат отправителя недоступен"
+    : "Родительский чат недоступен";
 
   switch (error.details.reason) {
     case "not_found":
@@ -361,42 +361,42 @@ function describeParentThreadInvalid({
         operation,
         title,
         body: isSenderThread
-          ? "The sender thread no longer exists."
-          : "That parent thread no longer exists.",
+          ? "Чат отправителя больше не существует."
+          : "Родительский чат больше не существует.",
       });
     case "archived":
       return warning({
         operation,
         title,
         body: isSenderThread
-          ? "The sender thread is archived."
-          : "Unarchive the parent thread first or choose another parent.",
+          ? "Чат отправителя архивирован."
+          : "Извлеките родительский чат из архива или выберите другой.",
       });
     case "deleted":
       return errorDescription({
         operation,
         title,
         body: isSenderThread
-          ? "The sender thread was deleted."
-          : "That parent thread was deleted.",
+          ? "Чат отправителя удалён."
+          : "Родительский чат удалён.",
       });
     case "self":
       return errorDescription({
         operation,
         title,
-        body: "A thread cannot be its own parent.",
+        body: "Чат не может быть собственным родителем.",
       });
     case "cycle":
       return errorDescription({
         operation,
         title,
-        body: "Choose a thread that is not a child of this thread.",
+        body: "Выберите чат, который не является дочерним для этого чата.",
       });
     case "too_deep":
       return errorDescription({
         operation,
         title,
-        body: "Thread nesting is limited to 4 levels.",
+        body: "Вложенность чатов ограничена четырьмя уровнями.",
       });
     default:
       return assertNever(error.details.reason);
@@ -409,8 +409,8 @@ function describeDispatchRejected({
 }: DispatchRejectedDescriptionArgs): LifecycleErrorDescription {
   return warning({
     operation,
-    title: "Blocked by a plugin",
-    body: `Blocked by the "${error.details.pluginId}" plugin: ${error.message}`,
+    title: "Заблокировано плагином",
+    body: `Заблокировано плагином «${error.details.pluginId}»: ${error.message}`,
   });
 }
 
@@ -422,8 +422,8 @@ function describeDispatchHookFailed({
   const sentence = reason.endsWith(".") ? reason : `${reason}.`;
   return errorDescription({
     operation,
-    title: "Plugin dispatch hook failed",
-    body: `${sentence} Disable that plugin to continue.`,
+    title: "Ошибка обработчика плагина",
+    body: `${sentence} Отключите этот плагин, чтобы продолжить.`,
   });
 }
 

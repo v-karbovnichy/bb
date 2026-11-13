@@ -43,7 +43,7 @@ function renderPanel() {
           fixedTabs={[
             {
               ariaLabel: "Show thread info panel",
-              label: "Info",
+              label: "Информация",
               leadingVisual: null,
               onSelect: noop,
               tab: infoFixedTab,

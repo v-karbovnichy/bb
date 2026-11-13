@@ -157,7 +157,7 @@ function renderSection() {
 
 async function openHostMenu(hostName: string): Promise<void> {
   fireEvent.pointerDown(
-    await screen.findByRole("button", { name: `${hostName} actions` }),
+    await screen.findByRole("button", { name: `Действия с машиной ${hostName}` }),
     { button: 0 },
   );
 }
@@ -246,7 +246,7 @@ describe("MachinesSettingsSection", () => {
     expect(within(banner).queryByRole("button")).toBeNull();
     await openHostMenu(failedHost.name);
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Retry cleanup" }),
+      await screen.findByRole("menuitem", { name: "Повторить очистку" }),
     );
     await waitFor(() =>
       expect(sdk.hosts.experimental_retryCleanup).toHaveBeenCalledWith({
@@ -271,7 +271,7 @@ describe("MachinesSettingsSection", () => {
     ).not.toBeNull();
     expect(screen.queryByText(sandboxHost.name)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Show all machines" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать все машины" }));
 
     const sandboxName = screen.getByText(sandboxHost.name);
     expect(sandboxName.parentElement?.querySelector("svg")).not.toBeNull();
@@ -280,7 +280,7 @@ describe("MachinesSettingsSection", () => {
     ).toBeNull();
     expect(screen.queryByText(modalMachineProvider.displayName)).toBeNull();
     await openHostMenu(sandboxHost.name);
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Suspend" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Приостановить" }));
     await waitFor(() => {
       expect(vi.mocked(sdk.hosts.experimental_suspend)).toHaveBeenCalledWith({
         hostId: sandboxHost.id,
@@ -288,7 +288,7 @@ describe("MachinesSettingsSection", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Show fewer machines" }),
+      screen.getByRole("button", { name: "Показать меньше машин" }),
     );
     expect(screen.queryByText(sandboxHost.name)).toBeNull();
   });
@@ -302,7 +302,7 @@ describe("MachinesSettingsSection", () => {
 
     await screen.findByText(primaryHost.name);
     expect(
-      screen.queryByRole("button", { name: "Show all machines" }),
+      screen.queryByRole("button", { name: "Показать все машины" }),
     ).toBeNull();
   });
 
@@ -315,17 +315,17 @@ describe("MachinesSettingsSection", () => {
 
     expect(await screen.findByText("MacBook Pro")).toBeDefined();
     expect(screen.getByText("dev-vm")).toBeDefined();
-    expect(screen.getByText("this machine")).toBeDefined();
-    expect(screen.getByText("server")).toBeDefined();
-    expect(screen.getByText("Online")).toBeDefined();
-    expect(screen.getByText(/^Offline · last seen/u)).toBeDefined();
-    expect(await screen.findByText("2 projects")).toBeDefined();
-    expect(screen.getByText("1 project")).toBeDefined();
-    expect(screen.getAllByText("Full Access")).toHaveLength(2);
+    expect(screen.getByText("эта машина")).toBeDefined();
+    expect(screen.getByText("сервер")).toBeDefined();
+    expect(screen.getByText("В сети")).toBeDefined();
+    expect(screen.getByText(/^Не в сети · последний раз в сети/u)).toBeDefined();
+    expect(await screen.findByText("2 проекта")).toBeDefined();
+    expect(screen.getByText("1 проект")).toBeDefined();
+    expect(screen.getAllByText("Полный доступ")).toHaveLength(2);
     expect(screen.getByText("macOS")).toBeDefined();
     expect(
       screen
-        .getByRole("link", { name: "Open MacBook Pro" })
+        .getByRole("link", { name: "Открыть MacBook Pro" })
         .querySelector('[data-icon="Laptop"]'),
     ).not.toBeNull();
   });
@@ -342,16 +342,16 @@ describe("MachinesSettingsSection", () => {
     const primaryName = await screen.findByText("MacBook Pro");
     const localName = screen.getByText("dev-vm");
     expect(primaryName.parentElement?.parentElement?.textContent).toContain(
-      "server",
+      "сервер",
     );
     expect(primaryName.parentElement?.parentElement?.textContent).not.toContain(
-      "this machine",
+      "эта машина",
     );
     expect(localName.parentElement?.parentElement?.textContent).toContain(
-      "this machine",
+      "эта машина",
     );
     expect(localName.parentElement?.parentElement?.textContent).not.toContain(
-      "server",
+      "сервер",
     );
     expect(screen.getByText("Linux")).toBeDefined();
   });
@@ -366,8 +366,8 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     await screen.findByText("MacBook Pro");
-    expect(screen.queryByText("this machine")).toBeNull();
-    expect(screen.getByText("server")).toBeDefined();
+    expect(screen.queryByText("эта машина")).toBeNull();
+    expect(screen.getByText("сервер")).toBeDefined();
   });
 
   it("does not promote a fallback host to the server badge", async () => {
@@ -383,11 +383,11 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     await screen.findByText("MacBook Pro");
-    expect(screen.queryByText("server")).toBeNull();
+    expect(screen.queryByText("сервер")).toBeNull();
     await openHostMenu("MacBook Pro");
     expect(
       screen
-        .getByRole("menuitem", { name: "Remove machine" })
+        .getByRole("menuitem", { name: "Удалить машину" })
         .getAttribute("aria-disabled"),
     ).toBeNull();
   });
@@ -400,8 +400,8 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     await screen.findByText("MacBook Pro");
-    expect(screen.getByText("server")).toBeDefined();
-    expect(screen.queryByText("this machine")).toBeNull();
+    expect(screen.getByText("сервер")).toBeDefined();
+    expect(screen.queryByText("эта машина")).toBeNull();
   });
 
   it("keeps the server badge off a lone machine when the server machine is unknown", async () => {
@@ -416,11 +416,11 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     await screen.findByText("MacBook Pro");
-    expect(screen.queryByText("server")).toBeNull();
+    expect(screen.queryByText("сервер")).toBeNull();
     await openHostMenu("MacBook Pro");
     expect(
       screen
-        .getByRole("menuitem", { name: "Remove machine" })
+        .getByRole("menuitem", { name: "Удалить машину" })
         .getAttribute("aria-disabled"),
     ).toBeNull();
   });
@@ -438,15 +438,15 @@ describe("MachinesSettingsSection", () => {
 
     renderSection();
 
-    await screen.findByText(/^Offline · last seen/);
+    await screen.findByText(/^Не в сети · последний раз в сети/);
     expect(screen.queryByText(/Needs update|daemon protocol/)).toBeNull();
     await openHostMenu("dev-vm");
-    const renameItem = await screen.findByRole("menuitem", { name: "Rename" });
+    const renameItem = await screen.findByRole("menuitem", { name: "Переименовать" });
     const retryItem = await screen.findByRole("menuitem", {
-      name: "Retry update",
+      name: "Повторить обновление",
     });
     const removeItem = await screen.findByRole("menuitem", {
-      name: "Remove machine",
+      name: "Удалить машину",
     });
     expect(renameItem.querySelector('[data-icon="Edit"]')).not.toBeNull();
     expect(
@@ -463,13 +463,13 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     const trigger = await screen.findByRole("button", {
-      name: "dev-vm actions",
+      name: "Действия с машиной dev-vm",
     });
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
     trigger.focus();
     fireEvent.keyDown(trigger, { key: "ArrowDown" });
 
-    const renameItem = await screen.findByRole("menuitem", { name: "Rename" });
+    const renameItem = await screen.findByRole("menuitem", { name: "Переименовать" });
     await waitFor(() => {
       expect(document.activeElement).toBe(renameItem);
     });
@@ -480,7 +480,7 @@ describe("MachinesSettingsSection", () => {
     });
   });
 
-  it("uses a labeled Add a machine action", async () => {
+  it("uses a labeled Добавить машину action", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue(systemConfig());
     vi.mocked(sdk.hosts.list).mockResolvedValue([primaryHost, offlineHost]);
     stubSidebarBootstrapFetch();
@@ -488,17 +488,17 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     const addMachine = await screen.findByRole("button", {
-      name: "Add a machine",
+      name: "Добавить машину",
     });
-    expect(addMachine.textContent).toBe("Add a machine");
+    expect(addMachine.textContent).toBe("Добавить машину");
     expect(addMachine.querySelector('[data-icon="Plus"]')).not.toBeNull();
     fireEvent.click(addMachine);
     expect(
-      await screen.findByRole("heading", { name: "Set up machine access" }),
+      await screen.findByRole("heading", { name: "Настроить доступ машин" }),
     ).toBeDefined();
     expect(
       screen.getByText(
-        "A new machine has to reach this server over the network. Choose the address it should use.",
+        "Новой машине нужен сетевой доступ к этому серверу. Выберите адрес для подключения.",
       ),
     ).toBeDefined();
   });
@@ -520,7 +520,7 @@ describe("MachinesSettingsSection", () => {
     await screen.findByText("dev-vm");
     await openHostMenu("dev-vm");
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Retry update" }),
+      await screen.findByRole("menuitem", { name: "Повторить обновление" }),
     );
 
     await waitFor(() => {
@@ -540,12 +540,12 @@ describe("MachinesSettingsSection", () => {
 
     renderSection();
 
-    expect(await screen.findByText("Accept Edits")).toBeDefined();
-    expect(screen.getByText("Full Access")).toBeDefined();
+    expect(await screen.findByText("Принимать изменения")).toBeDefined();
+    expect(screen.getByText("Полный доступ")).toBeDefined();
     expect(
       screen.queryByRole("button", { name: /Permission limit for/ }),
     ).toBeNull();
-    const machineLink = screen.getByRole("link", { name: "Open dev-vm" });
+    const machineLink = screen.getByRole("link", { name: "Открыть dev-vm" });
     expect(machineLink.getAttribute("href")).toBe(
       "/settings/machines/host_remote",
     );
@@ -583,7 +583,7 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     const machineLink = await screen.findByRole("link", {
-      name: "Open dev-vm",
+      name: "Открыть dev-vm",
     });
     const row = machineLink.closest("[data-machine-row]");
     const caret = row?.querySelector('[data-icon="ChevronRight"]');
@@ -607,14 +607,14 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     const trigger = await screen.findByRole("button", {
-      name: "dev-vm actions",
+      name: "Действия с машиной dev-vm",
     });
     fireEvent.pointerDown(trigger, { button: 0 });
     fireEvent.click(trigger);
     expect(screen.getByTestId("location").textContent).toBe("/");
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
 
-    expect(await screen.findByLabelText("Machine name")).toBeDefined();
+    expect(await screen.findByLabelText("Имя машины")).toBeDefined();
     expect(screen.getByTestId("location").textContent).toBe("/");
   });
 
@@ -631,11 +631,11 @@ describe("MachinesSettingsSection", () => {
 
     await screen.findByText("dev-vm");
     await openHostMenu("dev-vm");
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
 
-    const input = await screen.findByLabelText("Machine name");
+    const input = await screen.findByLabelText("Имя машины");
     fireEvent.change(input, { target: { value: "build box" } });
-    fireEvent.click(screen.getByRole("button", { name: "Rename machine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переименовать машину" }));
 
     await waitFor(() => {
       expect(vi.mocked(sdk.hosts.update)).toHaveBeenCalledWith({
@@ -656,11 +656,11 @@ describe("MachinesSettingsSection", () => {
     await screen.findByText("dev-vm");
     await openHostMenu("dev-vm");
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: /Remove machine/ }),
+      await screen.findByRole("menuitem", { name: /Удалить машину/ }),
     );
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove machine" }),
+      await screen.findByRole("button", { name: "Удалить машину" }),
     );
 
     await waitFor(() => {
@@ -690,13 +690,13 @@ describe("MachinesSettingsSection", () => {
 
     await openHostMenu(strandedHost.name);
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: /Remove machine/ }),
+      await screen.findByRole("menuitem", { name: /Удалить машину/ }),
     );
     expect(
-      await screen.findByText(/files and worktrees left on its disk/),
+      await screen.findByText(/файлы и рабочие деревья/),
     ).toBeTruthy();
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove anyway" }),
+      await screen.findByRole("button", { name: "Всё равно удалить" }),
     );
 
     await waitFor(() => {
@@ -718,14 +718,14 @@ describe("MachinesSettingsSection", () => {
     await openHostMenu("MacBook Pro");
 
     const removeItem = await screen.findByRole("menuitem", {
-      name: "Remove machine",
+      name: "Удалить машину",
     });
     expect(removeItem.getAttribute("aria-disabled")).toBe("true");
-    expect(removeItem.textContent).toBe("Remove machine");
+    expect(removeItem.textContent).toBe("Удалить машину");
     focusWithKeyboard(removeItem);
     expect(
       await screen.findByRole("tooltip", {
-        name: "The server machine can't be removed. Move the server to another machine first.",
+        name: "Серверную машину нельзя удалить. Сначала перенесите сервер на другую машину.",
       }),
     ).toBeDefined();
     fireEvent.click(removeItem);
@@ -735,7 +735,7 @@ describe("MachinesSettingsSection", () => {
     expect(vi.mocked(sdk.hosts.delete)).not.toHaveBeenCalled();
   });
 
-  it("points the explainer at Move server here", async () => {
+  it("points the explainer at Перенести сервер сюда", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue(systemConfig());
     vi.mocked(sdk.hosts.list).mockResolvedValue([primaryHost]);
     stubSidebarBootstrapFetch();
@@ -743,11 +743,11 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     expect(
-      await screen.findByText(/To change which machine runs the server/u),
+      await screen.findByText(/Чтобы перенести сервер, откройте меню/u),
     ).toBeDefined();
   });
 
-  it("keeps Move server here and its explainer hidden while the serverMove experiment is off", async () => {
+  it("keeps Перенести сервер сюда and its explainer hidden while the serverMove experiment is off", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue({
       ...systemConfig(),
       experiments: defaultExperiments,
@@ -759,15 +759,15 @@ describe("MachinesSettingsSection", () => {
 
     await screen.findByText("desk");
     expect(
-      screen.getByText(/awake and online to run the server\.$/u),
+      screen.getByText(/постоянно оставаться включённой и подключённой к сети\.$/u),
     ).toBeDefined();
     expect(
-      screen.queryByText(/To change which machine runs the server/u),
+      screen.queryByText(/Чтобы перенести сервер, откройте меню/u),
     ).toBeNull();
     await openHostMenu("desk");
-    await screen.findByRole("menuitem", { name: "Rename" });
+    await screen.findByRole("menuitem", { name: "Переименовать" });
     expect(
-      screen.queryByRole("menuitem", { name: "Move server here" }),
+      screen.queryByRole("menuitem", { name: "Перенести сервер сюда" }),
     ).toBeNull();
     fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
     await waitFor(() => {
@@ -775,11 +775,11 @@ describe("MachinesSettingsSection", () => {
     });
     await openHostMenu("MacBook Pro");
     focusWithKeyboard(
-      await screen.findByRole("menuitem", { name: "Remove machine" }),
+      await screen.findByRole("menuitem", { name: "Удалить машину" }),
     );
     expect(
       await screen.findByRole("tooltip", {
-        name: "The server machine can't be removed.",
+        name: "Серверную машину нельзя удалить.",
       }),
     ).toBeDefined();
   });
@@ -795,11 +795,11 @@ describe("MachinesSettingsSection", () => {
     renderSection();
 
     for (const [itemName, dialogName] of [
-      ["Remove machine", "Remove dev-vm?"],
-      ["Reconnect", "Reconnect machine"],
+      ["Удалить машину", "Удалить dev-vm?"],
+      ["Подключить повторно", "Подключить машину повторно"],
     ]) {
       const trigger = await screen.findByRole("button", {
-        name: "dev-vm actions",
+        name: "Действия с машиной dev-vm",
       });
       trigger.focus();
       fireEvent.keyDown(trigger, { key: "ArrowDown" });
@@ -834,7 +834,7 @@ describe("MachinesSettingsSection", () => {
 
     await screen.findByText("dev-vm");
     await openHostMenu("dev-vm");
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Reconnect" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Подключить повторно" }));
 
     await waitFor(() => {
       expect(vi.mocked(sdk.hosts.experimental_reconnect)).toHaveBeenCalledWith({
@@ -843,11 +843,11 @@ describe("MachinesSettingsSection", () => {
     });
     expect(await screen.findByText(/X-BB-Enrollment: bbde_test/)).toBeDefined();
     expect(
-      await screen.findByText("Waiting for the machine to reconnect…"),
+      await screen.findByText("Ожидание подключения машины…"),
     ).toBeDefined();
   });
 
-  it("hides Move server here while a move is underway", async () => {
+  it("hides Перенести сервер сюда while a move is underway", async () => {
     vi.mocked(sdk.system.config).mockResolvedValue(systemConfig());
     vi.mocked(sdk.hosts.list).mockResolvedValue([primaryHost, deskHost]);
     vi.mocked(sdk.experimental_server.moveStatus).mockResolvedValue({
@@ -866,9 +866,9 @@ describe("MachinesSettingsSection", () => {
       });
     });
     await openHostMenu("desk");
-    await screen.findByRole("menuitem", { name: "Rename" });
+    await screen.findByRole("menuitem", { name: "Переименовать" });
     expect(
-      screen.queryByRole("menuitem", { name: "Move server here" }),
+      screen.queryByRole("menuitem", { name: "Перенести сервер сюда" }),
     ).toBeNull();
   });
 
@@ -893,11 +893,11 @@ describe("MachinesSettingsSection", () => {
     await screen.findByText("desk");
     await openHostMenu("desk");
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Move server here" }),
+      await screen.findByRole("menuitem", { name: "Перенести сервер сюда" }),
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Move the server to desk" }),
+      await screen.findByRole("heading", { name: "Перенести сервер на desk" }),
     ).toBeDefined();
     expect(screen.getByTestId("location").textContent).toBe("/");
     await waitFor(() => {

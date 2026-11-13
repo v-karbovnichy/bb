@@ -66,7 +66,7 @@ import {
 const GROUP_LIMIT = 6;
 const ARCHIVED_BESIDE_ACTIVE_LIMIT = 3;
 
-const NO_MATCHING_THREADS_MESSAGE = "No matching threads";
+const NO_MATCHING_THREADS_MESSAGE = "Подходящих чатов не найдено";
 
 interface ThreadSearchOption {
   lifecycle: ThreadArchiveFilter;
@@ -381,12 +381,12 @@ export function ThreadSearchPaletteMode({
     emptyMessage =
       isLoading || isRecentLoading
         ? result.isRecent
-          ? "Loading threads"
-          : "Searching threads"
+          ? "Загрузка чатов"
+          : "Поиск чатов"
         : hasLoadError
-          ? "Couldn’t load threads"
+          ? "Не удалось загрузить чаты"
           : trimmedQuery.length === 1 && !lifecycles.includes("active")
-            ? "Type at least 2 characters"
+            ? "Введите не менее двух символов"
             : result.isRecent
               ? NO_THREADS_MESSAGE
               : NO_MATCHING_THREADS_MESSAGE;
@@ -397,8 +397,8 @@ export function ThreadSearchPaletteMode({
       activeDescendantId={activeDescendantId}
       inputDescription={
         canSplit
-          ? `Use ${splitModifier}+Enter to open in split. Use Escape to return to commands.`
-          : "Use Escape to return to commands."
+          ? `Нажмите ${splitModifier}+Enter, чтобы открыть в отдельной области. Нажмите Escape, чтобы вернуться к командам.`
+          : "Нажмите Escape, чтобы вернуться к командам."
       }
       inputLabel={THREAD_SEARCH_INPUT.label}
       inputAccessory={
@@ -418,7 +418,7 @@ export function ThreadSearchPaletteMode({
       }
       inputRef={inputRef}
       listId={listId}
-      listLabel="Threads"
+      listLabel="Чаты"
       listRef={listRef}
       modeChip={threadSearchModeChip(onExit, isCompact)}
       onInputChange={(value) => {
@@ -472,8 +472,8 @@ export function ThreadSearchPaletteMode({
                         option.row !== null
                           ? undefined
                           : lifecycle === "archived"
-                            ? "Show more archived threads"
-                            : "Show more threads"
+                            ? "Показать больше архивных чатов"
+                            : "Показать больше чатов"
                       }
                       className={cn(
                         "flex min-w-0 flex-1 items-center rounded-md px-2 py-1.5",
@@ -484,7 +484,7 @@ export function ThreadSearchPaletteMode({
                     >
                       {option.row === null ? (
                         <>
-                          Show more
+                          Показать ещё
                           <Icon
                             name="ChevronDown"
                             className="size-3.5"
@@ -498,7 +498,7 @@ export function ThreadSearchPaletteMode({
                     {option.row !== null && splitAvailable ? (
                       <button
                         type="button"
-                        aria-label="Open in split"
+                        aria-label="Открыть в отдельной области"
                         aria-hidden={
                           index !== activeIndex || !canSplit || undefined
                         }
@@ -514,7 +514,7 @@ export function ThreadSearchPaletteMode({
                           selectOption(option, index, true);
                         }}
                       >
-                        <span className="mr-1">Open in split</span>
+                        <span className="mr-1">Открыть в отдельной области</span>
                         <PaletteShortcut>{`${splitModifier} ↵`}</PaletteShortcut>
                       </button>
                     ) : null}

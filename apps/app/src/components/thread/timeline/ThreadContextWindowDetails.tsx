@@ -199,7 +199,7 @@ export function ThreadContextWindowDetails({
       <div className="max-h-[min(32rem,55dvh)] overflow-y-auto overscroll-contain">
         <div className="px-2 pt-2 max-md:px-4">
           <h3 className="pb-1 text-xs font-medium text-muted-foreground">
-            In context
+            В контексте
           </h3>
           {used.map((category, index) => (
             <CategoryRow
@@ -224,7 +224,7 @@ export function ThreadContextWindowDetails({
           {deferred.length > 0 ? (
             <section className="mt-2 border-t border-border-hairline pt-2">
               <h3 className="text-xs font-medium text-muted-foreground">
-                Available on demand
+                Доступно по запросу
               </h3>
               <p className="mt-1 mb-1 text-xs text-muted-foreground">
                 Loaded when needed. Excluded from current usage.

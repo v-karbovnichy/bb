@@ -81,7 +81,7 @@ export const rpcContract = defineRpcContract({
 
 function workspacePath(rootPath: string, relativePath: string): string {
   const path = joinHostPath({ rootPath, relativePath });
-  if (path === null) throw new Error("Workspace path must be absolute");
+  if (path === null) throw new Error("Путь рабочего пространства должен быть абсолютным");
   return path;
 }
 
@@ -158,7 +158,7 @@ export default async function plugin(bb: BbPluginApi) {
   ): Promise<{ path: string; rootPath: string; hostId?: string }> {
     if (source.kind === "thread-storage") {
       if (source.threadId === null) {
-        throw new Error("This thread-storage file has no thread");
+        throw new Error("Для файла хранилища чата не указан чат");
       }
       const { hostId, storageRootPath } = await bb.sdk.threads.storageLocation({
         threadId: source.threadId,
@@ -171,7 +171,7 @@ export default async function plugin(bb: BbPluginApi) {
     }
     if (source.environmentId === null && source.kind === "workspace") {
       if (source.projectId === null) {
-        throw new Error("This file has no environment or project");
+        throw new Error("Для файла не указано окружение или проект");
       }
       const project = await bb.sdk.projects.get({
         projectId: source.projectId,
@@ -184,7 +184,7 @@ export default async function plugin(bb: BbPluginApi) {
               (entry) => entry.hostId === source.experimental_hostId,
             );
       if (checkout === undefined) {
-        throw new Error("This project has no matching source checkout");
+        throw new Error("У проекта нет подходящей исходной копии");
       }
       return {
         path: workspacePath(checkout.path, filePath),
@@ -193,7 +193,7 @@ export default async function plugin(bb: BbPluginApi) {
       };
     }
     if (source.environmentId === null) {
-      throw new Error("This file has no environment to resolve it against");
+      throw new Error("Для файла не указано окружение для определения пути");
     }
     const environment = await bb.sdk.environments.get({
       environmentId: source.environmentId,
@@ -202,7 +202,7 @@ export default async function plugin(bb: BbPluginApi) {
     if (source.kind === "host") {
       const rootPath = getHostPathDirname(filePath);
       if (rootPath === null)
-        throw new Error("Host file paths must be absolute");
+        throw new Error("Пути файлов на машине должны быть абсолютными");
       return {
         path: filePath,
         rootPath,
@@ -211,7 +211,7 @@ export default async function plugin(bb: BbPluginApi) {
     }
 
     if (!environment.path) {
-      throw new Error("This environment has no workspace path");
+      throw new Error("У окружения нет пути рабочего пространства");
     }
     return {
       path: workspacePath(environment.path, filePath),
@@ -226,7 +226,7 @@ export default async function plugin(bb: BbPluginApi) {
       candidatePath: target,
     });
     const name = relative === "" ? getHostPathBasename(target) : relative;
-    if (name === null) throw new Error("File must stay inside its root");
+    if (name === null) throw new Error("Файл должен оставаться внутри корневой папки");
     return name;
   }
 
@@ -240,7 +240,7 @@ export default async function plugin(bb: BbPluginApi) {
       if (file.contentEncoding !== "utf8") {
         return {
           kind: "unsupported" as const,
-          reason: "This file is not text",
+          reason: "Этот файл не является текстовым",
         };
       }
       if (file.sizeBytes > MAX_EDITABLE_BYTES) {

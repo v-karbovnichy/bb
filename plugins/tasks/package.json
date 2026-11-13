@@ -1,7 +1,7 @@
 {
   "name": "bb-plugin-tasks",
   "version": "0.1.2",
-  "description": "Plan and track work in BB, delegate tasks to agents, and keep task context connected to worker threads.",
+  "description": "Планируйте и отслеживайте работу в BB, назначайте задачи агентам и связывайте их с чатами.",
   "private": true,
   "license": "MIT",
   "homepage": "https://github.com/get-bb/bb#readme",
@@ -26,8 +26,8 @@
     "bbPluginSdk": ">=0.6.113"
   },
   "bb": {
-    "name": "Tasks",
-    "description": "Plan and track work in BB, delegate tasks to agents, and keep task context connected to worker threads.",
+    "name": "Задачи",
+    "description": "Планируйте и отслеживайте работу в BB, назначайте задачи агентам и связывайте их с чатами.",
     "branding": {
       "icon": "ListTodo"
     },

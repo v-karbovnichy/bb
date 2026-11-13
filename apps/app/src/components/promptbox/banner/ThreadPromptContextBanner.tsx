@@ -76,7 +76,7 @@ import {
   ThreadTitle,
   useThreadTitleDisplayText,
 } from "@/components/thread/ThreadTitleMentions";
-import { childThreadNoun } from "@/lib/child-thread-copy";
+import { formatChildThreadCount } from "@/lib/child-thread-copy";
 import { SIDEBAR_WORKING_STATUS_COLOR_CLASS } from "@bb/shared-ui/sidebar-row-classes";
 
 export interface ThreadPromptParentThreadSection {
@@ -138,15 +138,15 @@ interface ThreadPromptContextBannerProps {
   onToggleSegment: (key: string) => void;
 }
 
-const ARCHIVED_THREAD_STATUS_LABEL = "Thread is archived";
+const ARCHIVED_THREAD_STATUS_LABEL = "Чат в архиве";
 const ENVIRONMENT_GONE_STATUS_COPY: Record<
   ThreadPromptEnvironmentGoneSection["status"],
   { description: string; label: string }
 > = {
   destroyed: {
     description:
-      "Environment unavailable. You can still view this thread’s history.",
-    label: "Environment unavailable",
+      "Окружение недоступно. Историю чата по-прежнему можно просматривать.",
+    label: "Окружение недоступно",
   },
   removed: {
     label: machineRemovalLabels.removed,
@@ -182,14 +182,14 @@ const PARENT_SECTION_COPY: Record<
   { verb: string; bodyLead: string; ariaPrefix: string }
 > = {
   parent: {
-    verb: "Parent",
-    bodyLead: "This thread is a child of ",
-    ariaPrefix: "Parent",
+    verb: "Родительский чат",
+    bodyLead: "Этот чат — дочерний для ",
+    ariaPrefix: "Родительский чат",
   },
   fork: {
-    verb: "Forked from",
-    bodyLead: "This thread was forked from ",
-    ariaPrefix: "Forked from",
+    verb: "Ответвление от",
+    bodyLead: "Этот чат ответвлён от ",
+    ariaPrefix: "Ответвление от",
   },
 };
 
@@ -296,7 +296,7 @@ function ParentThreadSectionBody({
       id={SECTION_IDS.parentThread.body}
       labelledBy={SECTION_IDS.parentThread.toggle}
       isExpanded={isExpanded}
-      collapseLabel="Collapse parent thread"
+      collapseLabel="Свернуть родительский чат"
       collapseRef={collapseRef}
       onCollapse={onCollapse}
     >
@@ -344,7 +344,7 @@ function ChildThreadsBody({
               <Icon
                 name="CircleQuestion"
                 className="size-3.5 shrink-0 text-muted-foreground/75 no-underline"
-                aria-label="Needs input"
+                aria-label="Ожидает ответа"
               />
             ) : (
               <Icon
@@ -353,7 +353,7 @@ function ChildThreadsBody({
                   "size-3.5 shrink-0 animate-spin no-underline motion-reduce:animate-none",
                   SIDEBAR_WORKING_STATUS_COLOR_CLASS,
                 )}
-                aria-label="Working"
+                aria-label="Работает"
               />
             )}
             {pending ? (
@@ -426,7 +426,7 @@ function ChildThreadsHeaderIcon({ needsInput }: { needsInput: boolean }) {
         <Icon
           name="CircleQuestion"
           className="size-3 text-foreground/80"
-          aria-label="Needs input"
+          aria-label="Ожидает ответа"
         />
       </span>
     </span>
@@ -453,7 +453,7 @@ function ChildQuestionBackHeader({
       ref={backButtonRef}
       type="button"
       id={SECTION_IDS.childThreads.toggle}
-      aria-label="Back to active child threads"
+      aria-label="К активным дочерним чатам"
       onClick={onBack}
       className={activityRowClass(
         "active",
@@ -475,7 +475,7 @@ function ChildQuestionBackHeader({
           "min-w-0 flex-1 truncate text-left font-normal",
         )}
       >
-        Active child threads
+        Активные дочерние чаты
       </span>
     </button>
   );
@@ -534,7 +534,7 @@ function ChildQuestionBody({
           <div className="-mr-1.5 flex shrink-0 items-center text-xs">
             <button
               type="button"
-              aria-label="Previous question"
+              aria-label="Предыдущий вопрос"
               onClick={() => onStep(-1)}
               className={CHILD_QUESTION_STEP_BUTTON_CLASS}
             >
@@ -549,7 +549,7 @@ function ChildQuestionBody({
             </span>
             <button
               type="button"
-              aria-label="Next question"
+              aria-label="Следующий вопрос"
               onClick={() => onStep(1)}
               className={CHILD_QUESTION_STEP_BUTTON_CLASS}
             >
@@ -776,7 +776,7 @@ function ActiveChildThreadsCard({
   return (
     <PromptStackCard
       rootRef={cardRef}
-      ariaLabel="Child threads"
+      ariaLabel="Дочерние чаты"
       onKeyDown={closeQuestionOnEscape}
       className="overflow-hidden"
       style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
@@ -796,8 +796,8 @@ function ActiveChildThreadsCard({
           aria-controls={SECTION_IDS.childThreads.body}
           aria-label={
             collapsedQuestion
-              ? `${items.length} active ${childThreadNoun(items.length)}, needs input: ${newestQuestionTitle}: ${collapsedQuestion.text}`
-              : `${items.length} active ${childThreadNoun(items.length)}`
+              ? `Активные дочерние чаты: ${items.length}, нужен ответ: ${newestQuestionTitle}: ${collapsedQuestion.text}`
+              : `Активные дочерние чаты: ${items.length}`
           }
           onClick={focus.onTriggerClick}
           className={activityRowClass(
@@ -825,7 +825,7 @@ function ActiveChildThreadsCard({
                 "min-w-0 flex-1 truncate text-left font-normal",
               )}
             >
-              Active child threads
+              Активные дочерние чаты
             </span>
           )}
           <PromptStackCountSlot count={items.length} />
@@ -870,7 +870,7 @@ function ActiveChildThreadsCard({
             buttonRef={focus.collapseRef}
             className="rounded-none"
             controlsId={SECTION_IDS.childThreads.body}
-            label={`Collapse ${items.length} ${childThreadNoun(items.length)}`}
+            label={`Свернуть: ${formatChildThreadCount(items.length)}`}
             onCollapse={focus.onCollapseClick}
           />
         )}
@@ -959,7 +959,7 @@ const coreThreadContextSegments: readonly CoreThreadContextSegment[] =
     definePluginApp((app) => {
       app.slots.experimental_threadContextSegment({
         id: "parent-thread",
-        title: "Parent thread",
+        title: "Родительский чат",
         group: SEGMENT_GROUPS.thread,
         order: 10,
         summary: ParentThreadSummary,
@@ -1039,7 +1039,7 @@ function ReadOnlyContextBanner({
     ) : null;
   return (
     <PromptStackCard
-      ariaLabel="Thread history"
+      ariaLabel="История чата"
       className="overflow-hidden"
       style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
     >
@@ -1087,7 +1087,7 @@ function ReadOnlyContextBanner({
           id={SECTION_IDS.status.body}
           labelledBy={SECTION_IDS.status.toggle}
           isExpanded={isStatusExpanded}
-          collapseLabel={`Collapse ${statusLabel.toLowerCase()}`}
+          collapseLabel={`Свернуть: ${statusLabel.toLowerCase()}`}
           collapseRef={statusFocus.collapseRef}
           onCollapse={statusFocus.onCollapseClick}
         >
@@ -1140,7 +1140,7 @@ function WritableContextBanner({
       {observers}
       {entries.length > 0 ? (
         <PromptStackCard
-          ariaLabel="Thread context before sending"
+          ariaLabel="Контекст чата перед отправкой"
           className="overflow-hidden"
           style={{ minHeight: PROMPT_CONTEXT_BANNER_COLLAPSED_HEIGHT }}
         >
@@ -1192,15 +1192,15 @@ export function ThreadPromptContextBanner({
             archivedSection?.onUnarchive ? (
               <PendingBannerActionButton
                 pending={Boolean(archivedSection.unarchivePending)}
-                label="Unarchive"
-                pendingLabel="Unarchiving..."
+                label="Вернуть из архива"
+                pendingLabel="Возврат из архива..."
                 onClick={archivedSection.onUnarchive}
               />
             ) : environmentGoneSection?.onRestore ? (
               <PendingBannerActionButton
                 pending={Boolean(environmentGoneSection.restorePending)}
-                label="Restore workspace"
-                pendingLabel="Restoring..."
+                label="Восстановить рабочую область"
+                pendingLabel="Восстановление..."
                 onClick={environmentGoneSection.onRestore}
               />
             ) : null

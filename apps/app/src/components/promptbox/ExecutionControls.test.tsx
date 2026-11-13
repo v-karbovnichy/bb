@@ -62,7 +62,7 @@ describe("ExecutionControls", () => {
       }),
     );
 
-    expect(screen.queryByText("Model")).not.toBeNull();
+    expect(screen.queryByText("Модель")).not.toBeNull();
     expect(screen.queryByTitle("Claude Code")).toBeNull();
   });
 

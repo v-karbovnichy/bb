@@ -133,7 +133,7 @@ export function CommitDialogContent({
   return (
     <>
       <DialogHeader className="px-6 pt-5 pb-3">
-        <DialogTitle>Commit changes</DialogTitle>
+        <DialogTitle>Создать коммит</DialogTitle>
         <DialogDescription>
           Create a commit from the current workspace changes.
         </DialogDescription>
@@ -142,14 +142,14 @@ export function CommitDialogContent({
         {branchName || gitStatusDisplay || shouldShowChangedFilesRow ? (
           <dl className="flex flex-col gap-1">
             {branchName ? (
-              <DetailRow icon="GitBranch" label="Branch">
+              <DetailRow icon="GitBranch" label="Ветка">
                 <span className="block truncate" title={branchName}>
                   {branchName}
                 </span>
               </DetailRow>
             ) : null}
             {gitStatusDisplay ? (
-              <DetailRow icon="FileDiff" label="Git status">
+              <DetailRow icon="FileDiff" label="Статус Git">
                 <div
                   className="flex min-w-0 items-baseline gap-2 whitespace-nowrap"
                   title={`${gitStatusDisplay.label} ${gitStatusDisplay.summary}`.trim()}
@@ -171,7 +171,7 @@ export function CommitDialogContent({
         ) : null}
         <DialogFooter className="flex-row flex-wrap items-center justify-end gap-x-2 gap-y-1 sm:space-x-0">
           <Button type="submit" size="sm" className="shrink-0">
-            Commit changes
+            Создать коммит
           </Button>
         </DialogFooter>
       </form>

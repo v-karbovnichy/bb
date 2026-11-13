@@ -159,7 +159,7 @@ const PopoverContent = React.forwardRef<
         <ResponsiveDrawerShell
           open={open}
           onOpenChange={onOpenChange}
-          srLabel={mobileTitle ?? "Options"}
+          srLabel={mobileTitle ?? "Варианты"}
           closeOnBackdropClick={dismissOnOutsideInteraction}
           contentClassName={mobileClassName}
           onContentAnimationEnd={onMobileContentAnimationEnd}
@@ -169,10 +169,7 @@ const PopoverContent = React.forwardRef<
         >
           <div
             ref={ref}
-            className={cn(
-              "overflow-y-auto px-4 pt-2 pb-4",
-              className,
-            )}
+            className={cn("overflow-y-auto px-4 pt-2 pb-4", className)}
             {...domProps}
             style={{ ...style, ...COMPACT_SHEET_CONTENT_STYLE }}
           >

@@ -135,7 +135,7 @@ export async function registerServerAccess(
   bb.experimental_serverAccess.register({
     id: "connect",
     displayName: "bb connect",
-    description: "Use a private getbb.app address.",
+    description: "Использовать личный адрес getbb.app.",
     availability: () => {
       const status = deps.status();
       if (!status.paired) {

@@ -79,7 +79,7 @@ describe("ThreadTimelineSurface load-older control", () => {
     emitLatestSentinelIntersection();
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Load older messages" }),
+        screen.getByRole("button", { name: "Загрузить предыдущие сообщения" }),
       ).not.toBeNull();
     });
 
@@ -135,7 +135,7 @@ describe("ThreadTimelineSurface catch-up indicator", () => {
       await vi.advanceTimersByTimeAsync(1);
     });
     expect(screen.getByRole("status").textContent).toBe(
-      "Loading latest messages…",
+      "Загрузка последних сообщений…",
     );
     view.rerender(
       <ThreadTimelineSurface
@@ -149,7 +149,7 @@ describe("ThreadTimelineSurface catch-up indicator", () => {
       await vi.advanceTimersByTimeAsync(1000);
     });
     expect(screen.getByRole("status").textContent).toBe(
-      "Loading latest messages…",
+      "Загрузка последних сообщений…",
     );
     view.rerender(
       <ThreadTimelineSurface
@@ -226,7 +226,7 @@ describe("ThreadTimelineSurface working indicator", () => {
 
   function indicatorHeightWrapper(): HTMLElement {
     const wrapper = screen
-      .getByText("Working...")
+      .getByText("Работает...")
       .closest<HTMLElement>('[style*="height 180ms"]');
     if (wrapper === null) throw new Error("Missing indicator height wrapper");
     return wrapper;

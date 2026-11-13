@@ -1126,7 +1126,7 @@ describe("Tasks RPC domain API", () => {
       error: {
         code: "project_not_empty",
         message:
-          "A project must be empty before it can be deleted; pass force: true to delete its tasks",
+          "Перед удалением проект должен быть пустым; передайте force: true, чтобы удалить его задачи",
       },
     });
     expect(harness.experimental_rpcInvalidations).toEqual(
@@ -1207,7 +1207,7 @@ describe("Tasks RPC domain API", () => {
     });
     const opsUrgent = store.tasks.createLabel({
       projectId: ops.id,
-      name: "Urgent",
+      name: "Срочно",
       color: "red",
     });
     const opsInfra = store.tasks.createLabel({
@@ -1228,7 +1228,7 @@ describe("Tasks RPC domain API", () => {
     });
     const parent = store.tasks.createTask({
       projectId: ops.id,
-      title: "Parent",
+      title: "Родительская задача",
       status: "done",
     });
     const child = store.tasks.createTask({
@@ -1322,7 +1322,7 @@ describe("Tasks RPC domain API", () => {
     });
     const parent = store.tasks.createTask({
       projectId: ops.id,
-      title: "Parent",
+      title: "Родительская задача",
     });
     const child = store.tasks.createTask({
       projectId: ops.id,
@@ -1393,7 +1393,7 @@ describe("Tasks RPC domain API", () => {
     const parentResult = tasksRpcContract.createTask.output.parse(
       await harness.callRpc("createTask", {
         projectId: projectResult.project.id,
-        title: "Parent",
+        title: "Родительская задача",
       }),
     );
     if (!parentResult.ok) throw new Error(parentResult.error.message);
@@ -1416,7 +1416,7 @@ describe("Tasks RPC domain API", () => {
       ok: false,
       error: {
         code: "subtask_depth_exceeded",
-        message: "Tasks support at most one level of sub-tasks",
+        message: "Поддерживается не более одного уровня подзадач",
       },
     });
 

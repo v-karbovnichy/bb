@@ -256,7 +256,7 @@ export function AppToastContent({
             variant="ghost"
             size="icon"
             className="-mr-1 -mt-1 size-6 shrink-0 text-muted-foreground"
-            aria-label="Dismiss notification"
+            aria-label="Закрыть уведомление"
             onClick={() => (onDismiss ? onDismiss() : dismissToast(id))}
           >
             <Icon

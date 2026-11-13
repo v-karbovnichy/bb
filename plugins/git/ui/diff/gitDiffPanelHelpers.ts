@@ -94,15 +94,15 @@ export function buildGitDiffSelectionOptions(
 ): GitDiffSelectionOption[] {
   const allChangesOption = {
     value: ALL_GIT_DIFF_SELECTION,
-    label: "All changes",
+    label: "Все изменения",
   };
   const committedOption = {
     value: COMMITTED_GIT_DIFF_SELECTION,
-    label: "Committed changes",
+    label: "Изменения в коммитах",
   };
   const uncommittedOption = {
     value: UNCOMMITTED_GIT_DIFF_SELECTION,
-    label: "Uncommitted changes",
+    label: "Изменения без коммита",
   };
   const commitOptions = diffCommits.map((commit) => ({
     value: commit.sha,

@@ -277,9 +277,9 @@ function EnvironmentDiffTab({
               isDiffFilesLoading
                 ? null
                 : diffFiles.length === 0
-                  ? "No changes"
+                  ? "Нет изменений"
                   : !hasFiles
-                    ? "No files match filter"
+                    ? "Нет файлов по фильтру"
                     : null
             }
             onToggleAllCollapsed={toggleAllCollapsed}

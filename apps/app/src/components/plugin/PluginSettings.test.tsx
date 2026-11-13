@@ -96,7 +96,7 @@ describe("PluginSettingsForm", () => {
 
     const apiKey = screen.getByLabelText("API key") as HTMLInputElement;
     expect(apiKey.value).toBe("");
-    expect(apiKey.placeholder).toBe("[not set]");
+    expect(apiKey.placeholder).toBe("[не задано]");
     expect(screen.queryByRole("button", { name: /save settings/i })).toBeNull();
     expect(screen.queryByRole("status")).toBeNull();
 
@@ -200,7 +200,7 @@ describe("PluginSettingsForm", () => {
     fireEvent.change(retries, { target: { value: "" } });
     fireEvent.blur(retries);
     expect((await screen.findByRole("alert")).textContent).toContain(
-      "Enter a finite number",
+      "Введите конечное число",
     );
     expect(retries.value).toBe("3");
     badInput.mockRestore();
@@ -628,12 +628,12 @@ describe("PluginSettingsPage", () => {
     );
 
     const disable = await screen.findByRole("switch", {
-      name: "Disable linear",
+      name: "Отключить linear",
     });
     expect(
       screen.getByRole("heading", { name: "Linear" }).closest("header"),
     ).toContain(disable);
-    expect(screen.getByRole("heading", { name: "Configuration" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Настройки" })).toBeTruthy();
 
     fireEvent.click(disable);
 
@@ -647,9 +647,9 @@ describe("PluginSettingsPage", () => {
       ).toBe(true);
     });
     const enable = await screen.findByRole("switch", {
-      name: "Enable linear",
+      name: "Включить linear",
     });
-    expect(screen.queryByRole("heading", { name: "Configuration" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Настройки" })).toBeNull();
     expect(
       container.querySelector('[data-resource-detail-section="configuration"]'),
     ).toBeNull();
@@ -669,10 +669,10 @@ describe("PluginSettingsPage", () => {
       ).toBe(true);
     });
     expect(
-      await screen.findByRole("switch", { name: "Disable linear" }),
+      await screen.findByRole("switch", { name: "Отключить linear" }),
     ).toBeTruthy();
     expect(
-      await screen.findByRole("heading", { name: "Configuration" }),
+      await screen.findByRole("heading", { name: "Настройки" }),
     ).toBeTruthy();
   });
 
@@ -702,7 +702,7 @@ describe("PluginSettingsPage", () => {
 
     const skeleton = await screen.findByTestId("plugin-settings-skeleton");
     expect(skeleton.getAttribute("role")).toBe("status");
-    expect(screen.getByText("Loading plugin settings…")).toBeTruthy();
+    expect(screen.getByText("Загрузка настроек плагина…")).toBeTruthy();
 
     resolveList(jsonOk({ plugins: [installedPlugin(true)] }));
 
@@ -728,7 +728,7 @@ describe("PluginSettingsPage", () => {
     );
 
     expect(
-      await screen.findByText("Could not load plugin settings."),
+      await screen.findByText("Не удалось загрузить настройки плагина."),
     ).toBeTruthy();
     expect(screen.queryByTestId("plugin-settings-skeleton")).toBeNull();
   });
@@ -764,7 +764,7 @@ describe("PluginSettingsPage", () => {
     await queryClient.invalidateQueries();
 
     expect(screen.getByRole("heading", { name: "Linear" })).toBeTruthy();
-    expect(screen.queryByText("Could not load plugin settings.")).toBeNull();
+    expect(screen.queryByText("Не удалось загрузить настройки плагина.")).toBeNull();
   });
 
   it("keeps the not-installed message free of loading affordances", async () => {
@@ -804,9 +804,9 @@ describe("PluginSettingsPage", () => {
     );
 
     expect(
-      await screen.findByRole("switch", { name: "Disable linear" }),
+      await screen.findByRole("switch", { name: "Отключить linear" }),
     ).toBeTruthy();
-    expect(screen.queryByRole("heading", { name: "Configuration" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Настройки" })).toBeNull();
     expect(
       container.querySelectorAll("[data-resource-detail-section]"),
     ).toHaveLength(0);
@@ -848,7 +848,7 @@ describe("PluginSettingsPage", () => {
 
     const section = await screen.findByText("Custom connect settings");
     expect(section.closest(".overflow-hidden")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Configuration" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Настройки" })).toBeTruthy();
     expect(
       screen.getByRole("heading", { level: 3, name: "Remote access" }),
     ).toBeTruthy();
@@ -893,7 +893,7 @@ describe("PluginSettingsPage", () => {
       "bg-surface-recessed/70",
     );
     expect(screen.queryByText("Custom connect settings")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Configuration" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Настройки" })).toBeTruthy();
   });
 });
 

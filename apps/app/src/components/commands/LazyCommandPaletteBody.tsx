@@ -56,7 +56,7 @@ function CommandPaletteBodyPlaceholder({
         ) : (
           <div
             role="status"
-            aria-label="Loading commands"
+            aria-label="Загрузка команд"
             className="h-[min(24rem,50dvh)] overflow-hidden p-1"
           >
             {SKELETON_ROW_WIDTHS.map((width, index) => (

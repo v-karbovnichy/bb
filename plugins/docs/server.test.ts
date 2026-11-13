@@ -1012,10 +1012,10 @@ describe("Docs vault operations", () => {
       ok: false,
       error: {
         code: "operation_failed",
-        message: expect.stringContaining(".bb-docs-state.json is malformed"),
+        message: expect.stringContaining(".bb-docs-state.json повреждён"),
       },
     });
-    expect(result.stderr).toContain(".bb-docs-state.json is malformed");
+    expect(result.stderr).toContain(".bb-docs-state.json повреждён");
   });
 
   it("supports whole-vault and single-file scopes and deprecates direct writes", async () => {
@@ -1056,7 +1056,7 @@ describe("Docs vault operations", () => {
       "legacy",
     ]);
     expect(direct).toMatchObject({ exitCode: 0 });
-    expect(direct.stderr).toContain("Deprecated");
+    expect(direct.stderr).toContain("Устарело");
   });
 
   it("renders top-level help successfully and rejects inapplicable flags before mutation", async () => {
@@ -1076,8 +1076,8 @@ describe("Docs vault operations", () => {
 
     const statusHelp = await harness.runCli(["status", "--help"]);
     expect(statusHelp).toMatchObject({ exitCode: 0 });
-    expect(statusHelp.stdout).toContain("Exit 4: changes present");
-    expect(statusHelp.stdout).toContain("run bb docs push separately");
+    expect(statusHelp.stdout).toContain("Код 4: есть изменения");
+    expect(statusHelp.stdout).toContain("отдельно выполните bb docs push");
     expect(statusHelp.stdout).toContain("[<workspace-dir>]");
 
     const unsafePull = await harness.runCli(
@@ -1461,7 +1461,7 @@ describe("Docs vault operations", () => {
         source: { ...selectedSource, experimental_hostId: "host_missing" },
         path: "docs/plan.md",
       }),
-    ).rejects.toThrow("This project has no workspace on the selected host");
+    ).rejects.toThrow("У этого проекта нет рабочей папки на выбранном хосте");
 
     expect(host.harness.sdk.callsTo("projects.get")).toEqual([
       [{ projectId: "project_1" }],
@@ -1623,7 +1623,7 @@ describe("Docs vault operations", () => {
         },
         path: "../outside.md",
       }),
-    ).rejects.toThrow("Invalid thread-storage path");
+    ).rejects.toThrow("Неверный путь хранилища чата");
     expect(harness.sdk.callsTo("threads.storageLocation")).toEqual([]);
   });
 
@@ -1908,7 +1908,7 @@ describe("Docs proposals", () => {
         expectedSha256: virtualSha(files.get("/vault/letter.md")!),
         content: "Late response",
       }),
-    ).rejects.toThrow("proposal changed");
+    ).rejects.toThrow("Предложение изменилось");
     expect(
       await harness.behavior.callRpc("resolveProposal", {
         path: "letter.md",
@@ -1929,7 +1929,7 @@ describe("Docs proposals", () => {
         expectedVersion: 1,
         action: "accept",
       }),
-    ).rejects.toThrow("document changed");
+    ).rejects.toThrow("Документ изменился");
     setUtf8("/vault/letter.md", "A simple place.");
     await harness.behavior.callRpc("resolveProposal", {
       path: "letter.md",
@@ -1943,7 +1943,7 @@ describe("Docs proposals", () => {
         expectedVersion: 2,
         action: "undo",
       }),
-    ).rejects.toThrow("overwrite newer edits");
+    ).rejects.toThrow("перезапишет более новые правки");
     expect(files.get("/vault/letter.md")?.content).toBe("Newer edit");
     await harness.lifecycle.dispose();
   });

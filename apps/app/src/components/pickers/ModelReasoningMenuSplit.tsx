@@ -8,7 +8,7 @@ export const ModelReasoningMenu = defineSplit({
   loading: () => (
     <div className="px-1 pt-2">
       <PickerLoadingRows
-        label="Loading model picker"
+        label="Загрузка выбора модели"
         rowDataAttribute="data-model-menu-loading-row"
       />
     </div>

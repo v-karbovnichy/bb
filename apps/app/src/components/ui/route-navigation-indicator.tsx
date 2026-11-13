@@ -60,7 +60,7 @@ export function RouteNavigationIndicator() {
     <div
       data-testid="route-navigation-indicator"
       role="progressbar"
-      aria-label="Loading page"
+      aria-label="Загрузка страницы"
       className="pointer-events-none fixed inset-x-0 top-[env(safe-area-inset-top)] z-100 h-0.5 overflow-hidden bg-transparent"
     >
       <div className="h-full w-1/3 animate-indeterminate-progress rounded-full bg-muted-foreground" />

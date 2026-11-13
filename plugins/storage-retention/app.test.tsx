@@ -179,16 +179,16 @@ it("stops a running development instance only after the user confirms stop and r
   });
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Remove instance: after" }),
+    await page.findByRole("button", { name: "Удалить экземпляр: after" }),
   );
   const confirmation = await page.findByRole("region", {
-    name: "Confirm cleanup",
+    name: "Подтвердить очистку",
   });
   expect(remove.mock.calls.map(([input]) => input)).toEqual([
     { hostId: "host_test", names: ["after"], stopRunning: false },
   ]);
   fireEvent.click(
-    within(confirmation).getByRole("button", { name: "Stop and remove" }),
+    within(confirmation).getByRole("button", { name: "Остановить и удалить" }),
   );
   await waitFor(() =>
     expect(remove.mock.calls.map(([input]) => input)).toEqual([
@@ -203,16 +203,16 @@ it("shows cleanup failures as toasts, keeps other actions available, and permits
   start.mockRejectedValueOnce(new Error("Machine disconnected"));
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Clear archived files" }),
+    await page.findByRole("button", { name: "Очистить архивные файлы" }),
   );
   expect(
     page
-      .getByRole("button", { name: "Remove orphans" })
+      .getByRole("button", { name: "Удалить осиротевшие файлы" })
       .hasAttribute("disabled"),
   ).toBe(false);
-  let confirmation = page.getByRole("region", { name: "Confirm cleanup" });
+  let confirmation = page.getByRole("region", { name: "Подтвердить очистку" });
   fireEvent.click(
-    within(confirmation).getByRole("button", { name: "Clear archived files" }),
+    within(confirmation).getByRole("button", { name: "Очистить архивные файлы" }),
   );
   await waitFor(() =>
     expect(
@@ -220,12 +220,12 @@ it("shows cleanup failures as toasts, keeps other actions available, and permits
     ).toContain("Machine disconnected"),
   );
   expect(page.queryByRole("alert")).toBeNull();
-  confirmation = page.getByRole("region", { name: "Confirm cleanup" });
+  confirmation = page.getByRole("region", { name: "Подтвердить очистку" });
   fireEvent.click(
-    within(confirmation).getByRole("button", { name: "Clear archived files" }),
+    within(confirmation).getByRole("button", { name: "Очистить архивные файлы" }),
   );
   await waitFor(() =>
-    expect(page.queryByRole("region", { name: "Confirm cleanup" })).toBeNull(),
+    expect(page.queryByRole("region", { name: "Подтвердить очистку" })).toBeNull(),
   );
   expect(start).toHaveBeenCalledTimes(2);
 });
@@ -234,7 +234,7 @@ it("saves switches immediately and rolls failed saves back without a storage sca
   const { slot, configure } = fixture("");
   const page = within(slot.container);
   const toggle = await page.findByRole("switch", {
-    name: "Delete thread storage on archive",
+    name: "Удалять файлы чата при архивировании",
   });
   configure.mockRejectedValueOnce(new Error("Save failed"));
   fireEvent.click(toggle);
@@ -259,7 +259,7 @@ it("saves switches immediately and rolls failed saves back without a storage sca
 it("shows background progress on the action and toasts only completion", async () => {
   const { slot, hosts } = fixture();
   await within(slot.container).findByRole("button", {
-    name: "Clear archived files",
+    name: "Очистить архивные файлы",
   });
   hosts[0]!.archivedFileCleanup = {
     state: "running",
@@ -270,7 +270,7 @@ it("shows background progress on the action and toasts only completion", async (
     await slot.emitRealtime("changed", null);
   });
   const button = within(slot.container).getByRole("button", {
-    name: "Clear archived files",
+    name: "Очистить архивные файлы",
   });
   expect(button.getAttribute("aria-busy")).toBe("true");
   expect(button.hasAttribute("disabled")).toBe(true);
@@ -286,13 +286,13 @@ it("shows background progress on the action and toasts only completion", async (
   await waitFor(() =>
     expect(
       document.querySelector("[data-sonner-toast]")?.textContent,
-    ).toContain("Archived thread files deleted"),
+    ).toContain("Файлы архивных чатов удалены"),
   );
   expect(
     within(slot.container)
       .queryAllByRole("status")
       .some((node) =>
-        node.textContent?.includes("Archived thread files deleted"),
+        node.textContent?.includes("Файлы архивных чатов удалены"),
       ),
   ).toBe(false);
 });
@@ -306,12 +306,12 @@ it("keeps all-machines cleanup busy until the machine jobs complete", async () =
   };
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Delete large files" }),
+    await page.findByRole("button", { name: "Удалить большие файлы" }),
   );
   fireEvent.click(
-    within(page.getByRole("region", { name: "Confirm cleanup" })).getByRole(
+    within(page.getByRole("region", { name: "Подтвердить очистку" })).getByRole(
       "button",
-      { name: "Delete large files" },
+      { name: "Удалить большие файлы" },
     ),
   );
   await waitFor(() => expect(start).toHaveBeenCalled());
@@ -322,7 +322,7 @@ it("keeps all-machines cleanup busy until the machine jobs complete", async () =
   });
   expect(
     page
-      .getByRole("button", { name: "Delete large files" })
+      .getByRole("button", { name: "Удалить большие файлы" })
       .getAttribute("aria-busy"),
   ).toBe("true");
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
@@ -338,11 +338,11 @@ it("keeps all-machines cleanup busy until the machine jobs complete", async () =
     expect(
       document.querySelector('[data-sonner-toast][data-type="success"]')
         ?.textContent,
-    ).toContain("Large archived files deleted"),
+    ).toContain("Большие архивные файлы удалены"),
   );
   expect(
     page
-      .getByRole("button", { name: "Delete large files" })
+      .getByRole("button", { name: "Удалить большие файлы" })
       .getAttribute("aria-busy"),
   ).toBe("false");
 });
@@ -351,7 +351,7 @@ it("does not keep cleanup controls locked while the follow-up report is slow", a
   const { slot, reports, hosts } = fixture();
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Clear archived files" }),
+    await page.findByRole("button", { name: "Очистить архивные файлы" }),
   );
   let finish = () => {};
   reports.mockImplementationOnce(
@@ -362,19 +362,19 @@ it("does not keep cleanup controls locked while the follow-up report is slow", a
   );
   try {
     fireEvent.click(
-      within(page.getByRole("region", { name: "Confirm cleanup" })).getByRole(
+      within(page.getByRole("region", { name: "Подтвердить очистку" })).getByRole(
         "button",
-        { name: "Clear archived files" },
+        { name: "Очистить архивные файлы" },
       ),
     );
     await waitFor(() =>
       expect(
-        page.queryByRole("region", { name: "Confirm cleanup" }),
+        page.queryByRole("region", { name: "Подтвердить очистку" }),
       ).toBeNull(),
     );
     expect(
       page
-        .getByRole("button", { name: "Remove orphans" })
+        .getByRole("button", { name: "Удалить осиротевшие файлы" })
         .hasAttribute("disabled"),
     ).toBe(false);
   } finally {
@@ -385,11 +385,11 @@ it("does not keep cleanup controls locked while the follow-up report is slow", a
 it("starts orphan cleanup in the background without locking the page and toasts completion", async () => {
   const { slot, hosts, start } = fixture();
   const page = within(slot.container);
-  fireEvent.click(await page.findByRole("button", { name: "Remove orphans" }));
+  fireEvent.click(await page.findByRole("button", { name: "Удалить осиротевшие файлы" }));
   fireEvent.click(
-    within(page.getByRole("region", { name: "Confirm cleanup" })).getByRole(
+    within(page.getByRole("region", { name: "Подтвердить очистку" })).getByRole(
       "button",
-      { name: "Remove orphans" },
+      { name: "Удалить осиротевшие файлы" },
     ),
   );
   await waitFor(() => expect(start).toHaveBeenCalled());
@@ -403,12 +403,12 @@ it("starts orphan cleanup in the background without locking the page and toasts 
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
   expect(
     page
-      .getByRole("button", { name: "Remove orphans" })
+      .getByRole("button", { name: "Удалить осиротевшие файлы" })
       .getAttribute("aria-busy"),
   ).toBe("true");
   expect(
     page
-      .getByRole("button", { name: "Remove orphans" })
+      .getByRole("button", { name: "Удалить осиротевшие файлы" })
       .hasAttribute("disabled"),
   ).toBe(true);
   hosts[0]!.maintenanceJobs = [
@@ -430,7 +430,7 @@ it("starts orphan cleanup in the background without locking the page and toasts 
   );
   expect(
     page
-      .getByRole("button", { name: "Remove orphans" })
+      .getByRole("button", { name: "Удалить осиротевшие файлы" })
       .hasAttribute("disabled"),
   ).toBe(false);
 });
@@ -448,9 +448,9 @@ it("spins the development trash button immediately and only toasts completion", 
   );
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Remove instance: after" }),
+    await page.findByRole("button", { name: "Удалить экземпляр: after" }),
   );
-  const button = page.getByRole("button", { name: "Remove instance: after" });
+  const button = page.getByRole("button", { name: "Удалить экземпляр: after" });
   expect(button.getAttribute("aria-busy")).toBe("true");
   expect(button.hasAttribute("disabled")).toBe(true);
   expect(
@@ -471,25 +471,25 @@ it("spins the development trash button immediately and only toasts completion", 
   await waitFor(() =>
     expect(
       document.querySelector("[data-sonner-toast] [data-title]")?.textContent,
-    ).toBe("Development data deleted"),
+    ).toBe("Данные разработки удалены"),
   );
   expect(
     document.querySelector("[data-sonner-toast] [data-description]")
       ?.textContent,
-  ).toBe("/fixture/dev/after · 20 B freed");
+  ).toBe("/fixture/dev/after · освобождено 20 B");
   expect(document.querySelectorAll("[data-sonner-toast]")).toHaveLength(1);
 });
 
 it.each([
-  ["orphans", "Orphaned files deleted"],
-  ["development", "Development data deleted"],
-  ["worktrees", "Checkout cleanup retried"],
+  ["orphans", "Осиротевшие файлы удалены"],
+  ["development", "Данные разработки удалены"],
+  ["worktrees", "Очистка рабочих деревьев повторена"],
 ] as const)(
   "keeps the %s completion title specific when the running update is missed",
   async (kind, title) => {
     const { slot, hosts } = fixture();
     await within(slot.container).findByRole("button", {
-      name: "Remove orphans",
+      name: "Удалить осиротевшие файлы",
     });
     hosts[0]!.maintenanceJobs = [
       {
@@ -528,7 +528,7 @@ it("keeps worktree removal spinning through queued and running states, then toas
   ];
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Remove worktree: heavy" }),
+    await page.findByRole("button", { name: "Удалить рабочее дерево: heavy" }),
   );
   await waitFor(() => expect(removeWorktree).toHaveBeenCalledTimes(1));
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
@@ -538,7 +538,7 @@ it("keeps worktree removal spinning through queued and running states, then toas
   await act(async () => {
     await slot.emitRealtime("changed", null);
   });
-  const button = page.getByRole("button", { name: "Remove worktree: heavy" });
+  const button = page.getByRole("button", { name: "Удалить рабочее дерево: heavy" });
   expect(button.getAttribute("aria-busy")).toBe("true");
   expect(button.hasAttribute("disabled")).toBe(true);
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
@@ -558,13 +558,13 @@ it("keeps worktree removal spinning through queued and running states, then toas
   await waitFor(() =>
     expect(
       document.querySelector("[data-sonner-toast] [data-title]")?.textContent,
-    ).toBe("Worktree removed"),
+    ).toBe("Рабочее дерево удалено"),
   );
   expect(document.querySelectorAll("[data-sonner-toast]")).toHaveLength(1);
   expect(
     document.querySelector("[data-sonner-toast] [data-description]")
       ?.textContent,
-  ).toBe(`${worktreePath} · 4 KB freed`);
+  ).toBe(`${worktreePath} · освобождено 4 KB`);
 });
 
 it("shows scan progress immediately and waits for the updated report before toasting", async () => {
@@ -577,15 +577,15 @@ it("shows scan progress immediately and waits for the updated report before toas
       }),
   );
   const page = within(slot.container);
-  fireEvent.click(await page.findByRole("button", { name: "Rescan machine" }));
-  const button = page.getByRole("button", { name: "Scanning…" });
+  fireEvent.click(await page.findByRole("button", { name: "Проверить машину повторно" }));
+  const button = page.getByRole("button", { name: "Проверка…" });
   expect(button.hasAttribute("disabled")).toBe(true);
   expect(button.querySelector(".animate-spin")).not.toBeNull();
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
   hosts[0]!.scan = { state: "scanning", startedAt: Date.now() };
   await act(async () => finish());
   expect(
-    page.getByRole("button", { name: "Scanning…" }).hasAttribute("disabled"),
+    page.getByRole("button", { name: "Проверка…" }).hasAttribute("disabled"),
   ).toBe(true);
   expect(document.querySelector("[data-sonner-toast]")).toBeNull();
   hosts[0]!.scan = { state: "idle" };
@@ -596,11 +596,11 @@ it("shows scan progress immediately and waits for the updated report before toas
   await waitFor(() =>
     expect(
       document.querySelector("[data-sonner-toast] [data-title]")?.textContent,
-    ).toBe("Storage scan completed"),
+    ).toBe("Проверка хранилища завершена"),
   );
   expect(
     page
-      .getByRole("button", { name: "Rescan machine" })
+      .getByRole("button", { name: "Проверить машину повторно" })
       .hasAttribute("disabled"),
   ).toBe(false);
 });
@@ -624,29 +624,29 @@ it("aggregates nearby instance deletions and starts a fresh toast after the wind
   });
   const page = within(slot.container);
   fireEvent.click(
-    await page.findByRole("button", { name: "Remove instance: first" }),
+    await page.findByRole("button", { name: "Удалить экземпляр: first" }),
   );
   await waitFor(() =>
     expect(
       document.querySelector('[data-sonner-toast][data-type="success"]')
         ?.textContent,
-    ).toContain("Development data deleted"),
+    ).toContain("Данные разработки удалены"),
   );
   const firstToast = document.querySelector(
     '[data-sonner-toast][data-type="success"]',
   );
   fireEvent.click(
-    page.getByRole("button", { name: "Remove instance: second" }),
+    page.getByRole("button", { name: "Удалить экземпляр: second" }),
   );
   await waitFor(() =>
-    expect(firstToast?.textContent).toContain("2 instances deleted"),
+    expect(firstToast?.textContent).toContain("Экземпляров удалено: 2"),
   );
-  expect(firstToast?.textContent).toContain("200 B freed");
+  expect(firstToast?.textContent).toContain("Освобождено 200 B");
   expect(
     document.querySelectorAll('[data-sonner-toast][data-type="success"]'),
   ).toHaveLength(1);
   vi.spyOn(Date, "now").mockReturnValue(Date.now() + 6000);
-  fireEvent.click(page.getByRole("button", { name: "Remove instance: later" }));
+  fireEvent.click(page.getByRole("button", { name: "Удалить экземпляр: later" }));
   await waitFor(() =>
     expect(
       document.querySelectorAll('[data-sonner-toast][data-type="success"]'),
@@ -658,14 +658,14 @@ it("aggregates nearby instance deletions and starts a fresh toast after the wind
     ),
   ].map((node) => node.textContent);
   expect(titles).toEqual(
-    expect.arrayContaining(["2 instances deleted", "Development data deleted"]),
+    expect.arrayContaining(["Экземпляров удалено: 2", "Данные разработки удалены"]),
   );
 });
 
 it("aggregates background completions across cleanup types while keeping failures separate", async () => {
   const { slot, hosts } = fixture();
   await within(slot.container).findByRole("button", {
-    name: "Clear archived files",
+    name: "Очистить архивные файлы",
   });
   hosts[0]!.archivedFileCleanup = {
     state: "completed",
@@ -690,12 +690,12 @@ it("aggregates background completions across cleanup types while keeping failure
     expect(
       document.querySelector('[data-sonner-toast][data-type="success"]')
         ?.textContent,
-    ).toContain("3 storage actions completed"),
+    ).toContain("Действий с хранилищем выполнено: 3"),
   );
   expect(
     document.querySelector('[data-sonner-toast][data-type="success"]')
       ?.textContent,
-  ).toContain("600 B freed");
+  ).toContain("Освобождено 600 B");
   expect(
     document.querySelectorAll('[data-sonner-toast][data-type="success"]'),
   ).toHaveLength(1);
@@ -709,5 +709,5 @@ it("aggregates background completions across cleanup types while keeping failure
   expect(
     document.querySelector('[data-sonner-toast][data-type="success"]')
       ?.textContent,
-  ).toContain("3 storage actions completed");
+  ).toContain("Действий с хранилищем выполнено: 3");
 });

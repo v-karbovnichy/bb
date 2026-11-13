@@ -41,11 +41,11 @@ describe("checkout inputs control", () => {
         },
       },
     );
-    const trigger = slot.getByRole("combobox", { name: "Branch" });
-    expect(trigger.textContent).toContain("Default branch");
+    const trigger = slot.getByRole("combobox", { name: "Ветка" });
+    expect(trigger.textContent).toContain("Ветка по умолчанию");
     expect(trigger.hasAttribute("disabled")).toBe(false);
     fireEvent.click(trigger);
-    fireEvent.click(await slot.findByRole("button", { name: "Checkout" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Переключиться" }));
     fireEvent.click(await slot.findByRole("button", { name: "release" }));
     expect(onChange).toHaveBeenLastCalledWith({
       status: "ready",
@@ -74,8 +74,8 @@ describe("checkout inputs control", () => {
       onChange: vi.fn(),
     });
     expect(
-      slot.getByRole("combobox", { name: "Branch" }).textContent,
-    ).toContain("Current (main)");
+      slot.getByRole("combobox", { name: "Ветка" }).textContent,
+    ).toContain("Текущая (main)");
   });
 
   it("renders an existing branch pick on the chip", () => {
@@ -86,8 +86,8 @@ describe("checkout inputs control", () => {
       onChange: vi.fn(),
     });
     expect(
-      slot.getByRole("combobox", { name: "Branch" }).textContent,
-    ).toContain("Checkout:release");
+      slot.getByRole("combobox", { name: "Ветка" }).textContent,
+    ).toContain("Переключиться:release");
   });
 
   it("renders a new branch base on the chip", () => {
@@ -97,8 +97,8 @@ describe("checkout inputs control", () => {
       value: { branch: { kind: "new", baseBranch: "origin/main" } },
       onChange: vi.fn(),
     });
-    const chipText = slot.getByRole("combobox", { name: "Branch" }).textContent;
-    expect(chipText).toContain("New branch from");
+    const chipText = slot.getByRole("combobox", { name: "Ветка" }).textContent;
+    expect(chipText).toContain("Новая ветка от");
     expect(chipText).toContain("origin/main");
   });
 
@@ -114,8 +114,8 @@ describe("checkout inputs control", () => {
       },
       { branchesState: { branches: ["main", "release"] } },
     );
-    fireEvent.click(slot.getByRole("combobox", { name: "Branch" }));
-    fireEvent.click(await slot.findByRole("button", { name: "Checkout" }));
+    fireEvent.click(slot.getByRole("combobox", { name: "Ветка" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Переключиться" }));
     fireEvent.click(await slot.findByRole("button", { name: "release" }));
     expect(onChange).toHaveBeenLastCalledWith({
       status: "ready",
@@ -134,8 +134,8 @@ describe("checkout inputs control", () => {
       },
       onChange,
     });
-    fireEvent.click(cleared.getByRole("combobox", { name: "Branch" }));
-    fireEvent.click(await cleared.findByTitle("Current: main"));
+    fireEvent.click(cleared.getByRole("combobox", { name: "Ветка" }));
+    fireEvent.click(await cleared.findByTitle("Текущая: main"));
     expect(onChange).toHaveBeenLastCalledWith({
       status: "ready",
       value: { path: "/srv/other-checkout" },
@@ -154,11 +154,11 @@ describe("checkout inputs control", () => {
       },
       { branchesState: { branches: ["main", "release"] } },
     );
-    const trigger = slot.getByRole("combobox", { name: "Branch" });
+    const trigger = slot.getByRole("combobox", { name: "Ветка" });
     fireEvent.click(trigger);
-    fireEvent.click(await slot.findByRole("button", { name: "Checkout" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Переключиться" }));
     const search = await slot.findByRole("textbox", {
-      name: "Search branches",
+      name: "Поиск веток",
     });
     fireEvent.change(search, { target: { value: "release" } });
     fireEvent.keyDown(search, { key: "Enter" });
@@ -181,10 +181,10 @@ describe("checkout inputs control", () => {
       },
       { branchesState: { branches: ["main", "release"] } },
     );
-    const trigger = slot.getByRole("combobox", { name: "Branch" });
+    const trigger = slot.getByRole("combobox", { name: "Ветка" });
     fireEvent.click(trigger);
     const search = await slot.findByRole("textbox", {
-      name: "Search branches",
+      name: "Поиск веток",
     });
     fireEvent.change(search, { target: { value: "release" } });
     fireEvent.keyDown(search, { key: "Enter" });
@@ -213,26 +213,26 @@ describe("checkout inputs control", () => {
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({
         status: "blocked",
-        reason: "Checkout blocked by uncommitted changes",
+        reason: "Переключение заблокировано несохранёнными изменениями",
       });
     });
     expect(
-      slot.getByRole("combobox", { name: "Branch" }).textContent,
-    ).toContain("Checkout:release");
-    fireEvent.click(slot.getByRole("combobox", { name: "Branch" }));
-    const newBranch = (await slot.findByText("New")).closest("button");
+      slot.getByRole("combobox", { name: "Ветка" }).textContent,
+    ).toContain("Переключиться:release");
+    fireEvent.click(slot.getByRole("combobox", { name: "Ветка" }));
+    const newBranch = (await slot.findByText("Новая")).closest("button");
     expect(newBranch).not.toBeNull();
     expect(newBranch).toHaveProperty("disabled", true);
     expect(newBranch?.getAttribute("title")).toBe(
-      "Checkout blocked by uncommitted changes",
+      "Переключение заблокировано несохранёнными изменениями",
     );
     expect(
       slot.getByRole("status").textContent,
     ).toBe(
-      "Commit or stash the uncommitted changes in this checkout to create or switch branches.",
+      "Создайте коммит или спрячьте изменения, чтобы создать другую ветку или переключиться на неё.",
     );
     expect(slot.queryByRole("button", { name: "release" })).toBeNull();
-    expect(slot.queryByRole("textbox", { name: "Search branches" })).toBeNull();
+    expect(slot.queryByRole("textbox", { name: "Поиск веток" })).toBeNull();
   });
 
   it("explains why branch actions are unavailable during a Git operation", async () => {
@@ -250,14 +250,14 @@ describe("checkout inputs control", () => {
         },
       },
     );
-    fireEvent.click(slot.getByRole("combobox", { name: "Branch" }));
+    fireEvent.click(slot.getByRole("combobox", { name: "Ветка" }));
     expect(
-      (await slot.findByRole("button", { name: "Checkout" })).hasAttribute(
+      (await slot.findByRole("button", { name: "Переключиться" })).hasAttribute(
         "disabled",
       ),
     ).toBe(true);
     expect(slot.getByRole("status").textContent).toBe(
-      "Resolve the conflicts and finish or abort the Git operation to change branches.",
+      "Разрешите конфликты и завершите или отмените операцию Git, чтобы сменить ветку.",
     );
   });
 
@@ -278,20 +278,20 @@ describe("checkout inputs control", () => {
         },
       },
     );
-    const trigger = slot.getByRole("combobox", { name: "Branch" });
+    const trigger = slot.getByRole("combobox", { name: "Ветка" });
     fireEvent.click(trigger);
 
-    expect(await slot.findByText("Start from:")).toBeTruthy();
-    expect(slot.getAllByTitle("Current: main")).toHaveLength(2);
-    expect(slot.getByTitle("New branch")).toBeTruthy();
-    expect(slot.getByTitle("Checkout an existing branch")).toBeTruthy();
-    expect(slot.queryByRole("textbox", { name: "Search branches" })).toBeNull();
+    expect(await slot.findByText("Исходная ветка:")).toBeTruthy();
+    expect(slot.getAllByTitle("Текущая: main")).toHaveLength(2);
+    expect(slot.getByTitle("Новая ветка")).toBeTruthy();
+    expect(slot.getByTitle("Переключиться на существующую ветку")).toBeTruthy();
+    expect(slot.queryByRole("textbox", { name: "Поиск веток" })).toBeNull();
 
-    fireEvent.click(slot.getByTitle("New branch"));
+    fireEvent.click(slot.getByTitle("Новая ветка"));
 
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
-    expect(await slot.findByText("Branch from:")).toBeTruthy();
-    expect(slot.getByRole("textbox", { name: "Search branches" })).toBeTruthy();
+    expect(await slot.findByText("Ветка от:")).toBeTruthy();
+    expect(slot.getByRole("textbox", { name: "Поиск веток" })).toBeTruthy();
     expect(slot.getByRole("button", { name: "origin/main" })).toBeTruthy();
     expect(onChange).toHaveBeenLastCalledWith({
       status: "ready",

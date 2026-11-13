@@ -16,7 +16,7 @@ import {
 const PLUGIN_ID = "side-chat";
 const PANEL_ACTION_ID = "side-chat";
 
-const PANEL_TAB_TITLE = "Side chat";
+const PANEL_TAB_TITLE = "Боковой чат";
 
 type SideChatPanelParams = {
   threadId: string;
@@ -89,7 +89,7 @@ function createdThreadId(result: unknown): string {
   ) {
     return (result as { threadId: string }).threadId;
   }
-  throw new Error("Plugin returned an unexpected createSideChat response.");
+  throw new Error("Плагин вернул неожиданный ответ при создании бокового чата.");
 }
 
 interface OpenSideChatArgs {
@@ -186,7 +186,7 @@ function ReplyingTo({ anchorText }: { anchorText: string }) {
           name="CornerDownRight"
           className="mr-1 inline-block size-3 align-middle"
         />
-        Replying to
+        Ответ на сообщение
       </span>
       <div
         className={`max-w-full rounded-md bg-surface-recessed p-1.5 text-xs leading-5 text-foreground ${
@@ -194,7 +194,7 @@ function ReplyingTo({ anchorText }: { anchorText: string }) {
         }`}
         role={overflows ? "button" : undefined}
         title={
-          overflows ? (expanded ? "Collapse" : "Show full message") : undefined
+          overflows ? (expanded ? "Свернуть" : "Показать сообщение полностью") : undefined
         }
         onClick={overflows ? () => setExpanded((value) => !value) : undefined}
       >
@@ -237,10 +237,10 @@ function SideChatPanel({ params }: ExperimentalThreadActionTabProps) {
           input: [{ type: "text", text, mentions: [] }],
           senderThreadId: sideChatThreadId,
         });
-        toast.success("Sent to main thread");
+        toast.success("Отправлено в основной чат");
       } catch (error) {
         toast.error(
-          `Failed to send to main thread: ${
+          `Не удалось отправить в основной чат: ${
             error instanceof Error ? error.message : String(error)
           }`,
         );
@@ -252,7 +252,7 @@ function SideChatPanel({ params }: ExperimentalThreadActionTabProps) {
   if (parsed === null) {
     return (
       <div className="p-3 text-sm text-muted-foreground" role="alert">
-        This side chat tab is missing its thread reference.
+        Для этой вкладки бокового чата не указан чат.
       </div>
     );
   }
@@ -260,7 +260,7 @@ function SideChatPanel({ params }: ExperimentalThreadActionTabProps) {
   const messageActions: ThreadChatMessageAction[] = [
     {
       id: "send-to-main",
-      title: "Send to main thread",
+      title: "Отправить в основной чат",
       icon: "ArrowTurnBackward",
       roles: ["assistant"],
       run: (message) => sendToMain(message),
@@ -285,7 +285,7 @@ function SideChatPanel({ params }: ExperimentalThreadActionTabProps) {
 export default definePluginApp((app) => {
   app.slots.messageAction({
     id: "reply-in-side-chat",
-    title: "Reply in side chat",
+    title: "Ответить в боковом чате",
     icon: "SideChat",
     async run(context: PluginMessageActionContext) {
       const anchorText = context.selectedText ?? context.message.text;
@@ -301,7 +301,7 @@ export default definePluginApp((app) => {
     context: { kind: "thread" },
     availability: "action",
     id: PANEL_ACTION_ID,
-    title: "Start side chat",
+    title: "Начать боковой чат",
     icon: "SideChat",
     component: SideChatPanel,
     layout: "flush",

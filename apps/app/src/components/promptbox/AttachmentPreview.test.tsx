@@ -68,12 +68,12 @@ describe("AttachmentPreview", () => {
         pendingUploads={[{ id: "upload-1", file }]}
       />,
     );
-    const status = getByRole("status", { name: "Uploading pending.png" });
+    const status = getByRole("status", { name: "Загрузка pending.png" });
     expect(status.querySelector("img")?.getAttribute("src")).toBe(
       "blob:local-1",
     );
-    expect(status.textContent).toContain("Uploading");
-    expect(queryByRole("button", { name: "Remove pending.png" })).toBeNull();
+    expect(status.textContent).toContain("Загрузка");
+    expect(queryByRole("button", { name: "Удалить pending.png" })).toBeNull();
 
     rerender(<AttachmentPreview {...props} />);
     expect(queryByRole("status")).toBeNull();
@@ -99,9 +99,9 @@ describe("AttachmentPreview", () => {
     );
 
     const uploading = getByRole("status", {
-      name: "Uploading Pasted text.txt",
+      name: "Загрузка Pasted text.txt",
     });
-    const finishedPill = getByRole("button", { name: "Remove notes.txt" })
+    const finishedPill = getByRole("button", { name: "Удалить notes.txt" })
       .parentElement?.parentElement;
     expect(uploading.parentElement).toBe(finishedPill?.parentElement);
     expect(uploading.className).toBe(finishedPill?.className);
@@ -122,7 +122,7 @@ describe("AttachmentPreview", () => {
     const { getByRole, rerender, unmount } = render(
       <AttachmentPreview {...props} compact />,
     );
-    const uploading = getByRole("status", { name: "1 uploading" });
+    const uploading = getByRole("status", { name: "1 загружается" });
     expect(uploading.textContent).toBe("1");
     expect(uploading.querySelector('[data-icon="Paperclip"]')).not.toBeNull();
     const attachments = [
@@ -136,7 +136,7 @@ describe("AttachmentPreview", () => {
     rerender(
       <AttachmentPreview {...props} attachments={attachments} compact />,
     );
-    const mixed = getByRole("status", { name: "1 attachment, 1 uploading" });
+    const mixed = getByRole("status", { name: "1 вложение, 1 загружается" });
     expect(mixed.textContent).toBe("2");
     rerender(
       <AttachmentPreview
@@ -146,11 +146,11 @@ describe("AttachmentPreview", () => {
         compact
       />,
     );
-    const settled = getByRole("img", { name: "1 attachment" });
+    const settled = getByRole("img", { name: "1 вложение" });
     expect(settled.querySelector('[data-icon="Loading"]')).toBeNull();
     rerender(<AttachmentPreview {...props} />);
     expect(
-      getByRole("status", { name: "Uploading pending.png" }).querySelector(
+      getByRole("status", { name: "Загрузка pending.png" }).querySelector(
         "img",
       ),
     ).not.toBeNull();
@@ -202,7 +202,7 @@ describe("AttachmentPreview", () => {
       images.every((image) => image.getAttribute("decoding") === "async"),
     ).toBe(true);
 
-    fireEvent.click(getByLabelText("Remove photo.png"));
+    fireEvent.click(getByLabelText("Удалить photo.png"));
     expect(onRemoveAttachment).toHaveBeenCalledWith("photo-1-abc.png");
   });
 
@@ -232,7 +232,7 @@ describe("AttachmentPreview", () => {
       />,
     );
 
-    for (const name of ["Remove screenshot.png", "Remove diff.patch"]) {
+    for (const name of ["Удалить screenshot.png", "Удалить diff.patch"]) {
       const removeButton = getByRole("button", { name });
       expect(fireEvent.mouseDown(removeButton, { button: 0 })).toBe(false);
       fireEvent.click(removeButton, { detail: 1 });
@@ -269,7 +269,7 @@ describe("AttachmentPreview", () => {
     );
 
     const imageRemoveButton = getByRole("button", {
-      name: "Remove screenshot.png",
+      name: "Удалить screenshot.png",
     });
     expect(
       imageRemoveButton.classList.contains("max-md:pointer-coarse:size-7"),
@@ -283,7 +283,7 @@ describe("AttachmentPreview", () => {
     ).toBe(true);
 
     const fileRemoveButton = getByRole("button", {
-      name: "Remove diff.patch",
+      name: "Удалить diff.patch",
     });
     expect(
       fileRemoveButton.classList.contains("max-md:pointer-coarse:size-7"),

@@ -19,18 +19,18 @@ export function serverMachineRemoveDisabledReason(
   serverMoveEnabled: boolean,
 ): string {
   return serverMoveEnabled
-    ? "The server machine can't be removed. Move the server to another machine first."
-    : "The server machine can't be removed.";
+    ? "Серверную машину нельзя удалить. Сначала перенесите сервер на другую машину."
+    : "Серверную машину нельзя удалить.";
 }
 
 export function machineRemovalConsequences(host: Host): string {
   if (host.type === "ephemeral") {
-    return "The compute and its saved snapshots are deleted. Its environments remain as read-only history.";
+    return "Вычислительный ресурс и сохранённые снимки будут удалены. Среды останутся в истории только для чтения.";
   }
   if (host.machineProviderId !== null) {
-    return "The provider cleans up resources it owns. Its environments remain as read-only history.";
+    return "Провайдер очистит принадлежащие ему ресурсы. Среды останутся в истории только для чтения.";
   }
-  return "Project checkouts stay on its disk, but its environments become read-only history and it cannot run new work until paired again.";
+  return "Рабочие деревья проектов останутся на диске, но среды будут доступны только для чтения. Машина не сможет выполнять новые задачи до повторного подключения.";
 }
 
 function MachineThreadPreviewList({ hostId }: { hostId: string }) {
@@ -43,8 +43,8 @@ function MachineThreadPreviewList({ hostId }: { hostId: string }) {
   const hiddenCount = total - threads.length;
   const summary =
     total === 1
-      ? "1 unarchived thread on this machine:"
-      : `${total} unarchived threads on this machine:`;
+      ? "Неархивированных чатов на этой машине: 1"
+      : `Неархивированных чатов на этой машине: ${total}`;
   return (
     <div className="space-y-1 text-sm text-muted-foreground">
       <p>{summary}</p>
@@ -57,7 +57,7 @@ function MachineThreadPreviewList({ hostId }: { hostId: string }) {
           </li>
         ))}
       </ul>
-      {hiddenCount > 0 ? <p>and {hiddenCount} more</p> : null}
+      {hiddenCount > 0 ? <p>и ещё {hiddenCount}</p> : null}
     </div>
   );
 }
@@ -87,20 +87,19 @@ export function MachineRemoveDialog({
       {target === null ? null : (
         <>
           <DialogHeader>
-            <DialogTitle>Remove {target.name}?</DialogTitle>
+            <DialogTitle>Удалить {target.name}?</DialogTitle>
             <DialogDescription>
               {force ? (
                 <>
-                  Cleanup failed and {target.name} is not connected. Removing it
-                  now skips environment cleanup on the machine: files and
-                  worktrees left on its disk are not deleted, and its
-                  environments become read-only history. The machine provider's
-                  removal still runs. Use this only if the machine is gone or
-                  will not come back.
+                  Очистка не удалась, а {target.name} не подключена. При удалении
+                  машины её среды не будут очищены: файлы и рабочие деревья
+                  останутся на диске, а среды станут доступны только для чтения.
+                  Провайдер машины всё равно удалит свои ресурсы. Используйте
+                  это действие, только если машина недоступна навсегда.
                 </>
               ) : (
                 <>
-                  This revokes {target.name}'s access to this server.{" "}
+                  Машина {target.name} потеряет доступ к этому серверу.{" "}
                   {machineRemovalConsequences(target)}
                 </>
               )}
@@ -111,7 +110,7 @@ export function MachineRemoveDialog({
             <p className="text-sm text-destructive" role="alert">
               {getMutationErrorMessage({
                 error: removeHost.error,
-                fallbackMessage: `Couldn't remove ${target.name}.`,
+                fallbackMessage: `Не удалось удалить ${target.name}.`,
               })}
             </p>
           ) : null}
@@ -132,7 +131,7 @@ export function MachineRemoveDialog({
                 )
               }
             >
-              {force ? "Remove anyway" : "Remove machine"}
+              {force ? "Всё равно удалить" : "Удалить машину"}
             </Button>
           </DialogFooter>
         </>

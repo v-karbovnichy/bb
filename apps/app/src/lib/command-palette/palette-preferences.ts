@@ -7,9 +7,9 @@ export const paletteThreadLifecyclesAtom = createThreadArchiveFilterAtom(
 );
 
 export const PALETTE_THREAD_SORT_OPTIONS = [
-  { value: "relevance", label: "Relevance" },
-  { value: "updated", label: "Updated at" },
-  { value: "created", label: "Created at" },
+  { value: "relevance", label: "По релевантности" },
+  { value: "updated", label: "По обновлению" },
+  { value: "created", label: "По созданию" },
 ] as const;
 
 export type PaletteThreadSort =

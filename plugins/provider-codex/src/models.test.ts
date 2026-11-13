@@ -222,10 +222,10 @@ describe("parseModelsResponse", () => {
       ).toEqual([
         {
           id: "fast",
-          label: "Fast",
+          label: "Быстрый",
           description: "1.5x speed, increased usage",
         },
-        { id: "ultrafast", label: "Ultrafast" },
+        { id: "ultrafast", label: "Очень быстрый" },
       ]);
     });
 

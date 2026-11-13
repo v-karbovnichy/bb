@@ -43,9 +43,9 @@ export function ExperimentalBadge() {
   return (
     <span
       className="inline-flex items-center rounded border border-attention/50 bg-surface-attention px-1.5 py-px font-mono text-xs text-foreground"
-      title="Experimental: audited before stabilizing — see docs/api_to_audit.md in the bb repository."
+      title="Экспериментальный API: перед стабилизацией проходит проверку. См. docs/api_to_audit.md в репозитории bb."
     >
-      experimental
+      экспериментально
     </span>
   );
 }
@@ -97,11 +97,11 @@ export function renderSurfaceCopy(
         key={index}
         type="button"
         onClick={target.onOpen}
-        title={target.otherPage ? `On ${target.otherPage}` : undefined}
+        title={target.otherPage ? `На странице «${target.otherPage}»` : undefined}
         aria-label={
           target.otherPage
-            ? `Go to ${label} on ${target.otherPage}`
-            : `Go to ${label} on this page`
+            ? `Перейти к «${label}» на странице «${target.otherPage}»`
+            : `Перейти к «${label}» на этой странице`
         }
         className={`cursor-pointer rounded-sm underline decoration-border underline-offset-2 hover:text-foreground hover:decoration-foreground ${FOCUS_RING_CLASS}`}
       >

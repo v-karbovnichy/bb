@@ -58,9 +58,9 @@ function menuArgs(
 function findServerSubmenu(
   template: MenuItemConstructorOptions[],
 ): MenuItemConstructorOptions[] {
-  const windowMenu = template.find((item) => item.label === "Window");
+  const windowMenu = template.find((item) => item.label === "Окно");
   const windowSubmenu = windowMenu?.submenu as MenuItemConstructorOptions[];
-  const serverMenu = windowSubmenu.find((item) => item.label === "Server");
+  const serverMenu = windowSubmenu.find((item) => item.label === "Сервер");
   return serverMenu?.submenu as MenuItemConstructorOptions[];
 }
 
@@ -69,12 +69,12 @@ function findDesktopSettingsServerSubmenu(
 ): MenuItemConstructorOptions[] {
   const appSubmenu = template[0]?.submenu as MenuItemConstructorOptions[];
   const desktopSettingsMenu = appSubmenu.find(
-    (item) => item.label === "Desktop Settings",
+    (item) => item.label === "Настройки приложения",
   );
   const desktopSettingsSubmenu =
     desktopSettingsMenu?.submenu as MenuItemConstructorOptions[];
   const serverMenu = desktopSettingsSubmenu.find(
-    (item) => item.label === "Server",
+    (item) => item.label === "Сервер",
   );
   return serverMenu?.submenu as MenuItemConstructorOptions[];
 }
@@ -87,9 +87,9 @@ describe("application menu", () => {
       const template = buildApplicationMenuTemplate(
         menuArgs(() => {}, { isMac, openLocalLogs }),
       );
-      const view = template.find((item) => item.label === "View")
+      const view = template.find((item) => item.label === "Вид")
         ?.submenu as MenuItemConstructorOptions[];
-      const logs = view.find((item) => item.label === "Local Logs");
+      const logs = view.find((item) => item.label === "Локальные журналы");
       expect(logs).toBeDefined();
       expect(logs?.enabled).not.toBe(false);
       if (logs?.click) logs.click({} as never, undefined, {} as never);
@@ -112,9 +112,9 @@ describe("application menu", () => {
         reopenClosedTab,
       }),
     );
-    const fileMenu = template.find((item) => item.label === "File");
+    const fileMenu = template.find((item) => item.label === "Файл");
     const submenu = fileMenu?.submenu as MenuItemConstructorOptions[];
-    const reopen = submenu.find((item) => item.label === "Reopen Closed Tab");
+    const reopen = submenu.find((item) => item.label === "Открыть закрытую вкладку");
 
     expect(reopen?.accelerator).toBe("CommandOrControl+Shift+T");
     reopen?.click?.({} as never, {} as BaseWindow, {} as never);
@@ -127,9 +127,9 @@ describe("application menu", () => {
     const template = buildApplicationMenuTemplate(
       menuArgs(() => {}, { closeWindowOrSideTab }),
     );
-    const fileMenu = template.find((item) => item.label === "File");
+    const fileMenu = template.find((item) => item.label === "Файл");
     const submenu = fileMenu?.submenu as MenuItemConstructorOptions[];
-    const closeWindow = submenu.find((item) => item.label === "Close Window");
+    const closeWindow = submenu.find((item) => item.label === "Закрыть окно");
 
     closeWindow?.click?.({} as never, null as never, {} as never);
 
@@ -145,9 +145,9 @@ describe("application menu", () => {
     const template = buildApplicationMenuTemplate(
       menuArgs(() => {}, { closeWindowOrSideTab }),
     );
-    const fileMenu = template.find((item) => item.label === "File");
+    const fileMenu = template.find((item) => item.label === "Файл");
     const submenu = fileMenu?.submenu as MenuItemConstructorOptions[];
-    const closeWindow = submenu.find((item) => item.label === "Close Window");
+    const closeWindow = submenu.find((item) => item.label === "Закрыть окно");
 
     closeWindow?.click?.({} as never, undefined, {} as never);
 
@@ -160,13 +160,13 @@ describe("application menu", () => {
     const template = buildApplicationMenuTemplate(
       menuArgs(vi.fn(), { zoomFocusedPage }),
     );
-    const viewMenu = template.find((item) => item.label === "View");
+    const viewMenu = template.find((item) => item.label === "Вид");
     const submenu = viewMenu?.submenu as MenuItemConstructorOptions[];
 
     for (const [label, accelerator] of [
-      ["Actual Size", "CommandOrControl+0"],
-      ["Zoom In", "CommandOrControl+Plus"],
-      ["Zoom Out", "CommandOrControl+-"],
+      ["Исходный размер", "CommandOrControl+0"],
+      ["Увеличить", "CommandOrControl+Plus"],
+      ["Уменьшить", "CommandOrControl+-"],
     ]) {
       const item = submenu.find((entry) => entry.label === label);
       expect(item?.accelerator).toBe(accelerator);
@@ -178,10 +178,10 @@ describe("application menu", () => {
   it("shows reload shortcuts without globally stealing browser commands", () => {
     const reloadWindow = vi.fn();
     const template = buildApplicationMenuTemplate(menuArgs(reloadWindow));
-    const viewMenu = template.find((item) => item.label === "View");
+    const viewMenu = template.find((item) => item.label === "Вид");
     const submenu = viewMenu?.submenu as MenuItemConstructorOptions[];
-    const reload = submenu.find((item) => item.label === "Reload");
-    const forceReload = submenu.find((item) => item.label === "Force Reload");
+    const reload = submenu.find((item) => item.label === "Обновить");
+    const forceReload = submenu.find((item) => item.label === "Обновить без кеша");
     const focusedWindow = {} as BaseWindow;
 
     expect(reload?.accelerator).toBe("CommandOrControl+R");
@@ -269,7 +269,7 @@ describe("application menu", () => {
       ["radio", false],
     ]);
     expect(serverSubmenu[3]?.type).toBe("separator");
-    expect(serverSubmenu[4]?.label).toBe("Add Server…");
+    expect(serverSubmenu[4]?.label).toBe("Добавить сервер…");
     expect(serverSubmenu[5]?.label).toBe(SET_SERVER_URL_MENU_LABEL);
     serverSubmenu[1]?.click?.({} as never, undefined, {} as never);
     serverSubmenu[2]?.click?.({} as never, undefined, {} as never);
@@ -295,7 +295,7 @@ describe("application menu", () => {
         addServer,
         selectServer,
         servers: [
-          { checked: true, id: "builtin", name: "This Mac" },
+          { checked: true, id: "builtin", name: "Этот Mac" },
           {
             checked: false,
             id: "custom:https://first.example",
@@ -310,13 +310,13 @@ describe("application menu", () => {
       items.map((item) => item.label ?? `<${item.type}>`);
 
     expect(labels(desktopSettingsServerSubmenu)).toEqual([
-      "This Mac",
+      "Этот Mac",
       "first.example",
       "<separator>",
-      "Add Server…",
+      "Добавить сервер…",
       SET_SERVER_URL_MENU_LABEL,
       "<separator>",
-      "Show This Mac",
+      "Показать Этот Mac",
     ]);
     expect(labels(findServerSubmenu(template))).toEqual(
       labels(desktopSettingsServerSubmenu),
@@ -336,8 +336,8 @@ describe("application menu", () => {
   });
 
   it.each([
-    { reason: "no-credential", label: "Sign in to bb Connect…" },
-    { reason: "unauthorized", label: "Sign in to bb Connect again…" },
+    { reason: "no-credential", label: "Войти в bb Connect…" },
+    { reason: "unauthorized", label: "Войти в bb Connect повторно…" },
   ] as const)(
     "offers sign-in with the server actions when the sync needs it ($reason)",
     ({ reason, label }) => {
@@ -361,10 +361,10 @@ describe("application menu", () => {
         "brsbl",
         "<separator>",
         label,
-        "Add Server…",
+        "Добавить сервер…",
         SET_SERVER_URL_MENU_LABEL,
         "<separator>",
-        "Show This Mac",
+        "Показать Этот Mac",
       ]);
       const signIn = serverSubmenu[3];
       expect(signIn?.enabled).toBeUndefined();
@@ -395,10 +395,10 @@ describe("application menu", () => {
         BUILTIN_SERVER_NAME,
         "brsbl",
         "<separator>",
-        "Add Server…",
+        "Добавить сервер…",
         SET_SERVER_URL_MENU_LABEL,
         "<separator>",
-        "Show This Mac",
+        "Показать Этот Mac",
       ]);
     },
   );
@@ -409,23 +409,23 @@ describe("application menu", () => {
       menuArgs(() => {}, { isMac: false }),
     );
     const appMenu = template[0]?.submenu as MenuItemConstructorOptions[];
-    const windowMenu = template.find((item) => item.label === "Window");
+    const windowMenu = template.find((item) => item.label === "Окно");
     const windowSubmenu = windowMenu?.submenu as MenuItemConstructorOptions[];
-    const viewMenu = template.find((item) => item.label === "View");
+    const viewMenu = template.find((item) => item.label === "Вид");
     const viewSubmenu = viewMenu?.submenu as MenuItemConstructorOptions[];
-    const fileMenu = template.find((item) => item.label === "File");
+    const fileMenu = template.find((item) => item.label === "Файл");
     const fileSubmenu = fileMenu?.submenu as MenuItemConstructorOptions[];
     const closeWindow = fileSubmenu.find(
-      (item) => item.label === "Close Window",
+      (item) => item.label === "Закрыть окно",
     );
 
     expect(appMenu.map((item) => item.role).filter(Boolean)).toEqual(["quit"]);
     expect(windowSubmenu.map((item) => item.role).filter(Boolean)).toEqual([
       "minimize",
     ]);
-    expect(windowSubmenu.some((item) => item.label === "Server")).toBe(true);
+    expect(windowSubmenu.some((item) => item.label === "Сервер")).toBe(true);
     expect(
-      viewSubmenu.find((item) => item.label === "Toggle Developer Tools")
+      viewSubmenu.find((item) => item.label === "Переключить инструменты разработчика")
         ?.accelerator,
     ).toBe("Control+Shift+I");
 
@@ -447,7 +447,7 @@ it.each([true, false])(
       }),
     );
     const appMenu = template[0].submenu as MenuItemConstructorOptions[];
-    const settings = appMenu.find((item) => item.label === "Desktop Settings")
+    const settings = appMenu.find((item) => item.label === "Настройки приложения")
       ?.submenu as MenuItemConstructorOptions[];
     expect(settings.some((item) => item.type === "checkbox")).toBe(false);
     for (const submenu of [
@@ -456,7 +456,7 @@ it.each([true, false])(
     ]) {
       const checkbox = submenu.find((item) => item.type === "checkbox");
       expect(checkbox?.label).toBe(
-        isMac ? "Show This Mac" : "Show This Computer",
+        isMac ? "Показать Этот Mac" : "Показать Этот компьютер",
       );
       expect(checkbox?.checked).toBe(false);
       expect(checkbox?.enabled).toBe(true);

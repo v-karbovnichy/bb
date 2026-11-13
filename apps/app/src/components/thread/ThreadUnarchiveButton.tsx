@@ -16,7 +16,7 @@ export function ThreadUnarchiveButton({
       type="button"
       variant={isSecondary ? "secondary" : "ghost"}
       size={isSecondary ? undefined : "icon"}
-      aria-label="Unarchive thread"
+      aria-label="Вернуть чат из архива"
       onClick={onUnarchive}
       disabled={Boolean(isPending)}
       className={
@@ -27,7 +27,7 @@ export function ThreadUnarchiveButton({
         isPending ? (
           "Restoring…"
         ) : (
-          "Unarchive"
+          "Вернуть из архива"
         )
       ) : isPending ? (
         <Icon name="Spinner" className="size-3 animate-spin" />

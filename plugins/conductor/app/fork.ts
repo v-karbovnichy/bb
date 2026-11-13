@@ -34,8 +34,8 @@ export async function forkToNewWorkspace(
   } catch (error) {
     toast.error(
       error instanceof Error
-        ? `Could not fork to a new workspace: ${error.message}`
-        : "Could not fork to a new workspace.",
+        ? `Не удалось создать ответвление в новой рабочей области: ${error.message}`
+        : "Не удалось создать ответвление в новой рабочей области.",
     );
   }
 }

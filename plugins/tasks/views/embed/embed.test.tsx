@@ -63,7 +63,7 @@ describe("Task directive card", () => {
     );
 
     const main = await slot.findByRole("button", {
-      name: "TSK-4 — Ship task embeds, in progress, high priority — open in side panel",
+      name: "TSK-4 — Ship task embeds, в работе, приоритет: высокий — открыть в боковой панели",
     });
     expect(main).toBeTruthy();
     expect(slot.rpcCalls).toContainEqual({
@@ -82,7 +82,7 @@ describe("Task directive card", () => {
       },
     );
     const main = await slot.findByRole("button", {
-      name: "TSK-4 — Ship task embeds, in progress — open in side panel",
+      name: "TSK-4 — Ship task embeds, в работе — открыть в боковой панели",
     });
     expect(main.querySelectorAll("svg")).toHaveLength(1);
   });
@@ -105,7 +105,7 @@ describe("Task directive card", () => {
       params: { taskKey: "TSK-4" },
     });
 
-    fireEvent.click(slot.getByRole("button", { name: "Open TSK-4 in Tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть TSK-4 в задачах" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -140,12 +140,12 @@ describe("Task directive card", () => {
       { rpc: { getTaskByKey: () => pending } },
     );
 
-    const loading = slot.getByRole("status", { name: "Loading task TSK-9" });
+    const loading = slot.getByRole("status", { name: "Загрузка задачи TSK-9" });
     expect(loading.textContent).toContain("Old embed work");
 
     resolveFetch!({ task: null });
-    await slot.findByText("Old embed work · not found");
-    fireEvent.click(slot.getByRole("button", { name: "Open Tasks" }));
+    await slot.findByText("Old embed work · не найдена");
+    fireEvent.click(slot.getByRole("button", { name: "Открыть задачи" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -161,7 +161,7 @@ describe("Task directive card", () => {
         rpc: { getTaskByKey: () => ({ task: null }) },
       },
     );
-    await slot.findByText("Task not found — deleted, or its key changed");
+    await slot.findByText("Задача не найдена: она удалена или её ключ изменился");
   });
 
   it("rejects malformed keys without calling the backend", () => {
@@ -178,7 +178,7 @@ describe("Task directive card", () => {
           rpc: {},
         },
       );
-      slot.getByText("Invalid task link. Expected a task key like TSK-4.");
+      slot.getByText("Некорректная ссылка на задачу. Ожидается ключ задачи, например TSK-4.");
       expect(slot.rpcCalls).toHaveLength(0);
       cleanup();
     }
@@ -198,7 +198,7 @@ describe("Task directive card", () => {
         },
       },
     );
-    const retry = await slot.findByRole("button", { name: "Retry" });
+    const retry = await slot.findByRole("button", { name: "Повторить" });
     fail = false;
     fireEvent.click(retry);
     await slot.findByText("Ship task embeds");
@@ -248,7 +248,7 @@ describe("Task directive card", () => {
         rpc: { getTaskByKey: () => ({ task: created ? task : null }) },
       },
     );
-    await slot.findByText("Task not found — deleted, or its key changed");
+    await slot.findByText("Задача не найдена: она удалена или её ключ изменился");
     created = true;
     await slot.behavior.experimental_invalidateRpc(
       taskChangedTags({ id: TASK_ID, projectId: PROJECT_ID }),
@@ -264,9 +264,9 @@ describe("Task embed panel", () => {
       { threadId: "thr_1", environment: null, params: { taskKey: "OLD-4" } },
       { rpc: taskDetailRpc(() => ({ task })) },
     );
-    await slot.findByRole("textbox", { name: "Task title" });
+    await slot.findByRole("textbox", { name: "Название задачи" });
     expect(slot.navigateCalls).toEqual([]);
-    fireEvent.click(slot.getByRole("button", { name: "Open OLD-4 in Tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть OLD-4 в задачах" }));
     expect(slot.navigateCalls).toEqual([
       {
         method: "toPluginPanel",
@@ -301,6 +301,6 @@ describe("Task embed panel", () => {
       { threadId: "thr_1", environment: null, params: null },
       { rpc: {} },
     );
-    slot.getByText("Open a task card from a message to view it here.");
+    slot.getByText("Откройте карточку задачи из сообщения, чтобы просмотреть её здесь.");
   });
 });

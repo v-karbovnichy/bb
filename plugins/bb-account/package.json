@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Signs this bb in to your getbb.app account and holds its server credential for remote access and hosted services.",
+  "description": "Выполняет вход этого bb в ваш аккаунт getbb.app и хранит учётные данные сервера для удалённого доступа и облачных сервисов.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.6.63"
   },
   "bb": {
-    "name": "bb account",
-    "description": "Signs this bb in to your getbb.app account and holds its server credential for remote access and hosted services.",
+    "name": "Аккаунт bb",
+    "description": "Выполняет вход этого bb в ваш аккаунт getbb.app и хранит учётные данные сервера для удалённого доступа и облачных сервисов.",
     "branding": {
       "icon": "UserRound"
     },

@@ -10,35 +10,35 @@ import type { ApplicationMenuAccelerators } from "./desktop-menu-shortcuts.js";
 import { builtinServerName } from "./server-target.js";
 import type { ConnectServerSyncSkipReason } from "./connect-server-sync.js";
 
-const LOCAL_LOGS_MENU_LABEL = "Local Logs";
-const OPEN_NEW_TAB_MENU_LABEL = "New Tab";
-const REOPEN_CLOSED_TAB_MENU_LABEL = "Reopen Closed Tab";
-const NEW_THREAD_MENU_LABEL = "New Thread";
-const NEW_WINDOW_MENU_LABEL = "New Window";
-const CLOSE_WINDOW_MENU_LABEL = "Close Window";
-const OPEN_SETTINGS_MENU_LABEL = "Settings…";
-const VIEW_LICENSE_MENU_LABEL = "View License";
+const LOCAL_LOGS_MENU_LABEL = "Локальные журналы";
+const OPEN_NEW_TAB_MENU_LABEL = "Новая вкладка";
+const REOPEN_CLOSED_TAB_MENU_LABEL = "Открыть закрытую вкладку";
+const NEW_THREAD_MENU_LABEL = "Новый чат";
+const NEW_WINDOW_MENU_LABEL = "Новое окно";
+const CLOSE_WINDOW_MENU_LABEL = "Закрыть окно";
+const OPEN_SETTINGS_MENU_LABEL = "Настройки…";
+const VIEW_LICENSE_MENU_LABEL = "Посмотреть лицензию";
 const LICENSE_URL = "https://github.com/get-bb/bb/blob/main/LICENSE";
-const UNINSTALL_MENU_LABEL = "How to Uninstall bb";
+const UNINSTALL_MENU_LABEL = "Как удалить bb";
 const UNINSTALL_URL = "https://getbb.app/uninstall";
-const TOGGLE_DEVELOPER_TOOLS_MENU_LABEL = "Toggle Developer Tools";
+const TOGGLE_DEVELOPER_TOOLS_MENU_LABEL = "Переключить инструменты разработчика";
 const TOGGLE_DEVELOPER_TOOLS_ACCELERATOR = "Command+Option+I";
 const RELOAD_ACCELERATOR = "CommandOrControl+R";
 const FORCE_RELOAD_ACCELERATOR = "CommandOrControl+Shift+R";
-const DESKTOP_SETTINGS_MENU_LABEL = "Desktop Settings";
-const SERVER_MENU_LABEL = "Server";
+const DESKTOP_SETTINGS_MENU_LABEL = "Настройки приложения";
+const SERVER_MENU_LABEL = "Сервер";
 const DESKTOP_SETTINGS_SERVER_MENU_ITEM_ID = "bb-desktop-settings-server-menu";
 const WINDOW_SERVER_MENU_ITEM_ID = "bb-server-menu";
 const SERVER_MENU_ITEM_IDS = [
   DESKTOP_SETTINGS_SERVER_MENU_ITEM_ID,
   WINDOW_SERVER_MENU_ITEM_ID,
 ];
-export const SET_SERVER_URL_MENU_LABEL = "Edit Server…";
+export const SET_SERVER_URL_MENU_LABEL = "Изменить сервер…";
 const CONNECT_SIGN_IN_MENU_LABELS: Partial<
   Record<ConnectServerSyncSkipReason, string>
 > = {
-  "no-credential": "Sign in to bb Connect…",
-  unauthorized: "Sign in to bb Connect again…",
+  "no-credential": "Войти в bb Connect…",
+  unauthorized: "Войти в bb Connect повторно…",
 };
 
 interface ApplicationMenuServerItem {
@@ -132,7 +132,7 @@ export function createServerMenuItems(
           },
         ]),
     {
-      label: "Add Server…",
+      label: "Добавить сервер…",
       click() {
         args.addServer();
       },
@@ -154,7 +154,7 @@ export function createServerMenuItems(
       enabled: !args.servers.some(
         (server) => server.id === "builtin" && server.checked,
       ),
-      label: `Show ${builtinServerName(args.isMac ? "darwin" : "linux")}`,
+      label: `Показать ${builtinServerName(args.isMac ? "darwin" : "linux")}`,
       type: "checkbox",
       click() {
         args.toggleBuiltinServer();
@@ -171,7 +171,7 @@ export function buildApplicationMenuTemplate(
       label: app.name,
       submenu: [
         {
-          label: `About ${app.name}`,
+          label: `О приложении ${app.name}`,
           click() {
             args.openAbout();
           },
@@ -209,7 +209,7 @@ export function buildApplicationMenuTemplate(
       ],
     },
     {
-      label: "File",
+      label: "Файл",
       submenu: [
         {
           accelerator: args.accelerators.openNewTab,
@@ -256,7 +256,7 @@ export function buildApplicationMenuTemplate(
       ],
     },
     {
-      label: "Edit",
+      label: "Правка",
       submenu: [
         { role: "undo" },
         { role: "redo" },
@@ -268,11 +268,11 @@ export function buildApplicationMenuTemplate(
       ],
     },
     {
-      label: "View",
+      label: "Вид",
       submenu: [
         {
           accelerator: RELOAD_ACCELERATOR,
-          label: "Reload",
+          label: "Обновить",
           registerAccelerator: false,
           click(_menuItem, browserWindow) {
             args.reloadWindow(browserWindow, false);
@@ -280,7 +280,7 @@ export function buildApplicationMenuTemplate(
         },
         {
           accelerator: FORCE_RELOAD_ACCELERATOR,
-          label: "Force Reload",
+          label: "Обновить без кеша",
           registerAccelerator: false,
           click(_menuItem, browserWindow) {
             args.reloadWindow(browserWindow, true);
@@ -296,21 +296,21 @@ export function buildApplicationMenuTemplate(
         { type: "separator" },
         {
           accelerator: "CommandOrControl+0",
-          label: "Actual Size",
+          label: "Исходный размер",
           click() {
             args.zoomFocusedPage("reset");
           },
         },
         {
           accelerator: "CommandOrControl+Plus",
-          label: "Zoom In",
+          label: "Увеличить",
           click() {
             args.zoomFocusedPage("in");
           },
         },
         {
           accelerator: "CommandOrControl+-",
-          label: "Zoom Out",
+          label: "Уменьшить",
           click() {
             args.zoomFocusedPage("out");
           },
@@ -321,7 +321,7 @@ export function buildApplicationMenuTemplate(
       ],
     },
     {
-      label: "Window",
+      label: "Окно",
       submenu: [
         { role: "minimize" },
         ...(args.isMac ? [{ role: "zoom" as const }] : []),
@@ -338,6 +338,7 @@ export function buildApplicationMenuTemplate(
     },
     {
       role: "help",
+      label: "Справка",
       submenu: [
         {
           label: VIEW_LICENSE_MENU_LABEL,

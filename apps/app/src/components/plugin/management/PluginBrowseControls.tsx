@@ -38,9 +38,9 @@ const PLUGIN_BROWSE_SORTS = [
 ] as const satisfies readonly PluginBrowseSort[];
 
 const PLUGIN_BROWSE_SORT_LABELS: Record<PluginBrowseSort, string> = {
-  name: "Name",
-  "recently-added": "Published",
-  "most-installed": "Installs",
+  name: "Название",
+  "recently-added": "Опубликован",
+  "most-installed": "Установки",
 };
 
 const PLUGIN_BROWSE_SORT_ICONS: Record<
@@ -57,8 +57,8 @@ const PLUGIN_BROWSE_SORT_DIRECTIONS: Record<
   Record<PluginBrowseSortDirection, string>
 > = {
   name: { asc: "A–Z", desc: "Z–A" },
-  "recently-added": { asc: "Oldest first", desc: "Newest first" },
-  "most-installed": { asc: "Fewest first", desc: "Most first" },
+  "recently-added": { asc: "Сначала старые", desc: "Сначала новые" },
+  "most-installed": { asc: "Сначала менее популярные", desc: "Сначала более популярные" },
 };
 
 export function pluginBrowseSortOptions(
@@ -92,7 +92,7 @@ export function PluginCollectionToolbar({
   sortDirection,
   installsKnown,
   changeSearchParams,
-  searchPlaceholder = "Search plugins",
+  searchPlaceholder = "Поиск плагинов",
   action,
   sourceFilter,
 }: {
@@ -119,7 +119,7 @@ export function PluginCollectionToolbar({
     compact: true,
     clearInFooter: true,
     showHeading: false,
-    placeholderLabel: "Default",
+    placeholderLabel: "По умолчанию",
     options: pluginBrowseSortOptions(installsKnown, sort, sortDirection),
     onChange: (value: string) =>
       changeSearchParams((next) => {
@@ -148,7 +148,7 @@ export function PluginCollectionToolbar({
   const sourceProps = sourceFilter
     ? {
         ...sourceFilter,
-        label: "Source",
+        label: "Источник",
         icon: "Download" as const,
         compact: true,
         clearInFooter: true,
@@ -161,21 +161,21 @@ export function PluginCollectionToolbar({
       : PLUGIN_BROWSE_SORT_ICONS[sort][sortDirection];
   const sortSummary =
     sort === null
-      ? "Default"
+      ? "По умолчанию"
       : `${PLUGIN_BROWSE_SORT_LABELS[sort]} · ${PLUGIN_BROWSE_SORT_DIRECTIONS[sort][sortDirection]}`;
   const controls = [
     ...(showCategoryFilter
       ? [
           {
             id: "category",
-            label: "Category",
+            label: "Категория",
             icon: "SlidersHorizontal",
             active: selectedCategories.length > 0,
             summary:
               categoryOptions
                 .filter((option) => selectedCategories.includes(option.id))
                 .map((option) => option.label)
-                .join(", ") || "All",
+                .join(", ") || "Все",
             content: <PluginCategoryOptions {...categoryProps} />,
           } satisfies PluginControlPage,
         ]
@@ -184,7 +184,7 @@ export function PluginCollectionToolbar({
       ? [
           {
             id: "source",
-            label: "Source",
+            label: "Источник",
             icon: sourceProps.icon,
             active: sourceProps.selectedValues.length > 0,
             summary:
@@ -193,14 +193,14 @@ export function PluginCollectionToolbar({
                   sourceProps.selectedValues.includes(option.id),
                 )
                 .map((option) => option.label)
-                .join(", ") || "All",
+                .join(", ") || "Все",
             content: <ResourceMultiSelectMenuItems {...sourceProps} />,
           } satisfies PluginControlPage,
         ]
       : []),
     {
       id: "sort",
-      label: "Sort",
+      label: "Сортировка",
       icon: sortIcon,
       active: sort !== null,
       summary: sortSummary,
@@ -216,7 +216,7 @@ export function PluginCollectionToolbar({
         action={action}
         searchValue={search.value}
         searchLabel={searchPlaceholder}
-        searchPlaceholder="Search plugins..."
+        searchPlaceholder="Поиск плагинов..."
         onSearchChange={search.change}
         controls={
           <>
@@ -230,7 +230,7 @@ export function PluginCollectionToolbar({
               {...sortProps}
               showLabel
               triggerIcon={sortIcon}
-              tooltip={`Sort: ${sortSummary}`}
+              tooltip={`Сортировка: ${sortSummary}`}
             />
           </>
         }
@@ -356,9 +356,9 @@ function PluginControlsMenu({
     >
       <DropdownMenuTrigger asChild>
         <ResourceControlButton
-          label="Filter & sort"
+          label="Фильтры и сортировка"
           tooltip={
-            activeLabels.length ? activeLabels.join("; ") : "Filter & sort"
+            activeLabels.length ? activeLabels.join("; ") : "Фильтры и сортировка"
           }
           icon="FilterHorizontal"
           active={activeLabels.length > 0}
@@ -368,7 +368,7 @@ function PluginControlsMenu({
       <DropdownMenuContent
         ref={contentRef}
         align="end"
-        mobileTitle={page?.label ?? "Filter & sort"}
+        mobileTitle={page?.label ?? "Фильтры и сортировка"}
         className="w-72 md:p-0.5"
       >
         {page ? (
@@ -381,7 +381,7 @@ function PluginControlsMenu({
               }}
             >
               <Icon name="ChevronLeft" className="size-4" />
-              Filter & sort
+              Фильтры и сортировка
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {page.content}
@@ -451,15 +451,15 @@ export function PluginBrowseCategoryFilter(props: PluginCategoryFilterProps) {
   });
   const accessibleSelectionLabel =
     selectedOptions.length === 0
-      ? "All categories"
+      ? "Все категории"
       : selectedOptions.map((option) => option.label).join(", ");
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <ResourceControlButton
-          label={`Filter plugins by category: ${accessibleSelectionLabel}`}
-          text="Category"
-          tooltip={`Category: ${accessibleSelectionLabel}`}
+          label={`Фильтр плагинов по категории: ${accessibleSelectionLabel}`}
+          text="Категория"
+          tooltip={`Категория: ${accessibleSelectionLabel}`}
           icon="SlidersHorizontal"
           count={value.length}
           trailingIcon="ChevronDown"
@@ -469,7 +469,7 @@ export function PluginBrowseCategoryFilter(props: PluginCategoryFilterProps) {
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        mobileTitle="Filter plugins by category"
+        mobileTitle="Фильтр плагинов по категории"
         className="w-72 p-1.5 md:p-0.5"
       >
         {open ? <PluginCategoryOptions {...props} /> : null}
@@ -551,7 +551,7 @@ function PluginCategoryOptions({
           ref={attachList}
           data-scrollbar-scrolling={scrollbarScrolling ? "true" : undefined}
           role="listbox"
-          aria-label="Plugin categories"
+          aria-label="Категории плагинов"
           aria-multiselectable={true}
           className="transient-scrollbar max-h-64 overflow-y-auto"
           onScroll={revealScrollbarWhileScrolling}
@@ -562,7 +562,7 @@ function PluginCategoryOptions({
               className="px-2 py-6 text-center text-xs text-muted-foreground"
               role="status"
             >
-              No categories are available.
+              Категории недоступны.
             </p>
           ) : (
             options.map((option) => {
@@ -571,7 +571,7 @@ function PluginCategoryOptions({
                   key={option.id}
                   type="button"
                   role="option"
-                  aria-label={`${option.label}, ${option.count.toLocaleString()} ${option.count === 1 ? "plugin" : "plugins"}`}
+                  aria-label={`${option.label}, плагинов: ${option.count.toLocaleString()}`}
                   aria-selected={selected.has(option.id)}
                   onClick={() => toggle(option.id)}
                   className="flex w-full items-center gap-2 rounded-sm px-1.5 py-1 text-left text-xs outline-none hover:bg-state-hover focus-visible:bg-state-hover focus-visible:text-foreground md:gap-1.5"
@@ -610,7 +610,7 @@ function PluginCategoryOptions({
           onClick={clearSelection}
           className="flex w-full items-center rounded-sm px-2 py-1 text-left text-xs text-muted-foreground outline-none hover:bg-state-hover hover:text-foreground focus-visible:bg-state-hover focus-visible:text-foreground disabled:pointer-events-none disabled:opacity-50"
         >
-          Clear filter
+          Сбросить фильтр
         </button>
       </div>
     </>

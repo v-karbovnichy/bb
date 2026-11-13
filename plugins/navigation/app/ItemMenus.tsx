@@ -66,30 +66,30 @@ function SidebarNavigationItemMenuItems({
               onSelect={() => actions.activate(item.id, { target: "split" })}
             >
               <Icon name="Columns2" aria-hidden="true" />
-              Open in split
+              Открыть в разделённой области
             </Item>
           ) : null}
           <Item onSelect={() => actions.openDetails(item.id)}>
             <Icon name="Info" aria-hidden="true" />
-            View details
+            Подробнее
           </Item>
           <Separator />
         </>
       ) : null}
       <Item onSelect={() => actions.setVisible(item.id, false)}>
         <Icon name="EyeOff" aria-hidden="true" />
-        Hide from {surface}
+        Скрыть {surface === "rail" ? "с панели значков" : "с боковой панели"}
       </Item>
       <Item onSelect={() => actions.openCustomize()}>
         <Icon name="SlidersHorizontal" aria-hidden="true" />
-        Customize navigation
+        Настроить навигацию
       </Item>
       {isPluginItem ? (
         <>
           <Separator />
           <Item disabled={disablePending} onSelect={disable}>
             <Icon name="Unavailable" aria-hidden="true" />
-            Disable
+            Отключить
           </Item>
         </>
       ) : null}
@@ -101,8 +101,8 @@ export function sidebarNavigationItemMenuLabel(
   item: ExperimentalSidebarNavigationItem,
 ): string {
   return item.pluginId === null
-    ? `${item.label} options`
-    : `${item.label} panel options`;
+    ? `Параметры ${item.label}`
+    : `Параметры панели ${item.label}`;
 }
 
 export function SidebarNavigationItemContextMenu({
@@ -214,7 +214,7 @@ export function SidebarNavigationMoreMenu({
         {hidden.length > 0 ? <DropdownMenuSeparator /> : null}
         <DropdownMenuItem onSelect={() => actions.openCustomize()}>
           <Icon name="SlidersHorizontal" aria-hidden="true" />
-          Customize navigation
+          Настроить навигацию
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

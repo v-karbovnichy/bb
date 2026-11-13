@@ -616,7 +616,7 @@ export const tasksRpcContract = defineRpcContract({
       .strict()
       .refine((input) => input.allowEmptyBody || input.body.trim().length > 0, {
         path: ["body"],
-        message: "Comment body cannot be empty",
+        message: "Текст комментария не может быть пустым",
       }),
     output: z.object({ comment: commentSchema }).strict(),
   },

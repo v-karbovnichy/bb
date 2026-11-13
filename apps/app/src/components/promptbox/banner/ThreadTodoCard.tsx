@@ -158,7 +158,7 @@ export function ThreadTodoCard({
   const summary = getTodoSummary(items);
   return (
     <PromptStackCard
-      ariaLabel="To-do list"
+      ariaLabel="Список задач"
       className="overflow-hidden"
       style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
     >
@@ -197,7 +197,7 @@ export function ThreadTodoCard({
         labelledBy={TOGGLE_ID}
         isExpanded={isExpanded}
         collapsedBorder="none"
-        collapseLabel="Collapse to-do list"
+        collapseLabel="Свернуть список задач"
         collapseRef={focus.collapseRef}
         onCollapse={focus.onCollapseClick}
       >

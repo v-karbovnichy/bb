@@ -135,7 +135,7 @@ export function SidebarNavigationProviderMount({
         data-sidebar-navigation-placeholder="missing"
         className="px-4 py-2 text-sm text-muted-foreground"
       >
-        No navigation plugin is enabled.
+        Плагин навигации не включён.
       </div>
     );
   }
@@ -146,7 +146,7 @@ export function SidebarNavigationProviderMount({
         data-sidebar-navigation-placeholder="failed"
         className="flex flex-col gap-2 px-4 py-2 text-sm text-muted-foreground"
       >
-        <span>Navigation couldn't load.</span>
+        <span>Не удалось загрузить навигацию.</span>
         <Button
           type="button"
           variant="outline"
@@ -154,7 +154,7 @@ export function SidebarNavigationProviderMount({
           className="self-start"
           onClick={schedulePluginFrontendReconcile}
         >
-          Retry
+          Повторить
         </Button>
       </div>
     );
@@ -174,11 +174,11 @@ export function SidebarNavigationProviderMount({
         )
       }
       onCrash={(pluginId) => {
-        appToast.error("Sidebar navigation plugin crashed", {
+        appToast.error("Плагин навигации боковой панели завершился с ошибкой", {
           description:
             fallback === null
-              ? `${slot.title} (${pluginId}) stopped working.`
-              : `${slot.title} (${pluginId}) stopped working, so bb drew ${fallback.title} instead.`,
+              ? `Сбой в работе ${slot.title} (${pluginId}).`
+              : `Сбой в работе ${slot.title} (${pluginId}). Вместо него bb показал ${fallback.title}.`,
         });
       }}
     />
@@ -205,7 +205,7 @@ export function SidebarNavigationRegion({
       <PopoverAnchor asChild>
         <nav
           ref={customize.containerRef}
-          aria-label="Sidebar navigation"
+          aria-label="Навигация боковой панели"
           data-testid={
             isRail ? "sidebar-navigation-rail" : "sidebar-navigation-region"
           }

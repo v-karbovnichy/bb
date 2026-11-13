@@ -9,7 +9,9 @@ const Breadcrumb = React.forwardRef<
   React.ComponentPropsWithoutRef<"nav"> & {
     separator?: React.ReactNode;
   }
->(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
+>(({ ...props }, ref) => (
+  <nav ref={ref} aria-label="Навигационная цепочка" {...props} />
+));
 Breadcrumb.displayName = "Breadcrumb";
 
 const BreadcrumbList = React.forwardRef<
@@ -102,7 +104,7 @@ const BreadcrumbEllipsis = ({
     {...props}
   >
     <Icon name="MoreHorizontal" className="h-4 w-4" />
-    <span className="sr-only">More</span>
+    <span className="sr-only">Ещё</span>
   </span>
 );
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";

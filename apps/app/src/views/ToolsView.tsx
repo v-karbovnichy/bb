@@ -261,7 +261,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     onSuccess: (_data, deletedPlugin) => {
       const isLocal = pluginIsLocalSource(deletedPlugin);
       pluginToast.success(
-        isLocal ? "Plugin removed from bb" : "Plugin uninstalled",
+        isLocal ? "Плагин удалён из bb" : "Плагин удалён",
         deletedPlugin,
         "catalog",
       );
@@ -272,7 +272,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     onError: (error, plugin) => {
       const isLocal = pluginIsLocalSource(plugin);
       pluginToast.error(
-        isLocal ? "Plugin removal failed" : "Plugin uninstall failed",
+        isLocal ? "Не удалось удалить плагин из bb" : "Не удалось удалить плагин",
         plugin,
         "installed",
         pluginAdminErrorMessage(error),
@@ -330,7 +330,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="error"
-        message="Couldn't load plugin."
+        message="Не удалось загрузить плагин."
         layout="detail"
         maxWidthClassName="max-w-5xl"
         onRetry={() => void listQuery.refetch()}
@@ -340,7 +340,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="loading"
-        message="Loading plugin"
+        message="Загрузка плагина"
         layout="detail"
         maxWidthClassName="max-w-5xl"
       />
@@ -383,7 +383,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="error"
-        message="Couldn't load plugin."
+        message="Не удалось загрузить плагин."
         layout="detail"
         maxWidthClassName="max-w-5xl"
         onRetry={() => void catalogQuery.refetch()}
@@ -393,7 +393,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="loading"
-        message="Loading plugin"
+        message="Загрузка плагина"
         layout="detail"
         maxWidthClassName="max-w-5xl"
       />
@@ -402,7 +402,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="error"
-        message="Couldn't load the installed plugin."
+        message="Не удалось загрузить установленный плагин."
         layout="detail"
         maxWidthClassName="max-w-5xl"
         onRetry={() => void listQuery.refetch()}
@@ -412,7 +412,7 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
     detailContent = (
       <ResourceListState
         state="empty"
-        message="Plugin not found."
+        message="Плагин не найден."
         layout="detail"
         maxWidthClassName="max-w-5xl"
       />
@@ -447,8 +447,8 @@ function PluginDetailToolView({ detailKey }: { detailKey: string }) {
               <ConfirmDeleteDialogContent
                 title={
                   pluginIsLocalSource(deleteTarget)
-                    ? "Remove plugin from bb?"
-                    : "Uninstall plugin?"
+                    ? "Удалить плагин из bb?"
+                    : "Удалить плагин?"
                 }
                 description={pluginRemovalDescription(deleteTarget)}
                 confirmLabel={pluginRemovalLabel(deleteTarget)}
@@ -718,7 +718,7 @@ export function PluginsView({ detailKey }: { detailKey?: string } = {}) {
           panelGroupKey="extensions-plugin-details"
           resetKey="extensions-plugin-details"
           contentKey={activePluginId ?? "extensions-plugins"}
-          drawerLabel="Plugin details"
+          drawerLabel="Сведения о плагине"
           drawerFallback={<ResourceBodyFallback />}
           mainPanelId="extensions-main-panel"
           main={mainContent}

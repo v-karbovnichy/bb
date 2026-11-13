@@ -55,7 +55,7 @@ describe("PaletteThreadViewMenu", () => {
       viewport.compact = compact;
       const { container } = render(<ViewMenu />);
       const trigger = screen.getByRole("button", {
-        name: "Filter and sort: Active, Relevance",
+        name: "Фильтр и сортировка: Активные, По релевантности",
       });
       expect(trigger.textContent).toBe("");
       if (compact) {
@@ -65,12 +65,12 @@ describe("PaletteThreadViewMenu", () => {
       }
       expect(screen.queryByRole("menuitemcheckbox", { name: "Drafts" })).toBeNull();
       const active = await screen.findByRole("menuitemcheckbox", {
-        name: "Active",
+        name: "Активные",
       });
-      expect(screen.getByRole("group", { name: "Filter" })).toBeTruthy();
+      expect(screen.getByRole("group", { name: "Фильтр" })).toBeTruthy();
       if (!compact) {
         expect(active.getAttribute("title")).toBe(
-          "Keep at least one filter selected",
+          "Выберите хотя бы один фильтр",
         );
       }
       expect(active.getAttribute("aria-disabled")).not.toBe("true");
@@ -79,12 +79,12 @@ describe("PaletteThreadViewMenu", () => {
       expect(active.getAttribute("aria-checked")).toBe("true");
       fireEvent.keyDown(active, { key: "Enter" });
       expect(active.getAttribute("aria-checked")).toBe("true");
-      fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Archived" }));
+      fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Архивные" }));
       await waitFor(() =>
         expect(active.getAttribute("aria-disabled")).not.toBe("true"),
       );
       fireEvent.click(active);
-      const archived = screen.getByRole("menuitemcheckbox", { name: "Archived" });
+      const archived = screen.getByRole("menuitemcheckbox", { name: "Архивные" });
       expect(archived.getAttribute("aria-checked")).toBe("true");
       expect(archived.getAttribute("aria-disabled")).not.toBe("true");
       expect(archived.hasAttribute("data-disabled")).toBe(false);
@@ -98,24 +98,24 @@ describe("PaletteThreadViewMenu", () => {
   it("describes the settings without changing the icon and reverses the selected sort", async () => {
     render(<ViewMenu />);
     fireEvent.keyDown(
-      screen.getByRole("button", { name: "Filter and sort: Active, Relevance" }),
+      screen.getByRole("button", { name: "Фильтр и сортировка: Активные, По релевантности" }),
       { key: "Enter" },
     );
     fireEvent.click(
-      await screen.findByRole("menuitemradio", { name: "Created at" }),
+      await screen.findByRole("menuitemradio", { name: "По созданию" }),
     );
     const trigger = await screen.findByRole("button", {
-      name: "Filter and sort: Active, Created at, descending",
+      name: "Фильтр и сортировка: Активные, По созданию, по убыванию",
     });
     expect(trigger.textContent).toBe("");
     fireEvent.click(
       screen.getByRole("menuitemradio", {
-        name: "Created at, descending. Sort ascending",
+        name: "По созданию, по убыванию. Сортировать по возрастанию",
       }),
     );
     expect(
       await screen.findByRole("button", {
-        name: "Filter and sort: Active, Created at, ascending",
+        name: "Фильтр и сортировка: Активные, По созданию, по возрастанию",
       }),
     ).toBeTruthy();
   });

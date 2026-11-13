@@ -222,7 +222,7 @@ describe("FilePreview", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Refresh file" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить файл" }));
 
     expect(onRefresh).toHaveBeenCalledOnce();
   });
@@ -240,7 +240,7 @@ describe("FilePreview", () => {
     expect(
       (
         screen.getByRole("button", {
-          name: "Refreshing file",
+          name: "Обновление файла",
         }) as HTMLButtonElement
       ).disabled,
     ).toBe(true);
@@ -560,9 +560,9 @@ describe("FilePreview", () => {
     );
     expect(document.querySelector("iframe")).toBeNull();
     await act(() => new Promise((resolve) => setTimeout(resolve, 200)));
-    expect(screen.queryByText("Loading preview…")).toBeNull();
+    expect(screen.queryByText("Загрузка предпросмотра…")).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Raw" }));
+    fireEvent.click(screen.getByRole("button", { name: "Исходный текст" }));
     expect(screen.queryByTestId("plugin-preview")).toBeNull();
     await screen.findByTestId("pierre-file");
     expect(pierreMock.state.lastFile?.contents).toBe("<h1>Page</h1>");
@@ -588,7 +588,7 @@ describe("FilePreview", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Open in external browser" }),
+      screen.getByRole("button", { name: "Открыть во внешнем браузере" }),
     );
 
     expect(openSpy).toHaveBeenCalledWith(
@@ -621,15 +621,15 @@ describe("FilePreview", () => {
         />
       </CompactViewportOverrideProvider>,
     );
-    expect(screen.getByRole("button", { name: "Preview" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Raw" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Предпросмотр" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Исходный текст" })).toBeTruthy();
     expect(
-      screen.queryByRole("button", { name: "Copy HTML source" }),
+      screen.queryByRole("button", { name: "Скопировать исходный HTML" }),
     ).toBeNull();
-    expect(screen.queryByRole("button", { name: "Refresh file" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Обновить файл" })).toBeNull();
     const openSpy = vi.spyOn(window, "open").mockReturnValue(null);
     fireEvent.click(
-      screen.getByRole("button", { name: "Open in external browser" }),
+      screen.getByRole("button", { name: "Открыть во внешнем браузере" }),
     );
     expect(openSpy).toHaveBeenCalledWith(
       `${window.location.origin}/gallery.html`,
@@ -637,35 +637,35 @@ describe("FilePreview", () => {
       "noopener,noreferrer",
     );
     openSpy.mockRestore();
-    fireEvent.click(screen.getByRole("button", { name: "File actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с файлом" }));
     const refresh = await screen.findByRole("menuitem", {
-      name: "Refresh file",
+      name: "Обновить файл",
     });
     expect(
-      screen.getByRole("menuitem", { name: "Copy HTML source" }),
+      screen.getByRole("menuitem", { name: "Скопировать исходный HTML" }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("menuitem", { name: "Copy file path" }),
+      screen.getByRole("menuitem", { name: "Скопировать путь к файлу" }),
     ).toBeTruthy();
     expect(
-      screen.queryByRole("menuitem", { name: "Open in external browser" }),
+      screen.queryByRole("menuitem", { name: "Открыть во внешнем браузере" }),
     ).toBeNull();
     expect(view.container.closest('[inert], [aria-hidden="true"]')).toBeNull();
     fireEvent.click(refresh);
     expect(onRefresh).toHaveBeenCalledOnce();
-    fireEvent.click(screen.getByRole("button", { name: "File actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с файлом" }));
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Open in editor" }),
+      await screen.findByRole("menuitem", { name: "Открыть в редакторе" }),
     );
     expect(onOpenInEditor).toHaveBeenCalledWith("reports/gallery.html");
-    fireEvent.click(screen.getByRole("button", { name: "Raw" }));
-    fireEvent.click(screen.getByRole("button", { name: "File actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Исходный текст" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с файлом" }));
     const wrap = await screen.findByRole("menuitemcheckbox", {
       name: "Wrap lines",
     });
     expect(wrap.getAttribute("aria-checked")).toBe("false");
     fireEvent.click(wrap);
-    fireEvent.click(screen.getByRole("button", { name: "File actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с файлом" }));
     expect(
       (
         await screen.findByRole("menuitemcheckbox", {
@@ -694,8 +694,8 @@ describe("FilePreview", () => {
     );
 
     const actionButtons = [
-      screen.getByRole("button", { name: "Copy HTML source" }),
-      screen.getByRole("button", { name: /Open in editor/ }),
+      screen.getByRole("button", { name: "Скопировать исходный HTML" }),
+      screen.getByRole("button", { name: /Открыть в редакторе/ }),
     ];
 
     for (const actionButton of actionButtons) {
@@ -737,7 +737,7 @@ describe("FilePreview", () => {
       );
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Open in external browser" }),
+        screen.getByRole("button", { name: "Открыть во внешнем браузере" }),
       );
 
       expect(openExternalUrl).toHaveBeenCalledWith(
@@ -762,7 +762,7 @@ describe("FilePreview", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Open in external browser" }),
+      screen.queryByRole("button", { name: "Открыть во внешнем браузере" }),
     ).toBeNull();
   });
 
@@ -821,7 +821,7 @@ describe("FilePreview", () => {
 
     expect(
       screen
-        .getByRole("button", { name: "Preview" })
+        .getByRole("button", { name: "Предпросмотр" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
     const iframe = container.querySelector("iframe");
@@ -854,7 +854,7 @@ describe("FilePreview", () => {
     expect(screen.getByRole("columnheader", { name: "Note" })).not.toBeNull();
     expect(screen.getByRole("cell", { name: "Ada, Lovelace" })).not.toBeNull();
     expect(screen.getByRole("cell", { name: 'said "hello"' })).not.toBeNull();
-    expect(screen.getByRole("button", { name: "Copy CSV" })).not.toBeNull();
+    expect(screen.getByRole("button", { name: "Скопировать CSV" })).not.toBeNull();
     expect(screen.queryByTestId("pierre-file")).toBeNull();
   });
 
@@ -874,7 +874,7 @@ describe("FilePreview", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Raw" }));
+    fireEvent.click(screen.getByRole("button", { name: "Исходный текст" }));
 
     await screen.findByTestId("pierre-file");
     expect(
@@ -938,7 +938,7 @@ describe("FilePreview", () => {
       60,
     );
     expect(
-      screen.getByText("Showing the first 500 rows and 100 columns."),
+      screen.getByText("Показаны первые 500 строк и 100 столбцов."),
     ).not.toBeNull();
   });
 
@@ -1036,7 +1036,7 @@ describe("FilePreview", () => {
         />,
       );
 
-      expect(screen.getByRole("alert").textContent).toBe("File not found.");
+      expect(screen.getByRole("alert").textContent).toBe("Файл не найден.");
     },
   );
 
@@ -1060,7 +1060,7 @@ describe("FilePreview", () => {
       />,
     );
 
-    expect(screen.getByRole("alert").textContent).toBe("File not found.");
+    expect(screen.getByRole("alert").textContent).toBe("Файл не найден.");
   });
 
   it("falls back to the generic failure message when the error carries none", () => {
@@ -1073,7 +1073,7 @@ describe("FilePreview", () => {
       />,
     );
 
-    expect(screen.getByRole("alert").textContent).toBe("Failed to load file");
+    expect(screen.getByRole("alert").textContent).toBe("Не удалось загрузить файл");
   });
 
   it("renders .htm files with the existing Preview and Raw controls", () => {
@@ -1099,17 +1099,17 @@ describe("FilePreview", () => {
     );
     expect(
       screen
-        .getByRole("button", { name: "Preview" })
+        .getByRole("button", { name: "Предпросмотр" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Raw" }));
+    fireEvent.click(screen.getByRole("button", { name: "Исходный текст" }));
     expect(
-      screen.getByRole("button", { name: "Raw" }).getAttribute("aria-pressed"),
+      screen.getByRole("button", { name: "Исходный текст" }).getAttribute("aria-pressed"),
     ).toBe("true");
     expect(
       view.container.querySelector("diffs-container")?.shadowRoot?.textContent,
     ).toBe("<!doctype html><h1>Report</h1>");
-    fireEvent.click(screen.getByRole("button", { name: "Preview" }));
+    fireEvent.click(screen.getByRole("button", { name: "Предпросмотр" }));
     expect(view.container.querySelector("iframe")?.getAttribute("src")).toBe(
       url,
     );
@@ -1154,10 +1154,10 @@ describe("FilePreview", () => {
 
     expect(view.container.querySelector("iframe")).toBeNull();
     expect(
-      screen.getByText("This file is too large to preview."),
+      screen.getByText("Этот файл слишком велик для предпросмотра."),
     ).not.toBeNull();
     expect(
-      screen.getByRole("link", { name: "Download" }).getAttribute("href"),
+      screen.getByRole("link", { name: "Скачать" }).getAttribute("href"),
     ).toBe("/api/v1/threads/thread-1/thread-storage/files/reports/huge.html");
   });
 
@@ -1217,13 +1217,13 @@ describe("FilePreview", () => {
           );
           if (compact) {
             fireEvent.click(
-              screen.getByRole("button", { name: "File actions" }),
+              screen.getByRole("button", { name: "Действия с файлом" }),
             );
             fireEvent.click(
-              await screen.findByRole("menuitem", { name: "Download" }),
+              await screen.findByRole("menuitem", { name: "Скачать" }),
             );
           } else {
-            fireEvent.click(screen.getByRole("button", { name: "Download" }));
+            fireEvent.click(screen.getByRole("button", { name: "Скачать" }));
           }
           expect(downloads.at(-1)).toEqual({ href: url, name: file.name });
           view.unmount();
@@ -1251,13 +1251,13 @@ describe("FilePreview", () => {
       />
     );
     const view = render(preview("old.txt"));
-    expect(screen.getByRole("button", { name: "Download" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Скачать" })).toBeTruthy();
     view.rerender(preview("new.txt"));
-    expect(screen.queryByRole("button", { name: "Download" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Скачать" })).toBeNull();
     view.rerender(
       preview("old.txt", new HttpError({ status: 404, message: "Not found" })),
     );
-    expect(screen.queryByRole("button", { name: "Download" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Скачать" })).toBeNull();
   });
 
   it("links Download to the file's raw URL under its basename", () => {
@@ -1279,9 +1279,9 @@ describe("FilePreview", () => {
     expect(screen.queryByRole("alert")).toBeNull();
     expect(screen.getByText("application/zip · 2.0 KB")).not.toBeNull();
     expect(
-      screen.getByText("This file type can't be previewed."),
+      screen.getByText("Предпросмотр этого типа файла недоступен."),
     ).not.toBeNull();
-    const download = screen.getByRole("link", { name: "Download" });
+    const download = screen.getByRole("link", { name: "Скачать" });
     expect(download.getAttribute("href")).toBe(
       "/api/v1/projects/p1/files/raw?path=qa%2Freport-with-images.zip",
     );
@@ -1356,14 +1356,14 @@ describe("FilePreview", () => {
       vi.advanceTimersByTime(200);
     });
     const loadingStatus = screen.getByRole("status");
-    expect(loadingStatus.textContent).toBe("Loading preview…");
+    expect(loadingStatus.textContent).toBe("Загрузка предпросмотра…");
     view.rerender(preview("first"));
     expect(screen.getByRole("status")).toBe(loadingStatus);
     const frame = screen.getByTitle("Gallery");
-    fireEvent.click(screen.getByRole("button", { name: "Raw" }));
+    fireEvent.click(screen.getByRole("button", { name: "Исходный текст" }));
     expect(screen.queryByRole("status")).toBeNull();
     fireEvent.load(frame);
-    fireEvent.click(screen.getByRole("button", { name: "Preview" }));
+    fireEvent.click(screen.getByRole("button", { name: "Предпросмотр" }));
     act(() => {
       vi.advanceTimersByTime(200);
     });

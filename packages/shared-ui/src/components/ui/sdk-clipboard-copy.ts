@@ -6,7 +6,7 @@ import { useCopiedFeedback } from "./copy-button";
 export function useSdkClipboardCopy({
   text,
   successMessage = null,
-  errorMessage = "Failed to copy",
+  errorMessage = "Не удалось скопировать",
 }: {
   text: string;
   successMessage?: string | null;
@@ -27,11 +27,11 @@ export function useSdkClipboardCopy({
 
 export async function copyTextWithSdkToast(
   text: string,
-  { successMessage = "Copied" }: { successMessage?: string } = {},
+  { successMessage = "Скопировано" }: { successMessage?: string } = {},
 ): Promise<void> {
   if (await experimental_copyToClipboard({ text })) {
     toast.success(successMessage);
   } else {
-    toast.error("Failed to copy");
+    toast.error("Не удалось скопировать");
   }
 }

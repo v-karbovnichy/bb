@@ -82,7 +82,7 @@ function renderLocalView(viewModel: LocalViewModel): string {
       ? renderLoadingView(viewModel)
       : renderErrorView(viewModel);
   return `<!doctype html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">

@@ -42,7 +42,7 @@ it("keeps plain Markdown immediate and HTML safe while the real pipeline downloa
   await act(async () => {});
   expect(pipeline.imports).toBe(1);
   expect(screen.getByText("Still readable")).toBeTruthy();
-  expect(screen.getByLabelText("Loading embedded HTML")).toBeTruthy();
+  expect(screen.getByLabelText("Загрузка встроенного HTML")).toBeTruthy();
   expect(view.container.querySelector("video, script")).toBeNull();
   await act(async () => pipeline.release());
   await waitFor(() =>
@@ -51,5 +51,5 @@ it("keeps plain Markdown immediate and HTML safe while the real pipeline downloa
     ),
   );
   expect(view.container.querySelector("script, [onerror]")).toBeNull();
-  expect(screen.queryByLabelText("Loading embedded HTML")).toBeNull();
+  expect(screen.queryByLabelText("Загрузка встроенного HTML")).toBeNull();
 });

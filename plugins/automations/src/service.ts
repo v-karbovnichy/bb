@@ -110,7 +110,7 @@ function requireProjectAutomation(
   args: { projectId: string; automationId: string },
 ): AutomationRow {
   const automation = getAutomationForProject(db, args);
-  if (!automation) throw new Error("Automation not found");
+  if (!automation) throw new Error("Автоматизация не найдена");
   return automation;
 }
 
@@ -150,12 +150,12 @@ async function assertNotRecursiveCreation(
   if (createdByThreadId === undefined) return;
   if (listRunningAutomationRunsByThread(db, createdByThreadId).length > 0) {
     throw new Error(
-      "Threads executing an automation run cannot create automations",
+      "Чаты, выполняющие автоматизацию, не могут создавать автоматизации",
     );
   }
   const thread = await bb.sdk.threads.get({ threadId: createdByThreadId });
   if (thread.originPluginId === "automations") {
-    throw new Error("Automation-spawned threads cannot create automations");
+    throw new Error("Чаты, созданные автоматизацией, не могут создавать автоматизации");
   }
 }
 
@@ -175,7 +175,7 @@ function validateScriptWorkingDirectory(
   if (workingDirectory.type !== "path") return;
   if (!isAbsolute(workingDirectory.path)) {
     throw new Error(
-      "A script working directory must be automation-storage, project, or an absolute path on the bb server host",
+      "Рабочая папка скрипта должна быть automation-storage, project или абсолютным путём на хосте сервера bb",
     );
   }
   if (!isPrintableWorkingDirectoryPath(workingDirectory.path)) {
@@ -223,7 +223,7 @@ async function applyScriptExecutionUpdate(args: {
   const { current, update } = args;
   if (current.mode !== "script") {
     throw new Error(
-      "Script execution options can only update script automations",
+      "Параметры скрипта можно изменять только у автоматизаций скриптов",
     );
   }
   if (update.workingDirectory !== undefined) {
@@ -308,17 +308,17 @@ function toStoredAutomationResponse(
 type AutomationWriteOperation = "run" | "pause" | "resume" | "update";
 
 const MISSING_PROMPT_OPERATION: Record<AutomationWriteOperation, string> = {
-  run: "it can run",
-  pause: "it can be paused",
-  resume: "it can be resumed",
-  update: "other fields can be updated",
+  run: "запуском",
+  pause: "приостановкой",
+  resume: "возобновлением",
+  update: "изменением других полей",
 };
 
 const INVALID_DATA_OPERATION: Record<AutomationWriteOperation, string> = {
-  run: "run",
-  pause: "paused",
-  resume: "resumed",
-  update: "updated",
+  run: "запустить",
+  pause: "приостановить",
+  resume: "возобновить",
+  update: "изменить",
 };
 
 function automationWriteError(
@@ -328,10 +328,10 @@ function automationWriteError(
 ): Error {
   return problem === "missing-agent-prompt"
     ? new Error(
-        `Automation "${row.name}" requires a prompt before ${MISSING_PROMPT_OPERATION[operation]}. Edit it and add a prompt first.`,
+        `Для автоматизации «${row.name}» требуется запрос перед ${MISSING_PROMPT_OPERATION[operation]}. Измените её и добавьте запрос.`,
       )
     : new Error(
-        `Automation "${row.name}" has invalid stored data and cannot be ${INVALID_DATA_OPERATION[operation]}. Delete it and recreate it.`,
+        `Сохранённые данные автоматизации «${row.name}» некорректны; её нельзя ${INVALID_DATA_OPERATION[operation]}. Удалите и создайте её заново.`,
       );
 }
 
@@ -493,7 +493,7 @@ function applyAgentExecutionUpdate(
 ): Extract<AutomationExecution, { mode: "agent" }> {
   if (execution.mode !== "agent") {
     throw new Error(
-      "Agent execution options can only update agent automations",
+      "Параметры агента можно изменять только у автоматизаций агентов",
     );
   }
 
@@ -533,11 +533,11 @@ function parseRunCursor(
   if (cursor === undefined) return null;
   const decoded = Buffer.from(cursor, "base64url").toString("utf8");
   const separator = decoded.indexOf(":");
-  if (separator <= 0) throw new Error("Invalid runs cursor");
+  if (separator <= 0) throw new Error("Недопустимый курсор запусков");
   const startedAt = Number(decoded.slice(0, separator));
   const id = decoded.slice(separator + 1);
   if (!Number.isFinite(startedAt) || id.length === 0) {
-    throw new Error("Invalid runs cursor");
+    throw new Error("Недопустимый курсор запусков");
   }
   return { startedAt, id };
 }
@@ -591,7 +591,7 @@ async function requireProjectAvailable(
     );
   } catch (error) {
     throw new Error(
-      `Project ${projectId} is not available: ${errorMessage(error)}`,
+      `Проект ${projectId} недоступен: ${errorMessage(error)}`,
     );
   }
 }
@@ -736,7 +736,7 @@ export function createAutomationService(args: {
         ).length > 1
       ) {
         throw new Error(
-          "execution, agent, and script updates cannot be combined",
+          "Обновления execution, agent и script нельзя объединять",
         );
       }
       const now = Date.now();
@@ -842,7 +842,7 @@ export function createAutomationService(args: {
           automationId: current.id,
           scriptFile: stagedScriptFile,
         });
-        throw new Error("Automation not found");
+        throw new Error("Автоматизация не найдена");
       }
       if (patch.execution !== undefined) {
         await cleanupSupersededScript({
@@ -884,7 +884,7 @@ export function createAutomationService(args: {
         enabled: false,
         nextRunAt: null,
       });
-      if (!updated) throw new Error("Automation not found");
+      if (!updated) throw new Error("Автоматизация не найдена");
       publishAutomationChange(bb, input.projectId, "automations-changed");
       return toStoredAutomationResponse(pluginDataDir, updated);
     },
@@ -907,7 +907,7 @@ export function createAutomationService(args: {
         lastError: null,
         resetConsecutiveFailures: true,
       });
-      if (!updated) throw new Error("Automation not found");
+      if (!updated) throw new Error("Автоматизация не найдена");
       publishAutomationChange(bb, input.projectId, "automations-changed");
       return toStoredAutomationResponse(pluginDataDir, updated);
     },

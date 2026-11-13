@@ -47,21 +47,21 @@ const DANGER_QUIET_CLASS =
 
 const ERROR_COPY: Record<string, string> = {
   invalid_code:
-    "That code is invalid or has expired. Get a new one from the getbb.app dashboard.",
+    "Этот код недействителен или истёк. Получите новый в панели getbb.app.",
   expired_code:
-    "That code has expired. Get a new one from the getbb.app dashboard.",
+    "Срок действия кода истёк. Получите новый в панели getbb.app.",
   already_used:
-    "That code was already used. Get a new one from the getbb.app dashboard.",
-  network: "Couldn't reach getbb.app. Check your connection, then try again.",
+    "Этот код уже использован. Получите новый в панели getbb.app.",
+  network: "Нет связи с getbb.app. Проверьте подключение и повторите попытку.",
   rate_limited:
-    "Too many sign-in attempts from this network. Wait a minute, then try again.",
+    "Слишком много попыток входа из этой сети. Подождите минуту и повторите попытку.",
   unavailable:
-    "getbb.app couldn't handle that request right now. Try again in a minute.",
-  unauthorized: "getbb.app rejected the new pairing. Try again.",
+    "getbb.app сейчас не может обработать запрос. Повторите попытку через минуту.",
+  unauthorized: "getbb.app отклонил привязку. Повторите попытку.",
   profile_unavailable:
-    "bb saved the pairing, but getbb.app didn't return your account yet. bb keeps retrying.",
+    "bb сохранил привязку, но getbb.app пока не вернул данные аккаунта. bb продолжает попытки.",
   superseded:
-    "Another sign-in or a sign-out replaced this one. Check the account above.",
+    "Эту попытку сменил другой вход или выход. Проверьте аккаунт выше.",
 };
 
 function errorText(error: unknown): string {
@@ -192,10 +192,10 @@ function SignOutDialog({
         {open ? (
           <>
             <DialogHeader>
-              <DialogTitle>Sign out of your bb account?</DialogTitle>
+              <DialogTitle>Выйти из аккаунта bb?</DialogTitle>
               <DialogDescription>
-                getbb.app forgets this bb. Remote access and hosted services
-                stop until you sign in again.
+                getbb.app отвяжет этот bb. Удалённый доступ и облачные сервисы
+                перестанут работать до повторного входа.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -205,7 +205,7 @@ function SignOutDialog({
                 disabled={pending}
                 onClick={() => onOpenChange(false)}
               >
-                Cancel
+                Отмена
               </Button>
               <Button
                 type="button"
@@ -216,7 +216,7 @@ function SignOutDialog({
                 {pending ? (
                   <Icon name="Spinner" className="size-4 animate-spin" />
                 ) : null}
-                {pending ? "Signing out…" : "Sign out"}
+                {pending ? "Выход…" : "Выйти"}
               </Button>
             </DialogFooter>
           </>
@@ -262,7 +262,7 @@ function SignOutControl({
         className={DANGER_QUIET_CLASS}
         onClick={() => setConfirmOpen(true)}
       >
-        Sign out
+        Выйти
       </Button>
       {error !== null ? (
         <p className="text-xs text-destructive-text">{error}</p>
@@ -294,16 +294,16 @@ function SignedInContent({
           <p className="truncate text-sm font-semibold">{account.name}</p>
           {account.githubLogin !== null ? (
             <p className="truncate text-xs text-muted-foreground">
-              @{account.githubLogin} on GitHub
+              @{account.githubLogin} в GitHub
             </p>
           ) : null}
         </div>
       </div>
       <dl className="space-y-1.5">
-        <DetailRow label="Handle">
-          {account.handle ?? "Not claimed yet"}
+        <DetailRow label="Имя пользователя">
+          {account.handle ?? "Пока не задано"}
         </DetailRow>
-        <DetailRow label="This server">
+        <DetailRow label="Этот сервер">
           <span className="font-mono text-xs">{account.serverLabel}</span>
           <span className="text-muted-foreground">
             {" "}
@@ -313,7 +313,7 @@ function SignedInContent({
       </dl>
       <div className="-mx-4 flex flex-wrap items-center gap-3 border-t border-border-seam px-4 pt-3">
         <span className="min-w-0 text-xs text-muted-foreground">
-          Remote access and hosted services use this account.
+          Удалённый доступ и облачные сервисы используют этот аккаунт.
         </span>
         <span className="flex-1" />
         <SignOutControl rpc={rpc} onSignedOut={onSignedOut} />
@@ -333,12 +333,12 @@ function ProfilePendingContent({
     <div className="space-y-4">
       <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <Icon name="Spinner" className="size-4 animate-spin" />
-        This bb is paired with getbb.app, but hasn't loaded your account yet. It
-        keeps retrying.
+        Этот bb привязан к getbb.app, но данные аккаунта ещё не загружены.
+        Повторные попытки продолжаются.
       </p>
       <div className="-mx-4 flex flex-wrap items-center gap-3 border-t border-border-seam px-4 pt-3">
         <span className="min-w-0 text-xs text-muted-foreground">
-          Remote access and hosted services start once it does.
+          Удалённый доступ и облачные сервисы заработают после загрузки.
         </span>
         <span className="flex-1" />
         <SignOutControl rpc={rpc} onSignedOut={onSignedOut} />
@@ -351,10 +351,10 @@ function signOutNotice(result: SignOutResult): ReactNode {
   if (result.revocation !== "failed") return null;
   return (
     <p className="text-xs text-destructive-text">
-      Signed out here, but getbb.app didn't confirm it revoked this server (
-      {result.message}). Remove it from{" "}
+      Здесь выполнен выход, но getbb.app не подтвердил отзыв доступа у этого сервера (
+      {result.message}). Удалите его через{" "}
       <UrlLink href={result.dashboardUrl} target="_blank" rel="noreferrer">
-        your dashboard
+        панель управления
       </UrlLink>
       .
     </p>
@@ -408,7 +408,7 @@ function PairCodeForm({
           placeholder="XXXX–XXXX"
           autoComplete="off"
           spellCheck={false}
-          aria-label="Pairing code"
+          aria-label="Код привязки"
           aria-invalid={error !== null}
           className={cn(
             "font-mono tracking-widest",
@@ -419,7 +419,7 @@ function PairCodeForm({
           {pending ? (
             <Icon name="Spinner" className="size-4 animate-spin" />
           ) : null}
-          Pair
+          Привязать
         </Button>
       </form>
       {error !== null ? (
@@ -445,7 +445,7 @@ function SignInDialogBody({
       <div className="space-y-3">
         <p className="text-sm text-destructive-text">{startError}</p>
         <Button type="button" variant="outline" onClick={onRetry}>
-          Try again
+          Повторить попытку
         </Button>
       </div>
     );
@@ -454,7 +454,7 @@ function SignInDialogBody({
     return (
       <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <Icon name="Spinner" className="size-4 animate-spin" />
-        Getting a sign-in code…
+        Получение кода входа…
       </p>
     );
   }
@@ -463,10 +463,10 @@ function SignInDialogBody({
     <div className="space-y-4">
       <div className="space-y-1.5">
         <p className="text-xs text-muted-foreground">
-          Confirm this code on {hostOf(login.verificationUrl)}:
+          Подтвердите этот код на {hostOf(login.verificationUrl)}:
         </p>
         <p
-          aria-label="Sign-in code"
+          aria-label="Код входа"
           className={cn(
             "font-mono text-base font-semibold tracking-widest",
             !pending && "text-muted-foreground line-through",
@@ -483,22 +483,22 @@ function SignInDialogBody({
               target="_blank"
               rel="noreferrer"
             >
-              Open getbb.app
+              Открыть getbb.app
               <Icon name="ExternalLink" className="size-3.5" />
             </UrlLink>
           </Button>
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
             <Icon name="Spinner" className="size-3.5 animate-spin" />
-            Waiting for you to approve it. You can approve from any device.
+            Ожидаем подтверждения. Подтвердить можно с любого устройства.
           </p>
         </>
       ) : (
         <div className="space-y-3">
           <p className="text-sm text-destructive-text">
-            {login.message ?? "Sign-in didn't finish."}
+            {login.message ?? "Вход не завершён."}
           </p>
           <Button type="button" variant="outline" onClick={onRetry}>
-            Get a new code
+            Получить новый код
           </Button>
         </div>
       )}
@@ -603,9 +603,9 @@ function SignInDialog({
         {open ? (
           <>
             <DialogHeader>
-              <DialogTitle>Sign in to your bb account</DialogTitle>
+              <DialogTitle>Вход в аккаунт bb</DialogTitle>
               <DialogDescription>
-                Approve this bb on getbb.app. You sign in with GitHub there.
+                Подтвердите этот bb на getbb.app. Для входа там используется GitHub.
               </DialogDescription>
             </DialogHeader>
             <SignInDialogBody
@@ -620,7 +620,7 @@ function SignInDialog({
                 variant="outline"
                 onClick={() => close(false)}
               >
-                Cancel
+                Отмена
               </Button>
             </DialogFooter>
           </>
@@ -646,12 +646,12 @@ function SignedOutContent({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Sign in to link this bb to your getbb.app account. Remote access and
-        hosted services such as title and commit message generation use it.
+        Войдите, чтобы привязать этот bb к аккаунту getbb.app. Он нужен для
+        удалённого доступа и облачных сервисов, включая создание названий и сообщений коммитов.
       </p>
       <div className="flex flex-wrap items-center gap-2">
         <Button type="button" onClick={() => setDialogOpen(true)}>
-          Sign in
+          Войти
         </Button>
         <Button
           type="button"
@@ -660,12 +660,12 @@ function SignedOutContent({
           className="text-muted-foreground"
           onClick={() => setCodeOpen((value) => !value)}
         >
-          Have a pairing code?
+          Есть код привязки?
         </Button>
       </div>
       {codeOpen ? <PairCodeForm rpc={rpc} onDone={onChanged} /> : null}
       <p className="text-xs text-subtle-foreground">
-        From a terminal: <span className="font-mono">bb account login</span>
+        Через терминал: <span className="font-mono">bb account login</span>
       </p>
       <SignInDialog
         open={dialogOpen}
@@ -693,12 +693,12 @@ function AccountSettingsSection() {
   if (loadError !== null && state === null) {
     return (
       <p className="text-sm text-destructive-text">
-        Failed to load your bb account: {loadError}
+        Не удалось загрузить аккаунт bb: {loadError}
       </p>
     );
   }
   if (state === null) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">Загрузка…</p>;
   }
   if (state.status.state === "signed-in") {
     return (
@@ -731,7 +731,7 @@ function AccountSettingsSection() {
 export default definePluginApp((app) => {
   app.slots.settingsSection({
     id: "account",
-    description: "The getbb.app account this bb is signed in to.",
+    description: "Аккаунт getbb.app, в который вошёл этот bb.",
     component: AccountSettingsSection,
   });
 });

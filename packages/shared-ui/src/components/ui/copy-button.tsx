@@ -49,7 +49,7 @@ export const CopyIconButton = forwardRef<
     onCopy,
     className,
     iconClassName,
-    label = "Copy to clipboard",
+    label = "Скопировать в буфер обмена",
     ...rest
   },
   ref,

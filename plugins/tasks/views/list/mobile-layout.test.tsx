@@ -97,7 +97,7 @@ describe("responsive list structure", () => {
     expect(count.closest(".overflow-x-auto")).toBeNull();
     const sortChip = slot.getByRole("button", { name: /Sort/ });
     expect(sortChip.closest(".overflow-x-auto")).toBeNull();
-    const statusChip = slot.getByRole("button", { name: "Status" });
+    const statusChip = slot.getByRole("button", { name: "Статус" });
     expect(statusChip.closest(".overflow-x-auto")).not.toBeNull();
   });
 });

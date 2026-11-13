@@ -79,9 +79,9 @@ function StarToast({ onStar, pluginId, toastId }: StarToastProps) {
           <Icon name="GithubLogo" className="size-4" aria-hidden />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium leading-5">Enjoying bb?</div>
+          <div className="text-sm font-medium leading-5">Нравится bb?</div>
           <div className="mt-0.5 flex min-w-0 flex-col items-start gap-2 text-xs leading-5 text-muted-foreground">
-            <div>A star on GitHub helps bb grow.</div>
+            <div>Звёздочка на GitHub помогает развитию bb.</div>
             <Button
               type="button"
               variant="link"
@@ -92,7 +92,7 @@ function StarToast({ onStar, pluginId, toastId }: StarToastProps) {
                 toast.dismiss(toastId);
               }}
             >
-              Star on GitHub
+              Поставить звезду на GitHub
             </Button>
           </div>
         </div>
@@ -101,7 +101,7 @@ function StarToast({ onStar, pluginId, toastId }: StarToastProps) {
           variant="ghost"
           size="icon"
           className="-mr-1 -mt-1 size-6 shrink-0 text-muted-foreground"
-          aria-label="Dismiss"
+          aria-label="Закрыть"
           onClick={() => toast.dismiss(toastId)}
         >
           <Icon name="X" className="size-3.5" aria-hidden />

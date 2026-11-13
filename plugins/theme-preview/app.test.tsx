@@ -195,12 +195,12 @@ describe("Theme Preview", () => {
         });
 
         const tabs = within(
-          screen.getByRole("tablist", { name: "Preview view" }),
+          screen.getByRole("tablist", { name: "Вид предпросмотра" }),
         ).getAllByRole("tab");
         expect(tabs.map((tab) => tab.textContent)).toEqual(
           panelWidth < 808
-            ? ["Thread", "New thread", "Settings"]
-            : ["Thread", "New thread", "Split", "Settings"],
+            ? ["Чат", "Новый чат", "Настройки"]
+            : ["Чат", "Новый чат", "Разделение", "Настройки"],
         );
         expect(themeControl().getAttribute("role")).toBe("combobox");
       } finally {
@@ -221,10 +221,10 @@ describe("Theme Preview", () => {
         },
         "split",
       );
-      expect(screen.queryByRole("tab", { name: "Split" })).toBeNull();
+      expect(screen.queryByRole("tab", { name: "Разделение" })).toBeNull();
       expect(
         screen
-          .getByRole("tab", { name: "Thread" })
+          .getByRole("tab", { name: "Чат" })
           .getAttribute("aria-selected"),
       ).toBe("true");
       expect(document.querySelector("[data-tp-mobile-scene]")).not.toBeNull();
@@ -233,14 +233,14 @@ describe("Theme Preview", () => {
       fireEvent(window, new Event("resize"));
       expect(
         screen
-          .getByRole("tab", { name: "Split" })
+          .getByRole("tab", { name: "Разделение" })
           .getAttribute("aria-selected"),
       ).toBe("true");
       expect(document.querySelector("[data-tp-mobile-scene]")).toBeNull();
       expect(document.querySelectorAll("[data-tp-split-pane]")).toHaveLength(2);
       width.mockReturnValue(700);
       fireEvent(window, new Event("resize"));
-      expect(screen.queryByRole("tab", { name: "Split" })).toBeNull();
+      expect(screen.queryByRole("tab", { name: "Разделение" })).toBeNull();
       expect(document.querySelector("[data-tp-mobile-scene]")).not.toBeNull();
     } finally {
       width.mockRestore();
@@ -265,10 +265,10 @@ describe("Theme Preview", () => {
         return found as HTMLElement;
       });
       const tabs = within(toc).getAllByRole("tab");
-      expect(tabs.map((tab) => tab.textContent)).toEqual(["Agent", "You"]);
+      expect(tabs.map((tab) => tab.textContent)).toEqual(["Агент", "Вы"]);
       expect(
         within(toc)
-          .getByRole("tab", { name: "You" })
+          .getByRole("tab", { name: "Вы" })
           .getAttribute("aria-selected"),
       ).toBe("true");
       expect(
@@ -277,7 +277,7 @@ describe("Theme Preview", () => {
           .getAttribute("aria-current"),
       ).toBe("true");
 
-      fireEvent.mouseDown(within(toc).getByRole("tab", { name: "Agent" }));
+      fireEvent.mouseDown(within(toc).getByRole("tab", { name: "Агент" }));
       const second = await within(toc).findByRole("button", {
         name: /Selection now reads/i,
       });
@@ -305,8 +305,8 @@ describe("Theme Preview", () => {
         expect(found).not.toBeNull();
         return found as HTMLElement;
       });
-      expect(within(info).getByText("Info")).toBeDefined();
-      expect(within(info).getByText("Diff")).toBeDefined();
+      expect(within(info).getByText("Сведения")).toBeDefined();
+      expect(within(info).getByText("Изменения")).toBeDefined();
       expect(within(info).queryByText("Changes")).toBeNull();
 
       cleanup();
@@ -318,7 +318,7 @@ describe("Theme Preview", () => {
         expect(found).not.toBeNull();
         return found as HTMLElement;
       });
-      expect(within(newThread).getByText("Ask anything…")).toBeDefined();
+      expect(within(newThread).getByText("Спросите о чём угодно…")).toBeDefined();
       expect(within(newThread).queryByRole("button")).toBeNull();
 
       cleanup();
@@ -351,14 +351,14 @@ describe("Theme Preview", () => {
       });
       expect(
         screen
-          .getByRole("button", { name: "Appearance" })
+          .getByRole("button", { name: "Оформление" })
           .getAttribute("aria-current"),
       ).toBe("page");
       expect(
-        within(settings).getByRole("button", { name: "Palette" }).textContent,
+        within(settings).getByRole("button", { name: "Палитра" }).textContent,
       ).toContain("Default");
       expect(
-        within(settings).getByRole("switch", { name: "Fade inactive splits" }),
+        within(settings).getByRole("switch", { name: "Приглушать неактивные панели" }),
       ).toBeDefined();
       expect(
         document.querySelector("[data-tp-mock-sidebar=settings]"),
@@ -367,7 +367,7 @@ describe("Theme Preview", () => {
         document.querySelector(
           "[data-tp-mock-sidebar=settings] [data-tp-sidebar-state=selected]",
         )?.textContent,
-      ).toContain("Appearance");
+      ).toContain("Оформление");
       expect(within(settings).queryByText("Extensions")).toBeNull();
       expect(within(settings).queryByText("Installed")).toBeNull();
     } finally {
@@ -385,12 +385,12 @@ describe("Theme Preview", () => {
     await waitFor(() => expect(control.textContent).toContain("Default"));
     expect(
       screen
-        .getByRole("button", { name: "Light mode" })
+        .getByRole("button", { name: "Светлый режим" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
     expect(
       screen
-        .getByRole("button", { name: "Dark mode" })
+        .getByRole("button", { name: "Тёмный режим" })
         .getAttribute("aria-pressed"),
     ).toBe("false");
     openThemeMenu();
@@ -419,9 +419,9 @@ describe("Theme Preview", () => {
       },
     });
 
-    await screen.findByRole("combobox", { name: /Default light/i });
-    const light = screen.getByRole("button", { name: "Light mode" });
-    const dark = screen.getByRole("button", { name: "Dark mode" });
+    await screen.findByRole("combobox", { name: /Default, светлый режим/i });
+    const light = screen.getByRole("button", { name: "Светлый режим" });
+    const dark = screen.getByRole("button", { name: "Тёмный режим" });
     expect(light.querySelector('[data-tp-mode-icon="light"]')).not.toBeNull();
     expect(dark.querySelector('[data-tp-mode-icon="dark"]')).not.toBeNull();
     expect(light.getAttribute("aria-pressed")).toBe("true");
@@ -500,27 +500,27 @@ describe("Theme Preview", () => {
         themeCatalog: () => DEFAULT_CATALOG,
         setTheme: () => DEFAULT_CATALOG,
       });
-      await screen.findByRole("button", { name: "Show navigation preview" });
+      await screen.findByRole("button", { name: "Показать предпросмотр навигации" });
       fireEvent.click(
-        screen.getByRole("button", { name: "Show navigation preview" }),
+        screen.getByRole("button", { name: "Показать предпросмотр навигации" }),
       );
       expect(
         document.querySelector("[data-tp-mobile-navigation]"),
       ).not.toBeNull();
       fireEvent.click(
-        screen.getByRole("button", { name: "Close navigation preview" }),
+        screen.getByRole("button", { name: "Закрыть предпросмотр навигации" }),
       );
       expect(document.querySelector("[data-tp-mobile-navigation]")).toBeNull();
       fireEvent.click(
-        screen.getByRole("button", { name: "Show right panel preview" }),
+        screen.getByRole("button", { name: "Показать предпросмотр правой панели" }),
       );
-      expect(screen.getByText("Pull request")).toBeDefined();
+      expect(screen.getByText("Запрос на слияние")).toBeDefined();
       fireEvent.click(
-        screen.getByRole("button", { name: "Return to conversation preview" }),
+        screen.getByRole("button", { name: "Вернуться к предпросмотру чата" }),
       );
       expect(document.querySelector("[data-tp-mobile-panel]")).toBeNull();
       fireEvent.click(
-        screen.getByRole("button", { name: "Show navigation preview" }),
+        screen.getByRole("button", { name: "Показать предпросмотр навигации" }),
       );
       const Component = panel.component;
       mounted.rerender(<Component subPath="new" />);
@@ -529,21 +529,21 @@ describe("Theme Preview", () => {
           document.querySelector("[data-tp-mobile-navigation]"),
         ).toBeNull(),
       );
-      expect(screen.getByText("Recent threads")).toBeDefined();
-      expect(screen.getByText("Ask anything…")).toBeDefined();
+      expect(screen.getByText("Недавние чаты")).toBeDefined();
+      expect(screen.getByText("Спросите о чём угодно…")).toBeDefined();
       mounted.rerender(<Component subPath="split" />);
       expect(
         screen
-          .getByRole("tab", { name: "Thread" })
+          .getByRole("tab", { name: "Чат" })
           .getAttribute("aria-selected"),
       ).toBe("true");
-      expect(screen.queryByRole("tab", { name: "Split" })).toBeNull();
+      expect(screen.queryByRole("tab", { name: "Разделение" })).toBeNull();
       expect(document.querySelector("[data-tp-split-pane]")).toBeNull();
       width.mockReturnValue(1280);
       fireEvent(window, new Event("resize"));
       expect(
         screen
-          .getByRole("tab", { name: "Split" })
+          .getByRole("tab", { name: "Разделение" })
           .getAttribute("aria-selected"),
       ).toBe("true");
     } finally {
@@ -564,7 +564,7 @@ describe("Theme Preview", () => {
       await waitFor(() =>
         expect(screen.queryByText("bb-plugins")).not.toBeNull(),
       );
-      expect(screen.getByText("Pull request")).toBeDefined();
+      expect(screen.getByText("Запрос на слияние")).toBeDefined();
       expect(
         document.querySelector("[data-tp-mock-sidebar=left]"),
       ).not.toBeNull();
@@ -587,26 +587,26 @@ describe("Theme Preview", () => {
       setTheme: () => DEFAULT_CATALOG,
     });
 
-    expect(screen.getByText("Overlays")).toBeDefined();
-    fireEvent.click(screen.getByRole("button", { name: "Overlays" }));
+    expect(screen.getByText("Всплывающие элементы")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Всплывающие элементы" }));
     for (const name of [
-      "Menu",
-      "Dialog",
-      "Popover",
-      "Tooltip",
-      "Hover card",
-      "Toast",
+      "Меню",
+      "Диалог",
+      "Всплывающая панель",
+      "Подсказка",
+      "Карточка при наведении",
+      "Уведомление",
     ]) {
       expect(screen.getByRole("button", { name })).toBeDefined();
     }
 
-    fireEvent.click(screen.getByRole("button", { name: "Dialog" }));
+    fireEvent.click(screen.getByRole("button", { name: "Диалог" }));
     const dialog = await screen.findByRole("dialog");
-    expect(within(dialog).getByText("Archive thread?")).toBeDefined();
-    fireEvent.click(within(dialog).getByRole("button", { name: "Cancel" }));
+    expect(within(dialog).getByText("Архивировать чат?")).toBeDefined();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Отмена" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
-    fireEvent.pointerDown(screen.getByRole("button", { name: "Menu" }), {
+    fireEvent.pointerDown(screen.getByRole("button", { name: "Меню" }), {
       button: 0,
       ctrlKey: false,
     });
@@ -615,12 +615,12 @@ describe("Theme Preview", () => {
       within(menu)
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
-    ).toEqual(["Rename…", "Open in split", "Copy link", "Archive"]);
+    ).toEqual(["Переименовать…", "Открыть в отдельной панели", "Скопировать ссылку", "Архивировать"]);
     fireEvent.keyDown(document.activeElement ?? document.body, {
       key: "Escape",
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Tooltip" }));
+    fireEvent.click(screen.getByRole("button", { name: "Подсказка" }));
     expect(await screen.findByRole("tooltip")).toBeDefined();
   });
 
@@ -630,7 +630,7 @@ describe("Theme Preview", () => {
       setTheme: () => DEFAULT_CATALOG,
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Overlays" }));
+    fireEvent.click(screen.getByRole("button", { name: "Всплывающие элементы" }));
     const trigger = document.querySelector<HTMLButtonElement>(
       "[data-tp-hovercard-trigger]",
     );
@@ -647,9 +647,9 @@ describe("Theme Preview", () => {
       return found as HTMLElement;
     });
 
-    const copy = within(card).getByRole("button", { name: "Copy branch" });
+    const copy = within(card).getByRole("button", { name: "Скопировать ветку" });
     expect(
-      within(card).getByRole("button", { name: "Open in split" }),
+      within(card).getByRole("button", { name: "Открыть в отдельной панели" }),
     ).toBeDefined();
     fireEvent.click(copy);
     expect(
@@ -668,56 +668,56 @@ describe("Theme Preview", () => {
       setTheme: () => DEFAULT_CATALOG,
     });
 
-    for (const name of ["Overlays", "Components", "Style sheet"]) {
+    for (const name of ["Всплывающие элементы", "Компоненты", "Стили"]) {
       expect(
         screen.getByRole("button", { name }).getAttribute("aria-expanded"),
       ).toBe("false");
     }
     expect(
-      screen.queryByRole("textbox", { name: "Search threads" }),
+      screen.queryByRole("textbox", { name: "Поиск чатов" }),
     ).toBeNull();
-    const components = screen.getByRole("button", { name: "Components" });
+    const components = screen.getByRole("button", { name: "Компоненты" });
     fireEvent.click(components);
 
     const search = await screen.findByRole("textbox", {
-      name: "Search threads",
+      name: "Поиск чатов",
     });
     fireEvent.change(search, { target: { value: "endless color" } });
     expect((search as HTMLInputElement).value).toBe("endless color");
     expect(screen.queryByRole("textbox", { name: "Filter" })).toBeNull();
 
-    const notifications = screen.getByRole("switch", { name: "Notifications" });
+    const notifications = screen.getByRole("switch", { name: "Уведомления" });
     const before = notifications.getAttribute("aria-checked");
     fireEvent.click(notifications);
     expect(notifications.getAttribute("aria-checked")).not.toBe(before);
 
-    const drafts = screen.getByRole("checkbox", { name: "Include drafts" });
+    const drafts = screen.getByRole("checkbox", { name: "Включать черновики" });
     const checkedBefore = drafts.getAttribute("aria-checked");
     fireEvent.click(drafts);
     expect(drafts.getAttribute("aria-checked")).not.toBe(checkedBefore);
 
     expect(
-      (screen.getByRole("button", { name: "Disabled" }) as HTMLButtonElement)
+      (screen.getByRole("button", { name: "Недоступна" }) as HTMLButtonElement)
         .disabled,
     ).toBe(true);
 
     fireEvent.click(components);
     expect(
-      screen.queryByRole("textbox", { name: "Search threads" }),
+      screen.queryByRole("textbox", { name: "Поиск чатов" }),
     ).toBeNull();
     fireEvent.click(components);
-    expect(screen.getByRole("textbox", { name: "Search threads" })).toBe(
+    expect(screen.getByRole("textbox", { name: "Поиск чатов" })).toBe(
       search,
     );
     expect((search as HTMLInputElement).value).toBe("endless color");
     expect(
       screen
-        .getByRole("switch", { name: "Notifications" })
+        .getByRole("switch", { name: "Уведомления" })
         .getAttribute("aria-checked"),
     ).not.toBe(before);
     expect(
       screen
-        .getByRole("checkbox", { name: "Include drafts" })
+        .getByRole("checkbox", { name: "Включать черновики" })
         .getAttribute("aria-checked"),
     ).not.toBe(checkedBefore);
   });
@@ -727,7 +727,7 @@ describe("Theme Preview", () => {
       themeCatalog: () => DEFAULT_CATALOG,
       setTheme: () => DEFAULT_CATALOG,
     });
-    fireEvent.click(screen.getByRole("button", { name: "Overlays" }));
+    fireEvent.click(screen.getByRole("button", { name: "Всплывающие элементы" }));
     const trigger = await waitFor(() => {
       const found = document.querySelector<HTMLButtonElement>(
         "[data-tp-tooltip-trigger]",
@@ -787,7 +787,7 @@ describe("Theme Preview", () => {
       expect(sheet?.querySelectorAll("button")).toHaveLength(1);
       expect(
         screen
-          .getByRole("button", { name: "Style sheet" })
+          .getByRole("button", { name: "Стили" })
           .getAttribute("aria-expanded"),
       ).toBe("true");
       const ratios = await waitFor(() => {
@@ -837,7 +837,7 @@ describe("Theme Preview", () => {
 
     expect(screen.getByRole("combobox", { name: /Default/i })).toBeDefined();
     expect(
-      screen.queryByRole("combobox", { name: "Loading themes" }),
+      screen.queryByRole("combobox", { name: "Загрузка тем" }),
     ).toBeNull();
     await act(async () => refresh.resolve(DEFAULT_CATALOG));
   });
@@ -907,7 +907,7 @@ describe("Theme Preview", () => {
     await chooseEndlessDark();
 
     const control = await screen.findByRole("combobox", {
-      name: /Applying Endless Color/i,
+      name: /Применяется тема: Endless Color/i,
     });
     expect((control as HTMLButtonElement).disabled).toBe(true);
     expect(control.getAttribute("aria-busy")).toBe("true");
@@ -941,9 +941,9 @@ describe("Theme Preview", () => {
     await chooseEndlessDark();
 
     expect((await screen.findByRole("alert")).textContent).toContain(
-      "Theme didn’t apply",
+      "Не удалось применить тему",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Retry theme" }));
+    fireEvent.click(screen.getByRole("button", { name: "Повторить применение темы" }));
     await waitFor(() =>
       expect(
         (
@@ -982,7 +982,7 @@ describe("Theme Preview", () => {
 
     expect(control.disabled).toBe(false);
     expect(screen.getByRole("alert").textContent).toContain(
-      "Theme didn’t apply",
+      "Не удалось применить тему",
     );
   });
 });

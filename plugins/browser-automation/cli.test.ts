@@ -229,18 +229,18 @@ describe("CLI boundaries", () => {
     expect(top.stdout).toContain("bb browser-automation open");
     expect(top.stdout).toContain("bb browser-automation screenshot");
     expect(top.stdout).toContain(
-      "run, pages, and screenshot renew expiry to 30 minutes",
+      "run, pages и screenshot продлевают срок действия до 30 минут",
     );
-    expect(top.stdout).toContain("capped at 8 hours from creation");
+    expect(top.stdout).toContain("не более чем до 8 часов с момента создания");
     expect(top.stdout).toContain(
-      "non-renewable control lease/connection deadline",
+      "непродлеваемого срока управления или подключения",
     );
-    expect(top.stdout).toContain("list and live preview do not renew expiry");
+    expect(top.stdout).toContain("list и просмотр в реальном времени не продлевают срок действия");
 
     const runHelp = await invoke(["run", "--help"]);
     expect(runHelp.exitCode).toBe(0);
-    expect(runHelp.stdout).toContain("at most 4 screenshots per run");
-    expect(runHelp.stdout).toContain("JPEG only, 500 KB combined");
+    expect(runHelp.stdout).toContain("не более 4 снимков экрана в JPEG");
+    expect(runHelp.stdout).toContain("общим размером до 500 КБ");
     expect(runHelp.stdout).toContain("--timeout <duration>");
     expect(execute).not.toHaveBeenCalled();
     expect(registration.commands?.map((command) => command.name)).toEqual([

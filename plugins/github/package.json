@@ -1,7 +1,7 @@
 {
   "name": "bb-plugin-github",
   "version": "0.2.1",
-  "description": "Browse GitHub issues and pull requests in BB, then send them to agents.",
+  "description": "Просматривайте задачи и пул-реквесты GitHub в BB и передавайте их агентам.",
   "private": true,
   "license": "MIT",
   "homepage": "https://github.com/get-bb/bb#readme",
@@ -27,7 +27,7 @@
   },
   "bb": {
     "name": "GitHub",
-    "description": "Browse GitHub issues and pull requests in BB, then send them to agents.",
+    "description": "Просматривайте задачи и пул-реквесты GitHub в BB и передавайте их агентам.",
     "branding": {
       "icon": "Github"
     },

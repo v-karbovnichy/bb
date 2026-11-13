@@ -93,9 +93,9 @@ export function ThreadWorkspaceOpenButton({
         primaryAction={primaryAction}
         primaryTooltip={`Open in ${preferredTarget.label}`}
         secondaryActions={secondaryActions}
-        triggerLabel="Choose another app to open workspace"
-        triggerTooltip="Choose another app"
-        mobileTitle="Open Workspace"
+        triggerLabel="Выбрать другое приложение для открытия рабочей области"
+        triggerTooltip="Выбрать другое приложение"
+        mobileTitle="Открыть рабочую область"
       />
     </span>
   );

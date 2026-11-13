@@ -302,7 +302,7 @@ function renderThreadActionsTrigger(props: PluginThreadActionsTriggerProps) {
         "data-[state=open]:bg-state-active data-[state=open]:text-foreground",
         SIDEBAR_CONTROL_BUTTON_CLASS,
       )}
-      aria-label="Thread actions"
+      aria-label="Действия с чатом"
       data-thread-actions-trigger=""
       onClick={(event) => {
         props.onClick?.(event);
@@ -368,8 +368,8 @@ function ThreadRowComponent({
     crossProjectId === null
       ? null
       : crossProjectName
-        ? `In project ${crossProjectName}`
-        : "In another project";
+        ? `В проекте ${crossProjectName}`
+        : "В другом проекте";
   const handleRename = useCallback(
     async (nextTitle: string) => {
       await sdk.threads.update({ threadId: thread.id, title: nextTitle });
@@ -380,7 +380,7 @@ function ThreadRowComponent({
     kind: "thread",
     id: thread.id,
     name: labelTitle,
-    label: "Thread name",
+    label: "Название чата",
     onSave: handleRename,
   });
   const { editor, isEditing, startEditing, startEditingFromDoubleClick } =
@@ -425,7 +425,7 @@ function ThreadRowComponent({
             key: CUSTOMIZE_ROW_ACTIONS_KEY,
             group: experimental_THREAD_ACTION_GROUPS.settings,
             action: {
-              label: "Customize actions",
+              label: "Настроить действия",
               icon: "FilterHorizontal",
               run: () => {
                 const begin = () => customizeRowActions(thread.id);
@@ -458,11 +458,11 @@ function ThreadRowComponent({
     rowStatus: pluginThreadRowStatus,
   });
   const splitIndicatorLabel = trailingStatus.label
-    ? `${labelTitle} — open in split; ${trailingStatus.label}`
-    : `${labelTitle} — open in split`;
+    ? `${labelTitle} — открыть в разделённой области; ${trailingStatus.label}`
+    : `${labelTitle} — открыть в разделённой области`;
   const linkLabel = hasComposerDraft
-    ? `Open ${labelTitle} (unsubmitted draft)`
-    : `Open ${labelTitle}`;
+    ? `Открыть ${labelTitle} (неотправленный черновик)`
+    : `Открыть ${labelTitle}`;
   const rowDragBindings =
     isEditing || isCustomizingActions ? undefined : options.dragBindings;
   const nestTargetState = options.nestDrop?.state ?? null;
@@ -695,8 +695,8 @@ function ThreadRowComponent({
               disabled={isEditing}
               className={isEditing ? "hidden" : undefined}
               isCollapsed={isParentCollapsed}
-              expandLabel={`Expand ${labelTitle} threads`}
-              collapseLabel={`Collapse ${labelTitle} threads`}
+              expandLabel={`Развернуть чаты ${labelTitle}`}
+              collapseLabel={`Свернуть чаты ${labelTitle}`}
               onToggle={() => parentOptions.onToggleCollapsed(thread.id)}
               revealOnHover={!isParentCollapsed}
             />

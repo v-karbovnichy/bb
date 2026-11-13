@@ -365,7 +365,7 @@ describe("connect on top of bb account", () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain(
-      `Paired as sawyer-desktop — reachable at ${stub.gateUrl}`,
+      `Привязан как sawyer-desktop — доступен по адресу ${stub.gateUrl}`,
     );
     expect(await accountState()).toBe("signed-in");
     await waitForConnected(1);

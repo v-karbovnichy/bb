@@ -297,7 +297,7 @@ describe("GeneratedConversationMessage markdown body", () => {
   it("renders agent Markdown and its offset-based path mention", () => {
     renderAgentMessage();
 
-    fireEvent.click(screen.getByRole("button", { name: /Message from/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Сообщение от/u }));
 
     expect(screen.getByRole("heading", { name: "notes" })).toBeTruthy();
     expect(screen.getByText("src/app.ts")).toBeTruthy();
@@ -306,7 +306,7 @@ describe("GeneratedConversationMessage markdown body", () => {
   it("renders prose and exact inline-code raw ids as linked pills when collapsed and expanded", () => {
     const { container } = renderAgentMessage(RAW_THREAD_BODY);
     const toggle = screen.getByRole("button", {
-      name: /Message from Worker/u,
+      name: /Сообщение от Worker/u,
     });
 
     const collapsedLinks = screen.getAllByRole("link", {
@@ -357,7 +357,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     expect(screen.queryByText(hiddenTail)).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(screen.getByText(new RegExp(hiddenTail, "u"))).toBeTruthy();
@@ -425,7 +425,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     ).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(
@@ -447,7 +447,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     ).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(container.querySelector("code")?.textContent).toContain(
@@ -472,7 +472,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     expect(container.textContent).toContain(`\`${RAW_THREAD_ID}`);
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(
@@ -494,7 +494,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     expect(container.textContent).toContain(`\`${RAW_THREAD_ID}`);
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(
@@ -521,7 +521,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     expect(screen.getByText("[Image: Remote diagram]")).toBeTruthy();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(container.querySelector("img, source")).toBeNull();
@@ -538,7 +538,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     const { container } = renderAgentMessage(source);
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from Worker/u }),
+      screen.getByRole("button", { name: /Сообщение от Worker/u }),
     );
 
     expect(container.querySelector("pre code")?.textContent).toContain(
@@ -556,7 +556,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     renderAgentMessage(OVERFLOWING_ONE_LINE_AGENT_BODY);
     notifyResize();
 
-    const toggle = screen.getByRole("button", { name: /Message from Worker/u });
+    const toggle = screen.getByRole("button", { name: /Сообщение от Worker/u });
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
     expect(screen.getByText("...").className).toContain("invisible");
 
@@ -575,7 +575,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     expect(screen.queryByText("**Ready** to merge.")).toBeNull();
 
     const toggle = screen.getByRole("button", {
-      name: /Message from side chat/u,
+      name: /Сообщение от дополнительного чата/u,
     });
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
 
@@ -595,7 +595,7 @@ describe("GeneratedConversationMessage markdown body", () => {
     ).not.toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Message from side chat/u }),
+      screen.getByRole("button", { name: /Сообщение от дополнительного чата/u }),
     );
 
     expect(
@@ -643,7 +643,7 @@ describe("GeneratedConversationMessage markdown body (system)", () => {
     expect(screen.queryByText("migration landed")).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Rebuild comments finished/u }),
+      screen.getByRole("button", { name: /Rebuild comments завершён/u }),
     );
 
     expect(screen.getByText("migration landed")).toBeTruthy();
@@ -657,7 +657,7 @@ describe("GeneratedConversationMessage markdown body (system)", () => {
     expect(container.querySelector('img[alt="System diagram"]')).not.toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Rebuild comments finished/u }),
+      screen.getByRole("button", { name: /Rebuild comments завершён/u }),
     );
 
     expect(container.querySelector('img[alt="System diagram"]')).not.toBeNull();

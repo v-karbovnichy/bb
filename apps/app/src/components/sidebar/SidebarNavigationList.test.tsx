@@ -141,7 +141,7 @@ function rowButtons(container: HTMLElement): HTMLElement[] {
   return within(container)
     .getAllByRole("button")
     .filter(
-      (button) => !button.getAttribute("aria-label")?.endsWith(" options"),
+      (button) => !button.getAttribute("aria-label")?.startsWith("Параметры"),
     );
 }
 
@@ -204,9 +204,9 @@ describe("SidebarNavigationList", () => {
       visibleKeys: ["__bb__/extensions", "garden/docs"],
     });
 
-    expect(rowLabels()).toEqual(["Plugins", "Docs", "More"]);
+    expect(rowLabels()).toEqual(["Плагины", "Docs", "Ещё"]);
 
-    fireEvent.keyDown(within(list()).getByRole("button", { name: "More" }), {
+    fireEvent.keyDown(within(list()).getByRole("button", { name: "Ещё" }), {
       key: "Enter",
     });
     const menu = await screen.findByTestId("sidebar-navigation-more-menu");
@@ -214,12 +214,7 @@ describe("SidebarNavigationList", () => {
       within(menu)
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
-    ).toEqual([
-      "New thread",
-      "Search threads",
-      "Skills",
-      "Customize navigation",
-    ]);
+    ).toEqual(["Новый чат", "Поиск чатов", "Навыки", "Настроить навигацию"]);
   });
 
   it("scrolls the destinations, New thread among them, keeping More in view", () => {
@@ -229,8 +224,8 @@ describe("SidebarNavigationList", () => {
     expect(destinations.className).toContain("overflow-y-auto");
     expect(
       rowButtons(destinations).map((button) => button.textContent),
-    ).toEqual(["New thread", "Plugins", "Skills", "Docs"]);
-    const more = within(list()).getByRole("button", { name: "More" });
+    ).toEqual(["Новый чат", "Плагины", "Навыки", "Docs"]);
+    const more = within(list()).getByRole("button", { name: "Ещё" });
     expect(destinations.contains(more)).toBe(false);
   });
 
@@ -238,18 +233,18 @@ describe("SidebarNavigationList", () => {
     const store = createStore();
     renderList(THREAD_PATH, { store });
 
-    fireEvent.keyDown(within(list()).getByRole("button", { name: "More" }), {
+    fireEvent.keyDown(within(list()).getByRole("button", { name: "Ещё" }), {
       key: "Enter",
     });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
     const editor = await screen.findByTestId("sidebar-navigation-customize");
     fireEvent.click(
-      within(editor).getByRole("checkbox", { name: /New thread/u }),
+      within(editor).getByRole("checkbox", { name: /Новый чат/u }),
     );
 
-    expect(rowLabels()).toEqual(["Plugins", "Skills", "Docs", "More"]);
+    expect(rowLabels()).toEqual(["Плагины", "Навыки", "Docs", "Ещё"]);
     expect(store.get(pluginNavVisiblePanelKeysAtom)).not.toContain(
       "__bb__/new-thread",
     );
@@ -294,30 +289,30 @@ describe("SidebarNavigationList", () => {
     renderList(THREAD_PATH, { visibleKeys: ["__bb__/extensions"] });
 
     const more = within(list()).getByRole("button", {
-      name: "More, Docs: Needs review",
+      name: "Ещё, Docs: Needs review",
     });
     expect(more.querySelector('[data-nav-rail-badge="dot"]')).not.toBeNull();
   });
 
   it("customizes the list from More and returns focus to More", async () => {
     renderList(THREAD_PATH);
-    const more = within(list()).getByRole("button", { name: "More" });
+    const more = within(list()).getByRole("button", { name: "Ещё" });
 
     fireEvent.keyDown(more, { key: "Enter" });
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize navigation" }),
+      await screen.findByRole("menuitem", { name: "Настроить навигацию" }),
     );
 
     const editor = await screen.findByTestId("sidebar-navigation-customize");
     const checklist = within(editor).getByRole("list", {
-      name: "Sidebar navigation",
+      name: "Навигация боковой панели",
     });
     fireEvent.click(
-      within(checklist).getByRole("checkbox", { name: /Skills/u }),
+      within(checklist).getByRole("checkbox", { name: /Навыки/u }),
     );
-    expect(rowLabels()).not.toContain("Skills");
+    expect(rowLabels()).not.toContain("Навыки");
 
-    fireEvent.click(within(editor).getByRole("button", { name: "Done" }));
+    fireEvent.click(within(editor).getByRole("button", { name: "Готово" }));
     await waitFor(() =>
       expect(screen.queryByTestId("sidebar-navigation-customize")).toBeNull(),
     );
@@ -329,31 +324,31 @@ describe("SidebarNavigationList", () => {
       visibleKeys: ALL_KEYS,
     });
 
-    expect(rowLabels()).not.toContain("More");
+    expect(rowLabels()).not.toContain("Ещё");
   });
 
   it("opens a row's options from its menu button and customizes from there", async () => {
     renderList(THREAD_PATH);
 
     fireEvent.keyDown(
-      within(list()).getByRole("button", { name: "Docs panel options" }),
+      within(list()).getByRole("button", { name: "Параметры панели Docs" }),
       { key: "Enter" },
     );
     const menu = await screen.findByRole("menu", {
-      name: "Docs panel options",
+      name: "Параметры панели Docs",
     });
     expect(
       within(menu)
         .getAllByRole("menuitem")
         .map((item) => item.textContent),
     ).toEqual([
-      "View details",
-      "Hide from sidebar",
-      "Customize navigation",
-      "Disable",
+      "Подробнее",
+      "Скрыть с боковой панели",
+      "Настроить навигацию",
+      "Отключить",
     ]);
     fireEvent.click(
-      within(menu).getByRole("menuitem", { name: "Customize navigation" }),
+      within(menu).getByRole("menuitem", { name: "Настроить навигацию" }),
     );
 
     expect(

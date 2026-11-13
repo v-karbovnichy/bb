@@ -27,18 +27,18 @@ function checkCounts(pullRequest: PullRequest): string | null {
     pullRequest.checks;
   if (totalCount === 0) return null;
   return [
-    `${passedCount} passed`,
-    failedCount > 0 ? `${failedCount} failed` : null,
-    pendingCount > 0 ? `${pendingCount} pending` : null,
+    `${passedCount} пройдено`,
+    failedCount > 0 ? `${failedCount} не пройдено` : null,
+    pendingCount > 0 ? `${pendingCount} в ожидании` : null,
   ]
     .filter((part) => part !== null)
     .join(", ");
 }
 
 const CHECKS_LABEL: Record<GithubCheckStatus, string> = {
-  success: "checks passing",
-  failure: "checks failing",
-  pending: "checks running",
+  success: "проверки пройдены",
+  failure: "проверки не пройдены",
+  pending: "проверки выполняются",
 };
 
 function AttentionGlyph({ kind }: { kind: "blocked" | "running" }) {
@@ -70,7 +70,7 @@ export function PullRequestBadge({
     action !== null ? "blocked" : checks === "pending" ? "running" : null;
   const label = [
     ...new Set([
-      `Pull request #${pullRequest.number}`,
+      `Пул-реквест #${pullRequest.number}`,
       state.label.toLowerCase(),
       action,
       checks === null ? null : CHECKS_LABEL[checks],

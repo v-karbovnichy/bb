@@ -137,7 +137,7 @@ function render(
 }
 
 function searchBox(slot: ReturnType<typeof renderSlot>) {
-  return slot.getByRole("textbox", { name: "Search prompts" });
+  return slot.getByRole("textbox", { name: "Поиск шаблонов" });
 }
 
 afterEach(() => {
@@ -199,7 +199,7 @@ describe("prompt library popup", () => {
     });
     await slot.findByRole("alert");
     expect(slot.getByRole("option", { name: /Saved review/ })).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Retry" }));
+    fireEvent.click(slot.getByRole("button", { name: "Повторить" }));
     await waitFor(() =>
       expect(search).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -221,8 +221,8 @@ describe("prompt library popup", () => {
       });
       if (width === 360)
         fireEvent.click(within(option).getAllByRole("button")[0]!);
-      fireEvent.click(await slot.findByRole("button", { name: "Add title" }));
-      const input = slot.getByRole("textbox", { name: "Prompt title" });
+      fireEvent.click(await slot.findByRole("button", { name: "Добавить название" }));
+      const input = slot.getByRole("textbox", { name: "Название шаблона" });
       fireEvent.change(input, { target: { value: "Review" } });
       search.mockResolvedValue({
         loading: false,
@@ -236,22 +236,22 @@ describe("prompt library popup", () => {
         ],
       });
       if (width === 728) fireEvent.keyDown(input, { key: "Enter" });
-      else fireEvent.click(slot.getByRole("button", { name: "Save title" }));
-      await slot.findByRole("button", { name: "Edit title" });
+      else fireEvent.click(slot.getByRole("button", { name: "Сохранить название" }));
+      await slot.findByRole("button", { name: "Изменить название" });
       expect(setTitle).toHaveBeenCalledWith({
         id: "prompt_1",
         title: "Review",
       });
       expect(slot.composer.draft.text).toBe("");
-      fireEvent.click(slot.getByRole("button", { name: "Edit title" }));
-      fireEvent.change(slot.getByRole("textbox", { name: "Prompt title" }), {
+      fireEvent.click(slot.getByRole("button", { name: "Изменить название" }));
+      fireEvent.change(slot.getByRole("textbox", { name: "Название шаблона" }), {
         target: { value: "Discard" },
       });
-      fireEvent.keyDown(slot.getByRole("textbox", { name: "Prompt title" }), {
+      fireEvent.keyDown(slot.getByRole("textbox", { name: "Название шаблона" }), {
         key: "Escape",
       });
       expect(setTitle).toHaveBeenCalledTimes(1);
-      fireEvent.click(slot.getByRole("button", { name: "Insert" }));
+      fireEvent.click(slot.getByRole("button", { name: "Вставить" }));
       expect(slot.composer.draft.text).toBe("starred prompt");
     },
   );
@@ -261,16 +261,16 @@ describe("prompt library popup", () => {
     setTitle.mockImplementationOnce(() => {
       throw new Error("Unable to save");
     });
-    fireEvent.click(await slot.findByRole("button", { name: "Add title" }));
-    fireEvent.change(slot.getByRole("textbox", { name: "Prompt title" }), {
+    fireEvent.click(await slot.findByRole("button", { name: "Добавить название" }));
+    fireEvent.change(slot.getByRole("textbox", { name: "Название шаблона" }), {
       target: { value: "Review" },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Save title" }));
+    fireEvent.click(slot.getByRole("button", { name: "Сохранить название" }));
     await slot.findByText("Unable to save");
     expect(
-      slot.getByRole("textbox", { name: "Prompt title" }).getAttribute("value"),
+      slot.getByRole("textbox", { name: "Название шаблона" }).getAttribute("value"),
     ).toBe("Review");
-    fireEvent.click(slot.getByRole("button", { name: "Save title" }));
+    fireEvent.click(slot.getByRole("button", { name: "Сохранить название" }));
     await waitFor(() => expect(setTitle).toHaveBeenCalledTimes(2));
     expect(slot.composer.draft.text).toBe("");
   });
@@ -316,7 +316,7 @@ describe("prompt library popup", () => {
         name: /Review @project:proj_b/,
       });
       fireEvent.click(choice);
-      fireEvent.click(slot.getByRole("button", { name: "Insert" }));
+      fireEvent.click(slot.getByRole("button", { name: "Вставить" }));
       expect(slot.composer.draft.text).toBe(
         `${existing}Review @project:proj_b`,
       );
@@ -388,10 +388,10 @@ describe("prompt library popup", () => {
       refreshHistory: true,
     });
     expect(
-      within(newThread.slot.getByRole("radiogroup", { name: "Search scope" }))
+      within(newThread.slot.getByRole("radiogroup", { name: "Область поиска" }))
         .getAllByRole("radio")
         .map((radio) => radio.textContent),
-    ).toEqual(["Project", "All"]);
+    ).toEqual(["Проект", "Все"]);
   });
 
   it("recovers a stuck search in place and ignores its late response", async () => {
@@ -407,12 +407,12 @@ describe("prompt library popup", () => {
       await vi.advanceTimersByTimeAsync(1);
     });
     expect(slot.getByRole("listbox").getAttribute("aria-busy")).toBe("true");
-    expect(slot.queryByLabelText("Searching prompts")).toBeNull();
+    expect(slot.queryByLabelText("Идёт поиск шаблонов…")).toBeNull();
     await act(async () => {
       await vi.advanceTimersByTimeAsync(5_000);
     });
-    expect(slot.getByRole("alert").textContent).toContain("timed out");
-    fireEvent.click(slot.getByRole("button", { name: "Retry" }));
+    expect(slot.getByRole("alert").textContent).toContain("истекло");
+    fireEvent.click(slot.getByRole("button", { name: "Повторить" }));
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1);
     });
@@ -444,7 +444,7 @@ describe("prompt library popup", () => {
       await vi.advanceTimersByTimeAsync(100);
     });
     expect(slot.queryByRole("status")).toBeNull();
-    expect(slot.queryByLabelText("Searching prompts")).toBeNull();
+    expect(slot.queryByLabelText("Идёт поиск шаблонов…")).toBeNull();
     expect(slot.getAllByRole("option").map((row) => row.textContent)).toEqual(
       before,
     );
@@ -452,7 +452,7 @@ describe("prompt library popup", () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(300);
     });
-    expect(slot.getByLabelText("Searching prompts")).toBeTruthy();
+    expect(slot.getByLabelText("Идёт поиск шаблонов…")).toBeTruthy();
     expect(slot.getAllByRole("option").map((row) => row.textContent)).toEqual(
       before,
     );
@@ -468,7 +468,7 @@ describe("prompt library popup", () => {
       expect.stringContaining("Connection interrupted"),
     );
     expect(slot.getByRole("option", { name: /recent prompt/ })).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Retry" }));
+    fireEvent.click(slot.getByRole("button", { name: "Повторить" }));
     await waitFor(() => expect(slot.queryByRole("alert")).toBeNull());
     await waitFor(() => expect(search).toHaveBeenCalledTimes(3));
     expect(search).toHaveBeenLastCalledWith(
@@ -485,8 +485,8 @@ describe("prompt library popup", () => {
     });
     const saved = await slot.findByRole("option", { name: /starred prompt/ });
     const history = slot.getByRole("option", { name: /saved history prompt/ });
-    const savedStar = within(saved).getByRole("button", { name: "Unstar" });
-    const historyStar = within(history).getByRole("button", { name: "Unstar" });
+    const savedStar = within(saved).getByRole("button", { name: "Убрать из избранного" });
+    const historyStar = within(history).getByRole("button", { name: "Убрать из избранного" });
 
     fireEvent.keyDown(searchBox(slot), { key: "ArrowDown" });
     fireEvent.keyDown(searchBox(slot), { key: "ArrowDown" });
@@ -523,7 +523,7 @@ describe("prompt library popup", () => {
 
   it("offers to star a non-empty draft that is not starred yet", async () => {
     const { slot, star } = render({ draft: "draft to keep" });
-    await slot.findByText("Star current draft");
+    await slot.findByText("Добавить текущий черновик в избранное");
 
     fireEvent.keyDown(searchBox(slot), { key: "Enter" });
 
@@ -539,7 +539,7 @@ describe("prompt library popup", () => {
 
     fireEvent.click(slot.getByText("recent prompt"));
     expect(slot.composer.draft.text).toBe("Before merging, ");
-    fireEvent.click(slot.getByRole("button", { name: "Insert" }));
+    fireEvent.click(slot.getByRole("button", { name: "Вставить" }));
 
     expect(slot.composer.draft.text).toBe("Before merging, recent prompt");
   });
@@ -548,20 +548,20 @@ describe("prompt library popup", () => {
     const long = `${"Please start a worktree server. ".repeat(20)}\n\nThen share the link.`;
     const { slot } = render({ recent: [recentRow("h1", long)] });
     await slot.findByRole("option", { name: /starred prompt/ });
-    const preview = slot.getByRole("region", { name: "Prompt preview" });
+    const preview = slot.getByRole("region", { name: "Предпросмотр шаблона" });
     expect(preview.textContent).toContain("starred prompt");
 
     fireEvent.keyDown(searchBox(slot), { key: "ArrowDown" });
 
     await waitFor(() =>
       expect(
-        slot.getByRole("region", { name: "Prompt preview" }).textContent,
+        slot.getByRole("region", { name: "Предпросмотр шаблона" }).textContent,
       ).toContain("Then share the link."),
     );
     fireEvent.click(
-      within(slot.getByRole("region", { name: "Prompt preview" })).getByRole(
+      within(slot.getByRole("region", { name: "Предпросмотр шаблона" })).getByRole(
         "button",
-        { name: "Insert" },
+        { name: "Вставить" },
       ),
     );
     expect(slot.composer.draft.text).toBe(long);
@@ -579,9 +579,9 @@ describe("prompt library popup", () => {
     fireEvent.mouseEnter(slot.getByRole("option", { name: /other prompt/ }));
     fireEvent.mouseMove(slot.getByRole("option", { name: /other prompt/ }));
 
-    const preview = slot.getByRole("region", { name: "Prompt preview" });
+    const preview = slot.getByRole("region", { name: "Предпросмотр шаблона" });
     expect(preview.textContent).toContain("recent prompt");
-    fireEvent.click(within(preview).getByRole("button", { name: "Star" }));
+    fireEvent.click(within(preview).getByRole("button", { name: "В избранное" }));
     await waitFor(() =>
       expect(star).toHaveBeenCalledWith({ prompt: draft("recent prompt") }),
     );
@@ -601,28 +601,28 @@ describe("prompt library popup", () => {
       ],
     });
     fireEvent.click(
-      within(slot.getByRole("region", { name: "Prompt preview" })).getByRole(
+      within(slot.getByRole("region", { name: "Предпросмотр шаблона" })).getByRole(
         "button",
-        { name: "Star" },
+        { name: "В избранное" },
       ),
     );
     await waitFor(() => expect(slot.getAllByRole("option")).toHaveLength(3));
     expect(slot.getByRole("option", { selected: true }).textContent).toContain(
       "recent prompt",
     );
-    const preview = slot.getByRole("region", { name: "Prompt preview" });
+    const preview = slot.getByRole("region", { name: "Предпросмотр шаблона" });
     expect(preview.textContent).toContain("recent prompt");
     expect(
       within(preview)
-        .getByRole("button", { name: "Starred" })
+        .getByRole("button", { name: "В избранном" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
   });
 
   it("shows a search as one ranked list and keeps a prompt selected when it is unstarred", async () => {
     const { slot, search, unstar } = render();
-    const listbox = await slot.findByRole("listbox", { name: "Prompts" });
-    expect(await within(listbox).findByText("Recent")).toBeTruthy();
+    const listbox = await slot.findByRole("listbox", { name: "Шаблоны" });
+    expect(await within(listbox).findByText("Недавние")).toBeTruthy();
     search.mockResolvedValue({
       loading: false,
       historyError: null,
@@ -633,8 +633,8 @@ describe("prompt library popup", () => {
     });
     fireEvent.change(searchBox(slot), { target: { value: "deploy" } });
     await within(listbox).findByText("deploy later");
-    expect(within(listbox).queryByText("Starred")).toBeNull();
-    expect(within(listbox).queryByText("Recent")).toBeNull();
+    expect(within(listbox).queryByText("Избранное")).toBeNull();
+    expect(within(listbox).queryByText("Недавние")).toBeNull();
 
     fireEvent.keyDown(searchBox(slot), { key: "ArrowDown" });
     search.mockResolvedValue({
@@ -651,8 +651,8 @@ describe("prompt library popup", () => {
     );
     await waitFor(() =>
       expect(
-        within(slot.getByRole("region", { name: "Prompt preview" }))
-          .getByRole("button", { name: "Star" })
+        within(slot.getByRole("region", { name: "Предпросмотр шаблона" }))
+          .getByRole("button", { name: "В избранное" })
           .getAttribute("aria-pressed"),
       ).toBe("false"),
     );
@@ -665,22 +665,22 @@ describe("prompt library popup", () => {
     pickerWidth = 390;
     const { slot } = render();
     await slot.findByText("recent prompt");
-    expect(slot.queryByRole("region", { name: "Prompt preview" })).toBeNull();
+    expect(slot.queryByRole("region", { name: "Предпросмотр шаблона" })).toBeNull();
 
     fireEvent.click(slot.getByText("recent prompt"));
 
-    const preview = await slot.findByRole("region", { name: "Prompt preview" });
-    expect(slot.queryByRole("listbox", { name: "Prompts" })).toBeNull();
+    const preview = await slot.findByRole("region", { name: "Предпросмотр шаблона" });
+    expect(slot.queryByRole("listbox", { name: "Шаблоны" })).toBeNull();
     expect(slot.composer.draft.text).toBe("");
 
-    fireEvent.click(within(preview).getByRole("button", { name: "Back" }));
-    expect(await slot.findByRole("listbox", { name: "Prompts" })).toBeTruthy();
+    fireEvent.click(within(preview).getByRole("button", { name: "Назад" }));
+    expect(await slot.findByRole("listbox", { name: "Шаблоны" })).toBeTruthy();
 
     fireEvent.click(slot.getByText("recent prompt"));
     fireEvent.click(
       within(
-        await slot.findByRole("region", { name: "Prompt preview" }),
-      ).getByRole("button", { name: "Insert" }),
+        await slot.findByRole("region", { name: "Предпросмотр шаблона" }),
+      ).getByRole("button", { name: "Вставить" }),
     );
     expect(slot.composer.draft.text).toBe("recent prompt");
   });

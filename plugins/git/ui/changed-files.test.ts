@@ -18,7 +18,7 @@ function section(
   const changed = file("M");
   return {
     kind: "uncommitted",
-    label: "Uncommitted files",
+    label: "Без коммита files",
     files: [changed],
     mergeBaseRef: null,
     stats: {

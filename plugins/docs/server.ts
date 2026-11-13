@@ -64,32 +64,32 @@ class CliUsageError extends PluginCliError {
 }
 
 const DOCS_DESCRIPTION = [
-  "Vaults hold the documents; every path is relative to its vault.",
-  "Pull a scope into a workspace directory, edit the files with normal tools, then run status and push.",
+  "Хранилища содержат документы; каждый путь указывается относительно своего хранилища.",
+  "Загрузите нужные файлы в рабочую папку, отредактируйте обычными инструментами, затем выполните status и push.",
 ].join("\n");
 
 const DOCS_STATUS_DESCRIPTION = [
-  "Exit 0: no changes.",
-  "Exit 1: the status operation failed.",
-  "Exit 2: the command usage is not valid.",
-  "Exit 3: local and remote changes conflict.",
-  "Exit 4: changes present.",
+  "Код 0: изменений нет.",
+  "Код 1: операция status завершилась ошибкой.",
+  "Код 2: неверное использование команды.",
+  "Код 3: конфликт локальных и удалённых изменений.",
+  "Код 4: есть изменения.",
   "",
-  "Exit 4 is a successful status result. Review the output, then run bb docs push separately.",
+  "Код 4 означает успешное выполнение status. Просмотрите результат и отдельно выполните bb docs push.",
 ].join("\n");
 
 const DEPRECATED_MUTATION_WARNING =
-  "Deprecated: direct Docs mutations will be removed; use bb docs pull, edit local files, then bb docs push.";
+  "Устарело: прямые изменения Docs будут удалены; используйте bb docs pull, редактируйте локальные файлы и выполняйте bb docs push.";
 
 const DEPRECATED_DELETION_WARNING =
-  "Deprecated: direct Docs mutations will be removed; use bb docs pull, edit local files, then bb docs push --delete.";
+  "Устарело: прямые изменения Docs будут удалены; используйте bb docs pull, редактируйте локальные файлы и выполняйте bb docs push --delete.";
 
 const VAULT_OPTION = {
   type: "string",
   placeholder: "id",
   aliases: ["vault-id", "vaultId"],
   description:
-    "Vault ID from `bb docs vaults`; defaults to the first configured vault",
+    "ID хранилища из `bb docs vaults`; по умолчанию — первое настроенное хранилище",
 } as const;
 
 const WORKSPACE_HOST_OPTION = {
@@ -97,23 +97,23 @@ const WORKSPACE_HOST_OPTION = {
   placeholder: "id",
   aliases: ["host", "host-id"],
   description:
-    "Host holding the workspace directory; defaults to the thread environment's host",
+    "Хост рабочей папки; по умолчанию — хост среды чата",
 } as const;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 const DIFF_OPTION = {
   type: "boolean",
-  description: "Include a unified diff for every changed file",
+  description: "Включить unified diff для каждого изменённого файла",
 } as const;
 
 const DELETE_OPTION = {
   type: "boolean",
   description:
-    "Also apply local file and empty-directory deletions to the vault",
+    "Также удалить из хранилища локально удалённые файлы и пустые папки",
 } as const;
 
 interface SyncCliArgs {
@@ -164,7 +164,7 @@ type SyncState = z.infer<typeof syncStateSchema>;
 type SyncFile = z.infer<typeof syncSnapshotEntrySchema>;
 
 function requireRecord(value: unknown): Record<string, unknown> {
-  if (!isRecord(value)) throw new Error("Expected an object");
+  if (!isRecord(value)) throw new Error("Ожидался объект");
   return value;
 }
 
@@ -191,7 +191,7 @@ function requireThreadStoragePath(value: unknown): string {
     resolvePath({ rootPath: "/", path: raw }) === null ||
     raw.split("/").includes("..")
   ) {
-    throw new Error(`Invalid thread-storage path: ${raw}`);
+    throw new Error(`Неверный путь хранилища чата: ${raw}`);
   }
   return path.posix.normalize(raw);
 }
@@ -203,21 +203,21 @@ function isAbsoluteHostPath(value: string): boolean {
 function normalizeHostRoot(value: string): string {
   const normalized = normalizeHostPath(value);
   if (normalized === null)
-    throw new Error(`Invalid absolute host path: ${value}`);
+    throw new Error(`Неверный абсолютный путь на хосте: ${value}`);
   return normalized;
 }
 
 function localFilePath(rootPath: string, relativePath: string): string {
   const joined = joinPath({ rootPath, relativePath });
   if (joined === null)
-    throw new Error(`Invalid absolute host path: ${rootPath}`);
+    throw new Error(`Неверный абсолютный путь на хосте: ${rootPath}`);
   return joined;
 }
 
 function hostPathDirname(filePath: string): string {
   const dirname = getHostPathDirname(filePath);
   if (dirname === null)
-    throw new Error(`Invalid absolute host path: ${filePath}`);
+    throw new Error(`Неверный абсолютный путь на хосте: ${filePath}`);
   return dirname;
 }
 
@@ -404,7 +404,7 @@ export default async function plugin(
       : vaults[0];
     if (!vault)
       throw new Error(
-        vaultId ? `Unknown vault: ${vaultId}` : "No vault configured",
+        vaultId ? `Неизвестное хранилище: ${vaultId}` : "Хранилище не настроено",
       );
     return vault;
   }
@@ -664,7 +664,7 @@ export default async function plugin(
     const vault = getVault(args.vaultId);
     const relativePath = requireVaultPath(args.rawPath);
     if (typeof args.content !== "string")
-      throw new Error('"content" must be a string');
+      throw new Error('«content» должно быть строкой');
     const result = await bb.sdk.files.write({
       ...hostArgs(vault),
       path: localFilePath(vault.rootPath, relativePath),
@@ -770,7 +770,7 @@ export default async function plugin(
   ): Proposal {
     const proposal = readProposal(vaultId, relativePath);
     if (!proposal || proposal.version !== expectedVersion) {
-      throw new Error("The proposal changed. Read it again before continuing.");
+      throw new Error("Предложение изменилось. Прочитайте его снова, прежде чем продолжить.");
     }
     return proposal;
   }
@@ -782,7 +782,7 @@ export default async function plugin(
     const filePath = requireString(pathValue, "path");
     if (source.kind === "host") {
       if (!isAbsoluteHostPath(filePath)) {
-        throw new Error("Host file paths must be absolute");
+        throw new Error("Пути к файлам на хосте должны быть абсолютными");
       }
       const normalized = normalizeHostRoot(filePath);
       return {
@@ -804,7 +804,7 @@ export default async function plugin(
         environmentId: source.environmentId,
       });
       if (!environment.path) {
-        throw new Error("This environment has no workspace path");
+        throw new Error("У этой среды нет пути к рабочей папке");
       }
       return {
         path: localFilePath(environment.path, filePath),
@@ -817,7 +817,7 @@ export default async function plugin(
         source.experimental_hostId ??
         (await bb.sdk.system.config()).primaryHostId;
       if (!hostId) {
-        throw new Error("This bb has no server machine yet");
+        throw new Error("У этого сервера bb пока нет основной машины");
       }
       const project = await bb.sdk.projects.get({
         projectId: source.projectId,
@@ -829,16 +829,16 @@ export default async function plugin(
       if (!projectSource) {
         throw new Error(
           source.experimental_hostId
-            ? "This project has no workspace on the selected host"
-            : "This project has no workspace on the server machine",
+            ? "У этого проекта нет рабочей папки на выбранном хосте"
+            : "У этого проекта нет рабочей папки на сервере",
         );
       }
       if (matchingSources.length > 1) {
-        throw new Error("This project has multiple workspaces on that host");
+        throw new Error("У этого проекта несколько рабочих папок на указанном хосте");
       }
       const rootPath = normalizeHostRoot(projectSource.path);
       if (!isAbsoluteHostPath(rootPath)) {
-        throw new Error("This project has no absolute workspace path");
+        throw new Error("У этого проекта нет абсолютного пути к рабочей папке");
       }
       return {
         path: localFilePath(rootPath, filePath),
@@ -848,14 +848,14 @@ export default async function plugin(
     }
     if (source.kind === "thread-storage") {
       if (!source.threadId) {
-        throw new Error("Thread-storage files require a thread ID");
+        throw new Error("Для файлов хранилища чата нужен ID чата");
       }
       const relativePath = requireThreadStoragePath(filePath);
       const storage = await bb.sdk.threads.storageLocation({
         threadId: source.threadId,
       });
       if (!isAbsoluteHostPath(storage.storageRootPath)) {
-        throw new Error("This thread has no absolute storage path");
+        throw new Error("У этого чата нет абсолютного пути к хранилищу");
       }
       const rootPath = normalizeHostRoot(storage.storageRootPath);
       return {
@@ -865,7 +865,7 @@ export default async function plugin(
       };
     }
     throw new Error(
-      "Docs can open workspace, host, and thread-storage files only",
+      "Документы могут открывать только файлы рабочей папки, хоста и хранилища чата",
     );
   }
 
@@ -1020,7 +1020,7 @@ export default async function plugin(
       const result = await listVaultPaths(vault);
       if (result.truncated) {
         throw new Error(
-          `Sync scope exceeds ${MAX_TREE_ENTRIES} entries; narrow the folder scope`,
+          `Область синхронизации превышает ${MAX_TREE_ENTRIES} элементов; сузьте выбор папки`,
         );
       }
       const accessible = result.paths
@@ -1045,7 +1045,7 @@ export default async function plugin(
             entry.path.startsWith(`${normalizedScope.path}/`),
         )
       ) {
-        throw new Error(`Folder does not exist: ${normalizedScope.path}`);
+        throw new Error(`Папка не существует: ${normalizedScope.path}`);
       }
       for (const entry of accessible) {
         if (entry.kind === "directory") {
@@ -1067,7 +1067,7 @@ export default async function plugin(
       const collision = folded.get(entry.toLowerCase());
       if (collision && collision !== entry) {
         throw new Error(
-          `Vault paths ${JSON.stringify(collision)} and ${JSON.stringify(entry)} collide on case-insensitive filesystems`,
+          `Пути хранилища ${JSON.stringify(collision)} и ${JSON.stringify(entry)} совпадают в файловых системах без учёта регистра`,
         );
       }
       folded.set(entry.toLowerCase(), entry);
@@ -1157,12 +1157,12 @@ export default async function plugin(
           operation: "delete directory",
         })),
       ],
-      "Sync request",
+      "Запрос синхронизации",
     );
     const currentListing = await listVaultPaths(vault);
     if (currentListing.truncated) {
       throw new Error(
-        `Vault exceeds ${MAX_TREE_ENTRIES} entries; narrow the sync scope`,
+          `Хранилище содержит более ${MAX_TREE_ENTRIES} элементов; сузьте область синхронизации`,
       );
     }
     const currentEntries: SyncTreeEntry[] = currentListing.paths.map(
@@ -1172,7 +1172,7 @@ export default async function plugin(
         operation: "existing vault entry",
       }),
     );
-    assertValidTree(currentEntries, "Vault");
+    assertValidTree(currentEntries, "Хранилище");
     const currentByPath = new Map(
       currentEntries.map((entry) => [entry.path, entry]),
     );
@@ -1188,7 +1188,7 @@ export default async function plugin(
         )
       ) {
         throw new Error(
-          `Sync request both deletes ${JSON.stringify(directory)} and creates content beneath it`,
+          `Запрос синхронизации одновременно удаляет ${JSON.stringify(directory)} и создаёт в нём файлы`,
         );
       }
       const remainingChild = currentEntries.find(
@@ -1199,7 +1199,7 @@ export default async function plugin(
       );
       if (remainingChild) {
         throw new Error(
-          `Directory ${JSON.stringify(directory)} is not empty; ${JSON.stringify(remainingChild.path)} is not scheduled for deletion`,
+          `Папка ${JSON.stringify(directory)} не пуста; удаление ${JSON.stringify(remainingChild.path)} не запланировано`,
         );
       }
     }
@@ -1225,7 +1225,7 @@ export default async function plugin(
         operation: "write",
       });
     }
-    assertValidTree(futureEntries, "Resulting vault");
+    assertValidTree(futureEntries, "Результирующее хранилище");
     const conflicts: Array<{
       path: string;
       expectedSha256: string | null;
@@ -1421,7 +1421,7 @@ export default async function plugin(
         const previous = readProposal(vaultId, input.path);
         if ((previous?.version ?? null) !== input.expectedVersion) {
           throw new Error(
-            "The proposal changed. Read it again before proposing changes.",
+            "Предложение изменилось. Прочитайте его снова, прежде чем предлагать изменения.",
           );
         }
         const file = await readFile(vaultId, input.path);
@@ -1430,7 +1430,7 @@ export default async function plugin(
           file.sha256 !== input.expectedSha256
         ) {
           throw new Error(
-            "The document changed. Read it again before proposing changes.",
+            "Документ изменился. Прочитайте его снова, прежде чем предлагать изменения.",
           );
         }
         return saveProposal({
@@ -1454,7 +1454,7 @@ export default async function plugin(
           input.expectedVersion,
         );
         if (proposal.status !== "pending")
-          throw new Error("This proposal is no longer pending.");
+          throw new Error("Это предложение больше не ожидает решения.");
         return saveProposal({
           ...proposal,
           content: input.content,
@@ -1486,21 +1486,21 @@ export default async function plugin(
         if (!status)
           throw new Error(
             input.action === "undo"
-              ? "Nothing to undo."
+              ? "Нечего отменять."
               : input.action === "redo"
-                ? "Nothing to redo."
-                : "This proposal is no longer pending.",
+                ? "Нечего повторять."
+                : "Это предложение больше не ожидает решения.",
           );
         const next = { ...proposal, status, version: proposal.version + 1 };
         const restoring = status === "undone";
         const conflictMessage = restoring
-          ? "The document changed. Undo would overwrite newer edits."
-          : "The document changed. Ask for an updated proposal.";
+          ? "Документ изменился. Отмена перезапишет более новые правки."
+          : "Документ изменился. Запросите обновлённое предложение.";
         if (status === "accepted" || restoring) {
           const expectedSha256 = restoring
             ? proposal.resolvedSha256
             : proposal.baseSha256;
-          if (!expectedSha256) throw new Error("Nothing to undo.");
+          if (!expectedSha256) throw new Error("Нечего отменять.");
           const result = await writeFile({
             vaultId,
             rawPath: input.path,
@@ -1537,7 +1537,7 @@ export default async function plugin(
             if (!isMissingFileError(error)) throw error;
             throw new experimental_PluginRpcRefusal({
               code: "not_found",
-              message: `Path does not exist: ${input.path}`,
+              message: `Путь не существует: ${input.path}`,
             });
           }),
           previewLease(vault),
@@ -1564,7 +1564,7 @@ export default async function plugin(
         if (result.outcome === "conflict")
           throw new experimental_PluginRpcRefusal({
             code: "conflict",
-            message: "This document changed elsewhere.",
+            message: "Документ изменился в другом месте.",
           });
         const destination = input.renameToTitle
           ? await titleRenameTarget(vault, input.path, input.content)
@@ -1608,7 +1608,7 @@ export default async function plugin(
       const parent = requireOptionalDirectory(input.parent);
       const paths = input.paths.map((value) => requireVaultPath(value));
       if (new Set(paths).size !== paths.length) {
-        throw new Error('"paths" must not contain duplicates');
+        throw new Error('«paths» не должен содержать повторяющихся путей');
       }
       if (
         paths.some(
@@ -1617,7 +1617,7 @@ export default async function plugin(
             !/\.(md|html?)$/i.test(filePath),
         )
       ) {
-        throw new Error('Every ordered path must be a file in "parent"');
+        throw new Error('Каждый упорядоченный путь должен быть файлом в «parent»');
       }
       const currentFiles = (await listEntries(vault)).entries
         .filter(
@@ -1631,7 +1631,7 @@ export default async function plugin(
         currentFiles.some((filePath) => !paths.includes(filePath))
       ) {
         throw new Error(
-          "Files changed while reordering; refresh and try again",
+          "Файлы изменились во время сортировки; обновите список и попробуйте снова",
         );
       }
       const replaceOrder = db.transaction(() => {
@@ -1656,7 +1656,7 @@ export default async function plugin(
       const name = requireString(input.name, "name");
       const rootPath = requireString(input.rootPath, "rootPath");
       if (!isAbsoluteHostPath(rootPath))
-        throw new Error('"rootPath" must be absolute');
+        throw new Error('«rootPath» должен быть абсолютным');
       const hostId = optionalString(input.hostId) ?? null;
       const resolvedRoot = normalizeHostRoot(rootPath);
       await bb.sdk.files.mkdir({
@@ -1679,7 +1679,7 @@ export default async function plugin(
       const id = requireString(input.vaultId, "vaultId");
       return serializeVault(id, async () => {
         if (listVaults().length <= 1)
-          throw new Error("At least one vault is required");
+          throw new Error("Требуется хотя бы одно хранилище");
         db.transaction(() => {
           db.prepare("DELETE FROM proposals WHERE vault_id = ?").run(id);
           db.prepare("DELETE FROM entry_order WHERE vault_id = ?").run(id);
@@ -1697,7 +1697,7 @@ export default async function plugin(
       const content = requireString(input.content, "content");
       const bytes = Buffer.from(content, "base64");
       if (bytes.length > MAX_ATTACHMENT_BYTES)
-        throw new Error("Attachment exceeds 20 MB");
+        throw new Error("Вложение превышает 20 МБ");
       const rawName = requireString(input.name, "name");
       const extension = path.extname(rawName).toLowerCase();
       const original =
@@ -1707,7 +1707,7 @@ export default async function plugin(
           extension,
         )
       ) {
-        throw new Error("Unsupported image type");
+        throw new Error("Неподдерживаемый тип изображения");
       }
       const parent = path.posix.dirname(notePath);
       const attachment = `${original}-${Date.now().toString(36)}${extension}`;
@@ -1745,7 +1745,7 @@ export default async function plugin(
         candidatePath: target.path,
       });
       if (previewPath === null)
-        throw new Error("Opened files must stay inside their root");
+        throw new Error("Открытые файлы должны оставаться внутри корневой папки");
       const args = {
         ...hostIdArgs(target.hostId),
         path: target.path,
@@ -1853,7 +1853,7 @@ export default async function plugin(
   function resolveHostPath(rootPath: string, candidate: string): string {
     const resolved = resolvePath({ rootPath, path: candidate });
     if (resolved === null)
-      throw new CliUsageError(`Invalid host path: ${candidate}`);
+      throw new CliUsageError(`Неверный путь на хосте: ${candidate}`);
     return resolved;
   }
 
@@ -1898,20 +1898,20 @@ export default async function plugin(
     const file = await readWorkspaceFile(rootPath, hostId, SYNC_STATE_FILE);
     if (!file) return null;
     if (file.contentEncoding !== "utf8") {
-      throw new Error(`${SYNC_STATE_FILE} must be UTF-8 JSON`);
+      throw new Error(`${SYNC_STATE_FILE} должен содержать JSON в кодировке UTF-8`);
     }
     let parsed: unknown;
     try {
       parsed = JSON.parse(file.content);
     } catch {
       throw new Error(
-        `${SYNC_STATE_FILE} is malformed; move this workspace aside and pull into a clean directory`,
+        `${SYNC_STATE_FILE} повреждён; переместите эту рабочую папку и выполните pull в пустую папку`,
       );
     }
     const result = syncStateSchema.safeParse(parsed);
     if (!result.success) {
       throw new Error(
-        `${SYNC_STATE_FILE} is invalid: ${z.prettifyError(result.error)}. Move this workspace aside and pull into a clean directory`,
+        `${SYNC_STATE_FILE} недействителен: ${z.prettifyError(result.error)}. Переместите эту рабочую папку и выполните pull в пустую папку`,
       );
     }
     const remotePaths = result.data.entries.map((entry) => entry.remotePath);
@@ -1920,7 +1920,7 @@ export default async function plugin(
       new Set(remotePaths).size !== remotePaths.length ||
       new Set(localPaths).size !== localPaths.length
     ) {
-      throw new Error(`${SYNC_STATE_FILE} contains duplicate identities`);
+      throw new Error(`${SYNC_STATE_FILE} содержит повторяющиеся записи`);
     }
     if (
       result.data.entries.some(
@@ -1933,7 +1933,7 @@ export default async function plugin(
       )
     ) {
       throw new Error(
-        `${SYNC_STATE_FILE} contains an identity outside its declared scope`,
+        `${SYNC_STATE_FILE} содержит запись вне объявленной области`,
       );
     }
     return { state: result.data, sha256: file.sha256 };
@@ -1955,7 +1955,7 @@ export default async function plugin(
     });
     if (result.outcome === "conflict") {
       throw new Error(
-        `${SYNC_STATE_FILE} changed concurrently; remote changes were left intact and the workspace can be recovered by rerunning pull`,
+        `${SYNC_STATE_FILE} изменился одновременно с операцией; данные в хранилище не затронуты. Повторите pull для восстановления`,
       );
     }
   }
@@ -1987,16 +1987,16 @@ export default async function plugin(
   function parsePullScope(args: SyncCliArgs): SyncScope {
     if (args.all && (args.folder || args.positionals.length > 0)) {
       throw new CliUsageError(
-        "--all cannot be combined with a path or --folder",
+        "--all нельзя использовать вместе с путём или --folder",
       );
     }
     if (args.all) return { kind: "all" };
     const scopePath = args.positionals[0];
     if (!scopePath) {
-      throw new CliUsageError("pull requires <path> or --all");
+      throw new CliUsageError("Для pull укажите <path> или --all");
     }
     if (args.positionals.length > 1) {
-      throw new CliUsageError("pull accepts only one vault path");
+      throw new CliUsageError("Для pull можно указать только один путь хранилища");
     }
     return {
       kind: args.folder ? "folder" : "file",
@@ -2049,7 +2049,7 @@ export default async function plugin(
         !sameScope(existing.state.scope, snapshot.scope))
     ) {
       throw new Error(
-        `${SYNC_STATE_FILE} belongs to a different vault or scope; choose another --into directory`,
+        `${SYNC_STATE_FILE} относится к другому хранилищу или области; выберите другую папку с --into`,
       );
     }
     const oldEntries = new Map(
@@ -2152,7 +2152,7 @@ export default async function plugin(
         });
         if (result.outcome === "conflict") {
           throw new Error(
-            `Local file changed during pull: ${write.file.localPath}; rerun pull to recover`,
+            `Локальный файл изменился во время загрузки: ${write.file.localPath}; повторите pull для восстановления`,
           );
         }
         written.push(write.file.localPath);
@@ -2165,7 +2165,7 @@ export default async function plugin(
         );
         if (current?.sha256 !== deletion.expectedSha256) {
           throw new Error(
-            `Local file changed during pull: ${deletion.path}; rerun pull to recover`,
+            `Локальный файл изменился во время загрузки: ${deletion.path}; повторите pull для восстановления`,
           );
         }
         await bb.sdk.files.remove({
@@ -2240,18 +2240,18 @@ export default async function plugin(
       args.positionals[0] ?? args.into ?? `docs-${defaultVault.id}`,
     );
     if (args.positionals.length > 1) {
-      throw new Error("push/status accepts only one workspace directory");
+      throw new Error("Для push/status можно указать только одну рабочую папку");
     }
     const hostId = await resolveWorkspaceHostId(args, context);
     const existing = await readSyncState(rootPath, hostId);
     if (!existing) {
       throw new Error(
-        `${SYNC_STATE_FILE} was not found; run bb docs pull first`,
+        `${SYNC_STATE_FILE} не найден; сначала выполните bb docs pull`,
       );
     }
     if (args.vaultId && args.vaultId !== existing.state.vault.id) {
       throw new Error(
-        `Workspace belongs to vault ${existing.state.vault.id}, not ${args.vaultId}`,
+        `Рабочая папка относится к хранилищу ${existing.state.vault.id}, а не ${args.vaultId}`,
       );
     }
     const snapshot = await syncSnapshot(
@@ -2268,7 +2268,7 @@ export default async function plugin(
     });
     if (listing.truncated) {
       throw new Error(
-        `Local workspace exceeds ${MAX_TREE_ENTRIES} entries; narrow the pull scope`,
+        `Локальная рабочая папка содержит более ${MAX_TREE_ENTRIES} элементов; сузьте область pull`,
       );
     }
     const localPaths = listing.paths
@@ -2543,12 +2543,12 @@ export default async function plugin(
     if (!isRecord(result)) return JSON.stringify(result, null, 2);
     if (command === "pull") {
       if (result.outcome === "conflict") {
-        return `Pull stopped: ${Array.isArray(result.conflicts) ? result.conflicts.length : 0} conflict(s). No files were changed.\n${JSON.stringify(result.conflicts, null, 2)}`;
+        return `Загрузка остановлена: конфликтов — ${Array.isArray(result.conflicts) ? result.conflicts.length : 0}. Файлы не изменены.\n${JSON.stringify(result.conflicts, null, 2)}`;
       }
       if (result.outcome === "partial") {
-        return `Pull partially completed in ${String(result.rootPath)}. The prior manifest remains valid; rerun pull to recover safely.\n${JSON.stringify(result.errors, null, 2)}`;
+        return `Загрузка в ${String(result.rootPath)} выполнена частично. Предыдущий манифест остаётся действительным; повторите pull для восстановления.\n${JSON.stringify(result.errors, null, 2)}`;
       }
-      return `Pulled ${stringArray(result.written).length} file(s) into ${String(result.rootPath)}${stringArray(result.deleted).length > 0 ? `; removed ${stringArray(result.deleted).length} remotely deleted file(s)` : ""}${stringArray(result.deletedDirectories).length > 0 ? `; removed ${stringArray(result.deletedDirectories).length} remotely deleted director${stringArray(result.deletedDirectories).length === 1 ? "y" : "ies"}` : ""}.`;
+      return `Загружено файлов: ${stringArray(result.written).length}, папка: ${String(result.rootPath)}${stringArray(result.deleted).length > 0 ? `; удалено файлов, удалённых в хранилище: ${stringArray(result.deleted).length}` : ""}${stringArray(result.deletedDirectories).length > 0 ? `; удалено папок, удалённых в хранилище: ${stringArray(result.deletedDirectories).length}` : ""}.`;
     }
     if (command === "status" || command === "push") {
       const writes = stringArray(result.writes);
@@ -2558,34 +2558,34 @@ export default async function plugin(
       const warnings = Array.isArray(result.warnings) ? result.warnings : [];
       const conflicts = Array.isArray(result.conflicts) ? result.conflicts : [];
       const lines = [
-        `Docs workspace: ${String(result.rootPath)}`,
-        `Vault: ${String(result.vaultId)}`,
-        `Changes: ${writes.length} write(s), ${deletes.length} file deletion(s), ${directories.length} directory creation(s), ${deleteDirectories.length} directory deletion(s), ${warnings.length} warning(s), ${conflicts.length} conflict(s)`,
+        `Рабочая папка документов: ${String(result.rootPath)}`,
+        `Хранилище: ${String(result.vaultId)}`,
+        `Изменения: записей — ${writes.length}, удалений файлов — ${deletes.length}, созданий папок — ${directories.length}, удалений папок — ${deleteDirectories.length}, предупреждений — ${warnings.length}, конфликтов — ${conflicts.length}`,
       ];
-      if (writes.length > 0) lines.push(`Write:\n  ${writes.join("\n  ")}`);
-      if (deletes.length > 0) lines.push(`Delete:\n  ${deletes.join("\n  ")}`);
+      if (writes.length > 0) lines.push(`Записать:\n  ${writes.join("\n  ")}`);
+      if (deletes.length > 0) lines.push(`Удалить:\n  ${deletes.join("\n  ")}`);
       if (directories.length > 0)
-        lines.push(`Create directories:\n  ${directories.join("\n  ")}`);
+        lines.push(`Создать папки:\n  ${directories.join("\n  ")}`);
       if (deleteDirectories.length > 0)
-        lines.push(`Delete directories:\n  ${deleteDirectories.join("\n  ")}`);
+        lines.push(`Удалить папки:\n  ${deleteDirectories.join("\n  ")}`);
       if (warnings.length > 0)
-        lines.push(`Warnings:\n${JSON.stringify(warnings, null, 2)}`);
+        lines.push(`Предупреждения:\n${JSON.stringify(warnings, null, 2)}`);
       if (conflicts.length > 0)
-        lines.push(`Conflicts:\n${JSON.stringify(conflicts, null, 2)}`);
+        lines.push(`Конфликты:\n${JSON.stringify(conflicts, null, 2)}`);
       const diffs = stringArray(result.diffs);
       if (diffs.length > 0) lines.push(diffs.join("\n\n"));
-      if (result.outcome === "pushed") lines.push("Push completed.");
+      if (result.outcome === "pushed") lines.push("Отправка завершена.");
       else if (result.outcome === "planned")
         lines.push(
           command === "push"
-            ? "Dry run only; no remote changes were made."
-            : "No remote changes were made.",
+            ? "Пробный запуск: изменения в хранилище не внесены."
+            : "Изменения в хранилище не внесены.",
         );
       else if (result.outcome === "partial")
-        lines.push("Push partially completed; rerun status to recover safely.");
+        lines.push("Отправка выполнена частично; повторите status для восстановления.");
       else if (result.outcome === "conflict")
         lines.push(
-          "No push changes were made; pull and merge the conflicts first.",
+          "Изменения не отправлены; сначала выполните pull и разрешите конфликты.",
         );
       return lines.join("\n");
     }
@@ -2669,7 +2669,7 @@ export default async function plugin(
   const proposalPositionals = [
     {
       name: "path",
-      description: "Markdown path relative to the vault root",
+      description: "Путь Markdown относительно корня хранилища",
       required: true,
     },
   ] as const;
@@ -2677,14 +2677,14 @@ export default async function plugin(
     type: "string",
     required: true,
     description:
-      "Version returned by proposal; use none only when no proposal exists",
+      "Версия из результата proposal; используйте none, только если предложения нет",
   } as const;
 
   function parseProposalVersion(value: string): number | null {
     if (value === "none") return null;
     const version = Number(value);
     if (!Number.isSafeInteger(version) || version < 1)
-      throw new CliUsageError("Expected a positive proposal version or none.");
+      throw new CliUsageError("Ожидается положительный номер версии предложения или none.");
     return version;
   }
 
@@ -2692,7 +2692,7 @@ export default async function plugin(
     (["accept", "reject", "undo", "redo"] as const).map((action) => [
       action,
       cliCommand({
-        summary: `${action[0]!.toUpperCase()}${action.slice(1)} a document proposal`,
+        summary: ({ accept: "Принять", reject: "Отклонить", undo: "Отменить", redo: "Повторить" } as const)[action] + " предложение изменения документа",
         positionals: proposalPositionals,
         options: {
           vault: VAULT_OPTION,
@@ -2704,7 +2704,7 @@ export default async function plugin(
             const expectedVersion = parseProposalVersion(input.options.version);
             if (expectedVersion === null)
               throw new CliUsageError(
-                "This action requires a proposal version.",
+                "Для этого действия нужна версия предложения.",
               );
             const result = await handlers.resolveProposal({
               vaultId: input.options.vault,
@@ -2721,13 +2721,13 @@ export default async function plugin(
   bb.cli.register(
     defineCli({
       name: "docs",
-      summary: "Discover and safely sync Docs vaults",
+      summary: "Поиск и безопасная синхронизация хранилищ Docs",
       description: DOCS_DESCRIPTION,
       usageErrorExitCode: 2,
       commands: {
         ...proposalCommands,
         proposal: cliCommand({
-          summary: "Read the current proposal and its version",
+          summary: "Прочитать текущее предложение и его версию",
           positionals: proposalPositionals,
           options: { vault: VAULT_OPTION, json: JSON_OPTION },
           run: (input) =>
@@ -2744,7 +2744,7 @@ export default async function plugin(
             })),
         }),
         propose: cliCommand({
-          summary: "Propose a Markdown revision without changing the document",
+          summary: "Предложить правку Markdown без изменения документа",
           positionals: proposalPositionals,
           options: {
             vault: VAULT_OPTION,
@@ -2753,13 +2753,13 @@ export default async function plugin(
             "expected-sha256": {
               type: "string",
               required: true,
-              description: "Current document SHA-256 from read --json",
+              description: "Текущий SHA-256 документа из read --json",
             },
             file: {
               type: "string",
               required: true,
               description:
-                "Workspace UTF-8 file containing the complete proposed Markdown",
+                "Файл UTF-8 в рабочей папке с полным предлагаемым Markdown",
             },
             "workspace-host": WORKSPACE_HOST_OPTION,
           },
@@ -2785,7 +2785,7 @@ export default async function plugin(
               });
               if (file.contentEncoding !== "utf8")
                 throw new CliUsageError(
-                  "Proposal file must be UTF-8 Markdown.",
+                  "Файл предложения должен содержать Markdown в UTF-8.",
                 );
               const result = await handlers.proposeNote({
                 vaultId: input.options.vault,
@@ -2800,7 +2800,7 @@ export default async function plugin(
             }),
         }),
         "proposal-update": cliCommand({
-          summary: "Edit a pending candidate using its version",
+          summary: "Изменить ожидающее предложение с проверкой версии",
           positionals: proposalPositionals,
           options: {
             vault: VAULT_OPTION,
@@ -2809,7 +2809,7 @@ export default async function plugin(
             content: {
               type: "string",
               required: true,
-              description: "Complete candidate Markdown",
+              description: "Полный Markdown предлагаемого варианта",
             },
           },
           run: (input) =>
@@ -2819,7 +2819,7 @@ export default async function plugin(
               );
               if (expectedVersion === null)
                 throw new CliUsageError(
-                  "This action requires a proposal version.",
+                  "Для этого действия нужна версия предложения.",
                 );
               const result = await handlers.updateProposal({
                 vaultId: input.options.vault,
@@ -2831,7 +2831,7 @@ export default async function plugin(
             }),
         }),
         vaults: cliCommand({
-          summary: "List configured vaults",
+          summary: "Показать настроенные хранилища",
           suggestFor: ["vault"],
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -2845,24 +2845,24 @@ export default async function plugin(
             })),
         }),
         "vault-add": cliCommand({
-          summary: "Add a vault",
+          summary: "Добавить хранилище",
           suggestFor: ["add-vault", "vault-create"],
           positionals: [
             {
               name: "name",
-              description: "Display name for the vault",
+              description: "Отображаемое название хранилища",
               required: true,
             },
             {
               name: "absolute-root",
               description:
-                "Absolute directory on the host; it is created when missing",
+                "Абсолютный путь к папке на хосте; если папки нет, она будет создана",
               required: true,
             },
             {
               name: "host-id",
               description:
-                "Connected host holding the directory; omit for this server",
+                "Подключённый хост с папкой; не указывайте для этого сервера",
             },
           ],
           options: { json: JSON_OPTION },
@@ -2881,12 +2881,12 @@ export default async function plugin(
             })),
         }),
         "vault-remove": cliCommand({
-          summary: "Remove a vault configuration",
+          summary: "Удалить настройки хранилища",
           suggestFor: ["remove-vault", "vault-delete"],
           positionals: [
             {
               name: "id",
-              description: "Vault ID from `bb docs vaults`",
+              description: "ID хранилища из `bb docs vaults`",
               required: true,
             },
           ],
@@ -2902,7 +2902,7 @@ export default async function plugin(
             })),
         }),
         list: cliCommand({
-          summary: "List notes and folders",
+          summary: "Показать заметки и папки",
           aliases: ["ls"],
           options: { vault: VAULT_OPTION, json: JSON_OPTION },
           run: (input) =>
@@ -2916,12 +2916,12 @@ export default async function plugin(
             })),
         }),
         read: cliCommand({
-          summary: "Read a file",
+          summary: "Прочитать файл",
           aliases: ["cat"],
           positionals: [
             {
               name: "path",
-              description: "Path relative to the vault root",
+              description: "Путь относительно корня хранилища",
               required: true,
             },
           ],
@@ -2944,15 +2944,15 @@ export default async function plugin(
             }),
         }),
         pull: cliCommand({
-          summary: "Pull one file, a folder subtree, or a whole vault",
+          summary: "Загрузить файл, папку со вложениями или всё хранилище",
           description:
-            "Writes the scope into a workspace directory with a .bb-docs-state.json manifest. Edit the files with ordinary tools, then run bb docs status and bb docs push.",
+            "Записывает файлы в рабочую папку с манифестом .bb-docs-state.json. Отредактируйте их обычными инструментами, затем выполните bb docs status и bb docs push.",
           suggestFor: ["fetch", "clone", "checkout"],
           positionals: [
             {
               name: "path",
               description:
-                "Vault file, or folder with --folder; omit only with --all",
+                "Файл хранилища или папка с --folder; не указывайте только с --all",
             },
           ],
           options: {
@@ -2962,17 +2962,17 @@ export default async function plugin(
               placeholder: "dir",
               aliases: ["dir", "target"],
               description:
-                "Workspace directory to pull into; defaults to docs-<vault-id> under the working directory",
+                "Рабочая папка для загрузки; по умолчанию docs-<vault-id> внутри текущей папки",
             },
             "workspace-host": WORKSPACE_HOST_OPTION,
             all: {
               type: "boolean",
-              description: "Pull the whole vault instead of one path",
+              description: "Загрузить всё хранилище вместо одного пути",
             },
             folder: {
               type: "boolean",
               aliases: ["recursive"],
-              description: "Treat the path as a folder subtree",
+              description: "Считать путь папкой со вложениями",
             },
             json: JSON_OPTION,
           },
@@ -3004,13 +3004,13 @@ export default async function plugin(
             }),
         }),
         status: cliCommand({
-          summary: "Show local edits, conflicts, and ignored deletions",
+          summary: "Показать локальные правки, конфликты и проигнорированные удаления",
           description: DOCS_STATUS_DESCRIPTION,
           positionals: [
             {
               name: "workspace-dir",
               description:
-                "Pulled workspace directory; defaults to --into or docs-<vault-id>",
+                "Папка с загруженными файлами; по умолчанию --into или docs-<vault-id>",
             },
           ],
           options: {
@@ -3042,14 +3042,14 @@ export default async function plugin(
             }),
         }),
         push: cliCommand({
-          summary: "Safely push local edits using optimistic concurrency",
+          summary: "Безопасно отправить локальные правки с проверкой изменений",
           description:
-            "Refuses to write when a vault file changed since the pull; resolve the conflict, then pull or push again.",
+            "Не записывает файл, если он изменился в хранилище после загрузки. Разрешите конфликт, затем повторите pull или push.",
           positionals: [
             {
               name: "workspace-dir",
               description:
-                "Pulled workspace directory; defaults to --into or docs-<vault-id>",
+                "Папка с загруженными файлами; по умолчанию --into или docs-<vault-id>",
             },
           ],
           options: {
@@ -3059,7 +3059,7 @@ export default async function plugin(
             "dry-run": {
               type: "boolean",
               aliases: ["dryrun", "plan"],
-              description: "Plan the push without writing to the vault",
+              description: "Спланировать отправку без записи в хранилище",
             },
             diff: DIFF_OPTION,
             json: JSON_OPTION,
@@ -3093,13 +3093,13 @@ export default async function plugin(
             }),
         }),
         write: cliCommand({
-          summary: "Deprecated: write a UTF-8 file directly",
+          summary: "Устарело: записать файл UTF-8 напрямую",
           description:
-            "Use bb docs pull, edit the files, then bb docs push instead.",
+            "Вместо этого используйте bb docs pull, редактируйте файлы и выполняйте bb docs push.",
           positionals: [
             {
               name: "path",
-              description: "Path relative to the vault root",
+              description: "Путь относительно корня хранилища",
               required: true,
             },
           ],
@@ -3110,7 +3110,7 @@ export default async function plugin(
               required: true,
               placeholder: "text",
               aliases: ["text", "body"],
-              description: "Complete UTF-8 file contents",
+              description: "Полное содержимое файла UTF-8",
             },
             json: JSON_OPTION,
           },
@@ -3130,13 +3130,13 @@ export default async function plugin(
             })),
         }),
         mkdir: cliCommand({
-          summary: "Deprecated: create a folder directly",
+          summary: "Устарело: создать папку напрямую",
           description:
-            "Use bb docs pull, create the directory locally, then bb docs push instead.",
+            "Вместо этого используйте bb docs pull, создайте папку локально и выполните bb docs push.",
           positionals: [
             {
               name: "path",
-              description: "Folder path relative to the vault root",
+              description: "Путь к папке относительно корня хранилища",
               required: true,
             },
           ],
@@ -3156,18 +3156,18 @@ export default async function plugin(
             })),
         }),
         move: cliCommand({
-          summary: "Deprecated: move a path directly",
+          summary: "Устарело: переместить путь напрямую",
           description:
-            "Use bb docs pull, move the file locally, then bb docs push --delete instead.",
+            "Вместо этого используйте bb docs pull, переместите файл локально и выполните bb docs push --delete.",
           positionals: [
             {
               name: "from",
-              description: "Existing path relative to the vault root",
+              description: "Существующий путь относительно корня хранилища",
               required: true,
             },
             {
               name: "to",
-              description: "Destination path relative to the vault root",
+              description: "Путь назначения относительно корня хранилища",
               required: true,
             },
           ],
@@ -3188,14 +3188,14 @@ export default async function plugin(
             })),
         }),
         remove: cliCommand({
-          summary: "Deprecated: remove a file or directory directly",
+          summary: "Устарело: удалить файл или папку напрямую",
           description:
-            "Use bb docs pull, delete the file locally, then bb docs push --delete instead.",
+            "Вместо этого используйте bb docs pull, удалите файл локально и выполните bb docs push --delete.",
           aliases: ["rm"],
           positionals: [
             {
               name: "path",
-              description: "Path relative to the vault root",
+              description: "Путь относительно корня хранилища",
               required: true,
             },
           ],
@@ -3203,7 +3203,7 @@ export default async function plugin(
             vault: VAULT_OPTION,
             recursive: {
               type: "boolean",
-              description: "Remove a directory and everything inside it",
+              description: "Удалить папку со всем содержимым",
             },
             json: JSON_OPTION,
           },
@@ -3254,7 +3254,7 @@ export default async function plugin(
     },
     async resolve(itemId) {
       const separator = itemId.indexOf(":");
-      if (separator < 1) throw new Error("Invalid note mention");
+      if (separator < 1) throw new Error("Неверная ссылка на заметку");
       const vaultId = itemId.slice(0, separator);
       const relativePath = itemId.slice(separator + 1);
       const file = await readFile(vaultId, relativePath);

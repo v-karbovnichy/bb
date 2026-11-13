@@ -41,7 +41,7 @@ export function InstalledPluginsTab({
 
   if (plugins.length === 0) {
     return (
-      <EmptyState message="No plugins installed. Browse the catalog, create a plugin, or run bb plugin install <source>." />
+      <EmptyState message="Плагины не установлены. Откройте каталог, создайте плагин или выполните bb plugin install <source>." />
     );
   }
 
@@ -116,21 +116,21 @@ export function InstalledPluginRow({
         title={plugin.name ?? plugin.id}
         byline={
           isLocal ? (
-            "Local"
+            "Локальный"
           ) : catalogEntry !== undefined ? (
             <PluginCardAuthor entry={catalogEntry} />
           ) : plugin.publisherLabel !== null ? (
             <PluginAuthorByline
               name={
                 plugin.provenance === "builtin"
-                  ? "BB Official"
+                  ? "Официальный BB"
                   : plugin.publisherLabel
               }
               github={null}
               official={plugin.provenance === "builtin"}
             >
               {plugin.provenance === "builtin"
-                ? "BB Official"
+                ? "Официальный BB"
                 : plugin.publisherLabel}
             </PluginAuthorByline>
           ) : null
@@ -151,7 +151,7 @@ export function InstalledPluginRow({
             </span>
           )
         }
-        openLabel={`${plugin.name ?? plugin.id} plugin details`}
+        openLabel={`Сведения о плагине ${plugin.name ?? plugin.id}`}
         onOpen={openDetail}
         footerAction={
           <span className="flex items-center gap-2">
@@ -176,8 +176,8 @@ export function InstalledPluginRow({
               checked={enabled}
               disabled={toggle.isPending}
               onCheckedChange={(next) => toggle.mutate(next)}
-              aria-label={`${enabled ? "Disable" : "Enable"} ${plugin.id}${
-                notRunning ? ` (${plugin.status}, not running)` : ""
+              aria-label={`${enabled ? "Отключить" : "Включить"} ${plugin.id}${
+                notRunning ? ` (${plugin.status}, не запущен)` : ""
               }`}
             />
           </span>

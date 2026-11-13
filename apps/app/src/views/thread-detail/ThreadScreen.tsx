@@ -312,7 +312,7 @@ function useSentMessageEditing({
     }
     setSentMessageEditHostElement(null);
     setSentMessageEditSession(null);
-    appToast.warning("The message being edited is no longer available.");
+    appToast.warning("Редактируемое сообщение больше недоступно.");
   }, [shouldDiscardMissingSentMessageEdit]);
   const activeSentMessageEditOperationId =
     activeSentMessageEditSession?.operationId ?? null;
@@ -370,7 +370,7 @@ function useSentMessageEditing({
         .catch((error) => {
           showMutationErrorToast({
             error,
-            fallbackMessage: "Failed to edit the message",
+            fallbackMessage: "Не удалось изменить сообщение",
             lifecycleOperation: "edit_message",
           });
         });

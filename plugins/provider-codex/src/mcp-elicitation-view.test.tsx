@@ -72,14 +72,14 @@ const responses: {
   response: CodexMcpElicitationResponse;
 }[] = [
   {
-    label: "Allow for this session",
+    label: "Разрешить для этого сеанса",
     response: { action: "accept", persist: "session" },
   },
   {
-    label: "Always allow",
+    label: "Всегда разрешать",
     response: { action: "accept", persist: "always" },
   },
-  { label: "Decline", response: { action: "decline" } },
+  { label: "Отклонить", response: { action: "decline" } },
 ];
 
 describe("Codex app permission interaction", () => {
@@ -88,11 +88,11 @@ describe("Codex app permission interaction", () => {
 
     expect(slot.getByText(permission.app.name)).toBeTruthy();
     expect(slot.getByText(permission.app.id)).toBeTruthy();
-    expect(slot.getByText("Computer Use")).toBeTruthy();
+    expect(slot.getByText("Управление компьютером")).toBeTruthy();
     expect(slot.getByText("cua_repl")).toBeTruthy();
     expect(slot.queryByText("Low risk")).toBeNull();
     expect(slot.queryByRole("button", { name: "Cancel" })).toBeNull();
-    expect(slot.queryByRole("button", { name: "Stop turn" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Остановить ход" })).toBeNull();
   });
 
   it("shows the host app icon and falls back without one", () => {
@@ -116,7 +116,7 @@ describe("Codex app permission interaction", () => {
     ).toBeNull();
     expect(fallback.getByText(permission.app.name)).toBeTruthy();
     expect(
-      fallback.getByRole("button", { name: "Allow for this session" }),
+      fallback.getByRole("button", { name: "Разрешить для этого сеанса" }),
     ).toBeTruthy();
   });
 
@@ -134,7 +134,7 @@ describe("Codex app permission interaction", () => {
     });
 
     expect(slot.getByText(warning)).toBeTruthy();
-    expect(slot.getByText("High risk")).toBeTruthy();
+    expect(slot.getByText("Высокий риск")).toBeTruthy();
     expect(slot.queryByText("Low risk")).toBeNull();
   });
 
@@ -187,10 +187,10 @@ describe("Codex app permission interaction", () => {
       });
 
       expect(
-        slot.queryByRole("button", { name: "Allow for this session" }) !== null,
+        slot.queryByRole("button", { name: "Разрешить для этого сеанса" }) !== null,
       ).toBe(scope === "session");
       expect(
-        slot.queryByRole("button", { name: "Always allow" }) !== null,
+        slot.queryByRole("button", { name: "Всегда разрешать" }) !== null,
       ).toBe(scope === "always");
     },
   );
@@ -209,7 +209,7 @@ describe("Codex app permission interaction", () => {
         fireEvent.click(button);
       }
 
-      expect(slot.getByRole("status").textContent).toBe("Sending response…");
+      expect(slot.getByRole("status").textContent).toBe("Отправка ответа…");
       expect(submit).toHaveBeenCalledExactlyOnceWith(response);
     },
   );
@@ -221,17 +221,17 @@ describe("Codex app permission interaction", () => {
       .mockResolvedValueOnce();
     const slot = renderPermission({ submit });
 
-    fireEvent.click(slot.getByRole("button", { name: "Always allow" }));
+    fireEvent.click(slot.getByRole("button", { name: "Всегда разрешать" }));
 
     expect((await slot.findByRole("alert")).textContent).toBe(
-      "Could not send this response. Try again or stop the turn.",
+      "Не удалось отправить ответ. Попробуйте ещё раз или остановите ход.",
     );
-    expect(slot.getByRole("button", { name: "Decline" })).toHaveProperty(
+    expect(slot.getByRole("button", { name: "Отклонить" })).toHaveProperty(
       "disabled",
       false,
     );
-    expect(slot.getByRole("button", { name: "Stop turn" })).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Decline" }));
+    expect(slot.getByRole("button", { name: "Остановить ход" })).toBeTruthy();
+    fireEvent.click(slot.getByRole("button", { name: "Отклонить" }));
 
     expect(submit.mock.calls).toEqual([
       [{ action: "accept", persist: "always" }],
@@ -267,10 +267,10 @@ describe("Codex app permission interaction", () => {
     });
 
     expect(slot.getByRole("alert").textContent).toBe(
-      "This request could not be displayed.",
+      "Не удалось отобразить этот запрос.",
     );
     expect(slot.getAllByRole("button")).toHaveLength(1);
-    fireEvent.click(slot.getByRole("button", { name: "Stop turn" }));
+    fireEvent.click(slot.getByRole("button", { name: "Остановить ход" }));
 
     expect(cancel).toHaveBeenCalledExactlyOnceWith();
     expect(submit).not.toHaveBeenCalled();
@@ -292,12 +292,12 @@ describe("Codex app permission interaction", () => {
       cancel,
     });
 
-    fireEvent.click(slot.getByRole("button", { name: "Stop turn" }));
+    fireEvent.click(slot.getByRole("button", { name: "Остановить ход" }));
 
     expect(
-      await slot.findByText("Could not stop this turn. Try again."),
+      await slot.findByText("Не удалось остановить ход. Попробуйте ещё раз."),
     ).toBeTruthy();
-    expect(slot.getByRole("button", { name: "Stop turn" })).toHaveProperty(
+    expect(slot.getByRole("button", { name: "Остановить ход" })).toHaveProperty(
       "disabled",
       false,
     );
@@ -426,7 +426,7 @@ describe("Codex MCP forms", () => {
     fireEvent.click(
       within(slot.getByRole("radiogroup", { name: "Enabled" })).getByRole(
         "radio",
-        { name: "No" },
+        { name: "Нет" },
       ),
     );
     fireEvent.click(
@@ -437,7 +437,7 @@ describe("Codex MCP forms", () => {
     );
     fireEvent.click(slot.getByRole("checkbox", { name: "work" }));
     fireEvent.click(slot.getByRole("checkbox", { name: "shared" }));
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit).toHaveBeenCalledExactlyOnceWith({
       action: "accept",
@@ -490,7 +490,7 @@ describe("Codex MCP forms", () => {
         .getAllByRole("radio")
         .every((radio) => radio.getAttribute("aria-checked") === "false"),
     ).toBe(true);
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit).toHaveBeenCalledExactlyOnceWith({
       action: "accept",
@@ -516,9 +516,9 @@ describe("Codex MCP forms", () => {
       { submit },
     );
 
-    fireEvent.click(slot.getByRole("button", { name: "Clear Enabled" }));
+    fireEvent.click(slot.getByRole("button", { name: "Очистить Enabled" }));
     fireEvent.change(slot.getByLabelText("Count"), { target: { value: "" } });
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit).toHaveBeenCalledExactlyOnceWith({
       action: "accept",
@@ -532,7 +532,7 @@ describe("Codex MCP forms", () => {
     );
     const slot = renderPayload(primitiveForm(), { submit });
 
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit).not.toHaveBeenCalled();
     expect(slot.getAllByRole("alert")).toHaveLength(6);
@@ -573,7 +573,7 @@ describe("Codex MCP forms", () => {
       target: { value: "1.5" },
     });
     fireEvent.click(slot.getByRole("checkbox", { name: "a" }));
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit).not.toHaveBeenCalled();
     expect(slot.getAllByRole("alert")).toHaveLength(5);
@@ -586,7 +586,7 @@ describe("Codex MCP forms", () => {
     });
     fireEvent.change(slot.getByLabelText("Count"), { target: { value: "1" } });
     fireEvent.click(slot.getByRole("checkbox", { name: "b" }));
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(slot.queryByRole("alert")).toBeNull();
     expect(submit).toHaveBeenCalledExactlyOnceWith({
@@ -613,12 +613,12 @@ describe("Codex MCP forms", () => {
     fireEvent.change(slot.getByLabelText("Name"), {
       target: { value: "First" },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
     await slot.findByRole("alert");
     fireEvent.change(slot.getByLabelText("Name"), {
       target: { value: "Second" },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Submit response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отправить ответ" }));
 
     expect(submit.mock.calls).toEqual([
       [{ action: "accept", content: { name: "First" } }],
@@ -647,7 +647,7 @@ describe("Codex MCP URL requests", () => {
     expect(slot.getByText("example-service")).toBeTruthy();
     expect(openUrl).not.toHaveBeenCalled();
     expect(submit).not.toHaveBeenCalled();
-    fireEvent.click(slot.getByRole("button", { name: "Open example.com" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть example.com" }));
 
     expect(openUrl).toHaveBeenCalledExactlyOnceWith(urlPayload.url);
     expect(submit).toHaveBeenCalledExactlyOnceWith({ action: "accept" });
@@ -656,7 +656,7 @@ describe("Codex MCP URL requests", () => {
     );
   });
 
-  it.each(["Decline"])(
+  it.each(["Отклонить"])(
     "returns %s without opening the URL or stopping the turn",
     (label) => {
       const openUrl = vi.fn(() => true);
@@ -670,7 +670,7 @@ describe("Codex MCP URL requests", () => {
       fireEvent.click(slot.getByRole("button", { name: label }));
 
       expect(submit).toHaveBeenCalledExactlyOnceWith({
-        action: label.toLowerCase(),
+        action: "decline",
       });
       expect(openUrl).not.toHaveBeenCalled();
       expect(cancel).not.toHaveBeenCalled();
@@ -688,14 +688,14 @@ describe("Codex MCP URL requests", () => {
         async () => {},
       );
       const slot = renderPayload(urlPayload, { openUrl, submit });
-      fireEvent.click(slot.getByRole("button", { name: "Open example.com" }));
+      fireEvent.click(slot.getByRole("button", { name: "Открыть example.com" }));
 
       expect((await slot.findByRole("alert")).textContent).toContain(
-        "Could not open this link",
+        "Не удалось открыть ссылку",
       );
       expect(submit).not.toHaveBeenCalled();
       expect(
-        slot.getByRole("button", { name: "Open example.com" }),
+        slot.getByRole("button", { name: "Открыть example.com" }),
       ).toHaveProperty("disabled", false);
     },
   );
@@ -707,19 +707,19 @@ describe("Codex MCP URL requests", () => {
       .mockRejectedValueOnce(new Error("Disconnected"))
       .mockResolvedValueOnce();
     const slot = renderPayload(urlPayload, { openUrl, submit });
-    fireEvent.click(slot.getByRole("button", { name: "Open example.com" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть example.com" }));
     await slot.findByRole("alert");
     expect(
-      slot.getByRole("link", { name: "Open link again" }).getAttribute("href"),
+      slot.getByRole("link", { name: "Открыть ссылку ещё раз" }).getAttribute("href"),
     ).toBe(urlPayload.url);
-    fireEvent.click(slot.getByRole("button", { name: "Retry response" }));
+    fireEvent.click(slot.getByRole("button", { name: "Повторить отправку" }));
 
     expect(openUrl).toHaveBeenCalledTimes(1);
     expect(submit.mock.calls).toEqual([
       [{ action: "accept" }],
       [{ action: "accept" }],
     ]);
-    expect(slot.queryByRole("link", { name: "Open link again" })).toBeNull();
+    expect(slot.queryByRole("link", { name: "Открыть ссылку ещё раз" })).toBeNull();
   });
 
   it("rejects a malformed URL payload without opening or accepting", () => {
@@ -733,14 +733,14 @@ describe("Codex MCP URL requests", () => {
     );
 
     expect(slot.getAllByRole("button")).toHaveLength(1);
-    expect(slot.getByRole("button", { name: "Stop turn" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Остановить ход" })).toBeTruthy();
     expect(openUrl).not.toHaveBeenCalled();
     expect(submit).not.toHaveBeenCalled();
   });
 });
 
 describe("unsupported Codex MCP requests", () => {
-  it.each(["Decline"])(
+  it.each(["Отклонить"])(
     "explains unsupported schemas and permits %s without acceptance",
     (label) => {
       const submit = vi.fn<PluginPendingInteractionProps["submit"]>(
@@ -767,7 +767,7 @@ describe("unsupported Codex MCP requests", () => {
       expect(slot.getAllByRole("button")).toHaveLength(1);
       fireEvent.click(slot.getByRole("button", { name: label }));
       expect(submit).toHaveBeenCalledExactlyOnceWith({
-        action: label.toLowerCase(),
+        action: "decline",
       });
       expect(cancel).not.toHaveBeenCalled();
     },
@@ -792,21 +792,21 @@ describe("Codex MCP tool-call approvals", () => {
     const slot = renderPayload(approval);
 
     expect(slot.getByText("elicit_e2e")).toBeTruthy();
-    expect(slot.getByText("MCP server · tool call approval")).toBeTruthy();
+    expect(slot.getByText("Сервер MCP · подтверждение вызова инструмента")).toBeTruthy();
     expect(slot.getByText("Delete a widget by id. Destructive.")).toBeTruthy();
-    const args = within(slot.getByLabelText("Tool arguments"));
+    const args = within(slot.getByLabelText("Аргументы инструмента"));
     expect(args.getByText("widget_id")).toBeTruthy();
     expect(args.getByText("w-42")).toBeTruthy();
     expect(args.getByText("force")).toBeTruthy();
     expect(args.getByText("true")).toBeTruthy();
-    expect(slot.queryByRole("button", { name: "Submit response" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Отправить ответ" })).toBeNull();
   });
 
   it.each([
-    ["Allow", { action: "accept" }],
-    ["Allow for this session", { action: "accept", persist: "session" }],
-    ["Always allow", { action: "accept", persist: "always" }],
-    ["Decline", { action: "decline" }],
+    ["Разрешить", { action: "accept" }],
+    ["Разрешить для этого сеанса", { action: "accept", persist: "session" }],
+    ["Всегда разрешать", { action: "accept", persist: "always" }],
+    ["Отклонить", { action: "decline" }],
   ] as const)("submits %s", (label, response) => {
     const submit = vi.fn<PluginPendingInteractionProps["submit"]>(
       async () => {},
@@ -823,7 +823,7 @@ describe("Codex MCP tool-call approvals", () => {
 
     expect(
       slot.getAllByRole("button").map((button) => button.textContent),
-    ).toEqual(["Decline", "Allow"]);
+    ).toEqual(["Отклонить", "Разрешить"]);
   });
 
   it("renders Computer Use metadata from another server as a plain tool approval", () => {
@@ -832,14 +832,14 @@ describe("Codex MCP tool-call approvals", () => {
 
     expect(slot.getByText("elicit_e2e")).toBeTruthy();
     expect(slot.getByText("get_app_state")).toBeTruthy();
-    expect(slot.queryByText("Computer Use")).toBeNull();
-    expect(slot.getByRole("button", { name: "Allow" })).toBeTruthy();
+    expect(slot.queryByText("Управление компьютером")).toBeNull();
+    expect(slot.getByRole("button", { name: "Разрешить" })).toBeTruthy();
   });
 });
 
 it("labels an empty confirmation form as an acceptance", () => {
   const slot = renderPayload(formPayload({}));
 
-  expect(slot.getByRole("button", { name: "Accept" })).toBeTruthy();
-  expect(slot.queryByRole("button", { name: "Submit response" })).toBeNull();
+  expect(slot.getByRole("button", { name: "Принять" })).toBeTruthy();
+  expect(slot.queryByRole("button", { name: "Отправить ответ" })).toBeNull();
 });

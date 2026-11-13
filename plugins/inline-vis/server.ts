@@ -23,7 +23,7 @@ const PREVIEW_KIND_BY_EXTENSION: ReadonlyMap<string, PreviewKind> = new Map([
 
 function requireNonEmptyString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`"${field}" must be a non-empty string`);
+    throw new Error(`«${field}» должно быть непустой строкой`);
   }
   return value.trim();
 }
@@ -37,7 +37,7 @@ function previewKind(file: string): PreviewKind {
   const kind = PREVIEW_KIND_BY_EXTENSION.get(extension);
   if (kind === undefined) {
     throw new Error(
-      `"file" must end with .html, .htm, .md, or .markdown, got ${JSON.stringify(file)}`,
+      `«file» должно оканчиваться на .html, .htm, .md или .markdown; получено ${JSON.stringify(file)}`,
     );
   }
   return kind;
@@ -49,11 +49,11 @@ export function requireRelativePreviewFile(value: unknown): string {
     normalizeHostPath(file) !== null ||
     resolveHostPath({ rootPath: "/", path: file }) === null
   ) {
-    throw new Error(`"file" must be source-relative, not absolute: ${file}`);
+    throw new Error(`«file» должно быть относительным путём внутри источника, а не абсолютным: ${file}`);
   }
   const slashNormalized = file.replace(/\\/g, "/");
   if (slashNormalized.split("/").includes("..")) {
-    throw new Error(`"file" must not contain traversal segments: ${file}`);
+    throw new Error(`«file» не должно содержать переходы к родительским папкам: ${file}`);
   }
   const normalized = path.posix.normalize(slashNormalized);
   if (
@@ -63,7 +63,7 @@ export function requireRelativePreviewFile(value: unknown): string {
     normalized === "." ||
     normalized.startsWith("/")
   ) {
-    throw new Error(`"file" must not escape its source: ${file}`);
+    throw new Error(`«file» не должно выходить за пределы источника: ${file}`);
   }
   previewKind(normalized);
   return normalized;
@@ -78,7 +78,7 @@ export function resolveContainedPreviewPath(
     absolute === null ||
     !isHostPathWithin({ rootPath, candidatePath: absolute })
   ) {
-    throw new Error(`"file" must not escape its source: ${relativeFile}`);
+    throw new Error(`«file» не должно выходить за пределы источника: ${relativeFile}`);
   }
   return absolute;
 }
@@ -170,7 +170,7 @@ export default async function plugin(bb: BbPluginApi) {
 
         if (!("environment" in thread)) {
           throw new Error(
-            "Thread environment was not returned — inline-vis needs a live environment.",
+            "Среда чата не получена — для inline-vis нужна активная среда.",
           );
         }
 
@@ -179,14 +179,14 @@ export default async function plugin(bb: BbPluginApi) {
           typeof environment?.path === "string" ? environment.path : null;
         if (!environment || !workspacePath) {
           throw new Error(
-            "This thread has no workspace path — inline-vis needs a live environment.",
+            "У чата нет пути к рабочей папке — для inline-vis нужна активная среда.",
           );
         }
         const workspaceHostId =
           typeof environment?.hostId === "string" ? environment.hostId : null;
         if (!workspaceHostId) {
           throw new Error(
-            "This thread's environment has no hostId — cannot read workspace files.",
+            "У среды чата нет hostId — не удалось прочитать файлы рабочей папки.",
           );
         }
         rootPath = workspacePath;
@@ -212,13 +212,13 @@ export default async function plugin(bb: BbPluginApi) {
 
       if (result.contentEncoding !== "utf8") {
         throw new Error(
-          `Preview file is not valid UTF-8 text (encoding=${result.contentEncoding}).`,
+          `Файл предпросмотра не является корректным текстом UTF-8 (кодировка=${result.contentEncoding}).`,
         );
       }
       const sizeBytes = result.sizeBytes;
       if (sizeBytes > MAX_PREVIEW_BYTES) {
         throw new Error(
-          `Preview file is too large (${sizeBytes} bytes; max ${MAX_PREVIEW_BYTES}).`,
+          `Файл предпросмотра слишком большой (${sizeBytes} байт; максимум ${MAX_PREVIEW_BYTES}).`,
         );
       }
 

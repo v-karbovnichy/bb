@@ -115,7 +115,7 @@ describe("ComposerActionsSlot overflow", () => {
     fireEvent.click(screen.getByRole("button", { name: "alpha one" }));
     fireEvent.click(screen.getByRole("button", { name: "alpha one" }));
     fireEvent.click(
-      screen.getByRole("button", { name: "More plugin actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия плагинов" }),
     );
 
     const overflow = document.querySelector(

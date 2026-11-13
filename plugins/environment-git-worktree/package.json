@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Run a thread in a fresh git worktree on an enrolled machine",
+  "description": "Запускать чат в новом рабочем дереве Git на подключённой машине",
   "engines": {
     "bb": ">=0.0"
   },
   "bb": {
-    "name": "Worktree",
-    "description": "Run a thread in a fresh git worktree on an enrolled machine",
+    "name": "Рабочее дерево",
+    "description": "Запускать чат в новом рабочем дереве Git на подключённой машине",
     "branding": {
       "icon": "FolderGit"
     },

@@ -38,7 +38,7 @@ export async function saveFile(
       description:
         error instanceof Error
           ? error.message
-          : "Could not start the download.",
+          : "Не удалось начать загрузку.",
     });
     return "failed";
   } finally {

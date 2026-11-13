@@ -18,25 +18,25 @@ export const PULL_REQUEST_STATE_DISPLAY: Record<
   PullRequestStateDisplay
 > = {
   open: {
-    label: "Open",
+    label: "Открыт",
     icon: "GitPullRequestArrow",
     className: "text-success-foreground",
     dotClass: "bg-success",
   },
   draft: {
-    label: "Draft",
+    label: "Черновик",
     icon: "GitPullRequestDraft",
     className: "text-muted-foreground",
     dotClass: "bg-muted-foreground",
   },
   merged: {
-    label: "Merged",
+    label: "Объединён",
     icon: "GitMerge",
     className: "text-pr-merged",
     dotClass: "bg-pr-merged",
   },
   closed: {
-    label: "Closed",
+    label: "Закрыт",
     icon: "GitPullRequestClosed",
     className: "text-destructive-text",
     dotClass: "bg-destructive",
@@ -70,14 +70,14 @@ function waiting(label: string): PullRequestNextStep {
 }
 
 const CHECKS_FAILING_STEP: PullRequestNextStep = {
-  label: "Checks failing",
+  label: "Проверки не пройдены",
   tone: "action",
   icon: "CircleX",
   running: false,
 };
 
 const CHECKS_RUNNING_STEP: PullRequestNextStep = {
-  label: "Checks running",
+  label: "Проверки выполняются",
   tone: "waiting",
   icon: "Clock",
   running: true,
@@ -90,24 +90,24 @@ function checksResult(label: string, icon: IconName): PullRequestNextStep {
 function blockedStep(pullRequest: PullRequest): PullRequestNextStep {
   switch (pullRequest.mergeability.mergeStateStatus) {
     case "BEHIND":
-      return action(`Behind ${pullRequest.baseRefName}`);
+      return action(`Позади ${pullRequest.baseRefName}`);
     default:
-      return action("Blocked by rules");
+      return action("Заблокирован правилами");
   }
 }
 
 function checksStep(pullRequest: PullRequest): PullRequestNextStep {
   switch (pullRequest.checks.state) {
     case "passing":
-      return checksResult("Checks passing", "CircleCheck");
+      return checksResult("Проверки пройдены", "CircleCheck");
     case "failing":
       return CHECKS_FAILING_STEP;
     case "pending":
       return CHECKS_RUNNING_STEP;
     case "no_checks":
-      return checksResult("No checks", "Circle");
+      return checksResult("Нет проверок", "Circle");
     case "unknown":
-      return checksResult("Checks unknown", "CircleQuestion");
+      return checksResult("Статус проверок неизвестен", "CircleQuestion");
   }
 }
 
@@ -121,9 +121,9 @@ export function getPullRequestNextStep(
     case "checks_failed":
       return CHECKS_FAILING_STEP;
     case "changes_requested":
-      return action("Changes requested");
+      return action("Запрошены изменения");
     case "conflicts":
-      return action(`Conflicts with ${pullRequest.baseRefName}`);
+      return action(`Конфликт с ${pullRequest.baseRefName}`);
     case "blocked":
       return blockedStep(pullRequest);
     case "checks_pending":
@@ -131,14 +131,14 @@ export function getPullRequestNextStep(
     case "review_requested":
       return waiting(
         pullRequest.review.state === "review_required"
-          ? "Review required"
-          : "Review requested",
+          ? "Требуется ревью"
+          : "Ревью запрошено",
       );
     case "queued":
-      return waiting("Queued to merge");
+      return waiting("В очереди на объединение");
     case "ready_to_merge":
       return {
-        label: "Ready to merge",
+        label: "Готов к объединению",
         tone: "ready",
         icon: null,
         running: false,
@@ -154,7 +154,7 @@ export function describePullRequestStatus(pullRequest: PullRequest): string {
   return [
     PULL_REQUEST_STATE_DISPLAY[pullRequest.state].label,
     nextStep?.label,
-    isPullRequestAutoMergeOn(pullRequest) ? "auto-merge on" : null,
+    isPullRequestAutoMergeOn(pullRequest) ? "автообъединение включено" : null,
   ]
     .filter((part) => part)
     .join(", ");

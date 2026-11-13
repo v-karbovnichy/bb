@@ -52,7 +52,7 @@ function AnsweredQuestionRow({ question, answer }: AnsweredQuestionRowProps) {
           ) : null}
         </div>
       ) : (
-        <div className="mt-0.5 text-subtle-foreground">No answer</div>
+        <div className="mt-0.5 text-subtle-foreground">Нет ответа</div>
       )}
     </div>
   );

@@ -22,22 +22,22 @@ const PLUGIN_RUNTIME_STATUS_DEFINITIONS: Record<
   PluginRuntimeStatus,
   PluginRuntimeStatusDefinition | null
 > = {
-  starting: { icon: "Clock", label: "Starting", tone: "muted" },
+  starting: { icon: "Clock", label: "Запускается", tone: "muted" },
   running: null,
-  error: { icon: "CircleX", label: "Failed", tone: "error" },
+  error: { icon: "CircleX", label: "Ошибка", tone: "error" },
   incompatible: {
     icon: "AlertCircle",
-    label: "Incompatible",
+    label: "Несовместим",
     tone: "error",
   },
-  missing: { icon: "FileQuestion", label: "Missing", tone: "error" },
+  missing: { icon: "FileQuestion", label: "Отсутствует", tone: "error" },
   disabled: null,
   "needs-configuration": {
     icon: "Settings",
-    label: "Needs configuration",
+    label: "Требует настройки",
     tone: "warning",
   },
-  degraded: { icon: "AlertTriangle", label: "Degraded", tone: "warning" },
+  degraded: { icon: "AlertTriangle", label: "Работает с ограничениями", tone: "warning" },
 };
 
 function configuredPathUnavailable(plugin: PluginListItem): boolean {
@@ -50,24 +50,24 @@ function pluginRuntimeRecovery(plugin: PluginListItem): string {
   switch (plugin.status) {
     case "error":
       if (configuredPathUnavailable(plugin))
-        return "Check the path, then reload.";
+        return "Проверьте путь и перезагрузите.";
       return plugin.source.startsWith("path:")
-        ? "Fix the plugin, then reload."
-        : "Try reloading it.";
+        ? "Исправьте плагин и перезагрузите."
+        : "Попробуйте перезагрузить.";
     case "incompatible":
       return plugin.provenance === "builtin"
-        ? "Update bb."
-        : "Install a compatible version.";
+        ? "Обновите bb."
+        : "Установите совместимую версию.";
     case "missing":
       if (plugin.source.startsWith("path:"))
-        return "Restore the folder, then reload.";
+        return "Восстановите папку и перезагрузите.";
       return plugin.provenance === "builtin"
-        ? "Update or reinstall bb."
-        : "Reinstall from its source.";
+        ? "Обновите или переустановите bb."
+        : "Переустановите из источника.";
     case "needs-configuration":
-      return plugin.hasSettings ? "" : "Then reload.";
+      return plugin.hasSettings ? "" : "Затем перезагрузите.";
     case "degraded":
-      return "Wait, then reload.";
+      return "Подождите и перезагрузите.";
     default:
       return "";
   }
@@ -76,23 +76,23 @@ function pluginRuntimeRecovery(plugin: PluginListItem): string {
 function pluginRuntimeCondition(plugin: PluginListItem): string {
   switch (plugin.status) {
     case "starting":
-      return "The plugin is starting.";
+      return "Плагин запускается.";
     case "error":
       return configuredPathUnavailable(plugin)
-        ? "Configured folder unavailable."
-        : "The plugin couldn't start.";
+        ? "Настроенная папка недоступна."
+        : "Не удалось запустить плагин.";
     case "incompatible":
-      return "This version is incompatible with bb.";
+      return "Эта версия несовместима с bb.";
     case "missing":
-      return "Plugin files are missing.";
+      return "Файлы плагина отсутствуют.";
     case "needs-configuration": {
       const detail = plugin.statusDetail?.trim();
       return detail && detail.length <= 60
         ? detail
-        : "Complete the required settings.";
+        : "Завершите обязательную настройку.";
     }
     case "degraded":
-      return "A service is still stopping.";
+      return "Служба ещё останавливается.";
     default:
       return "";
   }
@@ -142,12 +142,12 @@ function pluginRowStatusSignal(
     return {
       kind: "status",
       icon: "RotateCcw",
-      label: "Update failed",
+      label: "Ошибка обновления",
       tone: "error",
       detail:
         state.lastFailure.detail.length > 0
           ? state.lastFailure.detail
-          : `Update to ${state.lastFailure.label} failed and was rolled back.`,
+          : `Не удалось обновить до ${state.lastFailure.label}; предыдущая версия восстановлена.`,
     };
   }
   const runtimeStatus = pluginRuntimeStatusPresentation(plugin);
@@ -164,7 +164,7 @@ function pluginRowStatusSignal(
     return {
       kind: "status",
       icon: "AlertTriangle",
-      label: "Needs attention",
+      label: "Требует внимания",
       tone: "warning",
       detail: state.detail,
     };

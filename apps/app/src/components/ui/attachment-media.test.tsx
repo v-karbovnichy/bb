@@ -132,7 +132,7 @@ it.each([
     fireEvent.keyDown(video, { key: "ArrowLeft" });
     expect(within(dialog).getByLabelText("Recording")).toBe(video);
     fireEvent.click(
-      within(dialog).getByRole("button", { name: "Previous image" }),
+      within(dialog).getByRole("button", { name: "Предыдущее изображение" }),
     );
     expect(dialog.querySelector("video")).toBeNull();
     expect(dialog.querySelector("img")).not.toBeNull();

@@ -39,9 +39,9 @@ const KIND_OPTIONS: ReadonlyArray<{
   label: string;
   value: ArchivedThreadsKindFilter;
 }> = [
-  { label: "All threads", value: "all" },
-  { label: "Threads", value: "root" },
-  { label: "Child threads", value: "child" },
+  { label: "Все чаты", value: "all" },
+  { label: "Чаты", value: "root" },
+  { label: "Дочерние чаты", value: "child" },
 ];
 
 interface ArchiveFilterMenuProps<T extends string> {
@@ -176,7 +176,7 @@ export function ArchivedThreadsSettingsSection() {
 
   const selectedKindLabel =
     KIND_OPTIONS.find((option) => option.value === kind)?.label ??
-    "All threads";
+    "Все чаты";
   const isInitialLoading = searchIsActive
     ? threadSearch.isDebouncing ||
       (threadSearch.isLoading && threadSearch.data === undefined)
@@ -186,10 +186,10 @@ export function ArchivedThreadsSettingsSection() {
     <section className="space-y-5">
       <div>
         <h2 className="text-lg font-semibold text-foreground">
-          Archived threads
+          Архивные чаты
         </h2>
         <p className="mt-1 text-xs text-subtle-foreground">
-          Find and restore archived threads from across your projects.
+          Находите и восстанавливайте архивные чаты из всех проектов.
         </p>
       </div>
 
@@ -200,10 +200,10 @@ export function ArchivedThreadsSettingsSection() {
             className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-subtle-foreground"
           />
           <Input
-            aria-label="Search archived threads"
+            aria-label="Искать в архивных чатах"
             className="h-8 pl-8 text-xs"
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search archived threads…"
+            placeholder="Поиск в архивных чатах…"
             value={search}
           />
         </div>
@@ -227,13 +227,13 @@ export function ArchivedThreadsSettingsSection() {
 
       {isInitialLoading ? (
         <p className="py-8 text-center text-sm text-muted-foreground">
-          Loading archived threads…
+          Загрузка архивных чатов…
         </p>
       ) : archivedThreads.length === 0 ? (
         <EmptyStatePanel className="py-8">
           {search.trim().length > 0
-            ? "No archived threads match your search."
-            : "No archived threads match these filters."}
+            ? "По вашему запросу архивные чаты не найдены."
+            : "По выбранным фильтрам архивные чаты не найдены."}
         </EmptyStatePanel>
       ) : (
         <div className="space-y-6">
@@ -242,10 +242,10 @@ export function ArchivedThreadsSettingsSection() {
               <div className="flex items-center gap-2 px-0.5 text-xs font-medium text-muted-foreground">
                 <Icon name="Folder" className="size-3.5" />
                 <h3 className="min-w-0 flex-1 truncate">
-                  {projectNames.get(groupProjectId) ?? "Unknown project"}
+                  {projectNames.get(groupProjectId) ?? "Неизвестный проект"}
                 </h3>
                 <span>
-                  {threads.length} {threads.length === 1 ? "thread" : "threads"}
+                  Чатов: {threads.length}
                 </span>
               </div>
               <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
@@ -278,7 +278,7 @@ export function ArchivedThreadsSettingsSection() {
                       </span>
                       {thread.archivedAt !== null ? (
                         <span className="mt-0.5 block text-xs text-subtle-foreground">
-                          Archived{" "}
+                          Архивирован{" "}
                           {formatRelativeTime({
                             timestamp: thread.archivedAt,
                             now: Date.now(),
@@ -312,7 +312,7 @@ export function ArchivedThreadsSettingsSection() {
           disabled={archivedThreadsQuery.isFetchingNextPage}
           onClick={() => void archivedThreadsQuery.fetchNextPage()}
         >
-          {archivedThreadsQuery.isFetchingNextPage ? "Loading…" : "Load more"}
+          {archivedThreadsQuery.isFetchingNextPage ? "Загрузка…" : "Загрузить ещё"}
         </Button>
       ) : null}
     </section>

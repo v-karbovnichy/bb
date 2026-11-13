@@ -179,7 +179,7 @@ describe("mobile recents hierarchy interaction", () => {
 
     expect(screen.getByText("Audit folder query paths")).not.toBeNull();
     const collapse = screen.getByRole("button", {
-      name: "Hide threads under Rework folder model",
+      name: "Скрыть вложенные чаты: Rework folder model",
     });
     expect(collapse.getAttribute("aria-expanded")).toBe("true");
 
@@ -191,7 +191,7 @@ describe("mobile recents hierarchy interaction", () => {
 
     expect(screen.queryByText("Audit folder query paths")).toBeNull();
     const expand = screen.getByRole("button", {
-      name: "Show threads under Rework folder model",
+      name: "Показать вложенные чаты: Rework folder model",
     });
     expect(expand.getAttribute("aria-expanded")).toBe("false");
 
@@ -256,7 +256,7 @@ describe("mobile recents hierarchy interaction", () => {
       expect(screen.getByLabelText(label)).not.toBeNull();
       expect(
         screen.getByRole("link", {
-          name: `Open Mobile activity — ${label}`,
+          name: `Открыть Mobile activity — ${label}`,
         }),
       ).not.toBeNull();
     },
@@ -294,7 +294,7 @@ describe("mobile recents hierarchy interaction", () => {
     ).not.toBeNull();
     expect(
       screen.getByRole("link", {
-        name: "Open Mobile activity — Thread has unsubmitted draft",
+        name: "Открыть Mobile activity — Thread has unsubmitted draft",
       }),
     ).not.toBeNull();
   });
@@ -356,7 +356,7 @@ describe("mobile recents section", () => {
       </TestProviders>,
     );
 
-    const label = screen.getByText("Recent").parentElement;
+    const label = screen.getByText("Недавние").parentElement;
     if (!(label instanceof HTMLElement)) {
       throw new Error("Expected a Recent label wrapper");
     }
@@ -391,7 +391,7 @@ describe("mobile recent thread rows", () => {
       </TestProviders>,
     );
 
-    expect(screen.getByText("bb \u00b7 3h ago")).not.toBeNull();
+    expect(screen.getByText("bb \u00b7 3 ч назад")).not.toBeNull();
   });
 
   it("includes the worktree branch when the thread has one", () => {
@@ -420,7 +420,7 @@ describe("mobile recent thread rows", () => {
     );
 
     expect(
-      screen.getByText("bb \u00b7 bb/mobile-home \u00b7 3h ago"),
+      screen.getByText("bb \u00b7 bb/mobile-home \u00b7 3 ч назад"),
     ).not.toBeNull();
   });
 
@@ -455,7 +455,7 @@ describe("mobile recent thread rows", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.getByText("Personal \u00b7 3h ago")).not.toBeNull();
+    expect(screen.getByText("Personal \u00b7 3 ч назад")).not.toBeNull();
   });
 
   it("drops the status slot entirely when a thread has no indicator", () => {
@@ -529,7 +529,7 @@ describe("RootComposeMobileRecents", () => {
     act(() => {
       vi.advanceTimersByTime(500);
     });
-    const pin = screen.getByRole("menuitem", { name: "Pin" });
+    const pin = screen.getByRole("menuitem", { name: "Закрепить" });
     fireEvent.pointerDown(pin, { pointerType: "touch" });
     fireEvent.click(pin);
     vi.useRealTimers();
@@ -614,7 +614,7 @@ describe("RootComposeMobileRecents", () => {
 
     expect(
       screen.getByRole("link", {
-        name: "Open Mobile activity — Unread thread succeeded",
+        name: "Открыть Mobile activity — Unread thread succeeded",
       }),
     ).not.toBeNull();
     expect(screen.queryByLabelText("Plan mode active")).toBeNull();

@@ -63,16 +63,16 @@ function hostRow(
 }
 
 const HOST_ROWS: readonly SidebarNavigationRow[] = [
-  hostRow(NEW_THREAD_NAVIGATION_ITEM_ID, "New thread", "new-thread", {
+  hostRow(NEW_THREAD_NAVIGATION_ITEM_ID, "Новый чат", "new-thread", {
     kind: "new-thread",
   }),
-  hostRow(SEARCH_THREADS_NAVIGATION_ITEM_ID, "Search threads", "search", {
+  hostRow(SEARCH_THREADS_NAVIGATION_ITEM_ID, "Поиск чатов", "search", {
     kind: "search-threads",
   }),
-  hostRow(PLUGINS_NAVIGATION_ITEM_ID, "Plugins", "extensions", {
+  hostRow(PLUGINS_NAVIGATION_ITEM_ID, "Плагины", "extensions", {
     kind: "open-extensions",
   }),
-  hostRow(SKILLS_NAVIGATION_ITEM_ID, "Skills", "skills", {
+  hostRow(SKILLS_NAVIGATION_ITEM_ID, "Навыки", "skills", {
     kind: "open-skills",
   }),
 ];

@@ -43,12 +43,12 @@ function catalogInstallDescription(
   publisherLabel: string,
 ): string {
   if (source.startsWith("builtin:")) {
-    return "Install this plugin, bundled with BB.";
+    return "Установить этот плагин, входящий в BB.";
   }
   if (source.startsWith("npm:")) {
-    return `Install this ${publisherLabel} plugin from its listed npm package.`;
+    return `Установить этот плагин ${publisherLabel} из указанного пакета npm.`;
   }
-  return `Install this ${publisherLabel} plugin from its listed source repository.`;
+  return `Установить этот плагин ${publisherLabel} из указанного репозитория.`;
 }
 
 interface AddPluginDialogProps {
@@ -103,7 +103,7 @@ function resolvedSourceRows(
   if (source.kind === "npm") {
     return [
       {
-        label: "npm package",
+        label: "пакет npm",
         value: `${source.package}@${source.range ?? source.tag ?? "latest"}`,
       },
       ...(source.registry === undefined
@@ -121,7 +121,7 @@ function resolvedSourceRows(
       ? []
       : [
           {
-            label: "semver range",
+            label: "диапазон semver",
             value:
               source.tagPrefix === undefined
                 ? source.range
@@ -130,13 +130,13 @@ function resolvedSourceRows(
         ]),
     ...(source.resolvedTag === undefined
       ? []
-      : [{ label: "resolves to tag", value: source.resolvedTag }]),
+      : [{ label: "соответствует тегу", value: source.resolvedTag }]),
     ...(source.resolvedCommit === undefined
       ? []
-      : [{ label: "resolves to commit", value: source.resolvedCommit }]),
+      : [{ label: "соответствует коммиту", value: source.resolvedCommit }]),
     ...(source.unresolvedReason === undefined
       ? []
-      : [{ label: "not resolved", value: source.unresolvedReason }]),
+      : [{ label: "не определён", value: source.unresolvedReason }]),
   ];
 }
 
@@ -154,7 +154,7 @@ function ThirdPartySourceDisclosure({
   if (pending) {
     return (
       <p className="text-2xs text-subtle-foreground" role="status">
-        Resolving the listed source…
+        Проверка указанного источника…
       </p>
     );
   }
@@ -169,12 +169,12 @@ function ThirdPartySourceDisclosure({
       status === null || status === 408 || status === 429 || status >= 500;
     const message =
       status === 401 || status === 403
-        ? "Source access denied. Check repository permissions."
+        ? "Доступ к источнику запрещён. Проверьте права на репозиторий."
         : status === 404
-          ? "Source not found. Check the marketplace listing."
+          ? "Источник не найден. Проверьте запись в каталоге."
           : retryable
-            ? "Source unavailable. Try again."
-            : "Invalid source. Check the marketplace listing.";
+            ? "Источник недоступен. Повторите попытку."
+            : "Недопустимый источник. Проверьте запись в каталоге.";
     return (
       <div
         className="flex items-center gap-3 rounded-md border border-warning/20 bg-warning/5 p-3"
@@ -196,7 +196,7 @@ function ThirdPartySourceDisclosure({
             className="h-7 shrink-0 px-2 text-xs"
             onClick={onRetry}
           >
-            Retry
+            Повторить
           </Button>
         ) : null}
       </div>
@@ -219,14 +219,14 @@ function ThirdPartySourceDisclosure({
   return (
     <div className="space-y-1.5 rounded-md border border-border bg-muted/30 px-3 py-2">
       <p className="text-2xs text-subtle-foreground">
-        Listed by{" "}
+        Опубликовано в{" "}
         <span className="text-foreground">{plan.marketplaceDisplayName}</span>,
-        a third-party marketplace that BB does not review.
+        стороннем каталоге, содержимое которого BB не проверяет.
       </p>
       <dl className="space-y-0.5">
         <div className="flex gap-2">
           <dt className="w-28 shrink-0 text-2xs text-subtle-foreground">
-            author
+            автор
           </dt>
           <dd className="min-w-0 break-all font-mono text-2xs text-foreground">
             {author ?? plan.author.name}
@@ -304,13 +304,13 @@ function AddPluginDialogContent({
     <>
       <DialogHeader>
         <DialogTitle>
-          {initial !== null ? `Install ${initial.displayName}?` : "Add plugin"}
+          {initial !== null ? `Установить ${initial.displayName}?` : "Добавить плагин"}
         </DialogTitle>
         <DialogDescription>
           {initial === null
-            ? "Install from npm, a Git repository, or a local path."
+            ? "Установите из npm, Git-репозитория или локальной папки."
             : thirdParty
-              ? "Install this plugin from the source its marketplace lists."
+              ? "Установите плагин из источника, указанного в каталоге."
               : catalogInstallDescription(
                   initial.source,
                   initial.publisherLabel,
@@ -339,12 +339,12 @@ function AddPluginDialogContent({
               value={sourceText}
               autoFocus
               placeholder="https://github.com/owner/bb-plugin-name"
-              aria-label="Plugin source"
+              aria-label="Источник плагина"
               className="h-8 font-mono text-xs"
               onChange={(event) => setSourceText(event.target.value)}
             />
             <p className="mt-1.5 text-2xs text-subtle-foreground">
-              GitHub repository URL · npm:package[@version] · ./local/path
+              URL репозитория GitHub · npm:package[@version] · ./local/path
             </p>
           </div>
         )}
@@ -375,7 +375,7 @@ function AddPluginDialogContent({
           variant="outline"
           onClick={() => onOpenChange(false)}
         >
-          Cancel
+            Отмена
         </Button>
         <Button
           type="button"
@@ -393,7 +393,7 @@ function AddPluginDialogContent({
           {install.isPending ? (
             <Icon name="Spinner" className="animate-spin" />
           ) : null}
-          {`Install ${initial?.displayName ?? "plugin"}`}
+          {`Установить ${initial?.displayName ?? "плагин"}`}
         </Button>
       </DialogFooter>
     </>

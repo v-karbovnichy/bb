@@ -59,7 +59,7 @@ function CollapsibleHeader({ toolName, argEntries }: CollapsibleHeaderProps) {
           <ConversationMessageInlineOverflowToggle
             buttonBackgroundClassName="bg-card"
             fadeFromClassName="from-card"
-            label="Show more"
+            label="Показать больше"
             onToggle={() => setExpanded(true)}
           />
         ) : null}
@@ -72,7 +72,7 @@ function CollapsibleHeader({ toolName, argEntries }: CollapsibleHeaderProps) {
             className="text-muted-foreground hover:text-foreground"
             aria-expanded={true}
           >
-            Show less
+            Показать меньше
           </button>
         </div>
       ) : null}

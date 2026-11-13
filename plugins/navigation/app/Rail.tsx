@@ -133,7 +133,7 @@ export function Rail() {
       >
         <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-1.5 overflow-y-auto py-0.5 [scrollbar-width:none]">
           <RailButton
-            label="Home"
+            label="Главная"
             active={isHomeActive}
             onClick={(event) =>
               actions.goHome({
@@ -151,8 +151,8 @@ export function Rail() {
               <RailButton
                 label={
                   hiddenBadgeLabels.length > 0
-                    ? `More, ${hiddenBadgeLabels.join(", ")}`
-                    : "More"
+                    ? `Ещё, ${hiddenBadgeLabels.join(", ")}`
+                    : "Ещё"
                 }
               >
                 <Icon name="MoreHorizontal" aria-hidden="true" />

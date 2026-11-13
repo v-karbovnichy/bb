@@ -28,7 +28,7 @@ export function PluginAuthorAvatar({
     <Avatar
       role="img"
       aria-label={
-        githubUsername === null ? `${name}'s avatar` : `${name}'s GitHub avatar`
+        githubUsername === null ? `Аватар ${name}` : `Аватар ${name} на GitHub`
       }
       className={cn(
         "border border-border bg-muted",

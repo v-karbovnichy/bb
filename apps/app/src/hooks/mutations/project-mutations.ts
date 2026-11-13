@@ -55,7 +55,7 @@ export function useCreateProject() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to create project.",
+      errorMessage: "Не удалось создать проект.",
     },
     mutationFn: (request: CreateProjectRequest) => sdk.projects.create(request),
     onSuccess: (project) => {
@@ -70,7 +70,7 @@ export function useUpdateProject(options?: { showErrorToast?: boolean }) {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to update project.",
+      errorMessage: "Не удалось обновить проект.",
       showErrorToast: options?.showErrorToast ?? true,
     },
     mutationFn: ({ id, ...request }: UpdateProjectMutationRequest) =>
@@ -87,7 +87,7 @@ export function useReorderProject() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to reorder project.",
+      errorMessage: "Не удалось изменить порядок проекта.",
     },
     mutationFn: ({ id, ...request }: ReorderProjectMutationRequest) =>
       sdk.projects.reorder({ projectId: id, ...request }),
@@ -102,7 +102,7 @@ export function useDeleteProject() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to remove project.",
+      errorMessage: "Не удалось удалить проект.",
     },
     mutationFn: async (projectId: string): Promise<void> => {
       await sdk.projects.delete({ projectId });
@@ -118,7 +118,7 @@ export function useAddLocalProjectSource() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to add local source.",
+      errorMessage: "Не удалось добавить локальный источник.",
     },
     mutationFn: ({ projectId, hostId, path }: AddLocalProjectSourceRequest) =>
       sdk.projects.sources.add({
@@ -164,7 +164,7 @@ export function useUpdateLocalProjectSource() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to update local source.",
+      errorMessage: "Не удалось обновить локальный источник.",
     },
     mutationFn: ({
       projectId,
@@ -191,7 +191,7 @@ export function useDeleteLocalProjectSource() {
 
   return useMutation({
     meta: {
-      errorMessage: "Failed to remove source.",
+      errorMessage: "Не удалось удалить источник.",
     },
     mutationFn: async ({
       projectId,
@@ -211,7 +211,7 @@ export function useDeleteLocalProjectSource() {
 export function useUploadPromptAttachment() {
   return useMutation({
     meta: {
-      errorMessage: "Failed to upload attachment.",
+      errorMessage: "Не удалось загрузить вложение.",
       showErrorToast: false,
     },
     mutationFn: async ({

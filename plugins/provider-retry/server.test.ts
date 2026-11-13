@@ -441,9 +441,9 @@ describe("provider retry plugin", () => {
     expect(host.harness.registrations.settingsDescriptors).toEqual({
       maximumWait: {
         type: "select",
-        label: "Maximum automatic wait",
+        label: "Максимальное время автоматического ожидания",
         description:
-          "Do not schedule a subscription-limit retry when its reset is farther away than this.",
+          "Не планировать повторную попытку после достижения лимита подписки, если его сброс произойдёт позже указанного срока.",
         options: ["6 hours", "24 hours", "No limit"],
         default: "6 hours",
       },
@@ -693,7 +693,7 @@ describe("provider retry plugin", () => {
     await plugin(host.bb);
 
     const status = await host.harness.runCli(["status"]);
-    expect(status.stdout).toBe("No provider retries are pending.\n");
+    expect(status.stdout).toBe("Ожидающих повторных попыток провайдеров нет.\n");
     const cancelled = await host.harness.runCli(["cancel", THREAD_ID]);
     expect(cancelled.exitCode).toBe(1);
     expect(host.deleted).toEqual([]);
@@ -715,7 +715,7 @@ describe("provider retry plugin", () => {
     const missing = await host.harness.runCli(["cancel"]);
     expect(missing.exitCode).toBe(2);
     expect(missing.stderr).toContain(
-      "A thread id is required: bb provider-retry cancel <thread-id>",
+      "Требуется ID чата: bb provider-retry cancel <thread-id>",
     );
     await host.harness.dispose();
   });
@@ -738,7 +738,7 @@ describe("provider retry plugin", () => {
       ok: false,
       error: {
         code: "no_pending_retry",
-        message: `No pending provider retry exists for ${THREAD_ID}.`,
+        message: `Для чата ${THREAD_ID} нет ожидающей повторной попытки провайдера.`,
       },
     });
     expect(host.deleted).toEqual([]);
@@ -804,7 +804,7 @@ describe("asking the plugin that sent the failed turn", () => {
       },
     ]);
     expect((await host.harness.runCli(["explain", THREAD_ID])).stdout).toBe(
-      `${THREAD_ID}: Skipped: declined-by-sender (${SENDER}: the automation runs again on its schedule).\n`,
+      `${THREAD_ID}: Пропущено: declined-by-sender (${SENDER}: the automation runs again on its schedule).\n`,
     );
     await host.harness.dispose();
   });

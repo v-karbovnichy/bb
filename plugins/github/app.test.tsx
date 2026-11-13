@@ -119,6 +119,7 @@ describe("GitHub app navigation", () => {
     await act(async () => {});
     const removedFile = slot.getByText("removed.ts");
     const modifiedFile = slot.getByText("modified.ts");
+    expect(slot.getByText("удалён")).toBeTruthy();
     expect(removedFile.closest("a")).toBeNull();
     expect(modifiedFile.closest("a")?.getAttribute("href")).toBe(
       "./modified.ts",
@@ -129,13 +130,13 @@ describe("GitHub app navigation", () => {
       throw new Error("removed file diff toggle was not rendered");
     }
     expect(diffToggle.getAttribute("aria-label")).toBe(
-      "Expand removed.ts diff",
+      "Развернуть изменения removed.ts",
     );
     await act(async () => diffToggle.click());
     const diff = slot.getByTestId("bb-diff");
     expect(diff.getAttribute("data-path")).toBe("removed.ts");
     expect(diffToggle.getAttribute("aria-label")).toBe(
-      "Collapse removed.ts diff",
+      "Свернуть изменения removed.ts",
     );
     slot.lifecycle.unmount();
   });

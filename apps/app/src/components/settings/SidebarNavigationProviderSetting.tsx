@@ -6,9 +6,9 @@ export function SidebarNavigationProviderSetting() {
   const { experimentalSidebarNavigations } = usePluginSlots();
   return (
     <ReplacementProviderSetting
-      label="Navigation"
-      triggerAriaLabel="Sidebar navigation"
-      description="What draws New thread, Plugins, Skills, and plugin pages in the sidebar."
+      label="Навигация"
+      triggerAriaLabel="Навигация боковой панели"
+      description="Что отображает в боковой панели новый чат, плагины, навыки и страницы плагинов."
       preferenceAtom={sidebarNavigationProviderAtom}
       slots={experimentalSidebarNavigations}
     />

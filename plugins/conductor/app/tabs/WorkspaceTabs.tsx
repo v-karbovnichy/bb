@@ -82,7 +82,7 @@ function CloseTab({
   return (
     <button
       type="button"
-      aria-label={`Close ${thread.displayTitle}`}
+      aria-label={`Закрыть ${thread.displayTitle}`}
       className={CLOSE_BUTTON_CLASS}
       onClick={(event) => {
         event.preventDefault();
@@ -167,7 +167,7 @@ export function TabStrip({
     >
       <div
         role="tablist"
-        aria-label="Chats in this workspace"
+        aria-label="Чаты в этой рабочей области"
         className="flex min-w-0 flex-1 items-stretch gap-0.5 overflow-x-auto [scrollbar-width:none]"
       >
         {chats.map((chat) => {
@@ -204,12 +204,12 @@ export function TabStrip({
         {untitled ? (
           <div className={cn(TAB_CLASS, ACTIVE_TAB_CLASS)}>
             <span role="tab" aria-selected={true} className="min-w-0 truncate">
-              Untitled
+              Без названия
             </span>
             {closable && onCloseUntitled !== undefined ? (
               <button
                 type="button"
-                aria-label="Close Untitled"
+                aria-label="Закрыть чат без названия"
                 className={CLOSE_BUTTON_CLASS}
                 onClick={onCloseUntitled}
               >
@@ -222,7 +222,7 @@ export function TabStrip({
           <TooltipTrigger asChild>
             <button
               type="button"
-              aria-label="New chat in this workspace"
+              aria-label="Новый чат в этой рабочей области"
               className="my-1 inline-flex w-7 shrink-0 items-center justify-center rounded-md text-subtle-foreground hover:bg-state-hover hover:text-foreground"
               onClick={onNewChat}
             >
@@ -230,7 +230,7 @@ export function TabStrip({
             </button>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            New chat in this workspace
+            Новый чат в этой рабочей области
           </TooltipContent>
         </Tooltip>
       </div>
@@ -272,7 +272,7 @@ export function WorkspaceTabs({ threadId, environment }: WorkspaceTabsProps) {
         <>
           {diffTabKey === null ? null : (
             <ToolbarButton
-              label="All changes"
+              label="Все изменения"
               icon="GitBranch"
               onClick={() => panel.selectTab(diffTabKey)}
             >
@@ -288,12 +288,12 @@ export function WorkspaceTabs({ threadId, environment }: WorkspaceTabsProps) {
                   </span>
                 </span>
               ) : (
-                "Changes"
+                "Изменения"
               )}
             </ToolbarButton>
           )}
           <ToolbarButton
-            label={running ? "Starting…" : "Run"}
+            label={running ? "Запуск…" : "Запустить"}
             icon="Play"
             shortcut="⌘R"
             onClick={() => {
@@ -306,14 +306,14 @@ export function WorkspaceTabs({ threadId, environment }: WorkspaceTabsProps) {
                 .catch((error: unknown) =>
                   toast.error(
                     error instanceof Error
-                      ? `Could not run the workspace script: ${error.message}`
-                      : "Could not run the workspace script.",
+                      ? `Не удалось запустить скрипт рабочей области: ${error.message}`
+                      : "Не удалось запустить скрипт рабочей области.",
                   ),
                 )
                 .finally(() => setRunning(false));
             }}
           >
-            Run
+            Запустить
           </ToolbarButton>
         </>
       }

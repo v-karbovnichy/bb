@@ -166,7 +166,7 @@ export function ServerMoveOverlay({
       return;
     }
     announcedMoveId.current = arrivedMoveId;
-    appToast.success(`Server moved to ${arrivedHostName}`);
+    appToast.success(`Сервер перенесён на ${arrivedHostName}`);
     invalidateQueriesAfterServerMove({ queryClient });
   }, [arrivedHostName, arrivedMoveId, queryClient]);
 
@@ -207,7 +207,7 @@ export function ServerMoveOverlay({
         cancelMove.isError
           ? getMutationErrorMessage({
               error: cancelMove.error,
-              fallbackMessage: "Couldn't cancel the move.",
+              fallbackMessage: "Не удалось отменить перенос.",
             })
           : null
       }

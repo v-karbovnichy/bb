@@ -813,7 +813,7 @@ describe("PluginPanelRightPanelHost", () => {
     ).toHaveLength(1);
     expect(await screen.findByTestId("plugin-page-new-tab")).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close New tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close Новая вкладка" }));
     expect(
       await screen.findByRole("button", { name: "Show right panel" }),
     ).toBeTruthy();
@@ -977,7 +977,7 @@ describe("PluginPanelRightPanelHost", () => {
     );
     expect(await screen.findByTestId("plugin-page-new-tab")).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close New tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close Новая вкладка" }));
 
     expect(
       await screen.findByRole("button", { name: "Show right panel" }),
@@ -1066,7 +1066,7 @@ describe("PluginPanelRightPanelHost", () => {
 
     fireEvent.click(screen.getByText("Add tab"));
     expect(await screen.findByTestId("plugin-page-new-tab")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Close New tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close Новая вкладка" }));
     expect(await screen.findByText("Details for task/123")).toBeTruthy();
     expect(
       screen
@@ -1413,7 +1413,7 @@ describe("PluginPanelRightPanelHost", () => {
       ),
     ).toBe("true");
     expect(secondaryPanelState.tabKinds).toContain("browser");
-    fireEvent.click(screen.getByRole("button", { name: "Close Browser" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close Браузер" }));
     expect(
       await screen.findByRole("button", { name: "Show right panel" }),
     ).toBeTruthy();
@@ -1463,7 +1463,7 @@ describe("PluginPanelRightPanelHost", () => {
       await screen.findByRole("button", { name: "Show right panel" }),
     );
     fireEvent.pointerDown(
-      await screen.findByRole("button", { name: "Machine" }),
+      await screen.findByRole("button", { name: "Компьютер" }),
       { button: 0 },
     );
     fireEvent.click(screen.getByRole("menuitem", { name: /Laptop/u }));

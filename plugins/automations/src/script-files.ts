@@ -123,7 +123,7 @@ export async function resolveAutomationScriptPath(args: {
   const dir = automationScriptDir(args.dataDir, args.automationId);
   const contained = ensureContained(dir, resolve(dir, args.scriptFile));
   if (contained === null) {
-    throw new Error("Script file path escapes the automation script directory");
+    throw new Error("Путь к файлу скрипта выходит за пределы папки скриптов автоматизации");
   }
   let realRoot: string;
   let realCandidate: string;
@@ -131,11 +131,11 @@ export async function resolveAutomationScriptPath(args: {
     realRoot = await realpath(dir);
     realCandidate = await realpath(contained);
   } catch {
-    throw new Error("Script file was not found");
+    throw new Error("Файл скрипта не найден");
   }
   const reContained = ensureContained(realRoot, realCandidate);
   if (reContained === null) {
-    throw new Error("Script file path escapes the automation script directory");
+    throw new Error("Путь к файлу скрипта выходит за пределы папки скриптов автоматизации");
   }
   return reContained;
 }
@@ -165,7 +165,7 @@ export async function deleteAutomationScriptFile(args: {
 }): Promise<void> {
   const storedName = sanitizeScriptFileName(args.scriptFile);
   if (storedName !== args.scriptFile) {
-    throw new Error("Invalid stored automation script filename");
+    throw new Error("Некорректное имя сохранённого файла скрипта автоматизации");
   }
   await rm(
     join(automationScriptDir(args.dataDir, args.automationId), storedName),

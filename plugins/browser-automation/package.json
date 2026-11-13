@@ -3,14 +3,14 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "description": "Let BB control the in-app browser and browsers on connected machines, with inline previews for headless sessions.",
+  "description": "Позволяет BB управлять встроенным браузером и браузерами на подключённых машинах, показывая предпросмотр сеансов без интерфейса.",
   "engines": {
     "bb": ">=0.41",
     "bbPluginSdk": ">=0.6.113"
   },
   "bb": {
     "name": "Browser Automation",
-    "description": "Let BB control the in-app browser and browsers on connected machines, with inline previews for headless sessions.",
+    "description": "Позволяет BB управлять встроенным браузером и браузерами на подключённых машинах, показывая предпросмотр сеансов без интерфейса.",
     "branding": {
       "icon": "Globe"
     },

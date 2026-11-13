@@ -156,7 +156,7 @@ function renderSection() {
 
 async function openProjectMenu(projectName: string): Promise<void> {
   fireEvent.pointerDown(
-    await screen.findByRole("button", { name: `${projectName} actions` }),
+    await screen.findByRole("button", { name: `Действия с проектом ${projectName}` }),
     { button: 0 },
   );
 }
@@ -206,14 +206,14 @@ it("counts only persistent checkouts and their connection status in project summ
   ]);
   renderSection();
   const all = await screen.findByRole("link", {
-    name: "Open All checkouts settings",
+    name: "Открыть настройки проекта All checkouts",
   });
   const offline = screen.getByRole("link", {
-    name: "Open Offline checkout settings",
+    name: "Открыть настройки проекта Offline checkout",
   });
-  expect(all.textContent).toContain("2 of 2 machines");
-  expect(offline.textContent).toContain("1 of 2 machines");
-  expect(offline.textContent).toContain("offline");
+  expect(all.textContent).toContain("2 из 2 машины");
+  expect(offline.textContent).toContain("1 из 2 машины");
+  expect(offline.textContent).toContain("не в сети");
 });
 
 describe("buildProjectReorderRequest", () => {
@@ -273,16 +273,16 @@ describe("ProjectsSettingsSection", () => {
 
     expect(await screen.findByText("bb")).toBeDefined();
     expect(screen.getByText("github.com/get-bb/bb")).toBeDefined();
-    expect(await screen.findByText("2 of 2 machines")).toBeDefined();
-    expect(screen.getByText("3 threads")).toBeDefined();
-    expect(screen.getByText("1 of 2 machines")).toBeDefined();
-    expect(screen.getByText("No git remote")).toBeDefined();
-    expect(screen.getByText("Not set up on any machine")).toBeDefined();
-    expect(screen.getByText("needs setup")).toBeDefined();
+    expect(await screen.findByText("2 из 2 машины")).toBeDefined();
+    expect(screen.getByText("3 чата")).toBeDefined();
+    expect(screen.getByText("1 из 2 машины")).toBeDefined();
+    expect(screen.getByText("Нет удалённого Git-репозитория")).toBeDefined();
+    expect(screen.getByText("Не настроен ни на одной машине")).toBeDefined();
+    expect(screen.getByText("требуется настройка")).toBeDefined();
     expect(screen.queryByText("Personal")).toBeNull();
     expect(
       screen
-        .getByRole("link", { name: "Open bb settings" })
+        .getByRole("link", { name: "Открыть настройки проекта bb" })
         .getAttribute("href"),
     ).toBe("/settings/projects/proj_bb");
   });
@@ -292,11 +292,11 @@ describe("ProjectsSettingsSection", () => {
 
     renderSection();
 
-    await screen.findByText("1 of 2 machines");
+    await screen.findByText("1 из 2 машины");
     const pierre = screen.getByText("pierre");
-    expect(pierre.parentElement?.textContent).toContain("offline");
+    expect(pierre.parentElement?.textContent).toContain("не в сети");
     const bb = screen.getByText("bb");
-    expect(bb.parentElement?.textContent).not.toContain("offline");
+    expect(bb.parentElement?.textContent).not.toContain("не в сети");
   });
 
   it("shows a drag handle per project and disables them with a single project", async () => {
@@ -304,7 +304,7 @@ describe("ProjectsSettingsSection", () => {
     const { unmount } = renderSection();
 
     await screen.findByText("bb");
-    const handles = screen.getAllByRole("button", { name: /^Reorder / });
+    const handles = screen.getAllByRole("button", { name: /^Изменить порядок: / });
     expect(handles).toHaveLength(3);
     expect(handles.every((handle) => !handle.hasAttribute("disabled"))).toBe(
       true,
@@ -318,7 +318,7 @@ describe("ProjectsSettingsSection", () => {
       expect(
         (
           screen.getByRole("button", {
-            name: "Reorder bb",
+            name: "Изменить порядок: bb",
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(true),
@@ -339,7 +339,7 @@ describe("ProjectsSettingsSection", () => {
 
     renderSection();
     await openProjectMenu("bb");
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Rename" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Переименовать" }));
 
     const input = await screen.findByDisplayValue("bb");
     fireEvent.change(input, { target: { value: "bb-next" } });
@@ -360,10 +360,10 @@ describe("ProjectsSettingsSection", () => {
     renderSection();
     await openProjectMenu("ingest");
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Delete project" }),
+      await screen.findByRole("menuitem", { name: "Удалить проект" }),
     );
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove project" }),
+      await screen.findByRole("button", { name: "Удалить проект" }),
     );
 
     await waitFor(() =>
@@ -378,10 +378,10 @@ describe("ProjectsSettingsSection", () => {
 
     renderSection();
     await screen.findByText("bb");
-    fireEvent.click(screen.getByRole("button", { name: "Add a project" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить проект" }));
 
     expect(
-      await screen.findByRole("heading", { name: "Add project" }),
+      await screen.findByRole("heading", { name: "Добавить проект" }),
     ).toBeDefined();
     expect(screen.queryByText(/Every machine is offline/u)).toBeNull();
   });
@@ -391,7 +391,7 @@ describe("ProjectsSettingsSection", () => {
 
     renderSection();
 
-    expect(await screen.findByText(/^No projects yet/u)).toBeDefined();
+    expect(await screen.findByText(/^Пока нет проектов/u)).toBeDefined();
   });
 
   it("surfaces a failed project load instead of staying on the loader", async () => {
@@ -400,6 +400,6 @@ describe("ProjectsSettingsSection", () => {
     renderSection();
 
     expect(await screen.findByRole("alert")).toBeDefined();
-    expect(screen.queryByText("Loading…")).toBeNull();
+    expect(screen.queryByText("Загрузка…")).toBeNull();
   });
 });

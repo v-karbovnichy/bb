@@ -235,7 +235,7 @@ export function ListView({ projectId, activeOnly = false }: ListViewProps) {
       tasksQuery.error !== null ? (
         <EmptyState
           icon="AlertCircle"
-          title="Couldn't load tasks"
+          title="Не удалось загрузить задачи"
           description={tasksQuery.error}
         />
       ) : (
@@ -246,14 +246,14 @@ export function ListView({ projectId, activeOnly = false }: ListViewProps) {
       body = (
         <EmptyState
           icon="Search"
-          title="No tasks match these filters"
+          title="Нет задач, соответствующих фильтрам"
           action={
             <Button
               variant="outline"
               size="sm"
               onClick={() => setFilters(EMPTY_FILTERS)}
             >
-              Clear filters
+              Сбросить фильтры
             </Button>
           }
         />
@@ -262,20 +262,20 @@ export function ListView({ projectId, activeOnly = false }: ListViewProps) {
       body = (
         <EmptyState
           icon="Zap"
-          title="No agents working right now"
-          description="Dispatch a task to an agent preset and it will show up here while it runs."
+          title="Сейчас нет работающих агентов"
+          description="Назначьте задачу агенту через пресет, и она появится здесь на время выполнения."
         />
       );
     } else {
       body = (
         <EmptyState
           icon="ListTodo"
-          title="No tasks yet"
-          description="Create the first task to start tracking work."
+          title="Задач пока нет"
+          description="Создайте первую задачу, чтобы начать отслеживать работу."
           action={
             <Button size="sm" onClick={() => setNewTaskOpen(true)}>
               <Icon name="Plus" className="size-3.5" />
-              New task
+              Новая задача
             </Button>
           }
         />

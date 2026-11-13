@@ -40,7 +40,7 @@ describe("ParentThreadPicker", () => {
     );
 
     const search = screen.getByRole("combobox", {
-      name: "Search parent threads",
+      name: "Поиск родительских чатов",
     });
     const none = screen.getByRole("option", { name: "None" });
     const codex = screen.getByRole("option", { name: "Codex Parent" });
@@ -63,7 +63,7 @@ describe("ParentThreadPicker", () => {
     fireEvent.click(screen.getByRole("button"));
 
     expect(onOpenChange).toHaveBeenCalledWith(true);
-    expect(await screen.findByText("Loading threads…")).toBeTruthy();
+    expect(await screen.findByText("Загрузка чатов…")).toBeTruthy();
   });
 
   it("offers a retry after candidate loading fails and shows recovered results", async () => {
@@ -71,7 +71,7 @@ describe("ParentThreadPicker", () => {
     const result = render(picker({ isError: true, options: [], onRetry }));
 
     fireEvent.click(screen.getByRole("button"));
-    fireEvent.click(await screen.findByText("Retry loading threads"));
+    fireEvent.click(await screen.findByText("Повторить загрузку чатов"));
     expect(onRetry).toHaveBeenCalledTimes(1);
 
     result.rerender(picker());
@@ -85,7 +85,7 @@ describe("ParentThreadPicker", () => {
 
     fireEvent.click(screen.getByRole("button"));
     const search = await screen.findByRole("combobox", {
-      name: "Search parent threads",
+      name: "Поиск родительских чатов",
     });
     fireEvent.change(search, { target: { value: "frpar" } });
 
@@ -94,7 +94,7 @@ describe("ParentThreadPicker", () => {
 
     expect(onChange).toHaveBeenCalledWith("thr_frontend_parent");
     expect(
-      screen.queryByRole("combobox", { name: "Search parent threads" }),
+      screen.queryByRole("combobox", { name: "Поиск родительских чатов" }),
     ).toBeNull();
   });
 
@@ -104,7 +104,7 @@ describe("ParentThreadPicker", () => {
     fireEvent.click(screen.getByRole("button"));
     fireEvent.change(
       await screen.findByRole("combobox", {
-        name: "Search parent threads",
+        name: "Поиск родительских чатов",
       }),
       { target: { value: "frontend_parent" } },
     );
@@ -120,7 +120,7 @@ describe("ParentThreadPicker", () => {
 
     fireEvent.click(screen.getByRole("button"));
     const search = await screen.findByRole("combobox", {
-      name: "Search parent threads",
+      name: "Поиск родительских чатов",
     });
     const list = document.querySelector<HTMLElement>("[cmdk-list]");
     expect(list).not.toBeNull();

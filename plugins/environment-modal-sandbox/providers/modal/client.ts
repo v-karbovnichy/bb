@@ -208,7 +208,7 @@ export const createModalSandboxClient: ModalSandboxClientFactory = (
         (sandbox.createdAt + sandbox.timeoutSecs) * 1000,
       );
       if (!Number.isFinite(expiresAt) || sandbox.timeoutSecs <= 0)
-        throw new Error("Modal did not report a finite sandbox deadline");
+        throw new Error("Modal не сообщил конечный срок действия песочницы");
       return { running: true, expiresAt };
     },
     async create(request) {

@@ -58,7 +58,7 @@ export function DesktopZoomIndicator() {
     >
       <div
         role="toolbar"
-        aria-label="Zoom"
+        aria-label="Масштаб"
         className={cn(
           "mt-2 mr-3 flex items-center gap-1 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
           fading &&
@@ -85,7 +85,7 @@ export function DesktopZoomIndicator() {
           variant="ghost"
           size="icon"
           className="size-7"
-          aria-label="Zoom out"
+          aria-label="Уменьшить масштаб"
           disabled={zoomPercent <= BB_DESKTOP_MIN_ZOOM_PERCENT}
           onClick={() => zoom?.("out")}
         >
@@ -96,7 +96,7 @@ export function DesktopZoomIndicator() {
           variant="ghost"
           size="icon"
           className="size-7"
-          aria-label="Zoom in"
+          aria-label="Увеличить масштаб"
           disabled={zoomPercent >= BB_DESKTOP_MAX_ZOOM_PERCENT}
           onClick={() => zoom?.("in")}
         >
@@ -108,7 +108,7 @@ export function DesktopZoomIndicator() {
           variant="ghost"
           size="sm"
           className="h-7 px-2"
-          aria-label="Reset zoom"
+          aria-label="Сбросить масштаб"
           disabled={zoomPercent === 100}
           onClick={() => zoom?.("reset")}
         >

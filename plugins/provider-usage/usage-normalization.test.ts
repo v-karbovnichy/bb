@@ -87,8 +87,8 @@ it("normalizes structured plans and windows while retaining custom provider labe
     usage: {
       planLabel: "Max (20x)",
       windows: [
-        { label: "Weekly limit" },
-        { label: "Weekly · Fable" },
+        { label: "Недельный лимит" },
+        { label: "Недельный лимит · Fable" },
         { label: "Monthly tokens" },
       ],
     },

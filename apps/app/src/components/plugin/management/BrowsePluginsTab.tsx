@@ -89,7 +89,7 @@ export function BrowsePluginsTab({
   const notifiedSavedResultsError = useRef(false);
   useEffect(() => {
     if (savedResultsError && !notifiedSavedResultsError.current) {
-      appToast.warning("Couldn’t refresh plugins.");
+      appToast.warning("Не удалось обновить список плагинов.");
     }
     notifiedSavedResultsError.current = savedResultsError;
   }, [savedResultsError]);
@@ -218,7 +218,7 @@ export function BrowsePluginsTab({
               className="-ml-1 inline-flex items-center gap-1 rounded-sm px-1 text-xs text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <Icon name="ChevronLeft" className="size-3" aria-hidden />
-              Browse plugins
+              Обзор плагинов
             </Link>
             {selectedShelf === undefined ? null : (
               <h1 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-foreground">
@@ -280,30 +280,30 @@ export function BrowsePluginsTab({
             (shelfKey !== null &&
               trimmedQuery !== "" &&
               searchQuery.isPending) ? (
-              <ResourceListState state="loading" message="Loading plugins" />
+              <ResourceListState state="loading" message="Загрузка плагинов" />
             ) : activeQuery.isError && entries.length === 0 ? (
               <ResourceListState
                 state="error"
-                message="The plugin catalog is not available."
+                message="Каталог плагинов недоступен."
                 onRetry={() => void activeQuery.refetch()}
               />
             ) : shelfKey !== null && selectedShelf === undefined ? (
-              <ResourceListState state="empty" message="Shelf not found." />
+              <ResourceListState state="empty" message="Подборка не найдена." />
             ) : entries.length === 0 ? (
               <ResourceListState
                 state="empty"
-                message="No plugins match this search."
+                message="По запросу плагины не найдены."
               />
             ) : searchQuery.isError && searchQuery.data === undefined ? (
               <ResourceListState
                 state="error"
-                message="The plugin search is not available."
+                message="Поиск плагинов недоступен."
                 onRetry={() => void searchQuery.refetch()}
               />
             ) : filteredEntries.length === 0 ? (
               <ResourceListState
                 state="empty"
-                message="No plugins match these category filters."
+                message="По выбранным категориям плагины не найдены."
               />
             ) : shelvesMode && trimmedQuery === "" ? null : (
               <PluginCatalogGrid
@@ -389,9 +389,9 @@ function BrowseShelf({
                 pathname: getPluginsRoutePath(),
                 search: shelfParams.toString(),
               }}
-              aria-label={`View all ${shelf.label}`}
+              aria-label={`Показать все: ${shelf.label}`}
             >
-              View all
+              Показать все
             </Link>
           </ResourceShelfAction>
         ) : undefined

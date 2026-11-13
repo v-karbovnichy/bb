@@ -103,7 +103,7 @@ function press(key: string) {
 }
 
 const loadingInput = () =>
-  screen.findByRole("textbox", { name: "Search commands" });
+  screen.findByRole("textbox", { name: "Поиск команд" });
 
 it("stays usable before its body downloads on first open and keeps typed text", async () => {
   render(
@@ -134,21 +134,21 @@ it("stays usable before its body downloads on first open and keeps typed text", 
 
   press("p");
   const input = await loadingInput();
-  expect(screen.getByRole("status", { name: "Loading commands" })).toBeTruthy();
+  expect(screen.getByRole("status", { name: "Загрузка команд" })).toBeTruthy();
   expect(document.activeElement).toBe(input);
-  fireEvent.change(input, { target: { value: "new thr" } });
+  fireEvent.change(input, { target: { value: "новый ча" } });
   expect(body.imports).toBe(1);
 
   await act(async () => body.release());
   const combobox = await screen.findByRole("combobox", {
-    name: "Search commands",
+    name: "Поиск команд",
   });
-  expect(combobox).toHaveProperty("value", "new thr");
+  expect(combobox).toHaveProperty("value", "новый ча");
   expect(document.activeElement).toBe(combobox);
   const selected = screen
     .getAllByRole("option")
     .find((option) => option.getAttribute("aria-selected") === "true");
-  expect(selected?.textContent).toContain("New thread");
+  expect(selected?.textContent).toContain("Новый чат");
 
   fireEvent.keyDown(combobox, { key: "Enter" });
   await waitFor(() => expect(calls).toEqual(["thread.new", "thread.new"]));

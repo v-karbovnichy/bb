@@ -148,7 +148,7 @@ export function createHostEntry(
     ) {
       if (session) await close(sessionId);
       throw new Error(
-        "Session stopped, expired, or worker restarted; open a new session",
+        "Сеанс остановлен или истёк либо рабочий процесс перезапущен; откройте новый сеанс",
       );
     }
     return session;
@@ -216,13 +216,13 @@ export function createHostEntry(
       async open(input, context) {
         context.signal.throwIfAborted();
         if (Date.now() >= input.expiresAt)
-          throw new Error("Session expired; open a new session");
+          throw new Error("Срок сеанса истёк; откройте новый сеанс");
         if (sessions.has(input.sessionId))
-          throw new Error("Session already exists");
+          throw new Error("Сеанс уже существует");
         if (closes.has(input.sessionId))
-          throw new Error("Session already closed");
+          throw new Error("Сеанс уже закрыт");
         if (sessions.size >= 32)
-          throw new Error("Host browser session limit reached");
+          throw new Error("Достигнут лимит сеансов браузера на хосте");
         const abort = new AbortController();
         const signal = AbortSignal.any([
           context.signal,
@@ -280,7 +280,7 @@ export function createHostEntry(
         const runtime = await session.runtime;
         if (!runtime.preview)
           throw new Error(
-            "Live preview is available only for local headless sessions",
+            "Просмотр в реальном времени доступен только для локальных сеансов без интерфейса",
           );
         return {
           frame: await runtime.preview.next(

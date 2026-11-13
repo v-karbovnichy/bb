@@ -239,7 +239,7 @@ export function BranchPickerSearch({
   query,
   onQueryChange,
   ariaLabel,
-  placeholder = "Search branches",
+  placeholder = "Поиск веток",
 }: BranchPickerSearchProps) {
   return (
     <div className="shrink-0 border-b border-border p-1.5">

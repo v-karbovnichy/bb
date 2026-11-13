@@ -17,7 +17,7 @@ interface SetCustomServerUrlOptions {
 }
 
 export function builtinServerName(platform: NodeJS.Platform): string {
-  return platform === "darwin" ? "This Mac" : "This Computer";
+  return platform === "darwin" ? "Этот Mac" : "Этот компьютер";
 }
 
 export const BUILTIN_SERVER_NAME = builtinServerName(process.platform);
@@ -337,7 +337,7 @@ export function createServerTargetStore(
     async setCustomServerName(url, name) {
       const server = customServers.find((saved) => saved.url === url);
       if (server === undefined) {
-        throw new Error("That server is no longer saved.");
+        throw new Error("Этот сервер больше не сохранён.");
       }
       server.name = name === null ? null : normalizeServerName(name);
       await persist();
@@ -345,7 +345,7 @@ export function createServerTargetStore(
     async setCustomServerUrl(url, options = {}) {
       const normalized = url === null ? null : normalizeCustomServerUrl(url);
       if (url !== null && normalized === null) {
-        throw new Error("Enter a valid http(s) URL.");
+        throw new Error("Введите корректный URL http(s).");
       }
       const removedUrl =
         options.replacedUrl ?? (url === null ? customServerUrl : null);

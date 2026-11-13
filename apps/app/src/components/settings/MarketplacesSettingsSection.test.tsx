@@ -77,10 +77,10 @@ describe("MarketplacesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<MarketplacesSettingsSection />, { wrapper });
 
-    fireEvent.change(screen.getByLabelText("Marketplace source"), {
+    fireEvent.change(screen.getByLabelText("Источник маркетплейса"), {
       target: { value: " https://acme.test/marketplace.json " },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить" }));
 
     await vi.waitFor(() => {
       const post = requests.find(
@@ -99,14 +99,14 @@ describe("MarketplacesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<MarketplacesSettingsSection />, { wrapper });
 
-    expect(screen.queryByLabelText("Marketplace subdirectory")).toBe(null);
-    fireEvent.change(screen.getByLabelText("Marketplace source"), {
+    expect(screen.queryByLabelText("Подкаталог маркетплейса")).toBe(null);
+    fireEvent.change(screen.getByLabelText("Источник маркетплейса"), {
       target: { value: "git:https://github.com/acme/agent-plugins.git@main" },
     });
-    fireEvent.change(screen.getByLabelText("Marketplace subdirectory"), {
+    fireEvent.change(screen.getByLabelText("Подкаталог маркетплейса"), {
       target: { value: " bb " },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить" }));
 
     await vi.waitFor(() => {
       const post = requests.find(
@@ -126,17 +126,17 @@ describe("MarketplacesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<MarketplacesSettingsSection />, { wrapper });
 
-    fireEvent.change(screen.getByLabelText("Marketplace source"), {
+    fireEvent.change(screen.getByLabelText("Источник маркетплейса"), {
       target: { value: "git:https://github.com/acme/agent-plugins.git" },
     });
-    fireEvent.change(screen.getByLabelText("Marketplace subdirectory"), {
+    fireEvent.change(screen.getByLabelText("Подкаталог маркетплейса"), {
       target: { value: "bb" },
     });
-    fireEvent.change(screen.getByLabelText("Marketplace source"), {
+    fireEvent.change(screen.getByLabelText("Источник маркетплейса"), {
       target: { value: "https://acme.test/marketplace.json" },
     });
-    expect(screen.queryByLabelText("Marketplace subdirectory")).toBe(null);
-    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    expect(screen.queryByLabelText("Подкаталог маркетплейса")).toBe(null);
+    fireEvent.click(screen.getByRole("button", { name: "Добавить" }));
 
     await vi.waitFor(() => {
       const post = requests.find(
@@ -165,7 +165,7 @@ describe("MarketplacesSettingsSection", () => {
 
     expect(
       await screen.findByText(
-        "git:https://acme.test/repo.git@main · subdirectory bb",
+        "git:https://acme.test/repo.git@main · подкаталог bb",
       ),
     ).toBeTruthy();
   });
@@ -181,15 +181,15 @@ describe("MarketplacesSettingsSection", () => {
     const { wrapper } = createQueryClientTestHarness();
     render(<MarketplacesSettingsSection />, { wrapper });
 
-    fireEvent.change(screen.getByLabelText("Marketplace source"), {
+    fireEvent.change(screen.getByLabelText("Источник маркетплейса"), {
       target: { value: "path:/missing-marketplace" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить" }));
 
     await vi.waitFor(() => {
       expect(getNotifications()).toEqual([
         expect.objectContaining({
-          title: "Adding the marketplace failed",
+          title: "Не удалось добавить маркетплейс",
           description: "marketplace directory does not exist",
         }),
       ]);
@@ -202,11 +202,11 @@ describe("MarketplacesSettingsSection", () => {
     render(<MarketplacesSettingsSection />, { wrapper });
 
     await screen.findByText("Acme Plugins");
-    expect(screen.queryByRole("button", { name: "Remove BB Community" })).toBe(
+    expect(screen.queryByRole("button", { name: "Удалить BB Community" })).toBe(
       null,
     );
     expect(
-      screen.getByRole("button", { name: "Remove Acme Plugins" }),
+      screen.getByRole("button", { name: "Удалить Acme Plugins" }),
     ).toBeTruthy();
   });
 
@@ -216,11 +216,11 @@ describe("MarketplacesSettingsSection", () => {
     render(<MarketplacesSettingsSection />, { wrapper });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Remove Acme Plugins" }),
+      await screen.findByRole("button", { name: "Удалить Acme Plugins" }),
     );
-    expect(screen.getByText(/keep running as direct installs/)).toBeTruthy();
+    expect(screen.getByText(/продолжат работать как прямые установки/)).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }));
+    fireEvent.click(screen.getByRole("button", { name: "Удалить" }));
     await vi.waitFor(() => {
       expect(
         requests.some(

@@ -174,7 +174,7 @@ export function ConversationMessageOverflowToggle({
         className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground"
         aria-expanded={expanded}
       >
-        {expanded ? "Show less" : "Show more"}
+        {expanded ? "Показать меньше" : "Показать больше"}
       </button>
     </div>
   );

@@ -170,14 +170,14 @@ function GitDiffFileFilterInput({
       </span>
       <Input
         ref={inputRef}
-        aria-label="Filter changed files by path"
+        aria-label="Фильтровать изменённые файлы по пути"
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
         className={cn(
           "h-8 rounded-lg border-border pl-12 pr-8 text-xs focus-visible:ring-0 max-md:pointer-coarse:h-10 max-md:pointer-coarse:text-base",
         )}
-        placeholder="Filter files, e.g. *.md, docs/**, !*.test.ts"
+        placeholder="Фильтр файлов: *.md, docs/**, !*.test.ts"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={(event) => {
@@ -191,7 +191,7 @@ function GitDiffFileFilterInput({
         <button
           type="button"
           className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center text-muted-foreground hover:text-foreground"
-          aria-label="Clear file filter"
+          aria-label="Очистить фильтр файлов"
           onClick={() => {
             onChange("");
             inputRef.current?.focus();
@@ -223,7 +223,7 @@ interface GitDiffToolbarProps {
 
   areAllFilesCollapsed: boolean;
   isCollapseAllDisabled: boolean;
-  collapseAllDisabledReason: "No changes" | "No files match filter" | null;
+  collapseAllDisabledReason: "Нет изменений" | "Нет файлов по фильтру" | null;
   onToggleAllCollapsed: () => void;
 
   displayMode: GitDiffDisplayMode;
@@ -262,8 +262,8 @@ export function GitDiffToolbar({
   onIgnoreWhitespaceChange,
 }: GitDiffToolbarProps) {
   const collapseAllLabel = areAllFilesCollapsed
-    ? "Expand all files"
-    : "Collapse all files";
+    ? "Развернуть все файлы"
+    : "Свернуть все файлы";
   const rootRef = useRef<HTMLDivElement>(null!);
   const { width: rootWidth = 0 } = useResizeObserver({
     ref: rootRef,
@@ -271,11 +271,11 @@ export function GitDiffToolbar({
   });
   const changeTally = { ...stats, lineStatsComplete: true };
   const completeSummary = formatChangeSummary(changeTally);
-  const truncatedFilesLabel = `${stats.filesCount}+ file${stats.filesCount === 1 ? "" : "s"}`;
+  const truncatedFilesLabel = `${stats.filesCount}+ файл(ов)`;
   const hasShownLineChanges = stats.insertions > 0 || stats.deletions > 0;
   const isFiltering =
     Boolean(fileFilter?.trim()) || hasDiffFileFilters(filters);
-  const filteredFilesLabel = `${stats.filesCount} of ${totalFilesCount}${isTruncated ? "+" : ""} files`;
+  const filteredFilesLabel = `${stats.filesCount} из ${totalFilesCount}${isTruncated ? "+" : ""} файлов`;
 
   return (
     <div ref={rootRef} className="px-4 pb-3 pt-3">
@@ -307,16 +307,16 @@ export function GitDiffToolbar({
             data-testid="git-diff-toolbar-summary"
             title={
               isFiltering
-                ? `${stats.filesCount} of ${totalFilesCount}${isTruncated ? "+" : ""} changed files match the filter`
+                ? `${stats.filesCount} из ${totalFilesCount}${isTruncated ? "+" : ""} изменённых файлов соответствует фильтру`
                 : isTruncated
-                  ? `Showing the first ${stats.filesCount} changed file${stats.filesCount === 1 ? "" : "s"}; shown slice: ${stats.insertions} insertion${stats.insertions === 1 ? "" : "s"}, ${stats.deletions} deletion${stats.deletions === 1 ? "" : "s"}`
+                  ? `Показаны первые ${stats.filesCount} изменённых файлов; в показанной части: добавлено ${stats.insertions}, удалено ${stats.deletions}`
                   : completeSummary
             }
           >
             {isStatsLoading ? (
               <Skeleton
                 role="status"
-                aria-label="Loading changes"
+                aria-label="Загрузка изменений"
                 className="inline-block h-3 w-24 rounded-sm align-middle"
               />
             ) : isFiltering ? (
@@ -337,7 +337,7 @@ export function GitDiffToolbar({
                 {truncatedFilesLabel}
                 {hasShownLineChanges ? (
                   <>
-                    {" · shown "}
+                    {" · показано "}
                     <DiffStatsTally
                       insertions={stats.insertions}
                       deletions={stats.deletions}
@@ -366,8 +366,8 @@ export function GitDiffToolbar({
               }
               aria-label={
                 fileFilter === null
-                  ? "Search filenames"
-                  : "Close filename search"
+                  ? "Поиск по именам файлов"
+                  : "Закрыть поиск по именам файлов"
               }
               aria-pressed={fileFilter !== null}
             >
@@ -383,7 +383,7 @@ export function GitDiffToolbar({
                     COARSE_POINTER_COMPACT_ICON_BUTTON_CLASS,
                     "relative text-muted-foreground",
                   )}
-                  aria-label="Filter files"
+                  aria-label="Фильтр файлов"
                   aria-pressed={isFiltering}
                 >
                   <Icon name="Filter" />
@@ -396,7 +396,7 @@ export function GitDiffToolbar({
                 align="end"
                 className="max-h-80 overflow-y-auto min-w-48"
               >
-                <DropdownMenuLabel>File extensions</DropdownMenuLabel>
+                <DropdownMenuLabel>Расширения файлов</DropdownMenuLabel>
                 <DropdownMenuCheckboxItem
                   checked={filters.selectedExtensions.length === 0}
                   onSelect={(event) => event.preventDefault()}
@@ -423,7 +423,7 @@ export function GitDiffToolbar({
                     }
                   >
                     <span className="flex w-full items-center justify-between gap-6">
-                      <span>{extension || "No extension"}</span>
+                      <span>{extension || "Без расширения"}</span>
                       <span className="rounded-full bg-muted px-1.5 text-muted-foreground tabular-nums">
                         {count}
                       </span>
@@ -509,7 +509,7 @@ export function GitDiffToolbar({
                     COARSE_POINTER_COMPACT_ICON_BUTTON_CLASS,
                     "text-muted-foreground",
                   )}
-                  aria-label="Diff settings"
+                  aria-label="Настройки изменений"
                 >
                   <Icon name="Settings" />
                 </Button>

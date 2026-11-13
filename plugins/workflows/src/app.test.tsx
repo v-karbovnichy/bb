@@ -113,17 +113,17 @@ describe("workflow composer banner", () => {
 
     fireEvent.click(
       await slot.findByRole("button", {
-        name: "2 workflows running. Show all",
+        name: "Активных рабочих процессов: 2. Показать все",
       }),
     );
     expect(slot.getByText("Review the release")).toBeTruthy();
     expect(slot.getByText("Queue release notes")).toBeTruthy();
     expect(slot.getByText("Review")).toBeTruthy();
-    expect(slot.getByText("1/2 agents")).toBeTruthy();
-    expect(slot.getAllByRole("region", { name: "Workflow" })).toHaveLength(2);
+    expect(slot.getByText("1/2 агентов")).toBeTruthy();
+    expect(slot.getAllByRole("region", { name: "Рабочий процесс" })).toHaveLength(2);
     expect(
       slot.getByRole("button", {
-        name: /open workflow review.*in side panel/i,
+        name: /открыть рабочий процесс.*review.*в боковой панели/i,
       }),
     ).toBeTruthy();
   });
@@ -146,18 +146,18 @@ describe("workflow composer banner", () => {
     );
 
     const stack = await slot.findByRole("button", {
-      name: "4 workflows running. Show all",
+      name: "Активных рабочих процессов: 4. Показать все",
     });
     expect(stack.getAttribute("aria-expanded")).toBe("false");
     expect(slot.getByText("4")).toBeTruthy();
     expect(
       slot.container.querySelectorAll("[data-prompt-stack-peek]"),
     ).toHaveLength(2);
-    expect(slot.queryAllByRole("region", { name: "Workflow" })).toHaveLength(0);
+    expect(slot.queryAllByRole("region", { name: "Рабочий процесс" })).toHaveLength(0);
 
     fireEvent.click(stack);
-    expect(slot.getAllByRole("region", { name: "Workflow" })).toHaveLength(4);
-    const collapse = slot.getByRole("button", { name: "Collapse 4 workflows" });
+    expect(slot.getAllByRole("region", { name: "Рабочий процесс" })).toHaveLength(4);
+    const collapse = slot.getByRole("button", { name: "Свернуть рабочие процессы (4)" });
     expect(collapse.getAttribute("aria-expanded")).toBe("true");
     expect(document.activeElement).toBe(collapse);
     expect(
@@ -165,9 +165,9 @@ describe("workflow composer banner", () => {
     ).toHaveLength(0);
 
     fireEvent.click(collapse);
-    expect(slot.queryAllByRole("region", { name: "Workflow" })).toHaveLength(0);
+    expect(slot.queryAllByRole("region", { name: "Рабочий процесс" })).toHaveLength(0);
     expect(document.activeElement).toBe(
-      slot.getByRole("button", { name: "4 workflows running. Show all" }),
+      slot.getByRole("button", { name: "Активных рабочих процессов: 4. Показать все" }),
     );
   });
 
@@ -191,18 +191,18 @@ describe("workflow composer banner", () => {
 
     fireEvent.click(
       await slot.findByRole("button", {
-        name: "2 workflows running. Show all",
+        name: "Активных рабочих процессов: 2. Показать все",
       }),
     );
     expect(
-      slot.getByRole("button", { name: "Collapse 2 workflows" }),
+      slot.getByRole("button", { name: "Свернуть рабочие процессы (2)" }),
     ).toBeTruthy();
 
     current = [];
     await slot.experimental_invalidateRpc(["runs:thr_scope"]);
     await waitFor(() =>
       expect(
-        slot.queryByRole("button", { name: "Collapse 2 workflows" }),
+        slot.queryByRole("button", { name: "Свернуть рабочие процессы (2)" }),
       ).toBeNull(),
     );
 
@@ -210,7 +210,7 @@ describe("workflow composer banner", () => {
     await slot.experimental_invalidateRpc(["runs:thr_scope"]);
     expect(
       await slot.findByRole("button", {
-        name: "2 workflows running. Show all",
+        name: "Активных рабочих процессов: 2. Показать все",
       }),
     ).toBeTruthy();
   });
@@ -228,7 +228,7 @@ describe("workflow composer banner", () => {
     );
 
     const toggle = await slot.findByRole("button", {
-      name: "Workflow: Review the release",
+      name: "Рабочий процесс: Review the release",
     });
     expect(toggle.tagName).toBe("BUTTON");
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
@@ -248,7 +248,7 @@ describe("workflow composer banner", () => {
     expect(slot.getByText("Adversarial review")).toBeTruthy();
     expect(slot.getByRole("button", { name: /Review0\/1/ })).toBeTruthy();
     const collapse = slot.getByRole("button", {
-      name: "Collapse workflow Review the release",
+      name: "Свернуть рабочий процесс «Review the release»",
     });
     expect(document.activeElement).toBe(collapse);
 
@@ -282,7 +282,7 @@ describe("workflow composer banner", () => {
     );
 
     const toggle = await slot.findByRole("button", {
-      name: "Workflow: Review the release",
+      name: "Рабочий процесс: Review the release",
     });
     fireEvent.click(toggle);
     expect(toggle.getAttribute("aria-expanded")).toBe("true");
@@ -368,7 +368,7 @@ describe("workflow composer banner", () => {
 
     fireEvent.click(
       await slot.findByRole("button", {
-        name: /open workflow review.*in side panel/i,
+        name: /открыть рабочий процесс.*review.*в боковой панели/i,
       }),
     );
     expect(openTab).toHaveBeenCalledWith({
@@ -443,7 +443,7 @@ describe("workflow-preview directive", () => {
     ).toBe(false);
 
     const workflowToggle = slot.getByRole("button", {
-      name: "Workflow: Review the release",
+      name: "Рабочий процесс: Review the release",
     });
     fireEvent.click(workflowToggle);
     expect(workflowToggle.getAttribute("aria-expanded")).toBe("false");
@@ -460,7 +460,7 @@ describe("workflow-preview directive", () => {
     ).toBeTruthy();
     fireEvent.click(workflowToggle);
 
-    fireEvent.click(slot.getByRole("button", { name: /open in right panel/i }));
+    fireEvent.click(slot.getByRole("button", { name: /открыть в правой панели/i }));
     expect(openTab).toHaveBeenCalledWith({
       tab: {
         id: "workflow-run",
@@ -539,7 +539,7 @@ describe("workflow-preview directive", () => {
       { rpc: { workflowRunView: () => ({ run: unphasedRun }) } },
     );
 
-    await slot.findByText("Other work");
+    await slot.findByText("Другая работа");
     expect(slot.getByText("Unphased verification")).toBeTruthy();
   });
 
@@ -584,16 +584,16 @@ describe("workflow-preview directive", () => {
 
     await slot.experimental_invalidateRpc(["runs:thr_origin"]);
     expect(await slot.findByText("Review the release")).toBeTruthy();
-    expect(slot.queryByText("Complete")).toBeNull();
+    expect(slot.queryByText("Завершено")).toBeNull();
 
     await slot.experimental_invalidateRpc(["runs:thr_origin"]);
     expect((await slot.findByRole("status")).textContent).toBe(
-      "Could not refresh: refresh outage.",
+      "Не удалось обновить: refresh outage.",
     );
     expect(slot.getByText("Review the release")).toBeTruthy();
 
     await slot.experimental_invalidateRpc(["runs:thr_origin"]);
-    expect(await slot.findByText("Complete")).toBeTruthy();
+    expect(await slot.findByText("Завершено")).toBeTruthy();
     expect(slot.queryByRole("status")).toBeNull();
     expect(attempt).toBe(4);
   });
@@ -619,7 +619,7 @@ describe("workflow-preview directive", () => {
     );
 
     expect((await slot.findByRole("alert")).textContent).toBe(
-      "Workflow run not found.",
+      "Запуск рабочего процесса не найден.",
     );
     failing = true;
     await slot.experimental_invalidateRpc(["runs:thr_origin"]);
@@ -653,15 +653,15 @@ describe("workflow-preview directive", () => {
       },
     );
 
-    expect(await slot.findByText("1m")).toBeTruthy();
+    expect(await slot.findByText("1 мин")).toBeTruthy();
     await act(async () => vi.advanceTimersByTimeAsync(5_000));
-    expect(slot.getByText("1m 5s")).toBeTruthy();
+    expect(slot.getByText("1 мин 5 с")).toBeTruthy();
 
     finished = true;
     await slot.experimental_invalidateRpc(["runs:thr_origin"]);
-    expect(await slot.findByText("2m 4s")).toBeTruthy();
+    expect(await slot.findByText("2 мин 4 с")).toBeTruthy();
     await act(async () => vi.advanceTimersByTimeAsync(10_000));
-    expect(slot.getByText("2m 4s")).toBeTruthy();
+    expect(slot.getByText("2 мин 4 с")).toBeTruthy();
     expect(slot.rpcCalls).toHaveLength(2);
   });
 
@@ -684,7 +684,7 @@ describe("workflow-preview directive", () => {
       { rpc: { workflowRunView: () => ({ run: succeededRun }) } },
     );
 
-    await slot.findByText("Complete");
+    await slot.findByText("Завершено");
     expect(
       slot
         .getAllByText("Empty phase")
@@ -721,7 +721,7 @@ describe("workflow-preview directive", () => {
       { rpc: { workflowRunView: () => ({ run: cancelledRun }) } },
     );
 
-    await slot.findByText("Cancelled");
+    await slot.findByText("Отменено");
     expect(slot.container.querySelectorAll('[data-icon="Pause"]')).toHaveLength(
       2,
     );
@@ -768,12 +768,12 @@ describe("workflow thread panel", () => {
       threadId: "thr_worker_2",
     });
 
-    fireEvent.click(slot.getByRole("button", { name: "Stop workflow" }));
+    fireEvent.click(slot.getByRole("button", { name: "Остановить рабочий процесс" }));
     await waitFor(() => {
       expect(
         slot.rpcCalls.some((call) => call.method === "workflowStopRun"),
       ).toBe(true);
-      expect(slot.getByText("Cancelled")).toBeTruthy();
+      expect(slot.getByText("Отменено")).toBeTruthy();
     });
   });
 
@@ -811,7 +811,7 @@ describe("workflow thread panel", () => {
     );
 
     expect((await slot.findByRole("alert")).textContent).toMatch(
-      /invalid run parameters/i,
+      /неверные параметры запуска/i,
     );
     expect(slot.getByRole("alert").parentElement?.className).toContain("p-4");
     expect(slot.rpcCalls).toEqual([]);

@@ -17,7 +17,7 @@ function renderToolbar(
     <TooltipProvider>
       <GitDiffToolbar
         selectionValue="working-tree"
-        selectionOptions={[{ value: "working-tree", label: "All changes" }]}
+        selectionOptions={[{ value: "working-tree", label: "Все изменения" }]}
         onSelectionChange={() => undefined}
         isSelectorDisabled={isStatsLoading}
         stats={{ filesCount: 0, insertions: 0, deletions: 0 }}
@@ -31,7 +31,7 @@ function renderToolbar(
         onFileFilterChange={() => undefined}
         areAllFilesCollapsed={false}
         isCollapseAllDisabled
-        collapseAllDisabledReason={isStatsLoading ? null : "No changes"}
+        collapseAllDisabledReason={isStatsLoading ? null : "Нет изменений"}
         onToggleAllCollapsed={() => undefined}
         displayMode="unified"
         onDisplayModeChange={() => undefined}
@@ -49,14 +49,14 @@ it("keeps the disabled action name while skeletons report loading", async () => 
   const onToggleAllCollapsed = vi.fn();
   renderToolbar(true, { onToggleAllCollapsed });
 
-  expect(screen.queryByText("No changes")).toBeNull();
-  expect(screen.getByRole("status", { name: "Loading changes" })).toBeTruthy();
-  const button = screen.getByRole("button", { name: "Collapse all files" });
-  const trigger = screen.getByRole("group", { name: "Collapse all files" });
+  expect(screen.queryByText("Нет изменений")).toBeNull();
+  expect(screen.getByRole("status", { name: "Загрузка изменений" })).toBeTruthy();
+  const button = screen.getByRole("button", { name: "Свернуть все файлы" });
+  const trigger = screen.getByRole("group", { name: "Свернуть все файлы" });
   expect(button.hasAttribute("disabled")).toBe(true);
   fireEvent.pointerMove(trigger, { pointerType: "mouse" });
   expect((await screen.findByRole("tooltip")).textContent).toBe(
-    "Collapse all files",
+    "Свернуть все файлы",
   );
   trigger.focus();
   expect(document.activeElement).toBe(trigger);
@@ -68,16 +68,16 @@ it("keeps the disabled action name while skeletons report loading", async () => 
 it("reports no changes once an empty file list has loaded", () => {
   renderToolbar(false);
 
-  expect(screen.getByText("No changes")).toBeTruthy();
-  expect(screen.queryByRole("status", { name: "Loading changes" })).toBeNull();
+  expect(screen.getByText("Нет изменений")).toBeTruthy();
+  expect(screen.queryByRole("status", { name: "Загрузка изменений" })).toBeNull();
 });
 
-it.each(["No changes", "No files match filter"] as const)(
+it.each(["Нет изменений", "Нет файлов по фильтру"] as const)(
   "explains %s on hover and keyboard focus without activating the disabled button",
   async (collapseAllDisabledReason) => {
     const onToggleAllCollapsed = vi.fn();
     renderToolbar(false, { collapseAllDisabledReason, onToggleAllCollapsed });
-    const button = screen.getByRole("button", { name: "Collapse all files" });
+    const button = screen.getByRole("button", { name: "Свернуть все файлы" });
     const trigger = screen.getByRole("group", {
       name: collapseAllDisabledReason,
     });
@@ -98,8 +98,8 @@ it.each(["No changes", "No files match filter"] as const)(
 );
 
 it.each([
-  { areAllFilesCollapsed: false, label: "Collapse all files" },
-  { areAllFilesCollapsed: true, label: "Expand all files" },
+  { areAllFilesCollapsed: false, label: "Свернуть все файлы" },
+  { areAllFilesCollapsed: true, label: "Развернуть все файлы" },
 ])(
   "keeps the enabled $label action and tooltip",
   async ({ areAllFilesCollapsed, label }) => {

@@ -13,7 +13,7 @@ function Composer() {
 export default definePluginApp((app) => {
   app.slots.experimental_composer({
     id: "composer",
-    title: "Composer",
+    title: "Поле ввода",
     description:
       "bb's composer: rich text, @-mentions, slash commands, voice and attachments.",
     component: Composer,

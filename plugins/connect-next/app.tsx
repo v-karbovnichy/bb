@@ -29,13 +29,13 @@ const STATE_COPY: Record<
   ConnectNextStatus["state"],
   { label: string; tone: Tone }
 > = {
-  off: { label: "Off", tone: "muted" },
-  "signed-out": { label: "Waiting for a bb account sign-in", tone: "muted" },
-  connecting: { label: "Connecting…", tone: "warn" },
-  connected: { label: "Connected", tone: "ok" },
-  refused: { label: "The gate refused this bb's credential", tone: "bad" },
-  offline: { label: "Can't reach the gate", tone: "warn" },
-  error: { label: "Couldn't start the tunnel", tone: "bad" },
+  off: { label: "Выключено", tone: "muted" },
+  "signed-out": { label: "Ожидание входа в аккаунт bb", tone: "muted" },
+  connecting: { label: "Подключение…", tone: "warn" },
+  connected: { label: "Подключено", tone: "ok" },
+  refused: { label: "Шлюз отклонил учётные данные bb", tone: "bad" },
+  offline: { label: "Нет связи со шлюзом", tone: "warn" },
+  error: { label: "Не удалось запустить туннель", tone: "bad" },
 };
 
 const SHARE_TONE: Record<ConnectNextStatus["shares"][number]["state"], Tone> = {
@@ -63,12 +63,12 @@ const MACHINE_STATE_COPY: Record<
   ConnectNextStatus["machines"][number]["state"],
   { label: string; tone: Tone }
 > = {
-  idle: { label: "Idle", tone: "muted" },
-  connecting: { label: "Connecting…", tone: "warn" },
-  connected: { label: "Connected", tone: "ok" },
-  refused: { label: "Credential refused", tone: "bad" },
-  offline: { label: "Can't reach the gate", tone: "warn" },
-  error: { label: "Couldn't start the tunnel", tone: "bad" },
+  idle: { label: "Ожидание", tone: "muted" },
+  connecting: { label: "Подключение…", tone: "warn" },
+  connected: { label: "Подключено", tone: "ok" },
+  refused: { label: "Учётные данные отклонены", tone: "bad" },
+  offline: { label: "Нет связи со шлюзом", tone: "warn" },
+  error: { label: "Не удалось запустить туннель", tone: "bad" },
 };
 
 function ShareList({
@@ -132,7 +132,7 @@ function useConnectNextStatus() {
         if (request !== latest.current) return;
         const next = asStatus(result);
         setStatus(next);
-        setLoadError(next === null ? "Unexpected status payload." : null);
+        setLoadError(next === null ? "Неожиданный формат данных о состоянии." : null);
       },
       (error: unknown) => {
         if (request !== latest.current) return;
@@ -169,12 +169,12 @@ function ConnectNextSettingsSection() {
   if (loadError !== null) {
     return (
       <p role="alert" className="text-sm text-destructive-text">
-        Failed to load connect next status: {loadError}
+        Не удалось загрузить состояние connect next: {loadError}
       </p>
     );
   }
   if (status === null) {
-    return <p className="text-sm text-muted-foreground">Loading...</p>;
+    return <p className="text-sm text-muted-foreground">Загрузка…</p>;
   }
 
   const copy = STATE_COPY[status.state];
@@ -200,7 +200,7 @@ function ConnectNextSettingsSection() {
       ) : null}
       {!status.enabled ? (
         <p className="text-xs text-muted-foreground">
-          Turn on the switch above, or run <code>bb connect-next on</code>.
+          Включите переключатель выше или выполните <code>bb connect-next on</code>.
         </p>
       ) : null}
       {status.lastError !== null && status.state !== "connected" ? (
@@ -208,8 +208,8 @@ function ConnectNextSettingsSection() {
       ) : null}
       {status.shares.length > 0 ? (
         <ShareList
-          title="Shared ports"
-          label="Shared ports on the next address"
+          title="Открытые порты"
+          label="Открытые порты по новому адресу"
           shares={status.shares}
         />
       ) : null}
@@ -230,16 +230,16 @@ function ConnectNextSettingsSection() {
           {machine.shares.length > 0 ? (
             <ShareList
               title={null}
-              label={`Shared ports from ${machine.hostName} on the next address`}
+              label={`Открытые порты машины ${machine.hostName} по новому адресу`}
               shares={machine.shares}
             />
           ) : null}
         </div>
       ))}
       <p className="text-xs text-muted-foreground">
-        Your bb connect address keeps working; both answer at once. Ports you
-        share with <code>bb connect expose</code>, from this bb's machine or
-        another enrolled machine, answer on the next address too.
+        Текущий адрес bb connect продолжает работать вместе с новым. Порты,
+        открытые командой <code>bb connect expose</code> на этой или другой
+        подключённой машине, также доступны по новому адресу.
       </p>
     </div>
   );
@@ -249,7 +249,7 @@ export default definePluginApp((app) => {
   app.slots.settingsSection({
     id: "connect-next",
     description:
-      "Beta: a second way in to this bb, through bb's new Fly gate at next.<your bb account's domain>.",
+      "Бета: дополнительный доступ к bb через новый шлюз Fly по адресу next.<домен вашего аккаунта bb>.",
     component: ConnectNextSettingsSection,
   });
 });

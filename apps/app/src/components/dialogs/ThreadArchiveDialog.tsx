@@ -88,16 +88,17 @@ export function ThreadArchiveDialogContent<
     >
       <DialogHeader>
         <DialogTitle>
-          {single ? "Archive thread?" : `Archive ${threads.length} threads?`}
+          {single ? "Архивировать чат?" : `Архивировать чаты (${threads.length})?`}
         </DialogTitle>
         <DialogDescription>
-          {stopsRunningWork ? "This will stop current work. " : null}
-          {single ? "Its" : "Their"}{" "}
+          {stopsRunningWork ? "Текущая задача будет остановлена. " : null}
           <span className="font-semibold">
             {formatChildThreadCount(childThreadCount)}
           </span>{" "}
-          will be archived too. Archived threads stay available and can be
-          unarchived.
+          {childThreadCount === 1
+            ? "тоже будет архивирован. "
+            : "тоже будут архивированы. "}
+          Архивные чаты остаются доступными, и их можно восстановить.
         </DialogDescription>
       </DialogHeader>
       <DialogFooter>
@@ -107,10 +108,10 @@ export function ThreadArchiveDialogContent<
           disabled={pending}
           onClick={() => onOpenChange(false)}
         >
-          Cancel
+          Отмена
         </Button>
         <Button type="submit" disabled={pending}>
-          Archive
+          Архивировать
         </Button>
       </DialogFooter>
     </form>

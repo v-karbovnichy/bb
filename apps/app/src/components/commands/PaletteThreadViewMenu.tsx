@@ -33,6 +33,10 @@ function sortLabel(value: PaletteThreadSort): string {
   );
 }
 
+function directionLabel(value: PaletteThreadSortDirection): string {
+  return value === "ascending" ? "по возрастанию" : "по убыванию";
+}
+
 export function PaletteThreadViewMenu({
   lifecycles,
   onLifecyclesChange,
@@ -74,8 +78,8 @@ export function PaletteThreadViewMenu({
           variant="ghost"
           size="sm"
           className="w-8 justify-center px-0 text-subtle-foreground"
-          aria-label={`Filter and sort: ${threadLifecycleFilterLabel(lifecycles)}, ${sortLabel(sort)}${
-            sort === "relevance" ? "" : `, ${sortDirection}`
+          aria-label={`Фильтр и сортировка: ${threadLifecycleFilterLabel(lifecycles)}, ${sortLabel(sort)}${
+            sort === "relevance" ? "" : `, ${directionLabel(sortDirection)}`
           }`}
         >
           <Icon
@@ -89,12 +93,12 @@ export function PaletteThreadViewMenu({
         side={isPointerCoarse ? "bottom" : "right"}
         align={isPointerCoarse ? "end" : "start"}
         sideOffset={isPointerCoarse ? undefined : sideOffset}
-        mobileTitle="Filter and sort"
+        mobileTitle="Фильтр и сортировка"
         onCloseAutoFocus={onCloseAutoFocus}
       >
-        <DropdownMenuGroup aria-label="Filter">
+        <DropdownMenuGroup aria-label="Фильтр">
           <DropdownMenuLabel className={MENU_SECTION_LABEL_CLASS}>
-            Filter
+            Фильтр
           </DropdownMenuLabel>
           <ThreadLifecycleFilterItems
             value={lifecycles}
@@ -102,9 +106,9 @@ export function PaletteThreadViewMenu({
           />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup aria-label="Sort by">
+        <DropdownMenuGroup aria-label="Сортировать по">
           <DropdownMenuLabel className={MENU_SECTION_LABEL_CLASS}>
-            Sort by
+            Сортировать по
           </DropdownMenuLabel>
           {PALETTE_THREAD_SORT_OPTIONS.map((option) => {
             const selected = option.value === sort;
@@ -123,7 +127,7 @@ export function PaletteThreadViewMenu({
                 aria-checked={selected}
                 aria-label={
                   selected && reversible
-                    ? `${option.label}, ${direction}. Sort ${nextDirection}`
+                    ? `${option.label}, ${directionLabel(direction)}. Сортировать ${directionLabel(nextDirection)}`
                     : option.label
                 }
                 onSelect={(event) => {

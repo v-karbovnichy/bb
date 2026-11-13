@@ -248,7 +248,7 @@ export function TimelineSelectionMenu({
       ? [
           {
             icon: "MessageSquarePlus" as const,
-            label: "Add to chat",
+            label: "Добавить в чат",
             onSelect: (currentSelection: MessageProseSelection) =>
               onAddToChat(
                 readSelectedMessageMarkdown() ?? currentSelection.text,

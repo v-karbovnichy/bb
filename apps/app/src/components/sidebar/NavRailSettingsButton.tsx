@@ -16,8 +16,8 @@ export function NavRailSettingsButton({
   const navigate = useNavigate();
   const settingsShortcut = useAppCommandShortcut("settings.open");
   const label = settingsShortcut
-    ? `Settings (${settingsShortcut.label})`
-    : "Settings";
+    ? `Настройки (${settingsShortcut.label})`
+    : "Настройки";
   return (
     <Tooltip>
       <TooltipTrigger asChild>

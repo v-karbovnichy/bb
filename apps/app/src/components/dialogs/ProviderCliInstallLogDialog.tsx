@@ -70,8 +70,8 @@ export function ProviderCliInstallLogDialogContent({
       <div className="relative overflow-hidden rounded-md border bg-background">
         <CopyButton
           text={state.log}
-          label="Copy setup log"
-          successMessage={`${state.displayName} setup log copied`}
+          label="Скопировать журнал настройки"
+          successMessage={`Журнал настройки ${state.displayName} скопирован`}
           className="absolute right-2 top-2 z-10 opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100"
           iconClassName="size-3"
         />

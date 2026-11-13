@@ -203,7 +203,7 @@ describe("thread-list plugin", () => {
       },
       rpc: { listPreferences: () => new Promise(() => undefined) },
     });
-    expect(screen.getByLabelText("Loading sidebar navigation")).not.toBeNull();
+    expect(screen.getByLabelText("Загрузка боковой панели")).not.toBeNull();
     expect(threadIds()).toEqual([]);
   });
 
@@ -213,7 +213,7 @@ describe("thread-list plugin", () => {
 
     await screen.findByText("Pinned thread");
     expect(rpcCalls.map((call) => call.method)).toEqual(["listPreferences"]);
-    expect(sectionHeaders()).toEqual(["Pinned", "Later", "Review", "Threads"]);
+    expect(sectionHeaders()).toEqual(["Закреплённые", "Later", "Review", "Чаты"]);
     expect(threadIds()).toEqual([
       "thr_pinned",
       "thr_later",
@@ -222,7 +222,7 @@ describe("thread-list plugin", () => {
       "thr_personal",
     ]);
     expect(
-      screen.getByRole("button", { name: "Collapse Parent thread threads" }),
+      screen.getByRole("button", { name: "Свернуть чаты Parent thread" }),
     ).not.toBeNull();
   });
 
@@ -286,7 +286,7 @@ describe("thread-list plugin", () => {
     renderList({ organizationMode: "machine" });
 
     await screen.findByText("Pinned thread");
-    expect(sectionHeaders()).toEqual(["Pinned", "Laptop", "No machine"]);
+    expect(sectionHeaders()).toEqual(["Закреплённые", "Laptop", "Без компьютера"]);
     const laptop = screen
       .getByTitle("Laptop")
       .closest("[data-sidebar-sticky-group]");
@@ -295,7 +295,7 @@ describe("thread-list plugin", () => {
       within(laptop as HTMLElement).getByText("Later thread"),
     ).not.toBeNull();
     const noMachine = screen
-      .getByTitle("No machine")
+      .getByTitle("Без компьютера")
       .closest("[data-sidebar-sticky-group]");
     expect(
       within(noMachine as HTMLElement).getByText("Personal thread"),
@@ -307,7 +307,7 @@ describe("thread-list plugin", () => {
     const { inspection } = renderList({ organizationMode: "machine" });
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "New thread in Laptop" }),
+      await screen.findByRole("button", { name: "Новый чат в Laptop" }),
     );
 
     expect(inspection.navigateCalls).toContainEqual({
@@ -340,10 +340,10 @@ describe("thread-list plugin", () => {
 
     await screen.findByText("Pinned thread");
     expect(sectionHeaders()).toEqual([
-      "Pinned",
+      "Закреплённые",
       "Laptop",
       "Studio Mac",
-      "No machine",
+      "Без компьютера",
     ]);
   });
 
@@ -352,7 +352,7 @@ describe("thread-list plugin", () => {
     renderList({ organizationMode: "project" });
 
     await screen.findByText("Pinned thread");
-    expect(sectionHeaders()).toEqual(["Pinned", "App", "Web", "Threads"]);
+    expect(sectionHeaders()).toEqual(["Закреплённые", "App", "Web", "Чаты"]);
     const appGroup = screen
       .getByTitle("App")
       .closest("[data-sidebar-sticky-group]") as HTMLElement;
@@ -363,7 +363,7 @@ describe("thread-list plugin", () => {
       .closest("[data-sidebar-sticky-group]") as HTMLElement;
     expect(within(webGroup).getByText("Later thread")).not.toBeNull();
     const threadsGroup = screen
-      .getByTitle("Threads")
+      .getByTitle("Чаты")
       .closest("[data-sidebar-sticky-group]") as HTMLElement;
     expect(within(threadsGroup).getByText("Personal thread")).not.toBeNull();
   });
@@ -401,10 +401,10 @@ describe("thread-list plugin", () => {
         },
       );
 
-      await screen.findByTitle("Threads");
+      await screen.findByTitle("Чаты");
       expect(threadIds()).toEqual(["thr_personal"]);
       expect(sectionHeaders()).toEqual(
-        includeStandardProjects ? ["App", "Web", "Threads"] : ["Threads"],
+        includeStandardProjects ? ["App", "Web", "Чаты"] : ["Чаты"],
       );
     },
   );
@@ -428,7 +428,7 @@ describe("thread-list plugin", () => {
       },
     });
     const link = await screen.findByRole("link", {
-      name: "Open Personal thread",
+      name: "Открыть Personal thread",
     });
     link.click();
     await waitFor(() => expect(listProps.onNavigate).toHaveBeenCalledOnce());

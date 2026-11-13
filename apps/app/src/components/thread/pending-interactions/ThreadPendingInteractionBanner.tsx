@@ -226,7 +226,7 @@ function PlanReviewRequestBanner({
 }: PlanReviewRequestBannerProps) {
   const { errorMessage, loadingDecision, submitDecision, submitDisabled } =
     useApprovalDecisionSubmission({
-      fallbackMessage: "Failed to resolve plan review",
+      fallbackMessage: "Не удалось завершить проверку плана",
       interaction,
       threadId,
     });
@@ -234,8 +234,8 @@ function PlanReviewRequestBanner({
   const { plan, planFilePath } = request.review;
   return (
     <PendingInteractionShell
-      label="Plan review"
-      title={approval.reason ?? "Ready to code?"}
+      label="Проверка плана"
+      title={approval.reason ?? "Готовы перейти к коду?"}
       expandedByDefault={!collapsedByDefault}
       errorMessage={errorMessage}
       testId="plan-review-banner"
@@ -292,7 +292,7 @@ function ApprovalPendingInteractionBanner({
 }: ApprovalPendingInteractionBannerProps) {
   const { errorMessage, loadingDecision, submitDecision, submitDisabled } =
     useApprovalDecisionSubmission({
-      fallbackMessage: "Failed to resolve pending interaction",
+      fallbackMessage: "Не удалось завершить ожидающее взаимодействие",
       interaction,
       threadId,
     });
@@ -303,7 +303,7 @@ function ApprovalPendingInteractionBanner({
 
   return (
     <PendingInteractionShell
-      label="Approval needed"
+      label="Требуется разрешение"
       title={view.title}
       expandedByDefault={!collapsedByDefault}
       errorMessage={errorMessage}
@@ -334,7 +334,7 @@ function ThreadUserQuestionPendingInteractionBanner({
   return (
     <PendingInteractionShell
       label={
-        questions.length === 1 ? "Question" : `${questions.length} questions`
+        questions.length === 1 ? "Вопрос" : `Вопросов: ${questions.length}`
       }
       expandedByDefault={!collapsedByDefault}
       testId="user-question-banner"
@@ -540,10 +540,10 @@ function CommandPreview({
           className="block w-full border-t border-border px-3 py-1.5 text-left text-xs text-muted-foreground hover:bg-state-hover hover:text-foreground"
         >
           {showsAllLines
-            ? "Show less"
+            ? "Показать меньше"
             : hiddenLineCount === 1
-              ? "Show 1 more line"
-              : `Show ${hiddenLineCount} more lines`}
+              ? "Показать ещё 1 строку"
+              : `Показать остальные строки (${hiddenLineCount})`}
         </button>
       ) : null}
       {detailLines.length > 0 ? (
@@ -582,7 +582,7 @@ function buildApprovalSubject({
           line.startsWith("Cwd: ") ? line.slice("Cwd: ".length) : line,
         );
       return {
-        title: payload.reason ?? "Do you want to run this command?",
+        title: payload.reason ?? "Выполнить эту команду?",
         body: command ? (
           <CommandPreview command={command} detailLines={detailLines} />
         ) : null,
@@ -596,8 +596,8 @@ function buildApprovalSubject({
         title:
           payload.reason ??
           (subject.kind === "file_change"
-            ? "Do you want to make these changes?"
-            : "Do you want to grant this permission?"),
+            ? "Внести эти изменения?"
+            : "Предоставить это разрешение?"),
         body:
           detailLines.length > 0 ? (
             <ApprovalDetailList
@@ -624,14 +624,14 @@ function labelForApprovalDecision(
   subjectKind: PendingInteractionApprovalSubject["kind"],
 ): string {
   if (subjectKind === "plan") {
-    return decision === "deny" ? "Keep planning" : "Approve plan";
+    return decision === "deny" ? "Продолжить планирование" : "Утвердить план";
   }
   switch (decision) {
     case "allow_once":
-      return "Allow once";
+      return "Разрешить один раз";
     case "allow_for_session":
-      return "Allow for session";
+      return "Разрешить на время сеанса";
     case "deny":
-      return "Deny";
+      return "Отклонить";
   }
 }

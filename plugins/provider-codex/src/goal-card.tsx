@@ -12,32 +12,32 @@ import {
 } from "./extension-kinds.js";
 
 const GOAL_STATUS_TITLES: Partial<Record<CodexGoalStatus, string>> = {
-  active: "Goal",
-  paused: "Goal paused",
-  blocked: "Goal blocked",
-  usageLimited: "Goal usage limited",
+  active: "Цель",
+  paused: "Цель приостановлена",
+  blocked: "Цель заблокирована",
+  usageLimited: "Лимит использования для цели исчерпан",
 };
 
 function formatDuration(seconds: number): string {
   if (seconds < 60) {
-    return `${Math.round(seconds)}s`;
+    return `${Math.round(seconds)} с`;
   }
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) {
     const rest = Math.round(seconds % 60);
-    return rest > 0 ? `${minutes}m ${rest}s` : `${minutes}m`;
+    return rest > 0 ? `${minutes} мин ${rest} с` : `${minutes} мин`;
   }
   const hours = Math.floor(minutes / 60);
   const restMinutes = minutes % 60;
-  return restMinutes > 0 ? `${hours}h ${restMinutes}m` : `${hours}h`;
+  return restMinutes > 0 ? `${hours} ч ${restMinutes} мин` : `${hours} ч`;
 }
 
 function formatTokenUsage(goal: CodexGoal): string {
   const used = goal.tokensUsed.toLocaleString();
   if (goal.tokenBudget === null) {
-    return `${used} tokens`;
+    return `${used} токенов`;
   }
-  return `${used} / ${goal.tokenBudget.toLocaleString()} tokens`;
+  return `${used} / ${goal.tokenBudget.toLocaleString()} токенов`;
 }
 
 function GoalCard({ threadId }: { threadId: string }) {
@@ -52,13 +52,13 @@ function GoalCard({ threadId }: { threadId: string }) {
   const objective = goal.objective.trim();
   return (
     <CollapsibleStackCard
-      label="Goal"
+      label="Цель"
       title={title}
       icon="Target"
       isActive={isActive}
       dismiss={{
-        label: isActive ? "Clear active Goal" : "Clear Goal",
-        failureMessage: "Failed to clear Goal.",
+        label: isActive ? "Удалить активную цель" : "Удалить цель",
+        failureMessage: "Не удалось удалить цель.",
         onDismiss: async () => {
           await sdk.threads.clearGoal({ threadId });
         },
@@ -66,7 +66,7 @@ function GoalCard({ threadId }: { threadId: string }) {
     >
       <div className="space-y-2 px-3 pb-2.5 pt-2">
         <p className="whitespace-pre-wrap text-xs leading-relaxed text-foreground/90">
-          {objective.length > 0 ? objective : "No goal objective."}
+          {objective.length > 0 ? objective : "Описание цели отсутствует."}
         </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">

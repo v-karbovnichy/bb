@@ -113,16 +113,16 @@ export function ProjectSelector({
     !allowNoProject && !allProjectsSelected && !selected ? projects[0] : null;
   const noProjectSelected = allowNoProject && value === null;
   const triggerLabel = isLoading
-    ? "Loading projects…"
+    ? "Загрузка проектов…"
     : (selected?.name ??
       fallback?.name ??
-      (allProjectsSelected ? "All projects" : undefined) ??
-      (noProjectSelected ? "No project" : "Work in a project"));
+      (allProjectsSelected ? "Все проекты" : undefined) ??
+      (noProjectSelected ? "Без проекта" : "Работать в проекте"));
   const compactTriggerLabel = isLoading
-    ? "Loading…"
+    ? "Загрузка…"
     : (selected?.name ??
       fallback?.name ??
-      (allProjectsSelected ? "All projects" : "No project"));
+      (allProjectsSelected ? "Все проекты" : "Без проекта"));
   const triggerIcon =
     isLoading || selected || fallback || allProjectsSelected
       ? "Folder"
@@ -131,8 +131,8 @@ export function ProjectSelector({
         : "FolderPlus";
   const createProjectAction = createProject;
   const createProjectLabel = createProjectAction?.isCreating
-    ? "Creating..."
-    : "New project";
+    ? "Создание..."
+    : "Новый проект";
   const showActionSeparator =
     projects.length > 0 &&
     (Boolean(createProjectAction) ||
@@ -157,7 +157,7 @@ export function ProjectSelector({
           type="button"
           variant={variant}
           size="sm"
-          aria-label={`Project: ${triggerLabel}`}
+          aria-label={`Проект: ${triggerLabel}`}
           aria-busy={isLoading || undefined}
           disabled={disabled}
           data-promptbox-project-control=""
@@ -193,8 +193,8 @@ export function ProjectSelector({
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        aria-label="Project"
-        mobileTitle="Project"
+        aria-label="Проект"
+        mobileTitle="Проект"
         onOpenAutoFocus={(event) => {
           event.preventDefault();
           if (showSearch) {
@@ -207,7 +207,7 @@ export function ProjectSelector({
       >
         <Command
           ref={commandRef}
-          label="Search projects"
+          label="Поиск проектов"
           shouldFilter={false}
           value={highlightedValue}
           onValueChange={setHighlightedValue}
@@ -222,8 +222,8 @@ export function ProjectSelector({
           {showSearch ? (
             <CommandInput
               ref={searchInputRef}
-              aria-label="Search projects"
-              placeholder="Search projects"
+              aria-label="Поиск проектов"
+              placeholder="Поиск проектов"
               value={searchQuery}
               onValueChange={setSearchQuery}
               className="h-8 text-xs"
@@ -232,7 +232,7 @@ export function ProjectSelector({
           <CommandList className="flex min-h-0 flex-1 flex-col overflow-hidden [&>[cmdk-list-sizer]]:flex [&>[cmdk-list-sizer]]:min-h-0 [&>[cmdk-list-sizer]]:flex-col">
             {projects.length > 0 ? (
               <CommandGroup
-                heading="Project"
+                heading="Проект"
                 className="flex min-h-0 flex-col pb-0 [&>[cmdk-group-heading]]:shrink-0 [&>[cmdk-group-items]]:flex [&>[cmdk-group-items]]:min-h-0 [&>[cmdk-group-items]]:flex-col"
               >
                 <div
@@ -272,7 +272,7 @@ export function ProjectSelector({
                   ))}
                   {showSearch && filteredProjects.length === 0 ? (
                     <div className="px-2 py-1.5 text-xs text-muted-foreground max-md:pointer-coarse:py-2">
-                      No projects found
+                      Проекты не найдены
                     </div>
                   ) : null}
                 </div>
@@ -284,7 +284,7 @@ export function ProjectSelector({
               <div className="shrink-0">
                 {showActionSeparator ? <CommandSeparator /> : null}
                 <CommandGroup
-                  heading={projects.length === 0 ? "Project" : undefined}
+                  heading={projects.length === 0 ? "Проект" : undefined}
                 >
                   {allProjectsValue !== undefined ? (
                     <CommandItem
@@ -298,7 +298,7 @@ export function ProjectSelector({
                         className="text-muted-foreground"
                         aria-hidden
                       />
-                      <span className="min-w-0 flex-1">All projects</span>
+                      <span className="min-w-0 flex-1">Все проекты</span>
                       {allProjectsSelected ? (
                         <Icon name="Check" aria-hidden />
                       ) : null}
@@ -334,7 +334,7 @@ export function ProjectSelector({
                         className="size-4 text-muted-foreground"
                         aria-hidden
                       />
-                      Don&apos;t work in a project
+                      Работать без проекта
                       <Icon
                         name="Check"
                         className={cn(

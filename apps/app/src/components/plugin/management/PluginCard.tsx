@@ -109,7 +109,7 @@ interface PluginCardAuthorProps {
 
 function pluginCardAuthorName(entry: PluginCardAuthorProps["entry"]): string {
   return entry.marketplace === "bb-official"
-    ? "BB Official"
+    ? "Официальный BB"
     : (entry.author?.name ?? entry.publisherLabel);
 }
 

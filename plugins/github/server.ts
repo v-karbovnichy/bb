@@ -22,8 +22,8 @@ const PR_PAGE = 50;
 const CLOSED_PR_PAGE = 30;
 
 const GH_HINT =
-  "Install the GitHub CLI (https://cli.github.com) and run `gh auth login`, " +
-  "then `bb plugin reload github`.";
+  "Установите GitHub CLI (https://cli.github.com), выполните `gh auth login`, " +
+  "затем `bb plugin reload github`.";
 
 const repoNameSchema = z.string().regex(/^[\w.-]+\/[\w.-]+$/);
 const itemNumberSchema = z.number().int().positive();
@@ -344,8 +344,7 @@ export function parseExtraRepos(raw: string): {
 
 function describeIgnoredExtraRepos(ignored: string[]): string {
   return (
-    `ignoring ${ignored.length} extraRepos ${ignored.length === 1 ? "entry" : "entries"} ` +
-    `that ${ignored.length === 1 ? "is" : "are"} not "owner/repo": ${ignored.join(", ")}`
+    `Пропущено записей extraRepos: ${ignored.length}. Ожидался формат owner/repo: ${ignored.join(", ")}`
   );
 }
 
@@ -418,7 +417,7 @@ function requireRepoName(value: string | undefined): string | undefined {
   if (value === undefined) return undefined;
   if (!isRepoName(value)) {
     throw new PluginCliError(
-      `Invalid repository "${value}"; expected owner/repo.`,
+      `Неверный репозиторий «${value}»; ожидался формат owner/repo.`,
       { code: "invalid_repository" },
     );
   }
@@ -545,15 +544,15 @@ export default async function plugin(bb: BbPluginApi) {
   const settings = bb.settings.define({
     extraRepos: {
       type: "string",
-      label: "Extra repositories",
+      label: "Дополнительные репозитории",
       description:
-        'Comma-separated "owner/repo" list to track in addition to repos discovered from BB projects.',
+        'Список «owner/repo» через запятую для отслеживания вместе с репозиториями проектов BB.',
       experimental_schema: z.string().superRefine((value, context) => {
         const { ignored } = parseExtraRepos(value);
         if (ignored.length > 0) {
           context.addIssue({
             code: "custom",
-            message: `Use "owner/repo" for every entry. Invalid: ${ignored.join(", ")}`,
+            message: `Используйте «owner/repo» для каждой записи. Неверные: ${ignored.join(", ")}`,
           });
         }
       }),
@@ -561,9 +560,9 @@ export default async function plugin(bb: BbPluginApi) {
     },
     defaultProject: {
       type: "project",
-      label: "Default BB project",
+      label: "Проект BB по умолчанию",
       description:
-        "Where agent threads spawn for repos that are not attached to a BB project.",
+        "Проект, в котором создаются чаты агентов для репозиториев без привязки к проекту BB.",
     },
   });
 
@@ -582,7 +581,7 @@ export default async function plugin(bb: BbPluginApi) {
         return candidate;
       } catch {}
     }
-    throw needsConfiguration(`GitHub CLI not found. ${GH_HINT}`);
+    throw needsConfiguration(`GitHub CLI не найден. ${GH_HINT}`);
   }
 
   async function gh(
@@ -621,7 +620,7 @@ export default async function plugin(bb: BbPluginApi) {
     }
     if (!hasCredentials) {
       ghState = "needs_configuration";
-      throw needsConfiguration(`GitHub CLI is not authenticated. ${GH_HINT}`);
+      throw needsConfiguration(`GitHub CLI не авторизован. ${GH_HINT}`);
     }
     ghState = "unavailable";
     throw ghUnavailable(
@@ -966,8 +965,8 @@ export default async function plugin(bb: BbPluginApi) {
     const { defaultProject } = await settings.get();
     if (defaultProject) return defaultProject;
     throw new Error(
-      `No BB project is attached to ${repo}. Create a project whose checkout has ` +
-        "that origin remote, or set the defaultProject plugin setting.",
+      `К ${repo} не привязан проект BB. Создайте проект с удалённым репозиторием origin ` +
+        "или задайте настройку плагина defaultProject.",
     );
   }
 
@@ -1626,7 +1625,7 @@ export default async function plugin(bb: BbPluginApi) {
 
   bb.ui.registerMentionProvider({
     id: "issue",
-    label: "GitHub issues",
+    label: "Задачи GitHub",
     triggers: ["@", "#"],
     search({ query }) {
       return mentionItems("issue", query);
@@ -1638,7 +1637,7 @@ export default async function plugin(bb: BbPluginApi) {
 
   bb.ui.registerMentionProvider({
     id: "pr",
-    label: "GitHub pull requests",
+    label: "Пул-реквесты GitHub",
     triggers: ["@", "#"],
     search({ query }) {
       return mentionItems("pr", query);
@@ -1678,21 +1677,21 @@ export default async function plugin(bb: BbPluginApi) {
     return cliCommand({
       summary:
         kind === "pr"
-          ? "List cached open pull requests"
-          : "List cached open issues",
+          ? "Показать открытые пул-реквесты из кеша"
+          : "Показать открытые задачи из кеша",
       description:
-        "Reads the local cache only; run `bb github sync` to refresh it from GitHub.",
+        "Читает только локальный кеш; выполните `bb github sync` для обновления данных GitHub.",
       positionals: [
         {
           name: "repo",
           description:
-            "Limit the listing to one owner/repo; omit for every tracked repository",
+            "Ограничить список одним owner/repo; пропустите для всех отслеживаемых репозиториев",
         },
       ],
       options: {
         json: {
           type: "boolean",
-          description: "Emit the cached rows as JSON instead of a text table",
+          description: "Вывести строки кеша в JSON вместо текстовой таблицы",
         },
       },
       run(input) {
@@ -1715,7 +1714,7 @@ export default async function plugin(bb: BbPluginApi) {
           if (items.length === 0) {
             return {
               exitCode: 0,
-              stdout: "Nothing cached. Run `bb github sync` first.",
+              stdout: "Кеш пуст. Сначала выполните `bb github sync`.",
             };
           }
           return {
@@ -1735,17 +1734,17 @@ export default async function plugin(bb: BbPluginApi) {
   bb.cli.register(
     defineCli({
       name: "github",
-      summary: "Browse tracked GitHub repos, issues, and PRs",
+      summary: "Просматривать отслеживаемые репозитории GitHub, задачи и PR",
       description:
-        "Tracked repositories come from attached projects' GitHub remotes plus the extraRepos setting.",
+        "Отслеживаемые репозитории берутся из удалённых репозиториев GitHub подключённых проектов и настройки extraRepos.",
       commands: {
         repos: cliCommand({
-          summary: "List tracked repositories",
+          summary: "Показать отслеживаемые репозитории",
           options: {
             json: {
               type: "boolean",
               description:
-                "Emit the repositories as JSON, including extraRepos entries that were ignored",
+                "Вывести репозитории в JSON, включая проигнорированные записи extraRepos",
             },
           },
           run(input) {
@@ -1772,7 +1771,7 @@ export default async function plugin(bb: BbPluginApi) {
                 return {
                   exitCode: 0,
                   stdout:
-                    "No tracked repos. Attach a project with a GitHub remote or set extraRepos.",
+                    "Нет отслеживаемых репозиториев. Подключите проект с удалённым репозиторием GitHub или задайте extraRepos.",
                   ...warning,
                 };
               }
@@ -1792,11 +1791,11 @@ export default async function plugin(bb: BbPluginApi) {
         issues: listCachedItemsCommand("issue"),
         prs: listCachedItemsCommand("pr"),
         sync: cliCommand({
-          summary: "Refresh the cache from GitHub now",
+          summary: "Обновить кеш из GitHub сейчас",
           options: {
             json: {
               type: "boolean",
-              description: "Emit the refreshed repo and item counts as JSON",
+              description: "Вывести количество обновлённых репозиториев и элементов в JSON",
             },
           },
           run(input) {
@@ -1806,7 +1805,7 @@ export default async function plugin(bb: BbPluginApi) {
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify({ ok: true, repos, items })
-                  : `Synced ${items} item(s) across ${repos} repo(s).`,
+                  : `Синхронизировано ${items} элементов в ${repos} репозиториях.`,
               };
             });
           },

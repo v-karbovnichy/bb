@@ -307,9 +307,9 @@ describe("live preview", () => {
     controller.abort();
     await expect(cancelled).rejects.toThrow("cancelled");
     preview.close();
-    await expect(closed).rejects.toThrow("stopped");
+    await expect(closed).rejects.toThrow("остановлен");
     await expect(preview.next(0, 10, never, "thumbnail")).rejects.toThrow(
-      "stopped",
+      "остановлен",
     );
     expect(browser.live()).toHaveLength(0);
   });

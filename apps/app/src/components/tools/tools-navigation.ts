@@ -25,19 +25,19 @@ interface ToolsSectionDefinition {
 const TOOLS_SECTIONS = {
   skills: {
     id: "skills",
-    label: "Skills",
+    label: "Навыки",
     to: getSkillsRoutePath(),
   },
   plugins: {
     id: "plugins",
-    label: "Plugins",
+    label: "Плагины",
     to: getPluginsRoutePath(),
   },
 } satisfies Record<ToolsSectionId, ToolsSectionDefinition>;
 
 const TOOLS_OWNED_COLLECTION_LABEL = {
-  skills: "My skills",
-  plugins: "Installed",
+  skills: "Мои навыки",
+  plugins: "Установленные",
 } as const satisfies Record<ToolsSectionId, string>;
 
 const TOOLS_OWNED_COLLECTION_VIEW = {
@@ -67,8 +67,8 @@ function resolvePluginCreateBreadcrumbs(
     return null;
   }
   return [
-    { label: "Plugins", to: getPluginsRoutePath() },
-    { label: "Create a plugin" },
+    { label: "Плагины", to: getPluginsRoutePath() },
+    { label: "Создать плагин" },
   ];
 }
 
@@ -110,25 +110,25 @@ const DETAIL_ROUTES = [
     section: "skills",
     collection: collectionCrumb(
       "skills",
-      "Browse",
+      "Обзор",
       getRegistrySkillsRoutePath(),
     ),
     param: "registrySkillId",
-    fallback: "Skill",
+    fallback: "Навык",
   },
   {
     pattern: SKILL_DETAIL_ROUTE_PATH,
     section: "skills",
     collection: collectionCrumb("skills"),
     param: "skillId",
-    fallback: "Skill",
+    fallback: "Навык",
   },
   {
     pattern: PLUGIN_DETAIL_ROUTE_PATH,
     section: "plugins",
     collection: collectionCrumb("plugins"),
     param: "pluginId",
-    fallback: "Plugin",
+    fallback: "Плагин",
   },
 ] as const;
 
@@ -146,7 +146,7 @@ export function resolveToolsBreadcrumbs(
     return pluginCreateBreadcrumbs;
   }
   if (pathname === REGISTRY_SKILLS_ROUTE_PATH) {
-    return [sectionCrumb("skills"), { label: "Browse" }];
+    return [sectionCrumb("skills"), { label: "Обзор" }];
   }
 
   for (const section of [TOOLS_SECTIONS.plugins, TOOLS_SECTIONS.skills]) {
@@ -157,7 +157,7 @@ export function resolveToolsBreadcrumbs(
           label:
             view === TOOLS_OWNED_COLLECTION_VIEW[section.id]
               ? TOOLS_OWNED_COLLECTION_LABEL[section.id]
-              : "Browse",
+              : "Обзор",
         },
       ];
     }
@@ -169,7 +169,7 @@ export function resolveToolsBreadcrumbs(
     const collection =
       detail.section === "plugins" &&
       view !== TOOLS_OWNED_COLLECTION_VIEW.plugins
-        ? collectionCrumb("plugins", "Browse", getPluginsRoutePath())
+        ? collectionCrumb("plugins", "Обзор", getPluginsRoutePath())
         : detail.collection;
     return [
       sectionCrumb(detail.section),
@@ -198,12 +198,12 @@ interface ResourcePageDefinition {
 export const PLUGIN_PAGES: readonly ResourcePageDefinition[] = [
   {
     id: "plugins-browse",
-    label: "Browse plugins",
+    label: "Обзор плагинов",
     to: TOOLS_SECTIONS.plugins.to,
   },
   {
     id: "plugins-installed",
-    label: "Installed plugins",
+    label: "Установленные плагины",
     to: `${TOOLS_SECTIONS.plugins.to}?view=installed`,
   },
 ];
@@ -211,7 +211,7 @@ export const PLUGIN_PAGES: readonly ResourcePageDefinition[] = [
 export const SKILL_PAGES: readonly ResourcePageDefinition[] = [
   {
     id: "skills-browse",
-    label: "Browse skills",
+    label: "Обзор навыков",
     to: TOOLS_SECTIONS.skills.to,
   },
   {
@@ -264,12 +264,12 @@ export function resolvePluginsWorkspaceHeaderMeta(
   if (pluginCreateBreadcrumbs !== null) {
     return { kind: "breadcrumbs", breadcrumbs: pluginCreateBreadcrumbs };
   }
-  return { kind: "section-title", title: "Plugins" };
+  return { kind: "section-title", title: "Плагины" };
 }
 
 export function resolveSkillsWorkspaceHeaderMeta(
   pathname: string,
 ): ResourceWorkspaceHeaderMeta | null {
   if (!isSkillsRoutePath(pathname)) return null;
-  return { kind: "section-title", title: "Skills" };
+  return { kind: "section-title", title: "Навыки" };
 }

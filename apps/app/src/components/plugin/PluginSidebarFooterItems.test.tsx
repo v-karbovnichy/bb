@@ -151,14 +151,14 @@ describe("PluginSidebarFooterItems", () => {
       "plugin:example/four",
     ]);
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Remove Mobile apps from footer" }),
+      screen.getByRole("button", { name: "Убрать Мобильные приложения с нижней панели" }),
     );
     expect(
-      screen.getByRole("button", { name: "Add Report a bug to footer" }),
+      screen.getByRole("button", { name: "Добавить Сообщить об ошибке на нижнюю панель" }),
     ).toHaveProperty("disabled", true);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Remove Action two from footer" }),
+      screen.getByRole("button", { name: "Убрать Action two с нижней панели" }),
     );
     expect(store.get(sidebarFooterHiddenAtom)).toEqual([
       "plugin:unloaded/action",
@@ -173,7 +173,7 @@ describe("PluginSidebarFooterItems", () => {
     ]);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Add Action two to footer" }),
+      screen.getByRole("button", { name: "Добавить Action two на нижнюю панель" }),
     );
     expect(footerIcons()).toEqual([
       "builtin:mobile",
@@ -183,13 +183,13 @@ describe("PluginSidebarFooterItems", () => {
       "plugin:example/two",
     ]);
     expect(
-      screen.getByRole("button", { name: "Add Report a bug to footer" }),
+      screen.getByRole("button", { name: "Добавить Сообщить об ошибке на нижнюю панель" }),
     ).toHaveProperty("disabled", true);
 
     act(() => store.set(sidebarFooterCapacityAtom, 6));
     expect(footerIcons()).toHaveLength(5);
     fireEvent.click(
-      screen.getByRole("button", { name: "Add Report a bug to footer" }),
+      screen.getByRole("button", { name: "Добавить Сообщить об ошибке на нижнюю панель" }),
     );
     expect(footerIcons()).toEqual([
       "builtin:mobile",
@@ -224,12 +224,12 @@ describe("PluginSidebarFooterItems", () => {
     renderWithProviders(<FooterHarness />, store);
     const openMore = () =>
       fireEvent.pointerDown(
-        screen.getByRole("button", { name: "More footer actions" }),
+        screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
         { button: 0, ctrlKey: false, pointerType: "mouse" },
       );
     openMore();
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Hide footer" }),
+      await screen.findByRole("menuitem", { name: "Скрыть нижнюю панель" }),
     );
     await waitFor(() =>
       expect(screen.queryByRole("button", { name: "Run action" })).toBeNull(),
@@ -244,7 +244,7 @@ describe("PluginSidebarFooterItems", () => {
     expect(
       await screen.findByRole("menuitem", { name: "Run action" }),
     ).toBeDefined();
-    fireEvent.click(screen.getByRole("menuitem", { name: "Show footer" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Показать нижнюю панель" }));
     await screen.findByRole("button", { name: "Run action" });
     expect(store.get(sidebarFooterHiddenAtom)).toEqual([
       "plugin:unloaded/action",
@@ -540,14 +540,14 @@ describe("PluginSidebarFooterItems", () => {
       store,
     );
     expect(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
     ).toBeDefined();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
       { button: 0, ctrlKey: false, pointerType: "mouse" },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Customize footer" }),
+      await screen.findByRole("menuitem", { name: "Настроить нижнюю панель" }),
     );
     await waitFor(() => expect(onCustomize).toHaveBeenCalledTimes(1));
     expect(screen.getByTestId("location").textContent).toBe("/");
@@ -558,12 +558,12 @@ describe("PluginSidebarFooterItems", () => {
       screen.getByRole("button", { name: "Provider usage" }),
     );
     fireEvent.pointerUp(
-      await screen.findByRole("menuitem", { name: "Customize footer" }),
+      await screen.findByRole("menuitem", { name: "Настроить нижнюю панель" }),
       { button: 2, pointerType: "mouse" },
     );
     expect(screen.getByTestId("location").textContent).toBe("/");
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Hide from footer" }),
+      await screen.findByRole("menuitem", { name: "Скрыть из нижней панели" }),
     );
     await waitFor(() => expect(screen.queryByText("Usage detail")).toBeNull());
     expect(store.get(sidebarFooterHiddenAtom)).toEqual([
@@ -572,7 +572,7 @@ describe("PluginSidebarFooterItems", () => {
     act(() => store.set(sidebarFooterCapacityAtom, null));
     expect(screen.queryByRole("button", { name: "Provider usage" })).toBeNull();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
       { button: 0, ctrlKey: false, pointerType: "mouse" },
     );
     fireEvent.click(
@@ -584,13 +584,13 @@ describe("PluginSidebarFooterItems", () => {
       expect(document.activeElement?.id).toBe("sidebar-footer-more"),
     );
     fireEvent.click(
-      screen.getByRole("switch", { name: "Show Provider usage in footer" }),
+      screen.getByRole("switch", { name: "Показывать Provider usage в нижней панели" }),
     );
     expect(
       screen.getByRole("button", { name: "Provider usage" }),
     ).toBeDefined();
     expect(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
     ).toBeDefined();
   });
 
@@ -616,7 +616,7 @@ describe("PluginSidebarFooterItems", () => {
     ]);
     renderWithProviders(<FooterHarness />, store);
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
       { button: 0, ctrlKey: false, pointerType: "mouse" },
     );
     fireEvent.click(
@@ -625,7 +625,7 @@ describe("PluginSidebarFooterItems", () => {
     expect(run).toHaveBeenCalledTimes(1);
     act(() => removePluginSlotRegistrations("example"));
     expect(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
     ).toBeDefined();
     act(() =>
       setPluginSlotRegistrations(
@@ -702,7 +702,7 @@ describe("PluginSidebarFooterItems", () => {
       "builtin:mobile",
     ]);
     expect(
-      screen.getByRole("link", { name: "Mobile apps" }).getAttribute("href"),
+      screen.getByRole("link", { name: "Мобильные приложения" }).getAttribute("href"),
     ).toBe("/settings/mobile");
     act(() =>
       store.set(sidebarFooterHiddenAtom, [
@@ -716,11 +716,11 @@ describe("PluginSidebarFooterItems", () => {
       0,
     );
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "More footer actions" }),
+      screen.getByRole("button", { name: "Дополнительные действия внизу панели" }),
       { button: 0, ctrlKey: false, pointerType: "mouse" },
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Report a bug" }),
+      await screen.findByRole("menuitem", { name: "Сообщить об ошибке" }),
     );
     expect(run).toHaveBeenCalledTimes(1);
   });

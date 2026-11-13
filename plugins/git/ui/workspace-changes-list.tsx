@@ -69,7 +69,7 @@ function WorkspaceChangesListItem<File extends WorkspaceChangedFile>({
         WORKSPACE_CHANGE_ROW_CLASS,
         "group w-full rounded px-1 text-left transition-colors hover:bg-state-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
       )}
-      aria-label={`Open ${file.path}`}
+      aria-label={`Открыть ${file.path}`}
       onClick={() => onFileClick(file)}
     >
       {rowContent}
@@ -84,7 +84,7 @@ export function WorkspaceChangesList<File extends WorkspaceChangedFile>({
   onFileClick,
 }: WorkspaceChangesListProps<File>) {
   if (files.length === 0) {
-    return <EmptyState message="No changed files detected." />;
+    return <EmptyState message="Изменённые файлы не найдены." />;
   }
 
   const omittedFilesLabel = formatOmittedChangedFilesLabel({

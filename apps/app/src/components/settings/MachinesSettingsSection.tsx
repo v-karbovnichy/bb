@@ -113,7 +113,7 @@ export function MachineRowContent({
   const navigate = useNavigate();
   const detailPath = getSettingsMachineRoutePath(host.id);
   const permission = PERMISSION_MODE_PRESENTATION[host.maxPermissionMode];
-  const projectLabel = `${projectCount} ${projectCount === 1 ? "project" : "projects"}`;
+  const projectLabel = `${projectCount} ${projectCount % 10 === 1 && projectCount % 100 !== 11 ? "проект" : projectCount % 10 >= 2 && projectCount % 10 <= 4 && (projectCount % 100 < 12 || projectCount % 100 > 14) ? "проекта" : "проектов"}`;
   const connectionLabel = machineStatusLabel({ host, now });
 
   return (
@@ -129,7 +129,7 @@ export function MachineRowContent({
         >
           <Link
             to={getSettingsMachineRoutePath(host.id)}
-            aria-label={`Open ${host.name}`}
+            aria-label={`Открыть ${host.name}`}
             className="flex min-w-0 flex-1 items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <div className="min-w-0 flex-1 space-y-1">
@@ -140,9 +140,9 @@ export function MachineRowContent({
                   nameClassName="text-sm font-medium text-foreground"
                 />
                 {isThisMachine ? (
-                  <SettingsBadge>this machine</SettingsBadge>
+                  <SettingsBadge>эта машина</SettingsBadge>
                 ) : null}
-                {showServerBadge ? <SettingsBadge>server</SettingsBadge> : null}
+                {showServerBadge ? <SettingsBadge>сервер</SettingsBadge> : null}
               </div>
               <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-subtle-foreground/75">
                 <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -166,7 +166,7 @@ export function MachineRowContent({
           </Link>
           <div className="flex shrink-0 items-center gap-1">
             <ResourceOverflowMenu
-              label={`${host.name} actions`}
+              label={`Действия с машиной ${host.name}`}
               items={machineActions({
                 host,
                 machineProvider,
@@ -289,7 +289,7 @@ export function MachinesSettingsSection() {
           onRetryUpdate={() =>
             retryHostUpdate.mutate(host.id, {
               onSuccess: () => {
-                appToast.success(`Update retry requested for ${host.name}`);
+                appToast.success(`Повторное обновление ${host.name} запрошено`);
               },
             })
           }
@@ -298,18 +298,18 @@ export function MachinesSettingsSection() {
           }
           onSuspend={() =>
             suspendHost.mutate(host.id, {
-              onSuccess: () => appToast.success(`${host.name} suspended`),
+              onSuccess: () => appToast.success(`Машина ${host.name} приостановлена`),
             })
           }
           onResume={() =>
             resumeHost.mutate(host.id, {
-              onSuccess: () => appToast.success(`${host.name} resumed`),
+              onSuccess: () => appToast.success(`Машина ${host.name} возобновлена`),
             })
           }
           onRetryCleanup={() =>
             retryHostCleanup.mutate(host.id, {
               onSuccess: () =>
-                appToast.success(`Cleanup retried for ${host.name}`),
+                appToast.success(`Очистка ${host.name} запущена повторно`),
             })
           }
           canMoveServerHere={
@@ -342,7 +342,7 @@ export function MachinesSettingsSection() {
   return (
     <>
       <SettingsSection
-        title="Machines"
+        title="Машины"
         bodyClassName="space-y-3 border-0 bg-transparent p-0"
         action={
           <Button
@@ -351,7 +351,7 @@ export function MachinesSettingsSection() {
             onClick={() => setAddDialogOpen(true)}
           >
             <Icon name="Plus" className="size-3.5" />
-            Add a machine
+            Добавить машину
           </Button>
         }
       >
@@ -361,8 +361,8 @@ export function MachinesSettingsSection() {
               singleAttentionHost !== undefined
                 ? singleAttentionHost.issue.label
                 : allAttentionHostsOffline
-                  ? `${attentionHosts.length} machines are offline`
-                  : `${attentionHosts.length} machines need attention`
+                  ? `Машин не в сети: ${attentionHosts.length}`
+                  : `Требуют внимания: ${attentionHosts.length}`
             }
           >
             {singleAttentionHost !== undefined ? (
@@ -380,10 +380,10 @@ export function MachinesSettingsSection() {
                     {allAttentionHostsOffline ? null : (
                       <p className="line-clamp-2 whitespace-pre-wrap text-xs text-muted-foreground">
                         {issue.offline
-                          ? "Offline"
+                          ? "Не в сети"
                           : host.lifecycle.message === null
-                            ? "Cleanup failed"
-                            : `Cleanup failed: ${host.lifecycle.message}`}
+                            ? "Не удалось очистить"
+                            : `Не удалось очистить: ${host.lifecycle.message}`}
                       </p>
                     )}
                   </li>
@@ -394,7 +394,7 @@ export function MachinesSettingsSection() {
         ) : null}
         <div
           role="note"
-          aria-label="About the bb server"
+          aria-label="О сервере bb"
           className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 px-4 py-3"
         >
           <Icon
@@ -403,18 +403,18 @@ export function MachinesSettingsSection() {
             aria-hidden
           />
           <div className="min-w-0 space-y-1 text-xs leading-relaxed text-subtle-foreground">
-            <p className="font-medium text-foreground">How machines connect</p>
+            <p className="font-medium text-foreground">Как подключаются машины</p>
             <p>
-              All your machines connect to one central bb server, where your
-              threads and settings are stored. Choose a machine that can stay
-              awake and online to run the server.
+              Все машины подключаются к одному серверу bb, на котором хранятся
+              чаты и настройки. Для сервера выберите машину, которая может
+              постоянно оставаться включённой и подключённой к сети.
             </p>
             {serverMoveEnabled ? (
               <p>
-                To change which machine runs the server, open the ⋯ menu on
-                another machine below and choose{" "}
+                Чтобы перенести сервер, откройте меню ⋯ у другой машины ниже и
+                выберите{" "}
                 <span className="font-medium text-foreground">
-                  Move server here
+                  Перенести сервер сюда
                 </span>
                 .
               </p>
@@ -428,9 +428,9 @@ export function MachinesSettingsSection() {
           )}
         >
           {hosts === undefined ? (
-            <p className="text-sm text-muted-foreground">Loading…</p>
+            <p className="text-sm text-muted-foreground">Загрузка…</p>
           ) : visibleHosts.length === 0 ? (
-            <p className="text-sm text-subtle-foreground">No machines yet.</p>
+            <p className="text-sm text-subtle-foreground">Пока нет машин.</p>
           ) : (
             renderMachineRows(visibleHosts)
           )}
@@ -450,7 +450,7 @@ export function MachinesSettingsSection() {
                 aria-hidden
               />
               <span>
-                {showAllMachines ? "Show fewer machines" : "Show all machines"}
+                {showAllMachines ? "Показать меньше машин" : "Показать все машины"}
               </span>
             </button>
           ) : null}
@@ -466,7 +466,7 @@ export function MachinesSettingsSection() {
           renameHost.isError
             ? getMutationErrorMessage({
                 error: renameHost.error,
-                fallbackMessage: "Couldn't rename the machine.",
+                fallbackMessage: "Не удалось переименовать машину.",
               })
             : null
         }

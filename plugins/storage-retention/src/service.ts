@@ -18,7 +18,7 @@ export function createService(bb: BbPluginApi) {
     disposed = true;
   });
   function requireActive() {
-    if (disposed) throw new Error("Storage & retention plugin is disabled.");
+    if (disposed) throw new Error("Плагин хранилища и хранения отключён.");
   }
   async function readPolicy() {
     const stored = await bb.storage.kv.get("policy");
@@ -101,7 +101,7 @@ export function createService(bb: BbPluginApi) {
           } catch (error) {
             run.failedCount++;
             bb.log.warn(
-              `Could not ${action} ${candidate.rootId}: ${error instanceof Error ? error.message : String(error)}`,
+              `Не удалось выполнить ${action} для ${candidate.rootId}: ${error instanceof Error ? error.message : String(error)}`,
             );
           }
         }

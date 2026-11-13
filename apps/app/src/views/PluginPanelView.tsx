@@ -34,8 +34,7 @@ export function PluginPanelView({
     return (
       <PageShell contentClassName="pt-[calc(var(--bb-app-chrome-row-height)+1rem)] md:pt-[calc(var(--bb-app-chrome-row-height)+1.25rem)]">
         <EmptyStatePanel className="rounded-lg p-6 text-sm">
-          This plugin panel is not available. The plugin may have been disabled
-          or removed.
+          Эта панель плагина недоступна. Возможно, плагин отключён или удалён.
         </EmptyStatePanel>
       </PageShell>
     );

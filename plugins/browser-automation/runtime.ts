@@ -76,13 +76,13 @@ export async function decodeOutput(
   let exitCode: number | null = null;
   for (const line of stdout.split("\n").filter(Boolean)) {
     if (exitCode !== null)
-      throw new Error("DevBrowser emitted data after completion");
+      throw new Error("DevBrowser передал данные после завершения");
     const frame = frameSchema.parse(JSON.parse(line));
     if (frame.type === "done") exitCode = frame.exitCode;
     else if (frame.type === "hello") {
       if (frame.version !== version)
         throw new Error(
-          `DevBrowser daemon reports version ${frame.version}, expected ${version}`,
+          `Демон DevBrowser сообщил версию ${frame.version}; ожидалась ${version}`,
         );
     } else if (frame.type === "stdout" || frame.type === "stderr")
       text.push(frame.data);
@@ -91,24 +91,24 @@ export async function decodeOutput(
       text.push(`${frame.name}: ${frame.message}`);
     else if (frame.type === "image") {
       if (images.length >= 4)
-        throw new Error("At most four screenshots may be returned per script");
+        throw new Error("Скрипт может вернуть не более четырёх снимков экрана");
       const root = await realpath(join(home, "tmp"));
       const path = await realpath(frame.path);
       const rel = relative(root, path);
       if (!rel || rel.startsWith("..") || isAbsolute(rel))
-        throw new Error("Screenshot escaped the session capture directory");
+        throw new Error("Снимок экрана находится вне папки снимков сеанса");
       const file = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
       try {
         const stat = await file.stat();
         if (!stat.isFile() || stat.size > 500_000)
-          throw new Error("Screenshot must be a JPEG smaller than 500 KB");
+          throw new Error("Снимок экрана должен быть JPEG размером менее 500 КБ");
         const bytes = await file.readFile();
         if (bytes[0] !== 0xff || bytes[1] !== 0xd8 || bytes[2] !== 0xff)
-          throw new Error("Only JPEG screenshots are supported");
+          throw new Error("Поддерживаются только снимки экрана в JPEG");
         imageBytes += bytes.length;
         if (imageBytes > 500_000)
           throw new Error(
-            "Combined screenshots exceed the 500 KB output budget",
+            "Общий размер снимков экрана превышает лимит 500 КБ",
           );
         images.push({
           path,
@@ -122,7 +122,7 @@ export async function decodeOutput(
     }
   }
   if (exitCode === null)
-    throw new Error("DevBrowser did not return a completion frame");
+    throw new Error("DevBrowser не сообщил о завершении");
   const endpoint = new URL(connectionUrl);
   let safeText = text
     .join("\n")
@@ -170,7 +170,7 @@ async function findChrome(dataDir: string): Promise<string> {
     } catch {}
   }
   throw new Error(
-    "Install Chrome/Chromium on this host or link its executable at the plugin data runtime/chrome path.",
+    "Установите Chrome/Chromium на этом хосте или создайте ссылку на исполняемый файл по пути данных плагина runtime/chrome.",
   );
 }
 
@@ -222,7 +222,7 @@ export async function createRuntime(args: {
       startup.throwIfAborted();
       if (processes.some((child) => !child.alive()))
         throw new Error(
-          "Browser runtime exited during startup; check Chrome installation and runtime dependencies.",
+          "Процесс браузера завершился при запуске; проверьте установку Chrome и необходимые компоненты.",
         );
       try {
         return await readFile(path, "utf8");
@@ -269,7 +269,7 @@ export async function createRuntime(args: {
       !["127.0.0.1", "localhost", "[::1]"].includes(endpoint.hostname)
     )
       throw new Error(
-        "Desktop connection must be a private loopback WebSocket on the selected host",
+        "Настольное подключение должно использовать локальный WebSocket на выбранном хосте",
       );
     processes.push(supervise(binary, ["daemon"], env));
     await waitForFile(join(home, "daemon.pid"));
@@ -287,7 +287,7 @@ export async function createRuntime(args: {
         ]);
         deadline.throwIfAborted();
         if (closed || processes.some((child) => !child.alive()))
-          throw new Error("Browser session stopped; open a new session");
+          throw new Error("Сеанс браузера остановлен; откройте новый сеанс");
         try {
           const stdout = await execute(
             binary,

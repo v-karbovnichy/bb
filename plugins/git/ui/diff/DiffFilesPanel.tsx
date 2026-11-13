@@ -194,7 +194,7 @@ export function DiffFilesPanel({
     return (
       <div className={cn(DIFF_FILES_SCROLL_SLOT_CLASS, "px-4 pb-3")}>
         <EmptyStatePanel className="rounded-lg">
-          No changed files match the current filters.
+          Изменённые файлы не соответствуют текущим фильтрам.
         </EmptyStatePanel>
       </div>
     );

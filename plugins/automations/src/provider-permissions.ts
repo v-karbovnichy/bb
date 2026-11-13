@@ -32,14 +32,14 @@ export async function resolvePermissionMode(
   const providers = await bb.sdk.providers.list(routing);
   const provider = providers.find((candidate) => candidate.id === providerId);
   if (provider === undefined || provider.available === false) {
-    throw new Error(`Provider ${providerId} is not available.`);
+    throw new Error(`Провайдер ${providerId} недоступен.`);
   }
   if (
     requested !== undefined &&
     !provider.capabilities.permissionModes.includes(requested)
   ) {
     throw new Error(
-      `Permission mode ${requested} is not supported by provider ${providerId}.`,
+      `Режим разрешений ${requested} не поддерживается провайдером ${providerId}.`,
     );
   }
   if (requested !== undefined) return requested;
@@ -50,6 +50,6 @@ export async function resolvePermissionMode(
     return "full";
   }
   throw new Error(
-    `Provider ${providerId} has no supported default permission mode.`,
+    `У провайдера ${providerId} нет поддерживаемого режима разрешений по умолчанию.`,
   );
 }

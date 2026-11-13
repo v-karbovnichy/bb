@@ -144,7 +144,7 @@ function ModalMachineInputsControl({
           type="button"
           variant="ghost"
           size="sm"
-          aria-label="Modal sandbox options"
+          aria-label="Параметры песочницы Modal"
           data-promptbox-shrinkable-control=""
           className={cn(
             OPTION_BASE_CLASS_NAME,
@@ -168,7 +168,7 @@ function ModalMachineInputsControl({
       >
         {options.presets.length > 1 ? (
           <>
-            <DropdownMenuLabel>Size preset</DropdownMenuLabel>
+            <DropdownMenuLabel>Размер песочницы</DropdownMenuLabel>
             {options.presets.map((preset) => (
               <ModalOptionItem
                 key={preset.name}
@@ -184,7 +184,7 @@ function ModalMachineInputsControl({
         ) : null}
         {options.images.length > 1 ? (
           <>
-            <DropdownMenuLabel>Image</DropdownMenuLabel>
+            <DropdownMenuLabel>Образ</DropdownMenuLabel>
             {options.images.map((image) => (
               <ModalOptionItem
                 key={image.name}
@@ -259,7 +259,7 @@ function LaunchOptionsSettings() {
   if (draft === null) {
     return error === null ? (
       <p className="text-sm text-muted-foreground" role="status">
-        Loading launch options…
+        Загрузка параметров запуска…
       </p>
     ) : (
       <p className="text-sm text-destructive-text" role="alert">
@@ -279,11 +279,12 @@ function LaunchOptionsSettings() {
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">
             <h3 className="text-sm font-medium text-foreground">
-              Sandbox sizes
+              Размеры песочниц
             </h3>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              One preset becomes the default; several add a picker to the
-              composer. With none, new sandboxes reserve 1 CPU and 2 GiB.
+              Один размер используется по умолчанию; если размеров несколько,
+              выбрать нужный можно при создании чата. Если размеров нет, новая
+              песочница получает 1 ЦП и 2 ГиБ памяти.
             </p>
           </div>
           <Button
@@ -297,7 +298,7 @@ function LaunchOptionsSettings() {
                 presets: [
                   ...draft.presets,
                   {
-                    name: nextName("Preset", draft.presets),
+                    name: nextName("Размер", draft.presets),
                     cpu: 1,
                     memoryMiB: 1024,
                   },
@@ -305,15 +306,15 @@ function LaunchOptionsSettings() {
               })
             }
           >
-            Add preset
+            Добавить размер
           </Button>
         </div>
         {draft.presets.length > 0 ? (
           <div className="mt-3 space-y-1.5">
             <div className="grid grid-cols-[minmax(0,1fr)_5rem_7rem_2rem] items-center gap-2 text-xs text-muted-foreground">
-              <span>Name</span>
+              <span>Название</span>
               <span>CPU</span>
-              <span>Memory (MiB)</span>
+              <span>Память (МиБ)</span>
               <span />
             </div>
             {draft.presets.map((preset, index) => (
@@ -322,15 +323,15 @@ function LaunchOptionsSettings() {
                 className="grid grid-cols-[minmax(0,1fr)_5rem_7rem_2rem] items-center gap-2"
               >
                 <Input
-                  aria-label={`Preset ${index + 1} name`}
+                  aria-label={`Название размера ${index + 1}`}
                   value={preset.name}
                   onChange={(event) =>
                     updatePreset(index, { ...preset, name: event.target.value })
                   }
-                  placeholder="Large"
+                  placeholder="Большой"
                 />
                 <Input
-                  aria-label={`${preset.name || `Preset ${index + 1}`} CPU`}
+                  aria-label={`${preset.name || `Размер ${index + 1}`} CPU`}
                   type="number"
                   min="0.001"
                   step="0.125"
@@ -343,7 +344,7 @@ function LaunchOptionsSettings() {
                   }
                 />
                 <Input
-                  aria-label={`${preset.name || `Preset ${index + 1}`} memory MiB`}
+                  aria-label={`${preset.name || `Размер ${index + 1}`}: память в МиБ`}
                   type="number"
                   min="1"
                   step="1"
@@ -359,7 +360,7 @@ function LaunchOptionsSettings() {
                   type="button"
                   size="icon"
                   variant="ghost"
-                  aria-label={`Remove ${preset.name || `preset ${index + 1}`}`}
+                  aria-label={`Удалить ${preset.name || `размер ${index + 1}`}`}
                   className="size-8 text-muted-foreground"
                   onClick={() =>
                     setDraft({
@@ -381,10 +382,10 @@ function LaunchOptionsSettings() {
       <section>
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">
-            <h3 className="text-sm font-medium text-foreground">Images</h3>
+            <h3 className="text-sm font-medium text-foreground">Образы</h3>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              Default is bundled and always first; several add a picker to the
-              composer.
+              Образ Default входит в комплект и всегда стоит первым. Если
+              образов несколько, нужный можно выбрать при создании чата.
             </p>
           </div>
         </div>
@@ -392,7 +393,7 @@ function LaunchOptionsSettings() {
           const index = Math.min(selectedImage, draft.images.length - 1);
           const image = draft.images[index];
           if (image === undefined) return null;
-          const label = image.name || `Image ${index + 1}`;
+          const label = image.name || `Образ ${index + 1}`;
           const bundled = index === 0;
           return (
             <div className="mt-3 space-y-2">
@@ -403,7 +404,7 @@ function LaunchOptionsSettings() {
                       type="button"
                       variant="outline"
                       size="sm"
-                      aria-label="Image"
+                      aria-label="Образ"
                       className={cn(OPTION_BASE_CLASS_NAME, "gap-1.5 px-2")}
                     >
                       <span className="min-w-0 truncate">{label}</span>
@@ -423,7 +424,7 @@ function LaunchOptionsSettings() {
                     {draft.images.map((entry, entryIndex) => (
                       <ModalOptionItem
                         key={entryIndex}
-                        label={entry.name || `Image ${entryIndex + 1}`}
+                        label={entry.name || `Образ ${entryIndex + 1}`}
                         selected={entryIndex === index}
                         onSelect={() => setSelectedImage(entryIndex)}
                       />
@@ -437,7 +438,7 @@ function LaunchOptionsSettings() {
                           images: [
                             ...draft.images,
                             {
-                              name: nextName("Image", draft.images),
+                              name: nextName("Образ", draft.images),
                               source: "dockerfile",
                               dockerfile: "FROM debian:bookworm-slim\n",
                             },
@@ -447,7 +448,7 @@ function LaunchOptionsSettings() {
                       }}
                     >
                       <Icon name="Plus" className="size-3.5" />
-                      Add image
+                      Добавить образ
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -464,7 +465,7 @@ function LaunchOptionsSettings() {
                             type="button"
                             variant="ghost"
                             size="sm"
-                            aria-label={`${label} source`}
+                            aria-label={`${label}: источник`}
                             className={cn(
                               OPTION_BASE_CLASS_NAME,
                               OPTION_INTERACTIVE_CLASS_NAME,
@@ -473,7 +474,7 @@ function LaunchOptionsSettings() {
                             <span className="min-w-0 truncate">
                               {image.source === "dockerfile"
                                 ? "Dockerfile"
-                                : "Modal image ID"}
+                                : "ID образа Modal"}
                             </span>
                             <Icon
                               name="ChevronDown"
@@ -500,7 +501,7 @@ function LaunchOptionsSettings() {
                             }
                           />
                           <ModalOptionItem
-                            label="Modal image ID"
+                            label="ID образа Modal"
                             selected={image.source === "image-id"}
                             onSelect={() =>
                               updateImage(index, {
@@ -527,7 +528,7 @@ function LaunchOptionsSettings() {
                           setSelectedImage(0);
                         }}
                       >
-                        Remove
+                        Удалить
                       </Button>
                     </div>
                   </>
@@ -535,11 +536,11 @@ function LaunchOptionsSettings() {
               </div>
               {bundled ? null : (
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs text-muted-foreground">Name</span>
+                  <span className="text-xs text-muted-foreground">Название</span>
                   <Input
-                    aria-label={`Image ${index + 1} name`}
+                    aria-label={`Название образа ${index + 1}`}
                     value={image.name}
-                    placeholder={`Image ${index + 1}`}
+                    placeholder={`Образ ${index + 1}`}
                     onChange={(event) =>
                       updateImage(index, { ...image, name: event.target.value })
                     }
@@ -563,7 +564,7 @@ function LaunchOptionsSettings() {
                 />
               ) : (
                 <Input
-                  aria-label={`${label} Modal image ID`}
+                  aria-label={`${label}: ID образа Modal`}
                   value={image.imageId}
                   onChange={(event) =>
                     updateImage(index, {
@@ -588,11 +589,11 @@ function LaunchOptionsSettings() {
             disabled={saving}
             onClick={() => void save()}
           >
-            {saving ? "Saving…" : "Save changes"}
+            {saving ? "Сохранение…" : "Сохранить изменения"}
           </Button>
           {error === null ? (
             <span className="text-xs text-muted-foreground">
-              Unsaved changes
+              Несохранённые изменения
             </span>
           ) : (
             <span role="alert" className="text-xs text-destructive-text">

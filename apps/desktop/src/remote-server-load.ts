@@ -22,14 +22,14 @@ function describeServerUrl(serverUrl: string): string {
   try {
     parsed = new URL(serverUrl);
   } catch {
-    return "the saved bb server";
+    return "сохранённый сервер bb";
   }
-  return `the bb server at ${parsed.origin}`;
+  return `сервер bb по адресу ${parsed.origin}`;
 }
 
 function formatLoadFailure(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
-  return ELECTRON_LOAD_ERROR_CODE.exec(message)?.[0] ?? "the page load failed";
+  return ELECTRON_LOAD_ERROR_CODE.exec(message)?.[0] ?? "не удалось загрузить страницу";
 }
 
 export async function loadRemoteServerPage(
@@ -48,14 +48,14 @@ export async function loadRemoteServerPage(
     );
     await args.loadStartupError({
       actions: [
-        { id: "retry", label: "Try again" },
-        { id: "choose-server", label: "Choose server…" },
+        { id: "retry", label: "Повторить" },
+        { id: "choose-server", label: "Выбрать сервер…" },
       ],
       details:
-        `${label.charAt(0).toUpperCase()}${label.slice(1)} did not answer. ` +
-        "Check that the machine is awake and reachable.",
+        `${label.charAt(0).toUpperCase()}${label.slice(1)} не ответил. ` +
+        "Убедитесь, что машина включена и доступна.",
       logs: "",
-      title: "Could not reach this bb server",
+      title: "Не удалось связаться с сервером bb",
     });
     return false;
   }

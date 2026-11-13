@@ -133,7 +133,7 @@ describe("PluginPermissionModePicker", () => {
     await waitFor(() => expect(onChange).toHaveBeenCalledWith("auto"));
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Permission mode" }),
+      screen.getByRole("button", { name: "Режим разрешений" }),
       { button: 0 },
     );
     const full = screen.getByRole("menuitem", { name: /Full Access/ });
@@ -225,7 +225,7 @@ describe("PluginPermissionModePicker", () => {
       { wrapper },
     );
 
-    const trigger = screen.getByRole("button", { name: "Permission mode" });
+    const trigger = screen.getByRole("button", { name: "Режим разрешений" });
     expect(trigger.textContent).toContain("Full Access");
     expect(trigger.hasAttribute("disabled")).toBe(true);
   });
@@ -259,7 +259,7 @@ describe("PluginPermissionModePicker", () => {
     );
 
     const trigger = await screen.findByRole("button", {
-      name: "Permission mode",
+      name: "Режим разрешений",
     });
     expect(trigger.hasAttribute("disabled")).toBe(true);
     await waitFor(() =>

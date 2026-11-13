@@ -8,13 +8,13 @@ import {
 import { policySchema } from "./contract.js";
 import type { Service } from "./service.js";
 
-const MACHINE = { type: "string", description: "Machine ID" } as const;
+const MACHINE = { type: "string", description: "ID машины" } as const;
 const YES = {
   type: "boolean",
-  description: "Confirm this destructive operation",
+  description: "Подтвердить безвозвратное действие",
 } as const;
 function required(value: string | undefined, name: string) {
-  if (!value) throw new Error(`Provide --${name}.`);
+  if (!value) throw new Error(`Укажите --${name}.`);
   return value;
 }
 function booleanSetting(
@@ -24,14 +24,14 @@ function booleanSetting(
 ) {
   if (value === undefined) return fallback;
   if (value !== "true" && value !== "false")
-    throw new Error(`Use true or false for --${flag}.`);
+    throw new Error(`Для --${flag} укажите true или false.`);
   return value === "true";
 }
 function days(value: string | undefined, fallback: number | null) {
   if (value === undefined) return fallback;
   if (value === "never") return null;
   if (!/^\d+$/.test(value))
-    throw new Error("Use a number of days (1–3650) or never.");
+    throw new Error("Укажите число дней (1–3650) или never.");
   return Number(value);
 }
 async function output(work: () => Promise<unknown>): Promise<PluginCliResult> {
@@ -55,14 +55,14 @@ export function registerCli(
   bb.cli.register(
     defineCli({
       name: "storage",
-      summary: "Inspect storage and manage thread retention (JSON output)",
+      summary: "Проверка хранилища и управление хранением чатов (вывод JSON)",
       root: cliCommand({
-        summary: "Show storage commands",
+        summary: "Показать команды хранилища",
         run: (input) => ({ exitCode: 0, stdout: input.help }),
       }),
       commands: {
         cleanup: cliCommand({
-          summary: "Start background cleanup; read progress with storage usage",
+          summary: "Начать фоновую очистку; ход выполнения смотрите в storage usage",
           options: {
             machine: MACHINE,
             kind: {
@@ -75,7 +75,7 @@ export function registerCli(
           run: ({ options }) =>
             output(async () => {
               if (!options.yes)
-                throw new Error("Pass --yes to confirm cleanup.");
+                throw new Error("Для подтверждения очистки укажите --yes.");
               const kind = options.kind;
               if (
                 kind !== "orphans" &&
@@ -84,7 +84,7 @@ export function registerCli(
                 kind !== "externalWorktrees"
               )
                 throw new Error(
-                  "Use --kind orphans, development, worktrees, or externalWorktrees.",
+                  "Для --kind укажите orphans, development, worktrees или externalWorktrees.",
                 );
               await storage.startCleanup({
                 hostId: required(options.machine, "machine"),
@@ -95,28 +95,28 @@ export function registerCli(
         }),
         retention: cliCommand({
           summary:
-            "Show policy and last run, preview thresholds, or save with --save --yes",
+            "Показать политику и последнюю проверку, просмотреть сроки или сохранить с --save --yes",
           options: {
             "archive-after": {
               type: "string",
-              description: "Idle days before archiving, or never",
+              description: "Дней без активности до архивирования или never",
             },
             "delete-after": {
               type: "string",
-              description: "Archived days before deleting, or never",
+              description: "Дней в архиве до удаления или never",
             },
             "delete-storage-on-archive": {
               type: "string",
-              description: "Delete thread storage on archive: true or false",
+              description: "Удалять файлы чата при архивировании: true или false",
             },
             "delete-dev-data-on-checkout-removal": {
               type: "string",
               description:
-                "Delete development data for missing checkouts: true or false",
+                "Удалять данные разработки без рабочего дерева: true или false",
             },
             save: {
               type: "boolean",
-              description: "Save the supplied settings",
+              description: "Сохранить указанные настройки",
             },
             yes: YES,
           },
@@ -149,7 +149,7 @@ export function registerCli(
               if (input.options.save) {
                 if (!input.options.yes)
                   throw new Error(
-                    "Preview first, then pass --save --yes to confirm the policy.",
+                    "Сначала просмотрите политику, затем укажите --save --yes для подтверждения.",
                   );
                 return service.configure(policy);
               }
@@ -165,13 +165,13 @@ export function registerCli(
         }),
         usage: cliCommand({
           summary:
-            "Read cached machine usage; --rescan starts a background scan, rerun to see results",
+            "Показать сохранённые данные об использовании машины; --rescan начнёт фоновую проверку, повторите команду для результатов",
           options: {
             machine: MACHINE,
             rescan: {
               type: "boolean",
               description:
-                "Start a scan of --machine, or of every online machine",
+                "Начать проверку --machine или всех машин в сети",
             },
           },
           run: (input) =>
@@ -188,13 +188,13 @@ export function registerCli(
             }),
         }),
         "remove-orphans": cliCommand({
-          summary: "Remove orphaned storage from the last scan",
+          summary: "Удалить осиротевшие файлы, найденные при последней проверке",
           options: { machine: MACHINE, yes: YES },
           run: (input) =>
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to permanently remove orphaned storage.",
+                  "Для безвозвратного удаления осиротевших файлов укажите --yes.",
                 );
               return storage.removeOrphans({
                 hostId: required(input.options.machine, "machine"),
@@ -203,13 +203,13 @@ export function registerCli(
         }),
         "clear-large-files": cliCommand({
           summary:
-            "Delete files of 10 MB or more from archived threads on --machine, or on every scanned online machine",
+            "Удалить файлы размером от 10 МБ в архивных чатах на --machine или на всех проверенных машинах в сети",
           options: { machine: MACHINE, yes: YES },
           run: (input) =>
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to permanently delete large files from archived threads.",
+                  "Для безвозвратного удаления больших файлов архивных чатов укажите --yes.",
                 );
               return storage.clearLargeFiles({
                 hostId: input.options.machine ?? null,
@@ -217,7 +217,7 @@ export function registerCli(
             }),
         }),
         "retry-worktree-cleanup": cliCommand({
-          summary: "Retry cleanup of leftover worktrees",
+          summary: "Повторить очистку оставшихся рабочих деревьев",
           options: { machine: MACHINE },
           run: (input) =>
             output(async () => {
@@ -228,18 +228,18 @@ export function registerCli(
         }),
         "remove-external-worktrees": cliCommand({
           summary:
-            "Remove git worktrees of project repositories that BB did not create, keeping branches and skipping worktrees with uncommitted changes, locked worktrees, or commits on no branch",
+            "Удалить рабочие деревья git в репозиториях проектов, созданные вне BB; ветки сохранятся, а деревья с незакоммиченными изменениями, блокировкой или коммитами вне веток будут пропущены",
           options: {
             machine: MACHINE,
             path: {
               type: "string",
               description:
-                "Remove only this worktree path from the last scan (default: every worktree created outside BB)",
+                "Удалить только это рабочее дерево из последней проверки (по умолчанию — все деревья, созданные вне BB)",
             },
             force: {
               type: "boolean",
               description:
-                "With --path, also remove a locked worktree or one with uncommitted changes or commits on no branch, discarding them",
+                "С --path также удалить заблокированное дерево или дерево с незакоммиченными изменениями либо коммитами вне веток, потеряв эти данные",
             },
             yes: YES,
           },
@@ -247,7 +247,7 @@ export function registerCli(
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to permanently delete these worktree checkouts.",
+                  "Для безвозвратного удаления этих рабочих деревьев укажите --yes.",
                 );
               const hostId = required(input.options.machine, "machine");
               if (input.options.path === undefined) {
@@ -263,16 +263,16 @@ export function registerCli(
             }),
         }),
         "clear-thread": cliCommand({
-          summary: "Empty a stopped thread's storage directory",
+          summary: "Очистить папку файлов остановленного чата",
           options: {
-            thread: { type: "string", description: "Thread ID" },
+            thread: { type: "string", description: "ID чата" },
             yes: YES,
           },
           run: (input) =>
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to permanently clear thread storage.",
+                  "Для безвозвратного удаления файлов чата укажите --yes.",
                 );
               return storage.clearThread({
                 threadId: required(input.options.thread, "thread"),
@@ -281,13 +281,13 @@ export function registerCli(
         }),
         "clear-archived-files": cliCommand({
           summary:
-            "Clear all stored files from archived, stopped, unpinned threads on a machine",
+            "Удалить все файлы архивных, остановленных и незакреплённых чатов на машине",
           options: { machine: MACHINE, yes: YES },
           run: (input) =>
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to permanently clear archived thread files.",
+                  "Для безвозвратного удаления файлов архивных чатов укажите --yes.",
                 );
               return storage.clearArchivedFiles({
                 hostId: required(input.options.machine, "machine"),
@@ -296,13 +296,13 @@ export function registerCli(
         }),
         "remove-dev-instances": cliCommand({
           summary:
-            "Remove ~/.bb-dev instances whose source checkout no longer exists, stopping servers still running from them",
+            "Удалить экземпляры ~/.bb-dev без исходного рабочего дерева, предварительно остановив работающие серверы",
           options: {
             machine: MACHINE,
             instance: {
               type: "string",
               description:
-                "Remove only this ~/.bb-dev entry, stopping its dev server first if it is running (default: every instance with a missing checkout)",
+                "Удалить только эту запись ~/.bb-dev, предварительно остановив её сервер разработки (по умолчанию — все экземпляры без рабочего дерева)",
             },
             yes: YES,
           },
@@ -310,7 +310,7 @@ export function registerCli(
             output(async () => {
               if (!input.options.yes)
                 throw new Error(
-                  "Pass --yes to stop their servers and permanently remove development instance data.",
+                  "Для остановки серверов и безвозвратного удаления данных экземпляров разработки укажите --yes.",
                 );
               return storage.removeDevInstances({
                 hostId: required(input.options.machine, "machine"),

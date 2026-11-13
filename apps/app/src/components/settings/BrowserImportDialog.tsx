@@ -150,64 +150,64 @@ export function BrowserImportDialog({
         {step.step === "fullDiskAccess" ? (
           <>
             <DialogHeader>
-              {title(`Allow Full Disk Access for ${source.name}`)}
+              {title(`Разрешите полный доступ к диску для ${source.name}`)}
               <DialogDescription>
-                {source.name} keeps its cookies in a protected folder. Turn on
-                Full Disk Access for BB in System Settings → Privacy &amp;
-                Security, then come back. You can turn it off again after the
-                import.
+                {source.name} хранит файлы cookie в защищённой папке. Включите
+                полный доступ к диску для BB в Системных настройках →
+                Конфиденциальность и безопасность, затем вернитесь сюда. После
+                импорта доступ можно отключить.
               </DialogDescription>
             </DialogHeader>
             {step.checked ? (
               <p className="text-xs text-destructive-text">
-                Full Disk Access is still off. macOS may require quitting and
-                reopening BB before the grant applies.
+                Полный доступ к диску всё ещё выключен. Возможно, потребуется
+                закрыть и снова открыть BB, чтобы macOS применила разрешение.
               </p>
             ) : null}
             <DialogFooter>
               <Button variant="outline" onClick={onClose}>
-                Cancel
+                Отмена
               </Button>
               {desktopBrowser.openFullDiskAccessSettings ? (
                 <Button
                   variant="outline"
                   onClick={() => desktopBrowser.openFullDiskAccessSettings?.()}
                 >
-                  Open System Settings
+                  Открыть системные настройки
                 </Button>
               ) : null}
-              <Button onClick={recheck}>I've turned it on</Button>
+              <Button onClick={recheck}>Я включил доступ</Button>
             </DialogFooter>
           </>
         ) : step.step === "checking" ? (
           <DialogHeader>
-            {title(`Checking ${source.name}…`)}
-            <DialogDescription>This only takes a moment.</DialogDescription>
+            {title(`Проверка ${source.name}…`)}
+            <DialogDescription>Это займёт всего минуту.</DialogDescription>
           </DialogHeader>
         ) : step.step === "importing" ? (
           <DialogHeader>
-            {title(`Importing from ${source.name}…`)}
+            {title(`Импорт из ${source.name}…`)}
             <DialogDescription>
-              Reading and decrypting cookies. macOS may ask for Keychain access.
+              Чтение и расшифровка файлов cookie. macOS может запросить доступ к связке ключей.
             </DialogDescription>
           </DialogHeader>
         ) : step.step === "blocked" ? (
           <>
             <DialogHeader>
-              {title(`Can't import from ${source.name}`)}
+              {title(`Не удалось импортировать из ${source.name}`)}
               <DialogDescription>
                 {DESKTOP_BROWSER_IMPORT_FAILURE_COPY[step.reason]}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <Button variant="outline" onClick={onClose}>
-                Close
+                Закрыть
               </Button>
               {isRetryableDesktopBrowserImportReason(step.reason) ? (
                 <Button onClick={recheck}>
                   {step.reason === "browserRunning"
-                    ? "I've quit it"
-                    : "Try again"}
+                    ? "Я закрыл браузер"
+                    : "Повторить"}
                 </Button>
               ) : null}
             </DialogFooter>
@@ -215,14 +215,14 @@ export function BrowserImportDialog({
         ) : (
           <>
             <DialogHeader>
-              {title(`Import from ${source.name}`)}
+              {title(`Импорт из ${source.name}`)}
               <DialogDescription>
-                Which profile's cookies should be copied into the BB browser?
+                Из какого профиля скопировать файлы cookie в браузер BB?
               </DialogDescription>
             </DialogHeader>
             <div
               role="radiogroup"
-              aria-label="Source profile"
+              aria-label="Исходный профиль"
               className="flex flex-col gap-1.5"
             >
               {source.profiles.map((profile) => {
@@ -265,20 +265,20 @@ export function BrowserImportDialog({
               })}
             </div>
             <p className="text-xs text-subtle-foreground">
-              {source.name} must stay closed during the import. macOS may ask
-              for Keychain access to its encryption key; choose Allow.
+              Во время импорта {source.name} должен быть закрыт. macOS может
+              запросить доступ к ключу шифрования в связке ключей; нажмите «Разрешить».
             </p>
             <DialogFooter>
               <Button variant="outline" onClick={onClose}>
-                Cancel
+                Отмена
               </Button>
               <Button
                 onClick={runImport}
                 disabled={sourceProfileDirectory === null}
               >
                 {selectedProfile?.cookieCount !== undefined
-                  ? `Import ${formatCookieCount(selectedProfile.cookieCount)}`
-                  : "Import"}
+                  ? `Импортировать · ${formatCookieCount(selectedProfile.cookieCount)}`
+                  : "Импортировать"}
               </Button>
             </DialogFooter>
           </>

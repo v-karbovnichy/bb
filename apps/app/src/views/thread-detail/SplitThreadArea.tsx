@@ -1207,7 +1207,7 @@ function StandalonePaneContent({
         HEADER_PANE_ACTION_ICON_BUTTON_CLASS,
         CHROME_SUBTLE_ICON_BUTTON_FOREGROUND_CLASS,
       )}
-      aria-label="Close pane"
+      aria-label="Закрыть панель"
       onClick={onRequestClose}
     >
       <Icon name="ClosePluginPane" />
@@ -1298,7 +1298,7 @@ function NonThreadPaneContent({
   const panelChrome = panelEntry?.chrome;
   const label =
     panelChrome?.title ??
-    (content.kind === "plugin-detail" ? "Extension" : "New thread");
+    (content.kind === "plugin-detail" ? "Расширение" : "Новый чат");
   const handlePointerDown = (event: ReactPointerEvent) => {
     if (
       event.target instanceof Element &&
@@ -1320,7 +1320,7 @@ function NonThreadPaneContent({
             HEADER_PANE_ACTION_ICON_BUTTON_CLASS,
             CHROME_SUBTLE_ICON_BUTTON_FOREGROUND_CLASS,
           )}
-          aria-label="Close pane"
+          aria-label="Закрыть панель"
           onClick={onRequestClose}
         >
           <Icon
@@ -1403,8 +1403,8 @@ function NonThreadPaneContent({
                   )}
                 >
                   {content.kind === "plugin-detail"
-                    ? "Extension"
-                    : "New thread"}
+                    ? "Расширение"
+                    : "Новый чат"}
                 </p>
               )}
             </div>

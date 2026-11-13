@@ -121,7 +121,7 @@ function Blocks({ blocks }: { blocks: ChangelogBlock[] }) {
 }
 
 function pluralCommits(count: number): string {
-  return `${String(count)} new commit${count === 1 ? "" : "s"} on main`;
+  return `Новых коммитов в main: ${count}`;
 }
 
 function IncomingCommits({ update }: { update: SourceUpdateNotes }) {
@@ -154,7 +154,7 @@ function IncomingCommits({ update }: { update: SourceUpdateNotes }) {
         );
       })}
       {remaining > 0 ? (
-        <li className="pl-3">and {String(remaining)} more</li>
+        <li className="pl-3">и ещё {String(remaining)}</li>
       ) : null}
     </ul>
   );
@@ -199,7 +199,7 @@ export function ReleaseNotesPanel({
   return (
     <section
       id={id}
-      aria-label={`bb ${version} changelog`}
+      aria-label={`Список изменений bb ${version}`}
       data-updates-domain="release-notes"
       className="bg-sidebar px-4 py-3 text-xs leading-relaxed text-muted-foreground"
     >
@@ -216,7 +216,7 @@ export function ReleaseNotesPanel({
         </div>
       ) : releaseMeta === undefined ? (
         <h3 className="mb-2 text-xs font-medium text-foreground">
-          What&apos;s new in bb {notesVersion}
+          Что нового в bb {notesVersion}
         </h3>
       ) : (
         <div className="mb-2">
@@ -231,10 +231,10 @@ export function ReleaseNotesPanel({
       {sourceUpdate === null && entry === null ? (
         <p>
           {changelogQuery.isPending
-            ? "Loading the changelog…"
+            ? "Загрузка списка изменений…"
             : changelogQuery.isError
-              ? "Couldn't load the changelog."
-              : `bb ${version} has no changelog in the app.`}
+              ? "Не удалось загрузить список изменений."
+              : `Для bb ${version} нет списка изменений в приложении.`}
         </p>
       ) : null}
       {sourceUpdate !== null || entry !== null ? (
@@ -272,7 +272,7 @@ export function ReleaseNotesPanel({
       <div className="mt-2 flex items-baseline justify-end gap-3">
         {entry !== null && nightlyBaseVersion(version) !== null ? (
           <p className="mr-auto min-w-0 text-2xs">
-            This build includes changes since {entry.version}
+            Эта сборка включает изменения после версии {entry.version}
           </p>
         ) : null}
         {sourceUpdate === null ? (
@@ -281,7 +281,7 @@ export function ReleaseNotesPanel({
             className={FOOTER_LINK_CLASS_NAME}
             onOpen={() => openReleaseNotesOnWeb(version, notesVersion)}
           >
-            Full changelog
+            Полный список изменений
             <Icon aria-hidden name="ExternalLink" className="size-3" />
           </ExternalLink>
         ) : (
@@ -290,7 +290,7 @@ export function ReleaseNotesPanel({
             className={FOOTER_LINK_CLASS_NAME}
             onOpen={() => openSourceCompareOnWeb(version, sourceUpdate)}
           >
-            Compare on GitHub
+            Сравнить на GitHub
             <Icon aria-hidden name="ExternalLink" className="size-3" />
           </ExternalLink>
         )}

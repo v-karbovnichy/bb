@@ -52,7 +52,7 @@ describe("toast history", () => {
     expect(
       title
         .closest(".bb-app-toast")
-        ?.querySelector('[aria-label="Dismiss notification"]'),
+        ?.querySelector('[aria-label="Закрыть уведомление"]'),
     ).not.toBeNull();
     expect(getNotifications()[0]).toMatchObject({
       tone: "error",

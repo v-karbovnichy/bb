@@ -49,16 +49,16 @@ export function MachineEnvironmentSettings() {
       scopeControl={
         <div className="flex min-w-0 flex-wrap items-center gap-1">
           <span className="text-sm text-subtle-foreground">
-            Showing variables for
+            Переменные для
           </span>
           <OptionPicker
             modal={false}
-            label="Scope"
+            label="Область действия"
             className="text-sm"
             value={selected?.id ?? GLOBAL_SCOPE}
             onChange={setScope}
             options={[
-              { value: GLOBAL_SCOPE, label: "All projects" },
+              { value: GLOBAL_SCOPE, label: "Все проекты" },
               ...projects.map((project) => ({
                 value: project.id,
                 label: project.name,
@@ -165,7 +165,7 @@ export function MachineEnvironmentSettingsContent({
     }));
   const issues = rows.map((row) => {
     if (rows.filter((other) => other.name === row.name).length > 1)
-      return "Variable name already exists.";
+      return "Переменная с таким именем уже существует.";
     const result = machineEnvironmentSetSchema.safeParse({
       name: row.name,
       value: row.value ?? "",
@@ -174,8 +174,8 @@ export function MachineEnvironmentSettingsContent({
     return result.success
       ? null
       : !row.name
-        ? "Enter a variable name."
-        : "Use uppercase letters, numbers, and underscores; start with a letter or underscore.";
+        ? "Введите имя переменной."
+        : "Используйте прописные буквы, цифры и подчёркивания; имя должно начинаться с буквы или подчёркивания.";
   });
   const mutation = useMutation({
     mutationFn: () => onSave(rows),
@@ -188,7 +188,7 @@ export function MachineEnvironmentSettingsContent({
     onError: () => {
       onSaveFailed?.();
       setError(
-        "Some changes could not be saved. Your edits are retained; try saving again.",
+        "Не все изменения удалось сохранить. Ваши правки сохранены в форме; попробуйте ещё раз.",
       );
     },
   });
@@ -268,14 +268,14 @@ export function MachineEnvironmentSettingsContent({
     inheritedNames.has("GH_TOKEN");
   return (
     <SettingsSection
-      title="Environment variables"
-      description="Global variables are available to BB-managed processes on every connected machine. Project variables override them for work in that project."
+      title="Переменные окружения"
+      description="Глобальные переменные доступны процессам под управлением BB на каждой подключённой машине. Переменные проекта переопределяют их при работе с этим проектом."
       bodyClassName="space-y-8"
     >
       <div className="space-y-5">
         {scopeControl}
         {environment === null && !loadFailed && (
-          <p className="text-xs text-subtle-foreground">Loading…</p>
+          <p className="text-xs text-subtle-foreground">Загрузка…</p>
         )}
         {(environment !== null || loadFailed) && (
           <MachineEnvironmentAutomaticRow
@@ -320,9 +320,9 @@ export function MachineEnvironmentSettingsContent({
                 caption={
                   entry.overridesGlobal ? (
                     <>
-                      <RowScope>Override</RowScope>
+                      <RowScope>Переопределение</RowScope>
                       {entry.row.note ??
-                        "Replaces the global value; remove it to inherit again."}
+                        "Заменяет глобальное значение; удалите переменную, чтобы снова наследовать его."}
                     </>
                   ) : (
                     entry.row.note
@@ -350,7 +350,7 @@ export function MachineEnvironmentSettingsContent({
       </div>
       {loadFailed && (
         <p role="alert" className="text-xs text-destructive-text">
-          Could not load machine variables. Try refreshing this page.
+          Не удалось загрузить переменные машины. Обновите страницу.
         </p>
       )}
       {error && (
@@ -367,7 +367,7 @@ export function MachineEnvironmentSettingsContent({
             disabled={disabled}
             onClick={addRow}
           >
-            Add variable
+            Добавить переменную
           </Button>
           <Button
             size="sm"
@@ -376,7 +376,7 @@ export function MachineEnvironmentSettingsContent({
             disabled={disabled}
             onClick={() => setImporting(true)}
           >
-            Import from .env
+            Импортировать из .env
           </Button>
           <div className="ml-auto flex w-full items-center justify-end gap-2 @min-[36rem]/settings:w-auto">
             {isDirty && (
@@ -390,7 +390,7 @@ export function MachineEnvironmentSettingsContent({
                   setVisible(new Set());
                 }}
               >
-                Discard changes
+                Отменить изменения
               </Button>
             )}
             <Button
@@ -398,7 +398,7 @@ export function MachineEnvironmentSettingsContent({
               disabled={disabled || !isDirty || issues.some(Boolean)}
               onClick={() => mutation.mutate()}
             >
-              {mutation.isPending ? "Saving…" : "Save variables"}
+              {mutation.isPending ? "Сохранение…" : "Сохранить переменные"}
             </Button>
           </div>
         </div>
@@ -462,20 +462,20 @@ export function MachineEnvironmentAutomaticRow({
       <div className={ROW_GRID_CLASS_NAME}>
         <Input
           className={`col-span-2 font-mono @min-[32rem]/variable:col-span-1 ${dimmed ? "opacity-50" : ""}`}
-          aria-label="Automatic variable name"
+          aria-label="Имя автоматической переменной"
           value="GH_TOKEN"
           readOnly
         />
         <Input
           className={`font-mono ${dimmed ? "opacity-50" : ""}`}
-          aria-label="Automatic GH_TOKEN value"
+          aria-label="Автоматическое значение GH_TOKEN"
           value={git?.status === "logged in" ? "••••••••" : ""}
           placeholder={
             git?.status === "disabled"
-              ? "Disabled"
+              ? "Выключено"
               : missing
-                ? "Not available"
-                : "Checking…"
+                ? "Недоступно"
+                : "Проверка…"
           }
           readOnly
         />
@@ -485,7 +485,7 @@ export function MachineEnvironmentAutomaticRow({
               size="icon"
               variant="ghost"
               className="size-8 text-subtle-foreground"
-              aria-label="Override GH_TOKEN"
+              aria-label="Переопределить GH_TOKEN"
               disabled={overrideDisabled}
               onClick={onOverride}
             >
@@ -493,7 +493,7 @@ export function MachineEnvironmentAutomaticRow({
             </Button>
           ) : (
             <Switch
-              aria-label="Automatic GH_TOKEN"
+              aria-label="Автоматический GH_TOKEN"
               checked={enabled}
               disabled={switchDisabled}
               onCheckedChange={onSetEnabled}
@@ -502,7 +502,7 @@ export function MachineEnvironmentAutomaticRow({
         </div>
       </div>
       <p className={`${ROW_CAPTION_CLASS_NAME} ${dimmed ? "opacity-50" : ""}`}>
-        <RowScope>Automatic</RowScope>
+        <RowScope>Автоматически</RowScope>
         <span
           role={missing && !overridden ? "alert" : "status"}
           className={
@@ -510,25 +510,25 @@ export function MachineEnvironmentAutomaticRow({
           }
         >
           {overridden ? (
-            "Overridden by the GH_TOKEN variable below."
+            "Переопределено переменной GH_TOKEN ниже."
           ) : missing ? (
-            "GitHub is not logged in. Run gh auth login on the server, or add your own GH_TOKEN."
+            "Вход в GitHub не выполнен. Запустите gh auth login на сервере или добавьте свой GH_TOKEN."
           ) : git?.status === "logged in" ? (
             <>
-              Forwarded to other machines using{" "}
-              <code>gh auth token --hostname github.com</code>. The primary
-              machine uses its local Git authentication.
+              Передаётся на другие машины с помощью{" "}
+              <code>gh auth token --hostname github.com</code>. Основная
+              машина использует свою локальную аутентификацию Git.
             </>
           ) : git?.status === "disabled" ? (
-            "Disabled — no automatic GitHub credentials are sent to other machines."
+            "Выключено — автоматические учётные данные GitHub не отправляются на другие машины."
           ) : git?.status === "overridden" ? (
-            "The server’s GitHub login will be used after saving."
+            "После сохранения будет использоваться вход в GitHub на сервере."
           ) : (
-            "Checking the server’s GitHub login…"
+            "Проверка входа в GitHub на сервере…"
           )}
           {projectScope ? (
             <>
-              {" Managed in "}
+              {" Управляется в "}
               <GlobalSettingsLink />.
             </>
           ) : null}
@@ -552,13 +552,13 @@ export function MachineEnvironmentInheritedRow({
       <div className={ROW_GRID_CLASS_NAME}>
         <Input
           className="col-span-2 font-mono @min-[32rem]/variable:col-span-1"
-          aria-label={`Global variable ${variable.name}`}
+          aria-label={`Глобальная переменная ${variable.name}`}
           value={variable.name}
           readOnly
         />
         <Input
           className="font-mono"
-          aria-label={`Global value for ${variable.name}`}
+          aria-label={`Глобальное значение для ${variable.name}`}
           value="••••••••"
           readOnly
         />
@@ -566,7 +566,7 @@ export function MachineEnvironmentInheritedRow({
           size="icon"
           variant="ghost"
           className="size-8 text-subtle-foreground"
-          aria-label={`Override ${variable.name}`}
+          aria-label={`Переопределить ${variable.name}`}
           disabled={disabled}
           onClick={onOverride}
         >
@@ -574,10 +574,10 @@ export function MachineEnvironmentInheritedRow({
         </Button>
       </div>
       <p className={ROW_CAPTION_CLASS_NAME}>
-        <RowScope>Global</RowScope>
+        <RowScope>Глобальная</RowScope>
         {variable.note ?? (
           <>
-            Inherited from <GlobalSettingsLink />.
+            Унаследовано из <GlobalSettingsLink />.
           </>
         )}
       </p>
@@ -615,7 +615,7 @@ export function MachineEnvironmentVariableRow({
       <div className={ROW_GRID_CLASS_NAME}>
         <Input
           className="col-span-2 font-mono @min-[32rem]/variable:col-span-1"
-          aria-label={`Variable name ${index + 1}`}
+          aria-label={`Имя переменной ${index + 1}`}
           placeholder="KEY"
           value={row.name}
           disabled={disabled}
@@ -627,10 +627,10 @@ export function MachineEnvironmentVariableRow({
         <div className="relative min-w-0">
           <Input
             className="min-w-0 pr-9 font-mono"
-            aria-label={`Value for ${row.name || `variable ${index + 1}`}`}
+            aria-label={`Значение для ${row.name || `переменной ${index + 1}`}`}
             type={revealed ? "text" : "password"}
             placeholder={
-              row.value === null ? "Saved secret · enter to replace" : "VALUE"
+              row.value === null ? "Секрет сохранён · введите новый, чтобы заменить" : "VALUE"
             }
             value={row.value ?? ""}
             autoComplete="off"
@@ -641,7 +641,7 @@ export function MachineEnvironmentVariableRow({
             size="icon"
             variant="ghost"
             className="absolute inset-y-0 right-0 my-auto size-8 text-subtle-foreground"
-            aria-label={`${revealed ? "Hide" : "Show"} ${row.name || "value"}`}
+            aria-label={`${revealed ? "Скрыть" : "Показать"} ${row.name || "значение"}`}
             disabled={disabled || row.value === null}
             onClick={onToggleReveal}
           >
@@ -652,7 +652,7 @@ export function MachineEnvironmentVariableRow({
           size="icon"
           className="size-8 text-subtle-foreground"
           variant="ghost"
-          aria-label={`Remove ${row.name || "variable"}`}
+          aria-label={`Удалить ${row.name || "переменную"}`}
           disabled={disabled}
           onClick={onRemove}
         >

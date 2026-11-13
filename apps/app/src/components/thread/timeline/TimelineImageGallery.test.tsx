@@ -73,9 +73,9 @@ it("stops at each end of the loaded page without fetching older history, preserv
   fireEvent.click(screen.getByRole("img", { name: "Table" }));
   expect(screen.getByRole("status").textContent).toBe("3 / 3");
   expect(
-    screen.getByRole("button", { name: "Next image" }).hasAttribute("disabled"),
+    screen.getByRole("button", { name: "Следующее изображение" }).hasAttribute("disabled"),
   ).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   fireEvent.keyDown(window, { key: "ArrowRight" });
   expect(lightboxImage().getAttribute("alt")).toBe("Table");
   fireEvent.keyDown(window, { key: "ArrowLeft" });
@@ -84,15 +84,15 @@ it("stops at each end of the loaded page without fetching older history, preserv
   expect(lightboxImage().getAttribute("alt")).toBe("Earlier");
   expect(
     screen
-      .getByRole("button", { name: "Previous image" })
+      .getByRole("button", { name: "Предыдущее изображение" })
       .hasAttribute("disabled"),
   ).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Previous image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Предыдущее изображение" }));
   fireEvent.keyDown(window, { key: "ArrowLeft" });
   expect(lightboxImage().getAttribute("alt")).toBe("Earlier");
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Inline");
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Table");
   expect(history).not.toHaveBeenCalled();
 });
@@ -109,7 +109,7 @@ it("uses rendered footnote order and excludes unused definitions", () => {
   );
   fireEvent.click(screen.getByRole("img", { name: "Inline" }));
   expect(screen.getByRole("status").textContent).toBe("1 / 2");
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Footnote");
 });
 
@@ -157,7 +157,7 @@ it("preserves occurrence identity as streaming images settle into cached blocks"
       ]}
     />,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Previous image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Предыдущее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("A");
 });
 
@@ -180,13 +180,13 @@ it("preserves identical inline and footnote occurrences when normalized streamin
   });
   expect(
     screen
-      .getByRole("button", { name: "Previous image" })
+      .getByRole("button", { name: "Предыдущее изображение" })
       .hasAttribute("disabled"),
   ).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(screen.getByRole("status").textContent).toBe("2 / 2");
   expect(
-    screen.getByRole("button", { name: "Next image" }).hasAttribute("disabled"),
+    screen.getByRole("button", { name: "Следующее изображение" }).hasAttribute("disabled"),
   ).toBe(true);
 });
 
@@ -229,17 +229,17 @@ it("includes lazy turn details only while expanded, including during the collaps
   }
   if (toggle.getAttribute("aria-expanded") === "true") fireEvent.click(toggle);
   fireEvent.click(screen.getByRole("img", { name: "Final" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
   fireEvent.click(toggle);
   fireEvent.click(await screen.findByRole("img", { name: "Nested" }));
   expect(screen.getByRole("status").textContent).toBe("1 / 2");
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Final");
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
   fireEvent.click(toggle);
   fireEvent.click(screen.getByRole("img", { name: "Final" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
   await waitFor(() =>
     expect(screen.queryByRole("img", { name: "Nested" })).toBeNull(),
   );
@@ -270,7 +270,7 @@ it("never includes images suppressed in ordinary worker messages", () => {
   expect(screen.queryByRole("img", { name: "Suppressed" })).toBeNull();
   fireEvent.click(screen.getByRole("img", { name: "Visible" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Visible");
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
 });
 
 function galleryContent({ hidden = false, removed = false, extra = false }) {
@@ -308,12 +308,12 @@ it("retains only the displayed image after hiding and removing its source", asyn
   expect(lightboxImage().getAttribute("src")).toBe(
     "https://example.com/selected.png",
   );
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Later");
-  expect(screen.queryByRole("button", { name: "Previous image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Предыдущее изображение" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
   fireEvent.click(screen.getByRole("img", { name: "Later" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
 });
 
 it("keeps the selected image source until close even when no eligible images remain", async () => {
@@ -336,7 +336,7 @@ it("keeps the selected image source until close even when no eligible images rem
   expect(lightboxImage().getAttribute("src")).toBe(
     "https://example.com/selected.png",
   );
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
   expect(screen.queryByRole("dialog")).toBeNull();
 });
@@ -344,9 +344,9 @@ it("keeps the selected image source until close even when no eligible images rem
 it("enables navigation when a second image arrives without reopening", async () => {
   const { rerender } = render(galleryContent({ hidden: true, removed: true }));
   fireEvent.click(screen.getByRole("img", { name: "Later" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
   rerender(galleryContent({ hidden: true, removed: true, extra: true }));
-  fireEvent.click(await screen.findByRole("button", { name: "Next image" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Следующее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("New");
   expect(screen.getByRole("status").textContent).toBe("2 / 2");
 });
@@ -384,15 +384,15 @@ it("excludes clipped user-message images until expanded", () => {
     />,
   );
   fireEvent.click(screen.getByRole("img", { name: "Visible" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
-  fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+  fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
   fireEvent.click(screen.getByRole("img", { name: "Visible" }));
   expect(screen.getByRole("status").textContent).toBe("2 / 2");
-  fireEvent.click(screen.getByRole("button", { name: "Previous image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Предыдущее изображение" }));
   expect(lightboxImage().getAttribute("alt")).toBe("Clipped");
   fireEvent.click(screen.getByRole("button", { name: "Close image preview" }));
-  fireEvent.click(screen.getByRole("button", { name: "Show less" }));
+  fireEvent.click(screen.getByRole("button", { name: "Показать меньше" }));
   fireEvent.click(screen.getByRole("img", { name: "Visible" }));
-  expect(screen.queryByRole("button", { name: "Next image" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Следующее изображение" })).toBeNull();
 });

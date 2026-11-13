@@ -131,7 +131,7 @@ const PluginComposerActionList = memo(function PluginComposerActionList({
               type="button"
               size="icon"
               variant="ghost"
-              aria-label="More plugin actions"
+              aria-label="Дополнительные действия плагинов"
               className={cn(
                 COARSE_POINTER_PROMPT_ICON_ACTION_BUTTON_CLASS,
                 "shrink-0 data-[state=open]:bg-state-active data-[state=open]:text-foreground",
@@ -142,11 +142,11 @@ const PluginComposerActionList = memo(function PluginComposerActionList({
           </PopoverTrigger>
           <PopoverContent
             data-plugin-composer-action-overflow=""
-            aria-label="More plugin actions"
+            aria-label="Дополнительные действия плагинов"
             align="end"
             side="top"
             sideOffset={6}
-            mobileTitle="More plugin actions"
+            mobileTitle="Дополнительные действия плагинов"
             className="max-h-[min(24rem,calc(100dvh-4rem))] w-max max-w-[min(28rem,calc(100vw-2rem))] overflow-y-auto p-1.5"
           >
             <div className="flex flex-col gap-1">

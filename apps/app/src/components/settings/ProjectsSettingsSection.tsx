@@ -41,7 +41,7 @@ import {
 } from "./sortable-settings-rows";
 
 const PROJECTS_SECTION_DESCRIPTION =
-  "Repositories bb can work in. Drag to change the order projects appear in the sidebar.";
+  "Репозитории, с которыми может работать bb. Перетащите проекты, чтобы изменить их порядок в боковой панели.";
 
 export function formatGitRemote(url: string): string {
   const sshMatch = /^[^@]+@([^:]+):(.+?)(?:\.git)?$/.exec(url);
@@ -77,8 +77,19 @@ export function buildProjectReorderRequest(
   };
 }
 
-export function pluralize(count: number, singular: string): string {
-  return `${count} ${count === 1 ? singular : `${singular}s`}`;
+export function pluralize(count: number, singular: "machine" | "thread"): string {
+  const forms = singular === "machine" ? ["машина", "машины", "машин"] : ["чат", "чата", "чатов"];
+  const remainder100 = count % 100;
+  const remainder10 = count % 10;
+  const form =
+    remainder100 >= 11 && remainder100 <= 14
+      ? forms[2]
+      : remainder10 === 1
+        ? forms[0]
+        : remainder10 >= 2 && remainder10 <= 4
+          ? forms[1]
+          : forms[2];
+  return `${count} ${form}`;
 }
 
 interface ProjectSummary {
@@ -109,9 +120,9 @@ function summarizeMachines(
 }
 
 function machineLabel(summary: ProjectSummary): string {
-  if (summary.configuredMachineCount === 0) return "Not set up on any machine";
-  if (summary.totalMachineCount <= 1) return "1 machine";
-  return `${summary.configuredMachineCount} of ${summary.totalMachineCount} machines`;
+  if (summary.configuredMachineCount === 0) return "Не настроен ни на одной машине";
+  if (summary.totalMachineCount <= 1) return "1 машина";
+  return `${summary.configuredMachineCount} из ${pluralize(summary.totalMachineCount, "machine")}`;
 }
 
 interface SortableProjectRowProps {
@@ -164,7 +175,7 @@ function SortableProjectRow({
       >
         <Link
           to={detailPath}
-          aria-label={`Open ${project.name} settings`}
+          aria-label={`Открыть настройки проекта ${project.name}`}
           className="min-w-0 flex-1 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <div className="min-w-0 flex-1 space-y-0.5">
@@ -176,12 +187,12 @@ function SortableProjectRow({
               <span className="min-w-0 truncate text-sm font-medium text-foreground">
                 {project.name}
               </span>
-              {needsSetup ? <SettingsBadge>needs setup</SettingsBadge> : null}
-              {allOffline ? <SettingsBadge>offline</SettingsBadge> : null}
+              {needsSetup ? <SettingsBadge>требуется настройка</SettingsBadge> : null}
+              {allOffline ? <SettingsBadge>не в сети</SettingsBadge> : null}
             </div>
             <div className="min-w-0 space-y-0.5 text-xs text-subtle-foreground/75">
               {remoteLabel === null ? (
-                <div className="italic">No git remote</div>
+                <div className="italic">Нет удалённого Git-репозитория</div>
               ) : (
                 <div className="truncate">{remoteLabel}</div>
               )}
@@ -200,11 +211,11 @@ function SortableProjectRow({
         </Link>
         <div className="flex shrink-0 items-center gap-1">
           <ResourceOverflowMenu
-            label={`${project.name} actions`}
+            label={`Действия с проектом ${project.name}`}
             items={[
-              { label: "Rename", icon: "Edit", onSelect: onRename },
+              { label: "Переименовать", icon: "Edit", onSelect: onRename },
               {
-                label: "Delete project",
+                label: "Удалить проект",
                 icon: "Trash2",
                 tone: "destructive",
                 onSelect: onDelete,
@@ -278,7 +289,7 @@ export function ProjectsSettingsSection() {
   return (
     <>
       <SettingsSection
-        title="Projects"
+        title="Проекты"
         description={PROJECTS_SECTION_DESCRIPTION}
         action={
           <Button
@@ -290,20 +301,20 @@ export function ProjectsSettingsSection() {
             onClick={quickCreateProject.openCreateDialog}
           >
             <Icon name="Plus" className="size-3.5" />
-            Add a project
+            Добавить проект
           </Button>
         }
       >
         {sidebarNavigationQuery.isError ? (
           <p className="text-sm text-destructive" role="alert">
-            Couldn't load projects.
+            Не удалось загрузить проекты.
           </p>
         ) : projects === undefined ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">Загрузка…</p>
         ) : projects.length === 0 ? (
           <p className="text-sm text-subtle-foreground">
-            No projects yet. Add a project to start running threads in a
-            repository.
+            Пока нет проектов. Добавьте проект, чтобы запускать чаты в
+            репозитории.
           </p>
         ) : (
           <SortableSettingsRowList

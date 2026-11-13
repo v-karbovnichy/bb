@@ -242,7 +242,7 @@ function InfoRowTouchActionsMenu({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label="More actions"
+          aria-label="Другие действия"
           className={cn(
             INFO_ROW_ACTION_CLASS,
             "hidden [@media(hover:none)]:flex",

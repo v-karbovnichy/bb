@@ -1,4 +1,3 @@
-import { capitalize } from "@bb/thread-view";
 import { useId, useState, type FormEvent, type RefObject } from "react";
 import { Button } from "@bb/shared-ui/button";
 import {
@@ -29,8 +28,9 @@ export function RenameDialogContent({
 }: RenameDialogContentProps) {
   const inputId = useId();
   const [nextName, setNextName] = useState(initialName);
+  const entityName = entityLabel === "project" ? "проекта" : "чата";
   const { validationMessage, validate, clearMessage } = useNameValidation({
-    emptyMessage: `${capitalize(entityLabel)} name cannot be empty.`,
+    emptyMessage: `Имя ${entityName} не может быть пустым.`,
   });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -46,9 +46,9 @@ export function RenameDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Rename {entityLabel}</DialogTitle>
+        <DialogTitle>Переименовать {entityLabel === "project" ? "проект" : "чат"}</DialogTitle>
         <DialogDescription>
-          Choose a new name for this {entityLabel}.
+          Выберите новое имя {entityName}.
         </DialogDescription>
       </DialogHeader>
       <form
@@ -59,7 +59,7 @@ export function RenameDialogContent({
           <Input
             ref={inputRef}
             id={inputId}
-            aria-label={`${capitalize(entityLabel)} name`}
+            aria-label={`Название ${entityName}`}
             value={nextName}
             autoCapitalize={autoCapitalize}
             autoCorrect="off"
@@ -76,7 +76,7 @@ export function RenameDialogContent({
         </div>
         <DialogFooter>
           <Button type="submit" disabled={pending}>
-            Rename {entityLabel}
+            Переименовать {entityLabel === "project" ? "проект" : "чат"}
           </Button>
         </DialogFooter>
       </form>

@@ -151,7 +151,7 @@ export function useSetDiffFileViewed(args: {
           })
         : clearViewed({ environmentId, target, path: entry.path });
       void request.catch(() => {
-        toast.error("Failed to update Viewed.");
+        toast.error("Не удалось обновить отметку «Просмотрено».");
       });
     },
     [clearViewed, environmentId, markViewed, target],
@@ -170,7 +170,7 @@ export interface DiffPatchState {
 const EMPTY_PATHS: ReadonlySet<string> = new Set();
 const IDLE_PATCH_STATE: DiffPatchState = { status: "idle" };
 const LOADING_PATCH_STATE: DiffPatchState = { status: "loading" };
-const FAILED_PATCH_MESSAGE = "Failed to load file diff";
+const FAILED_PATCH_MESSAGE = "Не удалось загрузить изменения файла";
 
 function patchResultState(result: GitPatchResult): DiffPatchState {
   switch (result.outcome) {

@@ -85,11 +85,11 @@ describe("workflows CLI argument validation", () => {
       ok: false,
       error: {
         code: "command_failed",
-        message: "This command must run inside a BB project thread",
+        message: "Эту команду нужно запускать в чате проекта BB",
       },
     });
     expect(result.stderr).toBe(
-      "This command must run inside a BB project thread\n",
+      "Эту команду нужно запускать в чате проекта BB\n",
     );
   });
 

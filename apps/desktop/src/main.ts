@@ -1709,7 +1709,7 @@ async function runStartupAction(
       actions: [],
       details: error instanceof Error ? error.message : String(error),
       logs: "",
-      title: "Could not open bb",
+      title: "Не удалось открыть bb",
     });
   } finally {
     startupActionPending = false;
@@ -1734,7 +1734,7 @@ function openConnectSignIn(parentWindow: BrowserWindow | null): void {
     height: 720,
     parent: parentWindow ?? undefined,
     title:
-      targetUrl === null ? "Sign in to bb Connect" : "Reconnect bb Connect",
+      targetUrl === null ? "Войти в bb Connect" : "Повторно подключить bb Connect",
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -1817,14 +1817,14 @@ async function selectBuiltinServer(): Promise<void> {
 async function loadServerMovedView(move: DesktopServerMove): Promise<void> {
   await loadActionView({
     actions: [
-      { id: "open-moved-server", label: `Open ${move.toHostName}` },
-      { id: "choose-server", label: "Choose server…" },
+      { id: "open-moved-server", label: `Открыть ${move.toHostName}` },
+      { id: "choose-server", label: "Выбрать сервер…" },
     ],
     details: move.oldCopyKept
-      ? "The old copy on this computer is locked after the move."
-      : "The old copy on this computer was deleted.",
+      ? "Старый экземпляр на этом компьютере заблокирован после переноса."
+      : "Старый экземпляр на этом компьютере удалён.",
     logs: "",
-    title: `bb moved to ${move.toHostName}`,
+    title: `bb перенесён на ${move.toHostName}`,
   });
 }
 
@@ -1862,14 +1862,14 @@ async function applyServerTarget(): Promise<void> {
     if (!attached) {
       await loadStartupError({
         actions: [
-          { id: "retry", label: "Try again" },
-          { id: "choose-server", label: "Choose server…" },
+          { id: "retry", label: "Повторить" },
+          { id: "choose-server", label: "Выбрать сервер…" },
         ],
         details:
-          `Could not connect to the local bb server on ${process.platform === "darwin" ? "this Mac" : "this computer"}. ` +
-          "Check that the port is free or that a compatible bb server is running.",
+          `Не удалось подключиться к локальному серверу bb на ${process.platform === "darwin" ? "этом Mac" : "этом компьютере"}. ` +
+          "Убедитесь, что порт свободен или запущен совместимый сервер bb.",
         logs: "",
-        title: "Could not connect to bb server",
+        title: "Не удалось подключиться к серверу bb",
       });
       refreshApplicationMenu();
       return;
@@ -1903,21 +1903,21 @@ async function applyServerTarget(): Promise<void> {
             ? [
                 {
                   id: "reconnect-connect" as const,
-                  label: "Reconnect",
+                  label: "Подключиться повторно",
                 },
               ]
-            : [{ id: "retry" as const, label: "Try again" }]),
-          { id: "choose-server", label: "Choose server…" },
+            : [{ id: "retry" as const, label: "Повторить" }]),
+          { id: "choose-server", label: "Выбрать сервер…" },
         ],
         details: unauthorized
-          ? "The desktop app could not establish a session for this Connect server. " +
+          ? "Приложению не удалось создать сессию для этого сервера Connect. " +
             (result.detail === "this account does not own the selected server"
-              ? `(unauthorized: This account does not own ${new URL(target.server.url).host}.)`
-              : "(unauthorized: The app was rejected.)")
-          : "The desktop app could not establish a session for this Connect server. " +
+              ? `(нет доступа: этот аккаунт не владеет ${new URL(target.server.url).host}.)`
+              : "(нет доступа: приложение отклонено.)")
+          : "Приложению не удалось создать сессию для этого сервера Connect. " +
             `(${result.code}: ${result.detail})`,
         logs: "",
-        title: "Could not authenticate with bb Connect",
+        title: "Не удалось войти через bb Connect",
       });
       refreshApplicationMenu();
       return;
@@ -2211,8 +2211,8 @@ async function loadLoadingView(): Promise<void> {
     url: createLocalViewUrl({
       viewModel: {
         kind: "loading",
-        message: "Starting local services and opening the bb workspace.",
-        title: "Opening bb",
+        message: "Запускаем локальные службы и открываем рабочее пространство bb.",
+        title: "Открываем bb",
       },
     }),
   });
@@ -2224,8 +2224,8 @@ async function loadWindowsInstallerWaitView(): Promise<void> {
     url: createLocalViewUrl({
       viewModel: {
         kind: "loading",
-        message: "bb opens when the installer is done.",
-        title: "Finishing the bb update",
+        message: "bb откроется после завершения установки.",
+        title: "Завершаем обновление bb",
       },
     }),
   });
@@ -2701,12 +2701,12 @@ async function startOwnedRuntime(
       return startOwnedRuntime(args);
     }
     await loadStartupError({
-      details: `bb-app exited before the server was ready with ${formatExitResult(
+      details: `bb-app завершился до готовности сервера: ${formatExitResult(
         raceResult.exit,
       )}.`,
       logs: bbProcess.logs.text(),
       actions: [],
-      title: "Could not start bb",
+      title: "Не удалось запустить bb",
     });
     return null;
   }
@@ -2719,11 +2719,11 @@ async function startOwnedRuntime(
   await loadStartupError({
     details:
       raceResult.result.kind === "incompatible"
-        ? `Port ${args.serverUrl} is responding, but it does not look like bb: ${raceResult.result.reason}.`
-        : `Timed out waiting for bb at ${args.serverUrl}: ${raceResult.result.reason}.`,
+        ? `Порт ${args.serverUrl} отвечает, но это не похоже на сервер bb: ${raceResult.result.reason}.`
+        : `Превышено время ожидания bb по адресу ${args.serverUrl}: ${raceResult.result.reason}.`,
     logs: bbProcess.logs.text(),
     actions: [],
-    title: "Could not start bb",
+    title: "Не удалось запустить bb",
   });
   await stopOwnedRuntime();
   return null;
@@ -2802,40 +2802,40 @@ async function decideOnExistingServer(
   if (stopResult.kind === "unverified") {
     await loadStartupError({
       details:
-        `The bb at ${probe.serverUrl} records process ${String(stopResult.pid)}, but that ` +
-        "process no longer matches the record. bb did not stop it. Stop it yourself, then open bb again.",
+        `Сервер bb по адресу ${probe.serverUrl} указывает процесс ${String(stopResult.pid)}, но этот ` +
+        "процесс больше не соответствует записи. bb его не остановил. Остановите процесс вручную и снова откройте bb.",
       logs: "",
       actions: [],
-      title: "Could not stop the running bb",
+      title: "Не удалось остановить запущенный bb",
     });
     return "quit";
   }
   if (stopResult.kind === "still-running") {
     await loadStartupError({
-      details: `bb could not stop process ${String(stopResult.pid)}, even after SIGKILL.`,
+      details: `bb не смог остановить процесс ${String(stopResult.pid)} даже после SIGKILL.`,
       logs: "",
       actions: [],
-      title: "Could not stop the running bb",
+      title: "Не удалось остановить запущенный bb",
     });
     return "quit";
   }
   if (stopResult.kind === "replaced") {
     await loadStartupError({
       details:
-        `Another bb started at ${probe.serverUrl} while the question was open, so bb stopped nothing. ` +
-        "Open bb again to see the copy that runs now.",
+        `Пока диалог был открыт, по адресу ${probe.serverUrl} запустился другой bb. Ничего не было остановлено. ` +
+        "Откройте bb снова, чтобы увидеть текущий экземпляр.",
       logs: "",
       actions: [],
-      title: "Could not stop the running bb",
+      title: "Не удалось остановить запущенный bb",
     });
     return "quit";
   }
   if (!(await waitForServerToStop(probe.serverUrl))) {
     await loadStartupError({
-      details: `The bb at ${probe.serverUrl} stopped, but the address is still in use.`,
+      details: `Сервер bb по адресу ${probe.serverUrl} остановился, но адрес всё ещё занят.`,
       logs: "",
       actions: [],
-      title: "Could not stop the running bb",
+      title: "Не удалось остановить запущенный bb",
     });
     return "quit";
   }
@@ -2888,10 +2888,10 @@ async function initializeRuntime(args: InitializeRuntimeArgs): Promise<void> {
 
   if (existingProbe.kind === "incompatible") {
     await loadStartupError({
-      details: `Port ${args.serverUrl} is already in use, but it is not a compatible bb server: ${existingProbe.reason}.`,
+      details: `Порт ${args.serverUrl} уже занят, но на нём работает несовместимый с bb сервер: ${existingProbe.reason}.`,
       logs: "",
       actions: [],
-      title: "Port conflict",
+      title: "Конфликт порта",
     });
     return;
   }
@@ -3157,7 +3157,7 @@ async function runDesktopApp(): Promise<void> {
     currentVersion: desktopVersion,
     enabled:
       desktopUpdateSupport.versionCheck &&
-      (app.isPackaged || process.env.BB_DESKTOP_VERSION_CHECK === "1"),
+      process.env.BB_DESKTOP_VERSION_CHECK === "1",
     feedUrl: desktopUpdateFeedUrl,
     logger: desktopLogger,
     platform: desktopPlatform,
@@ -3166,6 +3166,7 @@ async function runDesktopApp(): Promise<void> {
     currentVersion: desktopVersion,
     enabled:
       desktopUpdateSupport.autoUpdate &&
+      process.env.BB_DESKTOP_AUTO_UPDATE === "1" &&
       shouldEnableDesktopAutoUpdate({
         env: process.env,
         isPackaged: app.isPackaged,
@@ -3439,6 +3440,6 @@ void runDesktopApp().catch((error) => {
     details: message,
     logs: "",
     actions: [],
-    title: "Could not open bb",
+    title: "Не удалось открыть bb",
   });
 });

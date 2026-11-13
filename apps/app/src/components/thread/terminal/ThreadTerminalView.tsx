@@ -572,7 +572,7 @@ function writeTerminalSessionStatusNotice({
         terminal,
         text:
           session.exitCode === null
-            ? "Terminal exited"
+            ? "Терминал завершил работу"
             : `Terminal exited with code ${session.exitCode}`,
       });
       return;
@@ -665,7 +665,7 @@ function handleTerminalServerMessage({
         terminal,
         text:
           message.session.exitCode === null
-            ? "Terminal exited"
+            ? "Терминал завершил работу"
             : `Terminal exited with code ${message.session.exitCode}`,
       });
       return;
@@ -759,8 +759,8 @@ export function ThreadTerminalView({
     () =>
       createTerminalSelectionClipboardHandler((text) => {
         void copyToClipboardWithToast(text, {
-          successMessage: "Selection copied",
-          errorMessage: "Failed to copy selection",
+          successMessage: "Выделенный текст скопирован",
+          errorMessage: "Не удалось скопировать выделенный текст",
         });
       }),
     [],
@@ -881,7 +881,7 @@ export function ThreadTerminalView({
     (text: string, successMessage: string) => {
       void copyToClipboardWithToast(text, {
         successMessage,
-        errorMessage: "Failed to copy",
+        errorMessage: "Не удалось скопировать",
       });
     },
     [],
@@ -900,7 +900,7 @@ export function ThreadTerminalView({
         sessionStatusRef.current === "running",
     }).catch(() => {
       appToast.error(
-        "Unable to read clipboard. Use your keyboard’s Paste action.",
+        "Не удалось прочитать буфер обмена. Воспользуйтесь командой вставки на клавиатуре.",
       );
     });
   }, []);
@@ -1092,7 +1092,7 @@ export function ThreadTerminalView({
       terminal.attachCustomKeyEventHandler(
         createTerminalClipboardKeyHandler({
           terminal,
-          copy: (text) => copyTerminalContextValue(text, "Selection copied"),
+          copy: (text) => copyTerminalContextValue(text, "Выделенный текст скопирован"),
           paste: pasteFromClipboard,
         }),
       );
@@ -1246,7 +1246,7 @@ export function ThreadTerminalView({
         onInvalidMessage: () => {
           writeTerminalStatus({
             terminal: activeTerminal,
-            text: "Terminal received an invalid server message",
+            text: "Терминал получил недопустимое сообщение сервера",
           });
         },
         onMessage: (message) => {
@@ -1267,7 +1267,7 @@ export function ThreadTerminalView({
           activeTerminal.reset();
           writeTerminalStatus({
             terminal: activeTerminal,
-            text: "Some terminal output was unavailable after reconnect",
+            text: "Часть вывода терминала недоступна после переподключения",
           });
         },
         shouldReconnect: () =>
@@ -1409,11 +1409,11 @@ export function ThreadTerminalView({
 
   const connectionNoticeText =
     session.status === "disconnected"
-      ? "Terminal disconnected"
+      ? "Терминал отключён"
       : connectionNotice === "reconnecting"
-        ? "Reconnecting…"
+        ? "Переподключение…"
         : connectionNotice === "reconnected"
-          ? "Reconnected"
+          ? "Подключение восстановлено"
           : null;
   const contextMenuLink = contextMenuState.link;
   const contextMenuSelectionText = contextMenuState.selectionText;
@@ -1475,14 +1475,14 @@ export function ThreadTerminalView({
               <ContextMenuItem
                 onSelect={() => requestOpenTerminalLink(contextMenuLink)}
               >
-                Open Link
+                Открыть ссылку
               </ContextMenuItem>
               <ContextMenuItem
                 onSelect={() =>
-                  copyTerminalContextValue(contextMenuLink.uri, "Link copied")
+                  copyTerminalContextValue(contextMenuLink.uri, "Ссылка скопирована")
                 }
               >
-                Copy Link
+                Скопировать ссылку
               </ContextMenuItem>
             </>
           ) : null}
@@ -1494,11 +1494,11 @@ export function ThreadTerminalView({
               onSelect={() =>
                 copyTerminalContextValue(
                   contextMenuSelectionText,
-                  "Selection copied",
+                  "Выделенный текст скопирован",
                 )
               }
             >
-              Copy
+              Скопировать
             </ContextMenuItem>
           ) : null}
           {contextMenuLink !== null || contextMenuSelectionText.length > 0 ? (
@@ -1508,7 +1508,7 @@ export function ThreadTerminalView({
             disabled={session.status !== "running"}
             onSelect={pasteFromClipboard}
           >
-            Paste
+            Вставить
           </ContextMenuItem>
         </ContextMenuContent>
         <TimelineSelectionMenu

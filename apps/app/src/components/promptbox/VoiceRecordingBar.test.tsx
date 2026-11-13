@@ -30,9 +30,9 @@ describe("VoiceRecordingBar", () => {
         onCancel={vi.fn()}
       />,
     );
-    const cancel = screen.getByRole("button", { name: "Cancel recording" });
-    const stop = screen.getByRole("button", { name: "Stop and add to draft" });
-    const send = screen.getByRole("button", { name: "Send voice input" });
+    const cancel = screen.getByRole("button", { name: "Отменить запись" });
+    const stop = screen.getByRole("button", { name: "Остановить и добавить в черновик" });
+    const send = screen.getByRole("button", { name: "Отправить голосовое сообщение" });
     expect(screen.getByTestId("waveform")).toBeTruthy();
     expect(
       cancel.compareDocumentPosition(stop) & Node.DOCUMENT_POSITION_FOLLOWING,
@@ -73,18 +73,18 @@ describe("VoiceRecordingBar", () => {
     );
 
     const confirm = screen.getByRole("button", {
-      name: "Transcribing voice input",
+      name: "Расшифровка голосового ввода",
     });
     expect(confirm).toHaveProperty("disabled", true);
     fireEvent.click(confirm);
     expect(onConfirm).not.toHaveBeenCalled();
 
-    const send = screen.getByRole("button", { name: "Send voice input" });
+    const send = screen.getByRole("button", { name: "Отправить голосовое сообщение" });
     expect(send).toHaveProperty("disabled", true);
     expect(confirm.querySelector('[data-icon-name="Spinner"]')).toBeTruthy();
     fireEvent.click(send);
     expect(onSend).not.toHaveBeenCalled();
-    const cancel = screen.getByRole("button", { name: "Cancel transcription" });
+    const cancel = screen.getByRole("button", { name: "Отменить расшифровку" });
     fireEvent.click(cancel);
     expect(onCancel).toHaveBeenCalledOnce();
   });
@@ -102,18 +102,18 @@ describe("VoiceRecordingBar", () => {
     const { rerender } = render(
       <VoiceRecordingBar state="recording" delivery="insert" {...props} />,
     );
-    const send = screen.getByRole("button", { name: "Send voice input" });
+    const send = screen.getByRole("button", { name: "Отправить голосовое сообщение" });
     expect(send.querySelector('[data-icon-name="ArrowUp"]')).toBeTruthy();
     rerender(
       <VoiceRecordingBar state="transcribing" delivery="send" {...props} />,
     );
 
     const sending = screen.getByRole("button", {
-      name: "Transcribing and sending",
+      name: "Расшифровка и отправка",
     });
     expect(sending.querySelector('[data-icon-name="Spinner"]')).toBeTruthy();
     expect(sending.className).toContain("disabled:opacity-100");
-    const stop = screen.getByRole("button", { name: "Stop and add to draft" });
+    const stop = screen.getByRole("button", { name: "Остановить и добавить в черновик" });
     expect(stop.querySelector('[data-icon-name="Spinner"]')).toBeNull();
     expect(stop.className).not.toContain("disabled:opacity-100");
   });

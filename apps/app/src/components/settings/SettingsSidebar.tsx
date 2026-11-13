@@ -163,8 +163,8 @@ function SettingsSearchField({
         onChange={(event) => onQueryChange(event.target.value)}
         onFocus={onFocus}
         onKeyDown={onKeyDown}
-        placeholder="Search"
-        aria-label="Search settings"
+        placeholder="Поиск"
+        aria-label="Поиск настроек"
         role="combobox"
         aria-autocomplete="list"
         aria-expanded={listboxId !== undefined}
@@ -184,7 +184,7 @@ function SettingsSearchField({
             COARSE_POINTER_COMPACT_ICON_BUTTON_CLASS,
             "h-6 w-6 shrink-0 text-muted-foreground hover:text-sidebar-foreground",
           )}
-          aria-label="Clear settings search"
+          aria-label="Очистить поиск настроек"
           onClick={onClear}
         >
           <Icon name="X" aria-hidden />
@@ -239,7 +239,7 @@ function SettingsSearchResults({
         role="status"
         className="px-2 py-6 text-center text-xs text-subtle-foreground"
       >
-        No settings found
+        Настройки не найдены
       </p>
     );
   }
@@ -248,7 +248,7 @@ function SettingsSearchResults({
     <div
       id={listboxId}
       role="listbox"
-      aria-label="Settings search results"
+      aria-label="Результаты поиска настроек"
       className="mt-1 space-y-0.5"
     >
       {results.map((item, index) => (
@@ -376,7 +376,7 @@ export function SettingsSidebarContent({
   return (
     <SectionSidebar
       backTo={backTo}
-      title="Settings"
+      title="Настройки"
       isResizing={isResizing}
       onResizeMouseDown={onResizeMouseDown}
       testIdPrefix={testIdPrefix}
@@ -430,7 +430,7 @@ export function SettingsSidebarContent({
           {hasPlugins ? (
             <>
               <div className="mt-4">
-                <SectionSidebarLabel>Plugins</SectionSidebarLabel>
+                <SectionSidebarLabel>Плагины</SectionSidebarLabel>
               </div>
               <div className="mt-1 space-y-0.5">
                 {pluginEntries.map((entry) => (
@@ -453,11 +453,11 @@ export function SettingsSidebarContent({
           {canOpenNativeScreen() ? (
             <>
               <div className="mt-4">
-                <SectionSidebarLabel>This phone</SectionSidebarLabel>
+                <SectionSidebarLabel>Этот телефон</SectionSidebarLabel>
               </div>
               <div className="mt-1 space-y-0.5">
                 <SectionSidebarActionRow
-                  label="This device"
+                  label="Это устройство"
                   testId="settings-nav-native-device"
                   onClick={() => shellOpenNative("device-settings")}
                 >
@@ -469,7 +469,7 @@ export function SettingsSidebarContent({
           {sections.some((section) => section.id === "archived") ? (
             <>
               <div className="mt-4">
-                <SectionSidebarLabel>Archived</SectionSidebarLabel>
+                <SectionSidebarLabel>Архив</SectionSidebarLabel>
               </div>
               <div className="mt-1 space-y-0.5">
                 {sections

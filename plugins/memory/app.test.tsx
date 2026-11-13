@@ -45,12 +45,12 @@ describe("memory settings", () => {
     );
 
     expect(await slot.findByText("validation")).toBeTruthy();
-    expect(slot.getByText("project")).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Edit" }));
-    fireEvent.change(slot.getByLabelText("Memory summary"), {
+    expect(slot.getByText("проект")).toBeTruthy();
+    fireEvent.click(slot.getByRole("button", { name: "Изменить" }));
+    fireEvent.change(slot.getByLabelText("Краткое описание воспоминания"), {
       target: { value: "Run all focused tests." },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Save" }));
+    fireEvent.click(slot.getByRole("button", { name: "Сохранить" }));
 
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
@@ -83,14 +83,14 @@ describe("memory settings", () => {
     );
 
     expect(await slot.findByText("validation")).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Delete" }));
-    expect(confirm).toHaveBeenCalledWith("Delete memory “validation”?");
+    fireEvent.click(slot.getByRole("button", { name: "Удалить" }));
+    expect(confirm).toHaveBeenCalledWith("Удалить воспоминание «validation»?");
     expect(
       slot.rpcCalls.filter((call) => call.method === "deleteMemory"),
     ).toEqual([]);
     expect(slot.getByText("validation")).toBeTruthy();
 
-    fireEvent.click(slot.getByRole("button", { name: "Delete" }));
+    fireEvent.click(slot.getByRole("button", { name: "Удалить" }));
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
         method: "deleteMemory",

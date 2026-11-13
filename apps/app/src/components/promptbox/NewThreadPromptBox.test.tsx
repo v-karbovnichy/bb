@@ -88,7 +88,7 @@ describe("ProjectlessMachineSlot", () => {
       />,
     );
 
-    expect(screen.queryByRole("button", { name: "Machine" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Компьютер" })).toBeNull();
   });
 
   it("renders no chip with a single host", () => {
@@ -104,7 +104,7 @@ describe("ProjectlessMachineSlot", () => {
       />,
     );
 
-    expect(screen.queryByRole("button", { name: "Machine" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Компьютер" })).toBeNull();
   });
 
   it("counts provider-made machines in the projectless machine chip", () => {
@@ -140,7 +140,7 @@ describe("ProjectlessMachineSlot", () => {
       />,
     );
 
-    const chip = screen.getByRole("button", { name: "Machine" });
+    const chip = screen.getByRole("button", { name: "Компьютер" });
     expect(chip.querySelector('[data-icon="Cloud"]')).not.toBeNull();
     expect(chip.querySelector('[data-icon="Laptop"]')).toBeNull();
     expect(chip.textContent).toContain(modalHost.name);
@@ -158,7 +158,7 @@ describe("ProjectlessMachineSlot", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Machine" });
+    const trigger = screen.getByRole("button", { name: "Компьютер" });
     expect(trigger.textContent).toContain("Mac Studio");
     fireEvent.click(trigger);
     fireEvent.click(screen.getByRole("option", { name: /Local host/u }));
@@ -283,8 +283,8 @@ describe("EnvironmentSlot", () => {
         worktree={makeWorktree()}
       />,
     );
-    expect(screen.getByRole("button", { name: "Environment" })).not.toBeNull();
-    expect(screen.queryByRole("button", { name: "Machine" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Окружение" })).not.toBeNull();
+    expect(screen.queryByRole("button", { name: "Компьютер" })).toBeNull();
     rerender(
       <EnvironmentSlot
         projectless
@@ -295,8 +295,8 @@ describe("EnvironmentSlot", () => {
         worktree={makeWorktree()}
       />,
     );
-    expect(screen.queryByRole("button", { name: "Environment" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Machine" })).not.toBeNull();
+    expect(screen.queryByRole("button", { name: "Окружение" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Компьютер" })).not.toBeNull();
   });
 
   it("omits project-only providers from the projectless picker", () => {
@@ -311,8 +311,8 @@ describe("EnvironmentSlot", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Machine" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Environment" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Компьютер" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Окружение" })).toBeNull();
     expect(screen.queryByText("Modal sandbox")).toBeNull();
   });
 
@@ -327,8 +327,8 @@ describe("EnvironmentSlot", () => {
         worktree={makeWorktree()}
       />,
     );
-    expect(screen.getByRole("button", { name: "Machine" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Environment" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Компьютер" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Окружение" })).toBeNull();
   });
 
   it("shows the reused environment instead of the machine slot when a thread reuses one", () => {
@@ -345,10 +345,10 @@ describe("EnvironmentSlot", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByRole("button", { name: "Machine" })).toBeNull();
-    const triggers = screen.getAllByRole("button", { name: "Environment" });
+    expect(screen.queryByRole("button", { name: "Компьютер" })).toBeNull();
+    const triggers = screen.getAllByRole("button", { name: "Окружение" });
     expect(triggers).toHaveLength(2);
-    expect(triggers[0]?.textContent).toContain("Reuse");
+    expect(triggers[0]?.textContent).toContain("Повторно использовать");
     expect(triggers[1]?.textContent).toContain("Scratch space");
   });
 
@@ -374,9 +374,9 @@ describe("EnvironmentSlot", () => {
         />
       </QueryClientProvider>,
     );
-    const trigger = screen.getAllByRole("button", { name: "Environment" })[0];
+    const trigger = screen.getAllByRole("button", { name: "Окружение" })[0];
     fireEvent.click(trigger!);
-    expect(screen.getByRole("dialog", { name: "Environment" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "Окружение" })).toBeTruthy();
 
     rerender(
       <QueryClientProvider client={queryClient}>
@@ -388,8 +388,8 @@ describe("EnvironmentSlot", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.getByRole("dialog", { name: "Environment" })).toBeTruthy();
-    expect(document.querySelector('button[aria-label="Environment"]')).toBe(
+    expect(screen.getByRole("dialog", { name: "Окружение" })).toBeTruthy();
+    expect(document.querySelector('button[aria-label="Окружение"]')).toBe(
       trigger,
     );
   });
@@ -409,9 +409,9 @@ describe("EnvironmentSlot", () => {
         />
       </QueryClientProvider>,
     );
-    const trigger = screen.getByRole("button", { name: "Environment" });
+    const trigger = screen.getByRole("button", { name: "Окружение" });
     fireEvent.click(trigger);
-    expect(screen.getByRole("dialog", { name: "Environment" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "Окружение" })).toBeTruthy();
 
     rerender(
       <QueryClientProvider client={queryClient}>
@@ -423,12 +423,12 @@ describe("EnvironmentSlot", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.getByRole("dialog", { name: "Environment" })).toBeTruthy();
-    expect(document.querySelector('button[aria-label="Environment"]')).toBe(
+    expect(screen.getByRole("dialog", { name: "Окружение" })).toBeTruthy();
+    expect(document.querySelector('button[aria-label="Окружение"]')).toBe(
       trigger,
     );
     fireEvent.keyDown(document, { key: "Escape" });
-    expect(screen.queryByRole("button", { name: "Environment" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Machine" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Окружение" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Компьютер" })).toBeTruthy();
   });
 });

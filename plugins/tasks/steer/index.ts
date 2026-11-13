@@ -28,7 +28,7 @@ export async function deliverCommentToLatestAgent(
   input: DeliverCommentInput,
 ): Promise<number> {
   const task = store.getTask(input.taskId);
-  if (!task) throw new Error(`Task not found: ${input.taskId}`);
+  if (!task) throw new Error(`Задача не найдена: ${input.taskId}`);
 
   const latestReply = store.getLatestAgentComment(
     input.taskId,

@@ -30,7 +30,7 @@ function assertStorageEntry(rootPath: string, name: string) {
     name.includes("\\") ||
     !STORAGE_ENTRY.test(name)
   )
-    throw new Error("Invalid storage entry");
+    throw new Error("Недопустимая запись хранилища");
 }
 
 export default experimental_defineHostEntry({
@@ -70,7 +70,7 @@ export default experimental_defineHostEntry({
         if (stats === null) continue;
         if (stats.isSymbolicLink() || !stats.isDirectory())
           throw new Error(
-            "Storage entry must be a directory, not a symbolic link",
+            "Запись хранилища должна быть папкой, а не символической ссылкой",
           );
         let sizeBytes = 0;
         let count = 0;
@@ -93,7 +93,7 @@ export default experimental_defineHostEntry({
             relative.startsWith(`..${path.sep}`) ||
             path.isAbsolute(relative)
           )
-            throw new Error("Large file must be inside its storage directory");
+            throw new Error("Большой файл должен находиться внутри своей папки хранилища");
           try {
             const current = await fs.lstat(file.path);
             if (!current.isFile()) continue;
@@ -120,7 +120,7 @@ export default experimental_defineHostEntry({
       return { removed };
     },
     async capacity({ path: target }) {
-      if (!path.isAbsolute(target)) throw new Error("Invalid storage path");
+      if (!path.isAbsolute(target)) throw new Error("Недопустимый путь к хранилищу");
       for (let current = target; ; current = path.dirname(current)) {
         try {
           const stats = await fs.statfs(current);
@@ -141,7 +141,7 @@ export default experimental_defineHostEntry({
       for (const name of names) {
         assertStorageEntry(rootPath, name);
         if (recreate && name.startsWith(".bb-trash-"))
-          throw new Error("Cannot recreate a trash directory");
+          throw new Error("Не удалось повторно создать папку удалённых файлов");
       }
       context.signal.throwIfAborted();
       if (recreate) await fs.mkdir(rootPath, { recursive: true });
@@ -167,7 +167,7 @@ export default experimental_defineHostEntry({
             const stat = await fs.lstat(source);
             if (stat.isSymbolicLink() || !stat.isDirectory())
               throw new Error(
-                "Storage entry must be a directory, not a symbolic link",
+                "Запись хранилища должна быть папкой, а не символической ссылкой",
               );
             const trash = name.startsWith(".bb-trash-")
               ? source

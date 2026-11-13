@@ -277,7 +277,7 @@ describe("resolveNewThreadSubmitDisabledReason", () => {
     [
       "model loading after a machine switch",
       { isLoadingModels: true },
-      "Loading models from the selected machine...",
+      "Загрузка моделей с выбранного компьютера...",
     ],
     [
       "provider setup failure",
@@ -296,12 +296,12 @@ describe("resolveNewThreadSubmitDisabledReason", () => {
         projectDefaultsStatus: "error",
         projectDefaultsUnavailable: true,
       },
-      "Could not load the project's execution defaults.",
+      "Не удалось загрузить настройки выполнения проекта.",
     ],
     [
       "an incomplete environment selection",
       { submissionEnvironmentUnavailable: true },
-      "Select an environment.",
+      "Выберите окружение.",
     ],
     [
       "an environment provider whose inputs are incomplete",
@@ -323,7 +323,7 @@ describe("resolveNewThreadSubmitDisabledReason", () => {
     [
       "an empty prompt",
       { promptInputEmpty: true },
-      "Enter a prompt or attach a file.",
+      "Введите запрос или прикрепите файл.",
     ],
   ])("reports %s", (_label, change, reason) => {
     expect(

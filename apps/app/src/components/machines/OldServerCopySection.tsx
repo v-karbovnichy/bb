@@ -32,10 +32,10 @@ export function oldServerCopyDescription(
   host: Host,
   lastMove: LastServerMove,
 ): string {
-  const base = `The server moved from ${host.name} to ${lastMove.toHostName}. The old server data is still on ${host.name}, locked so bb won't start a server from it. Keep it as a backup, or delete it once the new server works.`;
+  const base = `Сервер перенесён с ${host.name} на ${lastMove.toHostName}. Старые данные сервера остались на ${host.name} и заблокированы, чтобы bb не запустил из них сервер. Сохраните их как резервную копию или удалите, когда новый сервер заработает.`;
   return host.status === "connected"
     ? base
-    : `${base} ${host.name} has to be online to delete it.`;
+    : `${base} Для удаления ${host.name} должна быть в сети.`;
 }
 
 export function OldServerCopySection({
@@ -69,18 +69,18 @@ export function OldServerCopySection({
         }}
       >
         <DialogHeader>
-          <DialogTitle>Delete the old server copy?</DialogTitle>
+          <DialogTitle>Удалить старую копию сервера?</DialogTitle>
           <DialogDescription>
-            This permanently deletes the database, settings and plugin data{" "}
-            {host.name} kept when the server moved to {lastMove.toHostName}. The
-            server on {lastMove.toHostName} is not affected.
+            База данных, настройки и данные плагинов, оставшиеся на {host.name}
+            после переноса на {lastMove.toHostName}, будут удалены безвозвратно.
+            Сервер на {lastMove.toHostName} не затронут.
           </DialogDescription>
         </DialogHeader>
         {deleteOldCopy.isError ? (
           <p className="text-sm text-destructive-text" role="alert">
             {getMutationErrorMessage({
               error: deleteOldCopy.error,
-              fallbackMessage: `Couldn't delete the old server copy on ${host.name}.`,
+              fallbackMessage: `Не удалось удалить старую копию сервера на ${host.name}.`,
             })}
           </p>
         ) : null}
@@ -95,14 +95,14 @@ export function OldServerCopySection({
                   setConfirmOpen(false);
                   appToast.success(
                     result.deleted
-                      ? `Deleted the old server copy on ${host.name}`
-                      : `No old server copy was left on ${host.name}`,
+                      ? `Старая копия сервера на ${host.name} удалена`
+                      : `На ${host.name} не осталось старой копии сервера`,
                   );
                 },
               })
             }
           >
-            {deleteOldCopy.isPending ? "Deleting…" : "Delete old copy"}
+            {deleteOldCopy.isPending ? "Удаление…" : "Удалить старую копию"}
           </Button>
         </DialogFooter>
       </ConfirmDeleteDialog>
@@ -121,7 +121,7 @@ export function OldServerCopySectionView({
 }) {
   return (
     <SettingsSection
-      title="Old server copy"
+      title="Старая копия сервера"
       description={oldServerCopyDescription(host, lastMove)}
     >
       <SettingsRowList>
@@ -133,7 +133,7 @@ export function OldServerCopySectionView({
             disabled={host.status !== "connected"}
             onClick={onDelete}
           >
-            Delete old copy
+            Удалить старую копию
           </Button>
         </SettingsRow>
       </SettingsRowList>

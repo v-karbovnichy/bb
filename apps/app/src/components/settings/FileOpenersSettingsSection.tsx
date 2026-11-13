@@ -25,7 +25,7 @@ import {
 } from "./settings-dropdown";
 
 const AUTOMATIC_FILE_OPENER_PREFERENCE = "__automatic__";
-const BUILTIN_LABEL = "Built-in preview";
+const BUILTIN_LABEL = "Встроенный просмотр";
 
 export function FileOpenersSettingsSection() {
   const { fileOpeners } = usePluginSlots();
@@ -41,8 +41,8 @@ export function FileOpenersSettingsSection() {
 
   return (
     <SettingsSection
-      title="File openers"
-      description="Automatically use matching plugins, or choose a viewer for each file type. Right-click a file link for a one-off choice."
+      title="Открытие файлов"
+      description="Автоматически использовать подходящие плагины или выбрать просмотрщик для каждого типа файлов. Чтобы выбрать просмотрщик один раз, нажмите правой кнопкой мыши на ссылке файла."
     >
       <div className="space-y-5">
         {extensions.map((extension) => (
@@ -90,7 +90,7 @@ function ExtensionOpenerControl({
   const options = [
     {
       key: AUTOMATIC_FILE_OPENER_PREFERENCE,
-      label: `Automatic (${automaticOpener.title})`,
+      label: `Автоматически (${automaticOpener.title})`,
     },
     { key: BUILT_IN_FILE_OPENER_PREFERENCE, label: BUILTIN_LABEL },
     ...openers.map((opener) => ({
@@ -103,14 +103,14 @@ function ExtensionOpenerControl({
   if (selected === undefined) return null;
 
   return (
-    <SettingsWithControl label={`.${extension} files`}>
+    <SettingsWithControl label={`Файлы .${extension}`}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             size="sm"
             className={SETTINGS_DROPDOWN_TRIGGER_CLASS}
-            aria-label={`Default opener for .${extension} files`}
+            aria-label={`Приложение по умолчанию для файлов .${extension}`}
           >
             <span className="min-w-0 truncate">{selected.label}</span>
             <Icon

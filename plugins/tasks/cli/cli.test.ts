@@ -338,7 +338,7 @@ describe("bb tasks CLI", () => {
           "--project",
           "HIER",
           "--title",
-          "Parent",
+          "Родительская задача",
           "--json",
         ]),
       ),
@@ -531,7 +531,7 @@ describe("bb tasks CLI", () => {
       ]),
     );
     const seed = [
-      { title: "No priority", args: [] },
+      { title: "Без приоритета", args: [] },
       {
         title: "High later",
         args: ["--priority", "high", "--due", "2026-08-01"],
@@ -570,7 +570,7 @@ describe("bb tasks CLI", () => {
     );
     expect(
       byPriority.tasks.map((task: { title: string }) => task.title),
-    ).toEqual(["Urgent undated", "High soon", "High later", "No priority"]);
+    ).toEqual(["Urgent undated", "High soon", "High later", "Без приоритета"]);
 
     const byDue = JSON.parse(
       stdout(
@@ -588,7 +588,7 @@ describe("bb tasks CLI", () => {
       "High soon",
       "High later",
       "Urgent undated",
-      "No priority",
+      "Без приоритета",
     ]);
 
     const commaFiltered = JSON.parse(
@@ -873,7 +873,7 @@ describe("bb tasks CLI", () => {
           "folder",
           "create",
           "--name",
-          "Parent",
+          "Родительская задача",
           "--json",
         ]),
       ),
@@ -886,7 +886,7 @@ describe("bb tasks CLI", () => {
           "--name",
           "Child",
           "--parent",
-          "Parent",
+          "Родительская задача",
           "--json",
         ]),
       ),
@@ -901,7 +901,7 @@ describe("bb tasks CLI", () => {
           "--prefix",
           "FILED",
           "--folder",
-          "Parent",
+          "Родительская задача",
           "--json",
         ]),
       ),
@@ -936,7 +936,7 @@ describe("bb tasks CLI", () => {
     );
     expect(deleted).toMatchObject({
       deleted: true,
-      folder: { id: parent.id, name: "Parent" },
+      folder: { id: parent.id, name: "Родительская задача" },
       movedProjectIds: [project.id],
       movedFolderIds: [child.id],
     });
@@ -1103,10 +1103,10 @@ describe("bb tasks CLI", () => {
     });
 
     const listTable = stdout(await harness.runCli(["preset", "list"]));
-    expect(listTable).toContain("ENVIRONMENT");
-    expect(listTable).toContain("BASE BRANCH");
-    expect(listTable).toContain("MACHINE");
-    expect(listTable).toContain("SERVICE TIER");
+    expect(listTable).toContain("ОКРУЖЕНИЕ");
+    expect(listTable).toContain("БАЗОВАЯ ВЕТКА");
+    expect(listTable).toContain("МАШИНА");
+    expect(listTable).toContain("УРОВЕНЬ СЕРВИСА");
 
     const listed = JSON.parse(
       stdout(await harness.runCli(["preset", "list", "--json"])),
@@ -1299,7 +1299,7 @@ describe("bb tasks CLI", () => {
         "project",
         "create",
         "--name",
-        "Detach",
+        "Открепить",
         "--prefix",
         "DET",
       ]),
@@ -1909,7 +1909,7 @@ describe("bb tasks CLI", () => {
         attachment.id,
       ]);
       expect(removeMissing.exitCode).toBe(1);
-      expect(removeMissing.stderr).toContain("attachment not found");
+      expect(removeMissing.stderr).toContain("вложение не найдено");
 
       const removedReferenced = JSON.parse(
         stdout(
@@ -2239,7 +2239,7 @@ describe("bb tasks CLI", () => {
       "unexpected argument 'Ship the strict parser'",
     );
     expect(strayTitle.stderr).toContain(
-      "the task title belongs in --title <title>.",
+      "Название задачи указывается через --title <title>.",
     );
     expect(
       JSON.parse(stdout(await harness.runCli(["list", "--json"]))).tasks,
@@ -2352,7 +2352,7 @@ describe("bb tasks CLI", () => {
     });
     expect(missingProject.exitCode).toBe(1);
     expect(missingProject.stderr).toContain(
-      "missing required option --project",
+      "отсутствует обязательный параметр --project",
     );
     expect(missingProject.stderr).toContain("re-run with --project LINK");
 

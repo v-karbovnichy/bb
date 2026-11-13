@@ -372,9 +372,9 @@ export const DiffFileCard = memo(function DiffFileCard({
                     onCheckedChange={(checked) =>
                       onViewedChange(checked === true)
                     }
-                    aria-label={`Viewed ${headerModel.label}`}
+                    aria-label={`Просмотрено: ${headerModel.label}`}
                   />
-                  <span>Viewed</span>
+                  <span>Просмотрено</span>
                 </label>
               </>
             }
@@ -435,8 +435,8 @@ function DiffFileCardLoadDiffNotice({
     <div className={DIFF_FILE_CARD_NOTICE_CLASS}>
       <span>
         {entry.binary
-          ? "Binary file."
-          : `${changedLines.toLocaleString()} changed lines.`}
+          ? "Двоичный файл."
+          : `Изменено строк: ${changedLines.toLocaleString()}.`}
       </span>
       <Button
         type="button"
@@ -495,7 +495,7 @@ function DiffFileCardBody({
     return (
       <div className={DIFF_FILE_CARD_NOTICE_CLASS}>
         <span className="text-destructive">
-          {patchState.error ?? "Failed to load this file's diff."}
+          {patchState.error ?? "Не удалось загрузить изменения этого файла."}
         </span>
         <Button
           type="button"
@@ -514,12 +514,12 @@ function DiffFileCardBody({
     return (
       <div className={DIFF_FILE_CARD_NOTICE_CLASS}>
         <span>
-          Too large to display ({changedLines.toLocaleString()} changed lines).
+          Слишком большой файл для показа ({changedLines.toLocaleString()} изменённых строк).
         </span>
         {onOpenFilePreview ? (
           <FilePathLink
             path={entry.path}
-            displayName="Open file"
+            displayName="Открыть файл"
             onClick={() => onOpenFilePreview(entry.path)}
             className="text-xs underline underline-offset-4"
           />
@@ -554,11 +554,11 @@ function DiffFileCardBody({
     if (patchState.status === "loaded") {
       return (
         <div className={DIFF_FILE_CARD_NOTICE_CLASS}>
-          <span>No renderable diff for this file.</span>
+          <span>Изменения этого файла нельзя показать.</span>
           {onOpenFilePreview ? (
             <FilePathLink
               path={entry.path}
-              displayName="Open file"
+              displayName="Открыть файл"
               onClick={() => onOpenFilePreview(entry.path)}
               className="text-xs underline underline-offset-4"
             />
@@ -626,11 +626,11 @@ function DiffFileCardRenderedBody({
       />
       {truncated ? (
         <div className={DIFF_FILE_CARD_NOTICE_CLASS}>
-          <span>This diff was truncated for display.</span>
+          <span>Показана только часть изменений.</span>
           {onOpenFilePreview ? (
             <FilePathLink
               path={entry.path}
-              displayName="Show full diff"
+              displayName="Показать все изменения"
               onClick={() => onOpenFilePreview(entry.path)}
               className="text-xs underline underline-offset-4"
             />

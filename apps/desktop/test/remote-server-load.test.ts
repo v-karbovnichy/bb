@@ -56,9 +56,9 @@ describe("loadRemoteServerPage", () => {
 
     expect(harness.shownErrors).toHaveLength(1);
     const view = harness.shownErrors[0];
-    expect(view?.title).toBe("Could not reach this bb server");
+    expect(view?.title).toBe("Не удалось связаться с сервером bb");
     expect(view?.details).toBe(
-      "The bb server at http://bb-host.tailnet.ts.net:38886 did not answer. Check that the machine is awake and reachable.",
+      "Сервер bb по адресу http://bb-host.tailnet.ts.net:38886 не ответил. Убедитесь, что машина включена и доступна.",
     );
     expect(view?.actions.map((action) => action.id)).toEqual([
       "retry",
@@ -80,7 +80,7 @@ describe("loadRemoteServerPage", () => {
     await expect(loadRemoteServerPage(harness)).resolves.toBe(false);
 
     expect(harness.shownErrors[0]?.details).toBe(
-      "The bb server at https://bb.example.com:8443 did not answer. Check that the machine is awake and reachable.",
+      "Сервер bb по адресу https://bb.example.com:8443 не ответил. Убедитесь, что машина включена и доступна.",
     );
     const logged = harness.warnings[0] ?? "";
     expect(logged).toContain("https://bb.example.com:8443");
@@ -94,7 +94,7 @@ describe("loadRemoteServerPage", () => {
     await expect(loadRemoteServerPage(harness)).resolves.toBe(false);
 
     expect(harness.shownErrors[0]?.details).toBe(
-      "The saved bb server did not answer. Check that the machine is awake and reachable.",
+      "Сохранённый сервер bb не ответил. Убедитесь, что машина включена и доступна.",
     );
   });
 

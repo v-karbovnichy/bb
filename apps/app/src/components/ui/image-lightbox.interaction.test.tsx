@@ -54,13 +54,13 @@ it("keeps navigation open and restores the trigger after keyboard dismissal", ()
   const trigger = screen.getByRole("button", { name: "Open image" });
   trigger.focus();
   fireEvent.click(trigger);
-  fireEvent.click(screen.getByRole("button", { name: "Next image" }));
+  fireEvent.click(screen.getByRole("button", { name: "Следующее изображение" }));
   expect(screen.getByRole("img", { name: "Image 1" })).toBeTruthy();
   fireEvent.keyDown(window, { key: "ArrowLeft" });
   expect(screen.getByRole("img", { name: "Image 0" })).toBeTruthy();
   fireEvent.keyDown(document, { key: "Tab" });
   expect(document.activeElement).toBe(
-    screen.getByRole("button", { name: "Previous image" }),
+    screen.getByRole("button", { name: "Предыдущее изображение" }),
   );
   fireEvent.keyDown(document, { key: "Escape" });
   expect(screen.queryByRole("dialog")).toBeNull();
@@ -74,7 +74,7 @@ it("keeps a zoomed image open on tap and dismisses again after fitting it", () =
   fireEvent.wheel(window, { deltaY: -100 });
   fireEvent.click(image);
   expect(screen.getByRole("dialog", { name: "Image preview" })).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Fit image to screen" }));
+  fireEvent.click(screen.getByRole("button", { name: "Уместить изображение на экране" }));
   fireEvent.click(image);
   expect(screen.queryByRole("dialog")).toBeNull();
 });

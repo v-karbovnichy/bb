@@ -8,26 +8,26 @@ import {
 import type { TaskSort } from "../../shared/pagination.js";
 
 export const STATUS_LABELS: Record<TaskStatus, string> = {
-  backlog: "Backlog",
-  todo: "Todo",
-  in_progress: "In Progress",
-  in_review: "In Review",
-  done: "Done",
-  canceled: "Canceled",
+  backlog: "В очереди",
+  todo: "К выполнению",
+  in_progress: "В работе",
+  in_review: "На проверке",
+  done: "Готово",
+  canceled: "Отменено",
 };
 
 export const PRIORITY_LABELS: Record<TaskPriority, string> = {
-  urgent: "Urgent",
-  high: "High",
-  medium: "Medium",
-  low: "Low",
-  none: "No priority",
+  urgent: "Срочно",
+  high: "Высокий",
+  medium: "Средний",
+  low: "Низкий",
+  none: "Без приоритета",
 };
 
 export const SORT_LABELS: Record<TaskSort, string> = {
-  manual: "Manual",
-  priority: "Priority",
-  due: "Due date",
+  manual: "Вручную",
+  priority: "Приоритет",
+  due: "Срок",
 };
 
 interface StatusGroup {
@@ -83,7 +83,7 @@ export function selectedLabelIds(
 
 export function formatDueDate(dueDate: string, today = new Date()): string {
   const date = new Date(`${dueDate}T00:00:00`);
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("ru-RU", {
     month: "short",
     day: "numeric",
     ...(date.getFullYear() === today.getFullYear() ? {} : { year: "numeric" }),
@@ -95,10 +95,10 @@ export function activeWorkLabel(
 ): string {
   if (threads.length === 1) {
     return threads[0]?.liveStatus === "starting"
-      ? "Agent starting"
-      : "Agent working";
+      ? "Агент запускается"
+      : "Агент работает";
   }
-  return `${threads.length} agents working`;
+  return `Агентов в работе: ${threads.length}`;
 }
 
 interface LabelOverflow {
@@ -131,7 +131,7 @@ export function localIsoDate(daysFromNow: number): string {
 }
 
 export const DUE_DATE_PRESETS: readonly [label: string, days: number][] = [
-  ["Today", 0],
-  ["Tomorrow", 1],
-  ["Next week", 7],
+  ["Сегодня", 0],
+  ["Завтра", 1],
+  ["На следующей неделе", 7],
 ];

@@ -95,7 +95,7 @@ export function PluginsOverview({
           categoryId: isLocal
             ? "local"
             : (entry?.categoryId ?? plugin.categoryId),
-          category: isLocal ? "Local" : (entry?.category ?? plugin.category),
+          category: isLocal ? "Локальный" : (entry?.category ?? plugin.category),
           publishedAt: entry?.publishedAt,
           installs: entry?.installs ?? null,
         };
@@ -249,7 +249,7 @@ export function PluginsOverview({
         toolbar={
           <PluginCollectionToolbar
             query={installedQuery}
-            searchPlaceholder="Search installed plugins"
+            searchPlaceholder="Поиск установленных плагинов"
             selectedCategories={selectedCategories}
             categoryOptions={categoryOptions}
             sort={installedSort}
@@ -274,17 +274,17 @@ export function PluginsOverview({
           {listQuery.isError ? (
             <ResourceListState
               state="error"
-              message="Couldn't load plugins."
+              message="Не удалось загрузить плагины."
               onRetry={() => void listQuery.refetch()}
             />
           ) : listQuery.isFetching && listQuery.data === undefined ? (
-            <ResourceListState state="loading" message="Loading plugins" />
+            <ResourceListState state="loading" message="Загрузка плагинов" />
           ) : plugins.length > 0 && visiblePlugins.length === 0 ? (
             <ResourceListState
               state="empty"
               message={
                 normalizedInstalledQuery === ""
-                  ? "No plugins match these filters."
+                  ? "Нет плагинов, соответствующих этим фильтрам."
                   : selectedCategories.length > 0 ||
                       activeSourceFilters.length > 0
                     ? `No plugins match "${installedQuery}" with these filters.`

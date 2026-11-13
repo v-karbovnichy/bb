@@ -306,7 +306,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
         }),
       );
       const dialog = await screen.findByRole("dialog");
-      expect(dialog.textContent?.includes("This will stop current work.")).toBe(
+      expect(dialog.textContent?.includes("Текущая задача будет остановлена.")).toBe(
         warns,
       );
       expect(sdk.threads.archiveAll).not.toHaveBeenCalled();
@@ -319,7 +319,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
       renderProvider(<ArchiveButton thread={makeThread({ status })} />);
       fireEvent.click(screen.getByRole("button", { name: "Archive" }));
       const dialog = await screen.findByRole("dialog");
-      expect(dialog.textContent).toContain("This will stop current work.");
+      expect(dialog.textContent).toContain("Текущая задача будет остановлена.");
     },
   );
 
@@ -332,7 +332,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
       threadId: "thr_parent",
     });
     expect(sdk.threads.childSummary).not.toHaveBeenCalled();
-    expect(screen.queryByRole("button", { name: "Cancel" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Отмена" })).toBeNull();
     const undo = vi.mocked(appToast.success).mock.calls[0]?.[1]?.cancel;
     if (undo === undefined) throw new Error("Expected archive Undo");
     render(<button onClick={undo.onClick}>Undo archive</button>);
@@ -352,7 +352,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
     mocks.confirmThreadArchive = undefined;
     renderProvider(<ArchiveButton thread={makeThread()} />);
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
-    await screen.findByRole("button", { name: "Cancel" });
+    await screen.findByRole("button", { name: "Отмена" });
     expect(sdk.threads.archiveAll).not.toHaveBeenCalled();
   });
 
@@ -427,7 +427,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
         }
         if (outcome === "confirmation") {
           fireEvent.click(
-            await screen.findByRole("button", { name: "Cancel" }),
+            await screen.findByRole("button", { name: "Отмена" }),
           );
           expect(getCachedSidebarNavigationThreads(queryClient)).toEqual([
             thread,
@@ -529,7 +529,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
 
     expect((await screen.findByRole("dialog")).textContent).toContain(
-      "Its 4 child threads will be archived too.",
+      "4 дочерних чата тоже будут архивированы.",
     );
     expect(sdk.threads.archiveAll).not.toHaveBeenCalled();
   });
@@ -552,7 +552,7 @@ describe("ThreadActionsProvider archive confirmation", () => {
           name: size === "single" ? "Archive" : "Archive selection",
         }),
       );
-      fireEvent.click(await screen.findByRole("button", { name: "Cancel" }));
+      fireEvent.click(await screen.findByRole("button", { name: "Отмена" }));
 
       expect(screen.queryByRole("dialog")).toBeNull();
       expect(sdk.threads.archiveAll).not.toHaveBeenCalled();
@@ -607,10 +607,10 @@ describe("ThreadActionsProvider archive feedback", () => {
       if (!call) throw new Error("Expected archive toast");
       const [title, options] = call;
       expect(title).toBe(
-        source === "single" ? "Thread archived" : "Threads archived",
+        source === "single" ? "Чат архивирован" : "Чаты архивированы",
       );
       expect(options).toMatchObject({
-        cancel: { label: "Undo" },
+        cancel: { label: "Отменить" },
         duration: 10_000,
       });
       const undo = options?.cancel;
@@ -649,7 +649,7 @@ describe("ThreadActionsProvider archive feedback", () => {
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
     fireEvent.click(
       within(await screen.findByRole("dialog")).getByRole("button", {
-        name: "Archive",
+        name: "Архивировать",
       }),
     );
 
@@ -658,11 +658,11 @@ describe("ThreadActionsProvider archive feedback", () => {
     });
     expect(appToast.message).not.toHaveBeenCalled();
     expect(vi.mocked(appToast.success).mock.calls[0]?.[0]).toBe(
-      "Thread archived",
+      "Чат архивирован",
     );
     const toastOptions = vi.mocked(appToast.success).mock.calls[0]?.[1];
     expect(toastOptions).toMatchObject({
-      cancel: { label: "Undo" },
+      cancel: { label: "Отменить" },
       duration: 10_000,
       id: "thread-archived-thr_parent",
     });
@@ -707,7 +707,7 @@ describe("ThreadActionsProvider archive feedback", () => {
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
     fireEvent.click(
       within(await screen.findByRole("dialog")).getByRole("button", {
-        name: "Archive",
+        name: "Архивировать",
       }),
     );
 
@@ -748,7 +748,7 @@ describe("ThreadActionsProvider archive feedback", () => {
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
     fireEvent.click(
       within(await screen.findByRole("dialog")).getByRole("button", {
-        name: "Archive",
+        name: "Архивировать",
       }),
     );
 
@@ -820,7 +820,7 @@ describe("ThreadActionsProvider selections", () => {
       "thr_other",
     ]);
     expect(vi.mocked(appToast.success).mock.calls[0]?.[1]?.description).toBe(
-      "Archived 3 threads",
+      "Архивировано 3 чата",
     );
   });
 
@@ -832,13 +832,13 @@ describe("ThreadActionsProvider selections", () => {
 
     const dialog = await screen.findByRole("dialog");
     expect(
-      within(dialog).getByRole("heading", { name: "Archive 3 threads?" }),
+      within(dialog).getByRole("heading", { name: "Архивировать чаты (3)?" }),
     ).toBeTruthy();
     expect(dialog.textContent).toContain(
-      "Their 1 child thread will be archived too.",
+      "1 дочерний чат тоже будет архивирован.",
     );
     expect(sdk.threads.archiveAll).not.toHaveBeenCalled();
-    fireEvent.click(within(dialog).getByRole("button", { name: "Archive" }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Архивировать" }));
     await vi.waitFor(() =>
       expect(sdk.threads.archiveAll).toHaveBeenCalledTimes(2),
     );
@@ -961,17 +961,17 @@ describe("default thread rename", () => {
     renderProvider(<DefaultRenameButton threadId={thread.id} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Rename" }));
-    const dialog = await screen.findByRole("dialog", { name: "Rename thread" });
-    const input = within(dialog).getByRole("textbox", { name: "Thread name" });
+    const dialog = await screen.findByRole("dialog", { name: "Переименовать чат" });
+    const input = within(dialog).getByRole("textbox", { name: "Название чата" });
     expect(input).toHaveProperty("value", "Investigate archive behavior");
     fireEvent.change(input, { target: { value: "  Renamed  " } });
     const submit = within(dialog).getByRole("button", {
-      name: "Rename thread",
+      name: "Переименовать чат",
     });
     fireEvent.click(submit);
 
     expect((await within(dialog).findByRole("alert")).textContent).toBe(
-      "Could not save the name. Try again.",
+      "Не удалось сохранить название. Повторите попытку.",
     );
     fireEvent.click(submit);
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

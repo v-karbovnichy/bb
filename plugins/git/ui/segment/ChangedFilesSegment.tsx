@@ -90,7 +90,7 @@ export function MergeBaseActionView({
   return (
     <BannerActionSlot hideInCompact>
       <Icon name="GitMerge" className="size-3.5 shrink-0" aria-hidden="true" />
-      <span className="shrink-0">Merge base</span>
+      <span className="shrink-0">База слияния</span>
       <BranchPicker
         value={branch}
         options={candidates.options}
@@ -164,7 +164,7 @@ export function ChangedFilesSegmentView({
         }
         compactLabel={renderChangeSummary(tally)}
         hideLabelInCompact={segments.length > 2}
-        ariaLabel={`Changed files: ${prefix}, ${formatChangeSummary(tally)}`}
+        ariaLabel={`Изменённые файлы: ${prefix}, ${formatChangeSummary(tally)}`}
         isExpanded={isExpanded}
         onToggle={() => {
           if (!isExpanded) pendingFocus.set(threadId, "collapse");
@@ -180,7 +180,7 @@ export function ChangedFilesSegmentView({
       id={BODY_ID}
       labelledBy={TOGGLE_ID}
       isExpanded={isExpanded}
-      collapseLabel="Collapse changed files"
+      collapseLabel="Свернуть изменённые файлы"
       collapseRef={focusRef}
       onCollapse={() => {
         pendingFocus.set(threadId, "trigger");

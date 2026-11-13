@@ -311,8 +311,8 @@ function UnavailableActionTab() {
   return (
     <div className="p-4">
       <EmptyStatePanel className="rounded-lg p-6 text-sm">
-        This plugin tab is not available. The plugin may still be loading, or it
-        has been disabled or removed.
+        Эта вкладка плагина недоступна. Возможно, плагин ещё загружается,
+        отключён или удалён.
       </EmptyStatePanel>
     </div>
   );
@@ -481,9 +481,8 @@ function UnavailableFileOpenerTab() {
   return (
     <div className="p-4">
       <EmptyStatePanel className="rounded-lg p-6 text-sm">
-        This file opener is not available. The plugin may still be loading, or
-        it has been disabled or removed — reopen the file to use the built-in
-        preview.
+        Просмотр файла недоступен. Возможно, плагин ещё загружается, отключён
+        или удалён. Откройте файл снова для встроенного предпросмотра.
       </EmptyStatePanel>
     </div>
   );

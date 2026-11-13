@@ -13,7 +13,7 @@ import {
 const NOW = new Date(2026, 7, 28, 9, 0, 0).getTime();
 
 function clockAt(timestamp: number): string {
-  return new Date(timestamp).toLocaleTimeString(undefined, {
+  return new Date(timestamp).toLocaleTimeString("ru-RU", {
     hour: "numeric",
     minute: "2-digit",
   });
@@ -50,28 +50,28 @@ describe("describeQueuedMessageWait", () => {
 
   it("names each core wait a reader cannot otherwise explain", () => {
     expect(describeWait({ kind: "stopping" })).toBe(
-      "Sending when the thread stops",
+      "Отправится после остановки чата",
     );
     expect(describeWait({ kind: "turn-starting" })).toBe(
-      "Waiting for turn to start",
+      "Ожидание начала ответа",
     );
     expect(describeWait({ kind: "provisioning" })).toBe(
-      "Waiting for workspace",
+      "Ожидание рабочего пространства",
     );
     expect(describeWait({ kind: "interaction" })).toBe(
-      "Waiting for your reply",
+      "Ожидание вашего ответа",
     );
   });
 
   it("stops promising a turn start once the thread's run has failed", () => {
     expect(
       describeWait({ kind: "turn-starting" }, { threadStatus: "error" }),
-    ).toBe("Turn didn't start · sends on the next turn");
+    ).toBe("Ответ не начался · отправится при следующем ответе");
   });
 
   it("names the absent machine a host-offline row is waiting on", () => {
     expect(describeWait({ kind: "host-offline", hostName: "M4" })).toBe(
-      "Waiting for M4 to be ready",
+      "Ожидание готовности M4",
     );
   });
 
@@ -99,17 +99,17 @@ describe("describeQueuedMessageWait", () => {
     };
     expect(
       describeWait(waitingOn, { pluginDisplayName: "Concurrency Limit" }),
-    ).toBe("Held by Concurrency Limit · 4 of 4 running");
+    ).toBe("Удерживает Concurrency Limit · 4 of 4 running");
     expect(describeWait(waitingOn)).toBe(
-      "Held by concurrency-limit · 4 of 4 running",
+      "Удерживает concurrency-limit · 4 of 4 running",
     );
   });
 
   it("carries the scheduled instant but never the countdown", () => {
     const label = describeWait({ kind: "time" }, { sendAt: NOW + 3 * HOUR });
-    expect(label).toBe(`Scheduled for ${clockAt(NOW + 3 * HOUR)}`);
-    expect(label).not.toMatch(/\bin \d/);
-    expect(describeWait({ kind: "time" })).toBe("Scheduled");
+    expect(label).toBe(`Запланировано на ${clockAt(NOW + 3 * HOUR)}`);
+    expect(label).not.toMatch(/через \d/);
+    expect(describeWait({ kind: "time" })).toBe("Запланировано");
   });
 
   it("leads a retry with why it is being retried, then when and which attempt", () => {
@@ -128,7 +128,7 @@ describe("describeQueuedMessageWait", () => {
         threadStatus: "active",
         waitingOn: { kind: "time" },
       }),
-    ).toBe(`Rate limited · retrying at ${clockAt(NOW + HOUR)} · attempt 2`);
+    ).toBe(`Rate limited · Повторная попытка в ${clockAt(NOW + HOUR)} · попытка 2`);
     expect(
       describeQueuedMessageWait({
         failureReason: null,
@@ -149,7 +149,7 @@ describe("describeQueuedMessageWait", () => {
         },
       }),
     ).toBe(
-      "Rate limited · held by Concurrency limit · 2 of 2 running on all hosts · attempt 2",
+      "Rate limited · Удерживает Concurrency limit · 2 of 2 running on all hosts · попытка 2",
     );
   });
 });
@@ -206,7 +206,7 @@ describe("queuedMessageFallbackTitle", () => {
           reason: "Rate limited",
         },
       }),
-    ).toBe(`Retry failed turn from ${clockAt(NOW)}`);
+    ).toBe(`Повторить неудачный ответ от ${clockAt(NOW)}`);
   });
 
   it("titles a restart resume as a resume, with when it resumes and which attempt", () => {
@@ -218,7 +218,7 @@ describe("queuedMessageFallbackTitle", () => {
     };
     expect(
       queuedMessageFallbackTitle({ createdAt: NOW, now: NOW, payload }),
-    ).toBe("Resume after bb restarted");
+    ).toBe("Продолжить после перезапуска");
     expect(
       describeQueuedMessageWait({
         failureReason: null,
@@ -229,7 +229,7 @@ describe("queuedMessageFallbackTitle", () => {
         threadStatus: "idle",
         waitingOn: { kind: "time" },
       }),
-    ).toBe(`resuming at ${clockAt(NOW + 5_000)} · attempt 3`);
+    ).toBe(`Продолжение в ${clockAt(NOW + 5_000)} · попытка 3`);
   });
 });
 
@@ -270,13 +270,13 @@ describe("formatQueuedMessageCountdown", () => {
   });
 
   it("steps up a unit exactly at each boundary", () => {
-    expect(formatQueuedMessageCountdown(1)).toBe("in 1s");
-    expect(formatQueuedMessageCountdown(MINUTE - 1)).toBe("in 60s");
-    expect(formatQueuedMessageCountdown(MINUTE)).toBe("in 1m");
-    expect(formatQueuedMessageCountdown(HOUR - 1)).toBe("in 59m");
-    expect(formatQueuedMessageCountdown(HOUR)).toBe("in 1h");
-    expect(formatQueuedMessageCountdown(24 * HOUR - 1)).toBe("in 23h");
-    expect(formatQueuedMessageCountdown(24 * HOUR)).toBe("in 1d");
+    expect(formatQueuedMessageCountdown(1)).toBe("через 1 с");
+    expect(formatQueuedMessageCountdown(MINUTE - 1)).toBe("через 60 с");
+    expect(formatQueuedMessageCountdown(MINUTE)).toBe("через 1 мин");
+    expect(formatQueuedMessageCountdown(HOUR - 1)).toBe("через 59 мин");
+    expect(formatQueuedMessageCountdown(HOUR)).toBe("через 1 ч");
+    expect(formatQueuedMessageCountdown(24 * HOUR - 1)).toBe("через 23 ч");
+    expect(formatQueuedMessageCountdown(24 * HOUR)).toBe("через 1 дн");
   });
 });
 

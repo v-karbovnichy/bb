@@ -14,6 +14,17 @@ import {
   type RenameSession,
 } from "./inline-rename";
 
+const RENAME_KIND_LABELS: Record<
+  RenameSession["kind"],
+  { target: string; owner: string }
+> = {
+  thread: { target: "чат", owner: "чата" },
+  project: { target: "проект", owner: "проекта" },
+  section: { target: "раздел", owner: "раздела" },
+  environment: { target: "окружение", owner: "окружения" },
+  machine: { target: "машину", owner: "машины" },
+};
+
 export function RenameSessionDialog({
   controller,
 }: {
@@ -54,6 +65,7 @@ function RenameSessionDialogContent({
   const inputId = useId();
   const errorId = useId();
   const isPending = Boolean(session.pending);
+  const kindLabel = RENAME_KIND_LABELS[session.kind];
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     void controller.save();
@@ -62,9 +74,9 @@ function RenameSessionDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Rename {session.kind}</DialogTitle>
+        <DialogTitle>Переименовать {kindLabel.target}</DialogTitle>
         <DialogDescription>
-          Choose a new name for this {session.kind}.
+          Выберите новое название для {kindLabel.owner}.
         </DialogDescription>
       </DialogHeader>
       <form className="space-y-3" onSubmit={handleSubmit}>
@@ -97,11 +109,11 @@ function RenameSessionDialogContent({
               disabled={isPending || session.cannotRetry}
               onClick={() => void controller.save(true)}
             >
-              Clear custom name
+              Удалить пользовательское название
             </Button>
           ) : null}
           <Button type="submit" disabled={isPending || session.cannotRetry}>
-            Rename {session.kind}
+            Переименовать {kindLabel.target}
           </Button>
         </DialogFooter>
       </form>

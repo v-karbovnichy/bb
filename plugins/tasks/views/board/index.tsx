@@ -145,7 +145,7 @@ function TaskCard({
           <Icon
             name="Paperclip"
             className="size-3 text-muted-foreground"
-            aria-label={`${meta.attachmentCount} attachments`}
+            aria-label={`Вложений: ${meta.attachmentCount}`}
           />
         ) : null}
       </div>
@@ -352,9 +352,9 @@ export function BoardView({ projectId }: BoardViewProps) {
     if (board.error) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-sm text-muted-foreground">
-          <p>Failed to load the board: {board.error}</p>
+          <p>Не удалось загрузить доску: {board.error}</p>
           <Button variant="outline" size="sm" onClick={board.refresh}>
-            Retry
+            Повторить
           </Button>
         </div>
       );
@@ -419,7 +419,7 @@ export function BoardView({ projectId }: BoardViewProps) {
             variant="ghost"
             size="icon"
             className="ml-auto size-6 text-muted-foreground"
-            aria-label={`New ${STATUS_LABELS[status]} task`}
+            aria-label={`Новая задача со статусом «${STATUS_LABELS[status]}»`}
             onClick={() => setQuickAddStatus(status)}
           >
             <Icon name="Plus" className="size-3.5" />

@@ -155,10 +155,10 @@ describe("thread fixed-tab contract", () => {
   it("does not expose or mount thread tabs without a thread", () => {
     install();
     const view = mount(null);
-    expect(screen.queryByRole("button", { name: "Info" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Информация" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Status" })).toBeNull();
     view.changeThread("");
-    expect(screen.queryByRole("button", { name: "Info" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Информация" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Status" })).toBeNull();
     view.changeThread("thr_one");
     fireEvent.click(screen.getByRole("button", { name: "Status" }));
@@ -219,6 +219,6 @@ describe("thread fixed-tab contract", () => {
     expect(screen.getByText("thr_two:Reloaded")).toBeTruthy();
     act(() => removePluginSlotRegistrations("example"));
     expect(screen.queryByRole("button", { name: "Reloaded" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Info" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Информация" })).toBeTruthy();
   });
 });

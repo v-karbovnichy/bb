@@ -45,7 +45,7 @@ export function useThreadSurfaceRegistration(threadId: string): void {
 
 export function getAppBridge(): AppBridge {
   if (current === null) {
-    throw new Error("Conductor layout is still loading. Try again.");
+    throw new Error("Рабочая область ещё загружается. Повторите попытку.");
   }
   return current;
 }

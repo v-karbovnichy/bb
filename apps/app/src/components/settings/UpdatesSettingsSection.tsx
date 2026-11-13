@@ -121,6 +121,18 @@ import { ReleaseNotesPanel } from "./ReleaseNotesPanel";
 
 const BULK_RETRY_THRESHOLD = 1;
 
+const UPDATE_STATE_LABELS: Record<UpdateState, string> = {
+  "up-to-date": "Обновлено",
+  "in-progress": "Выполняется",
+  "update-available": "Доступно обновление",
+  "restart-required": "Загружено",
+  "not-installed": "Не установлено",
+  "update-manually": "Обновить в терминале",
+  "latest-unknown": "Последняя версия неизвестна",
+  failed: "Ошибка",
+  offline: "Не в сети",
+};
+
 export function UpdateActionButton({
   label,
   tooltipLabel,
@@ -362,7 +374,7 @@ function RowStateControl({
   const presentation = UPDATE_STATE_PRESENTATION[state];
   const icon = actionIcon ?? (presentation.icon as IconName | null);
   const spin = loading || presentation.inFlight === true;
-  const srLabel = presentation.label;
+  const srLabel = UPDATE_STATE_LABELS[state];
   const explainOnHover = presentation.inFlight !== true;
 
   if (onClick !== undefined && buttonLabel !== undefined) {
@@ -394,7 +406,7 @@ function RowStateControl({
       <span className="flex min-w-0 items-center gap-1.5">
         <UpdateActionButton
           label={[srLabel, actionLabel].filter(Boolean).join(" · ")}
-          tooltipLabel={actionTooltip ?? actionLabel ?? presentation.label}
+          tooltipLabel={actionTooltip ?? actionLabel ?? srLabel}
           icon={icon}
           loading={loading}
           onClick={onClick}
@@ -438,7 +450,7 @@ function RowStateControl({
       <TooltipProvider delayDuration={250}>
         <Tooltip>
           <TooltipTrigger asChild>{mark}</TooltipTrigger>
-          <TooltipContent>{presentation.label}</TooltipContent>
+          <TooltipContent>{srLabel}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </span>
@@ -489,11 +501,11 @@ function ReleaseNotesToggleButton({
       type="button"
       aria-expanded={expanded}
       aria-controls={expanded ? panelId : undefined}
-      aria-label={`Changelog for bb ${version}`}
+      aria-label={`Список изменений bb ${version}`}
       className="inline-flex w-fit shrink-0 cursor-pointer items-center gap-0.5 rounded-sm text-2xs text-muted-foreground underline decoration-border underline-offset-4 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none aria-expanded:text-foreground"
       onClick={onToggle}
     >
-      Changelog
+      Список изменений
       <Icon
         aria-hidden
         name="ChevronRight"
@@ -504,7 +516,7 @@ function ReleaseNotesToggleButton({
 }
 
 export function BbAppUpdateRows({
-  name: rowName = "Server",
+  name: rowName = "Сервер",
   systemVersion,
   appUpdate,
   applyPending = false,
@@ -533,8 +545,8 @@ export function BbAppUpdateRows({
     onRetryAppCheck === null ? null : (
       <RowStateControl
         state="latest-unknown"
-        buttonLabel="Retry"
-        actionLabel="Retry the release check"
+        buttonLabel="Повторить"
+        actionLabel="Повторить проверку выпусков"
         loading={isChecking}
         onClick={onRetryAppCheck}
       />
@@ -592,8 +604,8 @@ export function BbAppUpdateRows({
         <RowStateControl
           state="restart-required"
           buttonLeading={<BbLogo className="size-3" />}
-          buttonLabel="Relaunch"
-          actionLabel="Relaunch bb to finish updating"
+          buttonLabel="Перезапустить"
+          actionLabel="Перезапустить bb для завершения обновления"
           onClick={() => onRelaunchDesktop?.()}
         />,
       );
@@ -607,11 +619,11 @@ export function BbAppUpdateRows({
         <RowStateControl
           state="failed"
           actionIcon={RETRY_ACTION_ICON as IconName}
-          actionTooltip="Retry"
-          actionLabel="Retry the download"
+          actionTooltip="Повторить"
+          actionLabel="Повторить загрузку"
           onClick={() => onRetryDesktop?.()}
         />,
-        <FailureIndicator reason="Download failed" />,
+        <FailureIndicator reason="Не удалось загрузить" />,
       );
     }
     if (desktopInfo.updateAvailable) {
@@ -629,11 +641,11 @@ export function BbAppUpdateRows({
         ) : (
           <RowStateControl
             state="latest-unknown"
-            buttonLabel={unchecked ? "Check" : "Retry"}
+            buttonLabel={unchecked ? "Проверить" : "Повторить"}
             actionLabel={
               unchecked
-                ? "Check for desktop releases"
-                : "Retry the desktop release check"
+                ? "Проверить выпуски приложения"
+                : "Повторить проверку выпусков приложения"
             }
             loading={isChecking}
             onClick={checkDesktop}
@@ -641,10 +653,10 @@ export function BbAppUpdateRows({
         ),
         undefined,
         isChecking
-          ? "Checking for a newer desktop release…"
+          ? "Проверка нового выпуска приложения…"
           : unchecked
-            ? "Desktop updates haven't been checked yet."
-            : "Couldn't determine the latest desktop release.",
+            ? "Обновления приложения ещё не проверялись."
+            : "Не удалось определить последний выпуск приложения.",
       );
     }
     return row(name, settledStatus);
@@ -691,12 +703,12 @@ export function BbAppUpdateRows({
         name={rowName}
         detail={
           <span className="shrink-0 text-2xs text-muted-foreground">
-            Source checkout
+            Локальная копия исходного кода
           </span>
         }
         current={
           systemVersion.currentCommit === null
-            ? `Build ${systemVersion.currentVersion}`
+            ? `Сборка ${systemVersion.currentVersion}`
             : systemVersion.currentCommit.slice(0, 7)
         }
         latest={null}
@@ -736,12 +748,12 @@ export function BbAppUpdateRows({
       <RowStateControl
         state="update-available"
         actionIcon="Copy"
-        actionLabel="Copy the upgrade command"
-        actionTooltip="Copy command"
+        actionLabel="Скопировать команду обновления"
+        actionTooltip="Скопировать команду"
         onClick={() => {
           void copyToClipboardWithToast(systemVersion.upgradeCommand, {
-            successMessage: "Upgrade command copied",
-            errorMessage: "Couldn't copy upgrade command",
+            successMessage: "Команда обновления скопирована",
+            errorMessage: "Не удалось скопировать команду обновления",
           });
         }}
       />,
@@ -754,8 +766,8 @@ export function BbAppUpdateRows({
       unavailableCheckControl,
       undefined,
       isChecking
-        ? "Checking npm for a newer release…"
-        : "Couldn't check npm for a newer release.",
+        ? "Проверка нового выпуска в npm…"
+        : "Не удалось проверить новый выпуск в npm.",
     );
   }
   return row(name, settledStatus);
@@ -776,14 +788,14 @@ function ScheduledUpdateSplitButton({
     <SplitButton
       className="h-6 px-2 text-xs"
       disabled={updateNowPending}
-      primaryAction={{ label: "Update now", onSelect: onUpdateNow }}
-      primaryTooltip="Restart into the update without waiting for threads"
-      triggerLabel="More update options"
-      mobileTitle="Update bb"
+      primaryAction={{ label: "Обновить сейчас", onSelect: onUpdateNow }}
+      primaryTooltip="Перезапустить для обновления, не дожидаясь завершения чатов"
+      triggerLabel="Другие варианты обновления"
+      mobileTitle="Обновить bb"
       secondaryActions={[
         {
           id: "skip-version",
-          label: "Skip this version",
+          label: "Пропустить эту версию",
           disabled: skipPending,
           onSelect: onSkip,
         },
@@ -833,7 +845,7 @@ function InAppUpdateRow({
       detail={
         installKind === "source" ? (
           <span className="shrink-0 text-2xs text-muted-foreground">
-            Source checkout
+            Локальная копия исходного кода
           </span>
         ) : undefined
       }
@@ -854,7 +866,7 @@ function InAppUpdateRow({
     return row(
       name,
       <RowStateControl live state="in-progress" />,
-      <RowStateCaption state="in-progress">Restarting</RowStateCaption>,
+      <RowStateCaption state="in-progress">Перезапуск</RowStateCaption>,
     );
   }
   if (status.scheduled != null) {
@@ -886,12 +898,12 @@ function InAppUpdateRow({
     available === null || status.blocked !== null || onApply === null ? null : (
       <RowStateControl
         state={failure === null ? "update-available" : "failed"}
-        buttonLabel={failure === null ? "Update" : undefined}
+        buttonLabel={failure === null ? "Обновить" : undefined}
         actionIcon={
           failure === null ? undefined : (RETRY_ACTION_ICON as IconName)
         }
-        actionTooltip={failure === null ? undefined : "Retry"}
-        actionLabel="Download the update and restart bb"
+        actionTooltip={failure === null ? undefined : "Повторить"}
+        actionLabel="Загрузить обновление и перезапустить bb"
         loading={applyPending}
         onClick={onApply}
       />
@@ -901,9 +913,9 @@ function InAppUpdateRow({
       name,
       updateButton,
       <FailureIndicator
-        reason="Last update failed"
-        openLabel="View the failed bb update"
-        openTooltip="View details"
+        reason="Последнее обновление не удалось"
+        openLabel="Посмотреть неудачное обновление bb"
+        openTooltip="Показать подробности"
         onOpen={onShowResult === null ? undefined : () => onShowResult(failure)}
       />,
     );
@@ -923,7 +935,7 @@ function InAppUpdateRow({
   if (updateButton !== null) {
     const captions = [
       status.autoUpdate && status.availableSkipped
-        ? "Skipped until a newer version"
+        ? "Пропущено до выхода новой версии"
         : null,
       status.runningThreadCount > 0
         ? runningThreadsCaption(status.runningThreadCount)
@@ -1098,7 +1110,7 @@ export function providerCliUpdaterName(
     "",
   );
   if (executable === status.executableName) {
-    return "Built-in updater";
+    return "Встроенный механизм обновления";
   }
   return UPDATER_NAMES[executable] ?? executable;
 }
@@ -1214,7 +1226,7 @@ function ProviderDetailRow({
       <span className="flex shrink-0 items-center justify-end gap-1.5">
         {state === "update-manually" ? (
           <span className="text-xs text-subtle-foreground">
-            {UPDATE_STATE_PRESENTATION["update-manually"].label}
+            {UPDATE_STATE_LABELS["update-manually"]}
           </span>
         ) : updater === null || status.installAction === null ? null : (
           <Tooltip>
@@ -1235,8 +1247,8 @@ function ProviderDetailRow({
         {failure === null ? null : (
           <FailureIndicator
             reason={PROVIDER_CLI_FAILURE_SUMMARIES[failure.kind]}
-            openLabel={`View ${status.displayName} update log`}
-            openTooltip="View log"
+            openLabel={`Посмотреть журнал обновления ${status.displayName}`}
+            openTooltip="Посмотреть журнал"
             onOpen={() => openProviderCliInstallLog(failure.logDialogState)}
           />
         )}
@@ -1246,8 +1258,8 @@ function ProviderDetailRow({
           <RowStateControl
             state="failed"
             actionIcon={RETRY_ACTION_ICON as IconName}
-            actionLabel={`Retry ${status.displayName} on ${hostName}`}
-            actionTooltip="Retry"
+            actionLabel={`Повторить обновление ${status.displayName} на ${hostName}`}
+            actionTooltip="Повторить"
             onClick={() => onStart(retryIssue)}
           />
         ) : state === "up-to-date" || state === "latest-unknown" ? (
@@ -1293,7 +1305,7 @@ function MachineRowNote({
   if (daemon === "updating") {
     return (
       <>
-        <RowStateCaption state="in-progress">Updating bb</RowStateCaption>
+        <RowStateCaption state="in-progress">Обновление bb</RowStateCaption>
         <RowStateControl live state="in-progress" />
       </>
     );
@@ -1301,12 +1313,12 @@ function MachineRowNote({
   if (daemon === "stalled") {
     return (
       <>
-        <RowStateCaption state="failed">Update didn't finish</RowStateCaption>
+        <RowStateCaption state="failed">Обновление не завершилось</RowStateCaption>
         <RowStateControl
           state="failed"
           actionIcon={RETRY_ACTION_ICON as IconName}
-          actionTooltip="Retry"
-          actionLabel={`Retry on ${host.name} now`}
+          actionTooltip="Повторить"
+          actionLabel={`Повторить сейчас на ${host.name}`}
           loading={retryUpdatePending}
           onClick={() => onRetryDaemonUpdate(host.id)}
         />
@@ -1316,24 +1328,24 @@ function MachineRowNote({
   if (daemon === "ahead") {
     return (
       <RowStateCaption state="offline">
-        Update this app to reconnect
+        Обновите приложение, чтобы подключиться снова
       </RowStateCaption>
     );
   }
   if (daemon === "offline") {
-    return <RowStateCaption state="offline">Offline</RowStateCaption>;
+    return <RowStateCaption state="offline">Не в сети</RowStateCaption>;
   }
   if (machine.statusError) {
     return (
       <>
         <RowStateCaption state="failed">
-          Couldn't check for updates
+          Не удалось проверить обновления
         </RowStateCaption>
         <RowStateControl
           state="failed"
           actionIcon={RETRY_ACTION_ICON as IconName}
-          actionTooltip="Retry"
-          actionLabel={`Check ${host.name}'s CLIs again`}
+          actionTooltip="Повторить"
+          actionLabel={`Повторить проверку CLI на ${host.name}`}
           loading={machine.statusFetching}
           onClick={() => onRecheckClis(host.id)}
         />
@@ -1347,15 +1359,15 @@ function MachineRowNote({
       <>
         <RowStateCaption state="failed">
           {failed.length === 1
-            ? `${failed[0]?.status.displayName} failed`
-            : `${failed.length} failed`}
+            ? `Ошибка: ${failed[0]?.status.displayName}`
+            : `Ошибок: ${failed.length}`}
         </RowStateCaption>
         {retryable.length === 0 ? null : (
           <RowStateControl
             state="failed"
             actionIcon={RETRY_ACTION_ICON as IconName}
-            actionTooltip="Retry"
-            actionLabel={`Retry failed updates on ${host.name}`}
+            actionTooltip="Повторить"
+            actionLabel={`Повторить неудачные обновления на ${host.name}`}
             onClick={() => {
               for (const item of retryable) {
                 onStartInstall(host.id, item.issue);
@@ -1375,11 +1387,11 @@ function MachineRowNote({
             tabIndex={0}
             className="rounded-sm text-xs text-subtle-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
           >
-            {manual} manual
+            Требуют ручного обновления: {manual}
           </span>
         </TooltipTrigger>
         <TooltipContent>
-          {UPDATE_STATE_PRESENTATION["update-manually"].label}
+          {UPDATE_STATE_LABELS["update-manually"]}
         </TooltipContent>
       </Tooltip>
     );
@@ -1536,7 +1548,7 @@ export function AutoAppUpdateSetting({
     <div className="py-3.5 pr-4 pl-13">
       <SettingsWithControl
         label={label}
-        description="Checks every hour and restarts bb into a new version once no thread has run for 15 minutes."
+        description="Проверяет обновления каждый час и перезапускает bb с новой версией, когда ни один чат не работает 15 минут."
       >
         <Switch
           checked={checked}
@@ -1558,10 +1570,6 @@ export function BbUpdatesCard({ children }: { children: ReactNode }) {
   );
 }
 
-function pluralMachines(count: number): string {
-  return `${count} machine${count === 1 ? "" : "s"}`;
-}
-
 function quietFleetSummary(machines: readonly UpdateInventoryMachine[]): {
   message: string;
   checking: boolean;
@@ -1571,25 +1579,25 @@ function quietFleetSummary(machines: readonly UpdateInventoryMachine[]): {
   );
   const offline = machines.length - connected.length;
   if (connected.some((machine) => machine.statusPending)) {
-    return { message: "Checking for updates…", checking: true };
+    return { message: "Проверка обновлений…", checking: true };
   }
   if (connected.length === 0) {
     return {
       message:
         machines.length === 1
-          ? `${machines[0]?.host.name} is offline.`
-          : `All ${pluralMachines(machines.length)} are offline.`,
+          ? `${machines[0]?.host.name} не в сети.`
+          : `Все машины не в сети (${machines.length}).`,
       checking: false,
     };
   }
   const scope =
     machines.length === 1
-      ? `on ${connected[0]?.host.name}`
+      ? `на ${connected[0]?.host.name}`
       : offline === 0
-        ? `on all ${pluralMachines(connected.length)}`
-        : `on ${pluralMachines(connected.length)}`;
+        ? `на всех машинах (${connected.length})`
+        : `на машинах (${connected.length})`;
   return {
-    message: `Nothing to update ${scope}.${offline === 0 ? "" : ` ${offline} offline.`}`,
+    message: `Нет обновлений ${scope}.${offline === 0 ? "" : ` Не в сети: ${offline}.`}`,
     checking: false,
   };
 }
@@ -1618,8 +1626,8 @@ function BulkUpdateProgress({ remainingJobs }: { remainingJobs: number }) {
     >
       <Icon aria-hidden name="Loading" className="size-3.5 animate-spin" />
       {batch.total > 1 && batch.remaining === remainingJobs
-        ? `Updating ${batch.total - remainingJobs + 1} of ${batch.total}`
-        : "Updating"}
+        ? `Обновление ${batch.total - remainingJobs + 1} из ${batch.total}`
+        : "Обновление"}
     </span>
   );
 }
@@ -1677,10 +1685,10 @@ export function ProviderCliUpdatesSection({
   const updateAllButton =
     remainingJobs === 0 && startable.length > 0 ? (
       <UpdateActionButton
-        label={`Update all ${startable.length} CLI tool${startable.length === 1 ? "" : "s"}`}
-        tooltipLabel="Update all"
+        label={`Обновить все инструменты CLI (${startable.length})`}
+        tooltipLabel="Обновить все"
         icon={UPDATE_ACTION_ICON}
-        visibleLabel="Update all"
+        visibleLabel="Обновить все"
         variant="default"
         onClick={() => {
           for (const { hostId, issue } of startable) {
@@ -1692,8 +1700,8 @@ export function ProviderCliUpdatesSection({
   const retryAllButton =
     stalledHostIds.length > BULK_RETRY_THRESHOLD ? (
       <UpdateActionButton
-        label={`Update all ${stalledHostIds.length} machines now`}
-        visibleLabel="Retry all"
+        label={`Повторить обновление всех машин сейчас (${stalledHostIds.length})`}
+        visibleLabel="Повторить все"
         icon="RotateCcw"
         iconPosition="end"
         variant="default"
@@ -1705,7 +1713,7 @@ export function ProviderCliUpdatesSection({
     retryAllButton !== null || updateAllButton !== null || remainingJobs > 0 ? (
       <div
         role="toolbar"
-        aria-label="Bulk update actions"
+        aria-label="Массовые действия с обновлениями"
         className="flex flex-wrap items-center justify-end gap-2"
       >
         <BulkUpdateProgress remainingJobs={remainingJobs} />
@@ -1721,10 +1729,10 @@ export function ProviderCliUpdatesSection({
         action={bulkActions}
         actionPlacement="inline"
         bodyClassName="overflow-hidden p-0"
-        title="Provider CLIs"
+        title="CLI провайдеров"
       >
         {machines.length === 0 ? (
-          <ResourceListState state="empty" message="No machines available." />
+          <ResourceListState state="empty" message="Нет доступных машин." />
         ) : listed.length === 0 ? (
           <div
             data-updates-summary
@@ -1747,9 +1755,9 @@ export function ProviderCliUpdatesSection({
             {listed.map((machine) => {
               const hostId = machine.host.id;
               const tags = [
-                hostId === serverHostId ? "Server" : null,
+                hostId === serverHostId ? "Сервер" : null,
                 machines.length > 1 && hostId === localDaemonHostId
-                  ? "This machine"
+                  ? "Эта машина"
                   : null,
               ].filter((tag): tag is string => tag !== null);
               return (
@@ -1798,11 +1806,11 @@ export function ProviderCliUpdatesSection({
           >
             {showAll
               ? attention.length === 0
-                ? "Hide machines"
-                : "Hide"
+                ? "Скрыть машины"
+                : "Скрыть"
               : attention.length === 0
-                ? "Show machines"
-                : "Show all"}
+                ? "Показать машины"
+                : "Показать все"}
           </button>
         </p>
       )}
@@ -1876,7 +1884,7 @@ function PluginUpdateRow({
           <RowStateControl live state="in-progress" />
         ) : item.kind === "blocked" ? (
           <span className="text-2xs font-semibold text-subtle-foreground">
-            Blocked
+            Заблокировано
           </span>
         ) : failure !== null ? (
           <>
@@ -1884,25 +1892,25 @@ function PluginUpdateRow({
               reason={
                 failure.detail.length > 0
                   ? failure.detail
-                  : `bb couldn’t activate ${failure.label} and restored ${plugin.version}.`
+                  : `bb не удалось активировать ${failure.label}; восстановлена версия ${plugin.version}.`
               }
             />
             <RowStateControl
               state="failed"
               actionIcon={RETRY_ACTION_ICON as IconName}
-              actionLabel={`Retry ${name} update to ${item.version}`}
-              actionTooltip="Retry"
+              actionLabel={`Повторить обновление ${name} до ${item.version}`}
+              actionTooltip="Повторить"
               onClick={() => onStartUpdate(plugin.id)}
             />
           </>
         ) : (
           <RowStateControl
             state="update-available"
-            actionLabel={`Update ${name} to ${item.version}`}
+            actionLabel={`Обновить ${name} до ${item.version}`}
             buttonLeading={
               <Icon aria-hidden name={UPDATE_ACTION_ICON} className="size-3" />
             }
-            buttonLabel="Update"
+            buttonLabel="Обновить"
             onClick={() => onStartUpdate(plugin.id)}
           />
         )}
@@ -1932,16 +1940,16 @@ export function PluginUpdatesSection({
     remainingJobs === 0 && startable.length === 0 ? null : (
       <div
         role="toolbar"
-        aria-label="Bulk plugin update actions"
+        aria-label="Массовые действия с обновлениями плагинов"
         className="flex flex-wrap items-center justify-end gap-2"
       >
         <BulkUpdateProgress remainingJobs={remainingJobs} />
         {remainingJobs > 0 ? null : (
           <UpdateActionButton
-            label={`Update all ${startable.length} plugin${startable.length === 1 ? "" : "s"}`}
-            tooltipLabel="Update all"
+            label={`Обновить все плагины (${startable.length})`}
+            tooltipLabel="Обновить все"
             icon={UPDATE_ACTION_ICON}
-            visibleLabel="Update all"
+            visibleLabel="Обновить все"
             variant="default"
             onClick={() => onStartUpdates(startable)}
           />
@@ -1954,7 +1962,7 @@ export function PluginUpdatesSection({
         action={bulkActions}
         actionPlacement="inline"
         bodyClassName="overflow-hidden p-0"
-        title="Plugins"
+        title="Плагины"
       >
         {plugins.items.length === 0 ? (
           <div
@@ -1969,12 +1977,12 @@ export function PluginUpdatesSection({
               />
             </span>
             {checking
-              ? "Checking for updates…"
+              ? "Проверка обновлений…"
               : plugins.trackedCount === 0
-                ? "No installed plugins track updates."
+                ? "Ни один установленный плагин не отслеживает обновления."
                 : plugins.trackedCount === 1
-                  ? "Nothing to update for 1 plugin."
-                  : `Nothing to update across ${plugins.trackedCount} plugins.`}
+                  ? "Для одного плагина обновлений нет."
+                  : `Нет обновлений для отслеживаемых плагинов (${plugins.trackedCount}).`}
           </div>
         ) : (
           <div className="divide-y divide-border">
@@ -2155,7 +2163,7 @@ export function UpdatesSettingsSection() {
       ? null
       : () => {
           void desktopApi.installUpdate().catch((error) => {
-            appToast.error("Relaunch failed", {
+            appToast.error("Не удалось перезапустить", {
               description: checkErrorDescription(error),
             });
           });
@@ -2165,7 +2173,7 @@ export function UpdatesSettingsSection() {
       ? null
       : () => {
           void desktopApi.checkForUpdates().catch((error) => {
-            appToast.error("Update retry failed", {
+            appToast.error("Не удалось повторить обновление", {
               description: checkErrorDescription(error),
             });
           });
@@ -2222,7 +2230,7 @@ export function UpdatesSettingsSection() {
   }
   const serverAppRow = (
     <BbAppUpdateRows
-      name="Server"
+      name="Сервер"
       systemVersion={inventory.systemVersion}
       appUpdate={
         useServerUpdate || desktopInfo === null ? appUpdate : undefined
@@ -2243,7 +2251,7 @@ export function UpdatesSettingsSection() {
   );
   const desktopClientRow = (
     <BbAppUpdateRows
-      name="Desktop"
+      name="Приложение"
       systemVersion={undefined}
       desktopInfo={desktopInfo}
       isDesktop={isDesktop}
@@ -2262,7 +2270,7 @@ export function UpdatesSettingsSection() {
           (candidate) => candidate.host.id === hostId,
         );
         appToast.success(
-          `Retrying the update on ${machine?.host.name ?? "the requested machine"}`,
+          `Повторное обновление на ${machine?.host.name ?? "запрошенной машине"}`,
         );
       },
     });
@@ -2272,7 +2280,7 @@ export function UpdatesSettingsSection() {
     for (const hostId of hostIds) {
       retryHostUpdate.mutate(hostId);
     }
-    appToast.success(`Retrying the update on ${hostIds.length} machines`);
+    appToast.success(`Повторное обновление на машинах (${hostIds.length})`);
   }
 
   return (
@@ -2293,8 +2301,8 @@ export function UpdatesSettingsSection() {
           <AutoAppUpdateSetting
             label={
               serverRunsSeparately
-                ? "Restart and update the server automatically"
-                : "Restart and update bb automatically"
+                ? "Автоматически перезапускать и обновлять сервер"
+                : "Автоматически перезапускать и обновлять bb"
             }
             checked={
               setAutoAppUpdate.isPending

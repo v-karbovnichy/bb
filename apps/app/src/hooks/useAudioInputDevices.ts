@@ -29,7 +29,7 @@ function resolveAudioInputDeviceErrorMessage(error: unknown): string {
         return "Microphone permission denied";
       case "NotFoundError":
       case "DevicesNotFoundError":
-        return "No microphones found";
+        return "Микрофоны не найдены";
       default:
         return "Microphone devices unavailable";
     }

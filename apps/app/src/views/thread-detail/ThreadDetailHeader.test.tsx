@@ -225,7 +225,7 @@ describe("ThreadDetailHeader", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Hide right panel" }),
+      screen.queryByRole("button", { name: "Скрыть правую панель" }),
     ).toBeNull();
   });
 
@@ -243,7 +243,7 @@ describe("ThreadDetailHeader", () => {
       </PaneContext.Provider>
     );
     const view = render(header(false));
-    const toggle = screen.getByRole("button", { name: "Show right panel" });
+    const toggle = screen.getByRole("button", { name: "Показать правую панель" });
     expect(toggle.hasAttribute("inert")).toBe(false);
 
     view.rerender(header(true));
@@ -251,7 +251,7 @@ describe("ThreadDetailHeader", () => {
     expect(toggle.isConnected).toBe(true);
     expect(toggle.classList.contains("hidden")).toBe(true);
     expect(toggle.hasAttribute("inert")).toBe(true);
-    expect(toggle.getAttribute("aria-label")).toBe("Show right panel");
+    expect(toggle.getAttribute("aria-label")).toBe("Показать правую панель");
 
     view.rerender(header(false));
 
@@ -277,7 +277,7 @@ describe("ThreadDetailHeader", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: "Hide right panel",
+      name: "Скрыть правую панель",
     });
     expect(trigger.closest("[data-thread-header-pane-actions]")).not.toBeNull();
   });
@@ -304,7 +304,7 @@ describe("ThreadDetailHeader", () => {
       );
 
       const showButton = screen.getByRole("button", {
-        name: "Show right panel",
+        name: "Показать правую панель",
       });
       expect(
         showButton.querySelector(`[data-icon="${expectedIcon}"]`),
@@ -312,7 +312,7 @@ describe("ThreadDetailHeader", () => {
     },
   );
 
-  it("keeps thread Full Screen in a split header while its panel is open", () => {
+  it("keeps thread На весь экран in a split header while its panel is open", () => {
     render(
       <PaneContext.Provider
         value={{
@@ -334,10 +334,10 @@ describe("ThreadDetailHeader", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: /Maximize pane/ }),
+      screen.getByRole("button", { name: /Развернуть панель/ }),
     ).not.toBeNull();
     expect(
-      screen.queryByRole("button", { name: "Hide right panel" }),
+      screen.queryByRole("button", { name: "Скрыть правую панель" }),
     ).toBeNull();
   });
 
@@ -395,7 +395,7 @@ describe("ThreadDetailHeader", () => {
     expect(screen.getByText("Thread menu")).not.toBeNull();
     expect(screen.getByText("Responsive menu actions")).not.toBeNull();
     expect(screen.getByText("menu: Commit")).not.toBeNull();
-    const closePane = screen.getByRole("button", { name: "Close pane" });
+    const closePane = screen.getByRole("button", { name: "Закрыть панель" });
     expect(closePane.classList).toContain("header-pane-action-button");
     const closeIcon = closePane.querySelector('[data-icon="CloseThreadPane"]');
     expect(closeIcon).not.toBeNull();
@@ -922,11 +922,11 @@ describe("ThreadDetailHeader", () => {
       ctrlKey: true,
       shiftKey: true,
     });
-    const dialog = await screen.findByRole("dialog", { name: "Rename thread" });
+    const dialog = await screen.findByRole("dialog", { name: "Переименовать чат" });
     fireEvent.change(screen.getByRole("textbox", { name: "Thread name" }), {
       target: { value: "  From dialog  " },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Rename thread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Переименовать чат" }));
 
     await waitFor(() => expect(dialog.isConnected).toBe(false));
     expect(mocks.renameThreadAsync).toHaveBeenCalledExactlyOnceWith(
@@ -997,7 +997,7 @@ describe("experimental_threadHeaderTitle", () => {
             actionsMenu={(args) => {
               actionsMenu.push(args);
               return (
-                <button type="button" aria-label="Thread actions">
+                <button type="button" aria-label="Действия с чатом">
                   ···
                 </button>
               );
@@ -1030,10 +1030,10 @@ describe("experimental_threadHeaderTitle", () => {
     expect(screen.queryByText("Core title")).toBeNull();
     expect(title.closest("p")).toBeNull();
     expect(
-      screen.getByRole("button", { name: "Thread actions" }),
+      screen.getByRole("button", { name: "Действия с чатом" }),
     ).not.toBeNull();
     expect(
-      screen.getByRole("button", { name: "Show right panel" }),
+      screen.getByRole("button", { name: "Показать правую панель" }),
     ).not.toBeNull();
   });
 
@@ -1069,7 +1069,7 @@ describe("experimental_threadHeaderTitle", () => {
 
     expect(screen.getByText("Core title")).not.toBeNull();
     expect(
-      screen.getByRole("button", { name: "Thread actions" }),
+      screen.getByRole("button", { name: "Действия с чатом" }),
     ).not.toBeNull();
   });
 

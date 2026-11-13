@@ -84,7 +84,7 @@ describe("onboarding error telemetry", () => {
         properties: { step: "projects", entry: "first_run", kind: "render" },
       },
     ]);
-    expect(view.container.textContent).toContain("bb hit an error and stopped");
+    expect(view.container.textContent).toContain("В bb произошла ошибка, приложение остановлено");
   });
 
   it("reports each kind once per step", () => {

@@ -121,7 +121,7 @@ export default async function worktreePlugin(bb: BbPluginApi): Promise<void> {
     if (!(await context.experimental_claimPath(resolved.path))) {
       return {
         status: "failed",
-        message: `${resolved.path} is already in use by another environment.`,
+        message: `${resolved.path} уже используется другим окружением.`,
       };
     }
     return {
@@ -189,8 +189,8 @@ export default async function worktreePlugin(bb: BbPluginApi): Promise<void> {
 
   bb.experimental_environments.register({
     id: GIT_WORKTREE_ENVIRONMENT_PROVIDER_ID,
-    displayName: "Worktree",
-    description: "Create an isolated Git worktree for your changes.",
+    displayName: "Рабочее дерево",
+    description: "Создать отдельное рабочее дерево Git для изменений.",
     icon: "FolderGit",
     requires: { gitCheckout: true },
     inputs: worktreeInputsSchema,
@@ -216,7 +216,7 @@ export default async function worktreePlugin(bb: BbPluginApi): Promise<void> {
         return {
           status: "failed",
           message:
-            "The removed worktree had no branch checked out, so there is no branch to restore it on.",
+            "В удалённом рабочем дереве не была выбрана ветка, поэтому восстановить его в ветке нельзя.",
         };
       }
       return createManagedWorktree(context, {
@@ -231,7 +231,7 @@ export default async function worktreePlugin(bb: BbPluginApi): Promise<void> {
         return { status: "removed" };
       }
       if (context.hostId === null) {
-        return { status: "failed", message: "The worktree machine is unknown" };
+        return { status: "failed", message: "Машина рабочего дерева неизвестна" };
       }
       const operationId = `remove#${context.pathKey}#${context.attempt}`;
       reports.set(operationId, context.report);

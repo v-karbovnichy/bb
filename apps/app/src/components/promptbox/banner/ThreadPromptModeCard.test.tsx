@@ -29,7 +29,7 @@ describe("ThreadPromptModeCard", () => {
       />,
     );
 
-    const toggle = screen.getByRole("button", { name: "Plan" });
+    const toggle = screen.getByRole("button", { name: "План" });
     expect(toggle.getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(toggle);
 
@@ -58,9 +58,9 @@ describe("ThreadPromptModeCard", () => {
       />,
     );
 
-    const exit = screen.getByRole("button", { name: "Exit plan mode" });
+    const exit = screen.getByRole("button", { name: "Выйти из режима планирования" });
     expect(exit.parentElement).toBe(
-      screen.getByRole("group", { name: "Plan controls" }),
+      screen.getByRole("group", { name: "Управление: План" }),
     );
     fireEvent.click(exit);
     fireEvent.click(exit);
@@ -78,17 +78,17 @@ describe("ThreadPromptModeCard", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Exit plan mode" }));
+    fireEvent.click(screen.getByRole("button", { name: "Выйти из режима планирования" }));
 
     await vi.waitFor(() =>
       expect(showMutationErrorToast).toHaveBeenCalledWith({
         error,
-        fallbackMessage: "Failed to exit Plan mode.",
+        fallbackMessage: "Не удалось выйти из режима планирования.",
       }),
     );
     expect(
       screen
-        .getByRole("button", { name: "Exit plan mode" })
+        .getByRole("button", { name: "Выйти из режима планирования" })
         .hasAttribute("disabled"),
     ).toBe(false);
   });

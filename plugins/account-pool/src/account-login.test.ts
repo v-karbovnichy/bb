@@ -368,9 +368,9 @@ describe("Account Pooler logins", () => {
       "8",
     ]);
     expect(started.exitCode).toBe(0);
-    const sessionId = started.stdout.match(/Session ID: ([0-9a-f-]+)/u)?.[1];
+    const sessionId = started.stdout.match(/ID сессии: ([0-9a-f-]+)/u)?.[1];
     const authorizeUrl = started.stdout.match(
-      /sign in to Claude:\n([^\n]+)/u,
+      /входа в Claude:\n([^\n]+)/u,
     )?.[1];
     if (sessionId === undefined || authorizeUrl === undefined) {
       throw new Error("CLI login did not print its session.");
@@ -458,9 +458,9 @@ describe("Account Pooler logins", () => {
       main.id,
     ]);
     expect(started.exitCode).toBe(0);
-    const sessionId = started.stdout.match(/Session ID: ([0-9a-f-]+)/u)?.[1];
+    const sessionId = started.stdout.match(/ID сессии: ([0-9a-f-]+)/u)?.[1];
     const authorizeUrl = started.stdout.match(
-      /sign in to Claude:\n([^\n]+)/u,
+      /входа в Claude:\n([^\n]+)/u,
     )?.[1];
     if (sessionId === undefined || authorizeUrl === undefined) {
       throw new Error("CLI login did not print its session.");
@@ -534,8 +534,8 @@ describe("Account Pooler logins", () => {
         "login",
         account.id,
       ]);
-      expect(started.stdout).toContain("Enter this code: ABCD-1234");
-      const sessionId = started.stdout.match(/Session ID: ([0-9a-f-]+)/u)?.[1];
+      expect(started.stdout).toContain("Введите код: ABCD-1234");
+      const sessionId = started.stdout.match(/ID сессии: ([0-9a-f-]+)/u)?.[1];
       if (sessionId === undefined) throw new Error("No Codex session.");
       providers.nextCodexLogin = identity;
       return pool.host.harness.behavior.runCli([
@@ -564,7 +564,7 @@ describe("Account Pooler logins", () => {
     });
     expect(accepted).toMatchObject({
       exitCode: 0,
-      stdout: expect.stringContaining("Signed in Work Codex"),
+      stdout: expect.stringContaining("Выполнен вход в Work Codex"),
     });
     expect(await summary(pool, account.id)).toMatchObject({
       id: account.id,

@@ -40,27 +40,27 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["preferences"],
     settings: [
       {
-        title: "Navigate to threads on creation",
+        title: "Переходить к новым чатам",
         keywords: ["new thread", "open", "background"],
       },
       {
-        title: "Default thread followup behavior",
+        title: "Действие Enter в работающем чате",
         keywords: ["enter", "steer", "queue", "follow-up"],
       },
       {
-        title: "Thread archive confirmation",
+        title: "Подтверждать архивацию чата",
         keywords: ["confirm", "child threads"],
       },
       {
-        title: "Show messages from before a context clear",
+        title: "Показывать сообщения до очистки контекста",
         keywords: ["history", "clear context"],
       },
       {
-        title: "Setup guide",
+        title: "Руководство по настройке",
         keywords: ["onboarding", "getting started", "welcome"],
       },
       {
-        title: "App links",
+        title: "Ссылки приложений",
         keywords: [
           "always allow",
           "native apps",
@@ -75,17 +75,17 @@ export const SETTINGS_SEARCH_INDEX: Record<
         ],
       },
       {
-        title: "Open links in the in-app browser",
+        title: "Открывать ссылки во встроенном браузере",
         keywords: ["url", "web"],
         when: "desktopBrowser",
       },
       {
-        title: "Rewrite localhost links",
+        title: "Преобразовывать ссылки localhost",
         keywords: ["url", "port", "remote"],
         when: "localhostLinkRewrite",
       },
       {
-        title: "New branch prefix",
+        title: "Префикс новой ветки",
         keywords: ["git", "worktree", "branch name"],
       },
       {
@@ -93,21 +93,21 @@ export const SETTINGS_SEARCH_INDEX: Record<
         keywords: ["command line", "terminal", "path", "install"],
         when: "cliCommand",
       },
-      { title: "bb CLI skills", keywords: ["agents", "install"] },
+      { title: "Навыки CLI bb", keywords: ["agents", "install"] },
       {
-        title: "Microphone",
+        title: "Микрофон",
         keywords: ["voice input", "audio", "dictation", "speech"],
       },
       {
-        title: "Streamer mode",
+        title: "Режим трансляции",
         keywords: ["privacy", "screen share", "hide models"],
       },
       {
-        title: "Share anonymous usage data",
+        title: "Отправлять анонимные данные об использовании",
         keywords: ["privacy", "telemetry", "analytics"],
       },
       {
-        title: "Show diagnostic events",
+        title: "Показывать диагностические события",
         keywords: ["debug", "troubleshooting", "logs"],
       },
     ],
@@ -116,12 +116,12 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["agents", "models"],
     settings: [
       {
-        title: "Allow faster service tiers",
+        title: "Разрешить ускоренные уровни сервиса",
         keywords: ["fast mode", "priority", "speed"],
       },
       {
-        title: "Release idle agent sessions",
-        keywords: ["memory", "RAM", "timeout", "retention", "cleanup"],
+        title: "Завершать неактивные сеансы агентов",
+        keywords: ["memory", "RAM", "idle", "timeout", "retention", "cleanup"],
       },
     ],
   },
@@ -129,12 +129,12 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["bb cloud", "llm"],
     settings: [
       {
-        title: "Thread titles",
+        title: "Названия чатов",
         keywords: ["naming", "branch names", "generate"],
       },
-      { title: "Commit messages", keywords: ["git", "generate"] },
+      { title: "Сообщения коммитов", keywords: ["git", "generate"] },
       {
-        title: "Voice input",
+        title: "Голосовой ввод",
         keywords: ["transcription", "dictation", "microphone", "speech"],
       },
     ],
@@ -143,42 +143,42 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["look", "interface"],
     settings: [
       {
-        title: "Theme",
+        title: "Тема",
         keywords: ["dark mode", "light mode", "system", "color scheme"],
       },
       {
-        title: "Palette",
-        keywords: ["colors", "theme", "syntax highlighting", "custom"],
+        title: "Палитра",
+        keywords: ["colors", "theme", "тема", "syntax highlighting", "custom"],
       },
-      { title: "Favicon color", keywords: ["icon", "tab"] },
-      { title: "Fade inactive splits", keywords: ["dim", "panes", "focus"] },
+      { title: "Цвет значка вкладки", keywords: ["icon", "tab"] },
+      { title: "Затемнять неактивные области", keywords: ["dim", "panes", "focus"] },
       {
-        title: "Navigation",
+        title: "Навигация",
         keywords: ["sidebar", "rail", "top list", "layout", "labels", "plugin"],
         when: "sidebarNavigations",
       },
       {
-        title: "Sidebar thread list",
+        title: "Список чатов в боковой панели",
         keywords: ["threads", "plugin"],
         when: "threadLists",
       },
       {
-        title: "Source code",
+        title: "Исходный код",
         keywords: ["viewer", "renderer", "syntax highlighting", "files"],
         when: "sourceCodeRenderers",
       },
       {
-        title: "Diffs",
+        title: "Изменения",
         keywords: ["renderer", "split", "unified"],
         when: "diffRenderers",
       },
       {
-        title: "Composer",
+        title: "Поле ввода",
         keywords: ["prompt box", "input", "editor", "renderer", "plugin"],
         when: "composers",
       },
       {
-        title: "Sidebar footer",
+        title: "Нижняя часть боковой панели",
         keywords: ["reorder", "buttons", "navigation"],
       },
     ],
@@ -187,7 +187,7 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["shortcuts", "keybindings", "hotkeys", "keys"],
     settings: [
       {
-        title: "Show keyboard hints when holding CMD / Control",
+        title: "Показывать подсказки при удержании CMD / Control",
         keywords: ["badges", "shortcut hints"],
       },
     ],
@@ -200,12 +200,12 @@ export const SETTINGS_SEARCH_INDEX: Record<
     keywords: ["editor", "open with"],
     settings: [
       {
-        title: "File preferences",
+        title: "Настройки файлов",
         keywords: ["editor", "directory default", "file default", "open with"],
         when: "filePreferences",
       },
       {
-        title: "File openers",
+        title: "Открытие файлов",
         keywords: ["extensions", "file types", "viewer", "plugins"],
         when: "fileOpeners",
       },
@@ -236,9 +236,9 @@ export const SETTINGS_SEARCH_INDEX: Record<
   updates: {
     keywords: ["upgrade", "version", "release notes", "changelog"],
     settings: [
-      { title: "Provider CLIs", keywords: ["agents", "upgrade"] },
+      { title: "CLI провайдеров", keywords: ["agents", "upgrade"] },
       {
-        title: "Plugins",
+        title: "Плагины",
         keywords: ["plugin updates", "outdated", "upgrade"],
         when: "pluginUpdates",
       },
@@ -255,14 +255,14 @@ export const SETTINGS_SEARCH_INDEX: Record<
   experiments: {
     keywords: ["beta", "preview", "labs", "feature flags"],
     settings: [
-      { title: "Early adopter", keywords: ["beta", "opt in", "preview"] },
+      { title: "Ранний доступ", keywords: ["beta", "opt in", "preview"] },
       {
-        title: "Server performance diagnostics",
+        title: "Диагностика производительности сервера",
         keywords: ["cpu profile", "logs"],
         when: "performanceDiagnostics",
       },
       {
-        title: "Server move",
+        title: "Перенос сервера",
         keywords: ["migrate", "export", "import", "machine"],
       },
     ],
@@ -355,7 +355,7 @@ export function buildSettingsSearchItems(
       return [
         {
           anchor: null,
-          context: "Plugin settings",
+          context: "Настройки плагина",
           icon,
           id: `plugin:${plugin.id}`,
           keywords: [plugin.id],

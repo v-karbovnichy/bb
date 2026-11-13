@@ -132,7 +132,7 @@ describe("TopLevelSidebarSection", () => {
     renderTree(
       <div onKeyDown={onShortcut}>
         <TopLevelSidebarSection
-          label="Pinned"
+          label="Закреплённые"
           collapseControl={{ isCollapsed: false, onToggleCollapsed }}
         >
           <div>Pinned thread</div>
@@ -140,7 +140,7 @@ describe("TopLevelSidebarSection", () => {
       </div>,
     );
     const disclosure = screen.getByRole("button", {
-      name: "Collapse Pinned section",
+      name: "Свернуть раздел Закреплённые",
     });
     disclosure.focus();
     fireEvent.click(disclosure);
@@ -249,7 +249,7 @@ describe("TopLevelSidebarSection", () => {
   it("rolls a hidden split thread up to a collapsed top-level section", () => {
     renderTree(
       <TopLevelSidebarSection
-        label="Pinned"
+        label="Закреплённые"
         collapsedThreads={[
           makeSidebarThread({ id: "thread-one", isUnread: false }),
         ]}
@@ -279,7 +279,7 @@ describe("TopLevelSidebarSection", () => {
 
     expect(
       screen.getByRole("img", {
-        name: "Pinned — contains a thread open in split",
+        name: "Закреплённые — contains a thread open in split",
       }),
     ).not.toBeNull();
     expect(screen.queryByText("Pinned thread")).toBeNull();

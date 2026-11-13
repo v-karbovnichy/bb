@@ -56,7 +56,7 @@ function renderMachineMenu(overrides?: {
       machineProviders={overrides?.machineProviders}
     />,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Machine" }));
+  fireEvent.click(screen.getByRole("button", { name: "Компьютер" }));
 }
 
 describe("MachinePickerUI", () => {
@@ -71,10 +71,10 @@ describe("MachinePickerUI", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Machine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Компьютер" }));
 
     expect(
-      screen.queryByRole("combobox", { name: "Search machines" }),
+      screen.queryByRole("combobox", { name: "Поиск компьютеров" }),
     ).toBeNull();
 
     result.rerender(
@@ -89,14 +89,14 @@ describe("MachinePickerUI", () => {
     );
 
     expect(
-      screen.getByRole("combobox", { name: "Search machines" }),
+      screen.getByRole("combobox", { name: "Поиск компьютеров" }),
     ).toBeTruthy();
   });
 
   it("fuzzy-searches machine names and host ids, then resets after selection", () => {
     const onChange = vi.fn();
     renderMachineMenu({ hosts: manyHosts, onChange });
-    const search = screen.getByRole("combobox", { name: "Search machines" });
+    const search = screen.getByRole("combobox", { name: "Поиск компьютеров" });
 
     fireEvent.change(search, { target: { value: "OMS" } });
     expect(screen.queryByRole("option", { name: /^Mac Studio$/u })).toBeNull();
@@ -108,10 +108,10 @@ describe("MachinePickerUI", () => {
     fireEvent.keyDown(search, { key: "Enter" });
     expect(onChange).toHaveBeenCalledWith("host_travel");
 
-    fireEvent.click(screen.getByRole("button", { name: "Machine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Компьютер" }));
     expect(
       screen.getByRole<HTMLInputElement>("combobox", {
-        name: "Search machines",
+        name: "Поиск компьютеров",
       }).value,
     ).toBe("");
   });
@@ -125,7 +125,7 @@ describe("MachinePickerUI", () => {
       })),
     });
 
-    const dialog = screen.getByRole("dialog", { name: "Machine" });
+    const dialog = screen.getByRole("dialog", { name: "Компьютер" });
     expect(dialog.className).toContain(
       "max-h-[min(var(--radix-popover-content-available-height),calc(100dvh-0.5rem))]",
     );
@@ -139,20 +139,20 @@ describe("MachinePickerUI", () => {
     if (list === null) return;
     list.scrollTop = 120;
     fireEvent.change(
-      screen.getByRole("combobox", { name: "Search machines" }),
+      screen.getByRole("combobox", { name: "Поиск компьютеров" }),
       { target: { value: "missing" } },
     );
     expect(list.scrollTop).toBe(0);
-    expect(screen.getByText("No machines found")).toBeTruthy();
+    expect(screen.getByText("Компьютеры не найдены")).toBeTruthy();
   });
 
   it("names the selected machine in the trigger and badges this machine in the menu", () => {
     renderMachineMenu({ selectedHostId: studio.id });
 
     expect(
-      screen.getByRole("button", { name: "Machine" }).textContent,
+      screen.getByRole("button", { name: "Компьютер" }).textContent,
     ).toContain("Mac Studio");
-    expect(screen.getByText("this machine")).toBeTruthy();
+    expect(screen.getByText("Этот компьютер")).toBeTruthy();
   });
 
   it("emits the picked machine's host id", () => {
@@ -168,14 +168,14 @@ describe("MachinePickerUI", () => {
 
     const offlineItem = screen.getByRole("option", { name: /dev-vm/u });
     expect(offlineItem.getAttribute("aria-disabled")).toBe("true");
-    expect(screen.getByText(/last seen 2h ago/u)).toBeTruthy();
+    expect(screen.getByText(/был в сети 2 ч назад/u)).toBeTruthy();
   });
 
   it("falls back to the primary host when the selected host is unknown", () => {
     renderMachineMenu({ selectedHostId: "host_gone" });
 
     expect(
-      screen.getByRole("button", { name: "Machine" }).textContent,
+      screen.getByRole("button", { name: "Компьютер" }).textContent,
     ).toContain("MacBook Pro");
   });
 
@@ -200,7 +200,7 @@ describe("MachinePickerUI", () => {
     });
 
     expect(screen.getAllByText("Modal sandbox 3f9a")).toHaveLength(2);
-    const trigger = screen.getByRole("button", { name: "Machine" });
+    const trigger = screen.getByRole("button", { name: "Компьютер" });
     expect(trigger.querySelector('[data-icon="Cloud"]')).not.toBeNull();
     expect(trigger.querySelector('[data-icon="Laptop"]')).toBeNull();
     expect(screen.queryByText("Modal Sandbox")).toBeNull();

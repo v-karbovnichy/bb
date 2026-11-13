@@ -48,7 +48,7 @@ export function ThreadContextWindowCard({
 
   const usedTokensLabel = formatCompactTokenCount(usage.usedTokens);
   const windowTokensLabel = formatCompactTokenCount(usage.modelContextWindow);
-  const titleLabel = usage.estimated ? "Estimated context" : "Context window";
+  const titleLabel = usage.estimated ? "Оценка контекста" : "Окно контекста";
   const costLabel = usage.cost ? formatUsageCost(usage.cost) : null;
 
   return (
@@ -72,7 +72,7 @@ export function ThreadContextWindowCard({
             {titleLabel}
           </span>
           <span className={cn("font-medium tabular-nums", toneClass)}>
-            {usedPercent}% used
+            {usedPercent}% использовано
           </span>
         </div>
         <div
@@ -113,9 +113,9 @@ export function ThreadContextWindowCard({
             >
               {usedTokensLabel}
             </span>{" "}
-            / {windowTokensLabel} tokens
+            / {windowTokensLabel} токенов
           </span>
-          <span>{leftPercent}% left</span>
+          <span>Осталось {leftPercent}%</span>
         </div>
         {costLabel ? (
           <div
@@ -124,7 +124,7 @@ export function ThreadContextWindowCard({
               details && detailsExpanded && "order-3",
             )}
           >
-            <span>Session cost</span>
+            <span>Стоимость сеанса</span>
             <span>{costLabel}</span>
           </div>
         ) : null}
@@ -146,7 +146,7 @@ export function ThreadContextWindowCard({
             aria-controls={detailsId}
             onClick={() => setDetailsExpanded((value) => !value)}
           >
-            {detailsExpanded ? "Hide details" : "Show details"}
+            {detailsExpanded ? "Скрыть подробности" : "Показать подробности"}
             <svg
               viewBox="0 0 16 16"
               fill="none"
@@ -200,7 +200,7 @@ export function ThreadContextWindowIndicator({
         ? "text-warning-text"
         : "text-muted-foreground";
 
-  const titleLabel = usage.estimated ? "Estimated context" : "Context window";
+  const titleLabel = usage.estimated ? "Оценка контекста" : "Окно контекста";
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -209,7 +209,7 @@ export function ThreadContextWindowIndicator({
           type="button"
           {...triggerHoverProps}
           className="-m-1 inline-flex size-8 cursor-pointer max-md:pointer-coarse:my-0 max-md:pointer-coarse:-mr-3 max-md:pointer-coarse:-ml-1 max-md:pointer-coarse:h-11 max-md:w-auto max-md:gap-1.5 max-md:pointer-coarse:pl-2 max-md:pointer-coarse:pr-3.5 items-center justify-center rounded-full transition-colors hover:bg-state-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label={`Context window ${usedPercent}% used`}
+          aria-label={`Окно контекста: использовано ${usedPercent}%`}
         >
           <span
             aria-hidden="true"

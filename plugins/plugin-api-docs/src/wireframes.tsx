@@ -132,7 +132,7 @@ function Mark({
       data-guide-region={id}
       data-guide-target={target ? id : undefined}
       href={`#surface-${id}`}
-      aria-label={`${label} — jump to details`}
+      aria-label={`${label} — перейти к подробностям`}
       onClick={(event) => selectAnnotation(event, id, onSelect, onActivate)}
       {...hover}
       className={cn(
@@ -175,8 +175,8 @@ function CommandPaletteActionMark({ onRun }: { onRun: () => void }) {
         outlined ? "ring-surface-selected-border" : "ring-transparent",
       )}
     >
-      <span>Run release checklist</span>
-      <span className="ml-auto text-xs text-subtle-foreground">Plugins</span>
+      <span>Запустить проверку релиза</span>
+      <span className="ml-auto text-xs text-subtle-foreground">Плагины</span>
     </button>
   );
 }
@@ -503,7 +503,7 @@ function SidebarRail() {
   return (
     <RegionMark
       id="sidebar-navigation"
-      label="The sidebar navigation, drawn by bb or one plugin"
+      label="Навигация боковой панели, которую создаёт bb или один плагин"
       className="flex shrink-0"
       showChip={false}
     >
@@ -522,12 +522,12 @@ function SidebarRail() {
         </span>
         <Mark
           id="nav-panel"
-          label="Plugin nav panels, in the navigation rail"
+          label="Панели навигации плагинов в боковой панели"
           className="z-[2] flex size-7 items-center justify-center text-sidebar-foreground"
           showChip={false}
         >
           <PluginGlyph />
-          <span className="sr-only">Your panel</span>
+          <span className="sr-only">Ваша панель</span>
         </Mark>
         <span className={RAIL_BUTTON_CLASS}>
           <MiniIcon icon="MoreHorizontal" />
@@ -554,12 +554,12 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
   "thread-list": () => (
     <RegionMark
       id="thread-list"
-      label="The thread list, replaceable by one plugin"
+      label="Список чатов, который может заменить один плагин"
       className="mx-1.5 flex-1 px-1.5 py-1.5"
       showChip={false}
     >
       <span className="block px-2 pb-1 pt-1.5 text-xs text-subtle-foreground/75">
-        Pinned
+        Закреплённые
       </span>
       {SIDEBAR_THREADS.map((thread) => (
         <span
@@ -574,7 +574,7 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
             {thread.pullRequest ? (
               <Mark
                 id="thread-row-metadata"
-                label="A pull request badge a plugin added to the row's metadata line"
+                label="Значок запроса на слияние, добавленный плагином к строке чата"
                 chip="side"
                 className="z-[2] flex h-4 w-28 items-center gap-1 text-xs tabular-nums text-success"
               >
@@ -589,7 +589,7 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
           {thread.glyph === "spin" ? (
             <Mark
               id="thread-row-status"
-              label="A thread row status set by a plugin"
+              label="Состояние строки чата, заданное плагином"
               className="z-[2] flex size-5 shrink-0 items-center justify-center"
             >
               <span
@@ -603,7 +603,7 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
         </span>
       ))}
       <span className="block px-2 pb-1 pt-2 text-xs text-subtle-foreground/75">
-        Projects
+        Проекты
       </span>
       {["acme-app", "dotfiles"].map((project) => (
         <span
@@ -619,7 +619,7 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
   footer: () => (
     <Mark
       id="sidebar-footer"
-      label="Plugin footer items can run actions or reveal content"
+      label="Элементы внизу панели плагина могут выполнять действия и показывать содержимое"
       className="mx-1.5 mb-1.5 flex w-44 flex-col gap-1.5 p-1.5"
     >
       <span className="block w-full overflow-hidden rounded-md border border-border bg-surface-raised-solid">
@@ -634,8 +634,8 @@ const SIDEBAR_SECTION_RENDERERS: Record<string, () => ReactNode> = {
         </span>
         <span className="block space-y-1.5 p-2">
           <span className="flex items-center justify-between text-2xs">
-            <span>5-hour limit</span>
-            <span className="text-warning">18% left</span>
+            <span>Лимит на 5 часов</span>
+            <span className="text-warning">Осталось 18%</span>
           </span>
           <span className="block h-1 overflow-hidden rounded-full bg-muted">
             <span className="block h-full w-4/5 rounded-full bg-warning" />
@@ -679,35 +679,35 @@ function RightPanelTabLaneBadges({ mobile }: { mobile: boolean }) {
     <>
       <MeasuredBadge
         id="thread-info"
-        label="Plugin rows and sections in bb's Info tab"
+        label="Строки и разделы плагина на вкладке «Информация»"
         anchor='[data-guide-region="thread-info"]'
         clipTo={clipTo}
         at="lane"
       />
       <MeasuredBadge
         id="code-renderers"
-        label="Plugin code and diff renderers on bb's Diff tab"
+        label="Отображение кода и изменений плагином на вкладке «Изменения»"
         anchor='[data-guide-region="code-renderers"]'
         clipTo={clipTo}
         at="lane"
       />
       <MeasuredBadge
         id="browser-toolbar"
-        label="Plugin controls beside the Browser address bar"
+        label="Элементы управления плагина рядом с адресной строкой браузера"
         anchor='[data-guide-tab="browser-toolbar"]'
         clipTo={clipTo}
         at="lane"
       />
       <MeasuredBadge
         id="thread-panel"
-        label="A plugin tab in the thread side panel"
+        label="Вкладка плагина в боковой панели чата"
         anchor='[data-guide-region="thread-panel"]'
         clipTo={clipTo}
         at="lane"
       />
       <MeasuredBadge
         id="file-opener"
-        label="A plugin file viewer or editor tab"
+        label="Вкладка просмотра или редактирования файла плагином"
         anchor='[data-guide-region="file-opener"]'
         clipTo={clipTo}
         at="lane"
@@ -769,14 +769,14 @@ export function CommandPaletteWireframe({
                 </div>
                 <div className="mt-5 flex items-center gap-2 rounded-md px-2 py-1.5 text-foreground">
                   <MiniIcon icon="MessageSquarePlus" className="size-3.5" />
-                  New thread
+                  Новый чат
                 </div>
                 <div className="flex items-center gap-2 rounded-md px-2 py-1.5">
                   <MiniIcon icon="Search" className="size-3.5" />
-                  Search threads
+                  Поиск чатов
                 </div>
                 <div className="mt-3 px-2 text-2xs font-medium uppercase tracking-wide text-subtle-foreground">
-                  Threads
+                  Чаты
                 </div>
                 <div className="mt-1 rounded-md bg-state-hover px-2 py-2 text-foreground">
                   Ship release candidate
@@ -785,7 +785,7 @@ export function CommandPaletteWireframe({
                 <div className="px-2 py-2">Update onboarding copy</div>
                 <div className="mt-auto flex items-center gap-2 border-t border-border-hairline px-2 pt-3">
                   <MiniIcon icon="Settings" className="size-3.5" />
-                  Settings
+                  Настройки
                 </div>
               </aside>
             )}
@@ -805,12 +805,12 @@ export function CommandPaletteWireframe({
                 <button
                   type="button"
                   onClick={openPalette}
-                  aria-label="Open Quick palette (Shift Command P)"
+                  aria-label="Открыть быстрые команды (Shift Command P)"
                   data-guide-fixture="command-palette-shortcut"
                   className="flex h-7 cursor-pointer items-center gap-1.5 rounded-md border border-border-hairline px-2 text-subtle-foreground hover:bg-state-hover hover:text-foreground"
                 >
                   <MiniIcon icon="Search" className="size-3.5" />
-                  <span>Quick palette</span>
+                  <span>Быстрые команды</span>
                   {mobile ? null : (
                     <kbd className="rounded bg-surface-recessed px-1.5 py-0.5 font-mono text-2xs text-foreground">
                       ⇧⌘P
@@ -842,7 +842,7 @@ export function CommandPaletteWireframe({
               </div>
 
               <div className="mx-5 mb-5 rounded-xl border border-border bg-card px-3 py-3 text-subtle-foreground shadow-sm">
-                Ask for a follow-up…
+                Попросите продолжить…
               </div>
             </main>
 
@@ -865,22 +865,22 @@ export function CommandPaletteWireframe({
                     className="flex h-7 items-center gap-1.5 rounded-md bg-state-hover px-2 text-foreground"
                   >
                     <PluginGlyph className="size-3.5" />
-                    Release checklist
+                    Проверка релиза
                   </span>
                 </div>
                 <div className="space-y-4 p-4">
                   <div>
                     <p className="font-medium text-foreground">
-                      Release checklist
+                      Проверка релиза
                     </p>
                     <p className="mt-1 leading-relaxed text-subtle-foreground">
-                      Final checks for this thread and branch.
+                      Последние проверки для этого чата и ветки.
                     </p>
                   </div>
                   {[
-                    ["Tests and typecheck", "Passed"],
-                    ["UI evidence", "Ready"],
-                    ["Mergeability", "Clean"],
+                    ["Тесты и проверка типов", "Пройдены"],
+                    ["Материалы интерфейса", "Готовы"],
+                    ["Готовность к слиянию", "Без конфликтов"],
                   ].map(([label, status]) => (
                     <div
                       key={label}
@@ -928,7 +928,7 @@ export function CommandPaletteWireframe({
                     className="size-4 shrink-0 text-muted-foreground"
                   />
                   <input
-                    aria-label="Search commands"
+                    aria-label="Поиск команд"
                     readOnly
                     value=">release"
                     className="h-11 min-w-0 flex-1 bg-transparent text-foreground outline-none"
@@ -936,27 +936,27 @@ export function CommandPaletteWireframe({
                 </div>
                 <div
                   role="listbox"
-                  aria-label="Commands"
+                  aria-label="Команды"
                   className="max-h-[min(24rem,50dvh)] overflow-y-auto p-1 text-sm"
                 >
                   <span className="flex w-full min-w-0 items-center gap-1.5 rounded px-2 py-1.5 text-left">
-                    Open release notes
+                    Открыть заметки о релизе
                     <span className="ml-auto text-muted-foreground">
-                      Navigation
+                      Навигация
                     </span>
                   </span>
                   <CommandPaletteActionMark onRun={runReleaseChecklist} />
                   <span className="flex w-full min-w-0 items-center gap-1.5 rounded px-2 py-1.5 text-left">
-                    Copy link
+                    Копировать ссылку
                     <span className="ml-auto text-muted-foreground">
-                      Thread
+                      Чат
                     </span>
                   </span>
                 </div>
                 {mobile ? null : (
                   <MeasuredBadge
                     id="command-palette-actions"
-                    label="Plugin actions in bb's quick command palette"
+                    label="Действия плагина в палитре быстрых команд bb"
                     anchor='[data-guide-region="command-palette-actions"]'
                     at="start"
                     flush
@@ -970,7 +970,7 @@ export function CommandPaletteWireframe({
       {mobile && paletteOpen ? (
         <MeasuredBadge
           id="command-palette-actions"
-          label="Plugin actions in bb's quick command palette"
+          label="Действия плагина в палитре быстрых команд bb"
           anchor='[data-guide-region="command-palette-actions"]'
           at="start"
         />
@@ -1018,20 +1018,20 @@ export function AppShellWireframe({
         <>
           <MeasuredBadge
             id="sidebar-navigation"
-            label="The sidebar navigation, drawn by bb or one plugin"
+            label="Навигация боковой панели, которую создаёт bb или один плагин"
             anchor='[data-guide-region="sidebar-navigation"]'
             at="start"
             align="start"
           />
           <MeasuredBadge
             id="nav-panel"
-            label="Plugin nav panels, in the navigation rail"
+            label="Панели навигации плагинов в боковой панели"
             anchor='[data-guide-region="nav-panel"]'
             at="start"
           />
           <MeasuredBadge
             id="thread-list"
-            label="The thread list, replaceable by one plugin"
+            label="Список чатов, который может заменить один плагин"
             anchor='[data-guide-region="thread-list"]'
             at="start"
           />
@@ -1041,19 +1041,19 @@ export function AppShellWireframe({
         <>
           <MeasuredBadge
             id="thread-header"
-            label="Plugin header buttons, after the workspace's Open button"
+            label="Кнопки плагина в заголовке после кнопки «Открыть»"
             anchor='[data-guide-region="thread-header"]'
             at="above"
           />
           <MeasuredBadge
             id="thread-actions"
-            label="Plugin thread actions, in the thread menu"
+            label="Действия плагина в меню чата"
             anchor='[data-guide-region="thread-actions"]'
             at="above"
           />
           <MeasuredBadge
             id="content-scripts"
-            label="App-wide plugin scripts, running in the whole window"
+            label="Скрипты плагина, работающие во всём окне приложения"
             anchor="[data-guide-frame]"
             at="end"
             align="end"
@@ -1098,7 +1098,7 @@ function AppShellWireframeBody({
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex h-12 items-center gap-3 px-3 text-sm">
               <MiniIcon icon="MessageSquarePlus" />
-              New thread
+              Новый чат
             </div>
             {anatomy.appSidebar
               .filter((key) => key !== "top-reserve")
@@ -1174,7 +1174,7 @@ function AppShellWireframeBody({
             {mobile ? <MiniIcon icon="PanelLeft" className="size-5" /> : null}
             <Mark
               id="thread-header-title"
-              label="Plugin title in place of the thread title"
+              label="Заголовок плагина вместо названия чата"
               className="flex h-6.5 min-w-0 items-center gap-1 px-1 text-foreground"
               showChip={false}
             >
@@ -1183,7 +1183,7 @@ function AppShellWireframeBody({
             </Mark>
             <Mark
               id="thread-actions"
-              label="Plugin thread actions, in the thread menu"
+              label="Действия плагина в меню чата"
               className="flex h-6.5 items-center px-1"
               showChip={false}
             >
@@ -1192,7 +1192,7 @@ function AppShellWireframeBody({
             <span className="flex-1" />
             <Mark
               id="thread-header"
-              label="Plugin header buttons, after the workspace's Open button"
+              label="Кнопки плагина в заголовке после кнопки «Открыть»"
               className="flex h-6.5 items-center gap-1 px-2"
               showChip={false}
             >
@@ -1204,7 +1204,7 @@ function AppShellWireframeBody({
 
           <RegionMark
             id="thread-header-row"
-            label="Plugin rows under the thread header"
+            label="Строки плагина под заголовком чата"
             className="flex h-8 shrink-0 items-center gap-1 border-b border-border-hairline px-4"
             chip="side"
           >
@@ -1214,7 +1214,7 @@ function AppShellWireframeBody({
             </span>
             <span className="flex h-6 items-center gap-1.5 px-2 text-subtle-foreground">
               <PluginGlyph className="size-3" />
-              Review retries
+              Проверить повторы
             </span>
           </RegionMark>
 
@@ -1243,11 +1243,11 @@ function AppShellWireframeBody({
               <span className="flex items-center gap-1.5 text-foreground">
                 <PluginGlyph className="size-3.5" />
                 Re-ran checkout suite
-                <span className="text-subtle-foreground">Completed</span>
+                <span className="text-subtle-foreground">Завершено</span>
               </span>
               <RegionMark
                 id="timeline-renderers"
-                label="Plugin-owned content inside a timeline entry"
+                label="Содержимое плагина внутри записи переписки"
                 className="ml-5 block space-y-1 px-2.5 py-2"
                 chip="side"
               >
@@ -1271,7 +1271,7 @@ function AppShellWireframeBody({
               </p>
               <Mark
                 id="message-directives"
-                label="A plugin component rendered inline by a message directive"
+                label="Компонент плагина, встроенный в сообщение через директиву"
                 className="block w-3/5 px-2.5 py-2.5"
               >
                 <span className="flex items-end gap-1.5" aria-hidden>
@@ -1288,7 +1288,7 @@ function AppShellWireframeBody({
               </Mark>
               <Mark
                 id="code-fence-renderers"
-                label="A plugin component rendering a fenced code block"
+                label="Компонент плагина для блока кода"
                 className="block w-3/5 px-2.5 py-2.5"
               >
                 <span className="flex gap-1.5" aria-hidden>
@@ -1309,12 +1309,12 @@ function AppShellWireframeBody({
                   >
                     <span className="flex items-center gap-1 rounded px-1.5 py-0.5">
                       <MiniIcon icon="MessageSquarePlus" className="size-3.5" />
-                      Add to chat
+                      Добавить в чат
                     </span>
                     <span className="mx-0.5 h-4 w-px bg-border" />
                     <span className="flex items-center gap-1 rounded bg-state-hover px-1.5 py-0.5">
                       <PluginGlyph className="size-3.5" />
-                      Your action
+                      Ваше действие
                     </span>
                   </div>
                 ) : null}
@@ -1336,7 +1336,7 @@ function AppShellWireframeBody({
               <div className="flex h-7 items-start">
                 <Mark
                   id="message-actions"
-                  label="Plugin message actions fit inline before overflowing into the menu"
+                  label="Действия плагина с сообщением сначала показываются в строке, затем в меню"
                   className="inline-flex items-center px-2 py-1.5"
                 >
                   <span
@@ -1356,11 +1356,11 @@ function AppShellWireframeBody({
               </div>
               <Mark
                 id="message-metadata"
-                label="React message metadata beside realized messages"
+                label="Метаданные сообщений React рядом с отображёнными сообщениями"
                 className="inline-flex items-center py-0.5 pr-6 pl-2 text-2xs text-muted-foreground"
               >
                 <PluginGlyph className="mr-1 size-3" />
-                Yesterday, 3:42 PM
+                Вчера, 15:42
               </Mark>
             </div>
           </div>
@@ -1368,20 +1368,20 @@ function AppShellWireframeBody({
           <div className="space-y-2 border-t border-border-hairline p-4">
             <Mark
               id="pending-interaction"
-              label="A plugin ask-the-user form, shown in place of the composer"
+              label="Форма вопроса пользователю от плагина вместо поля ввода"
               className="block border border-border bg-card p-3"
             >
               <span className="flex items-center gap-1.5 text-foreground">
                 <PluginGlyph className="size-3.5" />
-                Pick a release channel
+                Выберите канал релиза
               </span>
               <span className="mt-2 flex gap-1.5" aria-hidden>
                 <span className="h-5.5 flex-1 rounded-md border border-border" />
                 <span className="flex h-5.5 items-center rounded-md border border-border px-2">
-                  Cancel
+                  Отмена
                 </span>
                 <span className="flex h-5.5 items-center rounded-md bg-foreground px-2 text-background">
-                  Submit
+                  Отправить
                 </span>
               </span>
             </Mark>
@@ -1398,7 +1398,7 @@ function AppShellWireframeBody({
 
       <Mark
         id="app-overlay"
-        label="App-wide floating plugin interface"
+        label="Плавающий интерфейс плагина во всём приложении"
         className={cn(
           "z-[6] flex w-44 items-center gap-2 border border-border bg-popover px-3 py-2 text-foreground shadow-md",
           mobile
@@ -1408,9 +1408,9 @@ function AppShellWireframeBody({
       >
         <PluginGlyph className="size-4 shrink-0" />
         <span className="min-w-0">
-          <span className="block truncate font-medium">Floating widget</span>
+          <span className="block truncate font-medium">Плавающий виджет</span>
           <span className="block truncate text-2xs text-subtle-foreground">
-            2 agents active
+            Активных агентов: 2
           </span>
         </span>
       </Mark>
@@ -1419,7 +1419,7 @@ function AppShellWireframeBody({
 }
 
 function ThreadContextCardMark({ compact }: { compact: boolean }) {
-  const label = "Plugin sections in the thread context card";
+  const label = "Разделы плагина в карточке контекста чата";
   if (compact) {
     return (
       <Mark
@@ -1445,7 +1445,7 @@ function ThreadContextCardMark({ compact }: { compact: boolean }) {
       </span>
       <span className="flex h-6.5 items-center gap-2 px-1.5">
         <MiniIcon icon="FileDiff" className="size-3.5" />
-        Changes
+        Изменения
         <span className="ml-auto font-mono text-2xs">
           <span className="text-success">+12</span>{" "}
           <span className="text-destructive">-3</span>
@@ -1456,8 +1456,8 @@ function ThreadContextCardMark({ compact }: { compact: boolean }) {
 }
 
 const THREAD_INFO_FIXTURE_ROWS = [
-  { icon: "Folder", label: "Project", value: "checkout-service" },
-  { icon: "GitBranch", label: "Branch", value: "fix/retry-flake" },
+  { icon: "Folder", label: "Проект", value: "checkout-service" },
+  { icon: "GitBranch", label: "Ветка", value: "fix/retry-flake" },
 ] as const;
 
 function ThreadInfoFixtureRow({
@@ -1495,26 +1495,26 @@ function ThreadInfoFixture() {
         ))}
         <Mark
           id="thread-info"
-          label="Plugin rows and sections in bb's Info tab"
+          label="Строки и разделы плагина на вкладке «Информация»"
           className="block rounded-md"
           showChip={false}
         >
           <ThreadInfoFixtureRow
             icon={<PluginGlyph className="size-3" />}
-            label="Deploy"
+            label="Развёртывание"
           >
-            Staging · healthy
+            Staging · работает
           </ThreadInfoFixtureRow>
         </Mark>
       </div>
       <Mark
         id="thread-info"
-        label="Plugin rows and sections in bb's Info tab"
+        label="Строки и разделы плагина на вкладке «Информация»"
         className="mt-3 block rounded-md border-t border-border-hairline pt-3"
         showChip={false}
       >
         <span className="mb-1 flex items-center font-medium text-muted-foreground">
-          Automations
+          Автоматизации
           <span className="ml-1.5 rounded-full bg-surface-recessed px-1.5 text-2xs leading-4 font-normal tabular-nums">
             1
           </span>
@@ -1525,13 +1525,13 @@ function ThreadInfoFixture() {
             Nightly CI check
           </span>
           <span className="shrink-0 text-2xs text-subtle-foreground">
-            Next 9:00 AM
+            Следующая: 9:00
           </span>
         </span>
       </Mark>
       <div className="mt-3 border-t border-border-hairline pt-3">
         <span className="mb-1 flex items-center font-medium text-muted-foreground">
-          Commits
+          Коммиты
           <span className="ml-1.5 rounded-full bg-surface-recessed px-1.5 text-2xs leading-4 font-normal tabular-nums">
             2
           </span>
@@ -1598,7 +1598,7 @@ export function AppShellRightPanel({
         >
           <Mark
             id="thread-info"
-            label="Plugin rows and sections in bb's Info tab"
+            label="Строки и разделы плагина на вкладке «Информация»"
             className={cn(tabClass("thread-info"), "px-1.5")}
             showChip={false}
             onActivate={() => onTabSelect("thread-info")}
@@ -1609,7 +1609,7 @@ export function AppShellRightPanel({
           </Mark>
           <Mark
             id="code-renderers"
-            label="Plugin code and diff renderers on bb's Diff tab"
+            label="Отображение кода и изменений плагином на вкладке «Изменения»"
             className={cn(
               tabClass("code-renderers"),
               "gap-1.5 whitespace-nowrap pl-1.5 pr-2",
@@ -1619,7 +1619,7 @@ export function AppShellRightPanel({
           >
             <span data-guide-tab="code-renderers" className="contents">
               <MiniIcon icon="FileDiff" className="size-3.5" />
-              <span className="text-foreground">Diff</span>
+              <span className="text-foreground">Изменения</span>
             </span>
           </Mark>
         </span>
@@ -1632,7 +1632,7 @@ export function AppShellRightPanel({
         >
           <Mark
             id="browser-toolbar"
-            label="Plugin controls beside the Browser address bar"
+            label="Элементы управления плагина рядом с адресной строкой браузера"
             className={cn(
               tabClass("browser-toolbar"),
               "gap-1.5 whitespace-nowrap px-2 text-foreground",
@@ -1640,11 +1640,11 @@ export function AppShellRightPanel({
             showChip={false}
             onActivate={() => onTabSelect("browser-toolbar")}
           >
-            <span data-guide-tab="browser-toolbar">Browser</span>
+            <span data-guide-tab="browser-toolbar">Браузер</span>
           </Mark>
           <Mark
             id="thread-panel"
-            label="A plugin tab in the thread side panel"
+            label="Вкладка плагина в боковой панели чата"
             className={cn(
               tabClass("thread-panel"),
               "gap-1.5 whitespace-nowrap pl-1.5 pr-2",
@@ -1654,12 +1654,12 @@ export function AppShellRightPanel({
           >
             <span data-guide-tab="thread-panel" className="contents">
               <PluginGlyph className="size-3.5" />
-              <span className="text-foreground">Your tab</span>
+              <span className="text-foreground">Ваша вкладка</span>
             </span>
           </Mark>
           <Mark
             id="file-opener"
-            label="A plugin file viewer or editor tab"
+            label="Вкладка просмотра или редактирования файла плагином"
             className={cn(
               tabClass("file-opener"),
               "gap-1.5 whitespace-nowrap pl-1.5 pr-2",
@@ -1698,7 +1698,7 @@ export function AppShellRightPanel({
               </div>
               <Mark
                 id="browser-toolbar"
-                label="Plugin controls beside the Browser address bar"
+                label="Элементы управления плагина рядом с адресной строкой браузера"
                 className="flex size-7 items-center justify-center"
                 showChip={false}
               >
@@ -1715,11 +1715,10 @@ export function AppShellRightPanel({
           <div data-guide-fixture="thread-panel" className="space-y-2">
             <div className="flex items-center gap-1.5 text-foreground">
               <PluginGlyph className="size-3.5" />
-              Release checklist
+              Проверка релиза
             </div>
             <p className="leading-relaxed text-subtle-foreground">
-              Your plugin owns this tab and receives the thread it was opened
-              from.
+              Ваш плагин управляет этой вкладкой и получает чат, в котором она открыта.
             </p>
             <span className="block h-2 w-4/5 rounded-sm bg-muted/60" />
             <span className="block h-2 w-3/5 rounded-sm bg-muted/60" />
@@ -1739,7 +1738,7 @@ export function AppShellRightPanel({
                 </h3>
                 <span className="ml-auto flex items-center gap-1 rounded bg-surface-recessed px-1.5 py-1 text-2xs text-subtle-foreground">
                   <PluginGlyph className="size-3" />
-                  Custom viewer
+                  Свой просмотр
                 </span>
               </div>
               <p className="leading-relaxed text-subtle-foreground">
@@ -1758,7 +1757,7 @@ export function AppShellRightPanel({
               <span className="font-medium">tests/checkout.test.ts</span>
               <span className="ml-auto flex items-center gap-1 rounded bg-surface-recessed px-1.5 py-1 text-2xs text-subtle-foreground">
                 <PluginGlyph className="size-3" />
-                Custom diff
+                Свой просмотр изменений
               </span>
             </div>
             <div className="overflow-hidden rounded-md border border-border-hairline bg-background font-mono text-2xs leading-relaxed">
@@ -1814,37 +1813,37 @@ export function RealComposerAnnotated({
         >
           <MeasuredBadge
             id="composer-banners"
-            label="Plugin banners and thread context, above the prompt box"
+            label="Баннеры плагина и контекст чата над полем ввода"
             anchor='[data-guide-target="composer-banners"]'
             at="end"
           />
           <MeasuredBadge
             id="composer-replacement"
-            label="The composer box, replaceable by one plugin"
+            label="Поле ввода, которое может заменить один плагин"
             anchor='[data-guide-region="composer-replacement"]'
             at="start"
           />
           <MeasuredBadge
             id="composer-state"
-            label="The draft prompt a plugin can read and lock"
+            label="Черновик запроса, который плагин может читать и блокировать"
             anchor='[data-guide-target="composer-state"]'
             at="above"
           />
           <MeasuredBadge
             id="composer-plus-menu"
-            label="Plugin rows in the composer's + menu"
+            label="Строки плагина в меню «+» поля ввода"
             anchor='[data-guide-target="composer-plus-menu"]'
             at="above"
           />
           <MeasuredBadge
             id="provider-picker"
-            label="Your agent provider and its mark, in the model picker"
+            label="Ваш провайдер агента и его значок в выборе модели"
             anchor='[data-guide-target="provider-picker"]'
             at="above"
           />
           <MeasuredBadge
             id="composer-actions"
-            label="Plugin composer actions, before voice and send"
+            label="Действия плагина в поле ввода перед голосовым вводом и отправкой"
             anchor='[data-guide-target="composer-actions"]'
             at="above"
           />
@@ -1888,7 +1887,7 @@ export function RealComposerAnnotated({
             <div className="px-4 pb-4">
               <Mark
                 id="composer-banners"
-                label="Plugin banners and thread context, above the prompt box"
+                label="Баннеры плагина и контекст чата над полем ввода"
                 showChip={false}
                 target
                 className={cn(
@@ -1899,7 +1898,7 @@ export function RealComposerAnnotated({
               >
                 <span className="flex items-center gap-2 rounded-md border border-border-hairline bg-surface-raised px-3 py-3">
                   <PluginGlyph className="size-3.5" />
-                  <span className="text-foreground">Your banner</span>
+                  <span className="text-foreground">Ваш баннер</span>
                 </span>
                 <span
                   data-guide-fixture="thread-context-segment"
@@ -1909,13 +1908,13 @@ export function RealComposerAnnotated({
                     <MiniIcon icon="UserRound" className="size-3.5" />
                     <span className="flex items-center gap-1.5 text-foreground">
                       <PluginGlyph className="size-3.5" />
-                      Your context
+                      Ваш контекст
                     </span>
-                    <span className="flex-1">Changed files</span>
+                    <span className="flex-1">Изменённые файлы</span>
                   </span>
                   {contextExpanded ? (
                     <span className="block border-t border-border-hairline px-3 py-2">
-                      Context details
+                      Подробности контекста
                     </span>
                   ) : null}
                 </span>
@@ -1940,7 +1939,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
     <div data-guide-fixture="embedded-composer" className="space-y-2">
       <RegionMark
         id="composer-replacement"
-        label="The composer box, replaceable by one plugin"
+        label="Поле ввода, которое может заменить один плагин"
         showChip={false}
         className={cn(
           "flex flex-col rounded-xl border border-border bg-background shadow-lift",
@@ -1963,7 +1962,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
           >
             <Mark
               id="composer-state"
-              label="The draft prompt a plugin can read and lock"
+              label="Черновик запроса, который плагин может читать и блокировать"
               showChip={false}
               target
               className="whitespace-pre"
@@ -1978,7 +1977,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
                   className="pointer-events-none absolute bottom-full left-0 z-[60] mb-7 block w-44 overflow-hidden rounded-md border border-border bg-popover pb-1 text-xs shadow-md"
                 >
                   <span className="block px-3 pb-1 pt-1.5 text-muted-foreground">
-                    Your plugin
+                    Ваш плагин
                   </span>
                   <span className="mx-1 flex h-7 items-center gap-1.5 rounded-md bg-state-hover px-2 text-foreground">
                     <PluginGlyph className="size-3.5" />
@@ -1992,7 +1991,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
               ) : null}
               <RegionMark
                 id="mention-provider"
-                label="Plugin mention results in the @ typeahead"
+                label="Результаты упоминаний плагина в подсказках после @"
                 className="flex h-5.5 items-center rounded-full border border-surface-selected-border bg-surface-selected px-1.5"
                 chip="outside-above"
                 showChip={!plus.outlined}
@@ -2006,7 +2005,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
             </span>
             <RegionMark
               id="composer-rich-text"
-              label="Plugin highlighting, painted over the draft prompt"
+              label="Подсветка плагина поверх черновика запроса"
               className="flex h-5.5 items-center rounded bg-warning/25 px-1 ring-1 ring-warning/40"
               chip="outside-above"
               showChip={!plus.outlined}
@@ -2029,21 +2028,21 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
                 >
                   <span className="flex h-6 items-center gap-1.5 px-1.5">
                     <MiniIcon icon="Paperclip" className="size-3.5" />
-                    Attach files
+                    Прикрепить файлы
                   </span>
                   <span className="flex h-6 items-center gap-1.5 px-1.5">
                     <MiniIcon icon="Zap" className="size-3.5" />
-                    Skills
+                    Навыки
                   </span>
                   <span className="flex h-6 items-center gap-1.5 rounded bg-state-hover px-1.5 text-foreground">
                     <PluginGlyph className="size-3.5" />
-                    Your action
+                    Ваше действие
                   </span>
                 </span>
               ) : null}
               <Mark
                 id="composer-plus-menu"
-                label="Plugin rows in the composer's + menu"
+                label="Строки плагина в меню «+» поля ввода"
                 showChip={false}
                 target
                 className={cn(
@@ -2056,7 +2055,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
             </span>
             <Mark
               id="provider-picker"
-              label="Your agent provider and its mark, in the model picker"
+              label="Ваш провайдер агента и его значок в выборе модели"
               showChip={false}
               target
               className={cn(
@@ -2067,7 +2066,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
               <ProviderGlyph />
               Fable 5
               {mobile ? null : (
-                <span className="text-subtle-foreground">High</span>
+                <span className="text-subtle-foreground">Высокий</span>
               )}
             </Mark>
             <span className="flex-1" />
@@ -2079,16 +2078,16 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
                   className="pointer-events-none absolute bottom-full right-0 z-[60] mb-7 block w-48 rounded-md border border-border bg-popover p-2 shadow-md"
                 >
                   <span className="block border-b border-border pb-1 text-xs text-subtle-foreground">
-                    Search saved prompts
+                    Поиск сохранённых запросов
                   </span>
                   <span className="mt-1 block rounded bg-state-hover px-2 py-1 text-xs">
-                    Review this change
+                    Проверить изменение
                   </span>
                 </span>
               ) : null}
               <Mark
                 id="composer-actions"
-                label="Plugin composer actions, before voice and send"
+                label="Действия плагина в поле ввода перед голосовым вводом и отправкой"
                 showChip={false}
                 target
                 className={cn(
@@ -2121,7 +2120,7 @@ function StaticEmbeddedComposer({ mobile = false }: { mobile?: boolean }) {
           <MiniIcon icon="Folder" className="size-3.5" />
           acme-app · worktree
         </span>
-        <span>Full Access</span>
+        <span>Полный доступ</span>
       </div>
     </div>
   );
@@ -2140,7 +2139,7 @@ export function ComposeScreenWireframe({
         <WindowFrame className={cn("flex flex-col", MOBILE_SCREEN_CLASS)}>
           <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border-seam px-3 text-sm">
             <MiniIcon icon="PanelLeft" className="size-5" />
-            <span className="min-w-0 flex-1">New thread</span>
+            <span className="min-w-0 flex-1">Новый чат</span>
             <MiniIcon icon="PanelRight" className="size-5" />
           </div>
           {panel ? (
@@ -2148,38 +2147,38 @@ export function ComposeScreenWireframe({
               data-guide-mobile-scene="panel"
               className="min-h-0 flex-1 space-y-1 p-3 text-sm"
             >
-              <div className="px-2 pb-1 text-subtle-foreground">Actions</div>
+              <div className="px-2 pb-1 text-subtle-foreground">Действия</div>
               <div className="flex h-10 items-center gap-2 rounded-md px-2">
                 <MiniIcon icon="Globe" />
-                Open browser
+                Открыть браузер
               </div>
               <div className="flex h-10 items-center gap-2 rounded-md px-2">
                 <MiniIcon icon="Terminal" />
-                Start terminal
+                Открыть терминал
               </div>
               <Mark
                 id="new-thread-panel"
-                label="A plugin action in the new-thread panel launcher"
+                label="Действие плагина в меню создания чата"
                 className="flex h-10 items-center gap-2 px-2"
               >
                 <PluginGlyph />
-                Your action
+                Ваше действие
               </Mark>
             </div>
           ) : (
             <div className="flex min-h-0 flex-1 flex-col justify-end gap-4 overflow-hidden p-4 text-sm leading-relaxed">
               <div className="text-xs text-subtle-foreground">
-                Recent threads
+                Недавние чаты
               </div>
               <div>Fix flaky checkout tests</div>
               <Mark
                 id="homepage-section"
-                label="A plugin homepage section, in the home content above the mobile composer"
+                label="Раздел плагина на главной странице над мобильным полем ввода"
                 className="block border border-border-seam p-3"
               >
                 <span className="flex items-center gap-2 font-medium">
                   <PluginGlyph />
-                  Your section
+                  Ваш раздел
                 </span>
                 <span className="mt-3 block">
                   Release 1.4 · Bug triage · Design QA
@@ -2196,7 +2195,7 @@ export function ComposeScreenWireframe({
     <div className="relative px-7 pb-2 pt-4">
       <MeasuredBadge
         id="new-thread-panel"
-        label="A plugin action in the new-thread panel launcher"
+        label="Действие плагина в меню создания чата"
         anchor='[data-guide-region="new-thread-panel"]'
         at="end"
       />
@@ -2212,12 +2211,12 @@ export function ComposeScreenWireframe({
 
                 <Mark
                   id="homepage-section"
-                  label="A plugin homepage section, below the composer"
+                  label="Раздел плагина на главной странице под полем ввода"
                   className="mt-4 block px-3 py-2.5"
                 >
                   <span className="flex items-center gap-1.5 pb-2 font-medium text-foreground">
                     <PluginGlyph className="size-3.5" />
-                    Your section
+                    Ваш раздел
                   </span>
                   <span className="grid grid-cols-3 gap-2" aria-hidden>
                     {["Release 1.4", "Bug triage", "Design QA"].map((card) => (
@@ -2237,24 +2236,24 @@ export function ComposeScreenWireframe({
 
             <div className="w-[210px] shrink-0 border-l border-border-seam bg-sidebar p-2">
               <span className="block px-1.5 pb-1.5 pt-1 text-xs text-subtle-foreground/75">
-                Actions
+                Действия
               </span>
               <span className="flex h-6.5 items-center gap-2 rounded-md px-2">
                 <MiniIcon icon="Globe" className="size-3.5" />
-                Open browser
+                Открыть браузер
               </span>
               <span className="flex h-6.5 items-center gap-2 rounded-md px-2">
                 <MiniIcon icon="Terminal" className="size-3.5" />
-                Start terminal
+                Открыть терминал
               </span>
               <Mark
                 id="new-thread-panel"
-                label="A plugin action in the new-thread panel launcher"
+                label="Действие плагина в меню создания чата"
                 className="flex h-6.5 items-center gap-2 px-2"
                 showChip={false}
               >
                 <PluginGlyph className="size-3.5" />
-                <span className="text-foreground">Your action</span>
+                <span className="text-foreground">Ваше действие</span>
               </Mark>
             </div>
           </div>
@@ -2275,7 +2274,7 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
         ) : (
           <TrafficLights />
         )}
-        <span className="pl-1 font-medium text-foreground">Settings</span>
+        <span className="pl-1 font-medium text-foreground">Настройки</span>
       </div>
 
       <div
@@ -2286,7 +2285,7 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
       >
         <span className="flex items-center gap-1 text-muted-foreground">
           <MiniIcon icon="ChevronLeft" className="size-3.5" />
-          Plugin details
+          Сведения о плагине
         </span>
         <div className="flex items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center">
@@ -2309,10 +2308,10 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
         </div>
 
         <div className="space-y-2">
-          <span className="block text-subtle-foreground">Configuration</span>
+          <span className="block text-subtle-foreground">Настройка</span>
           <Mark
             id="declarative-settings"
-            label="The form bb generates from the fields you declare"
+            label="Форма, которую bb создаёт из объявленных вами полей"
             className="block bg-surface-recessed-solid p-3"
           >
             <span
@@ -2323,20 +2322,20 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
             >
               <span className="min-w-0">
                 <span className="flex items-center gap-1.5 text-foreground">
-                  API key
+                  Ключ API
                   <span className="rounded border border-border px-1.5 py-0.5 text-xs">
                     secret
                   </span>
                 </span>
                 <span className="block pt-1 leading-relaxed">
-                  Stored server-side; never sent to the browser.
+                  Хранится на сервере и не передаётся в браузер.
                 </span>
               </span>
               <span
                 aria-hidden
                 className="flex h-6 w-32 shrink-0 items-center rounded-md border border-border bg-card px-2 text-xs text-subtle-foreground"
               >
-                [set]
+                [задано]
               </span>
             </span>
             <span
@@ -2347,10 +2346,10 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
             >
               <span className="min-w-0">
                 <span className="block text-foreground">
-                  Case-sensitive search
+                  Поиск с учётом регистра
                 </span>
                 <span className="block pt-1 leading-relaxed">
-                  Match capitalisation when looking things up.
+                  Учитывать регистр букв при поиске.
                 </span>
               </span>
               <Switch
@@ -2370,10 +2369,10 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
                 >
                   <span className="min-w-0">
                     <span className="block text-foreground">
-                      Retry attempts
+                      Попытки повтора
                     </span>
                     <span className="block pt-1 leading-relaxed">
-                      Maximum retries before stopping.
+                      Максимальное число попыток перед остановкой.
                     </span>
                   </span>
                   <span
@@ -2385,10 +2384,10 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
                 </span>
                 <span className="block py-1.5">
                   <span className="block text-foreground">
-                    Custom instructions
+                    Свои инструкции
                   </span>
                   <span className="block pt-1 leading-relaxed">
-                    Added to every agent task on this host.
+                    Добавляются к каждому заданию агента на этом хосте.
                   </span>
                   <span
                     aria-hidden
@@ -2403,21 +2402,21 @@ export function SettingsWireframe({ mobile = false }: { mobile?: boolean }) {
 
           <Mark
             id="settings-section"
-            label="A React component you write, under the generated form"
+            label="Ваш компонент React под созданной формой"
             className="block px-1 pb-2 pt-2"
           >
             <span className="flex items-center gap-1.5 pb-2 font-medium text-foreground">
               <PluginGlyph className="size-3.5" />
-              Your section
+              Ваш раздел
             </span>
             <span
               aria-hidden
               className="block space-y-2 rounded-md border border-border bg-card p-2.5"
             >
               <span className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-foreground">Connected as @acme-bot</span>
+                <span className="text-foreground">Подключено как @acme-bot</span>
                 <span className="flex h-5.5 items-center rounded-md border border-border px-2 text-foreground">
-                  Test connection
+                  Проверить подключение
                 </span>
               </span>
               <span className="block h-2 w-2/3 rounded-sm bg-muted/60" />
@@ -2445,7 +2444,7 @@ export function ExtensionsPluginPageWireframe({
         ) : (
           <TrafficLights />
         )}
-        <span className="text-foreground">Plugins</span>
+        <span className="text-foreground">Плагины</span>
       </div>
       <div
         className={cn(
@@ -2455,16 +2454,16 @@ export function ExtensionsPluginPageWireframe({
       >
         <Mark
           id="plugin-status"
-          label="The needs-configuration banner bb shows for a plugin that reports it"
+          label="Баннер о необходимости настройки, который bb показывает по запросу плагина"
           className="flex items-center gap-2 border-b border-border bg-surface-recessed/55 px-5 py-1.5 text-xs"
           chip="corner-inset"
         >
           <MiniIcon icon="Settings" className="size-3.5 text-warning" />
           <span className="min-w-0 flex-1 font-medium text-foreground">
-            Needs configuration
+            Требуется настройка
           </span>
           <span className="flex h-7 shrink-0 items-center gap-0.5 rounded-md px-2.5 text-xs font-normal text-muted-foreground">
-            Open settings
+            Открыть настройки
             <MiniIcon icon="ChevronRight" className="size-3" />
           </span>
         </Mark>
@@ -2497,11 +2496,11 @@ export function ExtensionsPluginPageWireframe({
           </div>
 
           <div className="space-y-1.5 border-t border-border-hairline pt-3">
-            <span className="block text-subtle-foreground">Details</span>
+            <span className="block text-subtle-foreground">Сведения</span>
             <span className="block divide-y divide-border-hairline rounded-md border border-border-hairline">
               {[
-                ["Delivery", "Updates with bb"],
-                ["Version", "0.1.0"],
+                ["Установка", "Обновляется вместе с bb"],
+                ["Версия", "0.1.0"],
               ].map(([label, value]) => (
                 <span
                   key={label}
@@ -2515,14 +2514,14 @@ export function ExtensionsPluginPageWireframe({
           </div>
 
           <div className="space-y-1.5 border-t border-border-hairline pt-3">
-            <span className="block text-subtle-foreground">Capabilities</span>
+            <span className="block text-subtle-foreground">Возможности</span>
             <span
               aria-hidden
               className="block divide-y divide-border-hairline rounded-md border border-border-hairline"
             >
               {[
-                ["Settings", "API key, Case-sensitive search"],
-                ["bb hello", "Say hello from the terminal"],
+                ["Настройки", "Ключ API, поиск с учётом регистра"],
+                ["bb hello", "Отправить приветствие из терминала"],
               ].map(([name, what]) => (
                 <span
                   key={name}
@@ -2577,7 +2576,7 @@ function MockHomeComposer() {
             acme-app <span className="text-subtle-foreground">· worktree</span>
           </span>
         </span>
-        <span className="shrink-0">Full Access</span>
+        <span className="shrink-0">Полный доступ</span>
       </div>
     </>
   );

@@ -76,7 +76,7 @@ import {
 } from "@/lib/route-paths";
 
 const PERMISSION_LIMIT_DESCRIPTION =
-  "Highest permission mode any thread on the selected machine may run with. Threads that ask for more resolve down to it, and a provider that supports nothing this low can't run here.";
+  "Максимальный режим разрешений для чатов на выбранной машине. Если чат запрашивает больше, применяется этот предел. Провайдер, который его не поддерживает, не сможет работать на этой машине.";
 
 const PLATFORM_LABELS: Record<HostPlatform, string | null> = {
   darwin: "macOS",
@@ -103,7 +103,7 @@ function headerMeta({
   const parts: string[] = [machineStatusLabel({ host, now })];
   if (platformLabel !== null) parts.push(platformLabel);
   parts.push(
-    `paired ${formatRelativeTime({ timestamp: host.createdAt, now })}`,
+    `подключена ${formatRelativeTime({ timestamp: host.createdAt, now })}`,
   );
   return parts.join(" · ");
 }
@@ -120,7 +120,7 @@ function PermissionLimitCards({
   value,
 }: PermissionLimitCardProps) {
   return (
-    <div role="radiogroup" aria-label="Permission limit">
+    <div role="radiogroup" aria-label="Предел разрешений">
       <SettingsRowList>
         {PERMISSION_MODE_OPTIONS.map((option) => {
           const selected = option.value === value;
@@ -212,7 +212,7 @@ export function MachineSettingsHeader({
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <Icon name="ChevronLeft" className="size-3.5" />
-        Machines
+        Машины
       </Link>
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
@@ -220,8 +220,8 @@ export function MachineSettingsHeader({
             <h1 className="min-w-0 text-sm font-semibold text-foreground">
               <MachineLabel host={host} machineProvider={machineProvider} />
             </h1>
-            {isThisMachine ? <SettingsBadge>This machine</SettingsBadge> : null}
-            {showServerBadge ? <SettingsBadge>Server</SettingsBadge> : null}
+            {isThisMachine ? <SettingsBadge>Эта машина</SettingsBadge> : null}
+            {showServerBadge ? <SettingsBadge>Сервер</SettingsBadge> : null}
           </div>
           <div className="flex min-w-0 items-center gap-2">
             <MachineStatusDot tone={machineStatusTone(host)} />
@@ -241,7 +241,7 @@ export function MachineSettingsHeader({
             onRetryCleanup={onRetryCleanup}
           />
           <ResourceOverflowMenu
-            label={`${host.name} actions`}
+            label={`Действия с машиной ${host.name}`}
             items={machineActions({
               host,
               machineProvider,
@@ -355,7 +355,7 @@ export function MachineSettingsView() {
     return (
       <PageShell contentClassName="pt-4 md:pt-5">
         <div className="mx-auto w-full max-w-3xl">
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">Загрузка…</p>
         </div>
       </PageShell>
     );
@@ -370,10 +370,10 @@ export function MachineSettingsView() {
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
           >
             <Icon name="ChevronLeft" className="size-3.5" />
-            Machines
+            Машины
           </Link>
           <p className="text-sm text-muted-foreground">
-            Machine is no longer paired.
+            Машина больше не подключена.
           </p>
         </div>
       </PageShell>
@@ -421,7 +421,7 @@ export function MachineSettingsView() {
         />
 
         <SettingsSection
-          title="Permission limit"
+          title="Предел разрешений"
           description={PERMISSION_LIMIT_DESCRIPTION}
         >
           <PermissionLimitCards
@@ -434,7 +434,7 @@ export function MachineSettingsView() {
                   onError: (error) => {
                     showMutationErrorToast({
                       error,
-                      fallbackMessage: `Couldn't change the permission limit for ${host.name}.`,
+                      fallbackMessage: `Не удалось изменить предел разрешений для ${host.name}.`,
                     });
                   },
                 },
@@ -443,15 +443,15 @@ export function MachineSettingsView() {
           />
         </SettingsSection>
 
-        <SettingsSection title="Provider CLIs">
+        <SettingsSection title="CLI провайдеров">
           <SettingsRowList>
-            <SettingsDetailRow label="Installed">
+            <SettingsDetailRow label="Установлено">
               {host.status !== "connected" ? (
-                <span>Unavailable while offline</span>
+                <span>Недоступно без подключения</span>
               ) : machine?.statusPending ? (
-                <span>Checking…</span>
+                <span>Проверка…</span>
               ) : machine?.statusError ? (
-                <span>Status unavailable</span>
+                <span>Статус недоступен</span>
               ) : (
                 <>
                   {installedProviders.length > 0 ? (
@@ -486,7 +486,7 @@ export function MachineSettingsView() {
                       ))}
                     </span>
                   ) : (
-                    <span>None installed</span>
+                    <span>Ничего не установлено</span>
                   )}
                   {updateIssueCount > 0 ? (
                     <Link
@@ -498,7 +498,7 @@ export function MachineSettingsView() {
                         size="sm"
                         className="border-attention/50 bg-surface-attention text-warning-text transition-colors hover:border-attention hover:text-foreground"
                       >
-                        {updateIssueCount} to fix
+                        Требуют исправления: {updateIssueCount}
                       </Pill>
                     </Link>
                   ) : null}
@@ -508,11 +508,11 @@ export function MachineSettingsView() {
           </SettingsRowList>
         </SettingsSection>
 
-        <SettingsSection title="Machine information">
+        <SettingsSection title="Сведения о машине">
           <SettingsRowList>
-            <SettingsDetailRow label="Projects">
+            <SettingsDetailRow label="Проекты">
               {projects.length === 0 ? (
-                <span>None</span>
+                <span>Нет</span>
               ) : (
                 <span className="min-w-0 truncate">
                   {projects.map((project, index) => (
@@ -529,8 +529,8 @@ export function MachineSettingsView() {
                 </span>
               )}
             </SettingsDetailRow>
-            <SettingsDetailRow label="Updates">
-              <span>{updateStatus ?? "Up to date"}</span>
+            <SettingsDetailRow label="Обновления">
+              <span>{updateStatus ?? "Обновлено"}</span>
               {hostCanRetryUpdate(host) ? (
                 <Button
                   type="button"
@@ -542,13 +542,13 @@ export function MachineSettingsView() {
                     retryHostUpdate.mutate(host.id, {
                       onSuccess: () => {
                         appToast.success(
-                          `Update retry requested for ${host.name}`,
+                          `Запрошена повторная попытка обновления для ${host.name}`,
                         );
                       },
                     })
                   }
                 >
-                  {retryHostUpdate.isPending ? "Retrying…" : "Retry update"}
+                  {retryHostUpdate.isPending ? "Повторная попытка…" : "Повторить обновление"}
                 </Button>
               ) : null}
             </SettingsDetailRow>
@@ -560,11 +560,11 @@ export function MachineSettingsView() {
         ) : null}
 
         <SettingsSection
-          title="Danger zone"
+          title="Опасная зона"
           description={
             isPrimary
               ? serverMachineRemoveDisabledReason(serverMoveEnabled)
-              : `Revokes ${host.name}'s access to this server. ${machineRemovalConsequences(host)}`
+              : `Машина ${host.name} потеряет доступ к этому серверу. ${machineRemovalConsequences(host)}`
           }
         >
           <SettingsRowList>
@@ -576,7 +576,7 @@ export function MachineSettingsView() {
                 disabled={isPrimary}
                 onClick={() => setRemoveOpen(true)}
               >
-                Remove machine
+                Удалить машину
               </Button>
             </SettingsRow>
           </SettingsRowList>
@@ -590,7 +590,7 @@ export function MachineSettingsView() {
           renameHost.isError
             ? getMutationErrorMessage({
                 error: renameHost.error,
-                fallbackMessage: "Couldn't rename the machine.",
+                fallbackMessage: "Не удалось переименовать машину.",
               })
             : null
         }

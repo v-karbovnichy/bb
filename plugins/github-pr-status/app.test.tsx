@@ -148,7 +148,7 @@ describe("pull request row metadata", () => {
     };
     const view = renderRow({ thread: thread("env_row") }, rows);
     const badge = await view.findByRole("img", {
-      name: "Pull request #6143, open, checks running",
+      name: "Пул-реквест #6143, открыт, проверки выполняются",
     });
     expect(badge.dataset.pullRequestBadge).toBe("open");
     expect(badge.textContent).toBe("#6143");
@@ -171,7 +171,7 @@ describe("pull request row metadata", () => {
         env_other: { outcome: "absent" },
       },
     );
-    await view.findByRole("img", { name: /Pull request #6143/ });
+    await view.findByRole("img", { name: /Пул-реквест #6143/ });
     document.dispatchEvent(new Event("visibilitychange"));
     await waitFor(() => expect(view.inspection.rpcCalls).toHaveLength(2));
     expect(view.inspection.rpcCalls[1]).toMatchObject({
@@ -196,7 +196,7 @@ describe("pull request row metadata", () => {
         env_other: { outcome: "absent" },
       },
     );
-    await view.findByRole("img", { name: /Pull request #6143/ });
+    await view.findByRole("img", { name: /Пул-реквест #6143/ });
     expect(view.inspection.rpcCalls).toMatchObject([
       { method: "pullRequests", input: { keys: ["env_other", "env_row"] } },
     ]);
@@ -215,28 +215,28 @@ describe("pull request row metadata", () => {
   });
 
   it.each<[Partial<PullRequest>, string]>([
-    [{ checks: passingChecks }, "open, checks passing"],
+    [{ checks: passingChecks }, "открыт, проверки пройдены"],
     [
       {
         attention: "checks_failed",
         checks: { ...passingChecks, state: "failing" },
       },
-      "open, checks failing",
+      "открыт, проверки не пройдены",
     ],
-    [{ attention: "conflicts" }, "open, conflicts with main, checks running"],
+    [{ attention: "conflicts" }, "открыт, конфликт с main, проверки выполняются"],
     [
       {
         attention: "changes_requested",
         review: { state: "changes_requested", reviewRequestCount: 0 },
       },
-      "open, changes requested, checks running",
+      "открыт, запрошены изменения, проверки выполняются",
     ],
     [
       {
         attention: "none",
         checks: { ...passingChecks, state: "no_checks" },
       },
-      "open",
+      "открыт",
     ],
     [
       {
@@ -244,9 +244,9 @@ describe("pull request row metadata", () => {
         attention: "draft",
         checks: { ...passingChecks, state: "failing" },
       },
-      "draft, checks failing",
+      "черновик, проверки не пройдены",
     ],
-    [{ state: "merged", attention: "merged" }, "merged"],
+    [{ state: "merged", attention: "merged" }, "объединён"],
   ])("labels %o as %s", async (overrides, expected) => {
     const view = renderRow(
       { thread: thread("env_row") },
@@ -258,7 +258,7 @@ describe("pull request row metadata", () => {
       },
     );
     expect(
-      await view.findByRole("img", { name: `Pull request #6143, ${expected}` }),
+      await view.findByRole("img", { name: `Пул-реквест #6143, ${expected}` }),
     ).toBeTruthy();
   });
 
@@ -274,7 +274,7 @@ describe("pull request row metadata", () => {
         },
       );
       const badge = await view.findByRole("img", {
-        name: /Pull request #6143/,
+        name: /Пул-реквест #6143/,
       });
       const drawn =
         badge.childNodes.length === 1
@@ -359,19 +359,19 @@ describe("pull request row metadata", () => {
       },
     );
     const badge = await view.findByRole("img", {
-      name: "Pull request #6143, open, checks running",
+      name: "Пул-реквест #6143, открыт, проверки выполняются",
     });
     fireEvent.pointerEnter(badge);
     fireEvent.pointerMove(
       view.getByRole("img", {
-        name: "Pull request #6143, open, checks running",
+        name: "Пул-реквест #6143, открыт, проверки выполняются",
       }),
     );
     expect(
       await view.findAllByText("#6143 Share and persist GitHub PR refreshes"),
     ).not.toHaveLength(0);
     expect(
-      (await view.findAllByText(/11 passed, 3 pending/)).length,
+      (await view.findAllByText(/11 пройдено, 3 в ожидании/)).length,
     ).toBeGreaterThan(0);
   });
 });

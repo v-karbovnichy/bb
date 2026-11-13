@@ -41,7 +41,7 @@ describe("AppToastContent", () => {
         .classList.contains("underline"),
     ).toBe(true);
     expect(
-      screen.getByRole("button", { name: "Dismiss notification" }),
+      screen.getByRole("button", { name: "Закрыть уведомление" }),
     ).toBeDefined();
   });
 
@@ -69,7 +69,7 @@ describe("AppToastContent", () => {
       />,
     );
 
-    screen.getByRole("button", { name: "Dismiss notification" }).click();
+    screen.getByRole("button", { name: "Закрыть уведомление" }).click();
 
     expect(onDismiss).toHaveBeenCalledOnce();
   });

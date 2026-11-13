@@ -165,13 +165,13 @@ function run(action: PluginThreadAction | null, value: string) {
   return action.run({ value, requestRename: () => {} });
 }
 
-describe("Move to section", () => {
+describe("Переместить в раздел", () => {
   it("offers the sections in the list's order and marks the current one", async () => {
     const { item, hydrated } = renderMove();
     await hydrated();
     await waitFor(() =>
       expect(item(makeTarget())?.choices?.items).toEqual([
-        { id: "threads", label: "Threads", selected: false, disabled: false },
+        { id: "threads", label: "Чаты", selected: false, disabled: false },
         { id: "sec_b", label: "Beta", selected: false, disabled: false },
         { id: "sec_a", label: "Alpha", selected: true, disabled: true },
       ]),

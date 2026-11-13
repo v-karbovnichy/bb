@@ -31,12 +31,12 @@ describe("ProviderCliBanner", () => {
     });
 
     expect(
-      screen.getByRole("region", { name: "Example Agent update required" }),
+      screen.getByRole("region", { name: "Требуется обновить Example Agent" }),
     ).toBeTruthy();
     expect(text).toContain(
-      "Update Example Agent before starting a thread. Installed 0.135.0; version 0.136.0 or newer is required.",
+      "Обновите Example Agent, прежде чем создавать чат. Установлена версия 0.135.0; требуется версия 0.136.0 или новее.",
     );
-    expect(button.textContent).toBe("Update Example Agent");
+    expect(button.textContent).toBe("Обновить Example Agent");
     expect(button.hasAttribute("disabled")).toBe(false);
   });
 
@@ -50,8 +50,8 @@ describe("ProviderCliBanner", () => {
       actionRunning: true,
     });
 
-    expect(text).toContain("Installed 0.135.0; a newer version is required.");
-    expect(button.textContent).toContain("Updating…");
+    expect(text).toContain("Установлена версия 0.135.0; требуется более новая версия.");
+    expect(button.textContent).toContain("Обновление…");
     expect(button.hasAttribute("disabled")).toBe(true);
   });
 
@@ -66,10 +66,10 @@ describe("ProviderCliBanner", () => {
     });
 
     expect(
-      screen.getByRole("region", { name: "Claude Code not installed" }),
+      screen.getByRole("region", { name: "Claude Code не установлен" }),
     ).toBeTruthy();
-    expect(text).toContain("Install Claude Code before starting a thread.");
-    expect(text).not.toContain("version");
-    expect(button.textContent).toBe("Install Claude Code");
+    expect(text).toContain("Установите Claude Code, прежде чем создавать чат.");
+    expect(text).not.toContain("версия");
+    expect(button.textContent).toBe("Установить Claude Code");
   });
 });

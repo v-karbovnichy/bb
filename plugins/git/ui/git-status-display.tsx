@@ -21,18 +21,18 @@ export interface GitStatusDisplayStatus {
 }
 
 export const INCOMPLETE_SQUASH_MERGE_MESSAGE =
-  "Squash-merge check incomplete; counts may include already-merged commits.";
+  "Проверка объединения со сжатием не завершена; в количестве могут учитываться уже объединённые коммиты.";
 
 export interface ThreadGitStatusDisplay {
   label:
-    | "Unknown"
-    | "Up to date"
-    | "Clean"
-    | "Ahead"
-    | "Behind"
-    | "Diverged"
-    | "Dirty"
-    | "Untracked";
+    | "Неизвестно"
+    | "Актуально"
+    | "Чисто"
+    | "Впереди"
+    | "Позади"
+    | "Разошлись"
+    | "Есть изменения"
+    | "Неотслеживаемые";
   summary: string;
   warning?: string;
 }
@@ -49,7 +49,7 @@ export function gitStatusErrorMessage(error: Error | null): string | null {
   return error instanceof experimental_PluginRpcCallError &&
     GIT_STATUS_REFUSAL_CODES.has(error.code)
     ? error.message
-    : "Workspace status unavailable.";
+    : "Статус рабочей копии недоступен.";
 }
 
 interface GetGitStatusDisplayOptions {
@@ -72,19 +72,19 @@ function formatComparisonSummary(
 
   if (aheadCount > 0 && behindCount > 0) {
     return mergeBaseBranch
-      ? `${aheadCount} ahead, ${behindCount} behind relative to ${mergeBaseBranch}`
-      : `${aheadCount} ahead, ${behindCount} behind`;
+      ? `Впереди на ${aheadCount}, позади на ${behindCount} относительно ${mergeBaseBranch}`
+      : `Впереди на ${aheadCount}, позади на ${behindCount}`;
   }
 
   if (aheadCount > 0) {
     return mergeBaseBranch
-      ? `${aheadCount} ahead of ${mergeBaseBranch}`
-      : `${aheadCount} ahead`;
+      ? `Впереди ${mergeBaseBranch} на ${aheadCount}`
+      : `Впереди на ${aheadCount}`;
   }
 
   return mergeBaseBranch
-    ? `${behindCount} behind ${mergeBaseBranch}`
-    : `${behindCount} behind`;
+    ? `Позади ${mergeBaseBranch} на ${behindCount}`
+    : `Позади на ${behindCount}`;
 }
 
 function plainDisplay(
@@ -102,14 +102,14 @@ function divergenceDisplay(
   const behindCount = status.mergeBase?.behindCount ?? 0;
   if (aheadCount > 0 && behindCount > 0) {
     return plainDisplay(
-      "Diverged",
-      comparisonSummary ?? "Branch has diverged.",
+      "Разошлись",
+      comparisonSummary ?? "Ветки разошлись.",
     );
   }
   if (behindCount > 0) {
     return plainDisplay(
-      "Behind",
-      comparisonSummary ?? "Branch is behind its merge base.",
+      "Позади",
+      comparisonSummary ?? "Ветка отстаёт от базы слияния.",
     );
   }
   return null;
@@ -122,17 +122,17 @@ function getGitStatusDisplayWithoutWarning(
   if (!status) {
     if (options?.workspaceUnavailable) {
       if (options.workspaceUnavailable.code === "path_not_found") {
-        return plainDisplay("Unknown", "Workspace not found.");
+        return plainDisplay("Неизвестно", "Рабочая копия не найдена.");
       }
-      return plainDisplay("Unknown", options.workspaceUnavailable.message);
+      return plainDisplay("Неизвестно", options.workspaceUnavailable.message);
     }
 
     if (options?.workspaceDeleted) {
-      return plainDisplay("Unknown", "Workspace not found.");
+      return plainDisplay("Неизвестно", "Рабочая копия не найдена.");
     }
     return plainDisplay(
-      "Unknown",
-      options?.errorMessage ?? "Workspace status unavailable.",
+      "Неизвестно",
+      options?.errorMessage ?? "Статус рабочей копии недоступен.",
     );
   }
 
@@ -148,27 +148,27 @@ function getGitStatusDisplayWithoutWarning(
         divergenceDisplay(status, comparisonSummary) ??
         ((status.mergeBase?.aheadCount ?? 0) > 0
           ? plainDisplay(
-              "Ahead",
-              comparisonSummary ?? "Local commits pending merge.",
+              "Впереди",
+              comparisonSummary ?? "Локальные коммиты ожидают объединения.",
             )
           : plainDisplay(
-              options?.showBranchComparison ? "Up to date" : "Clean",
+              options?.showBranchComparison ? "Актуально" : "Чисто",
               resolvedMergeBaseBranch
-                ? `No local changes relative to ${resolvedMergeBaseBranch}.`
-                : "No local changes.",
+                ? `Нет локальных изменений относительно ${resolvedMergeBaseBranch}.`
+                : "Нет локальных изменений.",
             ))
       );
     case "untracked":
-      return plainDisplay("Untracked", comparisonSummary ?? "");
+      return plainDisplay("Неотслеживаемые", comparisonSummary ?? "");
     case "dirty_uncommitted":
     case "dirty_and_committed_unmerged":
-      return plainDisplay("Dirty", comparisonSummary ?? "");
+      return plainDisplay("Есть изменения", comparisonSummary ?? "");
     case "committed_unmerged":
       return (
         divergenceDisplay(status, comparisonSummary) ??
         plainDisplay(
-          "Ahead",
-          comparisonSummary ?? "Local commits pending merge.",
+          "Впереди",
+          comparisonSummary ?? "Локальные коммиты ожидают объединения.",
         )
       );
   }

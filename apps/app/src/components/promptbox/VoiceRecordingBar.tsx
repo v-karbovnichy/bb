@@ -54,7 +54,7 @@ export function VoiceRecordingBar({
         size="icon"
         variant="ghost"
         aria-label={
-          isTranscribing ? "Cancel transcription" : "Cancel recording"
+          isTranscribing ? "Отменить расшифровку" : "Отменить запись"
         }
         onClick={onCancel}
         className={CONTROL_BUTTON_CLASS}
@@ -68,7 +68,7 @@ export function VoiceRecordingBar({
           <WaveformVisualizer stream={stream} active={!isTranscribing} />
         </div>
         <span className="sr-only" aria-live="polite">
-          {isTranscribing ? "Transcribing" : "Recording"}
+          {isTranscribing ? "Расшифровка" : "Запись"}
         </span>
       </div>
       {state === "recording" && microphoneWarning ? (
@@ -85,8 +85,8 @@ export function VoiceRecordingBar({
               variant="secondary"
               aria-label={
                 isConfirming
-                  ? "Transcribing voice input"
-                  : "Stop and add to draft"
+                  ? "Расшифровка голосового ввода"
+                  : "Остановить и добавить в черновик"
               }
               disabled={isTranscribing}
               onClick={onConfirm}
@@ -105,7 +105,7 @@ export function VoiceRecordingBar({
               )}
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top">Add to draft</TooltipContent>
+          <TooltipContent side="top">Добавить в черновик</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -114,7 +114,7 @@ export function VoiceRecordingBar({
               size="icon"
               variant="default"
               aria-label={
-                isSending ? "Transcribing and sending" : "Send voice input"
+                isSending ? "Расшифровка и отправка" : "Отправить голосовое сообщение"
               }
               disabled={isTranscribing}
               onClick={onSend}
@@ -130,7 +130,7 @@ export function VoiceRecordingBar({
               )}
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top">Send</TooltipContent>
+          <TooltipContent side="top">Отправить</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

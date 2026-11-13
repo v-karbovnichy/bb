@@ -165,7 +165,7 @@ export function pluginBrowseShelves({
     shelves.push({
       key: "category:uncategorized",
       categoryId: UNCATEGORIZED_PLUGIN_CATEGORY_ID,
-      label: "More plugins",
+      label: "Другие плагины",
       entries: uncategorizedEntries,
       kind: "uncategorized",
     });

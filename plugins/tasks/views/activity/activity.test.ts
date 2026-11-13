@@ -19,7 +19,7 @@ const agentComment: DisplayComment = {
   threadId: "thr_worker",
   threadTitle: "Fix the login bug",
   provider: null,
-  body: "Done",
+  body: "Готово",
   notifiedCount: 0,
   createdAt: "2026-07-15T00:00:00.000Z",
 };

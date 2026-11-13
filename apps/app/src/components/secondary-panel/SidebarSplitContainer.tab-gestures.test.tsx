@@ -107,7 +107,7 @@ it.each([5, 8])(
 
 it("closes a tab whose close press moves vertically without splitting", () => {
   const { onClose } = renderTabs();
-  pressAndRelease(screen.getByRole("button", { name: "Close beta.ts" }), 16);
+  pressAndRelease(screen.getByRole("button", { name: "Закрыть beta.ts" }), 16);
   expect(onClose).toHaveBeenCalledWith("beta.ts");
   expect(screen.queryAllByRole("separator")).toHaveLength(0);
 });

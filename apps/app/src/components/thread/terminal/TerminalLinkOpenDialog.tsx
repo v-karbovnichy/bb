@@ -26,14 +26,14 @@ export function TerminalLinkOpenDialog({
         {target ? (
           <>
             <DialogHeader>
-              <DialogTitle>Open terminal link?</DialogTitle>
+              <DialogTitle>Открыть ссылку из терминала?</DialogTitle>
               <DialogDescription>
                 Terminal output can disguise a link destination. Check the
                 address before opening it.
               </DialogDescription>
             </DialogHeader>
             <div
-              aria-label="Link target"
+              aria-label="Адрес ссылки"
               className="max-h-40 overflow-y-auto break-all rounded-md border bg-muted/40 p-3 font-mono text-xs text-foreground"
             >
               {target.uri}
@@ -44,10 +44,10 @@ export function TerminalLinkOpenDialog({
                 variant="outline"
                 onClick={() => onOpenChange(false)}
               >
-                Cancel
+                Отмена
               </Button>
               <Button type="button" onClick={() => onConfirm(target)}>
-                Open
+                Открыть
               </Button>
             </DialogFooter>
           </>

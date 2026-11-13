@@ -14,9 +14,9 @@ describe("custom instructions plugin", () => {
     expect(harness.registrations.settingsDescriptors).toEqual({
       instructions: {
         type: "string",
-        label: "Custom instructions",
+        label: "Пользовательские инструкции",
         description:
-          "Give agents extra instructions and context for tasks on this bb host.",
+          "Добавьте инструкции и контекст для задач агентов на этом сервере bb.",
         experimental_multiline: true,
         experimental_schema: expect.any(Object),
         default: "",
@@ -67,7 +67,7 @@ describe("custom instructions plugin", () => {
     });
     await expect(
       harness.setSettings({ instructions: "x".repeat(4097) }),
-    ).rejects.toThrow("at most 4096 characters");
+    ).rejects.toThrow("не могут превышать 4096 символов");
   });
 
   it("contributes nothing for blank text and rejects oversized CLI updates", async () => {
@@ -86,7 +86,7 @@ describe("custom instructions plugin", () => {
       harness.runCli(["set", "x".repeat(MAX_CUSTOM_INSTRUCTIONS_LENGTH + 1)]),
     ).resolves.toMatchObject({
       exitCode: 1,
-      stderr: expect.stringContaining("at most 4096 characters"),
+      stderr: expect.stringContaining("не могут превышать 4096 символов"),
     });
   });
 
@@ -98,7 +98,7 @@ describe("custom instructions plugin", () => {
 
     const help = (await harness.runCli(["set", "--help"])).stdout;
     expect(help).toContain("bb instructions set");
-    expect(help).toContain("at most 4096 characters");
+    expect(help).toContain("не более 4096 символов");
 
     const dashed = await harness.runCli(["set", "--", "-n", "no flags here"]);
     expect(dashed.exitCode, dashed.stderr).toBe(0);
@@ -123,7 +123,7 @@ describe("custom instructions plugin", () => {
       ok: false,
       error: {
         code: "invalid_instructions",
-        message: expect.stringContaining("at most 4096 characters"),
+        message: expect.stringContaining("не могут превышать 4096 символов"),
       },
     });
   });

@@ -106,44 +106,44 @@ function loginPollDelay(failures: number): number {
 
 const PAIR_ERROR_COPY: Record<ConnectPairErrorCode, PairErrorCopy> = {
   invalid_code: {
-    lead: "That code is invalid or has expired.",
-    linkLabel: "Get a new code",
-    tail: " — they only last 10 minutes.",
+    lead: "Этот код недействителен или истёк.",
+    linkLabel: "Получить новый код",
+    tail: " — код действует только 10 минут.",
   },
   expired_code: {
-    lead: "That code has expired.",
-    linkLabel: "Get a new code",
-    tail: " — they only last 10 minutes.",
+    lead: "Срок действия кода истёк.",
+    linkLabel: "Получить новый код",
+    tail: " — код действует только 10 минут.",
   },
   already_used: {
-    lead: "That code was already used.",
-    linkLabel: "Get a new code",
-    tail: " — each code works once.",
+    lead: "Этот код уже использован.",
+    linkLabel: "Получить новый код",
+    tail: " — каждый код можно использовать один раз.",
   },
   network: {
-    lead: "Couldn't reach getbb.app.",
-    linkLabel: "Open the dashboard",
-    tail: " — check your connection, then try again.",
+    lead: "Нет связи с getbb.app.",
+    linkLabel: "Открыть панель управления",
+    tail: " — проверьте подключение и повторите попытку.",
   },
   unauthorized: {
-    lead: "getbb.app rejected the new pairing.",
-    linkLabel: "Get a new code",
-    tail: " and try again.",
+    lead: "getbb.app отклонил новую привязку.",
+    linkLabel: "Получить новый код",
+    tail: " и повторите попытку.",
   },
   profile_unavailable: {
-    lead: "This bb saved the pairing, but getbb.app hasn't returned your account yet.",
-    linkLabel: "Open the dashboard",
-    tail: " — bb keeps retrying, and remote access starts once it does.",
+    lead: "Этот bb сохранил привязку, но getbb.app пока не вернул данные аккаунта.",
+    linkLabel: "Открыть панель управления",
+    tail: " — bb продолжает попытки; удалённый доступ заработает после получения данных.",
   },
   superseded: {
-    lead: "Another sign-in or a sign-out replaced this one.",
-    linkLabel: "Open the dashboard",
-    tail: " — check which account this bb uses under bb account.",
+    lead: "Эту попытку сменил другой вход или выход.",
+    linkLabel: "Открыть панель управления",
+    tail: " — проверьте в настройках аккаунта bb, какой аккаунт используется.",
   },
   account_unavailable: {
-    lead: "The bb account plugin is off.",
-    linkLabel: "Open the dashboard",
-    tail: " — turn bb account on under Plugins, then try again.",
+    lead: "Плагин аккаунта bb выключен.",
+    linkLabel: "Открыть панель управления",
+    tail: " — включите его в разделе «Плагины» и повторите попытку.",
   },
 };
 
@@ -403,22 +403,22 @@ function UrlHero({ url, showOpen }: { url: string; showOpen: boolean }) {
         variant="outline"
         size="sm"
         onClick={copy}
-        aria-label="Copy URL"
+        aria-label="Скопировать адрес"
       >
         <Icon
           name={copyState === "copied" ? "Check" : "Copy"}
           className="size-4"
         />
         {copyState === "copied"
-          ? "Copied"
+          ? "Скопировано"
           : copyState === "manual"
-            ? "Press ⌘C"
-            : "Copy"}
+            ? "Нажмите ⌘C"
+            : "Копировать"}
       </Button>
       {showOpen ? (
         <Button type="button" variant="outline" size="sm" asChild>
           <UrlLink href={url} target="_blank" rel="noreferrer">
-            Open
+            Открыть
           </UrlLink>
         </Button>
       ) : null}
@@ -452,7 +452,7 @@ function QuietCopyButton({ text, label }: { text: string; label: string }) {
       onClick={copy}
       aria-label={label}
     >
-      {copied ? "Copied" : "Copy"}
+      {copied ? "Скопировано" : "Копировать"}
     </Button>
   );
 }
@@ -529,10 +529,10 @@ function PairForm({
     <div className={layout === "setupGuide" ? "space-y-3" : "space-y-2.5"}>
       {layout === "setupGuide" ? (
         <CodeEntryForm
-          label="Pairing code"
+          label="Код привязки"
           value={code}
           placeholder="XXXX–XXXX"
-          submitLabel="Pair"
+          submitLabel="Привязать"
           canSubmit={complete}
           pending={pending}
           invalid={errorCode !== null}
@@ -553,7 +553,7 @@ function PairForm({
             placeholder="XXXX–XXXX"
             autoComplete="off"
             spellCheck={false}
-            aria-label="Pairing code"
+            aria-label="Код привязки"
             aria-invalid={errorCode !== null}
             className={cn(
               "font-mono tracking-widest",
@@ -565,7 +565,7 @@ function PairForm({
             {pending ? (
               <Icon name="Spinner" className="size-4 animate-spin" />
             ) : null}
-            Pair
+            Привязать
           </Button>
         </form>
       )}
@@ -616,15 +616,15 @@ function loginFailureDetail(
 
 function signInStartErrorText(error: unknown): string {
   if (isUnavailableError(error)) {
-    return "The bb account plugin is off. Turn it on under Plugins, then try again.";
+    return "Плагин аккаунта bb выключен. Включите его в разделе «Плагины» и повторите попытку.";
   }
   switch (accountErrorCode(error)) {
     case "rate_limited":
-      return "Too many sign-in attempts from this network. Wait a minute, then try again.";
+      return "Слишком много попыток входа из этой сети. Подождите минуту и повторите попытку.";
     case "unavailable":
-      return "getbb.app couldn't start sign-in right now. Try again in a minute.";
+      return "getbb.app сейчас не может начать вход. Повторите попытку через минуту.";
     default:
-      return "Couldn't reach getbb.app to start sign-in. Check your connection, then try again.";
+      return "Нет связи с getbb.app для начала входа. Проверьте подключение и повторите попытку.";
   }
 }
 
@@ -659,15 +659,15 @@ function MobilePairingCard({
         >
           <QrCodeImage
             value={qrText}
-            alt="QR code to pair the bb mobile app"
+            alt="QR-код для привязки мобильного приложения bb"
             className="size-40"
           />
         </div>
         <div className="min-w-0 flex-1 space-y-2">
           <p className="text-sm">
             {expired
-              ? "Generate a new code, then scan it or enter it in the bb mobile app."
-              : "Scan this with the bb mobile app, or enter the code by hand."}
+              ? "Получите новый код, затем отсканируйте или введите его в мобильном приложении bb."
+              : "Отсканируйте код в мобильном приложении bb или введите его вручную."}
           </p>
           <div className="flex max-w-xs items-center gap-1 rounded-lg border border-border bg-surface-recessed py-1 pl-3.5 pr-1">
             <span
@@ -677,18 +677,18 @@ function MobilePairingCard({
                   ? "text-muted-foreground line-through"
                   : "text-foreground",
               )}
-              aria-label="Mobile pairing code"
+              aria-label="Код привязки телефона"
             >
               {payload.code}
             </span>
             {expired ? null : (
-              <QuietCopyButton text={payload.code} label="Copy pairing code" />
+              <QuietCopyButton text={payload.code} label="Скопировать код привязки" />
             )}
           </div>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-subtle-foreground">
             {expired ? (
               <>
-                <span>Code expired</span>
+                <span>Срок действия кода истёк</span>
                 <Button
                   type="button"
                   variant="ghost"
@@ -700,19 +700,18 @@ function MobilePairingCard({
                   {minting ? (
                     <Icon name="Spinner" className="size-4 animate-spin" />
                   ) : null}
-                  Generate a new code
+                  Получить новый код
                 </Button>
               </>
             ) : remainingMs !== null ? (
               <span className="tabular-nums">
-                Code expires in {formatCountdown(remainingMs)}
+                Код истечёт через {formatCountdown(remainingMs)}
               </span>
             ) : null}
           </div>
           <p className="text-xs text-subtle-foreground/75">
-            {expired ? "Each new code works once." : "This code works once."}{" "}
-            You can revoke your phone’s access from the {dashboardHost}{" "}
-            dashboard.
+            {expired ? "Каждый новый код действует один раз." : "Этот код действует один раз."}{" "}
+            Доступ телефона можно отозвать через панель {dashboardHost}.
           </p>
         </div>
       </div>
@@ -747,10 +746,10 @@ function AddMobileDeviceSection({ dashboardUrl }: { dashboardUrl: string }) {
     <div className="mt-3 space-y-2.5 border-t border-border-seam pt-3">
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <div className="min-w-0">
-          <h3 className="text-xs font-medium">Pair your phone</h3>
+          <h3 className="text-xs font-medium">Привяжите телефон</h3>
           {payload === null ? (
             <p className="mt-1 text-xs text-subtle-foreground/75">
-              Scan or enter a code.
+              Отсканируйте или введите код.
             </p>
           ) : null}
         </div>
@@ -771,7 +770,7 @@ function AddMobileDeviceSection({ dashboardUrl }: { dashboardUrl: string }) {
                 className="size-3.5"
               />
             )}
-            {errorCode === "network" ? "Try again" : "Add mobile device"}
+            {errorCode === "network" ? "Повторить попытку" : "Добавить мобильное устройство"}
           </Button>
         ) : (
           <Button
@@ -784,7 +783,7 @@ function AddMobileDeviceSection({ dashboardUrl }: { dashboardUrl: string }) {
               setErrorCode(null);
             }}
           >
-            Done
+            Готово
           </Button>
         )}
       </div>
@@ -803,21 +802,21 @@ function AddMobileDeviceSection({ dashboardUrl }: { dashboardUrl: string }) {
         <p role="alert" className="text-xs text-destructive-text">
           {errorCode === "machine_limit" ? (
             <>
-              Your {dashboardHost} account has reached its machine limit.{" "}
+              Для аккаунта {dashboardHost} достигнут лимит машин.{" "}
               <UrlLink
                 href={dashboardUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="font-semibold underline underline-offset-2"
               >
-                Revoke a device you no longer use
+                Отозвать доступ у неиспользуемого устройства
               </UrlLink>{" "}
-              in the dashboard, then try again.
+              в панели управления и повторите попытку.
             </>
           ) : errorCode === "not_paired" ? (
-            "This bb is signed out. Open Manage to sign in, then try again."
+            "Вы вышли из аккаунта bb. Откройте «Управление», войдите и повторите попытку."
           ) : (
-            "Couldn't reach the Connect service to create a code — check your connection, then try again."
+            "Не удалось связаться с сервисом Connect для создания кода. Проверьте подключение и повторите попытку."
           )}
         </p>
       ) : null}
@@ -928,7 +927,7 @@ function SharedPortsSection({
     >
       <div className="flex flex-wrap items-center gap-1">
         <h3 className="text-2xs font-semibold uppercase tracking-wide text-subtle-foreground">
-          Shared ports
+          Открытые порты
         </h3>
         <span className="flex-1" />
         <Button
@@ -940,7 +939,7 @@ function SharedPortsSection({
           onClick={() => setFormOpen((open) => !open)}
         >
           <Icon name="Plus" className="size-3.5" />
-          Expose a port
+          Открыть порт
         </Button>
       </div>
 
@@ -955,7 +954,7 @@ function SharedPortsSection({
                   <button
                     type="button"
                     className="flex min-w-0 flex-1 items-center gap-1.5 rounded-sm py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label={`${group.hostName}, ${group.shares.length} shared ports`}
+                    aria-label={`${group.hostName}, открыто портов: ${group.shares.length}`}
                     aria-expanded={!collapsed}
                     onClick={() =>
                       setCollapsedHosts((previous) => {
@@ -988,7 +987,7 @@ function SharedPortsSection({
                     variant="ghost"
                     size="sm"
                     className={DANGER_QUIET_CLASS}
-                    aria-label={`Revoke all (${group.shares.length}) shared ports on ${group.hostName}`}
+                    aria-label={`Отозвать все открытые порты (${group.shares.length}) на ${group.hostName}`}
                     disabled={
                       revokingHost !== null ||
                       revokingShare !== null ||
@@ -999,7 +998,7 @@ function SharedPortsSection({
                     {revokingHost === group.hostId ? (
                       <Icon name="Spinner" className="size-4 animate-spin" />
                     ) : null}
-                    Revoke all ({group.shares.length})
+                    Отозвать все ({group.shares.length})
                   </Button>
                 </div>
                 <ul hidden={collapsed} className="space-y-1 pl-7">
@@ -1030,7 +1029,7 @@ function SharedPortsSection({
                           </UrlLink>
                           <QuietCopyButton
                             text={share.url}
-                            label={`Copy share URL for port ${share.port}`}
+                            label={`Скопировать адрес порта ${share.port}`}
                           />
                         </>
                       ) : (
@@ -1038,8 +1037,8 @@ function SharedPortsSection({
                           className="min-w-0 flex-1 truncate text-xs text-muted-foreground"
                           title={share.unavailableReason}
                         >
-                          Unavailable —{" "}
-                          {share.unavailableReason ?? "unknown reason"}
+                          Недоступно —{" "}
+                          {share.unavailableReason ?? "причина неизвестна"}
                         </span>
                       )}
                       <Button
@@ -1058,7 +1057,7 @@ function SharedPortsSection({
                             className="size-4 animate-spin"
                           />
                         ) : null}
-                        Revoke
+                        Отозвать
                       </Button>
                     </li>
                   ))}
@@ -1084,10 +1083,10 @@ function SharedPortsSection({
             step={1}
             value={portInput}
             onChange={(event) => setPortInput(event.target.value)}
-            placeholder="Port"
+            placeholder="Порт"
             inputMode="numeric"
             className="max-w-[7rem] font-mono"
-            aria-label="Port to share"
+            aria-label="Открываемый порт"
           />
           <Button
             type="submit"
@@ -1099,14 +1098,13 @@ function SharedPortsSection({
             {exposing ? (
               <Icon name="Spinner" className="size-4 animate-spin" />
             ) : null}
-            Expose
+            Открыть
           </Button>
         </form>
       ) : null}
 
       <p className="text-xs text-subtle-foreground/75">
-        Agents can expose their dev servers too — same owner sign-in required to
-        view.
+        Агенты также могут открывать свои серверы разработки. Для просмотра нужен вход под тем же аккаунтом владельца.
       </p>
       {error !== null ? (
         <p className="text-xs text-destructive-text">{error}</p>
@@ -1134,12 +1132,12 @@ function TurnOffDialog({
         {open ? (
           <>
             <DialogHeader>
-              <DialogTitle>Turn off remote access?</DialogTitle>
+              <DialogTitle>Выключить удалённый доступ?</DialogTitle>
             </DialogHeader>
             <p className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{host}</span> will
-              stop working on all devices until you turn remote access back on.
-              This bb stays signed in to your bb account.
+              <span className="font-medium text-foreground">{host}</span> перестанет
+              работать на всех устройствах, пока вы снова не включите удалённый доступ.
+              Вход в аккаунт bb сохранится.
             </p>
             <DialogFooter>
               <Button
@@ -1148,7 +1146,7 @@ function TurnOffDialog({
                 disabled={pending}
                 onClick={() => onOpenChange(false)}
               >
-                Cancel
+                Отмена
               </Button>
               <Button
                 type="button"
@@ -1159,7 +1157,7 @@ function TurnOffDialog({
                 {pending ? (
                   <Icon name="Spinner" className="size-4 animate-spin" />
                 ) : null}
-                {pending ? "Turning off…" : "Turn off"}
+                {pending ? "Выключение…" : "Выключить"}
               </Button>
             </DialogFooter>
           </>
@@ -1327,7 +1325,7 @@ function AccountSignInCard({
           {starting ? (
             <Icon name="Spinner" className="size-4 animate-spin" />
           ) : null}
-          Sign in to your bb account
+          Войти в аккаунт bb
         </Button>
         {error !== null ? (
           <p className="text-xs text-destructive-text">{error}</p>
@@ -1339,7 +1337,7 @@ function AccountSignInCard({
   if (login.state === "signed-in") {
     return (
       <p className="text-xs text-muted-foreground">
-        Signed in. Remote access is starting…
+        Вход выполнен. Удалённый доступ запускается…
       </p>
     );
   }
@@ -1348,7 +1346,7 @@ function AccountSignInCard({
     return (
       <div className="space-y-2">
         <p className="text-xs text-destructive-text">
-          {login.message ?? "Sign-in didn't finish."}
+          {login.message ?? "Вход не завершён."}
         </p>
         <Button
           type="button"
@@ -1358,7 +1356,7 @@ function AccountSignInCard({
             start();
           }}
         >
-          Try again
+          Повторить попытку
         </Button>
       </div>
     );
@@ -1367,10 +1365,10 @@ function AccountSignInCard({
   return (
     <div className="space-y-2.5 rounded-md border border-border bg-surface-recessed/50 px-3 py-3">
       <p className="text-xs text-muted-foreground">
-        Confirm this code on {hostOf(login.verificationUrl)}:
+        Подтвердите этот код на {hostOf(login.verificationUrl)}:
       </p>
       <p
-        aria-label="Sign-in code"
+        aria-label="Код входа"
         className="font-mono text-base font-semibold tracking-widest"
       >
         {login.userCode}
@@ -1382,7 +1380,7 @@ function AccountSignInCard({
             target="_blank"
             rel="noreferrer"
           >
-            Open getbb.app
+            Открыть getbb.app
             <Icon name="ExternalLink" className="size-3.5" />
           </UrlLink>
         </Button>
@@ -1393,12 +1391,12 @@ function AccountSignInCard({
           className="text-muted-foreground"
           onClick={cancel}
         >
-          Cancel
+          Отмена
         </Button>
       </div>
       <p className="flex items-center gap-2 text-xs text-subtle-foreground">
         <Icon name="Spinner" className="size-3.5 animate-spin" />
-        Waiting for you to approve it. You can approve from any device.
+        Ожидаем подтверждения. Подтвердить можно с любого устройства.
       </p>
     </div>
   );
@@ -1433,12 +1431,12 @@ function NotPairedContent({
   return (
     <div className="@container/connect-controls space-y-4">
       <p className="text-sm text-muted-foreground">
-        Remote access uses your bb account. Once you sign in, this bb gets a
-        private URL like{" "}
+        Для удалённого доступа используется аккаунт bb. После входа этот bb получит
+        личный адрес, например{" "}
         <span className="rounded bg-surface-recessed px-1.5 py-0.5 font-mono text-xs text-foreground">
           you.{dashboardHost}
         </span>
-        . Your code and data stay on this machine.
+        . Код и данные останутся на этой машине.
       </p>
 
       <div className="flex flex-col items-start gap-2 @min-[32rem]/connect-controls:flex-row @min-[32rem]/connect-controls:flex-wrap @min-[32rem]/connect-controls:items-center">
@@ -1454,7 +1452,7 @@ function NotPairedContent({
           className="text-muted-foreground"
           onClick={() => setCodeOpen((open) => !open)}
         >
-          Have a pairing code?
+          Есть код привязки?
         </Button>
       </div>
       {codeOpen ? (
@@ -1468,8 +1466,8 @@ function NotPairedContent({
       ) : null}
 
       <p className="text-xs text-subtle-foreground">
-        Only your {dashboardHost} account can open this bb. Manage the account
-        under Plugins → bb account.
+        Только ваш аккаунт {dashboardHost} может открыть этот bb. Управление аккаунтом
+        находится в разделе «Плагины» → «Аккаунт bb».
       </p>
     </div>
   );
@@ -1508,7 +1506,7 @@ function TurnOffControls({
     );
   }, [rpc, onChanged, onTurnedOff]);
 
-  const host = status.url !== null ? hostOf(status.url) : "this bb";
+  const host = status.url !== null ? hostOf(status.url) : "этот bb";
 
   return (
     <>
@@ -1522,7 +1520,7 @@ function TurnOffControls({
           className={DANGER_QUIET_CLASS}
           onClick={() => setConfirmOpen(true)}
         >
-          Turn off
+          Выключить
         </Button>
       </div>
       {error !== null ? (
@@ -1553,11 +1551,11 @@ function ConnectedContent({
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <StatusDot tone="ok" />
-        <span className="text-sm font-semibold">Connected</span>
+        <span className="text-sm font-semibold">Подключено</span>
         <span className="min-w-0 truncate text-xs text-muted-foreground">
-          since {formatSince(status.since)}
+          с {formatSince(status.since)}
           {status.remoteClients > 0
-            ? ` · ${status.remoteClients} viewing remotely`
+            ? ` · ${status.remoteClients} удалённых просмотров`
             : ""}
         </span>
       </div>
@@ -1568,7 +1566,7 @@ function ConnectedContent({
 
       <TurnOffControls
         status={status}
-        note="Turning off keeps this bb signed in to your bb account."
+        note="При выключении удалённого доступа вход в аккаунт bb сохраняется."
         onChanged={onChanged}
         onTurnedOff={onTurnedOff}
       />
@@ -1594,10 +1592,10 @@ function ReconnectingContent({
       <div className="-mx-4 -mt-3.5 flex items-center gap-2.5 rounded-t-lg border-b border-warning/40 bg-warning/10 px-4 py-3">
         <StatusDot tone="warn" />
         <span className="shrink-0 text-sm font-semibold text-warning-text">
-          Reconnecting…
+          Повторное подключение…
         </span>
         <ExpandableText
-          expandLabel="Show details"
+          expandLabel="Показать подробности"
           className="min-w-0 text-xs text-warning-text/80"
         >
           {why}
@@ -1606,7 +1604,7 @@ function ReconnectingContent({
 
       <div className="space-y-2 pointer-events-none opacity-60 saturate-[0.85]">
         <p className="text-sm text-muted-foreground">
-          Your bb will be reachable again at:
+          Ваш bb снова будет доступен по адресу:
         </p>
         {status.url !== null ? (
           <UrlHero url={status.url} showOpen={false} />
@@ -1617,7 +1615,7 @@ function ReconnectingContent({
 
       <TurnOffControls
         status={status}
-        note="Remote devices can't reach this bb right now. Local access is unaffected."
+        note="Сейчас удалённые устройства не могут подключиться к bb. Локальный доступ работает."
         onChanged={onChanged}
         onTurnedOff={onTurnedOff}
       />
@@ -1661,18 +1659,18 @@ function OffContent({
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <StatusDot tone="muted" />
-        <span className="text-sm font-semibold">Remote access is off</span>
+        <span className="text-sm font-semibold">Удалённый доступ выключен</span>
         <span className="flex-1" />
         <Button type="button" size="sm" disabled={pending} onClick={turnOn}>
           {pending ? (
             <Icon name="Spinner" className="size-4 animate-spin" />
           ) : null}
-          Turn on
+          Включить
         </Button>
       </div>
       <p className="text-sm text-muted-foreground">
-        This bb stays signed in to your bb account. Turn remote access on to
-        reach it again
+        Вход в аккаунт bb сохранён. Включите удалённый доступ, чтобы снова
+        подключаться к bb
         {status.url !== null ? ` at ${hostOf(status.url)}` : ""}.
       </p>
       <SharedPortsSection shares={status.shares} dimmed />
@@ -1701,7 +1699,7 @@ function useConnectStatus() {
           setStatus(next);
           setLoadError(null);
         } else {
-          setLoadError("Unexpected status payload.");
+          setLoadError("Неожиданный формат данных о состоянии.");
         }
       },
       (error: unknown) => {
@@ -1740,13 +1738,13 @@ function MobilePairingSection() {
     return (
       <div className="mt-3 space-y-2 border-t border-border-seam pt-3">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-xs font-medium">Pair your phone</h3>
+          <h3 className="text-xs font-medium">Привяжите телефон</h3>
           <Button variant="ghost" size="sm" onClick={refetch}>
-            Try again
+            Повторить попытку
           </Button>
         </div>
         <p role="alert" className="text-xs text-destructive-text">
-          Could not load phone pairing: {loadError}
+          Не удалось загрузить привязку телефона: {loadError}
         </p>
       </div>
     );
@@ -1778,7 +1776,7 @@ function ConnectSettingsSection({
   const [flash, setFlash] = useState<string | null>(null);
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showTurnedOff = useCallback(() => {
-    setFlash("Remote access turned off");
+    setFlash("Удалённый доступ отключён");
     if (flashTimerRef.current !== null) clearTimeout(flashTimerRef.current);
     flashTimerRef.current = setTimeout(() => setFlash(null), 4000);
   }, []);
@@ -1793,12 +1791,12 @@ function ConnectSettingsSection({
   if (loadError !== null) {
     return (
       <p className="text-sm text-destructive-text">
-        Failed to load remote-access status: {loadError}
+        Не удалось загрузить состояние удалённого доступа: {loadError}
       </p>
     );
   }
   if (status === null) {
-    return <p className="text-sm text-muted-foreground">Loading...</p>;
+    return <p className="text-sm text-muted-foreground">Загрузка…</p>;
   }
 
   return (
@@ -1863,7 +1861,7 @@ const MOBILE_APP_INSTALL_OPTIONS: readonly {
 ];
 
 const SETUP_GUIDE_DESCRIPTION =
-  "A private web address for your bb server, like me.getbb.app, to use bb from any browser or your phone. Your projects and files stay on your machines.";
+  "Личный веб-адрес вашего сервера bb, например me.getbb.app, для доступа из любого браузера или с телефона. Проекты и файлы остаются на ваших машинах.";
 
 const PAIRING_CODE_RENEW_BEFORE_MS = 15_000;
 const PAIRING_CODE_RETRY_MS = 15_000;
@@ -1884,7 +1882,7 @@ function HaveTheAppLink({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       className={INLINE_CHIP_BUTTON_CLASS}
     >
-      <span className="underline underline-offset-2">I have the app</span>
+      <span className="underline underline-offset-2">У меня есть приложение</span>
     </button>
   );
 }
@@ -1898,20 +1896,20 @@ function AppInstallQr({ platform }: { platform: MobilePlatform }) {
     <div className="flex items-center gap-3">
       <QrCodeImage
         value={install.url}
-        alt={`QR code to install bb on ${install.label}`}
+        alt={`QR-код для установки bb на ${install.label}`}
         className="size-16 shrink-0 p-1"
       />
       <div className="flex flex-col items-start gap-2">
-        <p>Scan with your phone's camera.</p>
+        <p>Отсканируйте камерой телефона.</p>
         <QuietTextAction
           icon="Copy"
           onClick={() =>
             void copyTextWithSdkToast(install.url, {
-              successMessage: "Install link copied",
+              successMessage: "Ссылка для установки скопирована",
             })
           }
         >
-          Copy install link
+          Скопировать ссылку для установки
         </QuietTextAction>
       </div>
     </div>
@@ -1924,11 +1922,11 @@ function machineCodeErrorText(
 ): string {
   switch (code) {
     case "machine_limit":
-      return `Your ${dashboardHost} account has reached its device limit. Revoke a device you no longer use in the dashboard to pair this phone.`;
+      return `Для аккаунта ${dashboardHost} достигнут лимит устройств. Отзовите доступ у неиспользуемого устройства через панель управления, чтобы привязать этот телефон.`;
     case "not_paired":
-      return "This bb is signed out of your bb account, so it can't pair a phone.";
+      return "На этом bb выполнен выход из аккаунта, поэтому привязать телефон нельзя.";
     case "network":
-      return "Couldn't reach getbb.app for a pairing code. bb keeps trying.";
+      return "Не удалось получить код привязки с getbb.app. bb продолжает попытки.";
   }
 }
 
@@ -2029,20 +2027,20 @@ function PairingCode({
     );
   }
   if (pairing.kind !== "code") {
-    return <PendingStatus>Getting a pairing code…</PendingStatus>;
+    return <PendingStatus>Получение кода привязки…</PendingStatus>;
   }
   return (
     <div className="flex items-stretch gap-3">
       <QrCodeImage
         value={encodeMobilePairingPayload(pairing.payload)}
-        alt="QR code to pair the bb mobile app"
+        alt="QR-код для привязки мобильного приложения bb"
         className="size-16 shrink-0 p-1"
       />
       <CodeDisplay
         className="flex-1"
         code={pairing.payload.code}
-        label="Mobile pairing code"
-        copyLabel="Copy pairing code"
+        label="Код привязки телефона"
+        copyLabel="Скопировать код привязки"
         onCopy={(value) => void copyTextWithSdkToast(value)}
       />
     </div>
@@ -2069,7 +2067,7 @@ function PhonePairingSteps({
         <>
           <div className="flex flex-col items-start gap-1">
             <span className="text-foreground">
-              Install the bb app on your phone:
+              Установите приложение bb на телефон:
             </span>
             <p className="-ml-1 flex flex-wrap items-center gap-x-1 gap-y-1">
               {MOBILE_APP_INSTALL_OPTIONS.map((option, index) => {
@@ -2102,12 +2100,12 @@ function PhonePairingSteps({
         </>
       ) : (
         <>
-          <p className="text-foreground">Open the bb app and scan this code:</p>
+          <p className="text-foreground">Откройте приложение bb и отсканируйте код:</p>
           <div className="w-full">
             <PairingCode pairing={pairing} dashboardHost={dashboardHost} />
           </div>
           <QuietTextAction onClick={() => onStepChange("install")}>
-            Don't have the app yet?
+            Ещё нет приложения?
           </QuietTextAction>
         </>
       )}
@@ -2155,7 +2153,7 @@ function ConnectOnSetupRow({
             />
           </span>
           <p className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-foreground @max-xl/onboarding:flex-col @max-xl/onboarding:items-start">
-            <span>bb connect is on</span>
+            <span>bb connect включён</span>
             {url === null ? null : (
               <>
                 <span
@@ -2173,7 +2171,7 @@ function ConnectOnSetupRow({
                     variant="ghost"
                     size="icon"
                     className="-my-1 size-6 shrink-0"
-                    aria-label="Copy URL"
+                    aria-label="Скопировать адрес"
                     onClick={() => void copyTextWithSdkToast(url)}
                   >
                     <Icon name="Copy" aria-hidden className="size-3.5" />
@@ -2192,7 +2190,7 @@ function ConnectOnSetupRow({
             aria-hidden
             className="size-3.5 text-success"
           />
-          Phone paired
+          Телефон привязан
         </p>
       ) : null}
     </SetupOptionRow>
@@ -2218,7 +2216,7 @@ function setupGuideLoginPanel(
         className="size-3.5 shrink-0 animate-spin text-subtle-foreground"
       />
       <span>
-        Finish signing in on{" "}
+        Завершите вход на{" "}
         <InlineTextLink href={login.verificationUrl} onOpen={openUrl}>
           {hostOf(login.verificationUrl)}
         </InlineTextLink>
@@ -2232,11 +2230,11 @@ function setupGuideLoginContent(login: AccountLogin["login"]): ReactNode {
   if (login === null) return null;
   if (login.state === "pending") return null;
   if (login.state === "signed-in") {
-    return <PendingStatus>Signed in. Turning on bb connect…</PendingStatus>;
+    return <PendingStatus>Вход выполнен. Включаем bb connect…</PendingStatus>;
   }
   return (
     <SetupGuideError>
-      {login.message ?? "Sign-in didn't finish."}
+      {login.message ?? "Вход не завершён."}
     </SetupGuideError>
   );
 }
@@ -2388,13 +2386,13 @@ function ConnectSetupGuideSection({
                     expanded={openFooterPanel === "signInCode"}
                     onToggle={() => toggleFooterPanel("signInCode")}
                   >
-                    Show pairing code
+                    Показать код привязки
                   </DisclosureToggle>
                   <DisclosureToggle
                     expanded={openFooterPanel === "pairingForm"}
                     onToggle={() => toggleFooterPanel("pairingForm")}
                   >
-                    Have a pairing code?
+                    Есть код привязки?
                   </DisclosureToggle>
                 </>
               }
@@ -2403,8 +2401,8 @@ function ConnectSetupGuideSection({
                   <div className="border-t border-border-hairline p-3">
                     <CodeDisplay
                       code={pendingSignIn.login.userCode}
-                      label="bb connect sign-in code"
-                      copyLabel="Copy code"
+                      label="Код входа bb connect"
+                      copyLabel="Скопировать код"
                       onCopy={(code) => void copyTextWithSdkToast(code)}
                     />
                   </div>
@@ -2439,7 +2437,7 @@ function ConnectSetupGuideSection({
             {starting || turningOn ? (
               <Icon name="Spinner" className="size-4 animate-spin" />
             ) : null}
-            Set up
+            Настроить
           </Button>
         )
       }
@@ -2449,11 +2447,11 @@ function ConnectSetupGuideSection({
           {connecting ? (
             <PendingStatus>
               {connectingState === "reconnecting"
-                ? "bb connect is reconnecting…"
-                : "bb connect is starting…"}
+                ? "bb connect подключается повторно…"
+                : "bb connect запускается…"}
             </PendingStatus>
           ) : turnOnError !== null ? null : turningOnAfterPairing ? (
-            <PendingStatus>Signed in. Turning on bb connect…</PendingStatus>
+            <PendingStatus>Вход выполнен. Включаем bb connect…</PendingStatus>
           ) : (
             setupGuideLoginContent(login)
           )}
@@ -2463,7 +2461,7 @@ function ConnectSetupGuideSection({
           ) : null}
           {loadError !== null ? (
             <SetupGuideError>
-              Couldn't load bb connect: {loadError}
+              Не удалось загрузить bb connect: {loadError}
             </SetupGuideError>
           ) : null}
         </>
@@ -2476,7 +2474,7 @@ export default definePluginApp((app) => {
   app.slots.settingsSection({
     id: "remote-access",
     description:
-      "Use this bb from any device, anywhere — powered by getbb.app.",
+      "Используйте bb с любого устройства и из любого места через getbb.app.",
     component: ConnectSettingsSection,
   });
   app.slots.settingsSection({

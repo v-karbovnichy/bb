@@ -212,10 +212,10 @@ describe("sidebar navigation providers", () => {
     "%s destination activation",
     (layout) => {
       it.each([
-        ["Plugins", "/plugins", { metaKey: true }],
-        ["Plugins", "/plugins", { ctrlKey: true }],
-        ["Skills", "/skills", { metaKey: true }],
-        ["Skills", "/skills", { ctrlKey: true }],
+        ["Плагины", "/plugins", { metaKey: true }],
+        ["Плагины", "/plugins", { ctrlKey: true }],
+        ["Навыки", "/skills", { metaKey: true }],
+        ["Навыки", "/skills", { ctrlKey: true }],
       ])("opens %s (%s) in a browser tab with %j", (label, path, modifier) => {
         const open = vi.spyOn(window, "open").mockReturnValue(null);
         renderHost(layout);
@@ -250,8 +250,8 @@ describe("sidebar navigation providers", () => {
       });
 
       it.each([
-        ["Plugins", "/plugins"],
-        ["Skills", "/skills"],
+        ["Плагины", "/plugins"],
+        ["Навыки", "/skills"],
       ])("opens %s in place without a modifier", (label, path) => {
         const open = vi.spyOn(window, "open").mockReturnValue(null);
         renderHost(layout);
@@ -265,9 +265,9 @@ describe("sidebar navigation providers", () => {
   );
 
   it.each([
-    ["Plugins", "/plugins", true],
-    ["Skills", "/skills", true],
-    ["Plugins", "/plugins", false],
+    ["Плагины", "/plugins", true],
+    ["Навыки", "/skills", true],
+    ["Плагины", "/plugins", false],
     [
       "Docs",
       getPluginPanelRoutePath({ pluginId: "garden", path: "docs" }),
@@ -355,7 +355,7 @@ describe("sidebar navigation providers", () => {
         enabled: true,
         compact: false,
         panes: 1,
-        label: "Plugins",
+        label: "Плагины",
         result: "tab",
       },
       {
@@ -439,7 +439,7 @@ describe("sidebar navigation providers", () => {
       renderHost("__automatic__", { store, splitEnabled: enabled, compact });
       fireEvent.click(screen.getByRole("button", { name: label }));
       const path =
-        label === "Plugins"
+        label === "Плагины"
           ? "/plugins"
           : getPluginPanelRoutePath({ pluginId: "garden", path: "docs" });
       if (result === "tab") {
@@ -543,10 +543,10 @@ describe("sidebar navigation providers", () => {
     expect(region().dataset.sidebarNavigationPlacement).toBe("rail");
     expect(screen.getByTestId("app-nav-rail")).toBeDefined();
     expect(mocks.toastError).toHaveBeenCalledWith(
-      "Sidebar navigation plugin crashed",
+      "Плагин навигации боковой панели завершился с ошибкой",
       {
         description:
-          "Broken rail (compact) stopped working, so bb drew Rail instead.",
+          "Сбой в работе Broken rail (compact). Вместо него bb показал Панель значков.",
       },
     );
   });
@@ -559,7 +559,7 @@ describe("sidebar navigation providers", () => {
     expect(
       region().querySelector('[data-sidebar-navigation-placeholder="missing"]')
         ?.textContent,
-    ).toBe("No navigation plugin is enabled.");
+    ).toBe("Плагин навигации не включён.");
   });
 
   it("renders the bundled provider for the placement as a plugin's Original", () => {

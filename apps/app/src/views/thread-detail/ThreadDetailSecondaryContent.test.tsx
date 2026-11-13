@@ -387,7 +387,7 @@ describe("ThreadDetailSecondaryContent", () => {
     expect(
       await screen.findByRole(
         "button",
-        { name: "Hide right panel" },
+        { name: "Скрыть правую панель" },
         { timeout: 5_000 },
       ),
     ).not.toBeNull();
@@ -408,7 +408,7 @@ describe("ThreadDetailSecondaryContent", () => {
     expect(panelGroup.contains(timelinePanel)).toBe(true);
     expect(panelGroup.contains(sidePanel)).toBe(true);
     expect(timelinePanel.contains(screen.getByTestId("footer"))).toBe(true);
-    expect(sidePanel.textContent).toContain("No thread details available.");
+    expect(sidePanel.textContent).toContain("Сведения о чате недоступны.");
   });
 
   it("keeps the thread metadata loading presentation in the panel", async () => {

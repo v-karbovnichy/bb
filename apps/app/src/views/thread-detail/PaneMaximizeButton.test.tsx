@@ -75,7 +75,7 @@ describe("PaneMaximizeButton", () => {
     const onToggle = vi.fn();
     renderButton(false, onToggle);
     const button = screen.getByRole("button", {
-      name: "Maximize pane (⌘⇧E)",
+      name: "Развернуть панель (⌘⇧E)",
     });
 
     expect(button.getAttribute("aria-keyshortcuts")).toBe("Meta+Shift+E");
@@ -92,7 +92,7 @@ describe("PaneMaximizeButton", () => {
     const onToggle = vi.fn();
     renderButton(true, onToggle);
     const button = screen.getByRole("button", {
-      name: "Restore split (⌘⇧E)",
+      name: "Восстановить разделение (⌘⇧E)",
     });
     expect(button.getAttribute("aria-pressed")).toBe("true");
 
@@ -101,7 +101,7 @@ describe("PaneMaximizeButton", () => {
       expect(
         screen
           .getAllByRole("tooltip")
-          .some((tooltip) => tooltip.textContent?.includes("Restore split")),
+          .some((tooltip) => tooltip.textContent?.includes("Восстановить разделение")),
       ).toBe(true);
     });
 
@@ -114,26 +114,26 @@ describe("PaneMaximizeButton", () => {
     const onMoveToSide = vi.fn();
     renderButton(false, noop, onMoveToSide);
     const button = screen.getByRole("button", {
-      name: "Maximize pane (⌘⇧E)",
+      name: "Развернуть панель (⌘⇧E)",
     });
 
     fireEvent.pointerEnter(button);
     act(() => {
       vi.advanceTimersByTime(399);
     });
-    expect(screen.queryByRole("menu", { name: "Pane arrangement" })).toBeNull();
+    expect(screen.queryByRole("menu", { name: "Расположение панелей" })).toBeNull();
     act(() => {
       vi.advanceTimersByTime(1);
     });
-    const menu = screen.getByRole("menu", { name: "Pane arrangement" });
-    expect(menu.textContent).toContain("Maximize pane");
-    expect(menu.textContent).toContain("Move");
+    const menu = screen.getByRole("menu", { name: "Расположение панелей" });
+    expect(menu.textContent).toContain("Развернуть панель");
+    expect(menu.textContent).toContain("Переместить");
     expect(
       screen.getAllByRole("menuitem").map((item) => item.textContent),
-    ).toEqual(["Maximize pane⌘⇧E", "", "", "", ""]);
+    ).toEqual(["Развернуть панель⌘⇧E", "", "", "", ""]);
     for (const side of ["left", "right", "top", "bottom"]) {
       const action = screen.getByRole("menuitem", {
-        name: `Move ${side}`,
+        name: ({ left: "Переместить влево", right: "Переместить вправо", top: "Переместить вверх", bottom: "Переместить вниз" } as const)[side as "left" | "right" | "top" | "bottom"],
       });
       expect(
         action.querySelector(`[data-pane-arrangement-glyph="${side}"]`),
@@ -141,10 +141,10 @@ describe("PaneMaximizeButton", () => {
       expect(action.className).toContain("cursor-pointer");
     }
     expect(
-      screen.getByRole("menuitem", { name: /Maximize pane/ }).className,
+      screen.getByRole("menuitem", { name: /Развернуть панель/ }).className,
     ).toContain("cursor-pointer");
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Move left" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Переместить влево" }));
     expect(onMoveToSide).toHaveBeenCalledWith("left");
   });
 
@@ -153,11 +153,11 @@ describe("PaneMaximizeButton", () => {
     const onMoveToSide = vi.fn();
     renderButton(false, noop, onMoveToSide);
     const button = screen.getByRole("button", {
-      name: "Maximize pane (⌘⇧E)",
+      name: "Развернуть панель (⌘⇧E)",
     });
 
     fireEvent.focus(button);
-    const menu = screen.getByRole("menu", { name: "Pane arrangement" });
+    const menu = screen.getByRole("menu", { name: "Расположение панелей" });
     act(() => {
       vi.advanceTimersByTime(150);
     });
@@ -168,10 +168,10 @@ describe("PaneMaximizeButton", () => {
       vi.advanceTimersByTime(0);
     });
     expect(document.activeElement).toBe(
-      screen.getByRole("menuitem", { name: /Maximize pane/ }),
+      screen.getByRole("menuitem", { name: /Развернуть панель/ }),
     );
 
-    const moveBottom = screen.getByRole("menuitem", { name: "Move bottom" });
+    const moveBottom = screen.getByRole("menuitem", { name: "Переместить вниз" });
     moveBottom.focus();
     moveBottom.click();
     expect(onMoveToSide).toHaveBeenCalledWith("bottom");
@@ -181,7 +181,7 @@ describe("PaneMaximizeButton", () => {
     vi.useFakeTimers();
     renderButton(false);
     const button = screen.getByRole("button", {
-      name: "Maximize pane (⌘⇧E)",
+      name: "Развернуть панель (⌘⇧E)",
     });
 
     fireEvent.pointerEnter(button);
@@ -190,7 +190,7 @@ describe("PaneMaximizeButton", () => {
     act(() => {
       vi.advanceTimersByTime(500);
     });
-    expect(screen.queryByRole("menu", { name: "Pane arrangement" })).toBeNull();
+    expect(screen.queryByRole("menu", { name: "Расположение панелей" })).toBeNull();
   });
 
   it("preserves full-screen copy in every desktop app context", async () => {
@@ -207,19 +207,19 @@ describe("PaneMaximizeButton", () => {
     renderButton(false);
 
     const button = screen.getByRole("button", {
-      name: "Full Screen (⌘⇧E)",
+      name: "На весь экран (⌘⇧E)",
     });
     fireEvent.focus(button);
-    const menu = await screen.findByRole("menu", { name: "Pane arrangement" });
+    const menu = await screen.findByRole("menu", { name: "Расположение панелей" });
     expect(
-      screen.getByRole("menuitem", { name: /Full Screen/ }),
+      screen.getByRole("menuitem", { name: /На весь экран/ }),
     ).not.toBeNull();
-    expect(menu.textContent).not.toContain("Maximize pane");
+    expect(menu.textContent).not.toContain("Развернуть панель");
 
     cleanup();
     renderButton(true);
     expect(
-      screen.getByRole("button", { name: "Exit Full Screen (⌘⇧E)" }),
+      screen.getByRole("button", { name: "Выйти из полноэкранного режима (⌘⇧E)" }),
     ).not.toBeNull();
   });
 
@@ -241,14 +241,14 @@ describe("PaneMaximizeButton", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: "Full Screen (⌘⇧E)",
+      name: "На весь экран (⌘⇧E)",
     });
     fireEvent.pointerEnter(trigger);
     act(() => {
       vi.advanceTimersByTime(400);
     });
     const menu = screen.getByRole("menu", {
-      name: "Pane arrangement",
+      name: "Расположение панелей",
     });
     fireEvent.pointerLeave(trigger);
     fireEvent.pointerEnter(menu);

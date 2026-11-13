@@ -340,7 +340,7 @@ describe("SidebarSplitContainer", () => {
             TABS[0] as SidebarSplitTabDescriptor,
             {
               id: "terminal-a",
-              label: "Terminal",
+              label: "Терминал",
               restoresPlacementAfterRemoval: true,
             },
           ]
@@ -348,7 +348,7 @@ describe("SidebarSplitContainer", () => {
       return (
         <>
           <button type="button" onClick={() => setTerminalOpen(true)}>
-            Start terminal
+            Открыть терминал
           </button>
           <SidebarSplitContainer
             activeTabId={terminalOpen ? "terminal-a" : "tab-b"}
@@ -375,7 +375,7 @@ describe("SidebarSplitContainer", () => {
         </TooltipProvider>
       </SidebarProvider>,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Start terminal" }));
+    fireEvent.click(screen.getByRole("button", { name: "Открыть терминал" }));
 
     await waitFor(() =>
       expect(
@@ -388,7 +388,7 @@ describe("SidebarSplitContainer", () => {
   it("appends a transient launcher instead of restoring its removed position", async () => {
     const launcher: SidebarSplitTabDescriptor = {
       id: "new-tab",
-      label: "New tab",
+      label: "Новая вкладка",
       restoresPlacementAfterRemoval: false,
     };
     const file: SidebarSplitTabDescriptor = {
@@ -413,7 +413,7 @@ describe("SidebarSplitContainer", () => {
             Select file
           </button>
           <button type="button" onClick={() => setPhase("both")}>
-            Open new tab
+            Открыть вкладку
           </button>
           <SidebarSplitContainer
             activeTabId={phase === "file" ? file.id : launcher.id}
@@ -443,7 +443,7 @@ describe("SidebarSplitContainer", () => {
       expect(screen.getByTestId("tab-order").textContent).toBe("file-a"),
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Open new tab" }));
+    fireEvent.click(screen.getByRole("button", { name: "Открыть вкладку" }));
     await waitFor(() =>
       expect(screen.getByTestId("tab-order").textContent).toBe(
         "file-a,new-tab",
@@ -785,13 +785,13 @@ describe("SidebarSplitContainer", () => {
     [
       "side-by-side",
       createTwoPaneState,
-      "Resize right panel panes",
+      "Изменить размер областей правой панели по горизонтали",
       "vertical",
     ],
     [
       "stacked",
       createStackedPaneState,
-      "Resize stacked right panel panes",
+      "Изменить размер областей правой панели по вертикали",
       "horizontal",
     ],
   ] as const)(
@@ -836,7 +836,7 @@ describe("SidebarSplitContainer", () => {
     });
 
     const separator = screen.getByRole("separator", {
-      name: "Resize stacked right panel panes",
+      name: "Изменить размер областей правой панели по вертикали",
     });
     const hitTarget = separator.firstElementChild;
     const previous = separator.previousElementSibling;
@@ -1223,7 +1223,7 @@ describe("SidebarSplitContainer", () => {
     });
 
     const separator = screen.getByRole("separator", {
-      name: "Resize stacked right panel panes",
+      name: "Изменить размер областей правой панели по вертикали",
     });
     const hitTarget = separator.firstElementChild;
     const previous = separator.previousElementSibling;

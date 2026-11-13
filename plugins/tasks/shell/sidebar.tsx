@@ -254,7 +254,7 @@ export function TasksSidebar({
             onClick={() => onNavigate({ kind: "all" })}
           >
             <Icon name="ListView" className="size-3.5 shrink-0" />
-            <span className="flex-1">All tasks</span>
+            <span className="flex-1">Все задачи</span>
             {summaries ? <RowCount value={totalTasks} /> : null}
           </SidebarRow>
           <SidebarRow
@@ -262,7 +262,7 @@ export function TasksSidebar({
             onClick={() => onNavigate({ kind: "active" })}
           >
             <Icon name="Zap" className="size-3.5 shrink-0" />
-            <span className="flex-1">Active</span>
+            <span className="flex-1">Активные</span>
             {activeTasks && activeTasks.length > 0 ? <WorkingDot /> : null}
             {activeTasks ? <RowCount value={activeTasks.length} /> : null}
           </SidebarRow>
@@ -273,7 +273,7 @@ export function TasksSidebar({
           <>
             {ungrouped.length > 0 ? (
               <>
-                <SectionHeader label="Projects" />
+                <SectionHeader label="Проекты" />
                 <div className="space-y-px">
                   {ungrouped.map((project) => (
                     <ProjectRow
@@ -290,20 +290,20 @@ export function TasksSidebar({
             {rootFolders.map((folder) => renderFolder(folder, false))}
             {(projects ?? []).length > 0 ? (
               <div className="mt-1.5">
-                <SidebarRow onClick={onNewProject} title="New project">
+                <SidebarRow onClick={onNewProject} title="Новый проект">
                   <Icon name="Plus" className="size-3.5 shrink-0" />
-                  <span className="flex-1">New project</span>
+                  <span className="flex-1">Новый проект</span>
                 </SidebarRow>
               </div>
             ) : null}
             {presets ? (
               <>
-                <SectionHeader label="Agent presets" />
+                <SectionHeader label="Пресеты агентов" />
                 <div className="space-y-px">
                   {presets.map((preset) => (
                     <SidebarRow
                       key={preset.id}
-                      title={`Edit preset ${preset.name}`}
+                      title={`Изменить пресет ${preset.name}`}
                       onClick={() =>
                         setPresetDialog({ key: Date.now(), editing: preset })
                       }
@@ -317,14 +317,14 @@ export function TasksSidebar({
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <span
-                                aria-label="Spawns a new worktree"
+                                aria-label="Создаёт новое рабочее дерево"
                                 className="flex shrink-0 text-muted-foreground/70"
                               >
                                 <Icon name="GitBranch" className="size-3" />
                               </span>
                             </TooltipTrigger>
                             <TooltipContent side="left">
-                              Spawns a new worktree
+                              Создаёт новое рабочее дерево
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -333,17 +333,17 @@ export function TasksSidebar({
                   ))}
                   {presets.length === 0 ? (
                     <div className="px-2 py-1 text-xs text-muted-foreground">
-                      No presets yet.
+                      Пресетов пока нет.
                     </div>
                   ) : null}
                   <SidebarRow
-                    title="New preset"
+                    title="Новый пресет"
                     onClick={() =>
                       setPresetDialog({ key: Date.now(), editing: null })
                     }
                   >
                     <Icon name="Plus" className="size-3.5 shrink-0" />
-                    <span className="flex-1">New preset</span>
+                    <span className="flex-1">Новый пресет</span>
                   </SidebarRow>
                 </div>
               </>
@@ -357,7 +357,7 @@ export function TasksSidebar({
           onClick={() => onNavigate({ kind: "manage" })}
         >
           <Icon name="Settings" className="size-3.5 shrink-0" />
-          <span className="flex-1">Manage</span>
+          <span className="flex-1">Управление</span>
         </SidebarRow>
       </div>
       {presetDialog ? (

@@ -171,8 +171,8 @@ function CopyDocumentAction({
   return (
     <button
       type="button"
-      aria-label={`Copy ${file}`}
-      title={copied ? "Copied" : "Copy Markdown"}
+      aria-label={`Копировать ${file}`}
+      title={copied ? "Скопировано" : "Копировать Markdown"}
       className={DOCUMENT_ACTION_CLASS}
       onClick={() => {
         void navigator.clipboard.writeText(content).then(
@@ -254,7 +254,7 @@ function MarkdownDocument({
             className="flex w-full cursor-pointer items-center justify-center gap-1 border-t border-border py-1.5 text-xs text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
             onClick={toggle}
           >
-            {expanded ? "Show less" : "Show more"}
+            {expanded ? "Показать меньше" : "Показать больше"}
             <Icon
               name="ChevronDown"
               aria-hidden
@@ -328,8 +328,8 @@ function OpenPreviewAction({
     return (
       <button
         type="button"
-        aria-label={`Open ${file} in sidebar`}
-        title="Open in sidebar"
+        aria-label={`Открыть ${file} в боковой панели`}
+        title="Открыть в боковой панели"
         className={className}
         onClick={onOpenPreview}
       >
@@ -342,8 +342,8 @@ function OpenPreviewAction({
       href={pageUrl}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Open ${file} in sidebar`}
-      title={`Open in sidebar\n${newPageClickHint()} to open in the browser`}
+      aria-label={`Открыть ${file} в боковой панели`}
+      title={`Открыть в боковой панели\n${newPageClickHint()} — открыть в браузере`}
       className={className}
       onClick={(event) => {
         if (event.defaultPrevented || isModifiedClick(event)) return;
@@ -543,7 +543,7 @@ function InlineVisDirective({
           setState({
             status: "error",
             file: result.file,
-            message: `Preview file not found: ${result.file}`,
+            message: `Файл предпросмотра не найден: ${result.file}`,
           });
           return;
         }
@@ -580,7 +580,7 @@ function InlineVisDirective({
         className="my-2 rounded-md border border-border bg-muted px-3 py-2 text-sm text-muted-foreground"
         title={source}
       >
-        inline-vis requires a file attribute, e.g.{" "}
+        Для inline-vis нужен атрибут file, например{" "}
         <code>::inline-vis{'{file="demo.html"}'}</code>
       </div>
     );
@@ -604,7 +604,7 @@ function InlineVisDirective({
         <div
           role="status"
           aria-busy="true"
-          aria-label={`Loading visualization ${state.file}`}
+          aria-label={`Загрузка визуализации ${state.file}`}
           style={{
             height: requestedHeight ?? FRAME_HEIGHT_BEFORE_FIRST_REPORT,
           }}
@@ -620,7 +620,7 @@ function InlineVisDirective({
         <div
           role="status"
           aria-busy="true"
-          aria-label={`Loading document ${state.file}`}
+          aria-label={`Загрузка документа ${state.file}`}
           className="flex flex-col gap-2.5 px-4 py-4"
         >
           <Skeleton className="h-4 w-2/5" />
@@ -639,7 +639,7 @@ function InlineVisDirective({
         className="my-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
         title={source}
       >
-        Failed to load {state.file}: {state.message}
+        Не удалось загрузить {state.file}: {state.message}
       </div>
     );
   }
@@ -722,7 +722,7 @@ function InlineVisFence({
     return <Original />;
   }
 
-  const sourceLabel = sourceShown ? "Hide source" : "Show source";
+  const sourceLabel = sourceShown ? "Скрыть исходный код" : "Показать исходный код";
   return (
     <>
       <HtmlFrame
@@ -801,7 +801,7 @@ export default definePluginApp((app) => {
   });
   app.slots.fileOpener({
     id: PAGE_OPENER_ID,
-    title: "Inline visualization page",
+    title: "Страница встроенной визуализации",
     extensions: [],
     component: InlineVisPageOpener,
   });

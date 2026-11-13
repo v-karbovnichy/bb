@@ -92,20 +92,20 @@ describe("PromptBoxActionsMenu", () => {
   it("does not render when no prompt actions are provided", () => {
     render(<PromptBoxActionsMenu onAction={() => {}} />);
 
-    expect(screen.queryByRole("button", { name: "Prompt actions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Действия с сообщением" })).toBeNull();
   });
 
   it("offers file attachments even when no provider actions are available", async () => {
     const onAttach = vi.fn();
     render(<PromptBoxActionsMenu onAction={() => {}} onAttach={onAttach} />);
 
-    const trigger = screen.getByRole("button", { name: "Prompt actions" });
+    const trigger = screen.getByRole("button", { name: "Действия с сообщением" });
     expect(trigger.classList).toContain("text-subtle-foreground/75");
     expect(trigger.querySelector('[data-icon="Plus"]')).not.toBeNull();
     expect(trigger.querySelector('[data-icon="Spinner"]')).toBeNull();
     fireEvent.pointerDown(trigger, { button: 0 });
     const attach = await screen.findByRole("menuitem", {
-      name: "Attach files",
+      name: "Прикрепить файлы",
     });
     expect(attach.getAttribute("aria-disabled")).not.toBe("true");
     expect(attach.querySelector('[data-icon="Paperclip"]')).not.toBeNull();
@@ -143,14 +143,14 @@ describe("PromptBoxActionsMenu", () => {
       );
 
       fireEvent.pointerDown(
-        screen.getByRole("button", { name: "Prompt actions" }),
+        screen.getByRole("button", { name: "Действия с сообщением" }),
         { button: 0 },
       );
       const menuItems = await screen.findAllByRole("menuitem");
       expect(menuItems.map((item) => item.textContent)).toEqual([
-        "Skills",
-        "Plan",
-        "Automation",
+        "Навыки",
+        "План",
+        "Автоматизация",
         "Plugin",
       ]);
       expect(
@@ -217,7 +217,7 @@ describe("PromptBoxActionsMenu", () => {
       );
       fireEvent.pointerDown(
         screen.getByRole("button", {
-          name: menu === "plus" ? "Prompt actions" : "Send options",
+          name: menu === "plus" ? "Действия с сообщением" : "Параметры отправки",
         }),
         { button: 0 },
       );
@@ -289,7 +289,7 @@ describe("PromptBoxActionsMenu", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Prompt actions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Действия с сообщением" }));
     fireEvent.click(
       await screen.findByRole("menuitem", { name: "Update prompt" }),
     );
@@ -393,12 +393,12 @@ describe("PromptBoxActionsMenu", () => {
     );
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Prompt actions" }),
+      screen.getByRole("button", { name: "Действия с сообщением" }),
       { button: 0 },
     );
     const menuItems = await screen.findAllByRole("menuitem");
     expect(menuItems.map((item) => item.textContent)).toEqual([
-      "Plan",
+      "План",
       "Improve prompt",
       "Rewrite prompt",
     ]);

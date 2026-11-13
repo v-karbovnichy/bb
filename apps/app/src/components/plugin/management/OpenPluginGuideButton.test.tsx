@@ -19,7 +19,7 @@ const GUIDE: InstalledPlugin = {
   provenance: "builtin",
   publisherLabel: "BB Official",
   isOrphanedBuiltin: false,
-  sourceDisplay: "Included with BB",
+  sourceDisplay: "Входит в BB",
   sourceNotice: null,
   updateState: {},
   enabled: false,
@@ -80,7 +80,7 @@ function renderGuide() {
     { wrapper },
   );
   return {
-    button: screen.getByRole("button", { name: "Plugin Guide" }),
+    button: screen.getByRole("button", { name: "Руководство по плагинам" }),
     queryClient,
   };
 }
@@ -161,7 +161,7 @@ describe("OpenPluginGuideButton", () => {
     const { button } = renderGuide();
     fireEvent.click(button);
     await vi.waitFor(() =>
-      expect(toast).toHaveBeenCalledWith("Could not open Plugin Guide", {
+      expect(toast).toHaveBeenCalledWith("Не удалось открыть Plugin Guide", {
         description: "Service unavailable",
       }),
     );
@@ -185,11 +185,11 @@ describe("OpenPluginGuideButton", () => {
     vi.stubGlobal("fetch", fetchMock);
     fireEvent.click(renderGuide().button);
     expect(
-      await screen.findByRole("dialog", { name: "Install Plugin Guide?" }),
+      await screen.findByRole("dialog", { name: "Установить Plugin Guide?" }),
     ).toBeTruthy();
     expect(screen.getByTestId("location").textContent).toBe("/plugins");
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Отмена" }));
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(screen.getByTestId("location").textContent).toBe("/plugins");
     expect(fetchMock).toHaveBeenCalledTimes(2);
@@ -230,7 +230,7 @@ describe("OpenPluginGuideButton", () => {
     const { button, queryClient } = renderGuide();
     fireEvent.click(button);
     fireEvent.click(
-      await screen.findByRole("button", { name: "Install Plugin Guide" }),
+      await screen.findByRole("button", { name: "Установить Plugin Guide" }),
     );
     await vi.waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     const installCall = fetchMock.mock.calls.find(

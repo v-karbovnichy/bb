@@ -95,7 +95,7 @@ export function attachmentMentionGroup(
     .map(({ suggestion }) => suggestion);
   return suggestions.length === 0
     ? null
-    : { key: "attachments", label: "Attachments", suggestions };
+    : { key: "attachments", label: "Вложения", suggestions };
 }
 
 function commandSuggestionKey(

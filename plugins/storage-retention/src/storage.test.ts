@@ -482,12 +482,12 @@ it.each([false, true])(
       });
       await expect(
         host.harness.callRpc("clearThread", { threadId: "thr_live" }),
-      ).rejects.toThrow("Stop the thread");
+      ).rejects.toThrow("Остановите чат");
       if (detached) {
         active = false;
         await expect(
           host.harness.callRpc("clearThread", { threadId: "thr_live" }),
-        ).rejects.toThrow("Scan the machine");
+        ).rejects.toThrow("Проверьте машину");
         expect((await fs.stat(path.join(root, "thr_live", "data"))).size).toBe(
           size,
         );
@@ -858,7 +858,7 @@ it("deletes only large files from archived threads on scanned online machines, k
     plugin(host.bb);
     await expect(
       host.harness.callRpc("clearArchivedFiles", { hostId: "host_test" }),
-    ).rejects.toThrow("Scan the machine");
+    ).rejects.toThrow("Проверьте машину");
     await host.harness.callRpc("scanAll", null);
     await expect
       .poll(
@@ -1079,14 +1079,14 @@ it("rejects traversal and symlinks without deleting their targets", async () => 
         names: ["../escape"],
         recreate: false,
       }),
-    ).rejects.toThrow("Invalid storage entry");
+    ).rejects.toThrow("Недопустимая запись хранилища");
     await expect(
       worker.experimental_call("discard", {
         rootPath: root,
         names: ["thr_link"],
         recreate: false,
       }),
-    ).rejects.toThrow("symbolic link");
+    ).rejects.toThrow("символической ссылкой");
     expect(await fs.readFile(path.join(outside, "keep"), "utf8")).toBe("keep");
     expect(
       await worker.experimental_call("discard", {
@@ -1238,7 +1238,7 @@ it("fails a scan visibly so it can be retried", async () => {
       )
       .toMatchObject({
         state: "failed",
-        message: "The machine has not reported its filesystem locations",
+        message: "Машина не сообщила расположение файловой системы",
       });
     root = "/unused";
     await host.harness.callRpc("scanHost", { hostId: "host_test" });
@@ -1669,7 +1669,7 @@ it("finds worktrees created outside BB, removes only safe ones in bulk, and forc
         paths: [managed],
         force: true,
       }),
-    ).rejects.toThrow("Not a worktree created outside BB");
+    ).rejects.toThrow("При последней проверке не найдено среди рабочих деревьев, созданных вне BB");
     await expect(
       host.harness.callRpc("startRemoveExternalWorktree", {
         hostId: "host_test",
@@ -2107,14 +2107,14 @@ it.skipIf(process.platform === "win32")(
           names: ["self", "spare"],
           stopRunning: true,
         }),
-      ).rejects.toThrow("this BB is running from");
+      ).rejects.toThrow("из которого запущен текущий BB");
       await expect(
         host.harness.callRpc("removeDevInstances", {
           hostId: "host_test",
           names: ["unscanned"],
           stopRunning: false,
         }),
-      ).rejects.toThrow("Not a development instance in the last scan");
+      ).rejects.toThrow("Не найдено среди экземпляров разработки при последней проверке");
       expect(
         await host.harness.callRpc("removeDevInstances", {
           hostId: "host_test",
@@ -2694,7 +2694,7 @@ it("never clears thread storage that holds a workspace an environment still uses
     await expect(
       host.harness.callRpc("clearThread", { threadId: "thr_owner" }),
     ).rejects.toThrow(
-      `contains the workspace ${path.join(root, "thr_owner", "repair")}`,
+      `содержат рабочее пространство ${path.join(root, "thr_owner", "repair")}`,
     );
 
     await expect
@@ -3116,7 +3116,7 @@ it("refuses to clear storage containing a live Windows workspace with different 
   try {
     await expect(
       host.harness.callRpc("clearThread", { threadId: "thr_owner" }),
-    ).rejects.toThrow("contains the workspace");
+    ).rejects.toThrow("содержат рабочее пространство");
     expect(worker).not.toHaveBeenCalled();
   } finally {
     await host.harness.lifecycle.dispose();

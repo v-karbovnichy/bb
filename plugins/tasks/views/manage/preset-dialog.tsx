@@ -33,14 +33,14 @@ type ReasoningLevel = ExperimentalProviderModelPickerValue["reasoningLevel"];
 type EnvironmentKind = (typeof PRESET_ENVIRONMENT_KINDS)[number];
 
 export const PERMISSION_LABELS: Record<PresetPermissionMode, string> = {
-  "accept-edits": "Accept Edits",
-  auto: "Approve for me",
-  full: "Full Access",
+  "accept-edits": "Принимать изменения",
+  auto: "Одобрять за меня",
+  full: "Полный доступ",
 };
 
 const ENVIRONMENT_LABELS: Record<EnvironmentKind, string> = {
-  "project-default": "Project default",
-  "new-worktree": "New worktree",
+  "project-default": "Окружение проекта по умолчанию",
+  "new-worktree": "Новое рабочее дерево",
 };
 
 interface MachineOption {
@@ -52,14 +52,14 @@ export function describePresetEnvironment(
   preset: Pick<Preset, "environmentKind" | "baseBranch" | "machineId">,
   machines: readonly MachineOption[],
 ): string {
-  if (preset.environmentKind !== "new-worktree") return "Project default";
+  if (preset.environmentKind !== "new-worktree") return "Окружение проекта по умолчанию";
   const branch = preset.baseBranch ?? "default";
   const machine =
     preset.machineId === null
       ? "default"
       : (machines.find((entry) => entry.id === preset.machineId)?.name ??
         preset.machineId);
-  return `Worktree · ${branch} · ${machine}`;
+  return `Рабочее дерево · ${branch} · ${machine}`;
 }
 
 const DEFAULT_MACHINE_VALUE = "__default-machine__";
@@ -176,14 +176,13 @@ export function PresetDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{editing ? "Edit preset" : "New preset"}</DialogTitle>
+          <DialogTitle>{editing ? "Изменить пресет" : "Новый пресет"}</DialogTitle>
           <DialogDescription>
-            Presets pick the provider, model, and guardrails for dispatched
-            threads.
+            Пресеты задают провайдера, модель и ограничения для запускаемых чатов.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Field label="Name">
+          <Field label="Название">
             <Input
               autoFocus
               value={draft.name}
@@ -192,7 +191,7 @@ export function PresetDialog({
               className="h-8"
             />
           </Field>
-          <Field label="Provider, model, and reasoning">
+          <Field label="Провайдер, модель и уровень рассуждений">
             <ProviderModelPicker
               value={pickerValue}
               onChange={(value) =>
@@ -211,7 +210,7 @@ export function PresetDialog({
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Permissions">
+            <Field label="Разрешения">
               <PermissionModePicker
                 providerId={draft.providerId}
                 value={draft.permissionMode}
@@ -224,7 +223,7 @@ export function PresetDialog({
               />
             </Field>
           </div>
-          <Field label="Execution environment">
+          <Field label="Окружение выполнения">
             <Select
               value={draft.environmentKind}
               onValueChange={(value) => {
@@ -238,7 +237,7 @@ export function PresetDialog({
                 }));
               }}
             >
-              <SelectTrigger aria-label="Execution environment" className="h-8">
+              <SelectTrigger aria-label="Окружение выполнения" className="h-8">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -252,16 +251,16 @@ export function PresetDialog({
           </Field>
           {draft.environmentKind === "new-worktree" ? (
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Base branch">
+              <Field label="Базовая ветка">
                 <Input
                   value={draft.baseBranch}
                   placeholder="project default base — leave empty"
-                  aria-label="Base branch"
+                  aria-label="Базовая ветка"
                   onChange={(event) => set("baseBranch", event.target.value)}
                   className="h-8"
                 />
               </Field>
-              <Field label="Machine">
+              <Field label="Машина">
                 <Select
                   value={
                     draft.machineId === ""
@@ -275,16 +274,16 @@ export function PresetDialog({
                     )
                   }
                 >
-                  <SelectTrigger aria-label="Machine" className="h-8">
+                  <SelectTrigger aria-label="Машина" className="h-8">
                     <SelectValue
                       placeholder={
-                        machines === undefined ? "Loading…" : "Machine"
+                        machines === undefined ? "Загрузка…" : "Машина"
                       }
                     />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={DEFAULT_MACHINE_VALUE}>
-                      Default machine
+                      Машина по умолчанию
                     </SelectItem>
                     {(machines ?? []).map((machine) => (
                       <SelectItem key={machine.id} value={machine.id}>
@@ -304,10 +303,10 @@ export function PresetDialog({
               </Field>
             </div>
           ) : null}
-          <Field label="Instructions">
+          <Field label="Инструкции">
             <Textarea
               value={draft.instructions}
-              placeholder="Extra instructions prepended to dispatched threads"
+              placeholder="Дополнительные инструкции перед запросом в запущенном чате"
               onChange={(event) => set("instructions", event.target.value)}
               className="min-h-20 text-xs"
             />
@@ -320,7 +319,7 @@ export function PresetDialog({
         ) : null}
         <DialogFooter>
           <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
-            Cancel
+            Отмена
           </Button>
           <Button
             size="sm"
@@ -336,7 +335,7 @@ export function PresetDialog({
                 .finally(() => setSubmitting(false));
             }}
           >
-            {editing ? "Save preset" : "Create preset"}
+            {editing ? "Сохранить пресет" : "Создать пресет"}
           </Button>
         </DialogFooter>
       </DialogContent>

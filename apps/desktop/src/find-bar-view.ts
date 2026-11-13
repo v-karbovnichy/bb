@@ -13,14 +13,14 @@ const CLOSE_ICON =
 
 function renderFindBarView(): string {
   return `<!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta
     http-equiv="Content-Security-Policy"
     content="default-src 'none'; style-src 'unsafe-inline'; img-src data:"
   />
-  <title>Find in window</title>
+  <title>Найти в окне</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -123,26 +123,26 @@ function renderFindBarView(): string {
   </style>
 </head>
 <body>
-  <div class="bar" role="search" aria-label="Find in window">
+  <div class="bar" role="search" aria-label="Найти в окне">
     <div class="field">
       <input
         id="bb-find-input"
         type="text"
-        placeholder="Find in window"
-        aria-label="Find in window"
+        placeholder="Найти в окне"
+        aria-label="Найти в окне"
         autocomplete="off"
         spellcheck="false"
         maxlength="${BB_DESKTOP_MAX_FIND_TEXT_LENGTH}"
       />
       <span id="bb-find-count" class="count" role="status" aria-live="polite"></span>
     </div>
-    <button type="button" data-step="previous" aria-label="Previous match" disabled>
+    <button type="button" data-step="previous" aria-label="Предыдущее совпадение" disabled>
       ${CHEVRON_UP_ICON}
     </button>
-    <button type="button" data-step="next" aria-label="Next match" disabled>
+    <button type="button" data-step="next" aria-label="Следующее совпадение" disabled>
       ${CHEVRON_DOWN_ICON}
     </button>
-    <button type="button" data-action="close" aria-label="Close find bar">
+    <button type="button" data-action="close" aria-label="Закрыть поиск">
       ${CLOSE_ICON}
     </button>
   </div>

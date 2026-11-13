@@ -164,14 +164,14 @@ function formatDuration(startedAt: number | null, finishedAt: number | null) {
   if (startedAt === null) return null;
   const durationMs = Math.max(0, (finishedAt ?? Date.now()) - startedAt);
   const totalSeconds = Math.round(durationMs / 1_000);
-  if (totalSeconds < 60) return `${totalSeconds}s`;
+  if (totalSeconds < 60) return `${totalSeconds} с`;
   const hours = Math.floor(totalSeconds / 3_600);
   const minutes = Math.floor((totalSeconds % 3_600) / 60);
   const seconds = totalSeconds % 60;
   return [
-    hours > 0 ? `${hours}h` : null,
-    minutes > 0 ? `${minutes}m` : null,
-    seconds > 0 ? `${seconds}s` : null,
+    hours > 0 ? `${hours} ч` : null,
+    minutes > 0 ? `${minutes} мин` : null,
+    seconds > 0 ? `${seconds} с` : null,
   ]
     .filter((part): part is string => part !== null)
     .join(" ");
@@ -308,7 +308,7 @@ function buildSharedWorkflowView(run: WorkflowRunView): SharedWorkflowView {
     phases.map((phase) => [phase.title, phase.index] as const),
   );
   if (otherWorkIndex !== null) {
-    phases.push({ index: otherWorkIndex, title: "Other work" });
+    phases.push({ index: otherWorkIndex, title: "Другая работа" });
   }
   const calls = [
     ...run.phases.flatMap((phase) => phase.calls),
@@ -418,7 +418,7 @@ function RefreshWarning({ message }: { message: string }) {
       role="status"
       className="rounded-md border border-warning/20 bg-warning/5 px-2.5 py-1.5 text-xs text-warning-text"
     >
-      Could not refresh: {message}.
+      Не удалось обновить: {message}.
     </div>
   );
 }
@@ -454,7 +454,7 @@ function WorkflowComposerSummary({ run }: { run: WorkflowRunView }) {
         </span>
         {agentCount === 0 ? null : (
           <span className="shrink-0 text-2xs tabular-nums text-subtle-foreground">
-            {settledAgents}/{agentCount} agents
+            {settledAgents}/{agentCount} агентов
           </span>
         )}
         {run.startedAt === null ? null : (
@@ -486,13 +486,13 @@ function WorkflowComposerCard({ run }: { run: WorkflowRunView }) {
 
   return (
     <section
-      aria-label="Workflow"
+      aria-label="Рабочий процесс"
       className="overflow-hidden rounded-lg border border-border bg-surface-raised-solid"
       style={{ minHeight: WORKFLOW_CARD_ROW_HEIGHT }}
     >
       <div
         role="group"
-        aria-label={`Workflow controls: ${run.name}`}
+        aria-label={`Управление рабочим процессом: ${run.name}`}
         className="flex w-full items-stretch"
       >
         <button
@@ -501,7 +501,7 @@ function WorkflowComposerCard({ run }: { run: WorkflowRunView }) {
           id={toggleId}
           aria-expanded={expanded}
           aria-controls={bodyId}
-          aria-label={`Workflow: ${run.name}`}
+          aria-label={`Рабочий процесс: ${run.name}`}
           onClick={focus.onTriggerClick}
           className={cn(
             WORKFLOW_HEADER_BUTTON_CLASS,
@@ -513,7 +513,7 @@ function WorkflowComposerCard({ run }: { run: WorkflowRunView }) {
         </button>
         <button
           type="button"
-          aria-label={`Open workflow ${run.name} in side panel`}
+          aria-label={`Открыть рабочий процесс «${run.name}» в боковой панели`}
           onClick={() =>
             panel.openTab({
               tab: {
@@ -552,7 +552,7 @@ function WorkflowComposerCard({ run }: { run: WorkflowRunView }) {
             <PromptStackCollapseRow
               buttonRef={focus.collapseRef}
               controlsId={bodyId}
-              label={`Collapse workflow ${run.name}`}
+              label={`Свернуть рабочий процесс «${run.name}»`}
               onCollapse={focus.onCollapseClick}
             />
           </div>
@@ -575,7 +575,7 @@ function WorkflowStackFront({
   return (
     <PromptStackPeekLayers hiddenCount={runs.length - 1}>
       <section
-        aria-label="Workflows"
+        aria-label="Рабочие процессы"
         className="overflow-hidden rounded-lg border border-border bg-surface-raised-solid"
         style={{ minHeight: WORKFLOW_CARD_ROW_HEIGHT }}
       >
@@ -583,7 +583,7 @@ function WorkflowStackFront({
           ref={buttonRef}
           type="button"
           aria-expanded={false}
-          aria-label={`${runs.length} workflows running. Show all`}
+          aria-label={`Активных рабочих процессов: ${runs.length}. Показать все`}
           onClick={onExpand}
           className={cn(
             WORKFLOW_HEADER_BUTTON_CLASS,
@@ -614,7 +614,7 @@ function WorkflowStatusBannerLoaded({ threadId }: { threadId: string }) {
 
   const collapsed = runs.length > 1 && !stackExpanded;
   return (
-    <section aria-label="Active workflows" className="flex flex-col gap-2">
+    <section aria-label="Активные рабочие процессы" className="flex flex-col gap-2">
       {collapsed ? (
         <WorkflowStackFront
           runs={runs}
@@ -632,7 +632,7 @@ function WorkflowStatusBannerLoaded({ threadId }: { threadId: string }) {
           <PromptStackCollapseRow
             buttonRef={focus.collapseRef}
             controlsId={listId}
-            label={`Collapse ${runs.length} workflows`}
+            label={`Свернуть рабочие процессы (${runs.length})`}
             onCollapse={focus.onCollapseClick}
           />
         ) : null}
@@ -684,7 +684,7 @@ function WorkflowPreviewLoaded({
     return <EmptyOrError>{state.message}</EmptyOrError>;
   }
   if (state.run === null) {
-    return <EmptyOrError>Workflow run not found.</EmptyOrError>;
+    return <EmptyOrError>Запуск рабочего процесса не найден.</EmptyOrError>;
   }
   const run = state.run;
   const shared = buildSharedWorkflowView(run);
@@ -695,14 +695,14 @@ function WorkflowPreviewLoaded({
     <section
       className="my-2 overflow-hidden rounded-lg border border-border bg-surface-recessed"
       title={source}
-      aria-label="Workflow"
+      aria-label="Рабочий процесс"
     >
       <button
         type="button"
         id={toggleId}
         aria-expanded={expanded}
         aria-controls={bodyId}
-        aria-label={`Workflow: ${run.name}`}
+        aria-label={`Рабочий процесс: ${run.name}`}
         onClick={() => setExpanded((value) => !value)}
         className={activityRowClass(
           activityState,
@@ -731,7 +731,7 @@ function WorkflowPreviewLoaded({
                 "shrink-0 text-2xs tabular-nums",
               )}
             >
-              {settledAgents}/{shared.progress.agents.length} agents
+              {settledAgents}/{shared.progress.agents.length} агентов
             </span>
           ) : null}
           {run.startedAt === null ? null : (
@@ -823,7 +823,7 @@ function WorkflowPreviewLoaded({
             })
           }
         >
-          Open in right panel
+          Открыть в правой панели
           <Icon name="ArrowRight" className="size-3" aria-hidden />
         </Button>
       </div>
@@ -841,7 +841,7 @@ function WorkflowRunPanel({
       {runId === undefined ? (
         <WorkflowRunPanelState>
           <EmptyOrError>
-            This workflow panel has invalid run parameters.
+            У панели рабочего процесса неверные параметры запуска.
           </EmptyOrError>
         </WorkflowRunPanelState>
       ) : (
@@ -889,7 +889,7 @@ function WorkflowRunPanelLoaded({
     return (
       <WorkflowRunPanelState>
         <EmptyOrError>
-          No workflow runs were found for this thread.
+          Для этого чата не найдены запуски рабочих процессов.
         </EmptyOrError>
       </WorkflowRunPanelState>
     );
@@ -934,17 +934,17 @@ function WorkflowRunPanelLoaded({
         <div className="mt-2 flex items-center gap-2 text-2xs tabular-nums text-subtle-foreground">
           <span>
             {shared.progress.agents.length > 0
-              ? `${settledAgents}/${shared.progress.agents.length} agents · `
+              ? `${settledAgents}/${shared.progress.agents.length} агентов · `
               : ""}
             {run.startedAt === null ? (
-              "Not started"
+              "Не запущен"
             ) : (
               <>
                 <RunDuration
                   startedAt={run.startedAt}
                   finishedAt={run.finishedAt}
                 />{" "}
-                {isRunActive(run) ? "elapsed" : "total"}
+                {isRunActive(run) ? "прошло" : "всего"}
               </>
             )}
           </span>
@@ -971,7 +971,7 @@ function WorkflowRunPanelLoaded({
         )}
         <div className="my-4 h-px bg-border-seam" />
         <h3 className="mb-2 text-xs font-medium text-muted-foreground">
-          Phases
+          Этапы
         </h3>
         <div className="-mx-2">
           <WorkflowProgress
@@ -990,24 +990,24 @@ function WorkflowRunPanelLoaded({
         </div>
         <div className="my-4 h-px bg-border-seam" />
         <h3 className="mb-2 text-xs font-medium text-muted-foreground">
-          Run details
+          Сведения о запуске
         </h3>
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-xs">
-          <dt className="text-subtle-foreground">Agent calls</dt>
+          <dt className="text-subtle-foreground">Вызовы агентов</dt>
           <dd className="text-right text-muted-foreground">
-            {completedCalls} of {shared.progress.agents.length}
+            {completedCalls} из {shared.progress.agents.length}
           </dd>
-          <dt className="text-subtle-foreground">Cache hits</dt>
+          <dt className="text-subtle-foreground">Попадания в кэш</dt>
           <dd className="text-right text-muted-foreground">{cachedCalls}</dd>
-          <dt className="text-subtle-foreground">Started</dt>
+          <dt className="text-subtle-foreground">Начало</dt>
           <dd className="text-right text-muted-foreground">
             {run.startedAt === null
               ? "—"
               : new Date(run.startedAt).toLocaleTimeString()}
           </dd>
-          <dt className="text-subtle-foreground">Result</dt>
+          <dt className="text-subtle-foreground">Результат</dt>
           <dd className="text-right text-muted-foreground">
-            {run.resultAvailable ? "Available" : "—"}
+            {run.resultAvailable ? "Доступен" : "—"}
           </dd>
         </dl>
       </div>
@@ -1021,7 +1021,7 @@ function WorkflowRunPanelLoaded({
             disabled={stopping}
             onClick={() => void stop()}
           >
-            {stopping ? "Stopping…" : "Stop workflow"}
+            {stopping ? "Остановка…" : "Остановить рабочий процесс"}
           </Button>
         </div>
       ) : null}
@@ -1045,7 +1045,7 @@ export default definePluginApp((app) => {
     context: { kind: "thread" },
     availability: "action",
     id: WORKFLOW_PANEL_ACTION_ID,
-    title: "Workflow run",
+    title: "Запуск рабочего процесса",
     icon: "Workflow",
     component: WorkflowRunPanel,
     layout: "flush",

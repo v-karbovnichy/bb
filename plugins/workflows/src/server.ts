@@ -121,7 +121,7 @@ export default async function plugin(bb: BbPluginApi) {
         : service.inspect(runId);
     if (run === null) return null;
     if (run.originThreadId !== threadId) {
-      throw new Error("This workflow run is not available in this thread");
+      throw new Error("Этот запуск рабочего процесса недоступен в данном чате");
     }
     return run;
   }
@@ -140,10 +140,10 @@ export default async function plugin(bb: BbPluginApi) {
     },
     async workflowStopRun({ threadId, runId }) {
       const run = workflowForThread(threadId, runId);
-      if (run === null) throw new Error(`Unknown workflow run ${runId}`);
+      if (run === null) throw new Error(`Неизвестный запуск рабочего процесса: ${runId}`);
       const stopped = await service.stop(run.id);
       const latest = workflowForThread(threadId, run.id);
-      if (latest === null) throw new Error(`Unknown workflow run ${runId}`);
+      if (latest === null) throw new Error(`Неизвестный запуск рабочего процесса: ${runId}`);
       return { stopped, run: buildWorkflowRunView(latest) };
     },
   });
@@ -151,7 +151,7 @@ export default async function plugin(bb: BbPluginApi) {
   bb.agents.registerTool({
     name: "bb_workflow_run",
     presentation: {
-      label: { pending: "Starting workflow", completed: "Started workflow" },
+      label: { pending: "Запуск рабочего процесса", completed: "Рабочий процесс запущен" },
       icon: { glyph: "Workflow" },
     },
     description:
@@ -186,8 +186,8 @@ export default async function plugin(bb: BbPluginApi) {
     name: "bb_workflow_result",
     presentation: {
       label: {
-        pending: "Returning structured result",
-        completed: "Returned structured result",
+        pending: "Возврат структурированного результата",
+        completed: "Структурированный результат возвращён",
       },
       icon: { glyph: "Workflow" },
       suppress: true,

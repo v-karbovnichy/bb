@@ -66,7 +66,7 @@ function NewChatHeaderTitle({ subPath }: PluginNavPanelProps) {
     environmentId === null
       ? null
       : findWorkspace(threads, projects, environmentId, null);
-  if (workspace === null) return <span className="text-sm">New chat</span>;
+  if (workspace === null) return <span className="text-sm">Новый чат</span>;
   return (
     <WorkspaceBreadcrumb
       threadId={null}
@@ -88,7 +88,7 @@ function useNewChatPageTitle({
   if (workspace === null) return null;
   return {
     breadcrumbs: [{ label: workspace.projectName }, { label: workspace.label }],
-    windowTitle: `New chat · ${workspace.label}`,
+    windowTitle: `Новый чат · ${workspace.label}`,
   };
 }
 
@@ -101,9 +101,9 @@ function reportFailure(action: string, error: unknown): void {
 export default definePluginApp((app) => {
   app.slots.experimental_threadList({
     id: "workspaces",
-    title: "Conductor workspaces",
+    title: "Рабочие области Conductor",
     description:
-      "Projects with one row per workspace: the threads that share an environment, with branch, pull request, and line changes.",
+      "Проекты с отдельной строкой для каждой рабочей области: чаты с общей средой, веткой, запросом на слияние и изменениями строк.",
     component: ConductorThreadList,
   });
   app.slots.experimental_threadHeaderRow({
@@ -116,7 +116,7 @@ export default definePluginApp((app) => {
   });
   app.slots.navPanel({
     id: "new-chat",
-    title: "New chat",
+    title: "Новый чат",
     icon: "MessageSquarePlus",
     path: NEW_CHAT_PANEL_PATH,
     component: ConductorNewChatPage,
@@ -130,23 +130,23 @@ export default definePluginApp((app) => {
   });
   app.slots.messageAction({
     id: "fork-to-new-workspace",
-    title: "Fork to new workspace",
+    title: "Создать ответвление в новой рабочей области",
     icon: "FolderGit",
     async run(context) {
       await forkToNewWorkspace(context).catch((error: unknown) =>
-        reportFailure("Could not fork to a new workspace", error),
+        reportFailure("Не удалось создать ответвление в новой рабочей области", error),
       );
     },
   });
   app.commands.register({
     id: "run",
-    title: "Run workspace script",
+    title: "Запустить скрипт рабочей области",
     defaultShortcut: { key: "r", mod: true },
     isAvailable: (context) => context.threadId !== null,
     async run(context) {
       if (context.threadId === null) return;
       await runWorkspaceScript(context.threadId).catch((error: unknown) =>
-        reportFailure("Could not run the workspace script", error),
+        reportFailure("Не удалось запустить скрипт рабочей области", error),
       );
     },
   });

@@ -6,8 +6,8 @@ import {
 import { DropdownMenuItem } from "@bb/shared-ui/dropdown-menu";
 
 export const THREAD_LIFECYCLE_OPTIONS = [
-  { value: "active", label: "Active" },
-  { value: "archived", label: "Archived" },
+  { value: "active", label: "Активные" },
+  { value: "archived", label: "Архивные" },
 ] as const satisfies readonly { value: ThreadArchiveFilter; label: string }[];
 
 interface ThreadLifecycleFilterProps {
@@ -31,7 +31,7 @@ export function ThreadLifecycleFilterItems({
             role="menuitemcheckbox"
             aria-checked={checked}
             title={
-              required ? "Keep at least one filter selected" : undefined
+              required ? "Выберите хотя бы один фильтр" : undefined
             }
             onSelect={(event) => {
               event.preventDefault();
@@ -65,7 +65,7 @@ export function threadLifecycleFilterLabel(
 ): string {
   const value = normalizeThreadLifecycleFilter(savedValue);
   return value.length === THREAD_LIFECYCLE_OPTIONS.length
-    ? "All"
+    ? "Все"
     : THREAD_LIFECYCLE_OPTIONS.filter((option) => value.includes(option.value))
         .map((option) => option.label)
         .join(", ");

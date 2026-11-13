@@ -137,7 +137,7 @@ function MonacoFileOpener({
       } catch (error) {
         setSaveState({
           kind: "error",
-          message: error instanceof Error ? error.message : "Save failed",
+          message: error instanceof Error ? error.message : "Не удалось сохранить",
         });
       }
     },
@@ -177,7 +177,7 @@ function MonacoFileOpener({
       if (editorRef.current !== editor) return;
       setSaveState({
         kind: "error",
-        message: error instanceof Error ? error.message : "Reload failed",
+        message: error instanceof Error ? error.message : "Не удалось перезагрузить",
       });
     } finally {
       if (editorRef.current === editor) setIsRefreshing(false);
@@ -226,7 +226,7 @@ function MonacoFileOpener({
           truncated: false,
           isLoading: false,
           error:
-            error instanceof Error ? error.message : "Could not list files",
+            error instanceof Error ? error.message : "Не удалось получить список файлов",
         });
       });
     return () => {
@@ -336,7 +336,7 @@ function MonacoFileOpener({
         setStatus({
           kind: "error",
           message:
-            error instanceof Error ? error.message : "Could not open this file",
+            error instanceof Error ? error.message : "Не удалось открыть файл",
         });
       }
     })();
@@ -479,7 +479,7 @@ function Notice({
         tone="warning"
         compact
         focusRef={conflictNoticeRef}
-        label="File changed on disk, edits not saved."
+        label="Файл изменился на диске. Правки не сохранены."
       >
         <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-2">
           <div className="flex min-w-0 max-w-full items-start gap-2">
@@ -489,23 +489,23 @@ function Notice({
               aria-hidden
             />
             <span className="min-w-0 text-left leading-6">
-              File changed on disk, edits not saved.
+              Файл изменился на диске. Правки не сохранены.
             </span>
           </div>
           <div className="ml-auto flex shrink-0 items-center gap-6">
             <NoticeAction
               disabled={isRefreshing}
               onClick={onReload}
-              title="Discard your edits and load the latest saved file"
+              title="Отменить правки и загрузить последнюю сохранённую версию"
             >
-              Keep disk version
+              Оставить версию с диска
             </NoticeAction>
             <NoticeAction
               disabled={isRefreshing}
               onClick={onOverwrite}
-              title="Replace the saved file with your edits"
+              title="Заменить сохранённый файл вашими правками"
             >
-              Save my edits
+              Сохранить мои правки
             </NoticeAction>
           </div>
         </div>
@@ -515,18 +515,18 @@ function Notice({
   if (pendingOpen !== null) {
     return (
       <NoticeRow tone="neutral">
-        Open {pendingOpen.split("/").at(-1)} and discard your unsaved changes?
-        <NoticeAction onClick={onOpenConfirm}>Discard and open</NoticeAction>
-        <NoticeAction onClick={onOpenCancel}>Cancel</NoticeAction>
+        Открыть {pendingOpen.split("/").at(-1)} и отменить несохранённые изменения?
+        <NoticeAction onClick={onOpenConfirm}>Отменить правки и открыть</NoticeAction>
+        <NoticeAction onClick={onOpenCancel}>Отмена</NoticeAction>
       </NoticeRow>
     );
   }
   if (pendingDiscard) {
     return (
       <NoticeRow tone="neutral">
-        Reload from disk and discard your unsaved changes?
-        <NoticeAction onClick={onDiscardConfirm}>Discard</NoticeAction>
-        <NoticeAction onClick={onDiscardCancel}>Cancel</NoticeAction>
+        Загрузить с диска и отменить несохранённые изменения?
+        <NoticeAction onClick={onDiscardConfirm}>Отменить правки</NoticeAction>
+        <NoticeAction onClick={onDiscardCancel}>Отмена</NoticeAction>
       </NoticeRow>
     );
   }
@@ -539,12 +539,12 @@ function Notice({
         tone="neutral"
         compact
         focusRef={conflictNoticeRef}
-        label="Disk version loaded."
+        label="Версия с диска загружена."
       >
         <div className="flex min-w-0 flex-1 items-center justify-between gap-6 @min-[32rem]/file-conflict:justify-start">
-          <span>Disk version loaded.</span>
+          <span>Версия с диска загружена.</span>
           <NoticeAction disabled={isRefreshing} onClick={onUndoReload}>
-            Undo
+            Отменить
           </NoticeAction>
         </div>
       </NoticeRow>
@@ -616,7 +616,7 @@ function NoticeAction({
 export default definePluginApp((app) => {
   app.slots.fileOpener({
     id: "monaco",
-    title: "File Editor",
+    title: "Редактор файлов",
     extensions: CLAIMED_EXTENSIONS,
     component: MonacoFileOpener,
   });

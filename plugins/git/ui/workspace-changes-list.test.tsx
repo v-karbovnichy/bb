@@ -23,7 +23,7 @@ describe("WorkspaceChangesList", () => {
     render(<WorkspaceChangesList files={makeFiles(3)} fileCount={3} />);
 
     expect(screen.getAllByRole("listitem")).toHaveLength(3);
-    expect(screen.queryByText(/more files not shown/)).toBeNull();
+    expect(screen.queryByText(/Ещё не показано/)).toBeNull();
   });
 
   it("reports files the capped status omitted", () => {
@@ -33,7 +33,7 @@ describe("WorkspaceChangesList", () => {
     expect(screen.queryAllByRole("button")).toHaveLength(0);
     expect(screen.getAllByRole("listitem")).toHaveLength(200 + 1);
     expect(
-      screen.getByText(`${(1234).toLocaleString()} more files not shown`),
+      screen.getByText("Ещё не показано: 1234 файла"),
     ).toBeTruthy();
   });
 });

@@ -98,14 +98,14 @@ function resolveRecordingErrorMessage(
       case "DevicesNotFoundError":
         return hasPreferredAudioInput
           ? "Selected microphone was not found"
-          : "No microphone was found";
+          : "Микрофон не найден";
       case "NotReadableError":
       case "TrackStartError":
         return "Microphone is unavailable or already in use";
       case "AbortError":
         return "Voice capture was aborted";
       default:
-        return "Failed to start voice recording";
+        return "Не удалось начать запись голоса";
     }
   }
   if (error instanceof Error && error.message.trim().length > 0) {
@@ -600,7 +600,7 @@ export function useVoiceInput(options: UseVoiceInputOptions) {
         const chunks = chunksRef.current;
         chunksRef.current = [];
         if (chunks.length === 0) {
-          showError("No audio was captured");
+          showError("Звук не записан");
           promptContextRef.current = undefined;
           return;
         }
@@ -738,10 +738,10 @@ export function useVoiceInput(options: UseVoiceInputOptions) {
     microphoneWarning:
       captureError ??
       (state === "recording" && silent
-        ? "No audio detected. Check your microphone or choose another."
+        ? "Звук не обнаружен. Проверьте микрофон или выберите другой."
         : null) ??
       (hasDeviceAccess && devices.length === 0
-        ? "No microphones are available. Connect a microphone or check microphone access."
+        ? "Нет доступных микрофонов. Подключите микрофон или проверьте доступ к нему."
         : null),
     isSupported,
     unsupportedReason,

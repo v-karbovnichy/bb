@@ -91,7 +91,9 @@ export function SidebarUpdatesBadge({ onNavigate }: SidebarUpdatesBadgeProps) {
           restarting:
             appUpdate !== undefined && appUpdate.activity.phase !== "idle",
           restartLabel:
-            serverCanApply || desktopCanRelaunch ? "Restart now" : null,
+            serverCanApply || desktopCanRelaunch
+              ? "Перезапустить сейчас"
+              : null,
         }
       : null;
   const model = buildSidebarUpdateModel({
@@ -176,9 +178,11 @@ export function SidebarUpdatesBadge({ onNavigate }: SidebarUpdatesBadgeProps) {
 }
 
 export function sidebarUpdateButtonLabel(model: SidebarUpdateModel): string {
-  if (model.updating) return "Updating";
+  if (model.updating) return "Обновление";
   const count = model.rows.length + (model.bb === null ? 0 : 1);
-  return count === 1 ? "1 update available" : `${count} updates available`;
+  return count === 1
+    ? "Доступно 1 обновление"
+    : `Доступно обновлений: ${count}`;
 }
 
 interface SidebarUpdateButtonProps {
@@ -238,7 +242,7 @@ export function SidebarUpdateButton({
           side="top"
           align="end"
           sideOffset={8}
-          mobileTitle="Updates"
+          mobileTitle="Обновления"
           data-testid="sidebar-update-card"
           className="w-76 p-3 text-xs"
         >
@@ -310,7 +314,7 @@ function SidebarUpdateCardBody({
         <div className="-mx-3 my-3 border-t border-border" />
       ) : null}
       {model.rows.length === 0 ? null : (
-        <ul className="space-y-0.5" aria-label="Updates">
+        <ul className="space-y-0.5" aria-label="Обновления">
           {model.rows.map((row) => (
             <SidebarUpdateRowItem
               key={row.key}
@@ -323,7 +327,7 @@ function SidebarUpdateCardBody({
       <div className="mt-3 flex gap-2">
         <Button asChild variant="outline" size="sm" className="h-7 flex-1">
           <Link to={getSettingsRoutePath("updates")} onClick={onDetails}>
-            Details
+            Подробнее
           </Link>
         </Button>
         {model.rows.length === 0 ? null : (
@@ -334,12 +338,12 @@ function SidebarUpdateCardBody({
             onClick={onUpdateAll}
           >
             {model.startableCount === 0
-              ? "Updating…"
+              ? "Обновление…"
               : model.retryOnly
-                ? "Try again"
+                ? "Повторить"
                 : model.startableCount === model.rows.length
-                  ? "Update all"
-                  : `Update ${String(model.startableCount)}`}
+                  ? "Обновить все"
+                  : `Обновить: ${String(model.startableCount)}`}
           </Button>
         )}
       </div>
@@ -357,15 +361,15 @@ function SidebarBbUpdateSection({
   onRestart: () => void;
 }) {
   return (
-    <section aria-label="bb update">
+    <section aria-label="Обновление bb">
       <div className="flex items-center gap-1.5">
         <BbLogo className="size-3.5" />
         <span className="text-sm font-medium">
-          {bb.version === null ? "bb update" : `bb ${bb.version}`}
+          {bb.version === null ? "Обновление bb" : `bb ${bb.version}`}
         </span>
         {bb.currentVersion === null || bb.version === null ? null : (
           <span className="truncate font-mono text-muted-foreground">
-            from {bb.currentVersion}
+            с версии {bb.currentVersion}
           </span>
         )}
       </div>
@@ -376,10 +380,10 @@ function SidebarBbUpdateSection({
         />
         <span className="min-w-0 flex-1 truncate">
           {bb.restarting
-            ? "Restarting into the update…"
+            ? "Перезапуск для обновления…"
             : bb.installsWhenIdle
-              ? "Installs itself when you're idle"
-              : "Installs when bb restarts"}
+              ? "Установится автоматически, когда вы не работаете"
+              : "Установится при перезапуске bb"}
         </span>
         {bb.restartLabel === null || bb.restarting ? null : (
           <button
@@ -432,10 +436,10 @@ function SidebarUpdateRowItem({
         {row.state === "updating" ? (
           <>
             <Icon name="Loading" className="size-3 animate-spin" />
-            Updating
+            Обновление
           </>
         ) : row.state === "failed" ? (
-          "Failed · try again"
+          "Ошибка · повторите попытку"
         ) : (
           row.detail
         )}

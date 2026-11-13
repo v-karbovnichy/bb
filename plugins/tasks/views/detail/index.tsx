@@ -62,7 +62,7 @@ function SubTaskDonut({
   return (
     <button
       type="button"
-      title="Sub-tasks completed"
+      title="Подзадачи завершены"
       onClick={onClick}
       className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs text-muted-foreground shadow-2xs hover:border-input hover:text-foreground"
     >
@@ -91,7 +91,7 @@ function EditableTitle({
       contentEditable
       suppressContentEditableWarning
       role="textbox"
-      aria-label="Task title"
+      aria-label="Название задачи"
       className="mb-2.5 mt-1 text-2xl font-semibold leading-tight outline-none"
       onKeyDown={(event) => {
         if (event.key === "Enter") {
@@ -161,7 +161,7 @@ function SubTasksSection({
           <input
             autoFocus
             value={title}
-            placeholder={`Sub-task of ${task.key}…`}
+            placeholder={`Подзадача для ${task.key}…`}
             className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             onChange={(event) => setTitle(event.target.value)}
             onKeyDown={(event) => {
@@ -183,7 +183,7 @@ function SubTasksSection({
         onClick={() => setAdding(true)}
       >
         <Icon name="Plus" className="size-3" />
-        Add sub-task
+        Добавить подзадачу
       </button>
     </section>
   );
@@ -368,7 +368,7 @@ function TaskDetail({ task }: { task: Task }) {
                     navigation.go({ kind: "task", taskKey: parentTask.key })
                   }
                 >
-                  Sub-task of
+                  Подзадача для
                   <StatusIcon status={parentTask.status} className="size-3" />
                   <span className="font-medium text-foreground">
                     {parentTask.key}
@@ -410,7 +410,7 @@ function TaskDetail({ task }: { task: Task }) {
             onChange={onDescriptionChange}
             variant="doc"
             className="min-h-24"
-            placeholder="Add a description… rich text: headings, lists, code, checkboxes, @mentions"
+            placeholder="Добавьте описание… Заголовки, списки, код, флажки, упоминания через @"
             onUploadImage={uploadForTask}
             mentionItems={mentionItems}
             onOpenThread={(threadId) => navigate.toThread(threadId)}
@@ -419,8 +419,8 @@ function TaskDetail({ task }: { task: Task }) {
           <div className="mb-1 mt-3 flex items-center gap-1">
             <button
               type="button"
-              title="Reactions coming soon"
-              aria-label="Add reaction"
+              title="Реакции скоро появятся"
+              aria-label="Добавить реакцию"
               disabled
               className="flex size-6.5 items-center justify-center rounded-md text-muted-foreground opacity-50"
             >
@@ -428,8 +428,8 @@ function TaskDetail({ task }: { task: Task }) {
             </button>
             <button
               type="button"
-              title="Attach file"
-              aria-label="Attach file"
+              title="Прикрепить файл"
+              aria-label="Прикрепить файл"
               className="flex size-6.5 items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground"
               onClick={() => fileInputRef.current?.click()}
             >
@@ -528,7 +528,7 @@ export function DetailView({ taskKey, onCanonicalKey }: DetailViewProps) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-6 text-sm text-muted-foreground">
         <Icon name="FileQuestion" className="size-5" />
-        Task {taskKey} was not found.
+        Задача {taskKey} не найдена.
       </div>
     );
   }

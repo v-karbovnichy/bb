@@ -33,7 +33,7 @@ export function registerUsageSource(bb: BbPluginApi) {
     const [hostId, providerId] = locatorSchema.parse(JSON.parse(resourceId));
     const host = await bb.sdk.hosts.get({ hostId }).catch((error: unknown) => {
       if (error instanceof Error && "status" in error && error.status === 404)
-        throw new Error("Usage resource no longer exists.");
+        throw new Error("Источник данных об использовании больше не существует.");
       throw error;
     });
     const previous = cache.get(resourceId);
@@ -49,7 +49,7 @@ export function registerUsageSource(bb: BbPluginApi) {
         },
       });
     if (host.status === "disconnected")
-      return unavailable("Machine is disconnected.");
+      return unavailable("Машина отключена.");
     const providers = await bb.sdk.providers.list({
       hostId,
       capability: "usage",
@@ -62,7 +62,7 @@ export function registerUsageSource(bb: BbPluginApi) {
           provider.id === "codex",
       )
     )
-      throw new Error("Usage resource no longer exists.");
+      throw new Error("Источник данных об использовании больше не существует.");
     if (
       !refresh &&
       previous?.usage.status === "ok" &&
@@ -78,7 +78,7 @@ export function registerUsageSource(bb: BbPluginApi) {
           refresh,
         });
         const usage = result[providerId];
-        if (!usage) throw new Error("Provider returned no usage information.");
+        if (!usage) throw new Error("Провайдер не вернул данные об использовании.");
         const metadata = metadataSchema.parse(usage);
         const value = usageMeasurementSchema.parse({
           accountKey: metadata.accountKey,
@@ -104,7 +104,7 @@ export function registerUsageSource(bb: BbPluginApi) {
         cache.set(resourceId, value);
         return value;
       } catch {
-        return unavailable("Usage could not be collected from this machine.");
+        return unavailable("Не удалось получить данные об использовании с этой машины.");
       }
     })();
     return promise;

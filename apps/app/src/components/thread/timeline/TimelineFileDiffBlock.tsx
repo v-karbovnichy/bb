@@ -103,7 +103,7 @@ export const TimelineFileDiffBlock = memo(function TimelineFileDiffBlock({
   if (renderablePatch === null && renderedChange.plainDiff === null) {
     return (
       <div className="rounded-md border border-border bg-surface-raised px-2 py-1.5 text-xs text-muted-foreground">
-        No diff available.
+        Различия недоступны.
       </div>
     );
   }

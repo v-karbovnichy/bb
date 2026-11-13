@@ -52,7 +52,7 @@ function prependSelectedBranch(
   return [selected.name, ...list];
 }
 
-const MERGE_BASE_FAILURE_TITLE = "Failed to update merge base";
+const MERGE_BASE_FAILURE_TITLE = "Не удалось обновить базу слияния";
 
 function showNotReadyToast(
   status: "creating" | "provisioning" | "ready" | "error" | "destroyed",
@@ -63,17 +63,17 @@ function showNotReadyToast(
       return;
     case "ready":
       toast.warning(MERGE_BASE_FAILURE_TITLE, {
-        description: "Workspace is unavailable.",
+        description: "Рабочая копия недоступна.",
       });
       return;
     case "error":
       toast.error(MERGE_BASE_FAILURE_TITLE, {
-        description: "Workspace setup failed.",
+        description: "Не удалось настроить рабочую копию.",
       });
       return;
     case "destroyed":
       toast.warning(MERGE_BASE_FAILURE_TITLE, {
-        description: "Workspace no longer exists.",
+        description: "Рабочая копия больше не существует.",
       });
       return;
   }
@@ -153,7 +153,7 @@ export function useMergeBase(
         },
         (error: unknown) => {
           setOverride(environmentId, null);
-          toast.error("Failed to update merge base branch", {
+          toast.error("Не удалось обновить ветку базы слияния", {
             description: error instanceof Error ? error.message : undefined,
           });
         },

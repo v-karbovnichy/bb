@@ -86,7 +86,7 @@ const OTHER = catalogEntry("Other", {
 function cardOrder(): string[] {
   return [
     ...document.querySelectorAll<HTMLButtonElement>(
-      'button[aria-label^="Open "][aria-label$=" details"]',
+      'button[aria-label^="Открыть сведения о "]',
     ),
   ].map((button) => button.getAttribute("aria-label") ?? "");
 }
@@ -192,9 +192,9 @@ describe("PluginAuthorPage", () => {
         .getAttribute("href"),
     ).toBe("https://github.com/patlee");
     expect(cardOrder()).toEqual([
-      "Open Alpha details",
-      "Open Beta details",
-      "Open Gamma details",
+      "Открыть сведения о Alpha",
+      "Открыть сведения о Beta",
+      "Открыть сведения о Gamma",
     ]);
     expect(screen.queryByText("Other")).toBeNull();
     expect(screen.getByTestId("location").textContent).toContain(
@@ -209,42 +209,42 @@ describe("PluginAuthorPage", () => {
 
     await screen.findByRole("heading", { name: /^Pat Lee/u });
     expect(cardOrder()).toEqual([
-      "Open Gamma details",
-      "Open Beta details",
-      "Open Alpha details",
+      "Открыть сведения о Gamma",
+      "Открыть сведения о Beta",
+      "Открыть сведения о Alpha",
     ]);
     const sort = screen.getByRole("button", {
-      name: "Sort: Installs, descending",
+      name: "Сортировка: Установки, по убыванию",
     });
     fireEvent.pointerDown(sort);
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Installs" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Установки" }));
     expect(cardOrder()).toEqual([
-      "Open Beta details",
-      "Open Gamma details",
-      "Open Alpha details",
+      "Открыть сведения о Beta",
+      "Открыть сведения о Gamma",
+      "Открыть сведения о Alpha",
     ]);
     fireEvent.keyDown(document, { key: "Escape" });
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Filter plugins by category: All categories",
+        name: "Фильтр плагинов по категории: Все категории",
       }),
     );
     fireEvent.click(screen.getByRole("option", { name: /Thread Content/u }));
-    expect(cardOrder()).toEqual(["Open Gamma details", "Open Alpha details"]);
+    expect(cardOrder()).toEqual(["Открыть сведения о Gamma", "Открыть сведения о Alpha"]);
     fireEvent.click(screen.getByRole("option", { name: /Security/u }));
     expect(cardOrder()).toEqual([
-      "Open Beta details",
-      "Open Gamma details",
-      "Open Alpha details",
+      "Открыть сведения о Beta",
+      "Открыть сведения о Gamma",
+      "Открыть сведения о Alpha",
     ]);
-    fireEvent.click(screen.getByRole("button", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить фильтр" }));
 
-    fireEvent.change(screen.getByRole("textbox", { name: "Search plugins" }), {
+    fireEvent.change(screen.getByRole("textbox", { name: "Поиск плагинов" }), {
       target: { value: "Beta" },
     });
-    await waitFor(() => expect(cardOrder()).toEqual(["Open Beta details"]));
-    const beta = screen.getByRole("button", { name: "Open Beta details" });
+    await waitFor(() => expect(cardOrder()).toEqual(["Открыть сведения о Beta"]));
+    const beta = screen.getByRole("button", { name: "Открыть сведения о Beta" });
     fireEvent.click(beta);
     expect(onOpenPlugin).toHaveBeenCalledWith("Beta", beta);
     expect(screen.getByTestId("location").textContent).toContain("query=Beta");
@@ -259,6 +259,6 @@ describe("PluginAuthorPage", () => {
       await screen.findByRole("heading", { name: /^Pat Lee/u }),
     ).toBeTruthy();
     expect(screen.getByText("3 plugins")).toBeTruthy();
-    await waitFor(() => expect(cardOrder()).toEqual(["Open Beta details"]));
+    await waitFor(() => expect(cardOrder()).toEqual(["Открыть сведения о Beta"]));
   });
 });

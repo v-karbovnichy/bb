@@ -33,16 +33,16 @@ interface OpenServerUrlDialogArgs {
 }
 
 const SERVER_URL_DIALOG_TITLES: Record<ServerUrlDialogMode, string> = {
-  add: "Add Server",
-  edit: "Edit Server",
-  rename: "Edit Server",
+  add: "Добавить сервер",
+  edit: "Изменить сервер",
+  rename: "Изменить сервер",
 };
 
 const SERVER_URL_DIALOG_DESCRIPTIONS: Record<ServerUrlDialogMode, string> = {
-  add: "Save another bb server to the Server menu.",
-  edit: "Edit this saved server. Leave the URL empty to remove it.",
+  add: "Сохраните ещё один сервер bb в меню «Сервер».",
+  edit: "Измените сохранённый сервер. Чтобы удалить его, оставьте URL пустым.",
   rename:
-    "Name this bb Connect server. Its address comes from your bb account.",
+    "Укажите имя сервера bb Connect. Адрес берётся из вашего аккаунта bb.",
 };
 
 function renderServerUrlDialogHtml(
@@ -52,7 +52,7 @@ function renderServerUrlDialogHtml(
 ): string {
   const title = SERVER_URL_DIALOG_TITLES[mode];
   return `<!doctype html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
@@ -102,11 +102,11 @@ ${DESKTOP_DIALOG_BASE_CSS}
   <p>${SERVER_URL_DIALOG_DESCRIPTIONS[mode]}</p>
   <form>
     <input name="url" type="text" placeholder="https://example.com:38886" value="${escapeHtmlText(initialUrl ?? "")}"${mode === "rename" ? " readonly" : ""} autocomplete="off" spellcheck="false">
-    <input name="name" type="text" placeholder="Name (optional)" value="${escapeHtmlText(initialName ?? "")}" maxlength="${MAX_SERVER_NAME_LENGTH}" autocomplete="off" spellcheck="false">
+    <input name="name" type="text" placeholder="Название (необязательно)" value="${escapeHtmlText(initialName ?? "")}" maxlength="${MAX_SERVER_NAME_LENGTH}" autocomplete="off" spellcheck="false">
     <div data-error></div>
     <div class="actions">
-      <button type="button" data-cancel>Cancel</button>
-      <button type="submit">Save</button>
+      <button type="button" data-cancel>Отмена</button>
+      <button type="submit">Сохранить</button>
     </div>
   </form>
 </body>
@@ -163,11 +163,11 @@ export function openServerUrlDialog(
       BB_DESKTOP_SERVER_URL_DIALOG_SUBMIT_CHANNEL,
       (event, payload): ServerUrlDialogSubmitResponse => {
         if (event.sender.id !== dialogWindow.webContents.id) {
-          return { ok: false, message: "Unexpected sender." };
+          return { ok: false, message: "Неожиданный отправитель." };
         }
         const parsed = serverUrlDialogSubmitRequestSchema.safeParse(payload);
         if (!parsed.success) {
-          return { ok: false, message: "Enter a valid http(s) URL." };
+          return { ok: false, message: "Введите корректный URL http(s)." };
         }
         if (args.mode === "rename" && args.initialUrl !== null) {
           finish({
@@ -183,7 +183,7 @@ export function openServerUrlDialog(
         }
         const normalized = normalizeCustomServerUrl(parsed.data.url);
         if (normalized === null) {
-          return { ok: false, message: "Enter a valid http(s) URL." };
+          return { ok: false, message: "Введите корректный URL http(s)." };
         }
         finish({
           kind: "set",

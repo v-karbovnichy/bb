@@ -94,7 +94,7 @@ describe("ThreadTimelineRows row isolation", () => {
       ).toBeTruthy();
       expect(
         screen
-          .getByRole("button", { name: "Message actions" })
+          .getByRole("button", { name: "Действия с сообщением" })
           .parentElement?.parentElement?.contains(status),
       ).toBe(true);
       expect(screen.getAllByText("Timestamp")).toHaveLength(1);
@@ -131,7 +131,7 @@ describe("ThreadTimelineRows row isolation", () => {
       const time = screen.getByText(
         formatShortMessageTime(startedAt, new Date()),
       );
-      const menu = screen.getByRole("button", { name: "Message actions" });
+      const menu = screen.getByRole("button", { name: "Действия с сообщением" });
       expect(time.tagName).toBe("TIME");
       expect(time.getAttribute("dateTime")).toBe(
         new Date(startedAt).toISOString(),

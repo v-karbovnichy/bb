@@ -36,15 +36,15 @@ import type { ClaudeOAuthLogin } from "./oauth-login.js";
 import type { CodexDeviceLogin } from "./codex-device-login.js";
 
 const DESCRIPTION = [
-  "Accounts run sequentially by priority, then order added. The current fallback stays active until unavailable.",
-  "switchThreshold is a preference, not a cutoff: new conversations go to accounts below it first, existing conversations keep their account past it, and accounts at or above it keep serving until the provider refuses them. Status shows exhausted only for an account the provider refused.",
-  "When this bb server runs inside another bb server's thread, parent proxy routes its pooled traffic through that parent; isolate neutralises the inherited routing.",
-  "Reorder includes every account for the provider and changes the next failover sequence; existing conversations stay pinned.",
+  "Аккаунты используются по очереди: сначала по приоритету, затем по порядку добавления. Текущий резервный аккаунт остаётся активным, пока доступен.",
+  "switchThreshold задаёт предпочтение, а не жёсткий предел: новые чаты сначала направляются на аккаунты ниже порога, существующие сохраняют свой аккаунт, а аккаунты на пороге и выше продолжают работать до отказа провайдера. Статус исчерпания показывается только после отказа провайдера.",
+  "Если этот сервер bb запущен внутри чата другого сервера bb, режим proxy направляет общий трафик через родительский сервер, а isolate отключает унаследованную маршрутизацию.",
+  "При изменении порядка перечислите все аккаунты провайдера. Новый порядок применяется при следующем переключении; существующие чаты остаются закреплёнными.",
 ].join("\n");
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для автоматической обработки",
 } as const;
 
 const PROVIDER_OPTION = {
@@ -52,7 +52,7 @@ const PROVIDER_OPTION = {
   values: ["claude", "codex"],
   required: true,
   aliases: ["vendor"],
-  description: "Provider this account belongs to",
+  description: "Провайдер этого аккаунта",
 } as const;
 
 const SESSION_OPTION = {
@@ -61,12 +61,12 @@ const SESSION_OPTION = {
   placeholder: "id",
   aliases: ["session-id", "sessionId"],
   description:
-    "Session ID printed by `bb pool account add --login` or `bb pool account login`",
+    "ID сессии, выведенный командой `bb pool account add --login` или `bb pool account login`",
 } as const;
 
 const ACCOUNT_ID_POSITIONAL = {
   name: "id",
-  description: "Account UUID from `bb pool account list`",
+  description: "UUID аккаунта из `bb pool account list`",
   required: true,
 } as const;
 
@@ -111,23 +111,23 @@ function formatFamilyQuota(quota: FamilyQuota | null): string {
 }
 
 function formatAccounts(accounts: readonly AccountSummary[]): string {
-  if (accounts.length === 0) return "No accounts configured.";
+  if (accounts.length === 0) return "Аккаунты не настроены.";
   const families = modelFamilySchema.options.filter((family) =>
     accounts.some((account) => account.familyWeekly[family] !== null),
   );
   return [
     [
       "ID",
-      "Label",
-      "Email",
-      "Provider",
-      "Kind",
-      "Enabled",
-      "Priority",
-      "Windows",
-      "Extra usage",
+      "Название",
+      "Эл. почта",
+      "Провайдер",
+      "Тип",
+      "Включён",
+      "Приоритет",
+      "Периоды",
+      "Доп. использование",
       ...families.map(familyLabel),
-      "Status",
+      "Статус",
     ].join("\t"),
     ...accounts.map((account) =>
       [
@@ -151,22 +151,22 @@ function formatAccounts(accounts: readonly AccountSummary[]): string {
 
 function formatStatus(status: PoolStatusReport): string {
   return [
-    `Route: ${status.route}`,
-    `Accepting: ${status.accepting}`,
-    `Enabled accounts: ${status.enabledAccountCount}`,
-    `In flight: ${status.inFlight}`,
+    `Маршрут: ${status.route}`,
+    `Приём запросов: ${status.accepting}`,
+    `Включено аккаунтов: ${status.enabledAccountCount}`,
+    `В обработке: ${status.inFlight}`,
     "",
-    "Machine tokens:",
+    "Токены машин:",
     ...(status.hosts.length === 0
-      ? ["None minted."]
+      ? ["Токены не созданы."]
       : status.hosts.map(
           (host) =>
-            `${host.hostName ?? host.hostId}\t${new Date(host.mintedAt).toISOString()}\t${host.lastUsedAt === null ? "never" : new Date(host.lastUsedAt).toISOString()}`,
+            `${host.hostName ?? host.hostId}\t${new Date(host.mintedAt).toISOString()}\t${host.lastUsedAt === null ? "никогда" : new Date(host.lastUsedAt).toISOString()}`,
         )),
     "",
-    "Recently routed threads without a local Claude login:",
+    "Недавние чаты без локального входа в Claude:",
     ...(status.routedThreadsWithoutLocalLogin.length === 0
-      ? ["None."]
+      ? ["Нет."]
       : status.routedThreadsWithoutLocalLogin.map(
           (thread) =>
             `${thread.threadId}\t${thread.hostName ?? thread.hostId}\t${thread.localClaudeStatus}`,
@@ -187,7 +187,7 @@ function formatConfig(config: AccountPoolConfig): string {
 
 function formatParent(parent: PoolStatus["parent"]): string {
   if (parent === null) {
-    return "No parent bb server Account Pooler was detected for this instance.";
+    return "Для этого экземпляра не обнаружен родительский сервер bb с пулом аккаунтов.";
   }
   return [
     `parent: ${parent.baseUrl}`,
@@ -220,7 +220,7 @@ function parseConfigUpdate(
     return accountPoolConfigSetInputSchema.parse({ parentMode: value });
   }
   throw new PluginCliError(
-    "Config key must be anthropicUpstreamBaseUrl, codexUpstreamBaseUrl, switchThreshold, or parentMode.",
+    "Ключ настройки должен быть anthropicUpstreamBaseUrl, codexUpstreamBaseUrl, switchThreshold или parentMode.",
     { code: "invalid_value" },
   );
 }
@@ -262,13 +262,13 @@ export function registerPoolCli(
         stdout: asJson
           ? json({ ok: true, login: started })
           : `${[
-              "Open this URL to sign in to Codex:",
+              "Откройте эту ссылку для входа в Codex:",
               started.verificationUri,
               "",
-              `Enter this code: ${started.userCode}`,
-              `Session ID: ${started.sessionId}`,
+              `Введите код: ${started.userCode}`,
+              `ID сессии: ${started.sessionId}`,
               "",
-              "After authorizing, wait for the login to be saved with:",
+              "После авторизации дождитесь сохранения входа с помощью команды:",
               `bb pool account login-poll --session ${started.sessionId}`,
             ].join("\n")}\n`,
       };
@@ -279,12 +279,12 @@ export function registerPoolCli(
       stdout: asJson
         ? json({ ok: true, login: started })
         : `${[
-            "Open this URL to sign in to Claude:",
+            "Откройте эту ссылку для входа в Claude:",
             started.authorizeUrl,
             "",
-            `Session ID: ${started.sessionId}`,
+            `ID сессии: ${started.sessionId}`,
             "",
-            "After signing in, pipe the code shown on the final page into:",
+            "После входа передайте код с последней страницы в команду:",
             `printf '%s\\n' \"$CLAUDE_AUTH_CODE\" | bb pool account login-complete --session ${started.sessionId} --code-stdin`,
           ].join("\n")}\n`,
     };
@@ -293,23 +293,23 @@ export function registerPoolCli(
     defineCli({
       name: "pool",
       summary:
-        "Manage Claude and Codex accounts and inspect the Account Pooler hub",
+        "Управлять аккаунтами Claude и Codex и просматривать состояние пула",
       description: DESCRIPTION,
       commands: {
         "account add": cliCommand({
           summary:
-            "Sign in to a Claude or Codex account, or add an Anthropic API key",
+            "Войти в аккаунт Claude или Codex либо добавить API-ключ Anthropic",
           description:
-            "--login prints the browser or device step and exits; finish it with `bb pool account login-complete` (Claude) or `bb pool account login-poll` (Codex).\nThe pool keeps its own login, separate from this machine's Claude Code or Codex login, so neither signs the other out.",
+            "--login выводит шаг входа через браузер или код устройства и завершает работу; закончите вход командой `bb pool account login-complete` (Claude) или `bb pool account login-poll` (Codex).\nПул хранит отдельную сессию, поэтому вход на этой машине в Claude Code или Codex не влияет на него.",
           unexpectedPositionalHint:
-            "the provider belongs in --provider <claude|codex>, not a bare argument",
+            "укажите провайдера через --provider <claude|codex>",
           options: {
             provider: PROVIDER_OPTION,
             login: {
               type: "boolean",
               aliases: ["signin", "sign-in"],
               description:
-                "Start a browser (Claude) or device-code (Codex) login and print the next command",
+                "Начать вход через браузер (Claude) или код устройства (Codex) и вывести следующую команду",
             },
             "api-key": {
               type: "string",
@@ -317,14 +317,14 @@ export function registerPoolCli(
               stdin: true,
               aliases: ["apikey", "key"],
               description:
-                "Anthropic API key, --provider claude only. Unsafe: exposes the key in process arguments, shell history, and agent transcripts",
+                "API-ключ Anthropic, только для --provider claude. Ключ будет виден в аргументах процесса, истории оболочки и журнале агента",
             },
             label: {
               type: "string",
               placeholder: "text",
               aliases: ["name"],
               description:
-                "Label shown in listings; defaults to a provider-derived label",
+                "Название в списке; по умолчанию определяется по провайдеру",
             },
             priority: {
               type: "integer",
@@ -334,7 +334,7 @@ export function registerPoolCli(
               placeholder: "n",
               aliases: ["order"],
               description:
-                "Failover position; lower numbers run first, ties keep the order added",
+                "Порядок переключения: меньшие числа используются раньше, при равенстве сохраняется порядок добавления",
             },
             json: JSON_OPTION,
           },
@@ -355,7 +355,7 @@ export function registerPoolCli(
               }
               if (provider !== "claude") {
                 throw new PluginCliError(
-                  "Anthropic API keys require --provider claude.",
+                  "Для API-ключа Anthropic требуется --provider claude.",
                   { code: "invalid_value" },
                 );
               }
@@ -370,15 +370,15 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, account })
-                  : `Added ${account.label} (${account.id}).\n`,
+                  : `Добавлен аккаунт ${account.label} (${account.id}).\n`,
               };
             }),
         }),
         "account login": cliCommand({
           summary:
-            "Sign in again to an existing account, keeping its id, priority, enabled state, and pinned conversations",
+            "Повторно войти в аккаунт, сохранив его ID, приоритет, состояние и закреплённые чаты",
           description:
-            "Use this when a login expired, was revoked, or was shared with another program. Prints the browser or device step and exits; finish it with `bb pool account login-complete` (Claude) or `bb pool account login-poll` (Codex). The new login must belong to the same account.",
+            "Используйте, если срок входа истёк, доступ отозван или сессия используется другой программой. Команда выводит шаг входа; завершите его через `bb pool account login-complete` (Claude) или `bb pool account login-poll` (Codex). Новый вход должен относиться к тому же аккаунту.",
           aliases: ["account relogin", "account reauth"],
           positionals: [ACCOUNT_ID_POSITIONAL],
           options: { json: JSON_OPTION },
@@ -391,7 +391,7 @@ export function registerPoolCli(
                 (candidate) => candidate.id === id,
               );
               if (account === undefined) {
-                throw new PluginCliError(`Account ${id} does not exist.`, {
+                throw new PluginCliError(`Аккаунт ${id} не найден.`, {
                   code: "account_not_found",
                 });
               }
@@ -403,9 +403,9 @@ export function registerPoolCli(
             }),
         }),
         "account login-poll": cliCommand({
-          summary: "Wait for a Codex device-code login to complete",
+          summary: "Дождаться завершения входа в Codex по коду устройства",
           description:
-            "Blocks until the Codex authorization finishes, fails, or the invocation is cancelled.",
+            "Ожидает завершения или ошибки авторизации Codex либо отмены команды.",
           options: { session: SESSION_OPTION, json: JSON_OPTION },
           run: (input, ctx) =>
             attempt(async () => {
@@ -419,7 +419,7 @@ export function registerPoolCli(
                 if (signal?.aborted) {
                   cancel();
                   throw (
-                    signal.reason ?? new Error("Codex login was cancelled.")
+                    signal.reason ?? new Error("Вход в Codex отменён.")
                   );
                 }
                 while (true) {
@@ -431,7 +431,7 @@ export function registerPoolCli(
                   const result = await codexLogin.poll(parsed);
                   if (signal?.aborted) {
                     throw (
-                      signal.reason ?? new Error("Codex login was cancelled.")
+                      signal.reason ?? new Error("Вход в Codex отменён.")
                     );
                   }
                   if (result.status === "complete") {
@@ -439,7 +439,7 @@ export function registerPoolCli(
                       exitCode: 0,
                       stdout: input.options.json
                         ? json({ ok: true, account: result.account })
-                        : `Signed in ${result.account.label} (${result.account.id}).\n`,
+                        : `Выполнен вход в ${result.account.label} (${result.account.id}).\n`,
                     };
                   }
                   if (result.status === "error") {
@@ -457,9 +457,9 @@ export function registerPoolCli(
             }),
         }),
         "account login-complete": cliCommand({
-          summary: "Complete a Claude browser login with its manual code",
+          summary: "Завершить вход в Claude через браузер с помощью кода",
           description:
-            "Pipe the code the final login page shows:\n  printf '%s\\n' \"$CLAUDE_AUTH_CODE\" | bb pool account login-complete --session <id> --code-stdin",
+            "Передайте код с последней страницы входа:\n  printf '%s\\n' \"$CLAUDE_AUTH_CODE\" | bb pool account login-complete --session <id> --code-stdin",
           options: {
             session: SESSION_OPTION,
             code: {
@@ -469,7 +469,7 @@ export function registerPoolCli(
               stdin: true,
               aliases: ["pasted", "auth-code"],
               description:
-                "Manual callback code from the final login page. Unsafe: exposes the code in process arguments",
+                "Код с последней страницы входа. Он будет виден в аргументах процесса",
             },
             json: JSON_OPTION,
           },
@@ -484,12 +484,12 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, account })
-                  : `Signed in ${account.label} (${account.id}).\n`,
+                  : `Выполнен вход в ${account.label} (${account.id}).\n`,
               };
             }),
         }),
         "account list": cliCommand({
-          summary: "List pool accounts and observed quota",
+          summary: "Показать аккаунты пула и доступные квоты",
           aliases: ["account ls"],
           suggestFor: ["accounts", "list", "ls"],
           options: { json: JSON_OPTION },
@@ -505,7 +505,7 @@ export function registerPoolCli(
             }),
         }),
         "account remove": cliCommand({
-          summary: "Remove an account and its secret token file",
+          summary: "Удалить аккаунт и файл с его секретным токеном",
           aliases: ["account rm", "account delete"],
           positionals: [ACCOUNT_ID_POSITIONAL],
           options: { json: JSON_OPTION },
@@ -515,7 +515,7 @@ export function registerPoolCli(
                 id: input.positionals.id,
               });
               if (!(await operations.remove(id))) {
-                throw new PluginCliError(`Account ${id} does not exist.`, {
+                throw new PluginCliError(`Аккаунт ${id} не найден.`, {
                   code: "account_not_found",
                 });
               }
@@ -523,12 +523,12 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, removed: id })
-                  : `Removed ${id}.\n`,
+                  : `Удалён аккаунт ${id}.\n`,
               };
             }),
         }),
         "account enable": cliCommand({
-          summary: "Enable an account",
+          summary: "Включить аккаунт",
           positionals: [ACCOUNT_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -538,7 +538,7 @@ export function registerPoolCli(
               });
               const account = await operations.enable(id);
               if (account === null) {
-                throw new PluginCliError(`Account ${id} does not exist.`, {
+                throw new PluginCliError(`Аккаунт ${id} не найден.`, {
                   code: "account_not_found",
                 });
               }
@@ -546,12 +546,12 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, account })
-                  : `Enabled ${id}.\n`,
+                  : `Включён аккаунт ${id}.\n`,
               };
             }),
         }),
         "account disable": cliCommand({
-          summary: "Disable an account",
+          summary: "Отключить аккаунт",
           positionals: [ACCOUNT_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -561,7 +561,7 @@ export function registerPoolCli(
               });
               const account = await operations.disable(id);
               if (account === null) {
-                throw new PluginCliError(`Account ${id} does not exist.`, {
+                throw new PluginCliError(`Аккаунт ${id} не найден.`, {
                   code: "account_not_found",
                 });
               }
@@ -569,17 +569,17 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, account })
-                  : `Disabled ${id}.\n`,
+                  : `Отключён аккаунт ${id}.\n`,
               };
             }),
         }),
         "account priority": cliCommand({
-          summary: "Set an account's position in the failover priority order",
+          summary: "Установить приоритет аккаунта при переключении",
           positionals: [
             ACCOUNT_ID_POSITIONAL,
             {
               name: "priority",
-              description: "Whole number; lower numbers run first",
+              description: "Целое число; меньшие числа используются раньше",
               required: true,
             },
           ],
@@ -589,7 +589,7 @@ export function registerPoolCli(
               const raw = input.positionals.priority;
               if (!/^-?\d+$/.test(raw.trim())) {
                 throw new PluginCliError(
-                  `invalid value '${raw}' for <priority>. Expected a whole number`,
+                  `недопустимое значение '${raw}' для <priority>. Требуется целое число`,
                   { code: "invalid_value" },
                 );
               }
@@ -602,7 +602,7 @@ export function registerPoolCli(
                 parsed.priority,
               );
               if (account === null) {
-                throw new PluginCliError("Account not found.", {
+                throw new PluginCliError("Аккаунт не найден.", {
                   code: "account_not_found",
                 });
               }
@@ -610,14 +610,14 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, account })
-                  : `Set ${account.label} priority to ${account.priority}.\n`,
+                  : `Для ${account.label} установлен приоритет ${account.priority}.\n`,
               };
             }),
         }),
         "account reorder": cliCommand({
-          summary: "Set the complete failover order for one provider",
+          summary: "Задать полный порядок переключения для провайдера",
           description:
-            "List every account for the provider, including disabled ones, in the order they should be tried.",
+            "Перечислите все аккаунты провайдера, включая отключённые, в порядке их использования.",
           positionals: [
             {
               name: "provider",
@@ -626,7 +626,7 @@ export function registerPoolCli(
             },
             {
               name: "account-id",
-              description: "Every account UUID for that provider, in order",
+              description: "UUID всех аккаунтов провайдера в нужном порядке",
               required: true,
               variadic: true,
             },
@@ -647,13 +647,13 @@ export function registerPoolCli(
                       provider: parsed.provider,
                       accountIds: parsed.accountIds,
                     })
-                  : `Updated ${parsed.provider} account order.\n`,
+                  : `Обновлён порядок аккаунтов ${parsed.provider}.\n`,
               };
             }),
         }),
         "account refresh": cliCommand({
           summary:
-            "Refresh one account's observed usage; retries an errored OAuth login and clears the error on success",
+            "Обновить данные об использовании аккаунта; повторить неудачный вход OAuth и очистить ошибку при успехе",
           positionals: [ACCOUNT_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -663,7 +663,7 @@ export function registerPoolCli(
               });
               const account = await operations.refreshUsage(id);
               if (account === null) {
-                throw new PluginCliError("Account not found.", {
+                throw new PluginCliError("Аккаунт не найден.", {
                   code: "account_not_found",
                 });
               }
@@ -672,13 +672,13 @@ export function registerPoolCli(
                 stdout: input.options.json
                   ? json({ ok: true, account })
                   : account.error === null
-                    ? `Refreshed usage for ${id}.\n`
-                    : `Account ${id} is still in error: ${account.error}\n`,
+                    ? `Обновлены данные об использовании ${id}.\n`
+                    : `Для аккаунта ${id} ошибка сохраняется: ${account.error}\n`,
               };
             }),
         }),
         status: cliCommand({
-          summary: "Show hub, machine token, routing, and account status",
+          summary: "Показать состояние пула, токенов машин, маршрутизации и аккаунтов",
           suggestFor: ["info", "hub"],
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -701,7 +701,7 @@ export function registerPoolCli(
             }),
         }),
         routing: cliCommand({
-          summary: "Enable or disable pooled routing for one provider",
+          summary: "Включить или отключить маршрутизацию через пул для провайдера",
           positionals: [
             {
               name: "provider",
@@ -713,7 +713,7 @@ export function registerPoolCli(
             off: {
               type: "boolean",
               aliases: ["disable"],
-              description: "Disable pooled routing instead of enabling it",
+              description: "Отключить маршрутизацию через пул",
             },
             json: JSON_OPTION,
           },
@@ -732,12 +732,12 @@ export function registerPoolCli(
                       provider: parsed.provider,
                       enabled: parsed.enabled,
                     })
-                  : `${parsed.enabled ? "Enabled" : "Disabled"} ${parsed.provider} Account Pooler routing.\n`,
+                  : `Маршрутизация ${parsed.provider} через пул ${parsed.enabled ? "включена" : "отключена"}.\n`,
               };
             }),
         }),
         config: cliCommand({
-          summary: "Show Account Pooler routing configuration",
+          summary: "Показать настройки маршрутизации через пул",
           options: { json: JSON_OPTION },
           run: (input) =>
             attempt(async () => {
@@ -751,18 +751,18 @@ export function registerPoolCli(
             }),
         }),
         "config set": cliCommand({
-          summary: "Update one Account Pooler routing configuration value",
+          summary: "Изменить одну настройку маршрутизации через пул",
           positionals: [
             {
               name: "key",
               description:
-                "anthropicUpstreamBaseUrl, codexUpstreamBaseUrl, switchThreshold, or parentMode",
+                "anthropicUpstreamBaseUrl, codexUpstreamBaseUrl, switchThreshold или parentMode",
               required: true,
             },
             {
               name: "value",
               description:
-                "HTTP(S) URL for the upstream keys, a number above 0 and at most 1 for switchThreshold (the quota fraction from which other accounts are preferred), proxy or isolate for parentMode",
+                "HTTP(S) URL вышестоящего сервера; для switchThreshold — число больше 0 и не больше 1 (доля квоты, при которой предпочтительны другие аккаунты); для parentMode — proxy или isolate",
               required: true,
             },
           ],
@@ -785,12 +785,12 @@ export function registerPoolCli(
         }),
         parent: cliCommand({
           summary:
-            "Show or set how this instance uses a parent bb server's Account Pooler",
+            "Показать или изменить использование пула родительского сервера bb",
           positionals: [
             {
               name: "mode",
               description:
-                "proxy routes pooled traffic through the parent; isolate neutralises the inherited routing. Omit to report the detected parent",
+                "proxy направляет трафик пула через родительский сервер; isolate отключает унаследованную маршрутизацию. Не указывайте режим, чтобы посмотреть обнаруженный родительский сервер",
             },
           ],
           options: { json: JSON_OPTION },
@@ -812,14 +812,14 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, parentMode: next.parentMode })
-                  : `Set the Account Pooler parent mode to ${next.parentMode}.\n`,
+                  : `Для пула установлен родительский режим ${next.parentMode}.\n`,
               };
             }),
         }),
         "token rotate": cliCommand({
-          summary: "Rotate one machine's Account Pooler bearer token",
+          summary: "Сменить токен доступа машины к пулу",
           description:
-            "The previous token keeps working for ten minutes. Tokens are never printed.",
+            "Предыдущий токен действует ещё десять минут. Токены не выводятся.",
           suggestFor: ["rotate", "token"],
           options: {
             machine: {
@@ -828,7 +828,7 @@ export function registerPoolCli(
               placeholder: "id-or-name",
               aliases: ["host", "host-id", "machine-id"],
               description:
-                "Enrolled machine name or host ID from `bb pool status`",
+                "Имя зарегистрированной машины или ID хоста из `bb pool status`",
             },
             json: JSON_OPTION,
           },
@@ -842,24 +842,24 @@ export function registerPoolCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? json({ ok: true, token })
-                  : `Rotated the Account Pooler token for ${token.hostName ?? token.hostId}.\n`,
+                  : `Токен пула для ${token.hostName ?? token.hostId} сменён.\n`,
               };
             }),
         }),
         bypass: cliCommand({
-          summary: "Bypass Account Pooler routing for one thread",
+          summary: "Отключить маршрутизацию через пул для чата",
           positionals: [
             {
               name: "thread-id",
               description:
-                "Thread that should use its own provider credentials",
+                "Чат, который должен использовать собственные учётные данные провайдера",
             },
           ],
           options: {
             off: {
               type: "boolean",
               aliases: ["disable"],
-              description: "Restore pooled routing for the thread",
+              description: "Восстановить маршрутизацию чата через пул",
             },
             json: JSON_OPTION,
           },
@@ -868,13 +868,13 @@ export function registerPoolCli(
               const threadId = input.positionals["thread-id"];
               if (threadId === undefined) {
                 throw new PluginCliError(
-                  "missing required arguments: <thread-id>",
+                  "отсутствует обязательный аргумент: <thread-id>",
                   {
                     code: "missing_required",
                     ...(ctx.threadId === undefined
                       ? {}
                       : {
-                          hint: `This thread is ${ctx.threadId}; re-run with bb pool bypass ${ctx.threadId}`,
+                          hint: `Текущий чат: ${ctx.threadId}; повторите команду bb pool bypass ${ctx.threadId}`,
                         }),
                   },
                 );
@@ -895,7 +895,7 @@ export function registerPoolCli(
                       threadId: result.threadId,
                       bypassed: result.bypassed,
                     })
-                  : `${result.bypassed ? "Enabled" : "Disabled"} Account Pooler bypass for ${result.threadId}.\n`,
+                  : `Обход пула для ${result.threadId} ${result.bypassed ? "включён" : "отключён"}.\n`,
               };
             }),
         }),

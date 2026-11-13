@@ -64,7 +64,9 @@ describe("PluginThreadList", () => {
     expect(
       container.querySelector('[data-thread-list-placeholder="loading"]'),
     ).not.toBeNull();
-    expect(screen.getByLabelText("Loading sidebar navigation")).toBeTruthy();
+    expect(
+      screen.getByLabelText("Загрузка навигации боковой панели"),
+    ).toBeTruthy();
     expect(screen.queryByRole("button")).toBeNull();
 
     act(() => markPluginFrontendsSettled());
@@ -73,7 +75,7 @@ describe("PluginThreadList", () => {
       container.querySelector('[data-thread-list-placeholder="missing"]'),
     ).not.toBeNull();
     expect(screen.getByRole("status").textContent).toContain(
-      "No thread list plugin is enabled.",
+      "Плагин списка чатов не включён.",
     );
     expect(screen.queryByRole("link")).toBeNull();
     expect(screen.queryByRole("button")).toBeNull();
@@ -113,12 +115,12 @@ describe("PluginThreadList", () => {
       container.querySelector('[data-thread-list-placeholder="crashed"]'),
     ).not.toBeNull();
     expect(screen.getByRole("alert").textContent).toContain(
-      "Demo list stopped working.",
+      "Сбой в работе Demo list.",
     );
     expect(toast.error).toHaveBeenCalledTimes(1);
 
     shouldCrash = false;
-    fireEvent.click(screen.getByRole("button", { name: "Reload" }));
+    fireEvent.click(screen.getByRole("button", { name: "Перезагрузить" }));
 
     expect(screen.getByTestId("plugin-list").textContent).toBe("recovered");
     expect(

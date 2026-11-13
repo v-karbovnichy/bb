@@ -364,11 +364,11 @@ export function PluginSidebarFooterItems({
                     onSelect={() => preferences.hideFromFooter(item.key)}
                   >
                     <Icon name="EyeOff" />
-                    Hide from footer
+                    Скрыть из нижней панели
                   </ContextMenuItem>
                   <ContextMenuItem onSelect={customize}>
                     <Icon name="SlidersHorizontal" />
-                    Customize footer
+                    Настроить нижнюю панель
                   </ContextMenuItem>
                 </ContextMenuContent>
               </ContextMenu>
@@ -380,18 +380,18 @@ export function PluginSidebarFooterItems({
                 <SidebarMenuButton
                   ref={moreRef}
                   id={SIDEBAR_FOOTER_MORE_ID}
-                  aria-label="More footer actions"
-                  tooltip={{ children: "More", hidden: false, side: "top" }}
+                  aria-label="Дополнительные действия внизу панели"
+                  tooltip={{ children: "Ещё", hidden: false, side: "top" }}
                   className={SIDEBAR_FOOTER_ACTION_CLASS}
                 >
                   <Icon name="MoreHorizontal" />
-                  <span className="sr-only">More</span>
+                  <span className="sr-only">Ещё</span>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
                 align="start"
-                mobileTitle="More footer actions"
+                mobileTitle="Дополнительные действия внизу панели"
                 onCloseAutoFocus={handleCloseAutoFocus}
               >
                 {hidden.map((item) => (
@@ -408,14 +408,14 @@ export function PluginSidebarFooterItems({
                   onSelect={isCompactViewport ? onCustomize : customize}
                 >
                   <Icon name="SlidersHorizontal" />
-                  Customize footer
+                  Настроить нижнюю панель
                 </DropdownMenuItem>
                 {items.length > 0 && (
                   <DropdownMenuItem
                     onSelect={() => setFooterShown(footerHidden)}
                   >
                     <Icon name={footerHidden ? "Eye" : "EyeOff"} />
-                    {footerHidden ? "Show footer" : "Hide footer"}
+                    {footerHidden ? "Показать нижнюю панель" : "Скрыть нижнюю панель"}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

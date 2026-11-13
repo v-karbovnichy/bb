@@ -90,8 +90,8 @@ export function VoiceInputTextarea({
                 variant="ghost"
                 aria-label={
                   voice.isProcessing
-                    ? "Cancel transcription"
-                    : "Cancel recording"
+                    ? "Отменить расшифровку"
+                    : "Отменить запись"
                 }
                 className="size-8 rounded-full p-0 max-md:pointer-coarse:size-10"
                 onClick={voice.cancel}
@@ -106,7 +106,7 @@ export function VoiceInputTextarea({
                 />
               </div>
               <span className="sr-only" aria-live="polite">
-                {voice.isProcessing ? "Transcribing" : "Recording"}
+                {voice.isProcessing ? "Расшифровка" : "Запись"}
               </span>
               <Button
                 type="button"
@@ -114,8 +114,8 @@ export function VoiceInputTextarea({
                 variant="secondary"
                 aria-label={
                   voice.isProcessing
-                    ? "Transcribing voice input"
-                    : "Stop and add text"
+                    ? "Расшифровка голосового ввода"
+                    : "Остановить и добавить текст"
                 }
                 className="size-8 rounded-md p-0 max-md:pointer-coarse:size-10"
                 disabled={disabled || voice.isProcessing}
@@ -138,7 +138,7 @@ export function VoiceInputTextarea({
                 type="button"
                 size="icon"
                 variant="ghost"
-                aria-label="Start voice input"
+                aria-label="Начать голосовой ввод"
                 className="size-8 rounded-md p-0 max-md:pointer-coarse:size-10"
                 disabled={disabled}
                 onClick={() => {

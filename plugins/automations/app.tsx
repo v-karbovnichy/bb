@@ -302,7 +302,7 @@ function AutomationsThreadInfoSection({
   const automations = useTargetThreadAutomations(threadId);
   if (automations.length === 0) return null;
   return (
-    <InfoSection label="Automations" count={automations.length}>
+    <InfoSection label="Автоматизации" count={automations.length}>
       <InfoList
         items={automations}
         getKey={(automation) => automation.id}
@@ -321,11 +321,11 @@ function useAutomationsPageTitle({ subPath }: PluginNavPanelProps) {
   return parsed
     ? {
         breadcrumbs: [
-          { label: "Installed", to: "/plugins/automations/automations" },
+          { label: "Установленные", to: "/plugins/automations/automations" },
           { label: automation?.name ?? parsed.route.automationId },
         ],
       }
-    : { title: subPath === "browse" ? "Browse" : "Installed" };
+    : { title: subPath === "browse" ? "Обзор" : "Установленные" };
 }
 
 interface RunsState {
@@ -473,10 +473,9 @@ function DeleteAutomationDialog({
         {open ? (
           <>
             <DialogHeader>
-              <DialogTitle>Delete automation?</DialogTitle>
+              <DialogTitle>Удалить автоматизацию?</DialogTitle>
               <DialogDescription>
-                &ldquo;{name}&rdquo; and its run history will be permanently
-                removed.
+                «{name}» и история запусков будут удалены без возможности восстановления.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -486,7 +485,7 @@ function DeleteAutomationDialog({
                 disabled={pending}
                 onClick={onCancel}
               >
-                Cancel
+                Отмена
               </Button>
               <Button
                 type="button"
@@ -525,7 +524,7 @@ function OverviewView({
       try {
         await mutations[method](route);
       } catch (rpcError: unknown) {
-        toast.error(`Failed to ${method} automation: ${errorText(rpcError)}`);
+        toast.error(`Не удалось выполнить действие ${method} для автоматизации: ${errorText(rpcError)}`);
       }
     },
     [mutations],
@@ -535,9 +534,9 @@ function OverviewView({
     async (route: DetailRoute) => {
       try {
         await mutations.run(route);
-        toast.success("Run started");
+        toast.success("Запуск начат");
       } catch (rpcError: unknown) {
-        toast.error(`Failed to run automation: ${errorText(rpcError)}`);
+        toast.error(`Не удалось запустить автоматизацию: ${errorText(rpcError)}`);
       }
     },
     [mutations],
@@ -558,12 +557,12 @@ function OverviewView({
       .delete(deleteTarget.route)
       .then(
         () => {
-          toast.success("Automation deleted");
+          toast.success("Автоматизация удалена");
           setDeleteTarget(null);
           refetch();
         },
         (rpcError: unknown) =>
-          toast.error(`Failed to delete automation: ${errorText(rpcError)}`),
+          toast.error(`Не удалось удалить автоматизацию: ${errorText(rpcError)}`),
       )
       .finally(() => setDeleting(false));
   }, [deleteTarget, mutations, refetch]);
@@ -650,11 +649,11 @@ function DetailView({
       mutations[method](route)
         .then(
           () => {
-            if (method === "run") toast.success("Run started");
+            if (method === "run") toast.success("Запуск начат");
           },
           (rpcError: unknown) =>
             toast.error(
-              `Failed to ${method} automation: ${errorText(rpcError)}`,
+              `Не удалось выполнить действие ${method} для автоматизации: ${errorText(rpcError)}`,
             ),
         )
         .finally(() => setActionPending(false));
@@ -676,11 +675,11 @@ function DetailView({
       setActionPending(true);
       try {
         await mutations.update(route, agent);
-        toast.success("Automation updated");
+        toast.success("Автоматизация обновлена");
         setEditingRequested(false);
         refetch();
       } catch (rpcError: unknown) {
-        toast.error(`Failed to update automation: ${errorText(rpcError)}`);
+        toast.error(`Не удалось обновить автоматизацию: ${errorText(rpcError)}`);
         throw rpcError;
       } finally {
         setActionPending(false);
@@ -695,12 +694,12 @@ function DetailView({
       .delete(route)
       .then(
         () => {
-          toast.success("Automation deleted");
+          toast.success("Автоматизация удалена");
           setDeleteOpen(false);
           onBack();
         },
         (rpcError: unknown) =>
-          toast.error(`Failed to delete automation: ${errorText(rpcError)}`),
+          toast.error(`Не удалось удалить автоматизацию: ${errorText(rpcError)}`),
       )
       .finally(() => setDeleting(false));
   }, [mutations, route, onBack]);
@@ -709,7 +708,7 @@ function DetailView({
     return (
       <ResourceListState
         state="error"
-        message={`Couldn't load automation: ${error}`}
+        message={`Не удалось загрузить автоматизацию: ${error}`}
         layout="detail"
         onRetry={refetch}
       />
@@ -721,7 +720,7 @@ function DetailView({
       <DelayedLoading>
         <ResourceListState
           state="loading"
-          message="Loading automation"
+          message="Загрузка автоматизации"
           layout="detail"
         />
       </DelayedLoading>
@@ -745,7 +744,7 @@ function DetailView({
         <div className="mx-auto w-full max-w-3xl space-y-3">
           <ResourceListState
             state="error"
-            message="The stored automation configuration cannot be read."
+            message="Не удалось прочитать сохранённые настройки автоматизации."
             layout="detail"
             onRetry={refetch}
           />
@@ -779,7 +778,7 @@ function DetailView({
     overviewEntry !== undefined
       ? automationProjectLabel(overviewEntry.project)
       : route.projectId === PERSONAL_PROJECT_ID
-        ? "Personal"
+        ? "Личный"
         : route.projectId;
 
   return (
@@ -874,7 +873,7 @@ export default definePluginApp((app) => {
   app.composer.customize(composerCustomization);
   app.slots.navPanel({
     id: "automations",
-    title: "Automations",
+    title: "Автоматизации",
     icon: "Repeat",
     path: PANEL_PATH,
     component: AutomationsPanel,

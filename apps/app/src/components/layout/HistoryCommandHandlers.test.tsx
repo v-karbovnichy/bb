@@ -161,7 +161,7 @@ describe("HistoryCommandHandlers", () => {
     await waitFor(() =>
       expect(
         screen
-          .getByRole("button", { name: "Go back" })
+          .getByRole("button", { name: "Назад" })
           .getAttribute("aria-disabled") === "true",
       ).toBe(false),
     );
@@ -174,7 +174,7 @@ describe("HistoryCommandHandlers", () => {
     await waitFor(() =>
       expect(
         screen
-          .getByRole("button", { name: "Go forward" })
+          .getByRole("button", { name: "Вперёд" })
           .getAttribute("aria-disabled") === "true",
       ).toBe(false),
     );
@@ -186,7 +186,7 @@ describe("HistoryCommandHandlers", () => {
     await waitFor(() =>
       expect(
         screen
-          .getByRole("button", { name: "Go forward" })
+          .getByRole("button", { name: "Вперёд" })
           .getAttribute("aria-disabled") === "true",
       ).toBe(true),
     );
@@ -196,8 +196,8 @@ describe("HistoryCommandHandlers", () => {
   it("shows each sidebar arrow's shortcut in its tooltip", async () => {
     renderAt(A);
     open(B);
-    const back = screen.getByRole("button", { name: "Go back" });
-    const forward = screen.getByRole("button", { name: "Go forward" });
+    const back = screen.getByRole("button", { name: "Назад" });
+    const forward = screen.getByRole("button", { name: "Вперёд" });
     const backDefinition = mocks.backBinding.shortcut;
     const forwardDefinition = mocks.forwardBinding.shortcut;
     if (backDefinition === null || forwardDefinition === null) {

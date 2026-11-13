@@ -97,7 +97,7 @@ function Harness({
     }));
   tabs.push({
     tab: browserTab,
-    label: "Browser",
+    label: "Браузер",
     leadingVisual: null,
     statusLabel: null,
     onClose: noop,
@@ -254,7 +254,7 @@ describe("Markdown reading position in open secondary-panel tabs", () => {
     (navigation) => {
       renderHarness();
       scrollTo(780);
-      if (navigation === "tab") selectTab("Browser");
+      if (navigation === "tab") selectTab("Браузер");
       else fireEvent.click(screen.getAllByRole("link", { name: "Visit" })[0]);
       expect(
         document.querySelector("[data-file-preview-scroll-container]"),
@@ -282,7 +282,7 @@ describe("Markdown reading position in open secondary-panel tabs", () => {
   it("waits for ready Markdown content before restoring", () => {
     const harness = renderHarness();
     scrollTo(780);
-    selectTab("Browser");
+    selectTab("Браузер");
     loading.current = true;
     selectTab("reading.md");
     scrollTo(0);

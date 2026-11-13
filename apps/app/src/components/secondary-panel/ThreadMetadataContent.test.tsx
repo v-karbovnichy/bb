@@ -215,7 +215,7 @@ describe("EnvironmentRow", () => {
     expect(markup).toContain("Unavailable — machine removed");
     expect(markup).toContain("Old laptop");
     expect(markup).not.toContain("(offline)");
-    expect(markup).not.toContain('aria-label="New thread in environment"');
+    expect(markup).not.toContain('aria-label="Новый чат в окружении"');
   });
 
   it("hides the create-thread action while an environment is provisioning", () => {
@@ -225,7 +225,7 @@ describe("EnvironmentRow", () => {
       }),
     );
 
-    expect(markup).not.toContain('aria-label="New thread in environment"');
+    expect(markup).not.toContain('aria-label="Новый чат в окружении"');
   });
 
   it("hides the create-thread action before an environment has a path", () => {
@@ -235,7 +235,7 @@ describe("EnvironmentRow", () => {
       }),
     );
 
-    expect(markup).not.toContain('aria-label="New thread in environment"');
+    expect(markup).not.toContain('aria-label="Новый чат в окружении"');
   });
 
   it("offers the create-thread action on a project's own checkout", () => {
@@ -243,7 +243,7 @@ describe("EnvironmentRow", () => {
       makeEnvironment({ environmentProviderId: null }),
     );
 
-    expect(markup).toContain('aria-label="New thread in environment"');
+    expect(markup).toContain('aria-label="Новый чат в окружении"');
   });
 
   it("shows a custom provider label with its machine", () => {
@@ -298,8 +298,8 @@ describe("EnvironmentProvisioningFailureRow", () => {
       <EnvironmentProvisioningFailureRow failed />,
     );
 
-    expect(markup).toContain("Environment");
-    expect(markup).toContain("Not created");
-    expect(markup).toContain("provisioning failed");
+    expect(markup).toContain("Окружение");
+    expect(markup).toContain("Не создано");
+    expect(markup).toContain("не удалось создать");
   });
 });

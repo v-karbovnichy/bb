@@ -46,14 +46,14 @@ export async function ensureModalImage(
     try {
       const existing = await client.images.fromName(definition.name);
       request.signal.throwIfAborted();
-      request.report.log(`Reusing the ${request.displayName} Modal image`);
+      request.report.log(`Повторно используется образ Modal «${request.displayName}»`);
       return existing.imageId;
     } catch (error) {
       if (!(error instanceof NotFoundError)) throw error;
     }
     request.signal.throwIfAborted();
     request.report.step(
-      `Building the ${request.displayName} Modal image (first launch)…`,
+      `Сборка образа Modal «${request.displayName}» (первый запуск)…`,
     );
     const app = await client.apps.fromName(request.appName, {
       createIfMissing: true,

@@ -9,8 +9,8 @@
     "bbPluginSdk": ">=0.4.3"
   },
   "bb": {
-    "name": "Plugin Guide",
-    "description": "Browse the bb plugin API as an annotated map of the product.",
+    "name": "Руководство по плагинам",
+    "description": "Изучайте API плагинов bb на интерактивной карте продукта.",
     "branding": {
       "icon": "./icons/ai-generative.svg",
       "experimental_icons": {

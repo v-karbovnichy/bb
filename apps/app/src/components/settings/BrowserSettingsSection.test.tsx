@@ -25,7 +25,7 @@ const sources: DesktopBrowserImportSource[] = [
     name: "Google Chrome",
     icon: PNG,
     profiles: [
-      { directory: "Default", name: "Person 1", cookieCount: 3 },
+      { directory: "По умолчанию", name: "Person 1", cookieCount: 3 },
       { directory: "Profile 1", name: "Work", cookieCount: 1 },
     ],
   },
@@ -88,7 +88,7 @@ describe("BrowserSettingsSectionContent", () => {
   it("explains that import is desktop only outside the desktop app", () => {
     render(<BrowserSettingsSectionContent desktopBrowser={null} />);
     expect(
-      screen.getByText("Only available in the BB desktop app."),
+      screen.getByText("Доступно только в приложении BB для компьютера."),
     ).toBeDefined();
   });
 
@@ -107,10 +107,10 @@ describe("BrowserSettingsSectionContent", () => {
         .querySelector("img")
         ?.getAttribute("src"),
     ).toBe(PNG);
-    expect(screen.getByText("2 profiles")).toBeDefined();
-    expect(screen.getByText("4 cookies")).toBeDefined();
-    expect(screen.getByText("Running · quit Brave to import")).toBeDefined();
-    expect(rowButton("brave").textContent).toBe("Recheck");
+    expect(screen.getByText("Профилей: 2")).toBeDefined();
+    expect(screen.getByText("Файлов cookie: 4")).toBeDefined();
+    expect(screen.getByText("Запущен · закройте Brave для импорта")).toBeDefined();
+    expect(rowButton("brave").textContent).toBe("Проверить снова");
   });
 
   it.each(["firefox", `storage-${"b".repeat(64)}`])(
@@ -127,16 +127,16 @@ describe("BrowserSettingsSectionContent", () => {
       await waitFor(() => expect(screen.getByText("Firefox")).toBeDefined());
       fireEvent.click(rowButton(sourceId));
       await waitFor(() =>
-        expect(screen.getByText("default · 2 cookies imported")).toBeDefined(),
+        expect(screen.getByText("default · импортировано: Файлов cookie: 2")).toBeDefined(),
       );
       expect(desktopBrowser.importCookies).toHaveBeenCalledWith({
         sourceId,
         sourceProfileDirectory: "Profiles/p1",
       });
       expect(
-        screen.getByText("1 skipped (accounts.example.com)"),
+        screen.getByText("Пропущено: 1 (accounts.example.com)"),
       ).toBeDefined();
-      expect(screen.getByText("imported just now")).toBeDefined();
+      expect(screen.getByText("импортировано только что")).toBeDefined();
       expect(
         JSON.parse(
           window.localStorage.getItem(BROWSER_IMPORT_RECORDS_STORAGE_KEY) ??
@@ -153,13 +153,13 @@ describe("BrowserSettingsSectionContent", () => {
       expect(screen.getByText("Google Chrome")).toBeDefined(),
     );
     fireEvent.click(rowButton("chrome"));
-    expect(screen.getByText("Import from Google Chrome")).toBeDefined();
+    expect(screen.getByText("Импорт из Google Chrome")).toBeDefined();
     fireEvent.click(screen.getByRole("radio", { name: /Work/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Import 1 cookie" }));
+    fireEvent.click(screen.getByRole("button", { name: "Импортировать · Файлов cookie: 1" }));
     await waitFor(() =>
-      expect(screen.getByText("Work · 2 cookies imported")).toBeDefined(),
+      expect(screen.getByText("Work · импортировано: Файлов cookie: 2")).toBeDefined(),
     );
-    expect(screen.queryByText("Import from Google Chrome")).toBeNull();
+    expect(screen.queryByText("Импорт из Google Chrome")).toBeNull();
   });
 
   it("rechecks a running browser from its row", async () => {
@@ -173,7 +173,7 @@ describe("BrowserSettingsSectionContent", () => {
                 ...source,
                 unavailable: undefined,
                 profiles: [
-                  { directory: "Default", name: "Default", cookieCount: 5 },
+                  { directory: "По умолчанию", name: "По умолчанию", cookieCount: 5 },
                 ],
               }
             : source,
@@ -186,7 +186,7 @@ describe("BrowserSettingsSectionContent", () => {
     );
     await waitFor(() => expect(screen.getByText("Brave")).toBeDefined());
     fireEvent.click(rowButton("brave"));
-    await waitFor(() => expect(rowButton("brave").textContent).toBe("Import…"));
-    expect(screen.getByText("5 cookies")).toBeDefined();
+    await waitFor(() => expect(rowButton("brave").textContent).toBe("Импортировать…"));
+    expect(screen.getByText("Файлов cookie: 5")).toBeDefined();
   });
 });

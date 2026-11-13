@@ -79,7 +79,7 @@ function QueuedMessagesCardFrame({
 }) {
   return (
     <PromptStackCard
-      ariaLabel="Queued messages"
+      ariaLabel="Сообщения в очереди"
       style={{ height }}
       className={cn(
         "relative z-10 flex min-h-0 flex-col overflow-hidden rounded-xl bg-surface-raised-solid shadow-lift",
@@ -94,7 +94,7 @@ function QueuedMessagesCardFrame({
             expanded && "border-b border-border/35",
           )}
         >
-          <span className="font-normal">Queue</span>
+          <span className="font-normal">Очередь</span>
           <QueuedMessagesCountPill arrivals={0} count={queuedMessageCount} />
         </div>
       </header>
@@ -186,7 +186,7 @@ export function QueuedMessagesPendingCard({
       height={QUEUED_MESSAGES_COLLAPSED_HEIGHT}
       queuedMessageCount={queuedMessageCount}
     >
-      <span role="status" aria-label="Loading queued messages" />
+      <span role="status" aria-label="Загрузка сообщений в очереди" />
     </QueuedMessagesCardFrame>
   );
 }

@@ -100,9 +100,9 @@ function TaskFieldPicker<Value extends string>({
       </PopoverTrigger>
       <PopoverContent className="w-56 p-0" align="start">
         <Command>
-          <CommandInput placeholder={`Choose ${label.toLowerCase()}…`} />
+          <CommandInput placeholder={`Выберите: ${label.toLowerCase()}…`} />
           <CommandList>
-            <CommandEmpty>No matching options.</CommandEmpty>
+            <CommandEmpty>Подходящих вариантов нет.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
@@ -406,11 +406,11 @@ export function NewTaskDialog({
               style={{ backgroundColor: project.color }}
             />
           ) : null}
-          New task
+          Новая задача
           {project ? ` · ${project.name}` : ""}
         </DialogTitle>
         <DialogDescription className="sr-only">
-          Create a task with a title, description, attributes, and attachments.
+          Создайте задачу с названием, описанием, параметрами и вложениями.
         </DialogDescription>
         {createdTask ? (
           <div className="min-h-0 flex-auto overflow-y-auto px-4 pt-2">
@@ -460,8 +460,8 @@ export function NewTaskDialog({
                 void submit();
               }
             }}
-            placeholder="Task title"
-            aria-label="Task title"
+            placeholder="Название задачи"
+            aria-label="Название задачи"
             className="w-full shrink-0 bg-transparent text-base font-semibold text-foreground outline-none placeholder:text-muted-foreground"
           />
           <TasksEditor
@@ -470,7 +470,7 @@ export function NewTaskDialog({
             onChange={(markdown) =>
               updateDraft(() => ({ description: markdown }))
             }
-            placeholder="Description — rich text, round-trips as markdown for agents"
+            placeholder="Описание с форматированием; агентам передаётся в Markdown"
             className="mt-2 min-h-16 flex-auto overflow-y-auto"
             onAttachFiles={stageMore}
           />
@@ -488,7 +488,7 @@ export function NewTaskDialog({
           ) : null}
           {hasOversized ? (
             <p className="mt-2 shrink-0 text-xs text-destructive">
-              Remove attachments over the 25 MB limit before creating the task.
+              Перед созданием задачи удалите вложения размером более 25 МБ.
             </p>
           ) : null}
         </div>
@@ -500,7 +500,7 @@ export function NewTaskDialog({
         >
           <TaskFieldPicker
             dialogOpen={open}
-            label="Project"
+            label="Проект"
             value={effectiveProjectId}
             options={projectList.map((entry) => ({
               value: entry.id,
@@ -512,7 +512,7 @@ export function NewTaskDialog({
           />
           <TaskFieldPicker<TaskStatus>
             dialogOpen={open}
-            label="Status"
+            label="Статус"
             value={status}
             options={TASK_STATUSES.map((value) => ({
               value,
@@ -522,7 +522,7 @@ export function NewTaskDialog({
           />
           <TaskFieldPicker<TaskPriority>
             dialogOpen={open}
-            label="Priority"
+            label="Приоритет"
             value={priority}
             options={TASK_PRIORITIES.map((value) => ({
               value,
@@ -540,7 +540,7 @@ export function NewTaskDialog({
                 {selectedLabels.length === 0 ? (
                   <>
                     <Icon name="Plus" className="size-3" />
-                    Labels
+                    Метки
                   </>
                 ) : (
                   <>
@@ -564,7 +564,7 @@ export function NewTaskDialog({
             <PopoverContent className="w-56 p-0" align="start">
               <Command>
                 <CommandInput
-                  placeholder="Add labels…"
+                  placeholder="Добавить метки…"
                   value={labelQuery}
                   onValueChange={setLabelQuery}
                 />
@@ -585,7 +585,7 @@ export function NewTaskDialog({
                         Create “{labelQuery.trim()}”
                       </button>
                     ) : (
-                      "No labels in this project."
+                      "В этом проекте нет меток."
                     )}
                   </CommandEmpty>
                   <CommandGroup>
@@ -618,7 +618,7 @@ export function NewTaskDialog({
               const next = event.target.value;
               updateDraft(() => ({ dueDate: next }));
             }}
-            aria-label="Due date"
+            aria-label="Срок"
             className="h-7 rounded-md border border-input bg-transparent px-2 text-xs text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
@@ -643,7 +643,7 @@ export function NewTaskDialog({
               <CheckboxField
                 checked={createMore}
                 onCheckedChange={setCreateMore}
-                label="Create more"
+                label="Создать ещё"
               />
               <div className="flex items-center gap-1.5">
                 {hasDraftContent(draft) ? (
@@ -659,8 +659,8 @@ export function NewTaskDialog({
                 ) : null}
                 <button
                   type="button"
-                  title="Attach files"
-                  aria-label="Attach files"
+                  title="Прикрепить файлы"
+                  aria-label="Прикрепить файлы"
                   disabled={submitting}
                   className="flex size-6.5 items-center justify-center rounded-md text-muted-foreground hover:bg-state-hover hover:text-foreground disabled:opacity-50"
                   onClick={() => fileInputRef.current?.click()}

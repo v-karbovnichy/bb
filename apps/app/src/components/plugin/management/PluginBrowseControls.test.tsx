@@ -31,7 +31,7 @@ const OPTIONS: PluginBrowseCategoryOption[] = [
 function openMenu(selectionLabel: string) {
   fireEvent.click(
     screen.getByRole("button", {
-      name: `Filter plugins by category: ${selectionLabel}`,
+      name: `Фильтр плагинов по категории: ${selectionLabel}`,
     }),
   );
 }
@@ -54,7 +54,7 @@ describe("PluginBrowseCategoryFilter", () => {
         onChange={() => undefined}
       />,
     );
-    openMenu("All categories");
+    openMenu("Все категории");
 
     expect(screen.getAllByRole("option")).toHaveLength(3);
     const security = screen.getByRole("option", { name: /Security/u });
@@ -82,10 +82,10 @@ describe("PluginBrowseCategoryFilter", () => {
       );
     }
     render(<Harness />);
-    openMenu("All categories");
+    openMenu("Все категории");
     expect(
       screen
-        .getByRole("button", { name: "Clear filter" })
+        .getByRole("button", { name: "Сбросить фильтр" })
         .hasAttribute("disabled"),
     ).toBe(true);
     fireEvent.click(screen.getByRole("option", { name: /Security/u }));
@@ -93,23 +93,23 @@ describe("PluginBrowseCategoryFilter", () => {
 
     expect(
       screen
-        .getByRole("listbox", { name: "Plugin categories" })
+        .getByRole("listbox", { name: "Категории плагинов" })
         .getAttribute("aria-multiselectable"),
     ).toBe("true");
     expect(
       screen.getByRole("button", {
-        name: "Filter plugins by category: Security, Tasks & Workflows",
+        name: "Фильтр плагинов по категории: Security, Tasks & Workflows",
       }),
     ).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить фильтр" }));
     expect(
       screen
-        .getByRole("button", { name: "Clear filter" })
+        .getByRole("button", { name: "Сбросить фильтр" })
         .hasAttribute("disabled"),
     ).toBe(true);
     expect(
       screen.getByRole("button", {
-        name: "Filter plugins by category: All categories",
+        name: "Фильтр плагинов по категории: Все категории",
       }),
     ).toBeTruthy();
   });
@@ -154,11 +154,11 @@ describe("PluginBrowseCategoryFilter", () => {
       </>,
     );
     const triggers = screen.getAllByRole("button", {
-      name: "Filter plugins by category: All categories",
+      name: "Фильтр плагинов по категории: Все категории",
     });
     fireEvent.click(triggers[0] as HTMLButtonElement);
     const firstList = screen.getByRole("listbox", {
-      name: "Plugin categories",
+      name: "Категории плагинов",
     });
     await waitFor(() =>
       expect(firstList.contains(document.activeElement)).toBe(true),
@@ -167,7 +167,7 @@ describe("PluginBrowseCategoryFilter", () => {
     await waitFor(() => expect(document.activeElement).toBe(triggers[0]));
     fireEvent.click(triggers[1] as HTMLButtonElement);
     const secondList = screen.getByRole("listbox", {
-      name: "Plugin categories",
+      name: "Категории плагинов",
     });
     const firstOption = screen.getByRole("option", {
       name: /Memory & Context/u,
@@ -232,8 +232,8 @@ function ToolbarHarness({
           installed
             ? {
                 options: [
-                  { id: "user", label: "Local" },
-                  { id: "official", label: "BB Official" },
+                  { id: "user", label: "Локальный" },
+                  { id: "official", label: "Официальный BB" },
                 ],
                 selectedValues: params.getAll("source"),
                 onChange: (values) =>
@@ -265,7 +265,7 @@ function mockToolbarWidth(initial: number, publishedWidth = 96) {
           [...this.querySelectorAll("button")].reduce(
             (total, button) =>
               total +
-              (button.textContent === "Published" ? publishedWidth : 96),
+              (button.textContent === "Опубликован" ? publishedWidth : 96),
             0,
           ),
           32,
@@ -310,9 +310,9 @@ function mockToolbarWidth(initial: number, publishedWidth = 96) {
 
 describe("PluginCollectionToolbar", () => {
   it.each([
-    { control: /^Filter plugins by category:/u, tooltip: "Category: Security" },
-    { control: /^Source:/u, tooltip: "Source: Local" },
-    { control: /^Sort:/u, tooltip: "Sort: Name · Z–A" },
+    { control: /^Фильтр плагинов по категории:/u, tooltip: "Категория: Security" },
+    { control: /^Источник:/u, tooltip: "Источник: Локальный" },
+    { control: /^Сортировка:/u, tooltip: "Сортировка: Название · Z–A" },
   ])(
     "describes applied selections in the $tooltip tooltip",
     async ({ control, tooltip }) => {
@@ -328,7 +328,7 @@ describe("PluginCollectionToolbar", () => {
   it("describes all applied selections in the combined trigger tooltip", async () => {
     mockToolbarWidth(320);
     render(<ToolbarHarness installed />);
-    const trigger = screen.getByRole("button", { name: "Filter & sort" });
+    const trigger = screen.getByRole("button", { name: "Фильтры и сортировка" });
     expect(trigger.textContent).toBe("");
     expect(
       trigger.querySelector('[data-icon="FilterHorizontal"]'),
@@ -336,20 +336,20 @@ describe("PluginCollectionToolbar", () => {
     fireEvent.keyDown(document, { key: "Tab" });
     act(() => trigger.focus());
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Category: Security; Source: Local; Sort: Name · Z–A",
+      "Категория: Security; Источник: Локальный; Сортировка: Название · Z–A",
     );
   });
 
   it.each([
     {
-      control: /^Source:/u,
-      heading: "Source",
+      control: /^Источник:/u,
+      heading: "Источник",
       icon: "Download",
       role: "menuitemcheckbox" as const,
     },
     {
-      control: /^Sort:/u,
-      heading: "Sort",
+      control: /^Сортировка:/u,
+      heading: "Сортировка",
       icon: "SortingZA01",
       role: "menuitemradio" as const,
     },
@@ -372,21 +372,21 @@ describe("PluginCollectionToolbar", () => {
   it("keeps an open sort menu stable when its selected label grows, then combines after dismissal", async () => {
     const resize = mockToolbarWidth(370, 128);
     render(<ToolbarHarness />);
-    fireEvent.keyDown(screen.getByRole("button", { name: /^Sort:/u }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: /^Сортировка:/u }), {
       key: "Enter",
     });
-    fireEvent.click(screen.getByRole("menuitemradio", { name: "Published" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Опубликован" }));
     resize(370);
     expect(
-      screen.getByRole("menuitemradio", { name: "Published" }),
+      screen.getByRole("menuitemradio", { name: "Опубликован" }),
     ).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Filter & sort" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Фильтры и сортировка" })).toBeNull();
     fireEvent.keyDown(document.activeElement ?? document.body, {
       key: "Escape",
     });
     await waitFor(() =>
       expect(
-        screen.getByRole("button", { name: "Filter & sort" }),
+        screen.getByRole("button", { name: "Фильтры и сортировка" }),
       ).toBeTruthy(),
     );
     expect(screen.getByLabelText("Parameters").textContent).toContain(
@@ -395,15 +395,15 @@ describe("PluginCollectionToolbar", () => {
   });
 
   it.each([
-    { label: "Name", value: "name", direction: "asc" },
-    { label: "Published", value: "recently-added", direction: "desc" },
-    { label: "Installs", value: "most-installed", direction: "desc" },
+    { label: "Название", value: "name", direction: "asc" },
+    { label: "Опубликован", value: "recently-added", direction: "desc" },
+    { label: "Установки", value: "most-installed", direction: "desc" },
   ])(
     "updates the selected $label label and direction without clearing filters",
     ({ label, value, direction }) => {
       mockToolbarWidth(800);
       render(<ToolbarHarness installed installsKnown />);
-      const trigger = screen.getByRole("button", { name: /^Sort:/u });
+      const trigger = screen.getByRole("button", { name: /^Сортировка:/u });
       fireEvent.keyDown(trigger, {
         key: "Enter",
       });
@@ -419,54 +419,54 @@ describe("PluginCollectionToolbar", () => {
       expect(screen.getByLabelText("Parameters").textContent).toContain(
         `direction=${direction === "asc" ? "desc" : "asc"}`,
       );
-      fireEvent.click(screen.getByRole("menuitem", { name: "Clear sort" }));
-      expect(trigger.textContent).toBe("Sort");
+      fireEvent.click(screen.getByRole("menuitem", { name: "Очистить сортировку" }));
+      expect(trigger.textContent).toBe("Сортировка");
     },
   );
 
   it("shows actual selections and sort direction in the combined menu", () => {
     mockToolbarWidth(320);
     render(<ToolbarHarness installed />);
-    fireEvent.keyDown(screen.getByRole("button", { name: "Filter & sort" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Фильтры и сортировка" }), {
       key: "Enter",
     });
     expect(
-      screen.getByRole("menuitem", { name: /Category.*Security/u }),
+      screen.getByRole("menuitem", { name: /Категория.*Security/u }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("menuitem", { name: /Source.*Local/u }),
+      screen.getByRole("menuitem", { name: /Источник.*Локальный/u }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("menuitem", { name: /Sort.*Name · Z–A/u }),
+      screen.getByRole("menuitem", { name: /Сортировка.*Название · Z–A/u }),
     ).toBeTruthy();
   });
 
   it("opens compact search with the query selected and restores controls on submit or blur", async () => {
     mockToolbarWidth(320);
     render(<ToolbarHarness installed createAction />);
-    const trigger = screen.getByRole("button", { name: "Search plugins" });
+    const trigger = screen.getByRole("button", { name: "Поиск плагинов" });
     expect(
-      screen.queryByRole("textbox", { name: "Search plugins" }),
+      screen.queryByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeNull();
     fireEvent.click(trigger);
     const search = screen.getByRole<HTMLInputElement>("textbox", {
-      name: "Search plugins",
+      name: "Поиск плагинов",
     });
     expect(document.activeElement).toBe(search);
     expect(search.selectionStart).toBe(0);
     expect(search.selectionEnd).toBe("Memory".length);
-    expect(search.placeholder).toBe("Search plugins...");
-    expect(screen.queryByRole("button", { name: "Filter & sort" })).toBeNull();
+    expect(search.placeholder).toBe("Поиск плагинов...");
+    expect(screen.queryByRole("button", { name: "Фильтры и сортировка" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Create" })).toBeNull();
     fireEvent.change(search, { target: { value: "Notes" } });
     fireEvent.keyDown(search, { key: "Enter", isComposing: true });
     expect(document.activeElement).toBe(search);
     fireEvent.keyDown(search, { key: "Enter" });
     expect(
-      screen.queryByRole("textbox", { name: "Search plugins" }),
+      screen.queryByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Search plugins" }),
+      screen.getByRole("button", { name: "Поиск плагинов" }),
     );
     expect(screen.getByRole("button", { name: "Create" })).toBeTruthy();
     await waitFor(() =>
@@ -474,16 +474,16 @@ describe("PluginCollectionToolbar", () => {
         "query=Notes&category=security&source=user&sort=name&direction=desc",
       ),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Search plugins" }));
-    act(() => screen.getByRole("textbox", { name: "Search plugins" }).blur());
-    expect(screen.getByRole("button", { name: "Filter & sort" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Поиск плагинов" }));
+    act(() => screen.getByRole("textbox", { name: "Поиск плагинов" }).blur());
+    expect(screen.getByRole("button", { name: "Фильтры и сортировка" })).toBeTruthy();
   });
 
   it("clears compact search, dismisses the input, and retains the other selections", async () => {
     mockToolbarWidth(320);
     render(<ToolbarHarness installed createAction />);
-    fireEvent.click(screen.getByRole("button", { name: "Search plugins" }));
-    const search = screen.getByRole("textbox", { name: "Search plugins" });
+    fireEvent.click(screen.getByRole("button", { name: "Поиск плагинов" }));
+    const search = screen.getByRole("textbox", { name: "Поиск плагинов" });
     fireEvent.change(search, { target: { value: "Notes" } });
     await waitFor(() =>
       expect(screen.getByLabelText("Parameters").textContent).toContain(
@@ -491,47 +491,47 @@ describe("PluginCollectionToolbar", () => {
       ),
     );
     expect(screen.queryByRole("button", { name: "Search" })).toBeNull();
-    const clear = screen.getByRole("button", { name: "Clear search" });
+    const clear = screen.getByRole("button", { name: "Очистить поиск" });
     act(() => clear.focus());
     expect(document.activeElement).toBe(clear);
     expect(screen.queryByRole("button", { name: "Create" })).toBeNull();
     fireEvent.click(clear);
     expect(
-      screen.queryByRole("textbox", { name: "Search plugins" }),
+      screen.queryByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Search plugins" }),
+      screen.getByRole("button", { name: "Поиск плагинов" }),
     );
-    expect(screen.getByRole("button", { name: "Filter & sort" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Фильтры и сортировка" })).toBeTruthy();
     expect(screen.getByLabelText("Parameters").textContent).toBe(
       "category=security&source=user&sort=name&direction=desc",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Search plugins" }));
-    const reopened = screen.getByRole("textbox", { name: "Search plugins" });
+    fireEvent.click(screen.getByRole("button", { name: "Поиск плагинов" }));
+    const reopened = screen.getByRole("textbox", { name: "Поиск плагинов" });
     expect(reopened.getAttribute("value")).toBe("");
     fireEvent.keyDown(reopened, { key: "Escape" });
     expect(
-      screen.queryByRole("textbox", { name: "Search plugins" }),
+      screen.queryByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Search plugins" }),
+      screen.getByRole("button", { name: "Поиск плагинов" }),
     );
   });
 
   it("clears and blurs wide search without removing filters", () => {
     mockToolbarWidth(800);
     render(<ToolbarHarness installed createAction />);
-    const search = screen.getByRole("textbox", { name: "Search plugins" });
+    const search = screen.getByRole("textbox", { name: "Поиск плагинов" });
     act(() => search.focus());
     fireEvent.change(search, { target: { value: "Notes" } });
-    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    fireEvent.click(screen.getByRole("button", { name: "Очистить поиск" }));
     expect(document.activeElement).not.toBe(search);
     expect(search.getAttribute("value")).toBe("");
     expect(screen.getByLabelText("Parameters").textContent).toBe(
       "category=security&source=user&sort=name&direction=desc",
     );
-    expect(screen.queryByRole("button", { name: "Clear search" })).toBeNull();
-    expect(screen.getByRole("button", { name: /^Sort:/u })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Очистить поиск" })).toBeNull();
+    expect(screen.getByRole("button", { name: /^Сортировка:/u })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Create" })).toBeTruthy();
   });
 
@@ -540,36 +540,36 @@ describe("PluginCollectionToolbar", () => {
     const resize = mockToolbarWidth(400);
     render(<ToolbarHarness categoryShelf />);
     expect(
-      screen.getByRole("textbox", { name: "Search plugins" }),
+      screen.getByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Search plugins" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Поиск плагинов" })).toBeNull();
     resize(260);
-    expect(screen.getByRole("button", { name: "Search plugins" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Поиск плагинов" })).toBeTruthy();
     resize(264);
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", { name: "Search plugins" })
+      screen.getByRole<HTMLInputElement>("textbox", { name: "Поиск плагинов" })
         .value,
     ).toBe("Memory");
-    expect(screen.getByRole("button", { name: /^Sort:/u })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /^Сортировка:/u })).toBeTruthy();
   });
 
   it("pairs combined controls with square search until separate controls fit", () => {
     viewport.compact = true;
     const resize = mockToolbarWidth(354);
     render(<ToolbarHarness installed createAction />);
-    expect(screen.getByRole("button", { name: "Filter & sort" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Фильтры и сортировка" })).toBeTruthy();
     expect(
-      screen.queryByRole("textbox", { name: "Search plugins" }),
+      screen.queryByRole("textbox", { name: "Поиск плагинов" }),
     ).toBeNull();
-    expect(screen.getByRole("button", { name: "Search plugins" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Поиск плагинов" })).toBeTruthy();
     resize(320);
-    expect(screen.getByRole("button", { name: "Search plugins" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Поиск плагинов" })).toBeTruthy();
     resize(328);
-    expect(screen.getByRole("button", { name: "Search plugins" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Поиск плагинов" })).toBeTruthy();
     resize(800);
-    expect(screen.queryByRole("button", { name: "Filter & sort" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Фильтры и сортировка" })).toBeNull();
     expect(
-      screen.getByRole<HTMLInputElement>("textbox", { name: "Search plugins" })
+      screen.getByRole<HTMLInputElement>("textbox", { name: "Поиск плагинов" })
         .value,
     ).toBe("Memory");
     expect(screen.getByRole("button", { name: "Create" })).toBeTruthy();
@@ -579,7 +579,7 @@ describe("PluginCollectionToolbar", () => {
     vi.useFakeTimers();
     render(<ToolbarHarness urlDelayMs={500} />);
     const search = screen.getByRole<HTMLInputElement>("textbox", {
-      name: "Search plugins",
+      name: "Поиск плагинов",
     });
     fireEvent.change(search, { target: { value: "Notes" } });
     act(() => {
@@ -608,7 +608,7 @@ describe("PluginCollectionToolbar", () => {
     mockToolbarWidth(400);
     render(<ToolbarHarness categoryShelf />);
     const search = screen.getByRole<HTMLInputElement>("textbox", {
-      name: "Search plugins",
+      name: "Поиск плагинов",
     });
     act(() => search.focus());
     fireEvent.change(search, { target: { value: "Notes" } });
@@ -626,15 +626,15 @@ describe("PluginCollectionToolbar", () => {
     {
       installed: true,
       categoryShelf: false,
-      labels: ["Category", "Source", "Sort"],
+      labels: ["Категория", "Источник", "Сортировка"],
     },
-    { installed: false, categoryShelf: false, labels: ["Category", "Sort"] },
+    { installed: false, categoryShelf: false, labels: ["Категория", "Сортировка"] },
   ])(
     "preserves the allowed combined controls for %j",
     ({ labels, ...props }) => {
       mockToolbarWidth(320);
       render(<ToolbarHarness {...props} />);
-      fireEvent.keyDown(screen.getByRole("button", { name: "Filter & sort" }), {
+      fireEvent.keyDown(screen.getByRole("button", { name: "Фильтры и сортировка" }), {
         key: "Enter",
       });
       expect(
@@ -644,49 +644,49 @@ describe("PluginCollectionToolbar", () => {
             (item) => item.querySelector("[data-control-page]")?.textContent,
           ),
       ).toEqual(labels);
-      expect(screen.queryByRole("button", { name: /^Sort:/u })).toBeNull();
+      expect(screen.queryByRole("button", { name: /^Сортировка:/u })).toBeNull();
     },
   );
 
   it("keeps a lone Sort control directly accessible at narrow widths", () => {
     mockToolbarWidth(240);
     render(<ToolbarHarness categoryShelf />);
-    expect(screen.getByRole("button", { name: /^Sort:/u }).textContent).toBe(
-      "Name",
+    expect(screen.getByRole("button", { name: /^Сортировка:/u }).textContent).toBe(
+      "Название",
     );
-    expect(screen.queryByRole("button", { name: "Filter & sort" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Фильтры и сортировка" })).toBeNull();
   });
 
   it("uses the space required by each surface instead of a common viewport cutoff", () => {
     const resize = mockToolbarWidth(400);
     const { rerender } = render(<ToolbarHarness />);
-    expect(screen.getByRole("button", { name: /^Sort:/u }).textContent).toBe(
-      "Name",
+    expect(screen.getByRole("button", { name: /^Сортировка:/u }).textContent).toBe(
+      "Название",
     );
     expect(
-      screen.getByRole("button", { name: /^Filter plugins by category:/u })
+      screen.getByRole("button", { name: /^Фильтр плагинов по категории:/u })
         .textContent,
-    ).toBe("Category1");
+    ).toBe("Категория1");
     rerender(<ToolbarHarness installed />);
     resize(400);
-    expect(screen.getByRole("button", { name: "Filter & sort" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Фильтры и сортировка" })).toBeTruthy();
   });
 
   it("reserves space for the create action before expanding controls", () => {
     mockToolbarWidth(500);
     render(<ToolbarHarness installed createAction />);
-    expect(screen.getByRole("button", { name: "Filter & sort" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Фильтры и сортировка" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Create" })).toBeTruthy();
   });
 
   it("shares sort, category selection, and source clearing in the combined menu without resetting other values", async () => {
     mockToolbarWidth(320);
     render(<ToolbarHarness installed />);
-    fireEvent.keyDown(screen.getByRole("button", { name: "Filter & sort" }), {
+    fireEvent.keyDown(screen.getByRole("button", { name: "Фильтры и сортировка" }), {
       key: "Enter",
     });
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Sort/u }));
-    const sort = screen.getByRole("menuitemradio", { name: "Name" });
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Сортировка/u }));
+    const sort = screen.getByRole("menuitemradio", { name: "Название" });
     await waitFor(() => expect(document.activeElement).toBe(sort));
     fireEvent.click(sort);
     expect(screen.getByLabelText("Parameters").textContent).toContain(
@@ -694,20 +694,20 @@ describe("PluginCollectionToolbar", () => {
     );
     expect(
       screen
-        .getByRole("menuitemradio", { name: "Installs" })
+        .getByRole("menuitemradio", { name: "Установки" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("menuitem", { name: "Clear sort" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Очистить сортировку" }));
     expect(screen.getByLabelText("Parameters").textContent).toBe(
       "query=Memory&category=security&source=user",
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: "Filter & sort" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Фильтры и сортировка" }));
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        screen.getByRole("menuitem", { name: /^Sort/u }),
+        screen.getByRole("menuitem", { name: /^Сортировка/u }),
       ),
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Category/u }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Категория/u }));
     expect(screen.queryByRole("combobox")).toBeNull();
     const firstOption = screen.getByRole("option", {
       name: /Memory & Context/u,
@@ -717,13 +717,13 @@ describe("PluginCollectionToolbar", () => {
     expect(document.activeElement).toBe(
       screen.getByRole("option", { name: /Security/u }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить фильтр" }));
     expect(screen.getByLabelText("Parameters").textContent).toBe(
       "query=Memory&source=user",
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: "Filter & sort" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /^Source/u }));
-    fireEvent.click(screen.getByRole("menuitem", { name: "Clear filter" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Фильтры и сортировка" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Источник/u }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Очистить фильтр" }));
     expect(screen.getByLabelText("Parameters").textContent).toBe(
       "query=Memory",
     );
@@ -732,7 +732,7 @@ describe("PluginCollectionToolbar", () => {
     });
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        screen.getByRole("button", { name: "Filter & sort" }),
+        screen.getByRole("button", { name: "Фильтры и сортировка" }),
       ),
     );
   });
@@ -741,19 +741,19 @@ describe("PluginCollectionToolbar", () => {
     viewport.compact = true;
     mockToolbarWidth(320);
     render(<ToolbarHarness installed />);
-    fireEvent.click(screen.getByRole("button", { name: "Filter & sort" }));
+    fireEvent.click(screen.getByRole("button", { name: "Фильтры и сортировка" }));
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: /^Category/u }),
+      await screen.findByRole("menuitem", { name: /^Категория/u }),
     );
     await waitFor(() =>
       expect(document.activeElement).toBe(
         screen.getByRole("option", { name: /Memory & Context/u }),
       ),
     );
-    fireEvent.click(screen.getByRole("menuitem", { name: "Filter & sort" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Фильтры и сортировка" }));
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        screen.getByRole("menuitem", { name: /^Category/u }),
+        screen.getByRole("menuitem", { name: /^Категория/u }),
       ),
     );
   });
@@ -761,20 +761,20 @@ describe("PluginCollectionToolbar", () => {
   it("moves focused controls into the combined menu and back without losing search or selection", () => {
     const resize = mockToolbarWidth(600);
     render(<ToolbarHarness installed />);
-    fireEvent.change(screen.getByRole("textbox", { name: "Search plugins" }), {
+    fireEvent.change(screen.getByRole("textbox", { name: "Поиск плагинов" }), {
       target: { value: "Notes" },
     });
-    screen.getByRole("button", { name: /^Source:/u }).focus();
+    screen.getByRole("button", { name: /^Источник:/u }).focus();
     resize(320);
     expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Filter & sort" }),
+      screen.getByRole("button", { name: "Фильтры и сортировка" }),
     );
     resize(600);
-    expect(screen.queryByRole("button", { name: "Filter & sort" })).toBeNull();
-    expect(screen.getByRole("button", { name: /^Source: 1/u })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Фильтры и сортировка" })).toBeNull();
+    expect(screen.getByRole("button", { name: /^Источник: выбрано 1/u })).toBeTruthy();
     expect(
       screen
-        .getByRole("textbox", { name: "Search plugins" })
+        .getByRole("textbox", { name: "Поиск плагинов" })
         .getAttribute("value"),
     ).toBe("Notes");
     expect(screen.getByLabelText("Parameters").textContent).toContain(

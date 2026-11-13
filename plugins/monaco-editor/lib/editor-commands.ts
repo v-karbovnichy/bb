@@ -66,7 +66,7 @@ export async function copy(text: string, successMessage: string): Promise<void> 
   if (await experimental_copyToClipboard({ text })) {
     toast.success(successMessage);
   } else {
-    toast.error("Failed to copy");
+    toast.error("Не удалось скопировать");
   }
 }
 
@@ -80,37 +80,37 @@ export const EDITOR_COMMANDS: readonly EditorCommand[] = [
   ),
   monacoAction(
     "fold-recursively",
-    "Monaco: fold recursively",
+    "Monaco: свернуть рекурсивно",
     "editor.foldRecursively",
   ),
-  monacoAction("unfold-all", "Monaco: unfold all", "editor.unfoldAll"),
+  monacoAction("unfold-all", "Monaco: развернуть всё", "editor.unfoldAll"),
   monacoAction(
     "unfold-recursively",
-    "Monaco: unfold recursively",
+    "Monaco: развернуть рекурсивно",
     "editor.unfoldRecursively",
   ),
-  monacoAction("unfold", "Monaco: unfold at cursor", "editor.unfold"),
+  monacoAction("unfold", "Monaco: развернуть у курсора", "editor.unfold"),
   monacoAction(
     "sort-lines-ascending",
-    "Monaco: sort selected lines ascending",
+    "Monaco: сортировать выделенные строки по возрастанию",
     "editor.action.sortLinesAscending",
     hasMultiLineSelection,
   ),
   monacoAction(
     "sort-lines-descending",
-    "Monaco: sort selected lines descending",
+    "Monaco: сортировать выделенные строки по убыванию",
     "editor.action.sortLinesDescending",
     hasMultiLineSelection,
   ),
   {
     id: "copy-path",
-    title: "Monaco: copy path of current file",
-    run: ({ absolutePath }) => copy(absolutePath, "Absolute path copied"),
+    title: "Monaco: скопировать путь к текущему файлу",
+    run: ({ absolutePath }) => copy(absolutePath, "Абсолютный путь скопирован"),
   },
   {
     id: "copy-relative-path",
-    title: "Monaco: copy relative path of current file",
-    run: ({ relativePath }) => copy(relativePath, "Relative path copied"),
+    title: "Monaco: скопировать относительный путь к текущему файлу",
+    run: ({ relativePath }) => copy(relativePath, "Относительный путь скопирован"),
   },
 ];
 

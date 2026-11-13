@@ -37,7 +37,7 @@ export function VoiceInputButton({
                 className={cn("relative", props.className)}
                 aria-label={
                   visibleWarning
-                    ? "Microphone warning: open voice preferences"
+                    ? "Предупреждение микрофона: откройте настройки голосового ввода"
                     : props["aria-label"]
                 }
                 onClick={(event) => {
@@ -48,7 +48,7 @@ export function VoiceInputButton({
                     props.onClick?.(event);
                   }
                 }}
-                aria-description="Right-click or press Shift+F10 for voice preferences"
+                aria-description="Нажмите правой кнопкой мыши или Shift+F10 для настроек голосового ввода"
                 onContextMenu={(event) => {
                   event.preventDefault();
                   setOpen(true);
@@ -80,11 +80,11 @@ export function VoiceInputButton({
                 <>
                   <span className="block">{visibleWarning}</span>
                   <span className="block">
-                    Click to open voice preferences.
+                    Нажмите, чтобы открыть настройки голосового ввода.
                   </span>
                 </>
               ) : (
-                "Start voice input · Right-click for voice preferences"
+                "Начать голосовой ввод · Правая кнопка мыши — настройки"
               )}
             </TooltipContent>
           </Tooltip>

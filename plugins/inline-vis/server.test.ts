@@ -50,18 +50,18 @@ describe("requireRelativePreviewFile", () => {
 
   it("rejects absolute, traversal, and unsupported paths", () => {
     expect(() => requireRelativePreviewFile("/etc/passwd.html")).toThrow(
-      /source-relative/,
+      /относительным путём/,
     );
     expect(() => requireRelativePreviewFile("../secret.html")).toThrow(
-      /traversal|escape/,
+      /родительским папкам|за пределы/,
     );
     expect(() => requireRelativePreviewFile("..\\secret.html")).toThrow();
     expect(() => requireRelativePreviewFile("charts/../secret.html")).toThrow(
-      /traversal/,
+      /родительским папкам/,
     );
     expect(() => requireRelativePreviewFile("demo.txt")).toThrow(/\.html/);
     expect(() => requireRelativePreviewFile("notes.mdx")).toThrow(/\.md/);
-    expect(() => requireRelativePreviewFile("")).toThrow(/non-empty/);
+    expect(() => requireRelativePreviewFile("")).toThrow(/непустой строкой/);
   });
 });
 
@@ -95,20 +95,20 @@ describe("resolveContainedPreviewPath", () => {
 
   it("rejects resolved paths outside the root", () => {
     expect(() => resolveContainedPreviewPath(ROOT, "../outside.html")).toThrow(
-      /escape/,
+      /за пределы/,
     );
     expect(() =>
       resolveContainedPreviewPath(
         String.raw`C:\Users\fixture\project`,
         String.raw`..\outside.html`,
       ),
-    ).toThrow(/escape/);
+    ).toThrow(/за пределы/);
     expect(() =>
       resolveContainedPreviewPath(
         String.raw`\\fixture-host\bb-data\thread-storage\thr_test`,
         String.raw`..\outside.html`,
       ),
-    ).toThrow(/escape/);
+    ).toThrow(/за пределы/);
   });
 });
 
@@ -343,7 +343,7 @@ describe("preparePreview rpc", () => {
         threadId: "thr_1",
         file: "demo.html",
       }),
-    ).rejects.toThrow(/no workspace path/);
+    ).rejects.toThrow(/нет пути к рабочей папке/);
   });
 
   it("reads through bb.sdk.files with hostId + rootPath confinement and returns the page with its content hash", async () => {
@@ -460,13 +460,13 @@ describe("preparePreview rpc", () => {
         threadId: "thr_1",
         file: "/tmp/x.html",
       }),
-    ).rejects.toThrow(/source-relative/);
+    ).rejects.toThrow(/относительным путём/);
     await expect(
       harness.callRpc("preparePreview", {
         threadId: "thr_1",
         file: "../etc/passwd.html",
       }),
-    ).rejects.toThrow(/traversal|escape/);
+    ).rejects.toThrow(/родительским папкам|за пределы/);
     await expect(
       harness.callRpc("preparePreview", {
         threadId: "thr_1",
@@ -524,6 +524,6 @@ describe("preparePreview rpc", () => {
         threadId: "thr_1",
         file: "big.html",
       }),
-    ).rejects.toThrow(/too large/);
+    ).rejects.toThrow(/слишком большой/);
   });
 });

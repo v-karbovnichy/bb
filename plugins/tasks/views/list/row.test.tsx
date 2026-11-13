@@ -118,7 +118,7 @@ describe("inline row editing", () => {
     ]);
     const row = await rowFor(slot, "TSK-1");
     fireEvent.click(
-      within(row).getByRole("button", { name: "Open TSK-1: Task 1" }),
+      within(row).getByRole("button", { name: "Открыть TSK-1: Task 1" }),
     );
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
@@ -145,7 +145,7 @@ describe("inline row editing", () => {
     const row = await rowFor(slot, "TSK-1");
     fireEvent.contextMenu(row);
     fireEvent.click(
-      await slot.findByRole("menuitem", { name: "Move to project" }),
+      await slot.findByRole("menuitem", { name: "Переместить в проект" }),
     );
     fireEvent.click(await slot.findByRole("menuitem", { name: /Personal/ }));
     await waitFor(() =>
@@ -164,12 +164,12 @@ describe("inline row editing", () => {
 
     fireEvent.click(
       within(row).getByRole("button", {
-        name: /Change status, currently Todo/,
+        name: /Изменить статус, сейчас «К выполнению»/,
       }),
     );
-    const drawer = await slot.findByRole("dialog", { name: "Change status" });
+    const drawer = await slot.findByRole("dialog", { name: "Изменить статус" });
     fireEvent.click(
-      await within(drawer).findByRole("menuitem", { name: /Done/ }),
+      await within(drawer).findByRole("menuitem", { name: /Готово/ }),
     );
 
     await waitFor(() =>
@@ -185,7 +185,7 @@ describe("inline row editing", () => {
       expect(
         within(
           slot.container.querySelector('[data-task-key="TSK-1"]')!,
-        ).getByRole("button", { name: /Change status, currently Done/ }),
+        ).getByRole("button", { name: /Изменить статус, сейчас «Готово»/ }),
       ).toBeTruthy(),
     );
   });
@@ -198,12 +198,12 @@ describe("inline row editing", () => {
 
     fireEvent.click(
       within(row).getByRole("button", {
-        name: /Set priority, currently No priority/,
+        name: /Установить приоритет, сейчас «Без приоритета»/,
       }),
     );
-    const drawer = await slot.findByRole("dialog", { name: "Set priority" });
+    const drawer = await slot.findByRole("dialog", { name: "Установить приоритет" });
     fireEvent.click(
-      await within(drawer).findByRole("menuitem", { name: /Urgent/ }),
+      await within(drawer).findByRole("menuitem", { name: /Срочно/ }),
     );
 
     await waitFor(() =>
@@ -219,7 +219,7 @@ describe("inline row editing", () => {
       expect(
         within(
           slot.container.querySelector('[data-task-key="TSK-1"]')!,
-        ).getByRole("button", { name: /currently Urgent/ }),
+        ).getByRole("button", { name: /сейчас «Срочно»/ }),
       ).toBeTruthy(),
     );
   });
@@ -238,12 +238,12 @@ describe("inline row editing", () => {
 
     fireEvent.click(
       within(row).getByRole("button", {
-        name: /Change status, currently Todo/,
+        name: /Изменить статус, сейчас «К выполнению»/,
       }),
     );
-    const drawer = await slot.findByRole("dialog", { name: "Change status" });
+    const drawer = await slot.findByRole("dialog", { name: "Изменить статус" });
     fireEvent.click(
-      await within(drawer).findByRole("menuitem", { name: /Done/ }),
+      await within(drawer).findByRole("menuitem", { name: /Готово/ }),
     );
 
     await slot.findByText("Server rejected it");
@@ -251,7 +251,7 @@ describe("inline row editing", () => {
       expect(
         within(
           slot.container.querySelector('[data-task-key="TSK-1"]')!,
-        ).getByRole("button", { name: /Change status, currently Todo/ }),
+        ).getByRole("button", { name: /Изменить статус, сейчас «К выполнению»/ }),
       ).toBeTruthy(),
     );
   });
@@ -264,12 +264,12 @@ describe("inline row editing", () => {
 
     fireEvent.click(
       within(row).getByRole("button", {
-        name: /Change status, currently Todo/,
+        name: /Изменить статус, сейчас «К выполнению»/,
       }),
     );
-    const drawer = await slot.findByRole("dialog", { name: "Change status" });
+    const drawer = await slot.findByRole("dialog", { name: "Изменить статус" });
     fireEvent.click(
-      await within(drawer).findByRole("menuitem", { name: /Todo/ }),
+      await within(drawer).findByRole("menuitem", { name: /К выполнению/ }),
     );
 
     await waitFor(() => expect(slot.queryByRole("dialog")).toBeNull());

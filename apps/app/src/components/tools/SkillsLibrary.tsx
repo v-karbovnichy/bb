@@ -495,20 +495,20 @@ export function SkillsLibrary() {
       {routeSkillId !== undefined && hasError ? (
         <ResourceListState
           state="error"
-          message="Couldn't load skill."
+          message="Не удалось загрузить навык."
           layout="detail"
           onRetry={() => void skillsQuery.refetch()}
         />
       ) : routeSkillId !== undefined && isLoading ? (
         <ResourceListState
           state="loading"
-          message="Loading skill"
+          message="Загрузка навыка"
           layout="detail"
         />
       ) : routeSkillId !== undefined && selectedSkill === null ? (
         <ResourceListState
           state="empty"
-          message="Skill not found."
+          message="Навык не найден."
           layout="detail"
         />
       ) : selectedSkill ? (
@@ -524,8 +524,8 @@ export function SkillsLibrary() {
           state={registryEntryQuery.isError ? "error" : "loading"}
           message={
             registryEntryQuery.isError
-              ? "This registry skill could not be loaded."
-              : "Loading registry skill"
+              ? "Не удалось загрузить навык из каталога."
+              : "Загрузка навыка из каталога"
           }
           layout="detail"
           onRetry={() => void registryEntryQuery.refetch()}
@@ -533,14 +533,14 @@ export function SkillsLibrary() {
       ) : selectedRegistrySkill && registryDetailQuery.isLoading ? (
         <ResourceListState
           state="loading"
-          message="Checking skill source"
+          message="Проверка источника навыка"
           layout="detail"
         />
       ) : selectedRegistrySkill &&
         (registryDetailQuery.isError || registryDetail === null) ? (
         <ResourceListState
           state="error"
-          message="This registry skill is no longer available from its source."
+          message="Этот навык больше недоступен в источнике."
           layout="detail"
           onRetry={() => void registryDetailQuery.refetch()}
         />
@@ -568,7 +568,7 @@ export function SkillsLibrary() {
               action={
                 <CreateWithTemplatesButton
                   kind="skill"
-                  label="New bb skill"
+                  label="Новый навык bb"
                   onCreate={handleCreateSkill}
                 />
               }

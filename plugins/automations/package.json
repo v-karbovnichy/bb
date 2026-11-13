@@ -1,7 +1,7 @@
 {
   "name": "bb-plugin-automations",
   "version": "0.1.0",
-  "description": "Schedule recurring and one-shot agent or script work.",
+  "description": "Планируйте повторяющиеся и разовые запуски агентов и скриптов.",
   "private": true,
   "type": "module",
   "engines": {
@@ -9,8 +9,8 @@
     "bbPluginSdk": ">=0.6.113"
   },
   "bb": {
-    "name": "Automations",
-    "description": "Schedule recurring and one-shot agent or script work.",
+    "name": "Автоматизации",
+    "description": "Планируйте повторяющиеся и разовые запуски агентов и скриптов.",
     "branding": {
       "icon": "Repeat"
     },

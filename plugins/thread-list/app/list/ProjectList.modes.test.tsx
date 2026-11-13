@@ -170,13 +170,13 @@ function MachineModeProbe({
         effectivePinnedThreadIds={new Set()}
         status="ready"
         showPinnedSection={false}
-        pinnedSection={{ label: "Pinned", content: null }}
+        pinnedSection={{ label: "Закреплённые", content: null }}
         pinnedReorderPending={false}
         pinnedRootItems={[]}
         pinnedRootNodes={[]}
         pinnedThreads={[]}
         onReorderPinnedThread={vi.fn()}
-        threadsSection={{ label: "Threads" }}
+        threadsSection={{ label: "Чаты" }}
         collapsedSectionIds={collapsedSectionIdSet}
         collapsedThreadIds={new Set()}
         collapsedEnvironmentIds={new Set()}
@@ -324,12 +324,12 @@ describe("sidebar organization mode sections", () => {
 
     expect(screen.getByText("No threads")).not.toBeNull();
     fireEvent.click(
-      screen.getByRole("button", { name: "Collapse Threads section" }),
+      screen.getByRole("button", { name: "Свернуть раздел Чаты" }),
     );
     expect(screen.queryByText("No threads")).toBeNull();
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Expand Threads section" }),
+      screen.getByRole("button", { name: "Развернуть раздел Чаты" }),
     );
     expect(screen.getByText("No threads")).not.toBeNull();
     expect(mockBuildMachineThreadGroups).toHaveBeenCalledWith([], []);
@@ -350,7 +350,7 @@ describe("sidebar organization mode sections", () => {
     );
 
     fireEvent.doubleClick(screen.getByTitle("Work laptop"));
-    const input = await screen.findByRole("textbox", { name: "Machine name" });
+    const input = await screen.findByRole("textbox", { name: "Название компьютера" });
     expect(input.closest('[aria-disabled="true"]')).toBeNull();
     fireEvent.change(input, { target: { value: "Studio" } });
     fireEvent.keyDown(input, { key: "Enter" });
@@ -368,7 +368,7 @@ describe("sidebar organization mode sections", () => {
     store.set(sidebarMachineSectionOrderAtom, ["machine:no-machine"]);
     store.set(sidebarCollapsedMachinesAtom, ["no-machine"]);
     const { sdkCalls } = renderMachineMode(store, [makeThread()]);
-    fireEvent.doubleClick(screen.getByTitle("No machine"));
+    fireEvent.doubleClick(screen.getByTitle("Без компьютера"));
     expect(screen.queryByRole("textbox")).toBeNull();
     expect(sdkCalls).toEqual([]);
   });
@@ -398,10 +398,10 @@ describe("sidebar organization mode sections", () => {
       selectedThreadId: "thr_machine",
     });
 
-    const more = screen.getByRole("button", { name: "More machines" });
+    const more = screen.getByRole("button", { name: "Ещё: Компьютеры" });
     expect(more.getAttribute("data-selected")).toBe("true");
     fireEvent.keyDown(more, { key: "Enter" });
-    const section = await screen.findByRole("menuitem", { name: /No machine/ });
+    const section = await screen.findByRole("menuitem", { name: /Без компьютера/ });
     expect(section.getAttribute("data-selected")).toBe("true");
   });
 
@@ -416,7 +416,7 @@ describe("sidebar organization mode sections", () => {
 
     expect(
       screen
-        .getByRole("button", { name: "More machines" })
+        .getByRole("button", { name: "Ещё: Компьютеры" })
         .getAttribute("data-selected"),
     ).toBeNull();
   });
@@ -430,30 +430,30 @@ describe("sidebar organization mode sections", () => {
 
     renderMachineMode(store, [makeThread()]);
 
-    const more = screen.getByRole("button", { name: "More machines" });
+    const more = screen.getByRole("button", { name: "Ещё: Компьютеры" });
     expect(
       more.querySelector('[data-thread-status-glyph="plan-mode"]'),
     ).not.toBeNull();
-    expect(screen.queryByText("No machine")).toBeNull();
+    expect(screen.queryByText("Без компьютера")).toBeNull();
     expect(screen.queryByText("Machine activity")).toBeNull();
 
     fireEvent.keyDown(more, { key: "Enter" });
-    const section = await screen.findByRole("menuitem", { name: /No machine/ });
+    const section = await screen.findByRole("menuitem", { name: /Без компьютера/ });
     expect(screen.queryByText("Machine activity")).toBeNull();
     fireEvent.keyDown(section, { key: "ArrowRight" });
     expect(await screen.findByText("Machine activity")).not.toBeNull();
     expect(
       more.querySelector('[data-thread-status-glyph="plan-mode"]'),
     ).not.toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Add to list" }));
+    fireEvent.click(screen.getByRole("button", { name: "Добавить в список" }));
 
     await waitFor(() =>
       expect(
-        screen.queryByRole("button", { name: "More machines" }),
+        screen.queryByRole("button", { name: "Ещё: Компьютеры" }),
       ).toBeNull(),
     );
     expect(
-      screen.getByRole("button", { name: "Expand No machine section" }),
+      screen.getByRole("button", { name: "Развернуть раздел Без компьютера" }),
     ).not.toBeNull();
     expect(screen.queryByText("Machine activity")).toBeNull();
     expect(store.get(sidebarHiddenGroupsAtom)).toEqual([]);

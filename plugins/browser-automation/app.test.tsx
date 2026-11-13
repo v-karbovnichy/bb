@@ -54,7 +54,7 @@ describe("inline browser preview", () => {
   it("rejects a malformed session attribute without calling the server", async () => {
     const slot = renderSlot(directive, props("not-a-session"), { rpc: {} });
     expect((await slot.findByRole("alert")).textContent).toMatch(
-      /valid session attribute/,
+      /допустимый атрибут session/,
     );
     expect(slot.rpcCalls).toEqual([]);
   });
@@ -79,14 +79,14 @@ describe("inline browser preview", () => {
       },
     });
     expect(await slot.findByRole("status")).toBeTruthy();
-    expect(slot.getByText("Connecting")).toBeTruthy();
+    expect(slot.getByText("Подключение")).toBeTruthy();
     deliverFirst();
-    const first = await slot.findByAltText("Live view of Cart");
+    const first = await slot.findByAltText("Текущий вид страницы Cart");
     expect(first.getAttribute("src")).toBe("data:image/jpeg;base64,bytes4");
     expect(slot.getByText("shop.test/cart")).toBeTruthy();
-    expect(slot.getByText("Live")).toBeTruthy();
+    expect(slot.getByText("Активно")).toBeTruthy();
     const second = await slot.findByAltText(
-      "Live view of Checkout",
+      "Текущий вид страницы Checkout",
       {},
       { timeout: 3_000 },
     );
@@ -112,7 +112,7 @@ describe("inline browser preview", () => {
         }),
       },
     });
-    await slot.findByAltText("Live view of Headless browser");
+    await slot.findByAltText("Текущий вид страницы Браузер без интерфейса");
     expect(slot.getByText("data:")).toBeTruthy();
     expect(slot.queryByText(/very-long-inline-page/)).toBeNull();
   });
@@ -126,7 +126,7 @@ describe("inline browser preview", () => {
         }),
       },
     });
-    await slot.findByAltText("Live view of Headless browser");
+    await slot.findByAltText("Текущий вид страницы Браузер без интерфейса");
     expect(slot.getAllByText("about:blank")).toHaveLength(1);
   });
 
@@ -140,13 +140,13 @@ describe("inline browser preview", () => {
         },
       },
     });
-    await slot.findByAltText("Live view of Cart");
-    fireEvent.click(slot.getByRole("button", { name: /^Browser preview:/ }));
+    await slot.findByAltText("Текущий вид страницы Cart");
+    fireEvent.click(slot.getByRole("button", { name: /^Предпросмотр браузера:/ }));
     expect(slot.queryByRole("img")).toBeNull();
     const settled = polls;
     await new Promise((resolve) => setTimeout(resolve, 600));
     expect(polls).toBe(settled);
-    fireEvent.click(slot.getByRole("button", { name: /^Browser preview:/ }));
+    fireEvent.click(slot.getByRole("button", { name: /^Предпросмотр браузера:/ }));
     await waitFor(() => expect(polls).toBeGreaterThan(settled));
   });
 
@@ -174,7 +174,7 @@ describe("inline browser preview", () => {
           },
         },
       });
-      await slot.findByAltText("Live view of Cart");
+      await slot.findByAltText("Текущий вид страницы Cart");
       expect(observers).toHaveLength(1);
       act(() => observers[0]!([{ isIntersecting: false }]));
       const settled = polls;
@@ -201,16 +201,16 @@ describe("inline browser preview", () => {
       },
     });
     const last = await slot.findByAltText(
-      "Last view of Cart",
+      "Последний вид страницы Cart",
       {},
       { timeout: 3_000 },
     );
     expect(last.getAttribute("src")).toBe("data:image/jpeg;base64,bytes1");
-    expect(slot.getByText("Ended")).toBeTruthy();
+    expect(slot.getByText("Завершено")).toBeTruthy();
     await new Promise((resolve) => setTimeout(resolve, 600));
     expect(polls).toBe(2);
     expect(
-      slot.getByRole("button", { name: "Expand browser preview" }),
+      slot.getByRole("button", { name: "Увеличить предпросмотр браузера" }),
     ).toBeTruthy();
   });
 
@@ -223,11 +223,11 @@ describe("inline browser preview", () => {
         }),
       },
     });
-    await slot.findByText("Ended");
+    await slot.findByText("Завершено");
     expect(slot.queryByRole("img")).toBeNull();
     expect(slot.queryByRole("status")).toBeNull();
     expect(
-      slot.queryByRole("button", { name: "Expand browser preview" }),
+      slot.queryByRole("button", { name: "Увеличить предпросмотр браузера" }),
     ).toBeNull();
   });
 
@@ -240,7 +240,7 @@ describe("inline browser preview", () => {
         }),
       },
     });
-    await slot.findByText("Unavailable");
+    await slot.findByText("Недоступно");
     expect(slot.queryByRole("img")).toBeNull();
     expect(previewInputs(slot)).toHaveLength(1);
   });
@@ -257,7 +257,7 @@ describe("inline browser preview", () => {
       });
       for (let attempt = 0; attempt < 8; attempt++)
         await act(() => vi.advanceTimersByTimeAsync(16_000));
-      expect(slot.getByText("Unavailable")).toBeTruthy();
+      expect(slot.getByText("Недоступно")).toBeTruthy();
       expect(previewInputs(slot)).toHaveLength(5);
     } finally {
       vi.useRealTimers();
@@ -296,21 +296,21 @@ describe("expanded browser preview", () => {
         },
       },
     );
-    await card.findByAltText("Live view of Thumbnail");
+    await card.findByAltText("Текущий вид страницы Thumbnail");
     expect(lightbox.queryByRole("dialog")).toBeNull();
     expect(overlayPolls).toBe(0);
 
     fireEvent.click(
-      card.getByRole("button", { name: "Expand browser preview" }),
+      card.getByRole("button", { name: "Увеличить предпросмотр браузера" }),
     );
     const dialog = await lightbox.findByRole("dialog");
     expect(dialog.querySelector("img")).toBeTruthy();
     await waitFor(() =>
       expect(dialog.querySelector("img")!.getAttribute("alt")).toBe(
-        "Live view of Full size",
+        "Текущий вид страницы Full size",
       ),
     );
-    expect(dialog.textContent).toContain("shop.test/cart · Live");
+    expect(dialog.textContent).toContain("shop.test/cart · Активно");
     expect(new Set(sizes(lightbox))).toEqual(new Set(["full"]));
     const pausedAt = cardPolls;
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -342,9 +342,9 @@ describe("expanded browser preview", () => {
         },
       },
     );
-    await card.findByAltText("Live view of Cart");
+    await card.findByAltText("Текущий вид страницы Cart");
     fireEvent.click(
-      card.getByRole("button", { name: "Expand browser preview" }),
+      card.getByRole("button", { name: "Увеличить предпросмотр браузера" }),
     );
     await lightbox.findByRole("dialog");
     card.unmount();
@@ -371,14 +371,14 @@ describe("expanded browser preview", () => {
         },
       },
     );
-    await card.findByAltText("Live view of Cart");
+    await card.findByAltText("Текущий вид страницы Cart");
     fireEvent.click(
-      card.getByRole("button", { name: "Expand browser preview" }),
+      card.getByRole("button", { name: "Увеличить предпросмотр браузера" }),
     );
     const dialog = await lightbox.findByRole("dialog");
-    await waitFor(() => expect(dialog.textContent).toContain("Ended"));
+    await waitFor(() => expect(dialog.textContent).toContain("Завершено"));
     expect(dialog.querySelector("img")!.getAttribute("alt")).toBe(
-      "Last view of Cart",
+      "Последний вид страницы Cart",
     );
     expect(previewInputs(lightbox)).toHaveLength(1);
   });

@@ -306,7 +306,7 @@ export function ResourceInfiniteScrollSentinel({
           role="status"
           aria-live="polite"
         >
-          Loading more…
+          Загрузка…
         </span>
       ) : null}
     </div>
@@ -355,11 +355,11 @@ export function ResourcePagination({
 
   return (
     <nav
-      aria-label="Results pagination"
+      aria-label="Страницы результатов"
       className="flex flex-wrap items-center justify-between gap-2 px-1"
     >
       <span className="text-xs text-subtle-foreground">
-        {`${firstItem}–${lastItem} of ${total}`}
+        {`${firstItem}–${lastItem} из ${total}`}
       </span>
       <div className="flex items-center gap-1">
         <Button
@@ -370,10 +370,10 @@ export function ResourcePagination({
           onClick={() => changePage(safePage - 1)}
         >
           <Icon name="ChevronLeft" aria-hidden />
-          Previous
+          Назад
         </Button>
         <span className="min-w-24 text-center text-xs text-muted-foreground">
-          Page {safePage + 1} of {pageCount}
+          Страница {safePage + 1} из {pageCount}
         </span>
         <Button
           type="button"
@@ -382,7 +382,7 @@ export function ResourcePagination({
           disabled={safePage >= pageCount - 1}
           onClick={() => changePage(safePage + 1)}
         >
-          Next
+          Далее
           <Icon name="ChevronRight" aria-hidden />
         </Button>
       </div>

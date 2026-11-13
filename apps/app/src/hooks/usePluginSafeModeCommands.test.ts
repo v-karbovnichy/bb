@@ -64,7 +64,7 @@ describe("changePluginSafeMode", () => {
     });
 
     expect(toast.error).toHaveBeenCalledWith(
-      "Failed to turn off plugin safe mode",
+      "Не удалось выключить безопасный режим плагинов",
       { description: "server unavailable" },
     );
     expect(setPluginSafeMode).toHaveBeenCalledWith(expect.anything(), false);

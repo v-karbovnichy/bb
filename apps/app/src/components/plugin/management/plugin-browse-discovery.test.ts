@@ -123,7 +123,7 @@ describe("plugin browse shelves", () => {
       ["Thread Management", ["thread"]],
       ["Observability", ["unknown-first"]],
       ["Data Tools", ["unknown-second"]],
-      ["More plugins", ["uncategorized"]],
+      ["Другие плагины", ["uncategorized"]],
     ]);
   });
 

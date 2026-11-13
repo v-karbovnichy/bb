@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Control the number of concurrent threads that are running in bb",
+  "description": "Ограничение числа чатов, одновременно работающих в bb",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.4.102"
   },
   "bb": {
-    "name": "Concurrency limit",
-    "description": "Control the number of concurrent threads that are running in bb",
+    "name": "Лимит одновременных чатов",
+    "description": "Ограничение числа чатов, одновременно работающих в bb",
     "branding": {
       "icon": "Limitation"
     },

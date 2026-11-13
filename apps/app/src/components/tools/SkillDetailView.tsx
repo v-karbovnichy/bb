@@ -53,7 +53,7 @@ interface SkillDetailViewProps {
 function SkillPath({ path, href }: { path: string; href?: string }) {
   const { copied, copy } = useClipboardCopy({
     text: path,
-    errorMessage: "Failed to copy path.",
+    errorMessage: "Не удалось скопировать путь.",
   });
   const displayPath = formatHomePathForDisplay(path);
 
@@ -66,7 +66,7 @@ function SkillPath({ path, href }: { path: string; href?: string }) {
               href={href}
               target="_blank"
               rel="noreferrer"
-              aria-label={`Open ${path} in a new tab`}
+              aria-label={`Открыть ${path} в новой вкладке`}
               className="group -ml-1.5 inline-flex max-w-full cursor-pointer items-center gap-1 rounded-md px-1.5 py-1 text-xs text-subtle-foreground transition-colors hover:bg-state-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <span className="truncate font-mono">{displayPath}</span>
@@ -79,7 +79,7 @@ function SkillPath({ path, href }: { path: string; href?: string }) {
           ) : (
             <button
               type="button"
-              aria-label={`Copy skill path: ${path}`}
+              aria-label={`Скопировать путь к навыку: ${path}`}
               onClick={() => void copy()}
               className="group -ml-1.5 inline-flex max-w-full cursor-pointer items-center gap-1 rounded-md px-1.5 py-1 text-xs text-subtle-foreground transition-colors hover:bg-state-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
@@ -96,7 +96,7 @@ function SkillPath({ path, href }: { path: string; href?: string }) {
           )}
         </TooltipTrigger>
         <TooltipContent>
-          {href ? "Open on skills.sh" : copied ? "Copied" : "Copy path"}
+          {href ? "Открыть на skills.sh" : copied ? "Скопировано" : "Скопировать путь"}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -254,7 +254,7 @@ export function SkillDetailView({
     >
       <ResourceDetailStack>
         {files.length > 1 ? (
-          <ResourceDetailIncludesSection label="Files">
+          <ResourceDetailIncludesSection label="Файлы">
             <SkillFileList
               files={files}
               selectedPath={selectedPath}
@@ -269,7 +269,7 @@ export function SkillDetailView({
               surface="recessed"
               className="px-3 py-10 text-center text-sm text-muted-foreground"
             >
-              Loading {selectedDisplayPath}…
+              Загрузка {selectedDisplayPath}…
             </ResourceDetailPanel>
           ) : contentState.kind === "error" ? (
             <ResourceDetailPanel
@@ -294,7 +294,7 @@ export function SkillDetailView({
                 className="mt-3"
                 onClick={contentState.onRetry}
               >
-                Retry
+                Повторить
               </Button>
             </ResourceDetailPanel>
           ) : (

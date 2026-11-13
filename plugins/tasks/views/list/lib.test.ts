@@ -74,8 +74,8 @@ describe("label filter options", () => {
 describe("formatDueDate", () => {
   it("omits the current year and shows other years", () => {
     const today = new Date("2026-07-15T12:00:00");
-    expect(formatDueDate("2026-07-18", today)).toBe("Jul 18");
-    expect(formatDueDate("2027-01-02", today)).toBe("Jan 2, 2027");
+    expect(formatDueDate("2026-07-18", today)).toBe("18 июл.");
+    expect(formatDueDate("2027-01-02", today)).toBe("2 янв. 2027 г.");
   });
 });
 
@@ -125,9 +125,9 @@ describe("isActiveThread", () => {
 
 describe("activeWorkLabel", () => {
   it.each<[string, TaskThread["liveStatus"][], string]>([
-    ["one working agent", ["working"], "Agent working"],
-    ["one starting agent", ["starting"], "Agent starting"],
-    ["several agents", ["working", "starting"], "2 agents working"],
+    ["one working agent", ["working"], "Агент работает"],
+    ["one starting agent", ["starting"], "Агент запускается"],
+    ["several agents", ["working", "starting"], "Агентов в работе: 2"],
   ])("labels %s", (_name, statuses, expected) => {
     expect(
       activeWorkLabel(statuses.map((liveStatus) => ({ liveStatus }))),

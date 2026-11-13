@@ -23,7 +23,7 @@ function resultLabel(
   results: { resultIndex: number; resultCount: number },
 ): string {
   if (query === "") return "";
-  if (results.resultCount === 0) return "No results";
+  if (results.resultCount === 0) return "Нет результатов";
   if (results.resultIndex < 0) return `${results.resultCount}+ results`;
   return `${results.resultIndex + 1} of ${results.resultCount}`;
 }
@@ -64,7 +64,7 @@ export function TerminalFindBar({
   return (
     <div
       role="search"
-      aria-label="Find in terminal"
+      aria-label="Найти в терминале"
       className="flex items-center gap-2 border-b border-border bg-sidebar p-2 text-xs"
       onKeyDown={(event) => {
         if (
@@ -80,7 +80,7 @@ export function TerminalFindBar({
     >
       <input
         ref={inputRef}
-        aria-label="Find in terminal"
+        aria-label="Найти в терминале"
         className="min-w-0 flex-1 rounded border border-input bg-background px-2 py-1"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
@@ -90,7 +90,7 @@ export function TerminalFindBar({
         variant="ghost"
         size="sm"
         className="h-6 px-1.5 font-mono"
-        aria-label="Match case"
+        aria-label="Учитывать регистр"
         aria-pressed={caseSensitive}
         onClick={() => setCaseSensitive(!caseSensitive)}
       >
@@ -104,7 +104,7 @@ export function TerminalFindBar({
         variant="ghost"
         size="icon"
         className="size-6"
-        aria-label="Previous match"
+        aria-label="Предыдущее совпадение"
         disabled={!query}
         onClick={() => find(true)}
       >
@@ -115,7 +115,7 @@ export function TerminalFindBar({
         variant="ghost"
         size="icon"
         className="size-6"
-        aria-label="Next match"
+        aria-label="Следующее совпадение"
         disabled={!query}
         onClick={() => find(false)}
       >
@@ -126,7 +126,7 @@ export function TerminalFindBar({
         variant="ghost"
         size="icon"
         className="size-6"
-        aria-label="Close terminal find"
+        aria-label="Закрыть поиск по терминалу"
         onClick={onClose}
       >
         <Icon name="X" />

@@ -17,7 +17,7 @@ export function PaletteInputBand({ children }: { children: ReactNode }) {
 }
 
 export const COMMAND_PALETTE_INPUT = {
-  label: "Search commands",
-  description: "Use Escape to close the command palette.",
-  placeholder: "Search commands…",
+  label: "Поиск команд",
+  description: "Нажмите Escape, чтобы закрыть палитру команд.",
+  placeholder: "Поиск команд…",
 };

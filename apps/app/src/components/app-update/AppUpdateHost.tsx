@@ -239,7 +239,7 @@ export function AppUpdateResultDialog({
               <div className="relative overflow-hidden rounded-md border bg-background">
                 <CopyButton
                   text={log}
-                  label="Copy update log"
+                  label="Копировать журнал обновления"
                   successMessage="Update log copied"
                   className="absolute right-2 top-2 z-10 opacity-70 transition-opacity hover:opacity-100 focus-visible:opacity-100"
                   iconClassName="size-3"

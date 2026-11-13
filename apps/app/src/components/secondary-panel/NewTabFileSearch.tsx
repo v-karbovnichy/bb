@@ -143,14 +143,14 @@ const FILE_SEARCH_SECTION_ORDER: readonly FileSearchSectionKind[] = [
 ];
 
 const FILE_SEARCH_SECTION_LABELS = {
-  actions: "Actions",
-  files: "Files",
-  recent: "Recent",
+  actions: "Действия",
+  files: "Файлы",
+  recent: "Недавние",
 } satisfies Record<FileSearchSectionKind, string>;
 
 const FILE_SEARCH_SOURCE_LABELS = {
-  workspace: "Workspace",
-  "thread-storage": "Thread storage",
+  workspace: "Рабочая область",
+  "thread-storage": "Хранилище чата",
 } satisfies Record<FileSearchSource, string>;
 
 const RECENT_ENTRY_ID_PREFIX = "file-search-result-recent";
@@ -447,7 +447,7 @@ function ShowMoreToggle({
         )}
         aria-hidden
       />
-      <span>{isExpanded ? "Show less" : `Show ${showMoreCount} more`}</span>
+      <span>{isExpanded ? "Показать меньше" : `Показать ещё: ${showMoreCount}`}</span>
     </button>
   );
 }
@@ -648,7 +648,7 @@ export function NewTabFileSearch({
     : undefined;
   const hasListbox = !isUnavailable && navigableEntries.length > 0;
   const searchLabel =
-    actions.length > 0 ? "Search files and actions" : "Search files";
+    actions.length > 0 ? "Поиск файлов и действий" : "Поиск файлов";
 
   const idleActions = <NewTabActions actions={actions} />;
 
@@ -684,7 +684,7 @@ export function NewTabFileSearch({
           aria-expanded={hasListbox}
           aria-controls={hasListbox ? listboxId : undefined}
           aria-activedescendant={hasListbox ? activeEntryId : undefined}
-          placeholder={isUnavailable ? "No searchable source" : searchLabel}
+          placeholder={isUnavailable ? "Нет доступного источника для поиска" : searchLabel}
           className={cn(
             "h-8 pl-8 pr-8 focus-visible:ring-0 max-md:pointer-coarse:h-10",
             COARSE_POINTER_TEXT_SM_CLASS,
@@ -704,7 +704,7 @@ export function NewTabFileSearch({
       {isUnavailable ? (
         <FileSearchMessage
           iconName="FileQuestion"
-          message="No searchable source is available."
+          message="Нет доступного источника для поиска."
         />
       ) : (
         <NewTabResults
@@ -791,7 +791,7 @@ function NewTabResults({
       <FileSearchMessage
         iconName={hasQuery ? "FileQuestion" : "File"}
         message={
-          hasQuery ? "No results match your search." : "Type to search files."
+          hasQuery ? "По вашему запросу ничего не найдено." : "Введите запрос для поиска файлов."
         }
       />
     );
@@ -805,10 +805,10 @@ function NewTabResults({
       iconClassName={showLoading ? "animate-spin" : undefined}
       message={
         showError
-          ? "Search failed."
+          ? "Не удалось выполнить поиск."
           : showLoading
-            ? "Searching files..."
-            : "No files match your search."
+            ? "Поиск файлов…"
+            : "Подходящих файлов не найдено."
       }
     />
   ) : null;
@@ -818,7 +818,7 @@ function NewTabResults({
       {hasQuery ? null : searchMessage}
 
       {sections.length > 0 ? (
-        <div id={listboxId} role="listbox" aria-label="Search results">
+        <div id={listboxId} role="listbox" aria-label="Результаты поиска">
           {sections.map((section, sectionIndex) => {
             const spaced = sectionIndex > 0 || hasRecentSectionPredecessor;
             return (
@@ -896,7 +896,7 @@ function NewTabResults({
             className={hasRecentSectionPredecessor ? "pt-2" : undefined}
           />
           <EmptyStatePanel className={cn("py-4", COARSE_POINTER_TEXT_SM_CLASS)}>
-            Plans, mockups, and files you open will show up here.
+            Здесь появятся планы, макеты и открытые файлы.
           </EmptyStatePanel>
         </section>
       ) : null}

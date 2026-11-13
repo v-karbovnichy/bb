@@ -23,9 +23,9 @@ function withTooltip(control: ReactNode, tooltip: ReactNode | undefined) {
 
 export function ResourceInstallControl({
   accessibleLabel,
-  label = "Install",
+  label = "Установить",
   icon = "Download",
-  pendingLabel = "Installing",
+  pendingLabel = "Установка",
   pending = false,
   disabled = false,
   presentation = "label",
@@ -106,7 +106,7 @@ export function ResourceInstalledControl({
     >
       <span className="inline-flex items-center gap-1">
         <Icon name="Check" className="size-3.5" aria-hidden />
-        Installed
+        Установлено
         {count === undefined ? null : (
           <span
             aria-label={count.accessibleLabel}

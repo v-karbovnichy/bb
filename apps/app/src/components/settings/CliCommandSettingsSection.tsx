@@ -20,19 +20,19 @@ export function describeCliCommandStatus(
 ): string {
   if (status.installedPath !== null) {
     return status.onPath
-      ? `Installed at ${status.installedPath}. You can control bb from any terminal, and so can agents outside bb, such as Claude Code or Codex.`
-      : `Installed at ${status.installedPath}, but its folder is not on your PATH. Add the folder to your PATH to use bb outside bb.`;
+      ? `Установлено в ${status.installedPath}. Управлять bb можно из любого терминала; агенты вне bb, например Claude Code или Codex, тоже смогут им пользоваться.`
+      : `Установлено в ${status.installedPath}, но эта папка не входит в PATH. Добавьте её в PATH, чтобы пользоваться bb вне bb.`;
   }
   if (status.shadowedBy === null) {
-    return "Install the bb CLI for use outside bb. You can control bb from any terminal, and so can agents outside bb, such as Claude Code or Codex. Threads in bb already have it.";
+    return "Установите CLI bb для работы вне bb. Управлять bb можно из любого терминала; агенты вне bb, например Claude Code или Codex, тоже смогут им пользоваться. В чатах bb CLI уже доступен.";
   }
   if (status.shadowedBy.source === "npm") {
-    return `Already installed for use outside bb at ${status.shadowedBy.path}, by npm.`;
+    return `Уже установлено для работы вне bb через npm по пути ${status.shadowedBy.path}.`;
   }
   if (status.shadowedBy.source === "machine") {
-    return `Already installed for use outside bb at ${status.shadowedBy.path}, with the bb machine on this computer.`;
+    return `Уже установлено для работы вне bb вместе с машиной bb на этом компьютере: ${status.shadowedBy.path}.`;
   }
-  return `Another bb at ${status.shadowedBy.path} comes first on your PATH. Remove it to install this one.`;
+  return `В PATH раньше находится другая установка bb: ${status.shadowedBy.path}. Удалите её, чтобы установить эту версию.`;
 }
 
 export function CliCommandSettingsSectionContent({
@@ -42,11 +42,11 @@ export function CliCommandSettingsSectionContent({
 }: CliCommandSettingsSectionContentProps) {
   const installed = status.installedPath !== null;
   return (
-    <SettingsSection title="Command line">
+    <SettingsSection title="Командная строка">
       <SettingsWithControl
         controlPlacement="trailing"
         label={CLI_COMMAND_SETTING_LABEL}
-        {...(installed ? { labelBadge: "Installed" } : {})}
+        {...(installed ? { labelBadge: "Установлено" } : {})}
         description={describeCliCommandStatus(status)}
       >
         <Button
@@ -55,9 +55,9 @@ export function CliCommandSettingsSectionContent({
           size="sm"
           disabled={pending || (!installed && status.shadowedBy !== null)}
           onClick={() => onChange(installed ? "remove" : "install")}
-          aria-label={`${installed ? "Remove" : "Install"} ${CLI_COMMAND_SETTING_LABEL}`}
+          aria-label={`${installed ? "Удалить" : "Установить"} ${CLI_COMMAND_SETTING_LABEL}`}
         >
-          {installed ? "Remove" : "Install"}
+          {installed ? "Удалить" : "Установить"}
         </Button>
       </SettingsWithControl>
     </SettingsSection>

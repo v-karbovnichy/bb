@@ -342,9 +342,9 @@ function ThreadContextCardContent({
         data-thread-context-card-empty=""
         className="hidden flex-col gap-0.5 px-2 py-1.5 text-xs"
       >
-        <span className="text-muted-foreground">Nothing to show yet</span>
+        <span className="text-muted-foreground">Пока нечего показать</span>
         <span className="text-subtle-foreground">
-          Changes, pull requests, and related threads show up here.
+          Здесь появятся изменения, запросы на слияние и связанные чаты.
         </span>
       </div>
     </div>
@@ -380,7 +380,7 @@ export function ThreadContextCard() {
       {state.layout !== "banner" ? (
         <div
           role="group"
-          aria-label="Thread context"
+          aria-label="Контекст чата"
           data-thread-context-card=""
           hidden={!isCardShown(state, pinned)}
           className={cn(
@@ -444,24 +444,24 @@ export function ThreadContextCardHeaderButton() {
               type="button"
               variant="ghost"
               size="icon"
-              aria-label="Thread context"
+              aria-label="Контекст чата"
               className={HEADER_BUTTON_CLASS}
             >
               <Icon name="LayoutList" />
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent>Thread context</TooltipContent>
+        <TooltipContent>Контекст чата</TooltipContent>
       </Tooltip>
       <PopoverContent
         align="end"
-        mobileTitle="Thread context"
+        mobileTitle="Контекст чата"
         onOpenAutoFocus={(event) => event.preventDefault()}
         className="max-h-[min(36rem,calc(100dvh-6rem))] w-72 overflow-y-auto p-0 shadow-none"
       >
         <div
           role="group"
-          aria-label="Thread context"
+          aria-label="Контекст чата"
           data-thread-context-card=""
           className="overflow-hidden p-2"
           onClick={(event) => {

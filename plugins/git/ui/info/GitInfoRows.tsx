@@ -76,10 +76,10 @@ export function BranchRowView({ workspace }: { workspace: WorkspaceStatus }) {
         <span className="block truncate">
           <CopyableValue
             text={display.copyValue}
-            label={display.copyLabel ?? "Copy checkout value"}
+            label={display.copyLabel ?? "Скопировать значение рабочей копии"}
             title={display.title}
-            successMessage={display.copySuccessMessage ?? "Value copied"}
-            errorMessage={display.copyErrorMessage ?? "Failed to copy value"}
+            successMessage={display.copySuccessMessage ?? "Значение скопировано"}
+            errorMessage={display.copyErrorMessage ?? "Не удалось скопировать значение"}
           >
             {display.label}
           </CopyableValue>
@@ -137,7 +137,7 @@ export function MergeBaseRowView({
     candidates.options.length > 0 ||
     candidates.remoteOptions.length > 0;
   return (
-    <DetailRow icon="GitMerge" label="Merge base">
+    <DetailRow icon="GitMerge" label="База слияния">
       {canSelect ? (
         <BranchPicker
           value={displayedBranch}
@@ -169,11 +169,11 @@ export function formatBranchComparison({
   baseBranch: string;
 }): string {
   if (aheadCount > 0 && behindCount > 0) {
-    return `${aheadCount} ahead, ${behindCount} behind ${baseBranch}`;
+    return `Впереди на ${aheadCount}, позади ${baseBranch} на ${behindCount}`;
   }
-  if (aheadCount > 0) return `${aheadCount} ahead of ${baseBranch}`;
-  if (behindCount > 0) return `${behindCount} behind ${baseBranch}`;
-  return `Even with ${baseBranch}`;
+  if (aheadCount > 0) return `Впереди ${baseBranch} на ${aheadCount}`;
+  if (behindCount > 0) return `Позади ${baseBranch} на ${behindCount}`;
+  return `На одном уровне с ${baseBranch}`;
 }
 
 export function GitStatusInfoRow(props: ExperimentalThreadInfoProps) {
@@ -209,12 +209,12 @@ export function GitStatusRowView({
     const mergeBase = workspace.mergeBase;
     if (!mergeBase?.mergeBaseBranch) return null;
     const refreshFailure = errorMessage
-      ? `Couldn't refresh: ${getGitStatusDisplay(undefined, {
+      ? `Не удалось обновить: ${getGitStatusDisplay(undefined, {
           errorMessage,
-        }).summary.replace(/\.$/, "")}. Showing the last known status.`
+        }).summary.replace(/\.$/, "")}. Показан последний известный статус.`
       : null;
     return (
-      <DetailRow icon="FileDiff" label="Git status">
+      <DetailRow icon="FileDiff" label="Статус Git">
         <span className="flex min-w-0 items-center gap-1.5">
           <span className="block min-w-0 truncate text-foreground">
             {formatBranchComparison({
@@ -251,7 +251,7 @@ export function GitStatusRowView({
     ...(failure === undefined ? {} : { workspaceUnavailable: failure }),
   });
   return (
-    <DetailRow icon="FileDiff" label="Git status" align="start">
+    <DetailRow icon="FileDiff" label="Статус Git" align="start">
       <span className="flex min-w-0 items-center gap-1.5">
         <Icon
           name="AlertTriangle"

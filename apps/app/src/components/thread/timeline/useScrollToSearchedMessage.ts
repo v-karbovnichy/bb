@@ -408,7 +408,7 @@ export function useScrollToSearchedMessage(
           handledKeyRef.current = targetLocationKey;
           setSettledLocationKey(targetLocationKey);
           if (reportsMissingTarget) {
-            appToast.message("Failed to load message", {
+            appToast.message("Не удалось загрузить сообщение", {
               description: "Please try opening the link again.",
             });
           }

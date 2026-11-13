@@ -7,7 +7,7 @@ import { TaskDirectiveCard, TaskEmbedPanel } from "./views/embed/index.js";
 export default definePluginApp((app) => {
   app.slots.navPanel({
     id: "tasks",
-    title: "Tasks",
+    title: "Задачи",
     icon: "ListTodo",
     path: "tasks",
     component: TasksAppShell,
@@ -17,7 +17,7 @@ export default definePluginApp((app) => {
     context: { kind: "nav-panel", panelId: "tasks" },
     availability: "fixed",
     id: "navigation",
-    title: "Navigation",
+    title: "Навигация",
     icon: "ListTodo",
     component: TasksNavigationPanel,
     layout: "flush",
@@ -26,7 +26,7 @@ export default definePluginApp((app) => {
     context: { kind: "thread" },
     availability: "action",
     id: "task",
-    title: "Task",
+    title: "Задача",
     icon: "ListTodo",
     component: TaskEmbedPanel,
   });

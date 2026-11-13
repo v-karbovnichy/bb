@@ -345,7 +345,7 @@ describe("push subscription RPC and CLI", () => {
         }),
       ).rejects.toMatchObject({
         code: "handler_error",
-        message: "Push subscription not found: missing",
+        message: "Push-подписка не найдена: missing",
       });
       await expect(
         host.harness.behavior.callRpc("pushSubscriptions.remove", {
@@ -372,7 +372,7 @@ describe("push subscription RPC and CLI", () => {
         ]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Registered push device subscription-1",
+        stdout: "Зарегистрировано push-устройство subscription-1",
       });
       const list = await host.harness.behavior.runCli(["list", "--json"]);
       expect(JSON.parse(list.stdout)).toEqual({
@@ -400,7 +400,7 @@ describe("push subscription RPC and CLI", () => {
         host.harness.behavior.runCli(["remove", "subscription-1"]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Removed push device subscription-1",
+        stdout: "Push-устройство subscription-1 удалено",
       });
     } finally {
       await host.cleanup();
@@ -413,7 +413,7 @@ describe("push subscription RPC and CLI", () => {
       const help = (await host.harness.behavior.runCli(["add", "--help"]))
         .stdout;
       expect(help).toContain("bb push-notifications add");
-      expect(help).toContain("at most 512 characters");
+      expect(help).toContain("до 512 символов");
 
       const badPlatform = await host.harness.behavior.runCli([
         "add",
@@ -455,14 +455,14 @@ describe("push subscription RPC and CLI", () => {
         ok: false,
         error: {
           code: "subscription_not_found",
-          message: "Push subscription not found: missing",
+          message: "Push-подписка не найдена: missing",
         },
       });
-      expect(envelope.stderr).toContain("Push subscription not found: missing");
+      expect(envelope.stderr).toContain("Push-подписка не найдена: missing");
 
       const badChannel = await host.harness.behavior.runCli(["test", "sms"]);
       expect(badChannel.exitCode).toBe(1);
-      expect(badChannel.stderr).toContain("Use web or desktop");
+      expect(badChannel.stderr).toContain("Используйте web или desktop");
     } finally {
       await host.cleanup();
     }
@@ -597,7 +597,7 @@ describe("push sender", () => {
         Directive: "Pick one icon and press Ship.",
         Table: "The deployment did not change.",
         Json: "All nine people are enrolled.",
-        "Directive only": "Finished and waiting for you",
+        "Directive only": "Ответ готов",
       });
     } finally {
       await host.cleanup();
@@ -997,7 +997,7 @@ describe("web and desktop delivery", () => {
         host.harness.behavior.callRpc("notifications.test", {
           channel: "desktop",
         }),
-      ).rejects.toThrow("disabled");
+      ).rejects.toThrow("отключены");
       await expect(
         host.harness.behavior.callRpc("notifications.test", { channel: "ios" }),
       ).rejects.toMatchObject({ code: "invalid_input" });
@@ -1154,7 +1154,7 @@ describe("sending notifications", () => {
       ]);
       expect(cli).toMatchObject({
         exitCode: 0,
-        stdout: "Sent to web, desktop, mobile",
+        stdout: "Отправлено в web, desktop, mobile",
       });
       expect(host.clientSignals().at(-1)?.payload).toMatchObject({
         title: "Review ready",
@@ -1175,7 +1175,7 @@ describe("sending notifications", () => {
           }),
         ).rejects.toMatchObject({
           code: "handler_error",
-          message: `Thread not found: ${threadId}`,
+          message: `Чат не найден: ${threadId}`,
         });
       }
       const missing = await host.harness.behavior.runCli([
@@ -1212,7 +1212,7 @@ describe("sending notifications", () => {
       await host.stopService();
       await expect(
         host.harness.behavior.callRpc("notifications.send", { title: "Late" }),
-      ).rejects.toThrow("Push notifications are not running");
+      ).rejects.toThrow("Push-уведомления не работают");
       expect(host.clientSignals()).toHaveLength(0);
     } finally {
       await host.cleanup();
@@ -1575,25 +1575,25 @@ describe("thread notification levels", () => {
         host.harness.behavior.runCli(["thread", root.id]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Notifications for root: all (default)",
+        stdout: "Уведомления для root: all (по умолчанию)",
       });
       await expect(
         host.harness.behavior.runCli(["thread", root.id, "--level", "muted"]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Notifications for root: muted (set on this thread)",
+        stdout: "Уведомления для root: muted (задано для этого чата)",
       });
       await expect(
         host.harness.behavior.runCli(["thread", child.id, "--level", "all"]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Notifications for child: muted (limited by parent)",
+        stdout: "Уведомления для child: muted (ограничено родительским чатом)",
       });
       await expect(
         host.harness.behavior.runCli(["thread", grandchild.id]),
       ).resolves.toMatchObject({
         exitCode: 0,
-        stdout: "Notifications for grandchild: muted (limited by an ancestor)",
+        stdout: "Уведомления для grandchild: muted (ограничено вышестоящим чатом)",
       });
       const inherited = await host.harness.behavior.runCli([
         "thread",

@@ -792,7 +792,7 @@ function MarkdownCodeBlock({
               <TooltipContent side="bottom">{LINE_WRAP_LABEL}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <CopyButton text={codeText} label="Copy code" />
+          <CopyButton text={codeText} label="Копировать код" />
         </div>
       </div>
       <pre
@@ -2071,7 +2071,7 @@ function MarkdownPreviewComponent({
       <ImageLightbox
         imageSrc={expandedImage?.url ?? null}
         imageAlt="Expanded image"
-        title="Expanded image preview"
+        title="Увеличенный просмотр изображения"
         hasMultipleImages={hasImageNavigation}
         onPrevious={() => stepExpandedImage("previous")}
         onNext={() => stepExpandedImage("next")}

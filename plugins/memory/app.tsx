@@ -38,9 +38,9 @@ function MemoryEditor({
     <div className="@container/memory-editor space-y-3 rounded-md border border-border bg-muted/20 p-3">
       <div className="grid gap-3 @min-[36rem]/memory-editor:grid-cols-2">
         <label className="space-y-1 text-xs text-muted-foreground">
-          Summary
+          Краткое описание
           <Input
-            aria-label="Memory summary"
+            aria-label="Краткое описание воспоминания"
             value={draft.summary}
             maxLength={400}
             onChange={(event) =>
@@ -49,19 +49,19 @@ function MemoryEditor({
           />
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          Tags
+          Теги
           <Input
-            aria-label="Memory tags"
+            aria-label="Теги воспоминания"
             value={tags}
-            placeholder="comma, separated"
+            placeholder="через запятую"
             onChange={(event) => setTags(event.target.value)}
           />
         </label>
       </div>
       <label className="block space-y-1 text-xs text-muted-foreground">
-        Details
+        Подробности
         <Textarea
-          aria-label="Memory details"
+          aria-label="Подробности воспоминания"
           value={draft.details}
           maxLength={16_000}
           className="min-h-28 resize-y text-sm"
@@ -72,9 +72,9 @@ function MemoryEditor({
       </label>
       <div className="grid gap-3 @min-[32rem]/memory-editor:grid-cols-3">
         <label className="space-y-1 text-xs text-muted-foreground">
-          Kind
+          Тип
           <select
-            aria-label="Memory kind"
+            aria-label="Тип воспоминания"
             value={draft.kind}
             className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
             onChange={(event) => {
@@ -85,15 +85,15 @@ function MemoryEditor({
           >
             {MEMORY_KINDS.map((kind) => (
               <option key={kind} value={kind}>
-                {kind}
+                {({ fact: "Факт", preference: "Предпочтение", decision: "Решение", procedure: "Процедура", episode: "Событие", reference: "Справка" } as Record<string, string>)[kind] ?? kind}
               </option>
             ))}
           </select>
         </label>
         <label className="space-y-1 text-xs text-muted-foreground">
-          Importance
+          Важность
           <Input
-            aria-label="Memory importance"
+            aria-label="Важность воспоминания"
             type="number"
             min={0}
             max={100}
@@ -105,11 +105,11 @@ function MemoryEditor({
         </label>
         <label className="flex items-end gap-2 pb-2 text-sm">
           <Switch
-            aria-label="Pinned memory"
+            aria-label="Закреплённое воспоминание"
             checked={draft.pinned}
             onCheckedChange={(pinned) => setDraft({ ...draft, pinned })}
           />
-          Pinned
+          Закреплено
         </label>
       </div>
       {error ? (
@@ -119,7 +119,7 @@ function MemoryEditor({
       ) : null}
       <div className="flex justify-end gap-2">
         <Button variant="ghost" size="sm" disabled={saving} onClick={onCancel}>
-          Cancel
+          Отмена
         </Button>
         <Button
           size="sm"
@@ -147,7 +147,7 @@ function MemoryEditor({
               .finally(() => setSaving(false));
           }}
         >
-          {saving ? "Saving…" : "Save"}
+          {saving ? "Сохранение…" : "Сохранить"}
         </Button>
       </div>
     </div>
@@ -179,15 +179,15 @@ function MemorySettings() {
   }, [load]);
 
   if (loading) {
-    return <p className="text-sm text-muted-foreground">Loading memories…</p>;
+    return <p className="text-sm text-muted-foreground">Загрузка воспоминаний…</p>;
   }
 
   return (
     <div className="space-y-4">
       <div className="rounded-md border border-border bg-muted/20 p-3 text-sm text-muted-foreground">
-        This plugin shares memory across providers. We recommend disabling
-        provider-native memory under Settings → Plugins → Claude Code provider
-        and Codex provider to avoid duplicate or conflicting stores.
+        Этот плагин использует общую память для всех провайдеров. Рекомендуем
+        отключить память провайдеров в разделе Настройки → Плагины → Claude Code provider
+        и Codex provider, чтобы избежать дублирования и конфликтов.
       </div>
       {error ? (
         <p className="text-sm text-destructive" role="alert">
@@ -196,17 +196,17 @@ function MemorySettings() {
       ) : null}
       {memories.length === 0 ? (
         <div className="rounded-md border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-          No memories stored yet.
+          Пока нет сохранённых воспоминаний.
         </div>
       ) : (
         <div className="overflow-hidden rounded-md border border-border">
           <table className="w-full table-fixed text-sm">
             <thead className="border-b border-border bg-muted/40 text-left text-xs text-muted-foreground">
               <tr>
-                <th className="w-auto px-3 py-2 font-medium">Memory</th>
-                <th className="w-24 px-3 py-2 font-medium">Scope</th>
+                <th className="w-auto px-3 py-2 font-medium">Воспоминание</th>
+                <th className="w-24 px-3 py-2 font-medium">Область</th>
                 <th className="w-28 px-3 py-2 text-right font-medium">
-                  Actions
+                  Действия
                 </th>
               </tr>
             </thead>
@@ -223,16 +223,16 @@ function MemorySettings() {
                         {memory.summary}
                       </div>
                       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                        <span>{memory.kind}</span>
-                        <span>importance {memory.importance}</span>
+                        <span>{({ fact: "Факт", preference: "Предпочтение", decision: "Решение", procedure: "Процедура", episode: "Событие", reference: "Справка" } as Record<string, string>)[memory.kind] ?? memory.kind}</span>
+                        <span>важность {memory.importance}</span>
                         <span>
-                          updated{" "}
+                          обновлено{" "}
                           {new Date(memory.updatedAt).toLocaleDateString()}
                         </span>
                       </div>
                     </td>
                     <td className="px-3 py-3 text-muted-foreground">
-                      <div>{memory.scope}</div>
+                      <div>{memory.scope === "project" ? "проект" : "общая"}</div>
                       {memory.projectId ? (
                         <div
                           className="mt-1 max-w-36 truncate text-xs"
@@ -253,7 +253,7 @@ function MemorySettings() {
                             )
                           }
                         >
-                          Edit
+                          Изменить
                         </Button>
                         <Button
                           variant="ghost"
@@ -262,7 +262,7 @@ function MemorySettings() {
                           className="text-destructive hover:text-destructive"
                           onClick={() => {
                             if (
-                              !window.confirm(`Delete memory “${memory.name}”?`)
+                              !window.confirm(`Удалить воспоминание «${memory.name}»?`)
                             ) {
                               return;
                             }
@@ -289,7 +289,7 @@ function MemorySettings() {
                               .finally(() => setDeletingId(null));
                           }}
                         >
-                          {deletingId === memory.id ? "Deleting…" : "Delete"}
+                          {deletingId === memory.id ? "Удаление…" : "Удалить"}
                         </Button>
                       </div>
                     </td>
@@ -325,9 +325,9 @@ function MemorySettings() {
 export default definePluginApp((app) => {
   app.slots.settingsSection({
     id: "memory",
-    title: "Memory",
+    title: "Память",
     description:
-      "Review and manage provider-independent global and project memories.",
+      "Просмотр и управление общей памятью и памятью проектов, независимой от провайдера.",
     component: MemorySettings,
   });
 });

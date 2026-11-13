@@ -80,7 +80,7 @@ describe("secondary panel tab-strip edge fades", () => {
             },
           },
           {
-            label: "Browser",
+            label: "Браузер",
             isPinned: false,
             leadingVisual: null,
             statusLabel: null,
@@ -97,12 +97,12 @@ describe("secondary panel tab-strip edge fades", () => {
     );
 
     expect(
-      getByRole("button", { name: "Close preview.html" }).classList.contains(
+      getByRole("button", { name: "Закрыть preview.html" }).classList.contains(
         "max-md:pointer-coarse:min-h-9",
       ),
     ).toBe(true);
     expect(
-      getByRole("button", { name: "Close Browser" }).classList.contains(
+      getByRole("button", { name: "Закрыть Браузер" }).classList.contains(
         "max-md:pointer-coarse:min-h-9",
       ),
     ).toBe(false);
@@ -134,7 +134,7 @@ describe("secondary panel tab-strip edge fades", () => {
         activeTabId: "browser",
         tabs: [
           {
-            label: "Browser",
+            label: "Браузер",
             isPinned: false,
             leadingVisual: null,
             statusLabel: null,
@@ -165,10 +165,10 @@ describe("secondary panel tab-strip edge fades", () => {
     expect(resizeCallback).toBeDefined();
     expect(container.querySelectorAll("[data-overflow-fade]")).toHaveLength(2);
     const leftButton = container.querySelector<HTMLButtonElement>(
-      '[aria-label="Scroll tabs left"]',
+      '[aria-label="Прокрутить вкладки влево"]',
     );
     const rightButton = container.querySelector<HTMLButtonElement>(
-      '[aria-label="Scroll tabs right"]',
+      '[aria-label="Прокрутить вкладки вправо"]',
     );
     expect(leftButton?.classList.contains("w-0")).toBe(true);
     expect(rightButton?.classList.contains("w-0")).toBe(true);
@@ -296,7 +296,7 @@ describe("secondary panel tab close menu", () => {
 
     fireEvent.contextMenu(screen.getByRole("button", { name: "file-2.ts" }));
 
-    expect(screen.getByRole("menuitem", { name: "Close tab" })).toBeTruthy();
+    expect(screen.getByRole("menuitem", { name: "Закрыть вкладку" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "file-1.ts" })).toBeTruthy();
     expect(document.body.style.pointerEvents).not.toBe("none");
   });
@@ -306,7 +306,7 @@ describe("secondary panel tab close menu", () => {
     renderCloseMenuStrip(tabs);
 
     fireEvent.contextMenu(screen.getByRole("button", { name: "file-2.ts" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: "Close tab" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Закрыть вкладку" }));
 
     expect(closeCounts(tabs)).toEqual([0, 0, 1, 0]);
   });
@@ -317,7 +317,7 @@ describe("secondary panel tab close menu", () => {
 
     fireEvent.contextMenu(screen.getByRole("button", { name: "file-1.ts" }));
     fireEvent.click(
-      screen.getByRole("menuitem", { name: "Close tabs to the right" }),
+      screen.getByRole("menuitem", { name: "Закрыть вкладки справа" }),
     );
 
     expect(tabs[1]?.onSelect).toHaveBeenCalledTimes(1);
@@ -331,10 +331,10 @@ describe("secondary panel tab close menu", () => {
     fireEvent.contextMenu(screen.getByRole("button", { name: "file-3.ts" }));
     expect(
       screen
-        .getByRole("menuitem", { name: "Close tabs to the right" })
+        .getByRole("menuitem", { name: "Закрыть вкладки справа" })
         .getAttribute("data-disabled"),
     ).not.toBeNull();
-    fireEvent.click(screen.getByRole("menuitem", { name: "Close other tabs" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Закрыть другие вкладки" }));
 
     expect(tabs[3]?.onSelect).not.toHaveBeenCalled();
     expect(closeCounts(tabs)).toEqual([1, 1, 1, 0]);

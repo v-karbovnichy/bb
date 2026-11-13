@@ -743,24 +743,24 @@ function FollowUpPromptBoxWithComposer({
             composer.isFollowUpSubmitting ||
             (steerOnPrimarySubmit && !composer.canModifierSubmit),
           disabledReason: composer.isFollowUpSubmitting
-            ? "Submitting..."
+            ? "Отправка..."
             : isLoadingExecutionOptions
-              ? "Loading models..."
+              ? "Загрузка моделей..."
               : isUnavailable
-                ? "Unavailable"
+                ? "Недоступно"
                 : undefined,
           onModifierSubmit,
           queuesDraft: submitMode.kind === "queue",
           swapSubmitActions: steerOnPrimarySubmit,
           showModifierSubmitAction: submitMode.kind === "queue",
           title: composer.isFollowUpSubmitting
-            ? "Submitting..."
+            ? "Отправка..."
             : canSubmit && compactBeforeSend?.compactFirst
               ? `Compact ${formatCompactTokenCount(compactBeforeSend.tokens)} tokens, then send (Enter)`
               : canSubmit && composer.submitTitle !== undefined
                 ? composer.submitTitle
                 : isStopping
-                  ? "Queue for after the stop (Enter)"
+                  ? "Добавить в очередь после остановки (Enter)"
                   : canQueueFollowUp
                     ? steerOnPrimarySubmit
                       ? isSteeringWhenReady
@@ -768,10 +768,10 @@ function FollowUpPromptBoxWithComposer({
                         : `Steer current run (Enter)${modifierSubmitHint("queue")}`
                       : `Queue follow-up (Enter)${modifierSubmitHint("steer")}`
                     : isLoadingExecutionOptions
-                      ? "Loading models..."
+                      ? "Загрузка моделей..."
                       : isUnavailable
-                        ? "Unavailable"
-                        : "Submit (Enter)",
+                        ? "Недоступно"
+                        : "Отправить (Enter)",
           isRunning: canStopRuntime,
         }}
         typeahead={typeahead}
@@ -796,7 +796,7 @@ function FollowUpPromptBoxWithComposer({
                 className="size-3.5 shrink-0"
                 aria-hidden
               />
-              <span>Handoff to new thread</span>
+              <span>Передать в новый чат</span>
               <Button
                 type="button"
                 size="icon"
@@ -804,7 +804,7 @@ function FollowUpPromptBoxWithComposer({
                 className="ml-auto size-6 shrink-0 text-subtle-foreground"
                 onClick={execution.handoff.onExit}
                 disabled={executionControlsDisabled}
-                aria-label="Exit handoff"
+                aria-label="Отменить передачу"
               >
                 <Icon name="X" className="size-3" aria-hidden />
               </Button>

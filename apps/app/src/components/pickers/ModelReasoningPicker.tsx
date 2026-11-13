@@ -111,7 +111,7 @@ export interface ModelReasoningPickerHandoff {
   onSelect: (selection: ModelReasoningPickerHandoffSelection) => void;
 }
 
-const FAILED_TO_LOAD_MODELS_LABEL = "Failed to load models";
+const FAILED_TO_LOAD_MODELS_LABEL = "Не удалось загрузить модели";
 const EMPTY_MODEL_OPTIONS: readonly ModelPickerOption[] = [];
 const EMPTY_SERVICE_TIER_OPTIONS: readonly ProviderOptionDescriptor[] = [];
 const preserveModelLabel = (displayName: string): string => displayName;
@@ -332,20 +332,20 @@ export function ModelReasoningPicker({
           error: modelLoadError,
           providerLabel: selectedProviderLabel,
         })
-      : "Could not load models.";
+      : "Не удалось загрузить модели.";
   const triggerModelLabel = showLoadingTrigger
-    ? "Loading models..."
+    ? "Загрузка моделей..."
     : hasSelectedModel
       ? stripModelBrandPrefix(selectedModelLabel, selectedProvider?.brandPrefix)
       : selectedModelLoadFailed
         ? hasAlternateSelectionPath
-          ? "Select model"
+          ? "Выберите модель"
           : FAILED_TO_LOAD_MODELS_LABEL
         : modelOptions.length === 0
           ? canSwitchProviders
-            ? "Select model"
-            : "No models available"
-          : "Select model";
+            ? "Выберите модель"
+            : "Нет доступных моделей"
+          : "Выберите модель";
   const triggerModelValueIsDestructive =
     triggerModelLabel === FAILED_TO_LOAD_MODELS_LABEL;
   const { base: triggerModelBase, tag: triggerModelTag } =
@@ -922,15 +922,15 @@ export function ModelReasoningPicker({
   const TriggerIcon =
     hasSelectedModel || modelIsLoading ? ProviderIcon : undefined;
   const triggerTitleModelLabel = showLoadingTrigger
-    ? "Loading models..."
+    ? "Загрузка моделей..."
     : selectedModelLoadFailed
       ? selectedModelLoadErrorText
       : triggerModelLabel;
   const triggerTitle = [
     `${selectedProviderLabel}: ${triggerTitleModelLabel}`,
-    triggerReasoningLabel ? ` · ${triggerReasoningLabel} reasoning` : "",
+    triggerReasoningLabel ? ` · Уровень рассуждения: ${triggerReasoningLabel}` : "",
     selectedServiceTierOption
-      ? ` (${selectedServiceTierOption.label} mode)`
+      ? ` (режим ${selectedServiceTierOption.label})`
       : "",
   ].join("");
   const trigger = (
@@ -941,8 +941,8 @@ export function ModelReasoningPicker({
       size="sm"
       aria-label={
         toggleShortcut
-          ? `Provider, model and reasoning (${toggleShortcut.label})`
-          : "Provider, model and reasoning"
+          ? `Провайдер, модель и уровень рассуждения (${toggleShortcut.label})`
+          : "Провайдер, модель и уровень рассуждения"
       }
       aria-keyshortcuts={toggleShortcut?.ariaKeyshortcuts}
       disabled={disabled}
@@ -970,7 +970,7 @@ export function ModelReasoningPicker({
                 aria-hidden
               />
             )}
-            <span className="sr-only">Loading models</span>
+            <span className="sr-only">Загрузка моделей</span>
             <Skeleton
               aria-hidden
               data-model-loading-placeholder="trigger-model"
@@ -1049,7 +1049,7 @@ export function ModelReasoningPicker({
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent
         align={align}
-        mobileTitle={handoffMode ? "Handoff to new thread" : "Model"}
+        mobileTitle={handoffMode ? "Передать в новый чат" : "Модель"}
         mobileClassName={cn(
           "h-[min(32rem,80dvh)]",
           handoffMode && HANDOFF_DRAWER_TOP_CLASS_NAME,
@@ -1185,7 +1185,7 @@ function HandoffModeHeader({ onBack }: { onBack: () => void }) {
     <div className="flex shrink-0 items-center gap-1 bg-background px-2 pb-1 pt-1.5">
       <button
         type="button"
-        aria-label="Exit handoff"
+        aria-label="Выйти из передачи"
         onClick={onBack}
         className={cn(
           "flex size-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-state-hover hover:text-foreground",
@@ -1239,8 +1239,8 @@ function ModelSearchInput({
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Search models"
-          aria-label="Search models"
+          placeholder="Поиск моделей"
+          aria-label="Поиск моделей"
           role="combobox"
           aria-expanded
           aria-controls={listboxId}

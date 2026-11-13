@@ -20,14 +20,14 @@ import {
 } from "@/hooks/queries/plugin-catalog-queries";
 
 const SOURCE_PLACEHOLDER = "https://example.com/marketplace.json";
-const SUBDIRECTORY_PLACEHOLDER = "Subdirectory (optional)";
+const SUBDIRECTORY_PLACEHOLDER = "Подкаталог (необязательно)";
 
 function formatRefreshedAt(marketplace: PluginMarketplace): string {
   if (marketplace.lastError !== null) {
-    return `Last refresh failed: ${marketplace.lastError}`;
+    return `Не удалось выполнить последнее обновление: ${marketplace.lastError}`;
   }
-  if (marketplace.lastRefreshAt === null) return "Never refreshed";
-  return `Refreshed ${new Date(marketplace.lastRefreshAt).toLocaleString()}`;
+  if (marketplace.lastRefreshAt === null) return "Никогда не обновлялся";
+  return `Обновлён ${new Date(marketplace.lastRefreshAt).toLocaleString()}`;
 }
 
 export function MarketplacesSettingsSection() {
@@ -49,12 +49,12 @@ export function MarketplacesSettingsSection() {
       setSource("");
       setSubdirectory("");
       invalidate();
-      appToast.success(`Added ${marketplace.displayName}`, {
-        description: `${marketplace.entryCount} plugins listed. Adding a marketplace installs nothing.`,
+      appToast.success(`Добавлен маркетплейс ${marketplace.displayName}`, {
+        description: `В каталоге ${marketplace.entryCount} плагинов. Добавление маркетплейса ничего не устанавливает.`,
       });
     },
     onError: (error) => {
-      appToast.error("Adding the marketplace failed", {
+      appToast.error("Не удалось добавить маркетплейс", {
         description: pluginAdminErrorMessage(error),
       });
     },
@@ -67,15 +67,15 @@ export function MarketplacesSettingsSection() {
       invalidate();
       const failed = results.filter((result) => !result.ok);
       if (failed.length === 0) {
-        appToast.success("Marketplace refreshed");
+        appToast.success("Маркетплейс обновлён");
         return;
       }
-      appToast.error("Refreshing the marketplace failed", {
-        description: `${failed[0]?.error ?? "Unknown error"}. The last catalog bb validated is still in use.`,
+      appToast.error("Не удалось обновить маркетплейс", {
+        description: `${failed[0]?.error ?? "Неизвестная ошибка"}. Продолжает использоваться последний проверенный каталог bb.`,
       });
     },
     onError: (error) => {
-      appToast.error("Refreshing the marketplace failed", {
+      appToast.error("Не удалось обновить маркетплейс", {
         description: pluginAdminErrorMessage(error),
       });
     },
@@ -87,15 +87,15 @@ export function MarketplacesSettingsSection() {
     onSuccess: (result) => {
       setRemoving(null);
       invalidate();
-      appToast.success("Marketplace removed", {
+      appToast.success("Маркетплейс удалён", {
         description:
           result.convertedPluginIds.length === 0
             ? undefined
-            : `Kept as direct installs: ${result.convertedPluginIds.join(", ")}`,
+            : `Сохранены как прямые установки: ${result.convertedPluginIds.join(", ")}`,
       });
     },
     onError: (error) => {
-      appToast.error("Removing the marketplace failed", {
+      appToast.error("Не удалось удалить маркетплейс", {
         description: pluginAdminErrorMessage(error),
       });
     },
@@ -103,8 +103,8 @@ export function MarketplacesSettingsSection() {
 
   return (
     <SettingsSection
-      title="Plugin marketplaces"
-      description="bb reads plugin catalogs from these marketplaces. Adding one validates and caches its catalog; it never installs, updates, or runs plugin code."
+      title="Маркетплейсы плагинов"
+      description="bb читает каталоги плагинов из этих маркетплейсов. При добавлении каталог проверяется и сохраняется, но код плагинов не устанавливается, не обновляется и не запускается."
       bodyClassName="border-0 bg-transparent p-0"
     >
       <div className="space-y-1.5">
@@ -112,7 +112,7 @@ export function MarketplacesSettingsSection() {
           <div className="min-w-0 flex-1 space-y-1.5">
             <Input
               value={source}
-              aria-label="Marketplace source"
+              aria-label="Источник маркетплейса"
               placeholder={SOURCE_PLACEHOLDER}
               className="h-8 font-mono text-xs"
               onChange={(event) => setSource(event.target.value)}
@@ -120,7 +120,7 @@ export function MarketplacesSettingsSection() {
             {isGitSource ? (
               <Input
                 value={subdirectory}
-                aria-label="Marketplace subdirectory"
+                aria-label="Подкаталог маркетплейса"
                 placeholder={SUBDIRECTORY_PLACEHOLDER}
                 className="h-8 font-mono text-xs"
                 onChange={(event) => setSubdirectory(event.target.value)}
@@ -141,12 +141,12 @@ export function MarketplacesSettingsSection() {
               })
             }
           >
-            {add.isPending ? "Adding…" : "Add"}
+            {add.isPending ? "Добавление…" : "Добавить"}
           </Button>
         </div>
         <p className="text-2xs text-subtle-foreground">
-          An https manifest URL, <code>git:&lt;url&gt;[@&lt;ref&gt;]</code>, or{" "}
-          <code>path:&lt;directory&gt;</code> on the bb server&rsquo;s machine.
+          HTTPS-адрес манифеста, <code>git:&lt;url&gt;[@&lt;ref&gt;]</code> или{" "}
+          <code>path:&lt;directory&gt;</code> на машине сервера bb.
           {isGitSource
             ? " Set a subdirectory when the repository keeps marketplace.json outside its root."
             : null}
@@ -167,7 +167,7 @@ export function MarketplacesSettingsSection() {
                 </span>
                 {marketplace.official ? (
                   <Badge variant="outline" className="text-2xs font-normal">
-                    Official
+                    Официальный
                   </Badge>
                 ) : null}
               </div>
@@ -175,10 +175,10 @@ export function MarketplacesSettingsSection() {
                 {marketplace.source}
                 {marketplace.subdirectory === null
                   ? null
-                  : ` · subdirectory ${marketplace.subdirectory}`}
+                  : ` · подкаталог ${marketplace.subdirectory}`}
               </p>
               <p className="text-2xs text-subtle-foreground">
-                {marketplace.entryCount} plugins ·{" "}
+                Плагинов: {marketplace.entryCount} ·{" "}
                 {formatRefreshedAt(marketplace)}
               </p>
             </div>
@@ -188,20 +188,20 @@ export function MarketplacesSettingsSection() {
                 variant="outline"
                 size="sm"
                 disabled={refresh.isPending}
-                aria-label={`Refresh ${marketplace.displayName}`}
+                aria-label={`Обновить ${marketplace.displayName}`}
                 onClick={() => refresh.mutate(marketplace.name)}
               >
-                Refresh
+                Обновить
               </Button>
               {marketplace.official ? null : (
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  aria-label={`Remove ${marketplace.displayName}`}
+                  aria-label={`Удалить ${marketplace.displayName}`}
                   onClick={() => setRemoving(marketplace)}
                 >
-                  Remove
+                  Удалить
                 </Button>
               )}
             </div>
@@ -216,9 +216,9 @@ export function MarketplacesSettingsSection() {
         }}
       >
         <ConfirmDeleteDialogContent
-          title={`Remove ${removing?.displayName ?? "marketplace"}?`}
-          description="Its catalog and cached icons are deleted. Plugins installed from it keep running as direct installs and keep checking for updates from their recorded source."
-          confirmLabel={remove.isPending ? "Removing…" : "Remove"}
+          title={`Удалить ${removing?.displayName ?? "маркетплейс"}?`}
+          description="Его каталог и сохранённые значки будут удалены. Установленные из него плагины продолжат работать как прямые установки и проверять обновления из своего источника."
+          confirmLabel={remove.isPending ? "Удаление…" : "Удалить"}
           pending={remove.isPending}
           onConfirm={() => {
             if (removing !== null) remove.mutate(removing.name);

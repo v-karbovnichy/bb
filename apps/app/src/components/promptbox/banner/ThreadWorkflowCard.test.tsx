@@ -30,7 +30,7 @@ describe("ThreadWorkflowCard", () => {
     render(<ToggleableCard />);
 
     const header = screen.getByRole("button", {
-      name: "Workflow: release-review",
+      name: "Процесс: release-review",
     });
     const body = document.getElementById(header.getAttribute("aria-controls")!);
     expect(body?.getAttribute("aria-labelledby")).toBe(header.id);
@@ -38,7 +38,7 @@ describe("ThreadWorkflowCard", () => {
 
     fireEvent.click(header);
     const collapse = screen.getByRole("button", {
-      name: "Collapse workflow release-review",
+      name: "Свернуть сценарий release-review",
     });
     expect(header.getAttribute("aria-expanded")).toBe("true");
     expect(header.querySelector('[data-icon="ChevronDown"]')).toBeNull();

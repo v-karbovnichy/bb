@@ -136,7 +136,7 @@ afterEach(async () => {
 describe("Connect server-owned machine access", () => {
   it("declares picker copy", async () => {
     const host = await setup(fakeCloud().cloud);
-    expect(provider(host).description).toBe("Use a private getbb.app address.");
+    expect(provider(host).description).toBe("Использовать личный адрес getbb.app.");
   });
 
   it("asks to sign in or turn remote access on before offering machine access", async () => {

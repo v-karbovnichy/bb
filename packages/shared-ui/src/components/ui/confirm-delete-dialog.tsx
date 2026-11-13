@@ -45,7 +45,7 @@ export function ConfirmDeleteDialogContent({
             disabled={pending}
             onClick={onCancel}
           >
-            Cancel
+            Отмена
           </Button>
         ) : null}
         <Button

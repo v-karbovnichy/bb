@@ -33,7 +33,7 @@ export function ThreadListPlaceholder({
   if (state.kind === "loading") {
     return (
       <div
-        aria-label="Loading sidebar navigation"
+        aria-label="Загрузка навигации боковой панели"
         data-thread-list-placeholder="loading"
         className="p-2"
       >
@@ -51,20 +51,20 @@ export function ThreadListPlaceholder({
         data-thread-list-placeholder="missing"
         className="flex flex-col gap-2 px-4 py-2 text-sm text-muted-foreground"
       >
-        <span>No thread list plugin is enabled.</span>
+        <span>Плагин списка чатов не включён.</span>
       </div>
     );
   }
   const alert =
     state.kind === "failed"
       ? {
-          message: "Thread list couldn't load.",
-          action: "Retry",
+          message: "Не удалось загрузить список чатов.",
+          action: "Повторить",
           onClick: state.onRetry,
         }
       : {
-          message: `${state.pluginTitle} stopped working.`,
-          action: "Reload",
+          message: `Сбой в работе ${state.pluginTitle}.`,
+          action: "Перезагрузить",
           onClick: state.onReload,
         };
   return (

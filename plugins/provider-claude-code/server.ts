@@ -95,16 +95,16 @@ export default function plugin(bb: BbPluginApi) {
       reasoningLevels: ["low", "medium", "high", "xhigh", "ultracode", "max"],
     },
     reasoningLevels: [
-      { id: "low", label: "Low" },
-      { id: "medium", label: "Medium" },
-      { id: "high", label: "High" },
-      { id: "xhigh", label: "Extra High" },
+      { id: "low", label: "Низкий" },
+      { id: "medium", label: "Средний" },
+      { id: "high", label: "Высокий" },
+      { id: "xhigh", label: "Очень высокий" },
       {
         id: "ultracode",
         label: "Ultracode",
-        description: "Extra-high effort plus standing workflow orchestration.",
+        description: "Очень высокий уровень усилий и постоянная координация задач.",
       },
-      { id: "max", label: "Max" },
+      { id: "max", label: "Максимальный" },
     ],
     serviceTiers: [
       { id: "default", label: "Default" },

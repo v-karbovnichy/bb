@@ -141,7 +141,7 @@ describe("commit header action", () => {
 
   it("offers Commit once the open thread's workspace has uncommitted changes", async () => {
     const action = renderAction();
-    await waitFor(() => expect(action.item()?.label).toBe("Commit"));
+    await waitFor(() => expect(action.item()?.label).toBe("Создать коммит"));
     expect(action.item()?.icon).toBe("GitBranch");
   });
 
@@ -180,9 +180,9 @@ describe("commit", () => {
       })),
       { threadId: "thr-1", environmentId: "env-1" },
     );
-    expect(toast.loading).toHaveBeenCalledWith("Creating commit");
+    expect(toast.loading).toHaveBeenCalledWith("Создание коммита");
     expect(toast.success).toHaveBeenCalledWith(
-      "Commit created",
+      "Коммит создан",
       expect.objectContaining({ id: "toast-1" }),
     );
   });
@@ -208,8 +208,8 @@ describe("commit", () => {
       { threadId: "thr-1", environmentId: "env-1" },
     );
     expect(toast.loading.mock.calls.map(([title]) => title)).toEqual([
-      "Creating commit",
-      "Commit queued",
+      "Создание коммита",
+      "Коммит в очереди",
     ]);
     await vi.waitFor(() =>
       expect(
@@ -220,9 +220,9 @@ describe("commit", () => {
     finishFirst();
     await Promise.all([first, second]);
     expect(toast.loading.mock.calls.map(([title]) => title)).toEqual([
-      "Creating commit",
-      "Commit queued",
-      "Creating commit",
+      "Создание коммита",
+      "Коммит в очереди",
+      "Создание коммита",
     ]);
     expect(toast.success).toHaveBeenCalledTimes(2);
   });
@@ -242,9 +242,9 @@ describe("commit", () => {
       }),
       { threadId: "thr-1", environmentId: "env-1" },
     );
-    expect(toast.error).toHaveBeenCalledWith("Commit failed", {
+    expect(toast.error).toHaveBeenCalledWith("Не удалось создать коммит", {
       id: "toast-1",
-      description: "Commit failed. Workspace is still starting.",
+      description: "Не удалось создать коммит. Рабочая копия ещё запускается.",
     });
   });
 
@@ -259,7 +259,7 @@ describe("commit", () => {
       }),
       { threadId: "thr-1", environmentId: "env-1" },
     );
-    expect(toast.error).toHaveBeenCalledWith("Commit failed", {
+    expect(toast.error).toHaveBeenCalledWith("Не удалось создать коммит", {
       id: "toast-1",
       description: "No uncommitted changes to commit",
     });
@@ -285,10 +285,10 @@ describe("commit dialog", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
     act(() => openCommitDialog({ threadId: "thr-1", environmentId: "env-1" }));
     await screen.findByText("feat/commit");
-    expect(screen.getByText("Dirty")).not.toBeNull();
-    expect(screen.getByText("Uncommitted")).not.toBeNull();
+    expect(screen.getByText("Есть изменения")).not.toBeNull();
+    expect(screen.getByText("Без коммита")).not.toBeNull();
     expect(screen.getByRole("dialog").textContent).toContain("app.ts");
-    fireEvent.click(screen.getByRole("button", { name: "Commit changes" }));
+    fireEvent.click(screen.getByRole("button", { name: "Создать коммит" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(commitEnvironment).toHaveBeenCalledWith({ environmentId: "env-1" });
   });

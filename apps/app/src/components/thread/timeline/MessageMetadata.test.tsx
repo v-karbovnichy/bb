@@ -78,7 +78,7 @@ describe("MessageMetadata", () => {
     expect(screen.queryByText("Assistant metadata")).toBeNull();
     const identity = screen.getByText("fixture/msg_1/turn_1/agent");
     expect(identity.title).toBe("1700000000123");
-    expect(screen.getByLabelText("Message metadata").textContent).toBe(
+    expect(screen.getByLabelText("Метаданные сообщения").textContent).toBe(
       "Firstfixture/msg_1/turn_1/agent",
     );
   });

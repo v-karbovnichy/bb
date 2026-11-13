@@ -55,7 +55,7 @@ describe("InstallCliSkillsDialog", () => {
     );
 
     fireEvent.click(checkbox("Studio"));
-    fireEvent.click(screen.getByRole("button", { name: "Install" }));
+    fireEvent.click(screen.getByRole("button", { name: "Установить" }));
 
     expect(onInstall).toHaveBeenCalledWith(["host-laptop"]);
   });
@@ -78,7 +78,7 @@ describe("InstallCliSkillsDialog", () => {
     fireEvent.click(checkbox("Laptop"));
     fireEvent.click(checkbox("Studio"));
 
-    const install = screen.getByRole("button", { name: "Install" });
+    const install = screen.getByRole("button", { name: "Установить" });
     expect(install.hasAttribute("disabled")).toBe(true);
     fireEvent.click(install);
     expect(onInstall).not.toHaveBeenCalled();
@@ -101,11 +101,11 @@ describe("InstallCliSkillsDialog", () => {
     expect(screen.queryAllByRole("checkbox")).toEqual([]);
     expect(
       screen.getByText(
-        "The skills go in ~/.agents/skills and ~/.claude/skills on Laptop, replacing any copy already there.",
+        "Навыки будут установлены в ~/.agents/skills и ~/.claude/skills на Laptop с заменой существующих копий.",
       ),
     ).toBeDefined();
 
-    fireEvent.click(screen.getByRole("button", { name: "Install" }));
+    fireEvent.click(screen.getByRole("button", { name: "Установить" }));
     expect(onInstall).toHaveBeenCalledWith(["host-laptop"]);
   });
 });

@@ -237,7 +237,9 @@ export function RootComposeRightPanelToggle({
   onToggle,
 }: RootComposeRightPanelToggleProps) {
   const shortcut = useAppCommandShortcut("panel.toggle");
-  const rightPanelLabel = isOpen ? "Hide right panel" : "Show right panel";
+  const rightPanelLabel = isOpen
+    ? "Скрыть правую панель"
+    : "Показать правую панель";
   const rightPanelIconName = RIGHT_PANEL_TOGGLE_ICON_NAME;
 
   return (
@@ -1257,7 +1259,7 @@ function RootComposeSurface({
     () => (
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pt-1">
         <EmptyStatePanel className="rounded-lg">
-          No thread details available.
+          Сведения о чате недоступны.
         </EmptyStatePanel>
       </div>
     ),
@@ -1365,7 +1367,7 @@ function RootComposeSurface({
     return (
       <PageShell contentClassName="min-h-full items-center justify-center">
         <p className="py-12 text-center text-sm text-destructive">
-          Failed to load projects.
+          Не удалось загрузить проекты.
         </p>
       </PageShell>
     );

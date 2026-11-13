@@ -171,7 +171,7 @@ it("lists cheaply, fetches only the selected source/provider, preserves failed m
         { id: "host" },
         {
           id: "source:pool",
-          error: "Some usage could not be refreshed.",
+          error: "Не удалось обновить часть данных об использовании.",
           providers: [
             { usage: { status: "ok" } },
             { usage: { status: "ok" } },
@@ -341,7 +341,7 @@ it("collapses known account observations per machine, preserves unknown identiti
               id: "adapter:account",
               usage: {
                 planLabel: "Max (20x)",
-                windows: [{ label: "Weekly limit", usedPercent: 42 }],
+                windows: [{ label: "Недельный лимит", usedPercent: 42 }],
               },
             },
             { id: "adapter:unknown", usage: null },

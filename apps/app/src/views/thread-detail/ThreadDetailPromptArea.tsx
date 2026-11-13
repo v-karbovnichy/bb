@@ -1239,7 +1239,7 @@ export function ThreadDetailPromptArea({
       const submittedInput = promptDraftToInput(submittedDraft);
       if (isHandoffSelection) {
         if (effectiveSelectedModel.length === 0) {
-          throw new Error("The selected model is still loading.");
+          throw new Error("Выбранная модель ещё загружается.");
         }
         let created = false;
         try {
@@ -1252,13 +1252,13 @@ export function ThreadDetailPromptArea({
           throw new Error(
             getMutationErrorMessage({
               error: submitError,
-              fallbackMessage: "Failed to create thread",
+              fallbackMessage: "Не удалось создать чат",
               lifecycleOperation: "create_thread",
             }),
           );
         }
         if (!created) {
-          throw new Error("Type a message before submitting it.");
+          throw new Error("Введите сообщение перед отправкой.");
         }
         return;
       }
@@ -1267,10 +1267,10 @@ export function ThreadDetailPromptArea({
         sendAt === undefined &&
         pluginSubmission === undefined;
       if (submittedInput.length === 0) {
-        throw new Error("Type a message before submitting it.");
+        throw new Error("Введите сообщение перед отправкой.");
       }
       if (!isQueuingMessage && isDefaultExecutionOptionsLoading) {
-        throw new Error("This thread's model options are still loading.");
+        throw new Error("Варианты моделей для этого чата ещё загружаются.");
       }
 
       promptDraft.clearIfCurrentMatches(submittedDraft);
@@ -1298,8 +1298,8 @@ export function ThreadDetailPromptArea({
         throw reportMutationError({
           error: nextError,
           fallbackMessage: isQueuingMessage
-            ? "Failed to queue message"
-            : "Failed to send message",
+            ? "Не удалось добавить сообщение в очередь"
+            : "Не удалось отправить сообщение",
           lifecycleOperation: isQueuingMessage
             ? "queue_message"
             : "send_message",
@@ -1328,7 +1328,7 @@ export function ThreadDetailPromptArea({
   const handleModifierSubmit = useCallback(
     async ({ sendAt, pluginSubmission }: ComposerSubmitExtras = {}) => {
       if (!canSubmitModifierShortcut) {
-        throw new Error("There is nothing to send right now.");
+        throw new Error("Сейчас нечего отправлять.");
       }
 
       const submittedDraft = promptDraft.getCurrent();
@@ -1340,7 +1340,7 @@ export function ThreadDetailPromptArea({
         threadId: thread.id,
       });
       if (!shortcutRequest) {
-        throw new Error("There is nothing to send right now.");
+        throw new Error("Сейчас нечего отправлять.");
       }
 
       if (shortcutRequest.kind === "draft") {
@@ -1362,7 +1362,7 @@ export function ThreadDetailPromptArea({
                 promptDraft.restoreIfEmpty(submittedDraft);
                 throw reportMutationError({
                   error: nextError,
-                  fallbackMessage: "Failed to send message",
+                  fallbackMessage: "Не удалось отправить сообщение",
                   lifecycleOperation: "send_message",
                 });
               }
@@ -1374,12 +1374,12 @@ export function ThreadDetailPromptArea({
 
       if (sendAt !== undefined || pluginSubmission !== undefined) {
         throw new Error(
-          "There is no new message to schedule or attach data to.",
+          "Нет нового сообщения для планирования или добавления вложений.",
         );
       }
       const queuedMessageId = shortcutRequest.request.queuedMessageId;
       if (queuedMessagesRef.current[0]?.id !== queuedMessageId) {
-        throw new Error("The next queued message changed.");
+        throw new Error("Следующее сообщение в очереди изменилось.");
       }
 
       await runWhileFollowUpShortcutSending(
@@ -1473,9 +1473,9 @@ export function ThreadDetailPromptArea({
       onSubmit: handleSend,
       ...(isHandoffSelection
         ? {
-            submitLabel: "New thread",
+            submitLabel: "Новый чат",
             submitIcon: "MessageSquarePlus",
-            submitTitle: "Create new thread (Enter)",
+            submitTitle: "Создать новый чат (Enter)",
           }
         : {}),
       compactPromptPlaceholder,
@@ -2010,8 +2010,8 @@ export function ThreadDetailPromptArea({
     const { draft, hostElement, operationId } = sentMessageEdit;
     return createPortal(
       <InlineMessageEditorFrame
-        cancelLabel="Stop editing sent message"
-        label="Editing message"
+        cancelLabel="Завершить редактирование отправленного сообщения"
+        label="Редактирование сообщения"
         onCancel={sentMessageEdit.onCancel}
         variant="cap"
       >
@@ -2031,7 +2031,7 @@ export function ThreadDetailPromptArea({
             },
           },
           canModifierSubmit: canSubmitSentMessageEdit,
-          compactPromptPlaceholder: "Edit message",
+          compactPromptPlaceholder: "Редактировать сообщение",
           composerId: `${composerId}-sent-${operationId}`,
           draft,
           editFocusNonce,
@@ -2055,10 +2055,10 @@ export function ThreadDetailPromptArea({
           permissionReadOnly: true,
           pluginComposerHost: sentMessagePluginComposerHost,
           promptActions: inlinePromptActions,
-          promptPlaceholder: "Edit message",
+          promptPlaceholder: "Редактировать сообщение",
           submit: handleSentMessageEditSubmit,
           submitMode: sentMessageEditSubmitMode,
-          submitTitle: "Submit edit (Enter)",
+          submitTitle: "Сохранить изменения (Enter)",
           suppressPluginComposerCustomizations: true,
           textEffects: sentMessageComposerTextEffects,
           threadRuntimeDisplayStatus: runtimeDisplayStatus,

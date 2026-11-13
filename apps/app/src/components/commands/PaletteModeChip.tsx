@@ -27,7 +27,7 @@ export function PaletteModeChip({
       }}
     >
       <TabPill
-        ariaLabel={`${label} search`}
+        ariaLabel={`Поиск: ${label}`}
         label={label}
         title={label}
         isActive

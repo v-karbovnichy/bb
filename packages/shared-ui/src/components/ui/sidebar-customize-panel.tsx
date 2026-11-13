@@ -55,7 +55,7 @@ export function SidebarCustomizePanel({
             className="h-7 shrink-0 px-2 text-xs text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent focus-visible:ring-2 max-md:pointer-coarse:h-9 max-md:pointer-coarse:text-sm"
             onClick={onDone}
           >
-            Done
+            Готово
           </Button>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto pt-1">{children}</div>
@@ -94,7 +94,7 @@ export function SidebarCustomizePanel({
           className="h-6 shrink-0 px-2 text-xs text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent focus-visible:ring-2"
           onClick={onDone}
         >
-          Done
+          Готово
         </Button>
       </div>
       {children}

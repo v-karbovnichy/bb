@@ -16,13 +16,13 @@ export function composerSubmittingBlockedReason({
   submitDisabledReason,
 }: ComposerSubmitGateInput): string | null {
   if (canSubmit) return null;
-  if (isAttaching) return "Uploading attachments...";
+  if (isAttaching) return "Загрузка вложений...";
   if (submitDisabledReason !== undefined) return submitDisabledReason;
-  if (voiceActive) return "Finish voice input first.";
-  if (isSubmitting) return "Submitting...";
+  if (voiceActive) return "Сначала завершите голосовой ввод.";
+  if (isSubmitting) return "Отправка...";
   return hasSubmittableInput
-    ? "This composer can't submit right now."
-    : "Type a message first.";
+    ? "Сейчас не удаётся отправить сообщение."
+    : "Сначала введите сообщение.";
 }
 
 export function hasSubmittableComposerInput(draft: {

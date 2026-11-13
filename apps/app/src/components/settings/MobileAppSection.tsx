@@ -19,14 +19,14 @@ export function MobileAppSection() {
   const handshake = getNativeShell()?.handshake;
   const installedAndroid = handshake?.platform === "android" ? handshake : null;
   return (
-    <section aria-label="Mobile app downloads" className="space-y-5">
+    <section aria-label="Загрузки мобильных приложений" className="space-y-5">
       <div>
-        <h2 className="text-base font-semibold">Mobile apps</h2>
+        <h2 className="text-base font-semibold">Мобильные приложения</h2>
         <p className="mt-1 text-sm text-subtle-foreground">
-          Use bb from your phone
+          Пользуйтесь bb с телефона
         </p>
       </div>
-      <MachineAccessSettings title="Accessing bb from your phone">
+      <MachineAccessSettings title="Доступ к bb с телефона">
         {(pluginId) => <PluginMobileSettingsSections pluginId={pluginId} />}
       </MachineAccessSettings>
       <div className="space-y-5">
@@ -37,11 +37,11 @@ export function MobileAppSection() {
               iOS
             </span>
           }
-          description="Available through TestFlight"
+          description="Доступно через TestFlight"
           bodyClassName="space-y-4"
         >
           <p className="text-sm text-subtle-foreground">
-            Install{" "}
+            Установите{" "}
             <a
               href="https://apps.apple.com/app/testflight/id899247664"
               target="_blank"
@@ -50,7 +50,7 @@ export function MobileAppSection() {
             >
               TestFlight
             </a>
-            , then join the bb beta to install the app on your iPhone.
+            , затем присоединитесь к бета-программе bb, чтобы установить приложение на iPhone.
           </p>
           <a
             href={mobileAppDownloads.ios}
@@ -58,7 +58,7 @@ export function MobileAppSection() {
             rel="noopener noreferrer"
             className={buttonVariants()}
           >
-            Join iOS TestFlight
+            Присоединиться к TestFlight для iOS
           </a>
         </SettingsSection>
         <SettingsSection
@@ -68,48 +68,48 @@ export function MobileAppSection() {
               Android
             </span>
           }
-          description="Direct download for Android phones"
+          description="Прямая загрузка для телефонов Android"
           bodyClassName="space-y-4"
         >
           <p className="text-sm text-subtle-foreground">
-            Download the APK and open it on your phone to install. Allow
-            installation from your browser if prompted.
+            Загрузите APK и откройте его на телефоне для установки. Если появится
+            запрос, разрешите установку из браузера.
           </p>
           <p className="text-sm text-subtle-foreground">
-            Google Play access is under review. For now, return here for
-            updates.
+            Доступ к Google Play находится на рассмотрении. Пока проверяйте
+            обновления здесь.
           </p>
           {installedAndroid && (
             <div className="space-y-1 text-sm">
               <p>
-                Installed: {installedAndroid.appVersion}
+                Установлено: {installedAndroid.appVersion}
                 {installedAndroid.androidVersionCode !== undefined &&
-                  ` (build ${installedAndroid.androidVersionCode})`}
+                  ` (сборка ${installedAndroid.androidVersionCode})`}
               </p>
               <p role="status">
                 {installedAndroid.androidVersionCode === undefined
-                  ? "This app does not report its build number. Download the latest APK to check for updates."
+                  ? "Приложение не сообщает номер сборки. Загрузите последний APK, чтобы проверить обновления."
                   : releases.isPending
-                    ? "Checking for updates…"
+                    ? "Проверка обновлений…"
                     : !android
-                      ? "Unable to check for updates. You can still download the latest APK."
+                      ? "Не удалось проверить обновления. Вы можете загрузить последний APK."
                       : installedAndroid.androidVersionCode <
                           android.versionCode
-                        ? "Update available"
+                        ? "Доступно обновление"
                         : installedAndroid.androidVersionCode ===
                             android.versionCode
-                          ? "You’re up to date"
-                          : "You’re running a newer build than the latest published release"}
+                          ? "Установлена последняя версия"
+                          : "У вас более новая сборка, чем последний опубликованный выпуск"}
               </p>
             </div>
           )}
           {android ? (
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-              <dt className="text-subtle-foreground">Version</dt>
+              <dt className="text-subtle-foreground">Версия</dt>
               <dd>
-                {android.version} (build {android.versionCode})
+                {android.version} (сборка {android.versionCode})
               </dd>
-              <dt className="text-subtle-foreground">Updated</dt>
+              <dt className="text-subtle-foreground">Обновлено</dt>
               <dd>
                 <time dateTime={android.updatedAt}>
                   {new Date(android.updatedAt).toLocaleDateString(undefined, {
@@ -119,14 +119,14 @@ export function MobileAppSection() {
                   })}
                 </time>
               </dd>
-              <dt className="text-subtle-foreground">Download size</dt>
+              <dt className="text-subtle-foreground">Размер загрузки</dt>
               <dd>{Math.ceil(android.size / 1024 / 1024)} MB</dd>
             </dl>
           ) : (
             <p className="text-sm text-subtle-foreground" role="status">
               {releases.isPending
-                ? "Checking the latest release…"
-                : "Release details are unavailable. You can still download the APK."}
+                ? "Проверка последнего выпуска…"
+                : "Сведения о выпуске недоступны. Вы можете загрузить APK."}
             </p>
           )}
           <a

@@ -44,7 +44,7 @@ export function LauncherRowTrailing({
           className="size-3 max-md:pointer-coarse:size-4"
           aria-hidden
         />
-        open
+        открыть
       </span>
     </span>
   );

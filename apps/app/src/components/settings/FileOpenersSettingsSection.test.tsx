@@ -37,14 +37,14 @@ describe("FileOpenersSettingsSection", () => {
     registerNotesOpener();
     render(<FileOpenersSettingsSection />);
 
-    expect(screen.getByText(".md files")).toBeDefined();
-    expect(screen.getByText(".mdx files")).toBeDefined();
+    expect(screen.getByText("Файлы .md")).toBeDefined();
+    expect(screen.getByText("Файлы .mdx")).toBeDefined();
     const trigger = screen.getByRole("button", {
-      name: "Default opener for .md files",
+      name: "Приложение по умолчанию для файлов .md",
     });
-    expect(trigger.textContent).toContain("Automatic");
+    expect(trigger.textContent).toContain("Автоматически");
 
-    await selectOption(trigger, /Built-in preview/u);
+    await selectOption(trigger, /Встроенный просмотр/u);
     expect(storedPreference()).toEqual({
       md: BUILT_IN_FILE_OPENER_PREFERENCE,
     });
@@ -52,7 +52,7 @@ describe("FileOpenersSettingsSection", () => {
     await selectOption(trigger, /Notes editor \(notes\)/u);
     expect(storedPreference()).toEqual({ md: "notes:editor" });
 
-    await selectOption(trigger, /Automatic/u);
+    await selectOption(trigger, /Автоматически/u);
     expect(storedPreference()).toEqual({});
   });
 });

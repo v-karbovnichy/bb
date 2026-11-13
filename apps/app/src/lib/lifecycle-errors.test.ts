@@ -92,82 +92,82 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
   [
     "environment_not_ready provisioning",
     environmentNotReady("provisioning"),
-    ["info", "Workspace starting", "Workspace is still starting."],
+    ["info", "Рабочее пространство запускается", "Рабочее пространство ещё запускается."],
   ],
   [
     "environment_not_ready ready",
     environmentNotReady("ready"),
-    ["warning", "Workspace unavailable", "Workspace is unavailable."],
+    ["warning", "Рабочее пространство недоступно", "Рабочее пространство недоступно."],
   ],
   [
     "environment_not_ready error",
     environmentNotReady("error"),
-    ["error", "Workspace setup failed", "Workspace setup failed."],
+    ["error", "Не удалось настроить рабочее пространство", "Не удалось настроить рабочее пространство."],
   ],
   [
     "environment_not_ready destroyed archived thread",
     environmentNotReady("destroyed"),
-    ["warning", "Workspace unavailable", "Workspace no longer exists."],
+    ["warning", "Рабочее пространство недоступно", "Рабочее пространство больше не существует."],
   ],
   [
     "thread_environment_unavailable never attached",
     threadEnvironmentUnavailable("never_attached", null),
-    ["info", "Workspace unavailable", "Workspace is not available yet."],
+    ["info", "Рабочее пространство недоступно", "Рабочее пространство пока недоступно."],
   ],
   [
     "thread_environment_unavailable destroyed",
     threadEnvironmentUnavailable("destroyed", "destroyed"),
-    ["warning", "Workspace unavailable", "Workspace no longer exists."],
+    ["warning", "Рабочее пространство недоступно", "Рабочее пространство больше не существует."],
   ],
   [
     "thread_environment_unavailable provisioning",
     threadEnvironmentUnavailable("provisioning", "provisioning"),
-    ["info", "Workspace starting", "Workspace is still starting."],
+    ["info", "Рабочее пространство запускается", "Рабочее пространство ещё запускается."],
   ],
   [
     "thread_environment_unavailable errored",
     threadEnvironmentUnavailable("errored", "error"),
-    ["error", "Workspace setup failed", "Workspace setup failed."],
+    ["error", "Не удалось настроить рабочее пространство", "Не удалось настроить рабочее пространство."],
   ],
   [
     "thread_not_writable archived",
     threadNotWritable("archived", "idle", 10),
-    ["info", "Thread archived", "Unarchive the thread first."],
+    ["info", "Чат архивирован", "Сначала извлеките чат из архива."],
   ],
   [
     "thread_not_writable stopping",
     threadNotWritable("stopping", "stopping"),
-    ["warning", "Thread stopping", "The thread is stopping."],
+    ["warning", "Чат останавливается", "Чат останавливается."],
   ],
   [
     "thread_not_writable deleted",
     threadNotWritable("deleted", "idle"),
-    ["error", "Thread deleted", "This thread was deleted."],
+    ["error", "Чат удалён", "Этот чат удалён."],
   ],
   [
     "thread_not_writable not started while starting",
     threadNotWritable("not_started", "starting"),
-    ["info", "Thread starting", "The thread is still starting."],
+    ["info", "Чат запускается", "Чат ещё запускается."],
   ],
   [
     "thread_not_writable not active",
     threadNotWritable("not_active", "idle"),
-    ["warning", "Thread not running", "The thread is not running."],
+    ["warning", "Чат не запущен", "Чат не запущен."],
   ],
   [
     "thread_not_writable errored",
     threadNotWritable("errored", "error"),
-    ["error", "Thread failed", "This thread failed and cannot continue."],
+    ["error", "Ошибка чата", "В этом чате произошла ошибка; продолжить его нельзя."],
   ],
   [
     "thread_not_writable already active",
     threadNotWritable("already_active", "active"),
-    ["warning", "Thread already running", "The thread is already running."],
+    ["warning", "Чат уже работает", "Чат уже работает."],
   ],
   [
     "thread_not_writable still starting",
     threadNotWritable("still_starting", "starting"),
-    ["info", "Thread starting", "The thread is still starting."],
+    ["info", "Чат запускается", "Чат ещё запускается."],
   ],
   [
     "host_unavailable suspended",
@@ -177,7 +177,7 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
       reason: "suspended",
       suspendedAt: 10,
     }),
-    ["warning", "Host paused", "Host is paused."],
+    ["warning", "Компьютер приостановлен", "Компьютер приостановлен."],
   ],
   [
     "host_unavailable disconnected",
@@ -187,7 +187,7 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
       reason: "disconnected",
       suspendedAt: null,
     }),
-    ["warning", "Host offline", "Host is offline."],
+    ["warning", "Компьютер не в сети", "Компьютер не в сети."],
   ],
   [
     "host_unavailable destroyed",
@@ -197,25 +197,25 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
       reason: "destroyed",
       suspendedAt: null,
     }),
-    ["error", "Host removed", "Host was removed."],
+    ["error", "Компьютер удалён", "Компьютер удалён."],
   ],
   [
     "project_unavailable pending deletion",
     projectUnavailable("pending_deletion", null),
-    ["info", "Project deletion in progress", "This project is being deleted."],
+    ["info", "Проект удаляется", "Этот проект удаляется."],
   ],
   [
     "project_unavailable deleted",
     projectUnavailable("deleted", 10),
-    ["error", "Project deleted", "This project was deleted."],
+    ["error", "Проект удалён", "Этот проект удалён."],
   ],
   [
     "parent_thread_invalid not found",
     parentThreadInvalid("not_found"),
     [
       "error",
-      "Parent thread unavailable",
-      "That parent thread no longer exists.",
+      "Родительский чат недоступен",
+      "Родительский чат больше не существует.",
     ],
   ],
   [
@@ -223,22 +223,22 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     parentThreadInvalid("archived"),
     [
       "warning",
-      "Parent thread unavailable",
-      "Unarchive the parent thread first or choose another parent.",
+      "Родительский чат недоступен",
+      "Извлеките родительский чат из архива или выберите другой.",
     ],
   ],
   [
     "parent_thread_invalid deleted",
     parentThreadInvalid("deleted"),
-    ["error", "Parent thread unavailable", "That parent thread was deleted."],
+    ["error", "Родительский чат недоступен", "Родительский чат удалён."],
   ],
   [
     "parent_thread_invalid self",
     parentThreadInvalid("self"),
     [
       "error",
-      "Parent thread unavailable",
-      "A thread cannot be its own parent.",
+      "Родительский чат недоступен",
+      "Чат не может быть собственным родителем.",
     ],
   ],
   [
@@ -246,8 +246,8 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     parentThreadInvalid("cycle"),
     [
       "error",
-      "Parent thread unavailable",
-      "Choose a thread that is not a child of this thread.",
+      "Родительский чат недоступен",
+      "Выберите чат, который не является дочерним для этого чата.",
     ],
   ],
   [
@@ -255,8 +255,8 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     parentThreadInvalid("too_deep"),
     [
       "error",
-      "Parent thread unavailable",
-      "Thread nesting is limited to 4 levels.",
+      "Родительский чат недоступен",
+      "Вложенность чатов ограничена четырьмя уровнями.",
     ],
   ],
   [
@@ -264,8 +264,8 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     parentThreadInvalid("not_found", "sender"),
     [
       "error",
-      "Sender thread unavailable",
-      "The sender thread no longer exists.",
+      "Чат отправителя недоступен",
+      "Чат отправителя больше не существует.",
     ],
   ],
   [
@@ -277,8 +277,8 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     },
     [
       "warning",
-      "Blocked by a plugin",
-      'Blocked by the "policy-guard" plugin: Sandbox quota is exhausted. Free a slot first.',
+      "Заблокировано плагином",
+      'Заблокировано плагином «policy-guard»: Sandbox quota is exhausted. Free a slot first.',
     ],
   ],
   [
@@ -291,8 +291,8 @@ const descriptionCases: Array<[string, LifecycleApiError, Expected]> = [
     },
     [
       "error",
-      "Plugin dispatch hook failed",
-      'The "policy-guard" plugin\'s message.dispatch hook failed: did not decide within 5000ms. Disable that plugin to continue.',
+      "Ошибка обработчика плагина",
+      'The "policy-guard" plugin\'s message.dispatch hook failed: did not decide within 5000ms. Отключите этот плагин, чтобы продолжить.',
     ],
   ],
 ];
@@ -313,8 +313,8 @@ describe("describeLifecycleError", () => {
         operation: "load_diff",
       }),
     ).toEqual({
-      title: "Failed to load diff",
-      body: "Workspace no longer exists.",
+      title: "Не удалось загрузить изменения",
+      body: "Рабочее пространство больше не существует.",
       severity: "warning",
     });
   });
@@ -322,11 +322,11 @@ describe("describeLifecycleError", () => {
   it("formats lifecycle descriptions as a single action-oriented message", () => {
     expect(
       formatLifecycleErrorDescription({
-        title: "Failed to send message",
-        body: "The thread is still starting.",
+        title: "Не удалось отправить сообщение",
+        body: "Чат ещё запускается.",
         severity: "info",
       }),
-    ).toBe("Failed to send message. The thread is still starting.");
+    ).toBe("Не удалось отправить сообщение. Чат ещё запускается.");
   });
 
   it("returns null for non-lifecycle errors", () => {
@@ -361,9 +361,9 @@ describe("describeLifecycleError", () => {
       throw new Error("expected a lifecycle description");
     }
     expect(description.body).toContain(pluginMessage);
-    expect(description.body).toContain('"release-freeze"');
+    expect(description.body).toContain('«release-freeze»');
     expect(formatLifecycleErrorDescription(description)).toBe(
-      'Failed to send message. Blocked by the "release-freeze" plugin: This project is frozen until the release ships.',
+      'Не удалось отправить сообщение. Заблокировано плагином «release-freeze»: This project is frozen until the release ships.',
     );
   });
 });

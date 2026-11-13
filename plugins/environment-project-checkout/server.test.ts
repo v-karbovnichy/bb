@@ -108,7 +108,7 @@ describe("checkout provider validate", () => {
       harness.registrations.environmentProviders.get(
         PROJECT_CHECKOUT_ENVIRONMENT_PROVIDER_ID,
       )?.displayName,
-    ).toBe("Project checkout");
+    ).toBe("Рабочая копия проекта");
   });
 
   it("refuses a branch switch while another thread is live on the checkout", async () => {
@@ -120,7 +120,7 @@ describe("checkout provider validate", () => {
     expect(decision).toEqual({
       action: "refuse",
       message:
-        "Cannot checkout branch while another thread is using this workspace",
+        "Нельзя переключить ветку, пока другой чат использует эту рабочую копию",
     });
   });
 
@@ -142,7 +142,7 @@ describe("checkout provider validate", () => {
     expect(decision).toEqual({
       action: "refuse",
       message:
-        "Cannot checkout branch while another thread is using this workspace",
+        "Нельзя переключить ветку, пока другой чат использует эту рабочую копию",
     });
   });
 
@@ -179,7 +179,7 @@ describe("checkout provider validate", () => {
     });
     expect(decision).toEqual({
       action: "refuse",
-      message: "Checkout blocked by uncommitted changes",
+      message: "Переключение заблокировано несохранёнными изменениями",
     });
   });
 
@@ -197,7 +197,7 @@ describe("checkout provider validate", () => {
     });
     expect(decision).toEqual({
       action: "refuse",
-      message: "Checkout blocked while HEAD is detached",
+      message: "Переключение заблокировано: HEAD отсоединён",
     });
   });
 
@@ -215,7 +215,7 @@ describe("checkout provider validate", () => {
     });
     expect(decision).toEqual({
       action: "refuse",
-      message: "Checkout blocked by an in-progress rebase",
+      message: "Переключение заблокировано: выполняется rebase",
     });
   });
 
@@ -233,7 +233,7 @@ describe("checkout provider validate", () => {
     });
     expect(decision).toEqual({
       action: "refuse",
-      message: "Checkout blocked by unresolved conflicts",
+      message: "Переключение заблокировано неразрешёнными конфликтами",
     });
   });
 
@@ -373,7 +373,7 @@ it.each(["branch", "timeout", "abort"] as const)(
         }
         await expect(result).resolves.toMatchObject({
           status: "failed",
-          message: "Workspace is being prepared by another thread",
+          message: "Другой чат подготавливает рабочую копию",
         });
       }
       expect(hostCall).not.toHaveBeenCalled();
@@ -565,7 +565,7 @@ describe("restoring a destroyed checkout environment", () => {
     });
     expect(result).toMatchObject({
       status: "failed",
-      message: expect.stringContaining("no branch"),
+      message: expect.stringContaining("не была выбрана ветка"),
     });
     expect(attachCalls).toHaveLength(0);
   });

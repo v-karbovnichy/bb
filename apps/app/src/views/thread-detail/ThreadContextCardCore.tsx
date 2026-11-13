@@ -32,7 +32,7 @@ function ParentThreadRow({ thread }: { thread: ThreadResponse }) {
   return (
     <ThreadContextCardRow
       icon={parent.relationship === "fork" ? "Fork" : "UserRound"}
-      label={`${parent.relationship === "fork" ? "Forked from" : "Parent"}: ${parent.parentThreadTitle}`}
+      label={`${parent.relationship === "fork" ? "Ответвление от" : "Родительский чат"}: ${parent.parentThreadTitle}`}
       title={parent.parentThreadTitle}
       onClick={() => void navigate(parent.href)}
     />
@@ -98,7 +98,7 @@ export const CORE_THREAD_CONTEXT_CARD_SECTIONS: readonly CoreThreadContextCardSe
   [
     {
       id: "childThreads",
-      title: "Child threads",
+      title: "Дочерние чаты",
       group: experimental_THREAD_INFO_SECTION_GROUPS.related,
       order: 10,
       component: ChildThreadsSection,

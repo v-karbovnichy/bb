@@ -105,7 +105,7 @@ function DashboardScene({ accentToken }: SceneProps) {
         ))}
       </div>
       <SceneCard className="flex min-h-0 flex-1 flex-col gap-1.5">
-        <SceneLabel>Throughput</SceneLabel>
+        <SceneLabel>Пропускная способность</SceneLabel>
         <div className="flex min-h-0 flex-1 items-end gap-1">
           {bars.map((height, index) => (
             <div
@@ -160,7 +160,7 @@ function VideoEditorScene({ accentToken }: SceneProps) {
   return (
     <div className="flex h-full flex-col gap-1.5 p-2">
       <div className="flex items-center gap-1">
-        <SceneLabel>Launch video</SceneLabel>
+        <SceneLabel>Запуск видео</SceneLabel>
         <span
           className="ml-auto rounded-full px-1.5 py-0.5 font-mono text-2xs font-medium tabular-nums"
           style={{
@@ -235,7 +235,7 @@ function ChiefOfStaffScene({ accentToken }: SceneProps) {
   return (
     <div className="flex h-full flex-col gap-1.5 p-2">
       <div className="flex items-center justify-between">
-        <SceneLabel>Working for you</SceneLabel>
+        <SceneLabel>Работает для вас</SceneLabel>
         <span
           className="rounded-full px-1.5 py-0.5 text-2xs font-medium tabular-nums"
           style={{
@@ -306,7 +306,7 @@ function PrototypingLabScene({ accentToken }: SceneProps) {
   return (
     <div className="flex h-full flex-col gap-1.5 p-2">
       <div className="flex items-center gap-1.5">
-        <SceneLabel>Checkout flow</SceneLabel>
+        <SceneLabel>Оформление заказа</SceneLabel>
         <span
           className="ml-auto rounded-full px-1.5 py-0.5 text-2xs font-medium"
           style={{
@@ -402,7 +402,7 @@ function InboxScene({ accentToken }: SceneProps) {
   return (
     <div className="flex h-full flex-col gap-1.5 p-2">
       <div className="flex items-center gap-1">
-        <SceneLabel>Inbox</SceneLabel>
+        <SceneLabel>Входящие</SceneLabel>
         <span
           className="ml-auto rounded-full px-1.5 py-0.5 text-2xs font-medium tabular-nums"
           style={{

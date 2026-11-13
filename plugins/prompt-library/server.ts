@@ -34,7 +34,7 @@ type SearchItem =
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 export default function promptLibraryPlugin(bb: BbPluginApi): void {
@@ -266,16 +266,16 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
   function star(prompt: ComposerDraft, title: string | null): StarredPrompt {
     const starred = store.star(prompt, title, Date.now());
     if (starred === null) {
-      throw new Error("A starred prompt needs some text.");
+      throw new Error("Для добавления шаблона в избранное нужен текст.");
     }
     return starred;
   }
 
   function setTitle(id: string, title: string | null) {
     if (!store.setTitle(id, title)) {
-      throw new PluginCliError(`Unknown starred prompt: ${id}`, {
+      throw new PluginCliError(`Неизвестный шаблон в избранном: ${id}`, {
         code: "unknown_prompt",
-        hint: "Run `bb prompts list` for starred prompt ids.",
+        hint: "Выполните `bb prompts list`, чтобы увидеть ID избранных шаблонов.",
       });
     }
     return { id, title };
@@ -301,40 +301,40 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
   bb.cli.register(
     defineCli({
       name: "prompts",
-      summary: "Search previous prompts and manage starred prompts",
+      summary: "Поиск предыдущих запросов и управление избранными шаблонами",
       description:
-        "Without a query, starred prompts appear before recent ones in the composer's Prompts… picker (Ctrl+R). Search matches titles and prompt text, with exact title matches first. A query otherwise ranks both in one list: prompts that start with the query first, then by match type (exact, word start, typo, inside a word, abbreviation), then starred prompts and prompts of the searching composer's kind (thread starts in the new-thread composer, follow-ups in a thread), then by relevance decayed by age. Previous prompts come from bb's prompt history.",
+        "Без запроса избранные шаблоны показываются перед недавними в меню «Шаблоны…» (Ctrl+R). Поиск учитывает названия и текст запросов; точные совпадения названий идут первыми. Затем результаты сортируются по началу текста, типу совпадения, избранному, типу поля ввода (новый чат или продолжение) и актуальности. Предыдущие запросы берутся из истории bb.",
       commands: {
         search: cliCommand({
-          summary: "Search starred and previous prompts",
+          summary: "Поиск избранных и предыдущих запросов",
           positionals: [
             {
               name: "query",
               description:
-                "Words that must each match a prompt word exactly, as its start, with one typo, inside it, or as an abbreviation; omit to list the most recent",
+                "Слова для поиска: точное совпадение, начало слова, одна опечатка, часть слова или сокращение. Не указывайте, чтобы показать недавние запросы",
               variadic: true,
             },
           ],
           options: {
             project: {
               type: "string",
-              description: "Search this project's prompts",
+              description: "Искать запросы этого проекта",
             },
             thread: {
               type: "string",
-              description: "Search this thread's prompts",
+              description: "Искать запросы этого чата",
             },
             composer: {
               type: "enum",
               values: ["new-thread", "follow-up"],
               default: "follow-up",
               description:
-                "Rank like this composer: new-thread favors prompts that started threads, follow-up favors follow-ups",
+                "Учитывать тип поля ввода: для нового чата выше запросы, начавшие чаты; для продолжения — ответы в чатах",
             },
             partial: {
               type: "boolean",
               description:
-                "Return available results immediately; JSON includes loading and historyError",
+                "Сразу вернуть доступные результаты; JSON включает loading и historyError",
             },
             json: JSON_OPTION,
           },
@@ -370,18 +370,18 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
                 lines.length > 0
                   ? lines.join("\n")
                   : result.loading
-                    ? "Loading prompts…"
-                    : "No prompts found",
-                ...(result.loading ? ["Searching older prompts…"] : []),
+                    ? "Загрузка шаблонов…"
+                    : "Шаблоны не найдены",
+                ...(result.loading ? ["Поиск старых запросов…"] : []),
                 ...(result.historyError === null
                   ? []
-                  : [`History unavailable: ${result.historyError}`]),
+                  : [`История недоступна: ${result.historyError}`]),
               ].join("\n"),
             };
           },
         }),
         list: cliCommand({
-          summary: "List starred prompts, most recently used first",
+          summary: "Показать избранные шаблоны, начиная с недавно использованных",
           options: { json: JSON_OPTION },
           run({ options }) {
             const prompts = store.list();
@@ -409,17 +409,17 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
                           `${prompt.id}  ${prompt.title === null ? "" : `${prompt.title} — `}${buildSnippet(prompt.prompt.text, []).text}`,
                       )
                       .join("\n")
-                  : "No starred prompts",
+                  : "Нет избранных шаблонов",
             };
           },
         }),
         star: cliCommand({
           summary:
-            "Star a prompt; existing text keeps its title (use prompts title to rename)",
+            "Добавить запрос в избранное; существующий текст сохраняет название (для переименования используйте prompts title)",
           positionals: [
             {
               name: "text",
-              description: "The prompt text",
+              description: "Текст запроса",
               required: true,
               variadic: true,
             },
@@ -427,7 +427,7 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
           options: {
             title: {
               type: "string",
-              description: "Optional title (up to 120 characters)",
+              description: "Необязательное название (до 120 символов)",
             },
             json: JSON_OPTION,
           },
@@ -452,17 +452,17 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
           },
         }),
         title: cliCommand({
-          summary: "Rename a starred prompt; use --clear to remove its title",
+          summary: "Переименовать избранный шаблон; --clear удаляет название",
           positionals: [
-            { name: "id", description: "Starred prompt id", required: true },
+            { name: "id", description: "ID избранного шаблона", required: true },
             {
               name: "title",
-              description: "New title (up to 120 characters)",
+              description: "Новое название (до 120 символов)",
               variadic: true,
             },
           ],
           options: {
-            clear: { type: "boolean", description: "Remove the title" },
+            clear: { type: "boolean", description: "Удалить название" },
             json: JSON_OPTION,
           },
           run({ options, positionals }) {
@@ -472,7 +472,7 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
                 : positionals.title.length === 0
             ) {
               throw new PluginCliError(
-                "Provide a title or --clear, but not both.",
+                "Укажите название или --clear, но не оба варианта.",
                 { code: "invalid_arguments" },
               );
             }
@@ -485,17 +485,17 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
               stdout: options.json
                 ? JSON.stringify(result)
                 : title === null
-                  ? `Cleared title for ${result.id}`
-                  : `Renamed ${result.id} to ${title}`,
+                  ? `Название ${result.id} удалено`
+                  : `${result.id} переименован в ${title}`,
             };
           },
         }),
         unstar: cliCommand({
-          summary: "Unstar a prompt",
+          summary: "Убрать шаблон из избранного",
           positionals: [
             {
               name: "id",
-              description: "Starred prompt id, as `bb prompts list` prints it",
+              description: "ID избранного шаблона из вывода `bb prompts list`",
               required: true,
             },
           ],
@@ -503,10 +503,10 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
           run({ options, positionals }) {
             if (!store.unstar(positionals.id)) {
               throw new PluginCliError(
-                `Unknown starred prompt: ${positionals.id}`,
+                `Неизвестный шаблон в избранном: ${positionals.id}`,
                 {
                   code: "unknown_prompt",
-                  hint: "Run `bb prompts list` for starred prompt ids.",
+                  hint: "Выполните `bb prompts list`, чтобы увидеть ID избранных шаблонов.",
                 },
               );
             }
@@ -514,7 +514,7 @@ export default function promptLibraryPlugin(bb: BbPluginApi): void {
               exitCode: 0,
               stdout: options.json
                 ? JSON.stringify({ id: positionals.id, unstarred: true })
-                : `Unstarred ${positionals.id}`,
+                : `${positionals.id} убран из избранного`,
             };
           },
         }),

@@ -121,12 +121,12 @@ export function buildDesktopContextMenuTemplate({
       }
     } else {
       template.push({
-        label: "No Spelling Suggestions",
+        label: "Нет вариантов написания",
         enabled: false,
       });
     }
     template.push({
-      label: `Add "${spellcheckContext.misspelledWord}" to Dictionary`,
+      label: `Добавить «${spellcheckContext.misspelledWord}» в словарь`,
       click: () => {
         webContents.session.addWordToSpellCheckerDictionary(
           spellcheckContext.misspelledWord,
@@ -138,7 +138,7 @@ export function buildDesktopContextMenuTemplate({
 
   if (isWebLink(params, allowSameOriginLinks)) {
     template.push({
-      label: "Open in Browser",
+      label: "Открыть в браузере",
       click: () => {
         void shell.openExternal(params.linkURL);
       },
@@ -146,7 +146,7 @@ export function buildDesktopContextMenuTemplate({
   }
   if (params.linkURL.length > 0) {
     template.push({
-      label: "Copy Link",
+      label: "Скопировать ссылку",
       click: () => {
         void copyLink(params.linkURL);
       },
@@ -157,14 +157,14 @@ export function buildDesktopContextMenuTemplate({
   if (params.mediaType === "image" && params.srcURL.length > 0) {
     template.push(
       {
-        label: "Copy Image",
+        label: "Скопировать изображение",
         enabled: params.hasImageContents,
         click: () => {
           webContents.copyImageAt(params.x, params.y);
         },
       },
       {
-        label: "Save Image As…",
+        label: "Сохранить изображение как…",
         click: () => {
           webContents.downloadURL(params.srcURL);
         },

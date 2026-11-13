@@ -251,8 +251,8 @@ describe("Docs nav panel", () => {
       },
     );
 
-    await slot.findByRole("navigation", { name: "Notes" });
-    await slot.findByText("Select a note or HTML page.");
+    await slot.findByRole("navigation", { name: "Заметки" });
+    await slot.findByText("Выберите заметку или HTML-страницу.");
     expect(requests).toBe(1);
   });
 
@@ -265,16 +265,16 @@ describe("Docs nav panel", () => {
         rpc: {
           listNotes: () => {
             requests += 1;
-            if (requests === 1) throw new Error("Host unavailable");
+            if (requests === 1) throw new Error("Хост недоступен");
             return listNotesResult([]);
           },
         },
       },
     );
 
-    await slot.findByText("Could not load vaults: Host unavailable");
-    fireEvent.click(slot.getByRole("button", { name: "Retry" }));
-    await slot.findByRole("navigation", { name: "Notes" });
+    await slot.findByText("Не удалось загрузить хранилища: Хост недоступен");
+    fireEvent.click(slot.getByRole("button", { name: "Повторить" }));
+    await slot.findByRole("navigation", { name: "Заметки" });
     expect(requests).toBe(2);
   });
 
@@ -483,11 +483,11 @@ describe("Docs nav panel", () => {
     expect(slot.queryByText("Personal document")).toBeNull();
     expect(slot.queryByText("Personal note")).toBeNull();
 
-    fireEvent.click(slot.getAllByRole("button", { name: "New note" }).at(-1)!);
+    fireEvent.click(slot.getAllByRole("button", { name: "Новая заметка" }).at(-1)!);
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
         method: "createNote",
-        input: { vaultId: "work", parent: "", name: "Untitled" },
+        input: { vaultId: "work", parent: "", name: "Без названия" },
       }),
     );
   });
@@ -516,7 +516,7 @@ describe("Docs nav panel", () => {
       },
     );
     const heading = await slot.findByText("Draft");
-    const editor = slot.getByRole("textbox", { name: "Document content" });
+    const editor = slot.getByRole("textbox", { name: "Содержимое документа" });
     heading.textContent = "Renamed";
     fireEvent.input(heading);
     await waitFor(
@@ -534,7 +534,7 @@ describe("Docs nav panel", () => {
     });
     slot.rerender(<PanelContent subPath="personal/renamed.md" />);
     await act(async () => undefined);
-    expect(slot.getByRole("textbox", { name: "Document content" })).toBe(
+    expect(slot.getByRole("textbox", { name: "Содержимое документа" })).toBe(
       editor,
     );
     expect(editor.textContent).toContain("Renamed");
@@ -566,7 +566,7 @@ describe("Docs nav panel", () => {
       await new Promise((resolve) => setTimeout(resolve, 300));
     });
     expect(slot.getByText("First body")).toBeTruthy();
-    expect(slot.queryByRole("status", { name: "Loading document" })).toBeNull();
+    expect(slot.queryByRole("status", { name: "Загрузка документа" })).toBeNull();
     next.resolve(
       documentResult("switch-second.md", "# Second\n\nSecond body", "sha-2"),
     );
@@ -575,7 +575,7 @@ describe("Docs nav panel", () => {
     expect(slot.queryByText("First body")).toBeNull();
     await waitFor(() =>
       expect(document.activeElement).toBe(
-        slot.getByRole("textbox", { name: "Document content" }),
+        slot.getByRole("textbox", { name: "Содержимое документа" }),
       ),
     );
   });
@@ -596,7 +596,7 @@ describe("Docs nav panel", () => {
       },
     );
     const editor = await slot.findByRole("textbox", {
-      name: "Document content",
+      name: "Содержимое документа",
     });
     await slot.findByText("Last line");
     editor.blur();
@@ -712,7 +712,7 @@ describe("Docs nav panel", () => {
       },
     );
     await slot.findByText("Personal note");
-    fireEvent.click(slot.getByRole("button", { name: "New note" }));
+    fireEvent.click(slot.getByRole("button", { name: "Новая заметка" }));
     await waitFor(() =>
       expect(slot.rpcCalls.some((call) => call.method === "createNote")).toBe(
         true,
@@ -765,7 +765,7 @@ describe("Docs nav panel", () => {
       { rpc: { listNotes: () => unavailable } },
     );
 
-    await slot.findByText("Host unavailable");
+    await slot.findByText("Хост недоступен");
     expect(slot.queryByText("Remote Mac")).toBeNull();
   });
 
@@ -1039,12 +1039,12 @@ describe("Docs nav panel", () => {
     );
 
     await slot.findByText("Existing");
-    fireEvent.click(slot.getByLabelText("New note"));
+    fireEvent.click(slot.getByLabelText("Новая заметка"));
 
     await waitFor(() => {
       expect(slot.rpcCalls).toContainEqual({
         method: "createNote",
-        input: { vaultId: "personal", parent: "projects", name: "Untitled" },
+        input: { vaultId: "personal", parent: "projects", name: "Без названия" },
       });
     });
     expect(slot.navigateCalls).toContainEqual({
@@ -1088,7 +1088,7 @@ describe("Docs nav panel", () => {
 
     const file = await slot.findByRole("button", { name: /Old note/ });
     fireEvent.contextMenu(file);
-    fireEvent.click(await slot.findByRole("menuitem", { name: "Delete" }));
+    fireEvent.click(await slot.findByRole("menuitem", { name: "Удалить" }));
 
     await waitFor(() => {
       expect(slot.rpcCalls).toContainEqual({
@@ -1243,11 +1243,11 @@ describe("Docs nav panel", () => {
 
     const file = await slot.findByRole("button", { name: "Old note" });
     expect(
-      slot.queryByRole("button", { name: "Move to top level" }),
+      slot.queryByRole("button", { name: "Переместить на верхний уровень" }),
     ).toBeNull();
     const dataTransfer = makeDataTransfer("projects/old.md");
     fireEvent.dragStart(file, { dataTransfer });
-    const topLevel = slot.getByRole("button", { name: "Move to top level" });
+    const topLevel = slot.getByRole("button", { name: "Переместить на верхний уровень" });
     fireEvent.dragOver(topLevel, { dataTransfer });
     fireEvent.drop(topLevel, { dataTransfer });
 
@@ -1290,7 +1290,7 @@ describe("Docs nav panel", () => {
       },
     });
 
-    fireEvent.click(slot.getByRole("button", { name: "Open in Docs" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть в Docs" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "docs",
@@ -1327,7 +1327,7 @@ describe("Docs nav panel", () => {
     const returned = render();
     try {
       expect(
-        returned.getByRole("textbox", { name: "Document content" }).textContent,
+        returned.getByRole("textbox", { name: "Содержимое документа" }).textContent,
       ).toContain(file.content);
     } finally {
       await act(async () => {
@@ -1371,9 +1371,9 @@ describe("Docs nav panel", () => {
         },
       });
       const button = await slot.findByRole("button", {
-        name: "Open Tall document in tab",
+      name: "Открыть Tall document во вкладке",
       });
-      const editor = slot.getByRole("textbox", { name: "Document content" });
+      const editor = slot.getByRole("textbox", { name: "Содержимое документа" });
       await waitFor(() => {
         expect(editor.getAttribute("contenteditable")).toBe("false");
       });
@@ -1412,7 +1412,7 @@ describe("Docs nav panel", () => {
       experimental_panel: { openTab },
     });
     const editor = await slot.findByRole("textbox", {
-      name: "Document content",
+      name: "Содержимое документа",
     });
     expect(editor.getAttribute("contenteditable")).toBe("true");
     fireEvent.focus(editor);
@@ -1420,8 +1420,8 @@ describe("Docs nav panel", () => {
     expect(slot.queryByText("Saved")).toBeNull();
     expect(slot.container.querySelectorAll("header")).toHaveLength(1);
     expect(slot.container.querySelector("footer")).toBeNull();
-    expect(slot.getByRole("button", { name: "Ask for changes" })).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Open in tab" }));
+    expect(slot.getByRole("button", { name: "Попросить внести изменения" })).toBeTruthy();
+    fireEvent.click(slot.getByRole("button", { name: "Открыть во вкладке" }));
     expect(openTab).toHaveBeenCalledWith({
       tab: {
         id: "document",
@@ -1449,8 +1449,8 @@ describe("Docs nav panel", () => {
           ),
       },
     });
-    await slot.findByRole("textbox", { name: "Document content" });
-    fireEvent.click(slot.getByRole("button", { name: "Ask for changes" }));
+    await slot.findByRole("textbox", { name: "Содержимое документа" });
+    fireEvent.click(slot.getByRole("button", { name: "Попросить внести изменения" }));
     await waitFor(() =>
       expect(slot.inspection.composer.draft.mentions).toMatchObject([
         {
@@ -1515,21 +1515,21 @@ describe("Docs nav panel", () => {
           resolveProposal,
         },
       });
-      const steps = action === "reject" ? ["Reject", "Undo"] : ["Redo"];
+      const steps = action === "reject" ? ["Отклонить", "Отменить"] : ["Повторить"];
       for (const [index, label] of steps.entries()) {
         const button = await slot.findByRole("button", { name: label });
         expect(button.textContent).toBe("");
         expect(
-          slot.getByRole("button", { name: "Ask for changes" }),
+          slot.getByRole("button", { name: "Попросить внести изменения" }),
         ).toBeTruthy();
         resolution = deferred<void>();
         fireEvent.click(button);
         expect((await slot.findByRole("status")).textContent).toBe(
-          "Updating document…",
+          "Обновление документа…",
         );
         expect(button.hasAttribute("disabled")).toBe(true);
         expect(
-          slot.getByRole("textbox", { name: "Document content" }),
+          slot.getByRole("textbox", { name: "Содержимое документа" }),
         ).toBeTruthy();
         await act(async () => resolution.resolve());
         await slot.experimental_invalidateRpc([`doc:personal:${pending.path}`]);
@@ -1537,16 +1537,16 @@ describe("Docs nav panel", () => {
         expect(resolveProposal).toHaveBeenLastCalledWith({
           vaultId: "personal",
           path: pending.path,
-          action: label.toLowerCase(),
+          action: action === "reject" ? (index === 0 ? "reject" : "undo") : "redo",
           expectedVersion: pending.version + index,
         });
-        if (label === "Reject")
-          expect(slot.queryByRole("button", { name: "Accept" })).toBeNull();
+        if (label === "Отклонить")
+          expect(slot.queryByRole("button", { name: "Принять" })).toBeNull();
       }
-      expect(slot.getByRole("button", { name: "Accept" })).toBeTruthy();
-      expect(slot.getByRole("button", { name: "Reject" })).toBeTruthy();
+      expect(slot.getByRole("button", { name: "Принять" })).toBeTruthy();
+      expect(slot.getByRole("button", { name: "Отклонить" })).toBeTruthy();
       expect(
-        slot.getByRole("button", { name: "Ask for changes" }),
+        slot.getByRole("button", { name: "Попросить внести изменения" }),
       ).toBeTruthy();
     },
   );
@@ -1574,7 +1574,7 @@ describe("Docs nav panel", () => {
     const slot = renderDocument(pending.path, "Scoped example", {
       rpc: { readDocument },
     });
-    await slot.findByRole("textbox", { name: "Document content" });
+    await slot.findByRole("textbox", { name: "Содержимое документа" });
     const baselines = parse.mock.calls
       .map(([root]) => root)
       .filter((root) =>
@@ -1665,14 +1665,14 @@ describe("Docs nav panel", () => {
 
     await slot.findByText("Ship it.");
     expect(slot.getAllByText("Release plan")).toHaveLength(2);
-    expect(slot.getByRole("button", { name: "Ask for changes" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Попросить внести изменения" })).toBeTruthy();
     expect(slot.queryByText("plans/panel-release.md")).toBeNull();
     expect(slot.getByRole("textbox").getAttribute("contenteditable")).toBe(
       "true",
     );
     expect(slot.queryByRole("button", { name: "Add to chat" })).toBeNull();
     expect(slot.queryByRole("button", { name: "Mention in chat" })).toBeNull();
-    fireEvent.click(slot.getByRole("button", { name: "Open in Docs" }));
+    fireEvent.click(slot.getByRole("button", { name: "Открыть в Docs" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "docs",
@@ -1734,10 +1734,10 @@ describe("Docs nav panel", () => {
     const heading = slot.getByText("Updated remote plan");
     heading.textContent = "My local plan";
     fireEvent.input(heading);
-    await slot.findByRole("button", { name: "Keep mine" }, { timeout: 2_000 });
+    await slot.findByRole("button", { name: "Оставить мою версию" }, { timeout: 2_000 });
     expect(file.content).toBe("# Plan rewritten elsewhere");
     expect(slot.getByText("My local plan")).toBeTruthy();
-    fireEvent.click(slot.getByRole("button", { name: "Keep mine" }));
+    fireEvent.click(slot.getByRole("button", { name: "Оставить мою версию" }));
     await waitFor(() => expect(file.content).toBe("# My local plan"));
     expect(saveOpenedFile.mock.calls.at(-1)?.[0]).toMatchObject({
       expectedSha256: "remote-sha",
@@ -1809,8 +1809,8 @@ describe("Docs nav panel", () => {
     );
     await slot.findByText("Draft");
     preview = "Freshly typed words";
-    fireEvent.click(slot.getByLabelText("Search notes"));
-    fireEvent.change(slot.getByPlaceholderText("Search this vault"), {
+    fireEvent.click(slot.getByLabelText("Поиск заметок"));
+    fireEvent.change(slot.getByPlaceholderText("Поиск в хранилище"), {
       target: { value: "freshly" },
     });
     await slot.findByText("Draft");
@@ -1846,19 +1846,19 @@ describe("Docs nav panel", () => {
 
     await slot.findByText("Roadmap");
     expect(slot.queryByText("Server machine")).toBeNull();
-    const vault = slot.getByRole("combobox", { name: "Vault" });
+    const vault = slot.getByRole("combobox", { name: "Хранилище" });
     expect(vault.closest("aside")).toBeNull();
-    expect(slot.queryByPlaceholderText("Search this vault")).toBeNull();
-    fireEvent.click(slot.getByLabelText("Search notes"));
-    fireEvent.change(slot.getByPlaceholderText("Search this vault"), {
+    expect(slot.queryByPlaceholderText("Поиск в хранилище")).toBeNull();
+    fireEvent.click(slot.getByLabelText("Поиск заметок"));
+    fireEvent.change(slot.getByPlaceholderText("Поиск в хранилище"), {
       target: { value: "meeting" },
     });
     expect(slot.queryByText("Roadmap")).toBeNull();
     slot.getByText("Meeting");
-    fireEvent.keyDown(slot.getByPlaceholderText("Search this vault"), {
+    fireEvent.keyDown(slot.getByPlaceholderText("Поиск в хранилище"), {
       key: "Escape",
     });
-    expect(slot.queryByPlaceholderText("Search this vault")).toBeNull();
+    expect(slot.queryByPlaceholderText("Поиск в хранилище")).toBeNull();
     slot.getByText("Roadmap");
   });
 });
@@ -1976,7 +1976,7 @@ describe("Docs live documents", () => {
       "live-card.md",
       "First paragraph.\n\nSecond paragraph, by the agent.\n",
     );
-    fireEvent.click(await slot.findByRole("button", { name: "Keep mine" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Оставить мою версию" }));
     await waitFor(
       () =>
         expect(vault.content("live-card.md")).toBe(
@@ -1985,7 +1985,7 @@ describe("Docs live documents", () => {
       { timeout: 2_000 },
     );
     expect(slot.queryByRole("alert")).toBeNull();
-    expect(slot.queryByRole("button", { name: "Retry" })).toBeNull();
+    expect(slot.queryByRole("button", { name: "Повторить" })).toBeNull();
   });
 
   it("does not undo another writer's change", async () => {
@@ -1994,7 +1994,7 @@ describe("Docs live documents", () => {
       rpc: vault.rpc,
     });
     const editor = await slot.findByRole("textbox", {
-      name: "Document content",
+      name: "Содержимое документа",
     });
     await slot.findByText("Original body.");
     await vault.remoteWrite(
@@ -2038,7 +2038,7 @@ describe("Docs live documents", () => {
     );
     await slot.findByText("Body.");
     await vault.remoteWrite(slot, "moved-page.md", null);
-    await slot.findByText("This document was moved or deleted elsewhere.");
+    await slot.findByText("Документ был перемещён или удалён в другом месте.");
     const body = paragraph(slot, "Body.");
     body.textContent = "Body, typed after the move.";
     fireEvent.input(body);
@@ -2046,7 +2046,7 @@ describe("Docs live documents", () => {
       await new Promise((resolve) => setTimeout(resolve, 900));
     });
     expect(vault.content("moved-page.md")).toBeUndefined();
-    expect(slot.getByRole("button", { name: "Save a copy" })).toBeTruthy();
+    expect(slot.getByRole("button", { name: "Сохранить копию" })).toBeTruthy();
   });
 
   it("keeps the same editor when the preview link is renewed", async () => {
@@ -2073,7 +2073,7 @@ describe("Docs live documents", () => {
       },
     );
     await slot.findByText("Body.");
-    const editor = slot.getByRole("textbox", { name: "Document content" });
+    const editor = slot.getByRole("textbox", { name: "Содержимое документа" });
     expect(slot.container.querySelector("img")?.getAttribute("src")).toBe(
       "/api/v1/file-previews/first/pixel.png",
     );
@@ -2088,7 +2088,7 @@ describe("Docs live documents", () => {
         "/api/v1/file-previews/renewed/pixel.png",
       ),
     );
-    expect(slot.getByRole("textbox", { name: "Document content" })).toBe(
+    expect(slot.getByRole("textbox", { name: "Содержимое документа" })).toBe(
       editor,
     );
   });

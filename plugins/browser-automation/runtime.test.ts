@@ -138,10 +138,10 @@ describe("runtime output boundary", () => {
         endpoint,
         "1.0.0-test",
       ),
-    ).rejects.toThrow("completion");
+    ).rejects.toThrow("не сообщил о завершении");
     await expect(
       decodeOutput(frames(done, done), "/tmp/home", endpoint, "1.0.0-test"),
-    ).rejects.toThrow("after completion");
+    ).rejects.toThrow("после завершения");
     await expect(
       decodeOutput(
         frames({ type: "image", path: "/tmp/x", width: -1, height: 20 }, done),
@@ -175,6 +175,6 @@ describe("runtime output boundary", () => {
         endpoint,
         "1.0.0-test",
       ),
-    ).rejects.toThrow("escaped");
+    ).rejects.toThrow("вне папки снимков");
   });
 });

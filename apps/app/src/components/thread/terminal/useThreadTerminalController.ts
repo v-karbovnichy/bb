@@ -205,7 +205,7 @@ export function useThreadTerminalController({
       [activeSession, renameTerminal],
     );
 
-  const terminalBodyMessage = "No terminals";
+  const terminalBodyMessage = "Нет терминалов";
 
   return {
     activeSession,

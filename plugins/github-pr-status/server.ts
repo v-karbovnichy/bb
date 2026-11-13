@@ -23,13 +23,13 @@ import { createPullRequestStore } from "./store.js";
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Print machine-readable JSON output",
+  description: "Вывести машиночитаемый JSON",
 } as const;
 
 const ENVIRONMENT_POSITIONAL = [
   {
     name: "environment-id",
-    description: "Environment whose current branch has the pull request",
+    description: "Окружение, в текущей ветке которого находится пул-реквест",
     required: true,
   },
 ] as const;
@@ -118,9 +118,9 @@ function describeEnvironmentPullRequest(
     case "available":
       return describePullRequest(result.pullRequest);
     case "absent":
-      return "No pull request found";
+      return "Пул-реквест не найден";
     case "unavailable":
-      return `Pull request lookup unavailable: ${result.message}`;
+      return `Поиск пул-реквеста недоступен: ${result.message}`;
   }
 }
 
@@ -128,9 +128,9 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
   bb.settings.define({
     [SHOW_PULL_REQUEST_SETTING]: {
       type: "boolean",
-      label: "Show pull request above the composer",
+      label: "Показывать пул-реквест над полем ввода",
       description:
-        "Show the pull request's status, Mark ready and merge above the composer.",
+        "Показывать статус пул-реквеста и действия для подготовки и объединения над полем ввода.",
       default: true,
     },
   });
@@ -218,7 +218,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
     if (environment.status !== "ready" || environment.path === null) {
       return {
         kind: "done",
-        result: { outcome: "unavailable", message: "Environment is not ready" },
+        result: { outcome: "unavailable", message: "Окружение не готово" },
       };
     }
     try {
@@ -231,7 +231,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
           kind: "done",
           result: {
             outcome: "unavailable",
-            message: `${machine.name} isn't available. Start the machine and try again.`,
+            message: `${machine.name} недоступна. Запустите машину и повторите попытку.`,
           },
         };
     } catch (error) {
@@ -307,7 +307,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
           entry.load.resolve({
             result: {
               outcome: "unavailable",
-              message: "The machine returned no pull request result",
+              message: "Машина не вернула результат по пул-реквесту",
             },
             refs: null,
           });
@@ -485,14 +485,14 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
     if (environment === null) {
       throw new experimental_PluginRpcRefusal({
         code: "not_found",
-        message: `Environment not found: ${environmentId}`,
+        message: `Окружение не найдено: ${environmentId}`,
       });
     }
     if (!environment.isGitRepo) {
-      refuse("Pull request actions require a git environment");
+      refuse("Для действий с пул-реквестом требуется окружение Git");
     }
     if (environment.status !== "ready" || environment.path === null) {
-      refuse("Environment is not ready");
+      refuse("Окружение не готово");
     }
     const machine = await bb.sdk.hosts.get({ hostId: environment.hostId });
     if (
@@ -500,7 +500,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
       machine.lifecycle.phase !== "active"
     ) {
       refuse(
-        `${machine.name} isn't available, so its pull request can't be changed. Start the machine and try again.`,
+        `${machine.name} недоступна, поэтому пул-реквест нельзя изменить. Запустите машину и повторите попытку.`,
       );
     }
     const url = store.currentUrl(environmentId);
@@ -515,7 +515,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
     )
       result = await loadPullRequest(environmentId, null, true);
     if (result.outcome === "unavailable") refuse(result.message);
-    if (result.outcome === "absent") refuse("No pull request found");
+    if (result.outcome === "absent") refuse("Пул-реквест не найден");
     return {
       environment,
       path: environment.path,
@@ -544,16 +544,16 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
 
   async function markReady(environmentId: string) {
     await runAction(environmentId, { operation: "ready" }, (pullRequest) => {
-      if (pullRequest.state !== "draft") refuse("Pull request is not a draft");
+      if (pullRequest.state !== "draft") refuse("Пул-реквест не является черновиком");
     });
-    return { message: "Pull request marked ready" };
+    return { message: "Пул-реквест отмечен готовым к ревью" };
   }
 
   async function markDraft(environmentId: string) {
     await runAction(environmentId, { operation: "draft" }, (pullRequest) => {
-      if (pullRequest.state !== "open") refuse("Pull request is not open");
+      if (pullRequest.state !== "open") refuse("Пул-реквест не открыт");
     });
-    return { message: "Pull request converted to draft" };
+    return { message: "Пул-реквест преобразован в черновик" };
   }
 
   async function merge(
@@ -568,11 +568,11 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
           pullRequest.state !== "open" ||
           pullRequest.mergeability.state !== "mergeable"
         ) {
-          refuse("Pull request is not currently mergeable");
+          refuse("Сейчас пул-реквест нельзя объединить");
         }
       },
     );
-    return { message: "Pull request merge started" };
+    return { message: "Объединение пул-реквеста начато" };
   }
 
   bb.rpc.register(
@@ -598,7 +598,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
     {
       experimental_discoverable: true,
       experimental_description:
-        "GitHub pull request status and actions for bb environments.",
+        "Статус пул-реквеста GitHub и действия с ним для окружений bb.",
     },
   );
 
@@ -649,12 +649,12 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
   bb.cli.register(
     defineCli({
       name: "pull-request",
-      summary: "Inspect and manage an environment's GitHub pull request",
+      summary: "Просматривать пул-реквест GitHub окружения и управлять им",
       description:
-        "Runs gh on the environment's machine against its current branch. The machine must be online; bb does not wake it.",
+        "Запускает gh на машине окружения для текущей ветки. Машина должна быть в сети; bb не запускает её автоматически.",
       commands: {
         show: cliCommand({
-          summary: "Show an environment's pull request",
+          summary: "Показать пул-реквест окружения",
           positionals: ENVIRONMENT_POSITIONAL,
           options: { json: JSON_OPTION },
           async run(input) {
@@ -671,7 +671,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
           },
         }),
         ready: cliCommand({
-          summary: "Mark a pull request ready for review",
+          summary: "Отметить пул-реквест готовым к ревью",
           positionals: ENVIRONMENT_POSITIONAL,
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -681,7 +681,7 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
             ),
         }),
         draft: cliCommand({
-          summary: "Convert a pull request to draft",
+          summary: "Преобразовать пул-реквест в черновик",
           positionals: ENVIRONMENT_POSITIONAL,
           options: { json: JSON_OPTION },
           run: (input) =>
@@ -691,14 +691,14 @@ export default function githubPrStatusPlugin(bb: BbPluginApi): void {
             ),
         }),
         merge: cliCommand({
-          summary: "Merge a pull request",
+          summary: "Объединить пул-реквест",
           positionals: ENVIRONMENT_POSITIONAL,
           options: {
             method: {
               type: "enum",
               values: ["merge", "squash", "rebase"],
               default: "merge",
-              description: "Merge method",
+              description: "Способ объединения",
             },
             json: JSON_OPTION,
           },

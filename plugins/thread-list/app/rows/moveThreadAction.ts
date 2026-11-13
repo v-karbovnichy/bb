@@ -66,7 +66,7 @@ export function useMoveDestinations():
           legacyEntityAnchor: "sections",
           hasPinnedSection: true,
         }).flatMap<ThreadSectionMoveDestination>((id) => {
-          if (id === "threads") return [{ label: "Threads", sectionId: null }];
+          if (id === "threads") return [{ label: "Чаты", sectionId: null }];
           const section = sections.find(
             (candidate) =>
               buildSidebarEntitySectionId("section", candidate.id) === id,
@@ -87,7 +87,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
   readonly ThreadSectionMoveDestination[] | null
 > = {
   id: "move",
-  title: "Move to section",
+  title: "Переместить в раздел",
   icon: "SectionMove",
   group: experimental_THREAD_ACTION_GROUPS.organize,
   order: 50,
@@ -106,7 +106,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
       return null;
     }
     return {
-      label: "Move to section",
+      label: "Переместить в раздел",
       icon: "SectionMove",
       choices: {
         items: destinations.map((destination) => ({
@@ -126,7 +126,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
         if (thread.pinnedAt !== null) {
           if (thread.sectionId === sectionId) {
             void sdk.threads.unpin({ threadId }).catch(() => {
-              toast.error("Failed to unpin thread.");
+              toast.error("Не удалось открепить чат.");
             });
             return;
           }
@@ -134,13 +134,13 @@ export const moveThreadAction: PluginThreadActionRegistration<
             sdk.threads.unpin({ threadId }),
             sdk.threads.update({ threadId, sectionId }),
           ]).catch(() => {
-            toast.error("Failed to unpin and move thread.");
+            toast.error("Не удалось открепить и переместить чат.");
           });
           return;
         }
         if (thread.sectionId === sectionId) return;
         void sdk.threads.update({ threadId, sectionId }).catch(() => {
-          toast.error("Failed to move thread.");
+          toast.error("Не удалось переместить чат.");
         });
       },
     };
@@ -155,7 +155,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
           thread.sectionId === sectionId,
       );
     return {
-      label: "Move to section",
+      label: "Переместить в раздел",
       icon: "SectionMove",
       choices: {
         items: destinations.map((destination) => ({
@@ -173,7 +173,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
         const { sectionId } = destination;
         const roots = await selectedRoots(sdk, threads).catch(() => null);
         if (roots === null) {
-          toast.error("Failed to move threads.");
+          toast.error("Не удалось переместить чаты.");
           return;
         }
         const results = await Promise.allSettled(
@@ -196,7 +196,7 @@ export const moveThreadAction: PluginThreadActionRegistration<
           }),
         );
         if (results.some((result) => result.status === "rejected")) {
-          toast.error("Failed to move threads.");
+          toast.error("Не удалось переместить чаты.");
         }
       },
     };

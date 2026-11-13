@@ -29,29 +29,29 @@ function unwrapShellCommand(command: string): string {
 }
 
 export const AGENT_MESSAGE_PRESENTATION: DeltaPresentation = {
-  label: { pending: "Responding", completed: "Responded" },
+  label: { pending: "Ответ", completed: "Ответ готов" },
   icon: { glyph: "MessageSquare" },
 };
 
 export const PLAN_PRESENTATION: DeltaPresentation = {
-  label: { pending: "Writing plan", completed: "Wrote plan" },
+  label: { pending: "Составление плана", completed: "План составлен" },
   icon: { glyph: "ListTodo" },
 };
 
 export const IMAGE_VIEW_PRESENTATION: DeltaPresentation = {
-  label: { pending: "Viewing image", completed: "Viewed image" },
+  label: { pending: "Просмотр изображения", completed: "Изображение просмотрено" },
   icon: { glyph: "Eye" },
 };
 
 export const IMAGE_GENERATION_PRESENTATION: DeltaPresentation = {
-  label: { pending: "Generating image", completed: "Generated image" },
+  label: { pending: "Создание изображения", completed: "Изображение создано" },
   icon: { glyph: "Palette" },
 };
 
 export function commandPresentation(command: string): DeltaPresentation {
   return withTitle(
     {
-      label: { pending: "Running command", completed: "Ran command" },
+      label: { pending: "Выполнение команды", completed: "Команда выполнена" },
       icon: { glyph: "Terminal" },
     },
     presentationTitle(unwrapShellCommand(command)),
@@ -66,8 +66,8 @@ export function fileChangePresentation(
   return withTitle(
     {
       label: {
-        pending: plural ? "Editing files" : "Editing file",
-        completed: plural ? "Edited files" : "Edited file",
+        pending: plural ? "Изменение файлов" : "Изменение файла",
+        completed: plural ? "Файлы изменены" : "Файл изменён",
       },
       icon: { glyph: "EditFile" },
     },
@@ -102,7 +102,7 @@ export function planStepsPresentation(args: {
   const headline = active?.step ?? args.explanation ?? undefined;
   return withTitle(
     {
-      label: { pending: "Updating plan", completed: "Updated plan" },
+      label: { pending: "Обновление плана", completed: "План обновлён" },
       icon: { glyph: "ListTodo" },
     },
     headline === undefined ? undefined : presentationTitle(headline),
@@ -118,8 +118,8 @@ function nodeReplPresentation(
   if (tool === "js_reset") {
     return {
       label: {
-        pending: "Resetting JavaScript session",
-        completed: "Reset JavaScript session",
+        pending: "Сброс сеанса JavaScript",
+        completed: "Сеанс JavaScript сброшен",
       },
       icon: { glyph: "Code" },
     };
@@ -136,7 +136,7 @@ function nodeReplPresentation(
       : undefined;
   return withTitle(
     {
-      label: { pending: "Running JavaScript", completed: "Ran JavaScript" },
+      label: { pending: "Выполнение JavaScript", completed: "JavaScript выполнен" },
       icon: { glyph: "Code" },
     },
     title,
@@ -162,26 +162,26 @@ export function macOsPermissionPresentation(
 ): DeltaPresentation {
   const presentation: DeltaPresentation = {
     label: {
-      pending: "Requesting macOS permissions",
-      completed: "Requested macOS permissions",
+      pending: "Запрос разрешений macOS",
+      completed: "Разрешения macOS запрошены",
     },
     icon: { glyph: "Lock" },
   };
   const detail =
     requested.length === 0
-      ? "No macOS capability was requested."
-      : `Requested: ${requested.join(", ")}. bb cannot grant macOS permissions; the approval covers the command only.`;
+      ? "Разрешения macOS не запрашивались."
+      : `Запрошено: ${requested.join(", ")}. bb не может выдать разрешения macOS; подтверждение относится только к команде.`;
   return { ...presentation, detail: presentationDetail(detail) };
 }
 
 const COLLAB_AGENT_LABELS: Readonly<
   Record<string, DeltaPresentation["label"]>
 > = {
-  spawnAgent: { pending: "Spawning agent", completed: "Spawned agent" },
-  wait: { pending: "Waiting for agents", completed: "Waited for agents" },
-  resumeAgent: { pending: "Resuming agent", completed: "Resumed agent" },
-  sendInput: { pending: "Messaging agent", completed: "Messaged agent" },
-  closeAgent: { pending: "Closing agent", completed: "Closed agent" },
+  spawnAgent: { pending: "Запуск агента", completed: "Агент запущен" },
+  wait: { pending: "Ожидание агентов", completed: "Ожидание агентов завершено" },
+  resumeAgent: { pending: "Возобновление агента", completed: "Агент возобновлён" },
+  sendInput: { pending: "Отправка сообщения агенту", completed: "Сообщение агенту отправлено" },
+  closeAgent: { pending: "Завершение агента", completed: "Агент завершён" },
 };
 
 export function collabAgentPresentation(args: {
@@ -189,8 +189,8 @@ export function collabAgentPresentation(args: {
   prompt: string | null;
 }): DeltaPresentation {
   const label = COLLAB_AGENT_LABELS[args.tool] ?? {
-    pending: `Running ${args.tool}`,
-    completed: `Ran ${args.tool}`,
+    pending: `Выполнение ${args.tool}`,
+    completed: `Выполнено ${args.tool}`,
   };
   return withTitle(
     { label, icon: { glyph: "UserRound" } },
@@ -201,7 +201,7 @@ export function collabAgentPresentation(args: {
 export function subAgentPresentation(agentPath: string): DeltaPresentation {
   return withTitle(
     {
-      label: { pending: "Running agent", completed: "Agent finished" },
+      label: { pending: "Работа агента", completed: "Агент завершил работу" },
       icon: { glyph: "UserRound" },
     },
     presentationTitle(agentPath),

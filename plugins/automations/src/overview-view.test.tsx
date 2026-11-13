@@ -110,7 +110,7 @@ describe("AutomationOverviewView", () => {
         />,
       );
 
-      expect(screen.queryByLabelText("Failed") !== null).toBe(shown);
+      expect(screen.queryByLabelText("Ошибка") !== null).toBe(shown);
       expect(
         screen.queryByText("Target thread thr_target was archived") !== null,
       ).toBe(shown);
@@ -230,42 +230,42 @@ describe("AutomationOverviewView", () => {
     expect(screen.getByText("Needs a prompt")).toBeTruthy();
     expect(screen.getByText("Unreadable automation")).toBeTruthy();
     expect(screen.getByText("Nightly digest")).toBeTruthy();
-    expect(screen.getAllByText("9AM")).toHaveLength(2);
+    expect(screen.getAllByText(/09:00/)).toHaveLength(2);
 
     fireEvent.pointerDown(
       screen.getByRole("button", { name: "Needs a prompt actions" }),
     );
     expect(
-      (screen.getByRole("menuitem", { name: "Run now" }) as HTMLElement)
+      (screen.getByRole("menuitem", { name: "Запустить сейчас" }) as HTMLElement)
         .ariaDisabled,
     ).toBe("true");
-    expect(screen.getByRole("menuitem", { name: "Delete" })).toBeTruthy();
+    expect(screen.getByRole("menuitem", { name: "Удалить" })).toBeTruthy();
     fireEvent.keyDown(document, { key: "Escape" });
 
-    const search = screen.getByPlaceholderText("Search automations");
-    fireEvent.change(search, { target: { value: "Prompt required" } });
+    const search = screen.getByPlaceholderText("Поиск автоматизаций");
+    fireEvent.change(search, { target: { value: "Нужен запрос" } });
     expect(screen.getByText("Needs a prompt")).toBeTruthy();
     expect(screen.queryByText("Unreadable automation")).toBeNull();
     expect(screen.queryByText("Nightly digest")).toBeNull();
 
-    fireEvent.change(search, { target: { value: "Invalid data" } });
+    fireEvent.change(search, { target: { value: "Некорректные данные" } });
     expect(screen.queryByText("Needs a prompt")).toBeNull();
     expect(screen.getByText("Unreadable automation")).toBeTruthy();
 
     fireEvent.change(search, { target: { value: "" } });
     fireEvent.pointerDown(screen.getByRole("button", { name: "Filters" }));
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Active" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Активные" }));
     expect(screen.getByText("Needs a prompt")).toBeTruthy();
     expect(screen.queryByText("Unreadable automation")).toBeNull();
     expect(screen.getByText("Nightly digest")).toBeTruthy();
 
     fireEvent.keyDown(document, { key: "Escape" });
-    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Изменить" }));
     expect(onOpenDetail).toHaveBeenCalledWith(
       { projectId: "proj_1", automationId: "auto_repair" },
       { editing: true },
     );
-    expect(screen.getAllByRole("button", { name: "Edit" })).toHaveLength(1);
+    expect(screen.getAllByRole("button", { name: "Изменить" })).toHaveLength(1);
   });
 
   it("runs an automation from its row without opening the detail", async () => {
@@ -295,14 +295,14 @@ describe("AutomationOverviewView", () => {
     const actions = () =>
       screen.getByRole("button", { name: "Nightly digest actions" });
     const enabledSwitch = screen.getByRole("switch", {
-      name: "Disable Nightly digest",
+      name: "Отключить Nightly digest",
     });
     expect(enabledSwitch.compareDocumentPosition(actions())).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
     expect(actions().parentElement?.className).not.toContain("opacity-0");
     fireEvent.pointerDown(actions());
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Run now" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Запустить сейчас" }));
 
     expect(onRunNow).toHaveBeenCalledWith({
       projectId: "proj_1",
@@ -315,7 +315,7 @@ describe("AutomationOverviewView", () => {
       resolveRun?.();
     });
     expect(actions()).toHaveProperty("disabled", false);
-    expect(screen.queryByRole("menuitem", { name: "Run now" })).toBeNull();
+    expect(screen.queryByRole("menuitem", { name: "Запустить сейчас" })).toBeNull();
   });
 
   it("uses the shared row menu to request deletion", async () => {
@@ -341,8 +341,8 @@ describe("AutomationOverviewView", () => {
     );
     expect(
       screen.getAllByRole("menuitem").map((item) => item.textContent),
-    ).toEqual(["Run now", "Delete"]);
-    fireEvent.click(screen.getByRole("menuitem", { name: "Delete" }));
+    ).toEqual(["Запустить сейчас", "Удалить"]);
+    fireEvent.click(screen.getByRole("menuitem", { name: "Удалить" }));
 
     expect(onDelete).toHaveBeenCalledWith(
       { projectId: "proj_1", automationId: "auto_1" },
@@ -381,36 +381,36 @@ describe("AutomationOverviewView", () => {
     ).toBe("true");
     expect(rowTitles()).toEqual(["Nightly digest"]);
 
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Paused" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Приостановленные" }));
     expect(
       screen.getByRole("menuitemcheckbox", { name: "bb" }).ariaChecked,
     ).toBe("true");
     expect(
-      screen.getByRole("menuitemcheckbox", { name: "Paused" }).ariaChecked,
+      screen.getByRole("menuitemcheckbox", { name: "Приостановленные" }).ariaChecked,
     ).toBe("true");
     expect(
-      screen.getByRole("menuitemcheckbox", { name: "Active" }).ariaChecked,
+      screen.getByRole("menuitemcheckbox", { name: "Активные" }).ariaChecked,
     ).toBe("false");
     expect(rowTitles()).toEqual([]);
     expect(
-      screen.getByText("No automations match these filters."),
+      screen.getByText("Нет автоматизаций, соответствующих фильтрам."),
     ).toBeTruthy();
 
     fireEvent.keyDown(document, { key: "Escape" });
     expect(
       screen.getByRole("button", {
-        name: "Filters: Projects: bb; Status: Paused",
+        name: "Filters: Проекты: bb; Статус: Приостановленные",
       }),
     ).toBeTruthy();
 
     fireEvent.pointerDown(screen.getByRole("button", { name: /^Filters/ }));
-    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Paused" }));
+    fireEvent.click(screen.getByRole("menuitemcheckbox", { name: "Приостановленные" }));
     expect(
       screen.getByRole("menuitemcheckbox", { name: "bb" }).ariaChecked,
     ).toBe("true");
     expect(rowTitles()).toEqual(["Nightly digest"]);
     expect(
-      screen.queryByText("No automations match these filters."),
+      screen.queryByText("Нет автоматизаций, соответствующих фильтрам."),
     ).toBeNull();
   });
 
@@ -430,9 +430,9 @@ describe("AutomationOverviewView", () => {
       />,
     );
 
-    const projectIcon = screen.getByRole("img", { name: "Project" });
-    const scheduleIcon = screen.getByRole("img", { name: "Schedule" });
-    const nextRunIcon = screen.getByRole("img", { name: "Next run" });
+    const projectIcon = screen.getByRole("img", { name: "Проект" });
+    const scheduleIcon = screen.getByRole("img", { name: "Расписание" });
+    const nextRunIcon = screen.getByRole("img", { name: "Следующий запуск" });
 
     expect(projectIcon.tabIndex).toBe(0);
     expect(scheduleIcon.tabIndex).toBe(0);
@@ -449,7 +449,7 @@ describe("AutomationOverviewView", () => {
     expect(screen.queryByText("Next")).toBeNull();
 
     focusWithKeyboard(nextRunIcon);
-    expect((await screen.findByRole("tooltip")).textContent).toBe("Next run");
+    expect((await screen.findByRole("tooltip")).textContent).toBe("Следующий запуск");
   });
 
   it("shows Personal as project membership and keeps it searchable", async () => {
@@ -472,17 +472,17 @@ describe("AutomationOverviewView", () => {
         onModeChange={() => {}}
       />,
     );
-    const icon = screen.getByRole("img", { name: "Project: Personal" });
+    const icon = screen.getByRole("img", { name: "Проект: Personal" });
     expect(icon.querySelector('[data-icon="Folder"]')).not.toBeNull();
     expect(screen.queryByText("Local")).toBeNull();
     expect(screen.getByText("Personal")).toBeTruthy();
-    fireEvent.change(screen.getByPlaceholderText("Search automations"), {
+    fireEvent.change(screen.getByPlaceholderText("Поиск автоматизаций"), {
       target: { value: "Personal" },
     });
     expect(screen.getByText("Nightly digest")).toBeTruthy();
     focusWithKeyboard(icon);
     expect((await screen.findByRole("tooltip")).textContent).toBe(
-      "Project: Personal",
+      "Проект: Personal",
     );
   });
 
@@ -507,7 +507,7 @@ describe("AutomationOverviewView", () => {
     );
 
     expect(
-      container.querySelector('[aria-label="Project"] [data-icon="Folder"]'),
+      container.querySelector('[aria-label="Проект"] [data-icon="Folder"]'),
     ).toBeTruthy();
     expect(
       container.querySelector(

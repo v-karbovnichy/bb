@@ -366,7 +366,7 @@ describe("PluginDetail official catalog lifecycle", () => {
     );
 
     expect(screen.getByRole("heading", { name: "GitHub" })).toBeTruthy();
-    expect(screen.getAllByText("BB Official").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Официальный BB").length).toBeGreaterThan(0);
     expect(screen.queryByText("Developer tools")).toBeNull();
     expect(
       screen.getByText("Browse GitHub issues and pull requests in BB."),
@@ -374,7 +374,7 @@ describe("PluginDetail official catalog lifecycle", () => {
     expect(screen.queryByText("Capabilities")).toBeNull();
     expect(container.querySelector('[data-icon="Github"]')).not.toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Install GitHub" }));
+    fireEvent.click(screen.getByRole("button", { name: "Установить GitHub" }));
     expect(onInstall).toHaveBeenCalledWith(GITHUB_CATALOG_ENTRY);
   });
 
@@ -413,14 +413,14 @@ describe("PluginDetail official catalog lifecycle", () => {
     );
 
     const screenshot = screen.getByRole("img", {
-      name: "GitHub screenshot 1",
+      name: "Скриншот 1 плагина GitHub",
     });
     expect(screenshot.getAttribute("src")).toBe(
       "https://images.example/plugin.png",
     );
     expect(screenshot.getAttribute("referrerpolicy")).toBe("no-referrer");
     expect(screenshot.getAttribute("loading")).toBe("lazy");
-    expect(screen.getByText("Listed")).toBeTruthy();
+    expect(screen.getByText("Опубликован")).toBeTruthy();
     expect(container.textContent).not.toContain("Last updated");
   });
 
@@ -441,13 +441,13 @@ describe("PluginDetail official catalog lifecycle", () => {
     );
 
     const link = screen.getByRole("link", {
-      name: "Browse Code & Reviews plugins",
+      name: "Смотреть плагины категории Code & Reviews",
     });
     expect(link.getAttribute("href")).toBe(
       "/plugins?shelf=category%3Acode-and-reviews",
     );
     expect(screen.queryByText("Marketplace")).toBeNull();
-    expect(screen.queryByRole("heading", { name: "Details" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Сведения" })).toBeNull();
   });
 
   it("explains why an incompatible official plugin cannot be installed", () => {
@@ -473,19 +473,19 @@ describe("PluginDetail official catalog lifecycle", () => {
 
     expect(screen.queryByRole("alert")).toBeNull();
     const compatibilityStatus = screen
-      .getByText("Update bb to install this plugin")
+      .getByText("Обновите bb для установки плагина")
       .closest("div[class*='bg-surface-recessed']");
     expect(compatibilityStatus).not.toBeNull();
     if (compatibilityStatus === null) return;
     expect(compatibilityStatus.textContent).toContain(
-      "Update bb to install this plugin",
+      "Обновите bb для установки плагина",
     );
     expect(compatibilityStatus.textContent).toContain(
       "Requires bb 0.20 or newer.",
     );
     expect(
       screen
-        .getByRole("button", { name: "Install GitHub" })
+        .getByRole("button", { name: "Установить GitHub" })
         .getAttribute("aria-disabled"),
     ).toBe("true");
   });
@@ -498,13 +498,13 @@ describe("PluginDetail official catalog lifecycle", () => {
       catalogEntries: [GITHUB_CATALOG_ENTRY],
     });
 
-    expect(screen.getAllByText("BB Official").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Официальный BB").length).toBeGreaterThan(0);
     expect(screen.queryByText("Developer tools")).toBeNull();
     expect(
       screen.queryByRole("button", { name: "Uninstall GitHub" }),
     ).toBeNull();
 
-    expect(screen.getByRole("heading", { name: "Details" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Сведения" })).toBeTruthy();
     expect(
       screen.getByText("Browse GitHub issues and pull requests in BB."),
     ).toBeTruthy();
@@ -518,15 +518,15 @@ describe("PluginDetail official catalog lifecycle", () => {
     expect(
       screen.queryByRole("button", { name: /Copy plugin path/u }),
     ).toBeNull();
-    expect(screen.getByText("Updates with bb")).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Check now" })).toBeNull();
+    expect(screen.getByText("Обновляется вместе с bb")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Проверить сейчас" })).toBeNull();
 
     expect(container.querySelector('[data-icon="Github"]')).not.toBeNull();
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
-    fireEvent.click(await screen.findByRole("menuitem", { name: "Uninstall" }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Удалить" }));
     expect(onDelete).toHaveBeenCalledWith(GITHUB_PLUGIN);
   });
 
@@ -547,9 +547,9 @@ describe("PluginDetail official catalog lifecycle", () => {
 
     const version = screen.getByText(GITHUB_PLUGIN.version);
     const update = screen.getByRole("button", {
-      name: "Update GitHub to 1.5.0",
+      name: "Обновить GitHub до 1.5.0",
     });
-    const activation = screen.getByRole("switch", { name: "Disable GitHub" });
+    const activation = screen.getByRole("switch", { name: "Отключить GitHub" });
     const path = screen.queryByText("~/.bb/plugins/github");
     const releaseSection = document.querySelector(
       '[data-resource-detail-section="release"]',
@@ -561,17 +561,17 @@ describe("PluginDetail official catalog lifecycle", () => {
     expect(path).toBeNull();
     expect(version.closest("dl")).not.toBeNull();
     expect(update.closest("dl")).toBeNull();
-    const updateLabel = screen.getByText("Update", { selector: "p" });
+    const updateLabel = screen.getByText("Обновление", { selector: "p" });
     const updateRow = updateLabel.parentElement;
     expect(updateRow).not.toBeNull();
     if (updateRow === null) return;
     const updateDetails = updateRow.querySelector('[role="status"]');
     expect(updateRow.closest("dl")).toBeNull();
     expect(updateRow?.textContent).toContain("1.5.0");
-    expect(updateRow?.textContent).toContain("Available");
+    expect(updateRow?.textContent).toContain("Доступно");
     expect(updateRow?.contains(update)).toBe(false);
     expect(updateDetails?.textContent).toContain("1.5.0");
-    const versionLabel = screen.getByText("Version", { selector: "dt" });
+    const versionLabel = screen.getByText("Версия", { selector: "dt" });
     expect(releaseSection?.contains(versionLabel)).toBe(true);
   });
 
@@ -592,9 +592,9 @@ describe("PluginDetail official catalog lifecycle", () => {
       },
     );
 
-    expect(screen.getByText("Installed", { selector: "dt" })).toBeTruthy();
-    expect(screen.getByText("Install date unavailable")).toBeTruthy();
-    expect(screen.queryByText("Updates with bb")).toBeNull();
+    expect(screen.getByText("Установлен", { selector: "dt" })).toBeTruthy();
+    expect(screen.getByText("Дата установки недоступна")).toBeTruthy();
+    expect(screen.queryByText("Обновляется вместе с bb")).toBeNull();
   });
 
   it("loads the install date for a local plugin", async () => {
@@ -643,8 +643,8 @@ describe("PluginDetail official catalog lifecycle", () => {
           detail: "The plugin failed to load.",
         },
       },
-      expected: "Update failed",
-      actionName: "Retry update to 1.5.0",
+      expected: "Ошибка обновления",
+      actionName: "Повторить обновление до 1.5.0",
     },
     {
       state: "blocked",
@@ -654,7 +654,7 @@ describe("PluginDetail official catalog lifecycle", () => {
         blockedLabel: "2.0.0",
         blockedReasons: ["Requires bb 0.20 or newer."],
       },
-      expected: "Update blocked",
+      expected: "Обновление заблокировано",
       actionName: null,
     },
   ])(
@@ -669,13 +669,13 @@ describe("PluginDetail official catalog lifecycle", () => {
         updateState,
       });
 
-      const updateLabel = screen.getByText("Update", { selector: "p" });
+      const updateLabel = screen.getByText("Обновление", { selector: "p" });
       const updateRow = updateLabel.parentElement;
       const status = screen.getByRole("status", { name: expected });
       expect(updateRow?.contains(status)).toBe(true);
       expect(screen.queryByText(expected)).toBeNull();
       expect(
-        screen.getByText("Version", { selector: "dt" }).parentElement,
+        screen.getByText("Версия", { selector: "dt" }).parentElement,
       ).not.toBe(updateRow);
       const action =
         actionName === null
@@ -720,16 +720,16 @@ describe("PluginDetail official catalog lifecycle", () => {
     };
     renderPluginDetail(builtinPlugin, { onDelete });
 
-    expect(screen.getAllByText("BB Official").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Официальный BB").length).toBeGreaterThan(0);
     expect(
-      screen.getByRole("switch", { name: "Disable Automations" }),
+      screen.getByRole("switch", { name: "Отключить Automations" }),
     ).toBeTruthy();
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "Automations actions" }),
+      screen.getByRole("button", { name: "Действия с Automations" }),
     );
     const uninstall = await screen.findByRole("menuitem", {
-      name: "Uninstall",
+      name: "Удалить",
     });
     expect(uninstall.getAttribute("aria-disabled")).toBe("true");
     fireEvent.click(uninstall);
@@ -737,7 +737,7 @@ describe("PluginDetail official catalog lifecycle", () => {
     fireEvent.pointerMove(uninstall);
     expect(
       await screen.findAllByText(
-        "Included with BB; disable this plugin instead.",
+        "Плагин входит в BB. Его можно отключить.",
       ),
     ).not.toHaveLength(0);
   });
@@ -763,10 +763,10 @@ describe("PluginDetail official catalog lifecycle", () => {
     );
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Copy marketplace link" }),
+      await screen.findByRole("menuitem", { name: "Скопировать ссылку на каталог" }),
     );
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(
@@ -786,10 +786,10 @@ describe("PluginDetail official catalog lifecycle", () => {
     });
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Copy marketplace link" }),
+      await screen.findByRole("menuitem", { name: "Скопировать ссылку на каталог" }),
     );
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(
@@ -805,11 +805,11 @@ describe("PluginDetail official catalog lifecycle", () => {
     });
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
-    await screen.findByRole("menuitem", { name: "Uninstall" });
+    await screen.findByRole("menuitem", { name: "Удалить" });
     expect(
-      screen.queryByRole("menuitem", { name: "Copy marketplace link" }),
+      screen.queryByRole("menuitem", { name: "Скопировать ссылку на каталог" }),
     ).toBeNull();
   });
 });
@@ -817,28 +817,28 @@ describe("PluginDetail official catalog lifecycle", () => {
 describe("BB Official plugin detail routing", () => {
   it.each([
     {
-      action: "Close other tabs",
+      action: "Закрыть другие вкладки",
       target: "memory",
       active: "memory",
       remaining: ["memory"],
       nextActive: "memory",
     },
     {
-      action: "Close other tabs",
+      action: "Закрыть другие вкладки",
       target: "github",
       active: "memory",
       remaining: ["github"],
       nextActive: "github",
     },
     {
-      action: "Close tabs to the right",
+      action: "Закрыть вкладки справа",
       target: "automations",
       active: "memory",
       remaining: ["github", "automations"],
       nextActive: "automations",
     },
     {
-      action: "Close tabs to the right",
+      action: "Закрыть вкладки справа",
       target: "automations",
       active: "github",
       remaining: ["github", "automations"],
@@ -903,7 +903,7 @@ describe("BB Official plugin detail routing", () => {
       for (const entry of entries) {
         expect(
           screen.queryByRole("button", {
-            name: `Close ${entry.displayName}`,
+            name: `Закрыть ${entry.displayName}`,
           }) !== null,
         ).toBe(remaining.includes(entry.entryId));
       }
@@ -977,18 +977,18 @@ describe("BB Official plugin detail routing", () => {
       expect(header).not.toBeNull();
       if (!header) throw new Error("Plugin header missing");
       const authorLink = await within(header).findByRole("link", {
-        name: "BB Official",
+        name: "Официальный BB",
       });
       expect(within(header).queryByText(/^By/u)).toBeNull();
-      expect(within(header).getAllByText("BB Official")).toHaveLength(1);
+      expect(within(header).getAllByText("Официальный BB")).toHaveLength(1);
       expect(
         within(header).getByRole("img", {
-          name: "BB Official's GitHub avatar",
+          name: "Аватар Официальный BB на GitHub",
         }),
       ).toBeTruthy();
       fireEvent.click(authorLink);
       expect(
-        await screen.findByRole("heading", { name: /^BB Official/u, level: 1 }),
+        await screen.findByRole("heading", { name: /^Официальный BB/u, level: 1 }),
       ).toBeTruthy();
       if (compact) {
         await waitFor(() =>
@@ -1000,59 +1000,59 @@ describe("BB Official plugin detail routing", () => {
         fireEvent.click(
           (
             await screen.findAllByRole("button", {
-              name: "Open Automations details",
+              name: "Открыть сведения о Automations",
             })
           )[0]!,
         );
         expect(
-          await screen.findByRole("button", { name: "Close Automations" }),
+          await screen.findByRole("button", { name: "Закрыть Automations" }),
         ).toBeTruthy();
         expect(
-          screen.queryByRole("button", { name: "Close GitHub" }),
+          screen.queryByRole("button", { name: "Закрыть GitHub" }),
         ).toBeNull();
-        fireEvent.click(screen.getByRole("button", { name: "Previous tab" }));
+        fireEvent.click(screen.getByRole("button", { name: "Предыдущая вкладка" }));
         expect(
           await screen.findByRole("heading", { name: "GitHub", level: 1 }),
         ).toBeTruthy();
         expect(
-          screen.getByRole("button", { name: "Close GitHub" }),
+          screen.getByRole("button", { name: "Закрыть GitHub" }),
         ).toBeTruthy();
         expect(
-          screen.queryByRole("button", { name: "Close Automations" }),
+          screen.queryByRole("button", { name: "Закрыть Automations" }),
         ).toBeNull();
         return;
       }
-      expect(screen.getByRole("button", { name: "Close GitHub" })).toBeTruthy();
+      expect(screen.getByRole("button", { name: "Закрыть GitHub" })).toBeTruthy();
       expect(screen.getByRole("heading", { name: "GitHub", level: 1 })).toBe(
         title,
       );
       fireEvent.click(
         (
           await screen.findAllByRole("button", {
-            name: "Open Automations details",
+            name: "Открыть сведения о Automations",
           })
         )[0]!,
       );
       expect(
-        await screen.findByRole("button", { name: "Close Automations" }),
+        await screen.findByRole("button", { name: "Закрыть Automations" }),
       ).toBeTruthy();
-      expect(screen.getByRole("button", { name: "Close GitHub" })).toBeTruthy();
-      fireEvent.click(screen.getByRole("link", { name: "Browse plugins" }));
+      expect(screen.getByRole("button", { name: "Закрыть GitHub" })).toBeTruthy();
+      fireEvent.click(screen.getByRole("link", { name: "Обзор плагинов" }));
       await waitFor(() =>
         expect(screen.getByTestId("location").textContent).toBe("/plugins"),
       );
       expect(
-        screen.getByRole("button", { name: "Close Automations" }),
+        screen.getByRole("button", { name: "Закрыть Automations" }),
       ).toBeTruthy();
-      expect(screen.getByRole("button", { name: "Close GitHub" })).toBeTruthy();
+      expect(screen.getByRole("button", { name: "Закрыть GitHub" })).toBeTruthy();
       fireEvent.click(
-        screen.getByRole("button", { name: "Close Automations" }),
+        screen.getByRole("button", { name: "Закрыть Automations" }),
       );
       expect(
         await screen.findByRole("heading", { name: "GitHub", level: 1 }),
       ).toBeTruthy();
       expect(
-        screen.queryByRole("button", { name: "Close Automations" }),
+        screen.queryByRole("button", { name: "Закрыть Automations" }),
       ).toBeNull();
     },
   );
@@ -1118,7 +1118,7 @@ describe("BB Official plugin detail routing", () => {
     );
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Open Canvas details" }),
+      await screen.findByRole("button", { name: "Открыть сведения о Canvas" }),
     );
 
     await waitFor(() => {
@@ -1131,15 +1131,15 @@ describe("BB Official plugin detail routing", () => {
         "Draw diagrams on a shared tldraw canvas.",
       );
     });
-    expect(screen.getByText("Another plugin uses this ID")).toBeTruthy();
-    const installButtons = screen.getAllByRole("button", { name: /Install/u });
+    expect(screen.getByText("Другой плагин использует этот ID")).toBeTruthy();
+    const installButtons = screen.getAllByRole("button", { name: /Установить/u });
     expect(installButtons).toHaveLength(2);
     for (const button of installButtons) {
       expect(button.getAttribute("aria-disabled")).toBe("true");
     }
 
     fireEvent.click(
-      screen.getByRole("button", { name: "View installed plugin" }),
+      screen.getByRole("button", { name: "Показать установленный плагин" }),
     );
     await waitFor(() => {
       expect(screen.getByTestId("location").textContent).toBe(
@@ -1151,9 +1151,9 @@ describe("BB Official plugin detail routing", () => {
         "Edit .mdx files beside the chat.",
       );
     });
-    expect(screen.getByText("Also published in BB Community")).toBeTruthy();
+    expect(screen.getByText("Также опубликован в BB Community")).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "View listing" }));
+    fireEvent.click(screen.getByRole("button", { name: "Открыть запись в каталоге" }));
     await waitFor(() => {
       expect(screen.getByTestId("location").textContent).toBe(
         "/plugins/canvas?q=canvas&listing=bb-community",
@@ -1379,10 +1379,10 @@ describe("BB Official plugin detail routing", () => {
 
     expect(await screen.findByRole("heading", { name: "GitHub" })).toBeTruthy();
     fireEvent.click(
-      screen.getAllByRole("button", { name: "Install GitHub" }).at(-1)!,
+      screen.getAllByRole("button", { name: "Установить GitHub" }).at(-1)!,
     );
     expect(
-      await screen.findByRole("heading", { name: "Install GitHub?" }),
+      await screen.findByRole("heading", { name: "Установить GitHub?" }),
     ).toBeTruthy();
     expect(screen.getByTestId("full-trust-warning")).toBeTruthy();
   });
@@ -1393,8 +1393,8 @@ describe("BB Official plugin detail routing", () => {
       const installed = mode === "installed";
       const pluginName = installed ? "Local GitHub" : "GitHub";
       const searchLabel = installed
-        ? "Search installed plugins"
-        : "Search plugins";
+        ? "Поиск установленных плагинов"
+        : "Поиск плагинов";
       const catalogEntry = {
         ...GITHUB_CATALOG_ENTRY,
         installed,
@@ -1452,8 +1452,8 @@ describe("BB Official plugin detail routing", () => {
 
       const card = await screen.findByRole("button", {
         name: installed
-          ? `${pluginName} plugin details`
-          : "Open GitHub details",
+          ? `Сведения о плагине ${pluginName}`
+          : "Открыть сведения о GitHub",
       });
       const panels = Array.from(document.querySelectorAll("[data-panel]"));
       expect(panels).toHaveLength(2);
@@ -1466,10 +1466,10 @@ describe("BB Official plugin detail routing", () => {
       card.focus();
       fireEvent.click(card);
       expect(
-        await screen.findByRole("button", { name: `Close ${pluginName}` }),
+        await screen.findByRole("button", { name: `Закрыть ${pluginName}` }),
       ).toBeTruthy();
       expect(screen.getByRole("textbox", { name: searchLabel })).toBeTruthy();
-      expect(screen.getAllByRole("button", { name: /^Close /u })).toHaveLength(
+      expect(screen.getAllByRole("button", { name: /^Закрыть /u })).toHaveLength(
         1,
       );
       expect(Array.from(document.querySelectorAll("[data-panel]"))).toEqual(
@@ -1478,7 +1478,7 @@ describe("BB Official plugin detail routing", () => {
       expect(screen.getByRole("textbox", { name: searchLabel })).toBe(search);
 
       fireEvent.click(
-        screen.getByRole("button", { name: `Close ${pluginName}` }),
+        screen.getByRole("button", { name: `Закрыть ${pluginName}` }),
       );
       await waitFor(() => {
         expect(screen.getByTestId("location").textContent).toBe(
@@ -1575,19 +1575,19 @@ describe("BB Official plugin detail routing", () => {
     if (path === "/settings/plugins" || path === "/plugins?view=installed") {
       expect(
         await screen.findByRole("textbox", {
-          name: "Search installed plugins",
+          name: "Поиск установленных плагинов",
         }),
       ).toBeTruthy();
       expect(screen.getByTestId("location").textContent).toBe(path);
       const pluginButton = await screen.findByRole("button", {
-        name: "GitHub plugin details",
+        name: "Сведения о плагине GitHub",
       });
 
       fireEvent.click(pluginButton);
     }
 
     const relatedPluginButton = await screen.findByRole("button", {
-      name: "Open Automations details",
+      name: "Открыть сведения о Automations",
     });
     expect(screen.getAllByText("GitHub", { selector: "h1" })).toHaveLength(1);
     fireEvent.click(relatedPluginButton);
@@ -1597,7 +1597,7 @@ describe("BB Official plugin detail routing", () => {
       );
     });
     expect(
-      await screen.findByRole("button", { name: "Close Automations" }),
+      await screen.findByRole("button", { name: "Закрыть Automations" }),
     ).toBeTruthy();
   });
 
@@ -1662,33 +1662,33 @@ describe("BB Official plugin detail routing", () => {
     );
 
     fireEvent.click(
-      (await screen.findAllByRole("link", { name: "BB Official" }))[0]!,
+      (await screen.findAllByRole("link", { name: "Официальный BB" }))[0]!,
     );
-    expect(await screen.findByRole("heading", { name: /^BB/u })).toBeTruthy();
+    expect(await screen.findByRole("heading", { name: /^Официальный BB/u })).toBeTruthy();
     expect(screen.getByTestId("location").textContent).toBe(
       "/plugins?category=code-and-reviews&sort=recently-added&author=11%3Abb-official%3Agithub%3Aget-bb",
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Browser back" }));
     await waitFor(() => {
-      expect(screen.queryByRole("heading", { name: /^BB/u })).toBeNull();
+      expect(screen.queryByRole("heading", { name: /^Официальный BB/u })).toBeNull();
     });
     expect(screen.getByTestId("location").textContent).toBe(
       "/plugins?category=code-and-reviews&sort=recently-added",
     );
 
     fireEvent.click(
-      (await screen.findAllByRole("link", { name: "BB Official" }))[0]!,
+      (await screen.findAllByRole("link", { name: "Официальный BB" }))[0]!,
     );
     const card = await screen.findByRole("button", {
-      name: "Open GitHub details",
+      name: "Открыть сведения о GitHub",
     });
     card.focus();
     fireEvent.click(card);
     expect(
-      await screen.findByRole("heading", { name: "More from this author" }),
+      await screen.findByRole("heading", { name: "Другие плагины автора" }),
     ).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Close GitHub" }));
+    fireEvent.click(screen.getByRole("button", { name: "Закрыть GitHub" }));
     await waitFor(() => expect(document.activeElement).toBe(card));
   });
 
@@ -1741,16 +1741,16 @@ describe("BB Official plugin detail routing", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: "More from this author" }),
+      await screen.findByRole("heading", { name: "Другие плагины автора" }),
     ).toBeTruthy();
-    const authorLinks = screen.getAllByRole("link", { name: "BB Official" });
+    const authorLinks = screen.getAllByRole("link", { name: "Официальный BB" });
     fireEvent.click(authorLinks.at(-1)!);
     await waitFor(() => {
       expect(screen.getByTestId("location").textContent).toBe(
         "/plugins?author=11%3Abb-official%3Agithub%3Aget-bb",
       );
     });
-    expect(await screen.findByRole("heading", { name: /^BB/u })).toBeTruthy();
+    expect(await screen.findByRole("heading", { name: /^Официальный BB/u })).toBeTruthy();
   });
 });
 
@@ -1818,21 +1818,21 @@ describe("plugin removal confirmation", () => {
 
     expect(await screen.findByRole("heading", { name: "GitHub" })).toBeTruthy();
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
     fireEvent.click(
-      await screen.findByRole("menuitem", { name: "Remove from bb" }),
+      await screen.findByRole("menuitem", { name: "Удалить из bb" }),
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Remove plugin from bb?" }),
+      await screen.findByRole("heading", { name: "Удалить плагин из bb?" }),
     ).toBeTruthy();
-    const description = screen.getByText(/Remove "github" from bb/);
+    const description = screen.getByText(/Удалить «github» из bb/);
     expect(description.textContent).toContain(
-      "delete its settings, secrets, and schedules",
+      "вместе с настройками, секретами и расписаниями",
     );
-    expect(description.textContent).toContain("source files stay on disk");
-    expect(description.textContent).toContain("install the new path instead");
+    expect(description.textContent).toContain("Исходные файлы останутся на диске");
+    expect(description.textContent).toContain("установите его по новому пути");
   });
 });
 
@@ -1881,13 +1881,13 @@ describe("PluginDetail banner precedence", () => {
 
     const alerts = screen.getAllByRole("alert");
     expect(alerts).toHaveLength(1);
-    expect(alerts[0]?.textContent).toContain("Degraded");
-    expect(alerts[0]?.textContent).toContain("A service is still stopping.");
-    expect(alerts[0]?.textContent).toContain("Wait, then reload.");
+    expect(alerts[0]?.textContent).toContain("Работает с ограничениями");
+    expect(alerts[0]?.textContent).toContain("Служба ещё останавливается.");
+    expect(alerts[0]?.textContent).toContain("Подождите и перезагрузите.");
     expect(alerts[0]?.textContent).not.toContain("issue-sync");
     expect(alerts[0]?.textContent).not.toContain("handler");
     expect(alerts[0]?.textContent).not.toContain("Restart bb");
-    expect(screen.getByRole("button", { name: "Reload" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Update" })).toBeNull();
   });
 
@@ -1906,7 +1906,7 @@ describe("PluginDetail banner precedence", () => {
     );
 
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Reload" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Перезагрузить" })).toBeNull();
   });
 
   it("does not treat a cleanup failure from an active frontend as a startup failure", () => {
@@ -1971,23 +1971,23 @@ describe("PluginDetail runtime health", () => {
 
   it("shows startup as a neutral status without failure recovery", () => {
     renderRuntimeStatus("starting", { statusDetail: null });
-    expect(screen.getByRole("status").textContent).toContain("Starting");
+    expect(screen.getByRole("status").textContent).toContain("Запускается");
     expect(screen.getByRole("status").textContent).toContain(
-      "The plugin is starting.",
+      "Плагин запускается.",
     );
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Reload" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Перезагрузить" })).toBeNull();
   });
 
   it("lifts a failed runtime status into a destructive alert above the content", () => {
     const { container } = renderRuntimeStatus("error");
     const alert = screen.getByRole("alert");
 
-    expect(alert.textContent).toContain("Failed");
-    expect(alert.textContent).toContain("The plugin couldn't start.");
+    expect(alert.textContent).toContain("Ошибка");
+    expect(alert.textContent).toContain("Не удалось запустить плагин.");
     expect(alert.textContent).not.toContain("runtime reported");
-    expect(alert.textContent).toContain("Try reloading it.");
-    expect(screen.getByRole("button", { name: "Reload" })).toBeTruthy();
+    expect(alert.textContent).toContain("Попробуйте перезагрузить.");
+    expect(screen.getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
 
     const about = container.querySelector(
       '[data-resource-detail-section="overview"]',
@@ -1998,8 +1998,8 @@ describe("PluginDetail runtime health", () => {
   });
 
   it.each([
-    ["incompatible", "This version is incompatible with bb.", "Update bb."],
-    ["missing", "Plugin files are missing.", "Update or reinstall bb."],
+    ["incompatible", "Эта версия несовместима с bb.", "Обновите bb."],
+    ["missing", "Файлы плагина отсутствуют.", "Обновите или переустановите bb."],
   ] as const)(
     "explains the %s condition and a supported recovery without offering Reload",
     (status, condition, recovery) => {
@@ -2009,7 +2009,7 @@ describe("PluginDetail runtime health", () => {
       expect(alert.textContent).toContain(condition);
       expect(alert.textContent).toContain(recovery);
       expect(alert.textContent).not.toContain("runtime reported");
-      expect(screen.queryByRole("button", { name: "Reload" })).toBeNull();
+      expect(screen.queryByRole("button", { name: "Перезагрузить" })).toBeNull();
     },
   );
 
@@ -2020,12 +2020,12 @@ describe("PluginDetail runtime health", () => {
     });
 
     const alert = screen.getByRole("alert");
-    expect(alert.querySelector("p")?.textContent).toBe("Needs configuration");
+    expect(alert.querySelector("p")?.textContent).toBe("Требует настройки");
     const settingsLink = within(alert).getByRole("link", {
-      name: "Open settings",
+      name: "Открыть настройки",
     });
     expect(settingsLink.getAttribute("href")).toBe("/settings/plugins/github");
-    expect(screen.queryByRole("button", { name: "Reload" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Перезагрузить" })).toBeNull();
   });
 
   it("offers Reload when required configuration lives outside Settings", () => {
@@ -2038,10 +2038,10 @@ describe("PluginDetail runtime health", () => {
     expect(alert.textContent).toContain(
       "Set GITHUB_TOKEN in the server environment.",
     );
-    expect(alert.textContent).toContain("Then reload.");
-    expect(screen.getByRole("button", { name: "Reload" })).toBeTruthy();
+    expect(alert.textContent).toContain("Затем перезагрузите.");
+    expect(screen.getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
     expect(
-      within(alert).queryByRole("link", { name: "Open settings" }),
+      within(alert).queryByRole("link", { name: "Открыть настройки" }),
     ).toBeNull();
   });
 
@@ -2069,10 +2069,10 @@ describe("PluginDetail runtime health", () => {
 
     const alert = screen.getByRole("alert");
     const settingsLink = within(alert).getByRole("link", {
-      name: "Open settings",
+      name: "Открыть настройки",
     });
     expect(settingsLink.getAttribute("href")).toBe("/settings/plugins/github");
-    expect(within(alert).getByRole("button", { name: "Reload" })).toBeTruthy();
+    expect(within(alert).getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
   });
 
   it("does not offer a settings link for other runtime failures", () => {
@@ -2096,9 +2096,9 @@ describe("PluginDetail runtime health", () => {
 
     const alert = screen.getByRole("alert");
     expect(
-      within(alert).queryByRole("link", { name: "Open settings" }),
+      within(alert).queryByRole("link", { name: "Открыть настройки" }),
     ).toBeNull();
-    expect(within(alert).getByRole("button", { name: "Reload" })).toBeTruthy();
+    expect(within(alert).getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
   });
 
   it("reloads the affected plugin and reflects its pending state", async () => {
@@ -2113,7 +2113,7 @@ describe("PluginDetail runtime health", () => {
     const { queryClient } = renderRuntimeStatus("error");
     const invalidate = vi.spyOn(queryClient, "invalidateQueries");
 
-    fireEvent.click(screen.getByRole("button", { name: "Reload" }));
+    fireEvent.click(screen.getByRole("button", { name: "Перезагрузить" }));
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
@@ -2121,7 +2121,7 @@ describe("PluginDetail runtime health", () => {
         expect.objectContaining({ method: "POST" }),
       );
     });
-    const pending = screen.getByRole("button", { name: "Reloading…" });
+    const pending = screen.getByRole("button", { name: "Перезагрузка…" });
     expect(pending.getAttribute("disabled")).not.toBeNull();
 
     resolveReload?.(
@@ -2131,7 +2131,7 @@ describe("PluginDetail runtime health", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Reload" })).toBeTruthy();
+      expect(screen.getByRole("button", { name: "Перезагрузить" })).toBeTruthy();
       expect(invalidate).toHaveBeenCalledWith({ queryKey: ["plugin-list"] });
     });
   });
@@ -2268,9 +2268,9 @@ describe("PluginDetail capability inventory", () => {
     ).toBeNull();
     for (const text of [
       "Run monitor",
-      "Adds a page to the app sidebar.",
+      "Добавляет страницу на боковую панель приложения.",
       "enhance-prompt",
-      "Adds an action beside the thread composer.",
+      "Добавляет действие рядом с полем ввода чата.",
       "bb capability",
       "Inspect contributed capabilities.",
       "review",
@@ -2290,9 +2290,9 @@ describe("PluginDetail capability inventory", () => {
     expect(inventory.queryByText("daily-cleanup")).toBeNull();
     expect(includes?.textContent).not.toContain("2 background services");
 
-    const commandGlyph = inventory.getByRole("img", { name: "Command" });
+    const commandGlyph = inventory.getByRole("img", { name: "Команда" });
     fireEvent.pointerMove(commandGlyph);
-    expect((await screen.findByRole("tooltip")).textContent).toBe("Command");
+    expect((await screen.findByRole("tooltip")).textContent).toBe("Команда");
 
     const [services, schedules] = Array.from(
       container.querySelectorAll('[data-resource-detail-section="activity"]'),
@@ -2302,29 +2302,29 @@ describe("PluginDetail capability inventory", () => {
 
     const serviceSection = within(services as HTMLElement);
     const serviceTable = serviceSection.getByRole("table", {
-      name: "Background services",
+      name: "Фоновые службы",
     });
     const serviceTableQueries = within(serviceTable);
     expect(
       serviceTableQueries
         .getAllByRole("columnheader")
         .map((header) => header.textContent),
-    ).toEqual(["Status", "Service"]);
+    ).toEqual(["Состояние", "Служба"]);
     for (const name of ["watch", "restart", "sync"]) {
       expect(serviceTableQueries.getByRole("rowheader", { name })).toBeTruthy();
     }
     expect(serviceTableQueries.queryByText("daily-cleanup")).toBeNull();
-    for (const label of ["Running", "Restarting", "Stopped"]) {
+    for (const label of ["Работает", "Перезапускается", "Остановлено"]) {
       expect(serviceTableQueries.getByText(label)).toBeTruthy();
     }
     expect(
-      serviceTableQueries.getByText("Running").getAttribute("class"),
+      serviceTableQueries.getByText("Работает").getAttribute("class"),
     ).toContain("animate-shine");
     expect(
-      serviceTableQueries.getByText("Restarting").getAttribute("class"),
+      serviceTableQueries.getByText("Перезапускается").getAttribute("class"),
     ).toContain("animate-shine");
     const scheduleTable = within(schedules as HTMLElement);
-    expect(scheduleTable.getByText("Scheduled jobs")).toBeTruthy();
+    expect(scheduleTable.getByText("Запланированные задачи")).toBeTruthy();
     expect(scheduleTable.getByText("daily-cleanup")).toBeTruthy();
     expect(scheduleTable.getByText("in-progress")).toBeTruthy();
     expect(scheduleTable.getByText("completed")).toBeTruthy();
@@ -2332,10 +2332,10 @@ describe("PluginDetail capability inventory", () => {
     expect(scheduleTable.queryByText("watch")).toBeNull();
 
     for (const [label, icon] of [
-      ["Scheduled", "Clock"],
-      ["Running", "Clock"],
-      ["Succeeded", "CircleCheck"],
-      ["Failed", "CircleX"],
+      ["Запланировано", "Clock"],
+      ["Работает", "Clock"],
+      ["Успешно", "CircleCheck"],
+      ["Ошибка", "CircleX"],
     ] as const) {
       const status = scheduleTable
         .getAllByRole("img", { name: label })
@@ -2347,7 +2347,7 @@ describe("PluginDetail capability inventory", () => {
     }
     expect(
       scheduleTable
-        .getAllByRole("img", { name: "Running" })
+        .getAllByRole("img", { name: "Работает" })
         .some((element) =>
           element
             .querySelector('[data-icon="Clock"]')
@@ -2460,12 +2460,12 @@ describe("detail disable workspace cleanup", () => {
         </QueryClientWrapper>,
       );
       fireEvent.click(
-        await screen.findByRole("switch", { name: "Disable GitHub" }),
+        await screen.findByRole("switch", { name: "Отключить GitHub" }),
       );
       await waitFor(() =>
         expect(
           screen
-            .getByRole("switch", { name: "Disable GitHub" })
+            .getByRole("switch", { name: "Отключить GitHub" })
             .hasAttribute("disabled"),
         ).toBe(true),
       );
@@ -2520,7 +2520,7 @@ describe("plugin detail source and settings", () => {
     renderPluginDetail(plugin, { openSourceDisabled: false, onOpenSource });
 
     const source = screen
-      .getByRole("heading", { name: "Source" })
+      .getByRole("heading", { name: "Источник" })
       .closest("[data-resource-detail-section]");
     expect(source).not.toBeNull();
     if (source === null) return;
@@ -2529,13 +2529,13 @@ describe("plugin detail source and settings", () => {
     ).toBeTruthy();
     fireEvent.click(
       within(source as HTMLElement).getByRole("button", {
-        name: "Open source",
+        name: "Открыть исходник",
       }),
     );
     expect(onOpenSource).toHaveBeenCalledWith(plugin);
     fireEvent.click(
       within(source as HTMLElement).getByRole("button", {
-        name: "Copy plugin path: /Users/you/src/bb-plugin-github",
+        name: "Скопировать путь к плагину: /Users/you/src/bb-plugin-github",
       }),
     );
     await waitFor(() => {
@@ -2543,10 +2543,10 @@ describe("plugin detail source and settings", () => {
     });
 
     fireEvent.pointerDown(
-      screen.getByRole("button", { name: "GitHub actions" }),
+      screen.getByRole("button", { name: "Действия с GitHub" }),
     );
-    expect(await screen.findByRole("menuitem", { name: "Edit" })).toBeTruthy();
-    expect(screen.queryByRole("menuitem", { name: "Open source" })).toBeNull();
+    expect(await screen.findByRole("menuitem", { name: "Редактировать" })).toBeTruthy();
+    expect(screen.queryByRole("menuitem", { name: "Открыть исходник" })).toBeNull();
   });
 
   it("opens settings in place from the detail gear and returns to details", async () => {
@@ -2564,10 +2564,10 @@ describe("plugin detail source and settings", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Details" }),
+      await screen.findByRole("heading", { name: "Сведения" }),
     ).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Configuration" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "GitHub settings" }));
+    fireEvent.click(screen.getByRole("button", { name: "Настройки GitHub" }));
     expect(await screen.findByLabelText("Repository")).toHaveProperty(
       "value",
       "get-bb/bb",
@@ -2576,9 +2576,9 @@ describe("plugin detail source and settings", () => {
       "/plugins/github?view=installed&configure=github",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Plugin details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сведения о плагине" }));
     expect(
-      await screen.findByRole("heading", { name: "Details" }),
+      await screen.findByRole("heading", { name: "Сведения" }),
     ).toBeTruthy();
     expect(screen.getByTestId("location").textContent).toBe(
       "/plugins/github?view=installed",
@@ -2637,7 +2637,7 @@ describe("plugin detail source and settings", () => {
     );
 
     const openSettings = await screen.findByRole("link", {
-      name: "Open settings",
+      name: "Открыть настройки",
     });
     expect(openSettings.getAttribute("href")).toBe(
       "/plugins/github?view=installed&configure=github",
@@ -2682,9 +2682,9 @@ describe("plugin detail source and settings", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: "Details" }),
+      await screen.findByRole("heading", { name: "Сведения" }),
     ).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "GitHub settings" }));
+    fireEvent.click(screen.getByRole("button", { name: "Настройки GitHub" }));
     expect(await screen.findByLabelText("Repository")).toHaveProperty(
       "value",
       "get-bb/bb",
@@ -2693,9 +2693,9 @@ describe("plugin detail source and settings", () => {
       "/threads/thr_1?panel=files",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Plugin details" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сведения о плагине" }));
     expect(
-      await screen.findByRole("heading", { name: "Details" }),
+      await screen.findByRole("heading", { name: "Сведения" }),
     ).toBeTruthy();
     expect(screen.getByTestId("location").textContent).toBe(
       "/threads/thr_1?panel=files",

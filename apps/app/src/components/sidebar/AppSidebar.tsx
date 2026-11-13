@@ -286,8 +286,8 @@ export function AppSidebar({
                     id: "settings" as const,
                     href: settingsRoutePath,
                     ariaLabel: settingsShortcut
-                      ? `Settings (${settingsShortcut.label})`
-                      : "Settings",
+                      ? `Настройки (${settingsShortcut.label})`
+                      : "Настройки",
                     ariaKeyShortcuts: settingsShortcut?.ariaKeyshortcuts,
                     onActivate: () => {
                       closeOnMobile();

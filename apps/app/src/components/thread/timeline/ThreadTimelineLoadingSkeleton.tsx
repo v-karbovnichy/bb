@@ -2,7 +2,7 @@ import { Skeleton } from "@bb/shared-ui/skeleton";
 
 export function ThreadTimelineLoadingSkeleton() {
   return (
-    <div className="mt-6 space-y-5" role="status" aria-label="Loading thread">
+    <div className="mt-6 space-y-5" role="status" aria-label="Загрузка чата">
       <div className="flex justify-end px-2">
         <Skeleton className="h-12 w-3/5" />
       </div>

@@ -82,29 +82,29 @@ describe("gitDiffPanelHelpers", () => {
     ];
 
     expect(buildGitDiffSelectionOptions(commits)).toEqual([
-      { value: "all", label: "All changes" },
-      { value: "branch_committed", label: "Committed changes" },
+      { value: "all", label: "Все изменения" },
+      { value: "branch_committed", label: "Изменения в коммитах" },
       { value: "abc123", label: "Initial change", monoPrefix: "abc123" },
       { value: "def456", label: "Follow-up", monoPrefix: "def456" },
     ]);
     expect(
       buildGitDiffSelectionOptions(commits, { hasUncommittedChanges: true }),
     ).toEqual([
-      { value: "all", label: "All changes" },
-      { value: "branch_committed", label: "Committed changes" },
-      { value: "uncommitted", label: "Uncommitted changes" },
+      { value: "all", label: "Все изменения" },
+      { value: "branch_committed", label: "Изменения в коммитах" },
+      { value: "uncommitted", label: "Изменения без коммита" },
       { value: "abc123", label: "Initial change", monoPrefix: "abc123" },
       { value: "def456", label: "Follow-up", monoPrefix: "def456" },
     ]);
     expect(
       buildGitDiffSelectionOptions([], { hasUncommittedChanges: true }),
     ).toEqual([
-      { value: "all", label: "All changes" },
-      { value: "uncommitted", label: "Uncommitted changes" },
+      { value: "all", label: "Все изменения" },
+      { value: "uncommitted", label: "Изменения без коммита" },
     ]);
     expect(
       buildGitDiffSelectionOptions([], { hasUncommittedChanges: false }),
-    ).toEqual([{ value: "all", label: "All changes" }]);
+    ).toEqual([{ value: "all", label: "Все изменения" }]);
     expect(shouldResetSelectedGitDiffSelection("missing", commits)).toBe(true);
     expect(shouldResetSelectedGitDiffSelection("abc123", commits)).toBe(false);
     expect(shouldResetSelectedGitDiffSelection(null, commits)).toBe(false);

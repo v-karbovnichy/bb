@@ -21,7 +21,7 @@ const REGISTRATIONS: readonly PluginThreadActionRegistrationInfo[] = [
   {
     key: "bb--core/split",
     pluginId: "bb--core",
-    title: "Open in split",
+    title: "Открыть в разделённой области",
     icon: "Columns2",
   },
   {
@@ -40,19 +40,19 @@ const REGISTRATIONS: readonly PluginThreadActionRegistrationInfo[] = [
   {
     key: "bb--core/rename",
     pluginId: "bb--core",
-    title: "Rename",
+    title: "Переименовать",
     icon: "Edit",
   },
   {
     key: "bb--core/archive",
     pluginId: "bb--core",
-    title: "Archive",
+    title: "Архивировать",
     icon: "Archive",
   },
   {
     key: "thread-list/move",
     pluginId: "thread-list",
-    title: "Move to section",
+    title: "Переместить в раздел",
     icon: "SectionMove",
   },
 ];
@@ -132,14 +132,14 @@ it.each([
   {
     initial: ["bb--core/pin", "bb--core/archive", "bb--core/rename"],
     slot: 0,
-    pick: "Rename",
+    pick: "Переименовать",
     focusedSlot: 0,
     focused: "bb--core/rename",
   },
   {
     initial: ["bb--core/pin", "bb--core/archive", "bb--core/rename"],
     slot: 1,
-    pick: "Hide",
+    pick: "Скрыть",
     focusedSlot: 1,
     focused: "bb--core/pin",
   },
@@ -170,24 +170,24 @@ it("offers Hide only for a filled slot and finishes on Escape", async () => {
   store.set(threadRowActionsAtom, ["bb--core/archive"]);
   const finish = vi.fn();
   renderWithRegistrations(<ThreadRowActionsEditor onDone={finish} />, store);
-  fireEvent.click(screen.getByRole("button", { name: "Row action 1: Empty" }));
+  fireEvent.click(screen.getByRole("button", { name: "Действие в строке 1: Пусто" }));
   await screen.findByRole("menuitemradio", { name: "Pin" });
-  expect(screen.queryByRole("menuitemradio", { name: "Hide" })).toBeNull();
+  expect(screen.queryByRole("menuitemradio", { name: "Скрыть" })).toBeNull();
   fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
   expect(finish).not.toHaveBeenCalled();
   await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
 
   fireEvent.click(
-    screen.getByRole("button", { name: "Row action 3: Archive" }),
+    screen.getByRole("button", { name: "Действие в строке 3: Архивировать" }),
   );
   expect(
-    await screen.findByRole("menuitemradio", { name: "Hide" }),
+    await screen.findByRole("menuitemradio", { name: "Скрыть" }),
   ).toBeTruthy();
   fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
   await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
 
   fireEvent.keyDown(
-    screen.getByRole("button", { name: "Row action 3: Archive" }),
+    screen.getByRole("button", { name: "Действие в строке 3: Архивировать" }),
     { key: "Escape" },
   );
   expect(finish).toHaveBeenCalledWith(true);
@@ -201,7 +201,7 @@ it("keeps customizing through picker choices and dismissals, then finishes on a 
     <OutsideClickHarness onDone={finish} showEditor />,
     store,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Row action 1: Empty" }));
+  fireEvent.click(screen.getByRole("button", { name: "Действие в строке 1: Пусто" }));
   fireEvent.keyDown(await screen.findByRole("menuitemradio", { name: "Pin" }), {
     key: "Enter",
   });
@@ -213,7 +213,7 @@ it("keeps customizing through picker choices and dismissals, then finishes on a 
   );
   expect(finish).not.toHaveBeenCalled();
 
-  fireEvent.click(screen.getByRole("button", { name: "Row action 1: Empty" }));
+  fireEvent.click(screen.getByRole("button", { name: "Действие в строке 1: Пусто" }));
   await screen.findByRole("menu");
   fireEvent.pointerDown(document.body);
   fireEvent.click(document.body);
@@ -240,13 +240,13 @@ it("offers every registered action by its static title and labels unknown keys",
   store.set(threadRowActionsAtom, ["plugin-gone/action"]);
   renderWithRegistrations(<ThreadRowActionsEditor onDone={() => {}} />, store);
   fireEvent.click(
-    screen.getByRole("button", { name: "Row action 3: plugin-gone/action" }),
+    screen.getByRole("button", { name: "Действие в строке 3: plugin-gone/action" }),
   );
   await screen.findByRole("menu");
   expect(
     screen.getAllByRole("menuitemradio").map((item) => item.textContent),
   ).toEqual([
     ...REGISTRATIONS.map((registration) => registration.title),
-    "Hide",
+    "Скрыть",
   ]);
 });

@@ -34,30 +34,30 @@ describe("ProjectSelector", () => {
     }
     render(<Picker />);
     expect(
-      screen.getByRole("button", { name: "Project: All projects" }),
+      screen.getByRole("button", { name: "Проект: Все проекты" }),
     ).toBeTruthy();
     fireEvent.change(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       {
         target: { value: "Charlie" },
       },
     );
     fireEvent.keyDown(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       {
         key: "Enter",
       },
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Project: Charlie Docs" }),
+      screen.getByRole("button", { name: "Проект: Charlie Docs" }),
     );
-    fireEvent.click(screen.getByRole("option", { name: "All projects" }));
+    fireEvent.click(screen.getByRole("option", { name: "Все проекты" }));
     fireEvent.click(
-      screen.getByRole("button", { name: "Project: All projects" }),
+      screen.getByRole("button", { name: "Проект: Все проекты" }),
     );
     expect(
       screen
-        .getByRole("option", { name: "All projects" })
+        .getByRole("option", { name: "Все проекты" })
         .getAttribute("aria-current"),
     ).toBe("true");
   });
@@ -78,19 +78,19 @@ describe("ProjectSelector", () => {
     }
     render(<Picker />);
     fireEvent.click(
-      screen.getByRole("option", { name: "Don't work in a project" }),
+      screen.getByRole("option", { name: "Работать без проекта" }),
     );
-    const trigger = screen.getByRole("button", { name: "Project: No project" });
+    const trigger = screen.getByRole("button", { name: "Проект: Без проекта" });
     expect(
       trigger.querySelector("[data-promptbox-full-label]")?.textContent,
-    ).toBe("No project");
+    ).toBe("Без проекта");
     expect(
       trigger.querySelector("[data-promptbox-compact-label]")?.textContent,
-    ).toBe("No project");
+    ).toBe("Без проекта");
     fireEvent.click(trigger);
     expect(
       screen
-        .getByRole("option", { name: "Don't work in a project" })
+        .getByRole("option", { name: "Работать без проекта" })
         .getAttribute("aria-current"),
     ).toBe("true");
   });
@@ -100,13 +100,13 @@ describe("ProjectSelector", () => {
       allowNoProject: false,
       value: null,
       projects: [],
-      label: "Work in a project",
+      label: "Работать в проекте",
     },
     {
       allowNoProject: true,
       value: "missing",
       projects: PROJECTS,
-      label: "Work in a project",
+      label: "Работать в проекте",
     },
     {
       allowNoProject: false,
@@ -118,7 +118,7 @@ describe("ProjectSelector", () => {
       allowNoProject: true,
       value: null,
       projects: PROJECTS,
-      label: "Loading projects…",
+      label: "Загрузка проектов…",
       isLoading: true,
     },
   ])(
@@ -126,7 +126,7 @@ describe("ProjectSelector", () => {
     ({ label, ...props }) => {
       render(<ProjectSelector {...props} onChange={() => {}} />);
       expect(
-        screen.getByRole("button", { name: `Project: ${label}` }),
+        screen.getByRole("button", { name: `Проект: ${label}` }),
       ).toBeTruthy();
     },
   );
@@ -143,9 +143,9 @@ describe("ProjectSelector", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Project: Charlie Docs" }),
+      screen.getByRole("button", { name: "Проект: Charlie Docs" }),
     ).toBeTruthy();
-    const search = screen.getByRole("combobox", { name: "Search projects" });
+    const search = screen.getByRole("combobox", { name: "Поиск проектов" });
     const alpha = screen.getByRole("option", { name: "Alpha Web" });
     const bravo = screen.getByRole("option", { name: "Bravo API" });
     const charlie = screen.getByRole("option", { name: "Charlie Docs" });
@@ -174,7 +174,7 @@ describe("ProjectSelector", () => {
     );
 
     expect(
-      screen.queryByRole("combobox", { name: "Search projects" }),
+      screen.queryByRole("combobox", { name: "Поиск проектов" }),
     ).toBeNull();
 
     result.rerender(
@@ -188,7 +188,7 @@ describe("ProjectSelector", () => {
     );
 
     expect(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
     ).toBeTruthy();
   });
 
@@ -205,19 +205,19 @@ describe("ProjectSelector", () => {
     );
 
     fireEvent.change(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       { target: { value: "CD" } },
     );
 
     expect(screen.queryByRole("option", { name: "Alpha Web" })).toBeNull();
     expect(screen.getByRole("option", { name: "Charlie Docs" })).toBeTruthy();
     fireEvent.keyDown(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       { key: "Enter" },
     );
 
     expect(onChange).toHaveBeenCalledWith("proj_charlie");
-    expect(screen.queryByRole("dialog", { name: "Project" })).toBeNull();
+    expect(screen.queryByRole("dialog", { name: "Проект" })).toBeNull();
   });
 
   it("keeps keyboard selection for short project lists", () => {
@@ -262,29 +262,29 @@ describe("ProjectSelector", () => {
 
     expect(
       screen
-        .getByRole("option", { name: "Don't work in a project" })
+        .getByRole("option", { name: "Работать без проекта" })
         .getAttribute("aria-current"),
     ).toBe("true");
     fireEvent.change(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       { target: { value: "missing" } },
     );
 
-    expect(screen.getByText("No projects found")).toBeTruthy();
-    expect(screen.getByRole("option", { name: "New project" })).toBeTruthy();
+    expect(screen.getByText("Проекты не найдены")).toBeTruthy();
+    expect(screen.getByRole("option", { name: "Новый проект" })).toBeTruthy();
     expect(
-      screen.getByRole("option", { name: "Don't work in a project" }),
+      screen.getByRole("option", { name: "Работать без проекта" }),
     ).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("option", { name: "New project" }));
+    fireEvent.click(screen.getByRole("option", { name: "Новый проект" }));
     expect(onCreate).toHaveBeenCalledTimes(1);
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Project: No project" }),
+      screen.getByRole("button", { name: "Проект: Без проекта" }),
     );
     expect(
       screen.getByRole<HTMLInputElement>("combobox", {
-        name: "Search projects",
+        name: "Поиск проектов",
       }).value,
     ).toBe("");
     expect(screen.getByRole("option", { name: "Alpha Web" })).toBeTruthy();
@@ -307,7 +307,7 @@ describe("ProjectSelector", () => {
     const groups = document.querySelectorAll("[cmdk-group]");
     expect(groups).toHaveLength(1);
     expect(groups[0]?.querySelector("[cmdk-group-heading]")?.textContent).toBe(
-      "Project",
+      "Проект",
     );
     expect(groups[0]?.querySelectorAll("[cmdk-item]")).toHaveLength(2);
     expect(screen.queryByRole("option", { selected: true })).toBeNull();
@@ -327,14 +327,14 @@ describe("ProjectSelector", () => {
       />,
     );
 
-    const dialog = screen.getByRole("dialog", { name: "Project" });
+    const dialog = screen.getByRole("dialog", { name: "Проект" });
     expect(dialog.className).toContain(
       "max-h-[min(var(--radix-popover-content-available-height),calc(100dvh-0.5rem))]",
     );
     expect(dialog.className).toContain("overflow-hidden");
 
     const list = screen
-      .getByRole("group", { name: "Project" })
+      .getByRole("group", { name: "Проект" })
       .querySelector<HTMLElement>(".overflow-y-auto");
     expect(list).not.toBeNull();
     expect(list?.className).toContain("overflow-y-auto");
@@ -343,7 +343,7 @@ describe("ProjectSelector", () => {
     if (list === null) return;
     list.scrollTop = 120;
     fireEvent.change(
-      screen.getByRole("combobox", { name: "Search projects" }),
+      screen.getByRole("combobox", { name: "Поиск проектов" }),
       { target: { value: "Project 19" } },
     );
     expect(list.scrollTop).toBe(0);

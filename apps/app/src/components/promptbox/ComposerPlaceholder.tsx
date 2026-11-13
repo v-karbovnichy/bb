@@ -41,7 +41,7 @@ export function ComposerPlaceholder({
     return (
       <ComposerLoadingSkeleton
         shape={state.shape}
-        aria-label="Loading composer"
+        aria-label="Загрузка поля ввода"
         data-composer-placeholder="loading"
       />
     );
@@ -53,20 +53,20 @@ export function ComposerPlaceholder({
         data-composer-placeholder="missing"
         className="px-1 py-2 text-sm text-muted-foreground"
       >
-        No composer plugin is enabled.
+        Плагин поля ввода не включён.
       </div>
     );
   }
   const alert =
     state.kind === "failed"
       ? {
-          message: "The composer couldn't load.",
-          action: "Retry",
+          message: "Не удалось загрузить поле ввода.",
+          action: "Повторить",
           onClick: state.onRetry,
         }
       : {
           message: `${state.pluginTitle} stopped working.`,
-          action: "Reload",
+          action: "Перезагрузить",
           onClick: state.onReload,
         };
   return (

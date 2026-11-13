@@ -44,7 +44,7 @@ export function resolveThreadPendingInteractionMutationOptions(
 ) {
   return mutationOptions({
     meta: {
-      errorMessage: "Failed to resolve pending interaction.",
+      errorMessage: "Не удалось завершить ожидающее взаимодействие.",
       showErrorToast: false,
     },
     mutationFn: ({

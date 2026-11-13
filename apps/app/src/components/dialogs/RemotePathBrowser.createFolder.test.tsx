@@ -81,7 +81,7 @@ describe("RemotePathBrowser new folder", () => {
     );
 
     await screen.findByText("existing");
-    expect(screen.queryByRole("button", { name: "New folder" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Новая папка" })).toBeNull();
   });
 
   it("does not create in the previous folder while navigation is loading", async () => {
@@ -115,14 +115,14 @@ describe("RemotePathBrowser new folder", () => {
 
     expect(
       screen
-        .getByRole("button", { name: "New folder" })
+        .getByRole("button", { name: "Новая папка" })
         .hasAttribute("disabled"),
     ).toBe(true);
-    expect(screen.queryByLabelText("New folder name")).toBeNull();
+    expect(screen.queryByLabelText("Имя новой папки")).toBeNull();
     expect(mkdir).not.toHaveBeenCalled();
 
     resolveNextDirectory(listing("/home/me/next", []));
-    await screen.findByText("This folder is empty.");
+    await screen.findByText("Эта папка пуста.");
   });
 
   it("creates the folder on the host and selects it", async () => {
@@ -146,11 +146,11 @@ describe("RemotePathBrowser new folder", () => {
     );
 
     await screen.findByText("existing");
-    fireEvent.click(screen.getByRole("button", { name: "New folder" }));
-    fireEvent.change(screen.getByLabelText("New folder name"), {
+    fireEvent.click(screen.getByRole("button", { name: "Новая папка" }));
+    fireEvent.change(screen.getByLabelText("Имя новой папки"), {
       target: { value: "repo" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Создать папку" }));
 
     await waitFor(() => {
       expect(mkdir).toHaveBeenCalledWith({
@@ -187,11 +187,11 @@ describe("RemotePathBrowser new folder", () => {
     );
 
     await screen.findByText("existing");
-    fireEvent.click(screen.getByRole("button", { name: "New folder" }));
-    fireEvent.change(screen.getByLabelText("New folder name"), {
+    fireEvent.click(screen.getByRole("button", { name: "Новая папка" }));
+    fireEvent.change(screen.getByLabelText("Имя новой папки"), {
       target: { value: "repo" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Создать папку" }));
 
     await waitFor(() => {
       expect(mkdir).toHaveBeenCalledOnce();
@@ -201,12 +201,12 @@ describe("RemotePathBrowser new folder", () => {
     ).toBe(true);
     expect(
       screen
-        .getByRole("button", { name: "Go to parent folder" })
+        .getByRole("button", { name: "Перейти в родительскую папку" })
         .hasAttribute("disabled"),
     ).toBe(true);
 
     resolveMkdir({ ok: true });
-    await screen.findByText("This folder is empty.");
+    await screen.findByText("Эта папка пуста.");
   });
 
   it("reports a failed create instead of navigating into it", async () => {
@@ -226,11 +226,11 @@ describe("RemotePathBrowser new folder", () => {
     );
 
     await screen.findByText("existing");
-    fireEvent.click(screen.getByRole("button", { name: "New folder" }));
-    fireEvent.change(screen.getByLabelText("New folder name"), {
+    fireEvent.click(screen.getByRole("button", { name: "Новая папка" }));
+    fireEvent.change(screen.getByLabelText("Имя новой папки"), {
       target: { value: "existing" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Создать папку" }));
 
     expect(await screen.findByText(/already exists/)).toBeTruthy();
     expect(onDirectoryChange).not.toHaveBeenCalledWith("/home/me/existing");

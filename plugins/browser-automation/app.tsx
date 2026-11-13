@@ -49,10 +49,10 @@ const EXPAND_BUTTON_CLASS =
 type PreviewStatus = "connecting" | "live" | "ended" | "unavailable";
 
 const STATUS_LABEL: Record<PreviewStatus, string> = {
-  connecting: "Connecting",
-  live: "Live",
-  ended: "Ended",
-  unavailable: "Unavailable",
+  connecting: "Подключение",
+  live: "Активно",
+  ended: "Завершено",
+  unavailable: "Недоступно",
 };
 
 function subscribeDocumentVisibility(onChange: () => void): () => void {
@@ -103,7 +103,7 @@ function pageLocation(url: string): string {
 
 function pageTitle(frame: PreviewFrame | null): string {
   const title = frame?.title.trim() ?? "";
-  return title === "" || title === frame?.url ? "Headless browser" : title;
+  return title === "" || title === frame?.url ? "Браузер без интерфейса" : title;
 }
 
 function useLivePreview(args: {
@@ -210,8 +210,8 @@ function PreviewImage({
           src={`data:${frame.mimeType};base64,${frame.data}`}
           alt={
             status === "live"
-              ? `Live view of ${title}`
-              : `Last view of ${title}`
+              ? `Текущий вид страницы ${title}`
+              : `Последний вид страницы ${title}`
           }
           draggable={false}
           className={cn(
@@ -223,7 +223,7 @@ function PreviewImage({
         <div
           role="status"
           aria-busy="true"
-          aria-label="Loading browser preview"
+          aria-label="Загрузка предпросмотра браузера"
           className="size-full"
         >
           <Skeleton className="size-full rounded-none" />
@@ -250,7 +250,7 @@ function BrowserPreviewDirective({
   if (!SESSION_ID_PATTERN.test(sessionId)) {
     return (
       <Notice>
-        browser-preview requires a valid session attribute, e.g.{" "}
+        Для browser-preview требуется допустимый атрибут session, например{" "}
         <code>::browser-preview{'{session="…"}'}</code>
       </Notice>
     );
@@ -293,13 +293,13 @@ function BrowserPreviewCard({
   return (
     <section
       ref={observe}
-      aria-label="Browser preview"
+      aria-label="Предпросмотр браузера"
       title={source}
       className="my-2 overflow-hidden rounded-lg border border-border bg-surface-recessed"
     >
       <div
         role="group"
-        aria-label={`Browser preview controls: ${title}`}
+        aria-label={`Управление предпросмотром браузера: ${title}`}
         className={activityRowClass(
           "active",
           "flex w-full items-stretch rounded-none px-0 py-0",
@@ -310,7 +310,7 @@ function BrowserPreviewCard({
           id={toggleId}
           aria-expanded={expanded}
           aria-controls={bodyId}
-          aria-label={`Browser preview: ${title}`}
+          aria-label={`Предпросмотр браузера: ${title}`}
           onClick={() => setExpanded((value) => !value)}
           className={HEADER_BUTTON_CLASS}
         >
@@ -355,8 +355,8 @@ function BrowserPreviewCard({
           <button
             type="button"
             aria-haspopup="dialog"
-            aria-label="Expand browser preview"
-            title="Expand"
+            aria-label="Увеличить предпросмотр браузера"
+            title="Увеличить"
             onClick={() => openLightbox({ threadId, sessionId, frame })}
             className={EXPAND_BUTTON_CLASS}
           >

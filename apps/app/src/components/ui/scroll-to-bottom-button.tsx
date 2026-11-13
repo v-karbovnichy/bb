@@ -22,7 +22,7 @@ export function ScrollToBottomButton({
             ? "translate-y-0 opacity-100"
             : "pointer-events-none invisible translate-y-2 opacity-0",
         )}
-        aria-label="Scroll to latest event"
+        aria-label="Прокрутить к последнему событию"
         type="button"
       >
         {}

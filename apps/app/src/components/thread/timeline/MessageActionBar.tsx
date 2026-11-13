@@ -342,10 +342,10 @@ export function MessageActionBar({
       ? [
           {
             icon: "Copy" as const,
-            label: "Copy message",
+            label: "Скопировать сообщение",
             onSelect: () => {
               void copyToClipboardWithToast(messageText, {
-                errorMessage: "Failed to copy",
+                errorMessage: "Не удалось скопировать",
                 imageUrl: copyImageUrl,
               });
             },
@@ -359,7 +359,7 @@ export function MessageActionBar({
       ? [
           {
             icon: "Edit" as const,
-            label: "Edit message",
+            label: "Редактировать сообщение",
             onSelect: onEdit,
           },
         ]
@@ -377,7 +377,7 @@ export function MessageActionBar({
       ? [
           {
             icon: "MessageSquarePlus" as const,
-            label: "Add to chat",
+            label: "Добавить в чат",
             onSelect: handleAddToChat,
           },
         ]
@@ -386,7 +386,7 @@ export function MessageActionBar({
       ? [
           {
             icon: "Fork" as const,
-            label: "Fork into new thread",
+            label: "Ответвить в новый чат",
             onSelect: onFork,
             disabled,
           },
@@ -418,7 +418,7 @@ export function MessageActionBar({
       ? [
           {
             icon: "Link" as const,
-            label: "Copy link",
+            label: "Скопировать ссылку",
             onSelect: onCopyLink,
           },
         ]
@@ -477,7 +477,7 @@ export function MessageActionBar({
                     inlineCount > 0 && OVERFLOW_TRIGGER_TIGHTEN_CLASS,
                     "data-[state=open]:text-foreground data-[state=open]:opacity-100",
                   )}
-                  aria-label="Message actions"
+                  aria-label="Действия с сообщением"
                   data-no-sidebar-swipe=""
                 >
                   <Icon name="MoreHorizontal" className="size-3" />
@@ -485,7 +485,7 @@ export function MessageActionBar({
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align={alignment === "end" ? "end" : "start"}
-                mobileTitle="Message actions"
+                mobileTitle="Действия с сообщением"
                 className={MENU_CONTENT_WIDTH_CLASS}
               >
                 <MessageActionMenuItems actions={menuActions} />

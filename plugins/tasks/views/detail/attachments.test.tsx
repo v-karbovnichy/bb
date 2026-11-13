@@ -63,8 +63,8 @@ describe("AttachmentsGrid removal", () => {
       />,
     );
 
-    fireEvent.click(screen.getByLabelText("Remove diagram.png"));
-    fireEvent.click(await screen.findByRole("button", { name: "Remove" }));
+    fireEvent.click(screen.getByLabelText("Удалить diagram.png"));
+    fireEvent.click(await screen.findByRole("button", { name: "Удалить" }));
 
     await waitFor(() => expect(onRemove).toHaveBeenCalledWith(attachment));
     expect(onError).not.toHaveBeenCalled();
@@ -82,8 +82,8 @@ describe("AttachmentsGrid removal", () => {
       />,
     );
 
-    fireEvent.click(screen.getByLabelText("Remove diagram.png"));
-    fireEvent.click(await screen.findByRole("button", { name: "Remove" }));
+    fireEvent.click(screen.getByLabelText("Удалить diagram.png"));
+    fireEvent.click(await screen.findByRole("button", { name: "Удалить" }));
 
     await waitFor(() => expect(onError).toHaveBeenCalledWith("blob is busy"));
     expect(onRemove).toHaveBeenCalledTimes(1);

@@ -49,7 +49,7 @@ export function ThreadMachineStatus({ hostId }: { hostId: string }) {
         resume.error
           ? getMutationErrorMessage({
               error: resume.error,
-              fallbackMessage: "Could not resume the machine.",
+              fallbackMessage: "Не удалось возобновить работу компьютера.",
             })
           : null
       }
@@ -86,7 +86,7 @@ export function ThreadMachineStatusBanner({
   const expandable = detail !== null;
   return (
     <PromptStackCard
-      ariaLabel="Machine status"
+      ariaLabel="Состояние компьютера"
       className="overflow-hidden"
       style={{ minHeight: PROMPT_STACK_CARD_ROW_HEIGHT }}
     >
@@ -132,7 +132,7 @@ export function ThreadMachineStatusBanner({
         {phase === "suspended" ? (
           <BannerActionSlot hideInTiny={false}>
             <PromptBannerActionButton onClick={onResume}>
-              {expandable ? "Retry" : "Resume"}
+              {expandable ? "Повторить" : "Возобновить"}
             </PromptBannerActionButton>
           </BannerActionSlot>
         ) : null}
@@ -143,7 +143,7 @@ export function ThreadMachineStatusBanner({
           id={MACHINE_STATUS_BODY_ID}
           labelledBy={MACHINE_STATUS_TOGGLE_ID}
           isExpanded={isExpanded}
-          collapseLabel="Collapse machine status"
+          collapseLabel="Свернуть состояние компьютера"
           collapseRef={focus.collapseRef}
           onCollapse={focus.onCollapseClick}
         >

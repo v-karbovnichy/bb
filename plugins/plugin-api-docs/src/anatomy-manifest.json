@@ -29,12 +29,12 @@
       "fidelity": "anchor",
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor"],
-      "labels": { "anchor": ["Yesterday, 3:42 PM"] },
+      "labels": { "anchor": ["Вчера, 15:42"] },
       "fixtureClassAnchors": ["text-muted-foreground"],
       "sources": [
         {
           "path": "apps/app/src/components/thread/timeline/MessageMetadata.tsx",
-          "anchors": ["aria-label=\"Message metadata\"", "<PluginSlotMount", "<slot.component message={message} />"]
+          "anchors": ["aria-label=\"Метаданные сообщения\"", "<PluginSlotMount", "<slot.component message={message} />"]
         },
         {
           "path": "apps/app/src/components/thread/timeline/ThreadTimelineRows.tsx",
@@ -48,8 +48,8 @@
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor", "triggered"],
       "labels": {
-        "anchor": ["Your banner", "Your context", "Changed files"],
-        "triggered": ["Context details"]
+        "anchor": ["Ваш баннер", "Ваш контекст", "Изменённые файлы"],
+        "triggered": ["Подробности контекста"]
       },
       "fixtureClassAnchors": ["overflow-hidden", "rounded-lg"],
       "sources": [
@@ -78,7 +78,7 @@
       "requiredStates": ["anchor", "triggered"],
       "labels": {
         "anchor": [],
-        "triggered": ["Search saved prompts", "Review this change"]
+        "triggered": ["Поиск сохранённых запросов", "Проверить изменение"]
       },
       "fixtureClassAnchors": ["bottom-full", "bg-popover"],
       "sources": [
@@ -103,9 +103,9 @@
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor", "triggered", "outcome"],
       "labels": {
-        "anchor": ["Quick palette", "\u21e7\u2318P"],
-        "triggered": ["Search commands", "Plugins", "Run release checklist"],
-        "outcome": ["Release checklist"]
+        "anchor": ["Быстрые команды", "\u21e7\u2318P"],
+        "triggered": ["Поиск команд", "Плагины", "Запустить проверку релиза"],
+        "outcome": ["Проверка релиза"]
       },
       "fixtureClassAnchors": [
         "top-[12%]",
@@ -263,7 +263,7 @@
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor"],
       "labels": {
-        "anchor": ["Floating widget", "2 agents active"]
+        "anchor": ["Плавающий виджет", "Активных агентов: 2"]
       },
       "fixtureClassAnchors": [
         "absolute bottom-24 right-12",
@@ -338,7 +338,7 @@
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor"],
       "labels": {
-        "anchor": ["Configuration", "[set]", "Case-sensitive search"]
+        "anchor": ["Настройка", "[задано]", "Поиск с учётом регистра"]
       },
       "fixtureClassAnchors": ["bg-surface-recessed-solid p-3"],
       "sources": [
@@ -346,8 +346,8 @@
           "path": "apps/app/src/components/plugin/PluginSettings.tsx",
           "anchors": [
             "<Switch",
-            "placeholder={isSecret ? (secretIsSet ? \"[set]\" : \"[not set]\") : undefined}",
-            "<ResourceDetailConfigurationSection label=\"Configuration\">"
+            "placeholder={isSecret ? (secretIsSet ? \"[задано]\" : \"[не задано]\") : undefined}",
+            "<ResourceDetailConfigurationSection label=\"Настройки\">"
           ]
         }
       ]
@@ -359,10 +359,10 @@
       "requiredStates": ["anchor"],
       "labels": {
         "anchor": [
-          "Needs configuration",
-          "Open settings",
-          "Details",
-          "Capabilities"
+          "Требуется настройка",
+          "Открыть настройки",
+          "Сведения",
+          "Возможности"
         ]
       },
       "fixtureClassAnchors": ["bg-surface-recessed/55"],
@@ -371,19 +371,19 @@
           "path": "apps/app/src/components/tools/PluginCapabilities.tsx",
           "anchors": [
             "plugin.status === \"needs-configuration\" && hasSettingsPage",
-            "Open settings",
+            "Открыть настройки",
             "name=\"ChevronRight\""
           ]
         },
         {
           "path": "apps/app/src/components/plugin/management/plugin-status.ts",
-          "anchors": ["Complete the required settings."]
+          "anchors": ["Завершите обязательную настройку."]
         },
         {
           "path": "apps/app/src/components/tools/PluginDetail.tsx",
           "anchors": [
-            "label=\"Details\"",
-            "label={updatesWithBb ? \"Delivery\" : \"Installed\"}",
+            "label=\"Сведения\"",
+            "label={updatesWithBb ? \"Поставка\" : \"Установлен\"}",
             "<PluginIncludes plugin={plugin} configurationPath={configurationPath} />"
           ]
         }
@@ -428,7 +428,7 @@
       "responsiveStrategy": "scale-together",
       "requiredStates": ["anchor"],
       "labels": {
-        "anchor": ["Project", "Branch", "Deploy", "Automations", "Commits"]
+        "anchor": ["Проект", "Ветка", "Развёртывание", "Автоматизации", "Коммиты"]
       },
       "fixtureClassAnchors": [
         "grid-cols-[96px_minmax(0,1fr)]",

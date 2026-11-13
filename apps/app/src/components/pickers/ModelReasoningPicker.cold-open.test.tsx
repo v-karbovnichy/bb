@@ -59,15 +59,15 @@ it("keeps search typing and keyboard selection across the first menu download", 
   );
   await act(async () => {});
   expect(menu.imports).toBe(0);
-  expect(screen.queryByPlaceholderText("Search models")).toBeNull();
+  expect(screen.queryByPlaceholderText("Поиск моделей")).toBeNull();
   fireEvent.click(
     screen.getByRole("button", { name: "Provider, model and reasoning" }),
   );
   await waitFor(() => expect(menu.imports).toBe(1));
-  const search = screen.getByPlaceholderText("Search models");
+  const search = screen.getByPlaceholderText("Поиск моделей");
   await waitFor(() => expect(document.activeElement).toBe(search));
   expect(
-    screen.getByRole("status", { name: "Loading model picker" }),
+    screen.getByRole("status", { name: "Загрузка выбора модели" }),
   ).toBeTruthy();
   fireEvent.change(search, { target: { value: "o4m" } });
   fireEvent.keyDown(search, { key: "ArrowDown" });

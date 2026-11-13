@@ -82,7 +82,7 @@ describe("PluginDetailReleaseControl", () => {
     );
 
     const update = screen.getByRole("button", {
-      name: "Update Linear to 1.9.0",
+      name: "Обновить Linear до 1.9.0",
     });
     expect(update).toBeTruthy();
     expect(update.querySelector('[data-icon="Download"]')).not.toBeNull();
@@ -110,13 +110,13 @@ describe("PluginDetailReleaseControl", () => {
     );
 
     const blockedStatus = screen.getByRole("status", {
-      name: "Update blocked",
+      name: "Обновление заблокировано",
     });
-    expect(screen.queryByText("Update blocked")).toBeNull();
+    expect(screen.queryByText("Обновление заблокировано")).toBeNull();
     expect(blockedStatus.textContent).toContain("Requires bb >= 0.15.");
-    expect(blockedStatus.textContent).toContain("1.6.2 remains installed");
+    expect(blockedStatus.textContent).toContain("Версия 1.6.2 остаётся установленной");
     expect(blockedStatus.textContent).toContain(
-      "check again when a compatible plugin version is available",
+      "проверьте наличие совместимого обновления позже",
     );
     expect(blockedStatus.textContent).not.toContain("Update bb");
     expect(screen.queryByRole("button")).toBeNull();
@@ -154,14 +154,14 @@ describe("PluginDetailReleaseControl", () => {
 
     expect(
       screen.getByRole("button", {
-        name: "Review the update of Linear to 2.0.0",
+        name: "Проверить обновление Linear до 2.0.0",
       }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("status", { name: "Update outside the version range" })
+      screen.getByRole("status", { name: "Обновление за пределами диапазона версий" })
         .textContent,
     ).toBe(
-      "2.0.0 is available outside the version range ^1.6.0 this plugin follows. The marketplace now lists ^2.0.0. It may include breaking changes, so bb won’t install it until you review it.",
+      "Версия 2.0.0 доступна за пределами диапазона ^1.6.0, которому следует этот плагин. Теперь в каталоге указан диапазон ^2.0.0. Обновление может содержать несовместимые изменения. bb установит его после вашей проверки.",
     );
 
     cleanup();
@@ -181,9 +181,9 @@ describe("PluginDetailReleaseControl", () => {
     );
     expect(screen.queryByRole("button")).toBeNull();
     expect(
-      screen.getByRole("status", { name: "Update outside the version range" })
+      screen.getByRole("status", { name: "Обновление за пределами диапазона версий" })
         .textContent,
-    ).toContain("Requires bb >= 9. 1.6.2 remains installed.");
+    ).toContain("Requires bb >= 9. Версия 1.6.2 остаётся установленной.");
   });
 
   it("reviews and confirms a range upgrade after a historical activation failure", async () => {
@@ -243,24 +243,24 @@ describe("PluginDetailReleaseControl", () => {
     );
 
     expect(
-      screen.getByRole("status", { name: "Update failed" }).textContent,
-    ).toContain("bb couldn’t activate 4.0.0.");
+      screen.getByRole("status", { name: "Ошибка обновления" }).textContent,
+    ).toContain("bb не удалось запустить 4.0.0.");
     expect(
-      screen.getByRole("status", { name: "Update outside the version range" })
+      screen.getByRole("status", { name: "Обновление за пределами диапазона версий" })
         .textContent,
-    ).toContain("4.2.0 is available outside the version range ^3.4.0");
+    ).toContain("Версия 4.2.0 доступна за пределами диапазона ^3.4.0");
 
     fireEvent.click(
       screen.getByRole("button", {
-        name: "Review the update of Linear to 4.2.0",
+        name: "Проверить обновление Linear до 4.2.0",
       }),
     );
     expect(
-      await screen.findByRole("heading", { name: "Update Linear to 4.2.0?" }),
+      await screen.findByRole("heading", { name: "Обновить Linear до 4.2.0?" }),
     ).toBeTruthy();
     expect(fetchMock).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Update to 4.2.0" }));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить до 4.2.0" }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
     expect(fetchMock.mock.calls[0]?.[1]?.body).toBe(
@@ -335,16 +335,16 @@ describe("PluginDetailReleaseControl", () => {
       },
     );
 
-    const failedStatus = screen.getByRole("status", { name: "Update failed" });
-    expect(screen.queryByText("Update failed")).toBeNull();
+    const failedStatus = screen.getByRole("status", { name: "Ошибка обновления" });
+    expect(screen.queryByText("Ошибка обновления")).toBeNull();
     expect(failedStatus.textContent).toContain(
-      "bb couldn’t activate 1.9.0. It restored 1.6.2 and its data.",
+      "bb не удалось запустить 1.9.0. Восстановлена версия 1.6.2 и её данные.",
     );
-    expect(screen.queryByText("Technical details")).toBeNull();
+    expect(screen.queryByText("Технические сведения")).toBeNull();
     expect(screen.queryByText("The plugin failed to load.")).toBeNull();
     expect(failedStatus.querySelector("button")).toBeNull();
     const retry = screen.getByRole("button", {
-      name: "Retry update to 1.9.0",
+      name: "Повторить обновление до 1.9.0",
     });
     fireEvent.click(retry);
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));

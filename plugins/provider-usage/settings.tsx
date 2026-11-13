@@ -64,36 +64,36 @@ function formatReset(resetsAt: string | null): string | null {
   }
   const diffMs = reset.getTime() - Date.now();
   if (diffMs <= 0) {
-    return "Resetting now";
+    return "Сброс сейчас";
   }
 
   const diffMinutes = Math.round(diffMs / 60_000);
   if (diffMinutes < 60) {
-    return `Resets in ${diffMinutes} min`;
+    return `Сброс через ${diffMinutes} мин`;
   }
 
   const diffHours = Math.floor(diffMinutes / 60);
   if (diffHours < 24) {
     const minutes = diffMinutes % 60;
     return minutes > 0
-      ? `Resets in ${diffHours} hr ${minutes} min`
-      : `Resets in ${diffHours} hr`;
+      ? `Сброс через ${diffHours} ч ${minutes} мин`
+      : `Сброс через ${diffHours} ч`;
   }
 
   const withinWeek = diffMs < 7 * 24 * 60 * 60_000;
-  const formatted = reset.toLocaleString(undefined, {
+  const formatted = reset.toLocaleString("ru-RU", {
     weekday: withinWeek ? "short" : undefined,
     month: withinWeek ? undefined : "short",
     day: withinWeek ? undefined : "numeric",
     hour: "numeric",
     minute: "2-digit",
   });
-  return `Resets ${formatted}`;
+  return `Сброс ${formatted}`;
 }
 
 function formatUsdCents(cents: number, alwaysShowCents: boolean): string {
   const hasFractionalDollar = cents % 100 !== 0;
-  return new Intl.NumberFormat(undefined, {
+  return new Intl.NumberFormat("ru-RU", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: alwaysShowCents || hasFractionalDollar ? 2 : 0,
@@ -103,7 +103,7 @@ function formatUsdCents(cents: number, alwaysShowCents: boolean): string {
 
 function usageWindowValue(window: UsageWindow): string {
   if (!window.cost) {
-    return `${window.usedPercent}% used`;
+    return `Использовано ${window.usedPercent}%`;
   }
   return `${formatUsdCents(window.cost.usedUsdCents, true)} / ${formatUsdCents(window.cost.limitUsdCents, false)}`;
 }
@@ -170,19 +170,19 @@ function UsageLocationPicker({
           variant="outline"
           size="sm"
           className="max-w-48 gap-1.5"
-          aria-label="Usage source"
+          aria-label="Источник данных об использовании"
         >
           <Icon
             name={selectedLocation?.kind === "source" ? "Layers" : "Laptop"}
             className="size-3.5 shrink-0"
           />
           <span className="min-w-0 truncate">
-            {selectedLocation?.name ?? "Source"}
+            {selectedLocation?.name ?? "Источник"}
           </span>
           <Icon name="ChevronDown" className="size-3.5 shrink-0" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" mobileTitle="Usage source">
+      <DropdownMenuContent align="end" mobileTitle="Источник данных об использовании">
         {locations.map((location) => {
           const connected = !location.disabled;
           return (
@@ -326,7 +326,7 @@ function ProviderUsageBody({
   if (!usage) {
     return (
       <p className="text-xs text-muted-foreground">
-        {isLoading ? "Loading usage…" : "Usage not provided."}
+        {isLoading ? "Загрузка данных об использовании…" : "Данные об использовании не предоставлены."}
       </p>
     );
   }
@@ -335,7 +335,7 @@ function ProviderUsageBody({
       if (usage.windows.length === 0) {
         return (
           <p className="text-xs text-muted-foreground">
-            No usage limits reported for this plan.
+            Для этого тарифа лимиты не указаны.
           </p>
         );
       }
@@ -349,7 +349,7 @@ function ProviderUsageBody({
     case "not_installed":
       return (
         <p className="text-xs text-muted-foreground">
-          Not installed on this machine.
+          Не установлено на этой машине.
         </p>
       );
     case "unauthenticated":
@@ -416,11 +416,11 @@ export function UsageSettingsContent({
         <div className="min-w-0">
           <div className="flex min-w-0 items-center gap-1.5">
             <h2 className="min-w-0 text-sm font-semibold text-foreground">
-              Usage limits
+              Лимиты использования
             </h2>
           </div>
           <p className="mt-0.5 text-xs leading-snug text-subtle-foreground/75">
-            Your provider subscription usage.
+            Использование подписки провайдера.
           </p>
         </div>
         <div className="shrink-0 self-start">
@@ -444,7 +444,7 @@ export function UsageSettingsContent({
               disabled={loading}
               onClick={onRefresh}
               aria-label={
-                loading ? "Reloading usage data" : "Reload usage data"
+                loading ? "Обновление данных об использовании" : "Обновить данные об использовании"
               }
             >
               <Icon

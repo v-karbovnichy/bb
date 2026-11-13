@@ -23,7 +23,7 @@ export function UncommittedChangesSectionView({
   if (section === undefined) return null;
   return (
     <InfoSection
-      label="Uncommitted files"
+      label="Файлы без коммита"
       count={section.stats.fileCount}
       trailing={<ChangedFilesTally section={section} />}
     >

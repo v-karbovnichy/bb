@@ -240,7 +240,7 @@ function buildOpenTargetMenuItemLabel(target: WorkspaceOpenTarget): string {
 function ThreadDetailNotFound() {
   return (
     <PageShell contentClassName="min-h-full items-center justify-center">
-      <p className="py-12 text-center text-sm text-destructive">Not found</p>
+      <p className="py-12 text-center text-sm text-destructive">Не найдено</p>
     </PageShell>
   );
 }
@@ -539,7 +539,7 @@ function ThreadDetailViewInternal(
     enabled: timelineEnabled,
   });
   const updateThread = useUpdateThread({
-    errorMessage: "Failed to assign parent thread.",
+    errorMessage: "Не удалось назначить родительский чат.",
   });
   const loadedTerminalSessions = terminalsListQuery.data?.sessions;
   const terminalSessions = loadedTerminalSessions ?? EMPTY_TERMINAL_SESSIONS;
@@ -1259,7 +1259,7 @@ function ThreadDetailViewInternal(
         items.push({
           id: "open-in",
           items: openTargetItems,
-          label: "Open in",
+          label: "Открыть в",
           type: "submenu",
         });
       }
@@ -1270,7 +1270,7 @@ function ThreadDetailViewInternal(
         items.push(
           {
             id: "builtin",
-            label: "Open with built-in preview",
+            label: "Открыть во встроенном просмотре",
             onSelect: () => {
               handleOpenTimelineLocalFileLink(link, { viewer: "builtin" });
             },
@@ -1292,21 +1292,21 @@ function ThreadDetailViewInternal(
       items.push(
         {
           id: "copy-path",
-          label: "Copy file path",
+          label: "Скопировать путь к файлу",
           onSelect: () => {
             void copyToClipboardWithToast(link.path, {
-              successMessage: "File path copied",
-              errorMessage: "Failed to copy file path",
+              successMessage: "Путь к файлу скопирован",
+              errorMessage: "Не удалось скопировать путь к файлу",
             });
           },
         },
         {
           id: "copy-name",
-          label: "Copy file name",
+          label: "Скопировать имя файла",
           onSelect: () => {
             void copyToClipboardWithToast(getFileBasename(link.path), {
-              successMessage: "File name copied",
-              errorMessage: "Failed to copy file name",
+              successMessage: "Имя файла скопировано",
+              errorMessage: "Не удалось скопировать имя файла",
             });
           },
         },
@@ -1351,7 +1351,7 @@ function ThreadDetailViewInternal(
     return (
       <PageShell contentClassName="min-h-full items-center justify-center">
         <p className="py-12 text-center text-sm text-destructive">
-          {error ? "Failed to load thread." : "Not found"}
+          {error ? "Не удалось загрузить чат." : "Не найдено"}
         </p>
       </PageShell>
     );
@@ -1473,7 +1473,7 @@ function ThreadDetailViewInternal(
                   "data-[state=open]:bg-state-active data-[state=open]:text-foreground",
                   HEADER_ICON_BUTTON_CLASS,
                 )}
-                aria-label="Thread actions"
+                aria-label="Действия с чатом"
                 onClick={(event) => {
                   triggerProps.onClick?.(event);
                   event.stopPropagation();

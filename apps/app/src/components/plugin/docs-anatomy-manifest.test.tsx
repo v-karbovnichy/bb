@@ -207,7 +207,7 @@ describe("docs anatomy manifest", () => {
     const footerSelectors: Record<string, () => Element | null> = {
       "plugin-footer-items": () =>
         footer!.querySelector('button[aria-label="Anatomy footer action"]'),
-      "bug-report": () => footer!.querySelector('[aria-label^="Report a bug"]'),
+      "bug-report": () => footer!.querySelector('[aria-label^="Сообщить об ошибке"]'),
     };
     expect(Object.keys(footerSelectors).sort()).toEqual(
       [...manifest.sidebarFooter].sort(),
@@ -246,10 +246,10 @@ describe("docs anatomy manifest", () => {
     );
 
     const actionLabels: Record<string, string> = {
-      copy: "Copy message",
-      edit: "Edit message",
+      copy: "Скопировать сообщение",
+      edit: "Редактировать сообщение",
       "plugin-actions": "Anatomy message action",
-      "message-menu": "Message actions",
+      "message-menu": "Действия с сообщением",
     };
     expect(Object.keys(actionLabels).sort()).toEqual(
       [...manifest.messageActionBar].sort(),

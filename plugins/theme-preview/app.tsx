@@ -370,8 +370,8 @@ function Sidebar({
             bb-plugins
           </div>
         )}
-        <MockSidebarRow label="New thread" />
-        <MockSidebarLabel>Today</MockSidebarLabel>
+        <MockSidebarRow label="Новый чат" />
+        <MockSidebarLabel>Сегодня</MockSidebarLabel>
         <MockSidebarRow
           label="Endless theme family — blacklight"
           state={selected ? "selected" : "rest"}
@@ -387,7 +387,7 @@ function Sidebar({
           state={hover ? "hover" : "rest"}
         />
         <MockSidebarRow label="Crit: endless-color light foil" dot="unread" />
-        <MockSidebarLabel roomy>Yesterday</MockSidebarLabel>
+        <MockSidebarLabel roomy>Вчера</MockSidebarLabel>
         <MockSidebarRow label="Fix pink split row (oklch mix)" dot="status" />
         <MockSidebarRow label="Hue census battery" />
       </div>
@@ -492,7 +492,7 @@ function Composer({
         className={mobile ? "text-base" : "text-sm"}
         style={{ color: v("muted-foreground"), minHeight: mobile ? 48 : 20 }}
       >
-        {empty ? "Ask anything…" : "Ask for a follow-up."}
+        {empty ? "Спросите о чём угодно…" : "Задайте уточняющий вопрос."}
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <Icon name="Plus" className="size-4 shrink-0" />
@@ -528,9 +528,9 @@ function Composer({
 
 function VerificationCard() {
   const rows: ReadonlyArray<[string, string, Tone]> = [
-    ["Theme tokens", "28 resolved", "success"],
-    ["Base contrast", "AA passed", "success"],
-    ["Reference sheet", "Updated", "secondary"],
+    ["Токены темы", "28 определено", "success"],
+    ["Базовая контрастность", "AA пройдено", "success"],
+    ["Таблица образцов", "Обновлена", "secondary"],
   ];
   return (
     <div
@@ -542,7 +542,7 @@ function VerificationCard() {
       }}
     >
       <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 6 }}>
-        Verification summary
+        Сводка проверки
       </div>
       {rows.map(([label, value, tone]) => (
         <div
@@ -583,7 +583,7 @@ function ThreadTocFixture() {
   return (
     <aside
       data-tp-thread-toc=""
-      aria-label="Thread table of contents"
+      aria-label="Содержание чата"
       style={{
         position: "absolute",
         zIndex: 6,
@@ -615,20 +615,20 @@ function ThreadTocFixture() {
           }}
         >
           <TabsList
-            aria-label="Table of contents messages"
+            aria-label="Сообщения в содержании"
             className="h-7 w-full justify-start p-0.5"
           >
             <TabsTrigger
               value="agent"
               className="h-6 flex-1 cursor-pointer px-2 text-xs"
             >
-              Agent
+              Агент
             </TabsTrigger>
             <TabsTrigger
               value="you"
               className="h-6 flex-1 cursor-pointer px-2 text-xs"
             >
-              You
+              Вы
             </TabsTrigger>
           </TabsList>
           <TabsContent
@@ -1051,7 +1051,7 @@ function InfoPanel({ mobile = false }: { mobile?: boolean }) {
       <div data-tp-thread-info="" className="flex min-h-0 flex-1 flex-col">
         {mobile ? null : (
           <div className="flex h-12 items-center gap-3 px-4 text-xs">
-            {["Info", "Diff"].map((t, i) => (
+            {["Сведения", "Изменения"].map((t, i) => (
               <span
                 key={t}
                 className={cn(
@@ -1067,26 +1067,26 @@ function InfoPanel({ mobile = false }: { mobile?: boolean }) {
         )}
         <div className="flex flex-col gap-3.5 px-4 py-3.5">
           <div>
-            {kv("Environment", "Worktree")}
+            {kv("Среда", "Рабочее дерево")}
             {kv(
-              "Directory",
+              "Папка",
               <span style={{ fontFamily: MONO, fontSize: 12 }}>~/Code/bb</span>,
             )}
             {kv(
-              "Branch",
+              "Ветка",
               <span style={{ fontFamily: MONO, fontSize: 12 }}>
                 bb/endless-theme
               </span>,
             )}
             {kv(
-              "Compare to",
+              "Сравнить с",
               <span style={{ fontFamily: MONO, fontSize: 12 }}>main</span>,
             )}
-            {kv("Status", <Badge tone="success">Clean</Badge>)}
-            {kv("Pull request", <Badge tone="merged">Merged #42</Badge>)}
+            {kv("Состояние", <Badge tone="success">Без изменений</Badge>)}
+            {kv("Запрос на слияние", <Badge tone="merged">Слит #42</Badge>)}
           </div>
           <div>
-            <Eyebrow style={{ marginBottom: 4 }}>Files</Eyebrow>
+            <Eyebrow style={{ marginBottom: 4 }}>Файлы</Eyebrow>
             {["themes/endless-color.css", "build-color.py"].map((f) => (
               <div
                 key={f}
@@ -1232,7 +1232,7 @@ function SettingsPage({
               fontWeight: 600,
             }}
           >
-            Appearance
+            Оформление
           </h2>
           <div
             style={{
@@ -1244,20 +1244,20 @@ function SettingsPage({
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {row(
-                "Theme",
+                "Тема",
                 null,
-                control("Theme", mode === "light" ? "Light" : "Dark"),
+                control("Тема", mode === "light" ? "Светлая" : "Тёмная"),
               )}
               {row(
-                "Palette",
+                "Палитра",
                 "Palettes change bb's colors, including syntax colors in diffs and file previews. Choose a built-in palette or create one from a prompt.",
-                control("Palette", themeName),
+                control("Палитра", themeName),
               )}
               {row(
-                "Favicon color",
-                "Tint browser tabs to tell instances apart.",
+                "Цвет значка сайта",
+                "Окрашивать вкладки браузера, чтобы различать экземпляры.",
                 control(
-                  "Favicon color",
+                  "Цвет значка сайта",
                   <span
                     style={{ display: "flex", alignItems: "center", gap: 8 }}
                   >
@@ -1270,14 +1270,14 @@ function SettingsPage({
                         background: v("foreground"),
                       }}
                     />
-                    Default
+                    По умолчанию
                   </span>,
                 ),
               )}
               {row(
-                "Fade inactive splits",
-                "Fade out splits that do not have focus.",
-                <BbSwitch checked aria-label="Fade inactive splits" />,
+                "Приглушать неактивные панели",
+                "Приглушать панели, которые не находятся в фокусе.",
+                <BbSwitch checked aria-label="Приглушать неактивные панели" />,
               )}
             </div>
           </div>
@@ -1288,13 +1288,13 @@ function SettingsPage({
 }
 
 const SETTINGS_NAV_ITEMS = [
-  { icon: "Settings", label: "General" },
-  { icon: "Bot", label: "Providers" },
-  { icon: "Palette", label: "Appearance" },
-  { icon: "SlidersHorizontal", label: "Keyboard" },
-  { icon: "ChartColumn", label: "Usage limits" },
-  { icon: "Folder", label: "Files" },
-  { icon: "Laptop", label: "Machines" },
+  { icon: "Settings", label: "Общие" },
+  { icon: "Bot", label: "Провайдеры" },
+  { icon: "Palette", label: "Оформление" },
+  { icon: "SlidersHorizontal", label: "Клавиатура" },
+  { icon: "ChartColumn", label: "Лимиты использования" },
+  { icon: "Folder", label: "Файлы" },
+  { icon: "Laptop", label: "Машины" },
 ] as const;
 
 function SettingsSidebarFixture() {
@@ -1310,7 +1310,7 @@ function SettingsSidebarFixture() {
               key={item.label}
               label={item.label}
               icon={item.icon}
-              state={item.label === "Appearance" ? "selected" : "rest"}
+              state={item.label === "Оформление" ? "selected" : "rest"}
               interactive
             />
           ))}
@@ -1450,9 +1450,9 @@ function MobileFrame({
   >("conversation");
   const title =
     view === "settings"
-      ? "Settings"
+      ? "Настройки"
       : view === "new"
-        ? "New thread"
+        ? "Новый чат"
         : "Endless theme family";
   const navigation = surface === "navigation";
   const panel = surface === "panel";
@@ -1475,7 +1475,7 @@ function MobileFrame({
             <BbButton
               variant="ghost"
               className={headerButton}
-              aria-label="Close navigation preview"
+              aria-label="Закрыть предпросмотр навигации"
               onClick={() => setSurface("conversation")}
             >
               <Icon name="PanelLeft" />
@@ -1502,7 +1502,7 @@ function MobileFrame({
           <BbButton
             variant="ghost"
             className={headerButton}
-            aria-label="Show navigation preview"
+            aria-label="Показать предпросмотр навигации"
             onClick={() =>
               setSurface(navigation ? "conversation" : "navigation")
             }
@@ -1514,7 +1514,7 @@ function MobileFrame({
           <BbButton
             variant="ghost"
             className={headerButton}
-            aria-label="Show right panel preview"
+            aria-label="Показать предпросмотр правой панели"
             onClick={() => setSurface(panel ? "conversation" : "panel")}
           >
             <Icon name="PanelRight" />
@@ -1524,7 +1524,7 @@ function MobileFrame({
           <SettingsPage narrow themeName={themeName} mode={mode} />
         ) : view === "new" ? (
           <div className="flex min-h-0 flex-1 flex-col justify-end gap-4 p-4">
-            <div className="text-xs text-subtle-foreground">Recent threads</div>
+            <div className="text-xs text-subtle-foreground">Недавние чаты</div>
             {[
               "Endless theme family",
               "Specimen sheets",
@@ -1552,7 +1552,7 @@ function MobileFrame({
           <button
             type="button"
             className="absolute inset-0 cursor-pointer bg-transparent"
-            aria-label="Return to conversation preview"
+            aria-label="Вернуться к предпросмотру чата"
             onClick={() => setSurface("conversation")}
           />
         ) : null}
@@ -1565,11 +1565,11 @@ function MobileFrame({
           <div className="flex h-12 shrink-0 items-center gap-2 border-b border-border-seam px-2">
             <Icon name="Info" className="size-5" />
             <Icon name="FileDiff" className="size-5" />
-            <span className="min-w-0 flex-1 truncate text-sm">Info</span>
+            <span className="min-w-0 flex-1 truncate text-sm">Сведения</span>
             <BbButton
               variant="ghost"
               className={headerButton}
-              aria-label="Close right panel preview"
+              aria-label="Закрыть предпросмотр правой панели"
               onClick={() => setSurface("conversation")}
             >
               <Icon name="PanelRight" />
@@ -2143,7 +2143,7 @@ function ColorSegment({
       labelStyle={{ ...TEXT_VALUE, color: v("foreground") }}
       leading={
         <span
-          aria-label={`${name} swatch${color?.sidebar ? ", has a sidebar override" : ""}`}
+          aria-label={`Образец цвета ${name}${color?.sidebar ? ", есть переопределение для боковой панели" : ""}`}
           title={title}
           style={{
             width: 24,
@@ -2158,7 +2158,7 @@ function ColorSegment({
         hasContrast ? (
           <span
             data-tp-contrast-ratio=""
-            aria-label={`${name} contrast ratio: ${ratioLabel}`}
+            aria-label={`Контрастность ${name}: ${ratioLabel}`}
             style={{ ...TEXT_VALUE, textAlign: "right", whiteSpace: "nowrap" }}
           >
             {ratioLabel}
@@ -2254,7 +2254,7 @@ function TypographySheet({ computed }: { computed: Computed }) {
     "line-height": formatLineHeight(computed["text-sm--line-height"]?.value),
   };
   return (
-    <SystemBlock id="typography" title="Typography">
+    <SystemBlock id="typography" title="Типографика">
       {TYPE_SPECIMENS.map((specimen) => (
         <StyleSegment
           key={specimen.id}
@@ -2281,7 +2281,7 @@ function TypographySheet({ computed }: { computed: Computed }) {
 
 function RhythmSheet({ computed }: { computed: Computed }) {
   return (
-    <SystemBlock id="rhythm" title="Rhythm">
+    <SystemBlock id="rhythm" title="Ритм">
       {RHYTHM_SPECIMENS.map((specimen) => (
         <StyleSegment
           key={specimen.id}
@@ -2296,7 +2296,7 @@ function RhythmSheet({ computed }: { computed: Computed }) {
 
 function RadiusSheet({ resolved }: { resolved: Record<string, string> }) {
   return (
-    <SystemBlock id="radius" title="Corner radius">
+    <SystemBlock id="radius" title="Скругление углов">
       {RADIUS_SPECIMENS.map((specimen) => (
         <StyleSegment
           key={specimen.id}
@@ -2341,7 +2341,7 @@ function ShadowSheet({ computed }: { computed: Computed }) {
     opacity,
   };
   return (
-    <SystemBlock id="shadow" title="Shadow">
+    <SystemBlock id="shadow" title="Тень">
       <div
         data-tp-shadow-preview=""
         style={{
@@ -2356,7 +2356,7 @@ function ShadowSheet({ computed }: { computed: Computed }) {
           borderTop: `1px solid ${v("border-hairline", v("border"))}`,
         }}
       >
-        <span style={TEXT_LABEL}>Live shadow</span>
+        <span style={TEXT_LABEL}>Предпросмотр тени</span>
         <span
           aria-hidden
           style={{
@@ -2425,7 +2425,7 @@ function StyleSheetSection({
             key={group.id}
             id={group.id}
             title={group.title}
-            trailingLabel={group.contrast !== "none" ? "Contrast" : undefined}
+            trailingLabel={group.contrast !== "none" ? "Контрастность" : undefined}
           >
             {group.tokens.map((token) => (
               <ColorSegment
@@ -2454,7 +2454,7 @@ function StyleSheetSection({
             key={group.id}
             id={group.id}
             title={group.title}
-            trailingLabel={group.contrast !== "none" ? "Contrast" : undefined}
+            trailingLabel={group.contrast !== "none" ? "Контрастность" : undefined}
           >
             {group.tokens.map((token) => (
               <ColorSegment
@@ -2555,17 +2555,17 @@ function OverlaySpecimens() {
             size="sm"
             className={OVERLAY_TRIGGER_CLASS}
           >
-            <OverlayTriggerLabel>Menu</OverlayTriggerLabel>
+            <OverlayTriggerLabel>Меню</OverlayTriggerLabel>
           </BbButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuLabel>Thread</DropdownMenuLabel>
-          <DropdownMenuItem>Rename…</DropdownMenuItem>
-          <DropdownMenuItem>Open in split</DropdownMenuItem>
-          <DropdownMenuItem>Copy link</DropdownMenuItem>
+          <DropdownMenuLabel>Чат</DropdownMenuLabel>
+          <DropdownMenuItem>Переименовать…</DropdownMenuItem>
+          <DropdownMenuItem>Открыть в отдельной панели</DropdownMenuItem>
+          <DropdownMenuItem>Скопировать ссылку</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-destructive focus:text-destructive">
-            Archive
+            Архивировать
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -2576,25 +2576,25 @@ function OverlaySpecimens() {
             size="sm"
             className={OVERLAY_TRIGGER_CLASS}
           >
-            <OverlayTriggerLabel>Dialog</OverlayTriggerLabel>
+            <OverlayTriggerLabel>Диалог</OverlayTriggerLabel>
           </BbButton>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Archive thread?</DialogTitle>
+            <DialogTitle>Архивировать чат?</DialogTitle>
             <DialogDescription>
-              “Endless theme family — blacklight pass” moves to the archive. You
-              can restore it from search at any time.
+              Чат «Endless theme family — blacklight pass» будет перемещён в архив.
+              Его можно восстановить через поиск в любое время.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
               <BbButton variant="outline" size="sm">
-                Cancel
+                Отмена
               </BbButton>
             </DialogClose>
             <DialogClose asChild>
-              <BbButton size="sm">Archive</BbButton>
+              <BbButton size="sm">Архивировать</BbButton>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
@@ -2606,14 +2606,14 @@ function OverlaySpecimens() {
             size="sm"
             className={OVERLAY_TRIGGER_CLASS}
           >
-            <OverlayTriggerLabel>Popover</OverlayTriggerLabel>
+            <OverlayTriggerLabel>Всплывающая панель</OverlayTriggerLabel>
           </BbButton>
         </PopoverTrigger>
         <PopoverContent align="start" className="w-56 p-1">
           <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-            On this page
+            На этой странице
           </div>
-          {["Verification summary", "Selection blue", "Sidebar seam"].map(
+          {["Сводка проверки", "Синий цвет выделения", "Граница боковой панели"].map(
             (item, index) => (
               <div
                 key={item}
@@ -2647,7 +2647,7 @@ function OverlaySpecimens() {
                 tooltip.show();
               }}
             >
-              <OverlayTriggerLabel>Tooltip</OverlayTriggerLabel>
+              <OverlayTriggerLabel>Подсказка</OverlayTriggerLabel>
             </BbButton>
           </TooltipTrigger>
           <TooltipContent
@@ -2655,7 +2655,7 @@ function OverlaySpecimens() {
             onMouseEnter={tooltip.show}
             onMouseLeave={tooltip.hideSoon}
           >
-            Copy branch name
+            Скопировать название ветки
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -2673,7 +2673,7 @@ function OverlaySpecimens() {
             className={openClass(hoverCardOpen)}
             onClick={() => setHoverCardOpen((open) => !open)}
           >
-            <OverlayTriggerLabel>Hover card</OverlayTriggerLabel>
+            <OverlayTriggerLabel>Карточка при наведении</OverlayTriggerLabel>
           </BbButton>
         </HoverCardTrigger>
         <HoverCardContent
@@ -2689,7 +2689,7 @@ function OverlaySpecimens() {
               Endless theme family
             </span>
             <Badge tone="success">
-              <Dot color={v("success")} size={6} /> Running
+              <Dot color={v("success")} size={6} /> Выполняется
             </Badge>
           </div>
           <div
@@ -2719,13 +2719,13 @@ function OverlaySpecimens() {
               size="sm"
               className="h-7 flex-1 cursor-pointer px-2 text-xs"
             >
-              Copy branch
+              Скопировать ветку
             </BbButton>
             <BbButton
               size="sm"
               className="h-7 flex-1 cursor-pointer px-2 text-xs"
             >
-              Open in split
+              Открыть в отдельной панели
             </BbButton>
           </div>
         </HoverCardContent>
@@ -2735,12 +2735,12 @@ function OverlaySpecimens() {
         size="sm"
         className={OVERLAY_TRIGGER_CLASS}
         onClick={() =>
-          toast.success("Reference sheet updated", {
+          toast.success("Таблица образцов обновлена", {
             description: "themes/endless-color.css",
           })
         }
       >
-        <OverlayTriggerLabel>Toast</OverlayTriggerLabel>
+        <OverlayTriggerLabel>Уведомление</OverlayTriggerLabel>
       </BbButton>
     </div>
   );
@@ -2789,7 +2789,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           data-tp-role="category"
           style={{ ...TEXT_CATEGORY, marginBottom: 8 }}
         >
-          Buttons
+          Кнопки
         </h3>
         <div
           data-tp-button-grid=""
@@ -2803,35 +2803,35 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
             size="sm"
             className="h-7 min-w-0 cursor-pointer px-2 text-xs"
           >
-            Default
+            Основная
           </BbButton>
           <BbButton
             size="sm"
             variant="secondary"
             className="h-7 min-w-0 cursor-pointer px-2 text-xs"
           >
-            Secondary
+            Вторичная
           </BbButton>
           <BbButton
             size="sm"
             variant="outline"
             className="h-7 min-w-0 cursor-pointer px-2 text-xs"
           >
-            Outline
+            Контурная
           </BbButton>
           <BbButton
             size="sm"
             variant="ghost"
             className="h-7 min-w-0 cursor-pointer px-2 text-xs"
           >
-            Ghost
+            Без фона
           </BbButton>
           <BbButton
             size="sm"
             variant="destructive"
             className="h-7 min-w-0 cursor-pointer px-2 text-xs"
           >
-            Delete
+            Удалить
           </BbButton>
           <BbButton
             size="sm"
@@ -2839,7 +2839,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
             className="h-7 min-w-0 px-2 text-xs"
             disabled
           >
-            Disabled
+            Недоступна
           </BbButton>
         </div>
       </div>
@@ -2848,7 +2848,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           data-tp-role="category"
           style={{ ...TEXT_CATEGORY, marginBottom: 8 }}
         >
-          Badges
+          Метки
         </h3>
         <div
           data-tp-badge-row=""
@@ -2860,12 +2860,12 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           }}
         >
           <Badge tone="success">
-            <Dot color={v("success")} size={6} /> Running
+            <Dot color={v("success")} size={6} /> Выполняется
           </Badge>
-          <Badge tone="warning">Attention</Badge>
-          <Badge tone="destructive">Failed</Badge>
-          <Badge tone="merged">Merged</Badge>
-          <Badge tone="outline">branch</Badge>
+          <Badge tone="warning">Внимание</Badge>
+          <Badge tone="destructive">Ошибка</Badge>
+          <Badge tone="merged">Слито</Badge>
+          <Badge tone="outline">ветка</Badge>
         </div>
       </div>
       <div data-tp-block="inputs" style={compactBlock(true)}>
@@ -2873,20 +2873,20 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           data-tp-role="category"
           style={{ ...TEXT_CATEGORY, marginBottom: 8 }}
         >
-          Inputs
+          Поля ввода
         </h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <BbInput
             className="h-7 px-2 text-xs"
-            aria-label="Search threads"
-            placeholder="Search threads…"
+            aria-label="Поиск чатов"
+            placeholder="Поиск чатов…"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
           <BbInput
             className="h-7 px-2 text-xs"
-            aria-label="Disabled input"
-            value="Disabled"
+            aria-label="Недоступное поле ввода"
+            value="Недоступно"
             disabled
             readOnly
           />
@@ -2897,7 +2897,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           data-tp-role="category"
           style={{ ...TEXT_CATEGORY, marginBottom: 8 }}
         >
-          Switch
+          Переключатель
         </h3>
         <div data-tp-toggle-controls="" style={toggleControls}>
           <label
@@ -2914,7 +2914,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               onCheckedChange={setNotify}
               className="cursor-pointer"
             />{" "}
-            Notifications
+            Уведомления
           </label>
           <label
             style={{
@@ -2930,7 +2930,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               onCheckedChange={setCompact}
               className="cursor-pointer"
             />{" "}
-            Compact rows
+            Компактные строки
           </label>
           <label
             style={{
@@ -2941,7 +2941,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               color: v("muted-foreground"),
             }}
           >
-            <BbSwitch checked disabled /> Disabled
+            <BbSwitch checked disabled /> Недоступно
           </label>
         </div>
       </div>
@@ -2950,7 +2950,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
           data-tp-role="category"
           style={{ ...TEXT_CATEGORY, marginBottom: 8 }}
         >
-          Checkbox
+          Флажок
         </h3>
         <div data-tp-toggle-controls="" style={toggleControls}>
           <label
@@ -2967,7 +2967,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               onCheckedChange={(next) => setChecked(next === true)}
               className="cursor-pointer"
             />{" "}
-            Include drafts
+            Включать черновики
           </label>
           <label
             style={{
@@ -2983,7 +2983,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               onCheckedChange={(next) => setAgreed(next === true)}
               className="cursor-pointer"
             />{" "}
-            Watch this branch
+            Следить за этой веткой
           </label>
           <label
             style={{
@@ -2994,7 +2994,7 @@ function ComponentsSection({ stacked = false }: { stacked?: boolean }) {
               color: v("muted-foreground"),
             }}
           >
-            <BbCheckbox checked disabled /> Disabled
+            <BbCheckbox checked disabled /> Недоступно
           </label>
         </div>
       </div>
@@ -3074,7 +3074,7 @@ function Chips({
       {CHIP_KEYS.map((key) => (
         <span
           key={key}
-          title={`--${key === "accent" ? "file-accent" : key}: ${swatch?.[key] ?? "bundled with the app, not readable from disk"}`}
+          title={`--${key === "accent" ? "file-accent" : key}: ${swatch?.[key] ?? "встроено в приложение, недоступно для чтения с диска"}`}
           style={{
             width: w,
             height: h,
@@ -3126,7 +3126,7 @@ function ModeSwitch({
     <div
       data-tp-mode-switch=""
       role="group"
-      aria-label="Colour mode"
+      aria-label="Цветовой режим"
       className="border-input"
       style={{
         display: "flex",
@@ -3146,8 +3146,8 @@ function ModeSwitch({
             type="button"
             data-tp-mode={option}
             aria-pressed={active}
-            aria-label={option === "light" ? "Light mode" : "Dark mode"}
-            title={option === "light" ? "Light mode" : "Dark mode"}
+            aria-label={option === "light" ? "Светлый режим" : "Тёмный режим"}
+            title={option === "light" ? "Светлый режим" : "Тёмный режим"}
             disabled={disabled}
             onClick={() => onPick(option)}
             className={cn(
@@ -3217,10 +3217,10 @@ function ThemePicker({
   const unavailable = pending;
   const loading = catalog.themes.length === 0;
   const accessibleName = loading
-    ? "Loading themes"
+    ? "Загрузка тем"
     : pending
-      ? `${selectionSlow ? "Still applying" : "Applying"} ${current?.name ?? "theme"} ${displayMode}`
-      : `${current?.name ?? "Theme"} ${displayMode}`;
+      ? `${selectionSlow ? "Тема всё ещё применяется:" : "Применяется тема:"} ${current?.name ?? "тема"}, ${displayMode === "light" ? "светлый режим" : "тёмный режим"}`
+      : `${current?.name ?? "Тема"}, ${displayMode === "light" ? "светлый режим" : "тёмный режим"}`;
 
   return (
     <div
@@ -3277,7 +3277,7 @@ function ThemePicker({
                   flex: "1 1 auto",
                 }}
               >
-                {loading ? "Loading themes…" : (current?.name ?? "Theme")}
+                {loading ? "Загрузка тем…" : (current?.name ?? "Тема")}
               </span>
             </span>
           </SelectTrigger>
@@ -3308,7 +3308,7 @@ function ThemePicker({
           role="status"
           style={{ fontSize: 10.5, color: v("muted-foreground") }}
         >
-          Still applying…
+          Тема всё ещё применяется…
         </div>
       ) : null}
       {selectionFailed ? (
@@ -3323,10 +3323,10 @@ function ThemePicker({
             color: v("destructive-text", v("destructive")),
           }}
         >
-          <span>Theme didn’t apply.</span>
+          <span>Не удалось применить тему.</span>
           <button
             type="button"
-            aria-label="Retry theme"
+            aria-label="Повторить применение темы"
             onClick={onRetry}
             className="cursor-pointer underline underline-offset-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
             style={{
@@ -3338,7 +3338,7 @@ function ThemePicker({
               font: "inherit",
             }}
           >
-            Retry
+            Повторить
           </button>
         </div>
       ) : null}
@@ -3421,7 +3421,7 @@ function PreviewPage({ subPath }: { subPath: string }) {
       catalogLoadQueued.current = false;
       catalogLoadPending.current = true;
       const request = catalogRequests.current.begin();
-      withRpcTimeout(rpc.call("themeCatalog", {}), "Theme catalog")
+      withRpcTimeout(rpc.call("themeCatalog", {}), "Каталог тем")
         .then((c) => {
           if (
             !cancelled &&
@@ -3507,7 +3507,7 @@ function PreviewPage({ subPath }: { subPath: string }) {
     const request = catalogRequests.current.begin();
     withRpcTimeout(
       rpc.call("setTheme", { themeId: selection.themeId }),
-      "Theme selection",
+      "Выбор темы",
     )
       .then((next) => {
         if (catalogRequests.current.isLatest(request)) {
@@ -3550,7 +3550,7 @@ function PreviewPage({ subPath }: { subPath: string }) {
   const displayThemeId = pendingSelection?.themeId ?? catalog.activeThemeId;
   const displayThemeName =
     catalog.themes.find((theme) => theme.id === displayThemeId)?.name ??
-    "Current theme";
+    "Текущая тема";
 
   return (
     <div
@@ -3601,7 +3601,7 @@ function PreviewPage({ subPath }: { subPath: string }) {
           >
             <TabsList
               data-tp-view-control=""
-              aria-label="Preview view"
+              aria-label="Вид предпросмотра"
               className={cn(mobile && "grid w-full grid-cols-3")}
             >
               {VIEWS.filter((item) => !mobilePreview || item !== "split").map(
@@ -3742,7 +3742,7 @@ function PreviewPage({ subPath }: { subPath: string }) {
 export default definePluginApp((app) => {
   app.slots.navPanel({
     id: "preview",
-    title: "Theme Preview",
+    title: "Предпросмотр темы",
     icon: "Palette",
     path: "preview",
     component: PreviewPage,

@@ -222,7 +222,7 @@ it("rolls back a failed pin under concurrent status and membership writes", asyn
   expect(
     listSidebarNavigationThreads(sidebar.data!).map((row) => row.status),
   ).toEqual(["active"]);
-  expect(appToast.error).toHaveBeenCalledWith("Failed to pin thread", {
+  expect(appToast.error).toHaveBeenCalledWith("Не удалось закрепить чат", {
     description: "pin refused",
   });
 });

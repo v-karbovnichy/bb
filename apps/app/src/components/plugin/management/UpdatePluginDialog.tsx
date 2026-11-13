@@ -71,14 +71,14 @@ function UpdatePluginDialogContent({
       onOpenChange(false);
     },
     onError: (error) => {
-      appToast.error("Plugin update failed", {
+      appToast.error("Не удалось обновить плагин", {
         description: `${plugin.name ?? plugin.id} — ${pluginAdminErrorMessage(error)}`,
         action: notificationAction(plugin.id, "installed"),
       });
     },
   });
 
-  const fromLine = `Currently ${plugin.version}`;
+  const fromLine = `Текущая версия: ${plugin.version}`;
   const failure = state.lastFailure;
   const rangeUpgrade = reviewableRangeUpgrade(plugin);
 
@@ -87,11 +87,11 @@ function UpdatePluginDialogContent({
     return (
       <>
         <DialogHeader>
-          <DialogTitle>Update failed</DialogTitle>
+          <DialogTitle>Ошибка обновления</DialogTitle>
           <DialogDescription>
             {failure.at === null
-              ? "The update couldn’t be completed."
-              : `Failed on ${formatAbsoluteDate(failure.at)}.`}
+              ? "Не удалось завершить обновление."
+              : `Ошибка ${formatAbsoluteDate(failure.at)}.`}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
@@ -102,14 +102,14 @@ function UpdatePluginDialogContent({
               aria-hidden
             />
             <span>
-              bb couldn&rsquo;t activate {failure.label}. It restored{" "}
-              {plugin.version} and its data.
+              bb не удалось запустить {failure.label}. Восстановлена версия{" "}
+              {plugin.version} и её данные.
             </span>
           </div>
           {failure.detail.length > 0 ? (
             <DetailsDisclosure
               key="failure-details"
-              summary="Technical details"
+              summary="Технические сведения"
               defaultExpanded
             >
               <p className="break-words font-mono text-foreground">
@@ -119,8 +119,8 @@ function UpdatePluginDialogContent({
           ) : null}
           <p className="text-xs text-muted-foreground">
             {retryVersion === null
-              ? `The restored version can keep running. Try again when a compatible update becomes available.`
-              : `A compatible update to ${retryVersion} is still available. Retry when you’re ready.`}
+              ? `Восстановленная версия может продолжать работу. Повторите попытку, когда появится совместимое обновление.`
+              : `Совместимое обновление до ${retryVersion} всё ещё доступно. Повторите попытку, когда будете готовы.`}
           </p>
         </div>
         <DialogFooter>
@@ -129,20 +129,20 @@ function UpdatePluginDialogContent({
             variant="outline"
             onClick={() => onOpenChange(false)}
           >
-            Close
+            Закрыть
           </Button>
           {retryVersion === null ? null : (
             <Button
               type="button"
               disabled={update.isPending}
               aria-busy={update.isPending}
-              aria-label={`Retry update to ${retryVersion}`}
+              aria-label={`Повторить обновление до ${retryVersion}`}
               onClick={() => update.mutate({})}
             >
               {update.isPending ? (
                 <Icon name="Spinner" className="animate-spin" />
               ) : null}
-              Retry update
+              Повторить обновление
             </Button>
           )}
         </DialogFooter>
@@ -156,7 +156,7 @@ function UpdatePluginDialogContent({
       <>
         <DialogHeader>
           <DialogTitle>
-            Update {name} to {candidate}?
+            Обновить {name} до {candidate}?
           </DialogTitle>
           <DialogDescription>{fromLine}</DialogDescription>
         </DialogHeader>
@@ -165,14 +165,14 @@ function UpdatePluginDialogContent({
             <span className="font-medium" style={SUCCESS_TEXT_STYLE}>
               ✓
             </span>
-            <span>Compatible with your bb and plugin SDK</span>
+            <span>Совместимо с вашей версией bb и SDK плагинов</span>
           </div>
-          <DetailsDisclosure summary="Details — source, versions">
+          <DetailsDisclosure summary="Сведения — источник и версии">
             <KeyValueGrid
               entries={[
-                { key: "Source", value: plugin.sourceDisplay },
-                { key: "Current", value: plugin.version },
-                { key: "Candidate", value: candidate },
+                { key: "Источник", value: plugin.sourceDisplay },
+                { key: "Текущая версия", value: plugin.version },
+                { key: "Новая версия", value: candidate },
               ]}
             />
           </DetailsDisclosure>
@@ -185,7 +185,7 @@ function UpdatePluginDialogContent({
             disabled={update.isPending}
             onClick={() => onOpenChange(false)}
           >
-            Not now
+            Не сейчас
           </Button>
           <Button
             type="button"
@@ -198,7 +198,7 @@ function UpdatePluginDialogContent({
             ) : (
               <Icon name={UPDATE_ACTION_ICON} aria-hidden />
             )}
-            Update
+            Обновить
           </Button>
         </DialogFooter>
       </>
@@ -211,12 +211,12 @@ function UpdatePluginDialogContent({
       <>
         <DialogHeader>
           <DialogTitle>
-            Update {name} to {candidate}?
+            Обновить {name} до {candidate}?
           </DialogTitle>
           <DialogDescription>
-            {fromLine}. {candidate} is outside the version range{" "}
-            {rangeUpgrade.currentRange} that {name} follows, so updating changes
-            it to {rangeUpgrade.range}.
+            {fromLine}. Версия {candidate} находится за пределами диапазона{" "}
+            {rangeUpgrade.currentRange}, который использует {name}. Обновление
+            изменит диапазон на {rangeUpgrade.range}.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
@@ -228,8 +228,7 @@ function UpdatePluginDialogContent({
                 aria-hidden
               />
               <span>
-                {candidate} may include breaking changes. Check its release
-                notes before updating.
+                {candidate} может содержать несовместимые изменения. Перед обновлением ознакомьтесь с примечаниями к выпуску.
               </span>
             </div>
           ) : null}
@@ -237,20 +236,20 @@ function UpdatePluginDialogContent({
             <span className="font-medium" style={SUCCESS_TEXT_STYLE}>
               ✓
             </span>
-            <span>Compatible with your bb and plugin SDK</span>
+            <span>Совместимо с вашей версией bb и SDK плагинов</span>
           </div>
-          <DetailsDisclosure summary="Details — source, versions, range">
+          <DetailsDisclosure summary="Сведения — источник, версии и диапазон">
             <KeyValueGrid
               entries={[
-                { key: "Source", value: plugin.sourceDisplay },
-                { key: "Current", value: plugin.version },
-                { key: "Candidate", value: candidate },
-                { key: "Current range", value: rangeUpgrade.currentRange },
+                { key: "Источник", value: plugin.sourceDisplay },
+                { key: "Текущая версия", value: plugin.version },
+                { key: "Новая версия", value: candidate },
+                { key: "Текущий диапазон", value: rangeUpgrade.currentRange },
                 {
-                  key: "New range",
+                  key: "Новый диапазон",
                   value:
                     rangeUpgrade.basis === "catalog"
-                      ? `${rangeUpgrade.range} (listed by the marketplace)`
+                      ? `${rangeUpgrade.range} (указано в каталоге)`
                       : rangeUpgrade.range,
                 },
               ]}
@@ -265,7 +264,7 @@ function UpdatePluginDialogContent({
             disabled={update.isPending}
             onClick={() => onOpenChange(false)}
           >
-            Not now
+            Не сейчас
           </Button>
           <Button
             type="button"
@@ -283,7 +282,7 @@ function UpdatePluginDialogContent({
             ) : (
               <Icon name={UPDATE_ACTION_ICON} aria-hidden />
             )}
-            Update to {candidate}
+            Обновить до {candidate}
           </Button>
         </DialogFooter>
       </>
@@ -296,7 +295,7 @@ function UpdatePluginDialogContent({
       <>
         <DialogHeader>
           <DialogTitle>
-            Update {name} to {blocked}?
+            Обновить {name} до {blocked}?
           </DialogTitle>
           <DialogDescription>{fromLine}</DialogDescription>
         </DialogHeader>
@@ -307,9 +306,9 @@ function UpdatePluginDialogContent({
               className="size-4 shrink-0 text-warning"
               aria-hidden
             />
-            <span>{blocked} isn&rsquo;t compatible with this bb</span>
+            <span>Версия {blocked} несовместима с этой версией bb</span>
           </div>
-          <DetailsDisclosure summary="Details" defaultExpanded>
+          <DetailsDisclosure summary="Сведения" defaultExpanded>
             <div className="space-y-1.5">
               {state.blockedReasons.length > 0 ? (
                 <ul className="space-y-1">
@@ -323,16 +322,16 @@ function UpdatePluginDialogContent({
               <KeyValueGrid
                 entries={[
                   {
-                    key: "Newest compatible",
-                    value: `${plugin.version} — already installed`,
+                    key: "Последняя совместимая версия",
+                    value: `${plugin.version} — уже установлена`,
                   },
                 ]}
               />
             </div>
           </DetailsDisclosure>
           <p className="text-xs text-subtle-foreground">
-            Keep using {plugin.version} and check again when a compatible plugin
-            version is available.
+            Продолжайте использовать версию {plugin.version} и проверьте наличие
+            совместимой версии плагина позже.
           </p>
         </div>
         <DialogFooter>
@@ -341,11 +340,11 @@ function UpdatePluginDialogContent({
             variant="outline"
             onClick={() => onOpenChange(false)}
           >
-            Close
+            Закрыть
           </Button>
           <Button type="button" disabled>
             <Icon name={UPDATE_ACTION_ICON} aria-hidden />
-            Update
+            Обновить
           </Button>
         </DialogFooter>
       </>
@@ -355,7 +354,7 @@ function UpdatePluginDialogContent({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>{name} is up to date</DialogTitle>
+        <DialogTitle>{name} уже обновлён</DialogTitle>
         <DialogDescription>{fromLine}</DialogDescription>
       </DialogHeader>
       <DialogFooter>
@@ -364,7 +363,7 @@ function UpdatePluginDialogContent({
           variant="outline"
           onClick={() => onOpenChange(false)}
         >
-          Close
+          Закрыть
         </Button>
       </DialogFooter>
     </>

@@ -82,11 +82,11 @@ function requireRestorableSnapshot(resource: ModalMachineResource): string {
     resource.snapshotSandboxId !== resource.sandboxId
   ) {
     throw new Error(
-      "Modal compute is missing. Refusing automatic recovery from a potentially stale snapshot.",
+      "Вычислительный ресурс Modal отсутствует. Автоматическое восстановление из возможно устаревшего снимка отменено.",
     );
   }
   if (resource.snapshotImageId === null) {
-    throw new Error("The Modal sandbox has no restorable snapshot.");
+    throw new Error("У песочницы Modal нет снимка для восстановления.");
   }
   return resource.snapshotImageId;
 }
@@ -102,13 +102,13 @@ function resolveLaunchSelection(
       : (options.presets.find((entry) => entry.name === presetName) ?? null);
   if (presetName !== undefined && preset === null) {
     throw new Error(
-      `The Modal sandbox preset "${presetName}" is not configured.`,
+      `Размер песочницы Modal «${presetName}» не настроен.`,
     );
   }
   const imageName = inputs.image ?? options.images[0]?.name;
   const image = options.images.find((entry) => entry.name === imageName);
   if (image === undefined) {
-    throw new Error(`The Modal image "${imageName ?? ""}" is not configured.`);
+    throw new Error(`Образ Modal «${imageName ?? ""}» не настроен.`);
   }
   return { preset, image };
 }
@@ -158,7 +158,7 @@ export function createModalSandboxBackend(
     const client = clientFor(resolved);
     if (resource.accountIdentity !== (await client.accountIdentity())) {
       throw new Error(
-        "Restore the machine’s pinned Modal account before lifecycle operations",
+        "Восстановите закреплённую за машиной учётную запись Modal перед управлением её состоянием",
       );
     }
     if (resource.sandboxId !== null) {
@@ -176,7 +176,7 @@ export function createModalSandboxBackend(
     const client = clientFor(resolved);
     if (resource.accountIdentity !== (await client.accountIdentity())) {
       throw new Error(
-        "Restore the machine’s pinned Modal account before snapshot cleanup",
+        "Восстановите закреплённую за машиной учётную запись Modal перед очисткой снимков",
       );
     }
     let current = resource;
@@ -198,9 +198,9 @@ export function createModalSandboxBackend(
     definition: {
       id: PROVIDER_ID,
       displayName: "Modal Sandbox",
-      description: "Create a sandbox in your Modal account.",
+      description: "Создать песочницу в вашей учётной записи Modal.",
       environmentDescription:
-        "Create a project checkout in a new Modal sandbox.",
+        "Создать рабочее дерево проекта в новой песочнице Modal.",
       runtimeName: "Modal",
       icon: "./modal-logo.svg",
       ephemeral: true,
@@ -242,8 +242,8 @@ export function createModalSandboxBackend(
       context.signal.throwIfAborted();
       context.report.step(
         selection.image.source === "dockerfile"
-          ? `Preparing the ${selection.image.name} Modal image…`
-          : `Using the ${selection.image.name} Modal image…`,
+          ? `Подготовка образа Modal «${selection.image.name}»…`
+          : `Используется образ Modal «${selection.image.name}»…`,
       );
       const selectedImage = selection.image;
       const imageId =
@@ -261,7 +261,7 @@ export function createModalSandboxBackend(
               context.signal,
             );
       context.signal.throwIfAborted();
-      context.report.step("Creating the sandbox…");
+      context.report.step("Создание песочницы…");
       const sandbox = await retryModalApi(async () => {
         const existing = await client.fromName(resolved.appName, context.key);
         return (
@@ -306,7 +306,7 @@ export function createModalSandboxBackend(
         await sandbox.terminate();
         if ((await client.fromId(sandbox.sandboxId)) !== null) {
           throw new Error(
-            "The Modal allocation is still present; retry cleanup.",
+            "Ресурс Modal ещё существует; повторите очистку.",
           );
         }
       }
@@ -325,14 +325,14 @@ export function createModalSandboxBackend(
           context.checkpoint,
         );
       }
-      context.report.step("Snapshotting the filesystem…");
+      context.report.step("Создание снимка файловой системы…");
       const snapshotStartedAt = deps.now();
       const snapshotImageId = await sandbox.snapshotFilesystem({
         timeoutMs: SNAPSHOT_TIMEOUT_MS,
         ttlMs: null,
       });
       context.report.log(
-        `Saved Modal filesystem snapshot ${snapshotImageId} in ${deps.now() - snapshotStartedAt} ms`,
+        `Снимок файловой системы Modal ${snapshotImageId} сохранён за ${deps.now() - snapshotStartedAt} мс`,
       );
       const checkpoint = {
         ...context.resource,
@@ -351,7 +351,7 @@ export function createModalSandboxBackend(
       await context.checkpoint(checkpoint);
       await sandbox.terminate();
       context.report.log(
-        `Terminated Modal sandbox ${sandbox.sandboxId} after its durable filesystem checkpoint`,
+        `Песочница Modal ${sandbox.sandboxId} остановлена после сохранения снимка файловой системы`,
       );
       const suspended = { ...checkpoint, sandboxId: null };
       await context.checkpoint(suspended);
@@ -363,7 +363,7 @@ export function createModalSandboxBackend(
       let sandbox = await findSandbox(resource, resolved);
       if (sandbox === null) {
         const snapshotImageId = requireRestorableSnapshot(resource);
-        context.report.step("Restoring the sandbox…");
+        context.report.step("Восстановление песочницы…");
         sandbox = await clientFor(resolved).create({
           appName: resource.appName,
           name: resource.key,
@@ -374,7 +374,7 @@ export function createModalSandboxBackend(
           tags: { bbMachineKey: resource.key },
         });
         context.report.log(
-          `Restored Modal sandbox ${sandbox.sandboxId} from image ${snapshotImageId}\n`,
+          `Песочница Modal ${sandbox.sandboxId} восстановлена из образа ${snapshotImageId}\n`,
         );
       }
       resource = { ...resource, sandboxId: sandbox.sandboxId };
@@ -409,7 +409,7 @@ export function createModalSandboxBackend(
         await clientFor(resolved.settings).accountIdentity();
         return {
           available: true,
-          message: `Connected to Modal (${resolved.settings.appName})`,
+          message: `Подключено к Modal (${resolved.settings.appName})`,
         };
       } catch (error) {
         return { available: false, message: errorMessage(error) };
@@ -438,8 +438,8 @@ export function createModalSandboxBackend(
       return {
         summary:
           state === "missing"
-            ? "Modal compute is missing. Changes since the last saved image may be lost; automatic recovery is refused."
-            : `Modal machine is ${state}.`,
+            ? "Вычислительный ресурс Modal отсутствует. Изменения после последнего сохранённого образа могут быть потеряны; автоматическое восстановление отменено."
+            : `Машина Modal ${state === "running" ? "работает" : "приостановлена"}.`,
         values: {
           state,
           expiresAt: observation?.expiresAt ?? null,

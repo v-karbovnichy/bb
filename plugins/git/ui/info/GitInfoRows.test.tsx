@@ -31,9 +31,9 @@ describe("GitStatusRowView", () => {
       failure: undefined,
       errorMessage: null,
     });
-    expect(markup).toContain("3 ahead of main");
+    expect(markup).toContain("Впереди main на 3");
     expect(markup).toContain(
-      'aria-label="Squash-merge check incomplete; counts may include already-merged commits."',
+      'aria-label="Проверка объединения со сжатием не завершена; в количестве могут учитываться уже объединённые коммиты."',
     );
   });
 
@@ -50,7 +50,7 @@ describe("GitStatusRowView", () => {
       render(
         makeWorkspaceMergeBase({ mergeBaseBranch: "release", aheadCount: 2 }),
       ),
-    ).toContain("2 ahead of release");
+    ).toContain("Впереди release на 2");
     expect(render(null)).toBe("");
   });
 
@@ -66,12 +66,12 @@ describe("GitStatusRowView", () => {
         failure: undefined,
         errorMessage,
       });
-    const stale = render("Workspace status unavailable.");
-    expect(stale).toContain("3 ahead of main");
+    const stale = render("Статус рабочей копии недоступен.");
+    expect(stale).toContain("Впереди main на 3");
     expect(stale).toContain(
-      "Couldn&#x27;t refresh: Workspace status unavailable. Showing the last known status.",
+      "Не удалось обновить: Статус рабочей копии недоступен. Показан последний известный статус.",
     );
-    expect(render(null)).not.toContain("Couldn&#x27;t refresh");
+    expect(render(null)).not.toContain("Не удалось обновить");
   });
 
   it("shows the failure when no status has loaded", () => {
@@ -79,9 +79,9 @@ describe("GitStatusRowView", () => {
       renderRow({
         workspace: undefined,
         failure: undefined,
-        errorMessage: "Workspace status unavailable.",
+        errorMessage: "Статус рабочей копии недоступен.",
       }),
-    ).toContain("Workspace status unavailable");
+    ).toContain("Статус рабочей копии недоступен");
     expect(
       renderRow({
         workspace: undefined,
@@ -92,7 +92,7 @@ describe("GitStatusRowView", () => {
         },
         errorMessage: null,
       }),
-    ).toContain("Workspace not found");
+    ).toContain("Рабочая копия не найдена");
     expect(
       renderRow({ workspace: undefined, failure: undefined, errorMessage: null }),
     ).toBe("");
@@ -101,9 +101,9 @@ describe("GitStatusRowView", () => {
   it("phrases the branch comparison against its merge base", () => {
     const compare = (aheadCount: number, behindCount: number) =>
       formatBranchComparison({ aheadCount, behindCount, baseBranch: "main" });
-    expect(compare(0, 0)).toBe("Even with main");
-    expect(compare(6, 0)).toBe("6 ahead of main");
-    expect(compare(0, 3)).toBe("3 behind main");
-    expect(compare(4, 2)).toBe("4 ahead, 2 behind main");
+    expect(compare(0, 0)).toBe("На одном уровне с main");
+    expect(compare(6, 0)).toBe("Впереди main на 6");
+    expect(compare(0, 3)).toBe("Позади main на 3");
+    expect(compare(4, 2)).toBe("Впереди на 4, позади main на 2");
   });
 });

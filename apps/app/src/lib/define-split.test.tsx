@@ -145,7 +145,7 @@ it("keeps load failure local and retries a failed import instead of caching the 
   );
   expect(await screen.findByRole("alert")).toBeTruthy();
   expect(screen.getByText("Shell stays")).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
   expect(await screen.findByText("Editor ready")).toBeTruthy();
   expect(load).toHaveBeenCalledTimes(2);
 });
@@ -255,7 +255,7 @@ it("stops automatic retries after three attempts and permits a new manual attemp
   await act(async () => vi.advanceTimersByTimeAsync(60000));
   expect(load).toHaveBeenCalledTimes(3);
   load.mockResolvedValue(() => <p>Recovered editor</p>);
-  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
   await act(async () => vi.runAllTimersAsync());
   expect(screen.getByText("Recovered editor")).toBeTruthy();
   expect(load).toHaveBeenCalledTimes(4);

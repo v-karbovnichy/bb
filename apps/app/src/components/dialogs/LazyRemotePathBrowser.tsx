@@ -13,7 +13,7 @@ export const LazyRemotePathBrowser = defineSplit<
     <EmptyState
       icon="Spinner"
       iconClassName="animate-spin"
-      message="Loading folders…"
+      message="Загрузка папок…"
       className="px-2 py-3"
     />
   ),

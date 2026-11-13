@@ -10,21 +10,21 @@ export interface PermissionModeOption {
 export const PERMISSION_MODE_OPTIONS: PermissionModeOption[] = [
   {
     value: "accept-edits",
-    label: "Accept Edits",
+    label: "Принимать изменения",
     description:
-      "Applies edits inside the workspace automatically. Anything beyond the workspace asks you first.",
+      "Изменения в рабочей папке применяются автоматически. Для действий за её пределами потребуется ваше подтверждение.",
   },
   {
     value: "auto",
-    label: "Approve for me",
+    label: "Подтверждать за меня",
     description:
-      "Same workspace sandbox, with requests reviewed automatically. High-risk actions can still come back to you.",
+      "Запросы в рабочей папке проверяются автоматически. Действия с высоким риском всё ещё могут потребовать вашего подтверждения.",
   },
   {
     value: "full",
-    label: "Full Access",
+    label: "Полный доступ",
     tone: "warning",
     description:
-      "No sandbox and no approvals — the agent can run anything on your machine.",
+      "Без изоляции и подтверждений — агент может выполнять любые действия на вашем компьютере.",
   },
 ];

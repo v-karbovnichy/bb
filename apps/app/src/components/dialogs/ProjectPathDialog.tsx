@@ -112,22 +112,22 @@ interface PlatformCopy {
 function getDialogTitle(kind: ProjectPathDialogTarget["kind"]): string {
   switch (kind) {
     case "create":
-      return "Add project";
+      return "Добавить проект";
     case "update":
-      return "Update project path";
+      return "Обновить путь к проекту";
     case "add-source":
-      return "Add project source";
+      return "Добавить источник проекта";
   }
 }
 
 function getDialogSubmitLabel(kind: ProjectPathDialogTarget["kind"]): string {
   switch (kind) {
     case "create":
-      return "Add project";
+      return "Добавить проект";
     case "update":
-      return "Save path";
+      return "Сохранить путь";
     case "add-source":
-      return "Add source";
+      return "Добавить источник";
   }
 }
 
@@ -136,21 +136,21 @@ function getPlatformCopy(
   hostName: string | null,
 ): PlatformCopy {
   const placeholder = "/path/to/project";
-  const hostSuffix = hostName ? ` on ${hostName}` : "";
+  const hostSuffix = hostName ? ` на ${hostName}` : "";
   if (platform === "wsl") {
     return {
-      description: `Enter an absolute WSL path${hostSuffix} to the project folder, such as /home/me/repo or /mnt/c/...`,
+      description: `Введите абсолютный путь WSL${hostSuffix} к папке проекта, например /home/me/repo или /mnt/c/...`,
       placeholder,
     };
   }
   if (platform === "win32") {
     return {
-      description: `Enter an absolute Windows path${hostSuffix} to the project folder, such as C:\\Users\\me\\repo.`,
+      description: `Введите абсолютный путь Windows${hostSuffix} к папке проекта, например C:\\Users\\me\\repo.`,
       placeholder: "C:\\path\\to\\project",
     };
   }
   return {
-    description: `Enter an absolute path${hostSuffix} to the project folder.`,
+    description: `Введите абсолютный путь${hostSuffix} к папке проекта.`,
     placeholder,
   };
 }
@@ -223,7 +223,7 @@ export function ProjectPathDialogContent({
     if (pending) return;
 
     if (!selectedPath) {
-      setValidationMessage("Choose a project folder.");
+      setValidationMessage("Выберите папку проекта.");
       return;
     }
 
@@ -239,7 +239,7 @@ export function ProjectPathDialogContent({
       target.kind === "create" &&
       !deriveProjectNameFromPath(normalizedPath)
     ) {
-      setValidationMessage("Could not derive a project name from that path.");
+      setValidationMessage("Не удалось определить имя проекта по этому пути.");
       return;
     }
 
@@ -252,11 +252,11 @@ export function ProjectPathDialogContent({
         <DialogTitle>{getDialogTitle(target.kind)}</DialogTitle>
         <DialogDescription>
           {selectedHostId
-            ? `Browse to the project folder${
-                selectedHostName ? ` on ${selectedHostName}` : ""
-              }, or edit the path directly.`
+            ? `Перейдите в папку проекта${
+                selectedHostName ? ` на ${selectedHostName}` : ""
+              }, или укажите путь вручную.`
             : noMachineAvailable
-              ? "No machine is online. Start one to choose a project folder."
+              ? "Нет машин в сети. Запустите одну, чтобы выбрать папку проекта."
               : copy.description}
         </DialogDescription>
       </DialogHeader>
@@ -267,7 +267,7 @@ export function ProjectPathDialogContent({
               <Button
                 type="button"
                 variant="outline"
-                aria-label="Machine"
+                aria-label="Машина"
                 disabled={pending}
                 className="w-full justify-between font-normal"
               >
@@ -276,7 +276,7 @@ export function ProjectPathDialogContent({
                     <MachineStatusDot connected={selectedHostConnected} />
                   ) : null}
                   <span className="min-w-0 truncate">
-                    {selectedHost?.name ?? "Select a machine"}
+                    {selectedHost?.name ?? "Выберите машину"}
                   </span>
                 </span>
                 <Icon
@@ -287,7 +287,7 @@ export function ProjectPathDialogContent({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              mobileTitle="Machine"
+              mobileTitle="Машина"
               className="max-h-72 w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto"
             >
               {machineOptions?.map((host) => {
@@ -307,7 +307,7 @@ export function ProjectPathDialogContent({
                     <span className="min-w-0 flex-1 truncate">{host.name}</span>
                     {!connected ? (
                       <span className="shrink-0 text-xs text-subtle-foreground">
-                        Offline
+                        Не в сети
                       </span>
                     ) : null}
                     <Icon
@@ -336,12 +336,12 @@ export function ProjectPathDialogContent({
           />
         ) : noMachineAvailable ? (
           <p className="rounded-md border px-3 py-6 text-center text-sm text-muted-foreground">
-            Every machine is offline. Bring one online to browse its folders.
+            Все машины не в сети. Подключите одну, чтобы просмотреть папки.
           </p>
         ) : (
           <Input
             id={inputId}
-            aria-label="Project path"
+            aria-label="Путь к проекту"
             value={manualPath}
             autoFocus={!isPointerCoarse}
             disabled={pending}
@@ -356,7 +356,7 @@ export function ProjectPathDialogContent({
           <div className="space-y-1">
             {target.kind === "create" && derivedProjectName ? (
               <p className="flex min-w-0 gap-1 text-sm text-muted-foreground">
-                <span className="shrink-0">Project name:</span>
+                <span className="shrink-0">Имя проекта:</span>
                 <span className="min-w-0 truncate font-medium text-foreground">
                   {derivedProjectName}
                 </span>

@@ -755,7 +755,7 @@ export function createDesktopBrowserViewManager(
     }
     if (entry.rendererRecoveryAttempts >= RENDERER_RECOVERY_MAX_ATTEMPTS) {
       entry.rendererRecoveryState = "blocked";
-      entry.lastErrorText = "The page renderer stopped repeatedly";
+      entry.lastErrorText = "Процесс отображения страницы неоднократно завершался";
       pushState(hostWindow, tabId, entry);
       return;
     }
@@ -848,10 +848,10 @@ export function createDesktopBrowserViewManager(
           if (microphoneGrants.get(wc) !== origin) {
             const result = await dialog.showMessageBox({
               type: "question",
-              title: "Microphone access",
-              message: "Allow this site to use your microphone?",
-              detail: `${origin} can use your microphone in this browser tab until you close it.`,
-              buttons: ["Don’t allow", "Allow"],
+              title: "Доступ к микрофону",
+              message: "Разрешить этому сайту использовать микрофон?",
+              detail: `${origin} сможет использовать микрофон в этой вкладке до её закрытия.`,
+              buttons: ["Не разрешать", "Разрешить"],
               defaultId: 0,
               cancelId: 0,
               noLink: true,
@@ -1160,7 +1160,7 @@ export function createDesktopBrowserViewManager(
         details.reason === "launch-failed" ||
         details.reason === "integrity-failure"
       ) {
-        entry.lastErrorText = "The page renderer could not start";
+        entry.lastErrorText = "Не удалось запустить процесс отображения страницы";
         applyEntryVisibility(entry, hostWindow);
         pushState(hostWindow, tabId, entry);
         return;
@@ -1273,7 +1273,7 @@ export function createDesktopBrowserViewManager(
         entry.lastErrorText =
           errorDescription.length > 0
             ? errorDescription
-            : "Failed to load page";
+            : "Не удалось загрузить страницу";
         refresh();
       },
     );

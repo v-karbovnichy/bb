@@ -257,7 +257,7 @@ describe("mention extension", () => {
     );
     instance!.chain().focus().insertContent("@").run();
     await screen.findByText("Threads");
-    expect(screen.getByText("Tasks")).toBeTruthy();
+    expect(screen.getByText("Задачи")).toBeTruthy();
     fireEvent.click(screen.getByText("Fix login flow").closest("button")!);
     await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith(
@@ -338,7 +338,7 @@ describe("TasksEditor component", () => {
     expect(screen.queryByRole("toolbar")).toBeNull();
     const surface = screen.container.querySelector(".tiptap");
     expect(surface?.getAttribute("contenteditable")).toBe("false");
-    expect(surface?.querySelector("strong")?.textContent).toBe("Done");
+    expect(surface?.querySelector("strong")?.textContent).toBe("Готово");
     expect(
       screen.container.querySelector('[data-variant="comment"]'),
     ).toBeTruthy();
@@ -452,7 +452,7 @@ describe("TasksEditor submit-on-Enter", () => {
     let editor: Editor | null = null;
     const screen = render(
       <TasksEditor
-        value="Draft"
+        value="Черновик"
         onChange={() => undefined}
         onSubmit={onSubmit}
         variant="comment"

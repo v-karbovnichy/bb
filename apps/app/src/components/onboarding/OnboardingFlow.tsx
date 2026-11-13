@@ -156,13 +156,13 @@ const REDESIGN_SIGN_IN_TERMINAL_FALLBACK_DELAY_MS = 3_000;
 const CONNECT_INPUT_SETTLE_MS = 500;
 const INSTALL_SETTLE_TIMEOUT_MS = 20_000;
 const INSTALL_SETTLE_POLL_MS = 2_000;
-const INSTALL_FAILED_MESSAGE = "Install failed";
+const INSTALL_FAILED_MESSAGE = "Не удалось установить";
 const REDESIGN_INSTALL_FAILED_MESSAGE =
-  "Couldn't install. Check your connection and retry.";
+  "Не удалось установить. Проверьте подключение и попробуйте ещё раз.";
 const PLUGIN_TOGGLE_SETTLE_TIMEOUT_MS = 10_000;
 const AGENT_STATES_LOAD_TIMEOUT_MS = 10_000;
 const AGENT_STATES_LOAD_FAILED_MESSAGE =
-  "Provider readiness could not be checked.";
+  "Не удалось проверить готовность провайдера.";
 const ONBOARDING_PHONE_QUERY = "(max-width: 640px) and (pointer: coarse)";
 const ONBOARDING_COMPACT_QUERY = "(max-width: 640px)";
 
@@ -311,7 +311,7 @@ function AgentSignInContainer({
       })
       .catch(() => {
         setCodeSubmitted(false);
-        appToast.error("Couldn't send the code. Try again.");
+        appToast.error("Не удалось отправить код. Попробуйте ещё раз.");
       });
   };
 
@@ -687,11 +687,11 @@ function AgentStepContainer({
                     signIn.hasAlternateMethod
                       ? signIn.method === "local"
                         ? {
-                            label: "Use a one-time code instead",
+                            label: "Войти с одноразовым кодом",
                             method: "remote",
                           }
                         : {
-                            label: "Use browser sign-in instead",
+                            label: "Войти через браузер",
                             method: "local",
                           }
                       : null
@@ -720,7 +720,7 @@ function AgentStepContainer({
       {...stepCopy(redesign, "agent")}
       footerNote={
         agentBlocked && !redesign
-          ? "Threads can't start until one agent is ready."
+          ? "Чтобы начать чат, нужен хотя бы один готовый агент."
           : null
       }
       primaryDisabled={agentContinueDisabled({
@@ -728,7 +728,7 @@ function AgentStepContainer({
         agentReady,
         statesLoading: statesLoading && !statesLoad.timedOut,
       })}
-      secondaryLabel={agentBlocked && !redesign ? "Skip for now" : undefined}
+      secondaryLabel={agentBlocked && !redesign ? "Пропустить пока" : undefined}
       onPrimary={onContinue}
       onSecondary={onContinue}
     >
@@ -907,11 +907,11 @@ function ProjectsStepContainer({
       primaryLabel={
         scanning || selectedPaths.size === 0
           ? copy.primaryLabel
-          : `Import ${selectedPaths.size} ${selectedPaths.size === 1 ? "project" : "projects"}`
+          : `Импортировать проекты (${selectedPaths.size})`
       }
       primaryDisabled={scanning}
       primaryBusy={importing}
-      secondaryLabel={redesign ? undefined : "Skip"}
+      secondaryLabel={redesign ? undefined : "Пропустить"}
       onPrimary={() => {
         const action = projectsPrimaryAction({
           selectedCount: selectedPaths.size,
@@ -933,7 +933,7 @@ function ProjectsStepContainer({
             : reposQuery.isError
               ? {
                   kind: "error",
-                  message: "bb couldn't scan this computer for git repos.",
+                  message: "bb не удалось найти Git-репозитории на этом компьютере.",
                 }
               : { kind: "results", truncated: reposQuery.data.truncated }
         }
@@ -1070,7 +1070,7 @@ function PluginCardContainer({
       unavailableReason={
         entry.installed || entry.compatible
           ? null
-          : (entry.incompatibleReason ?? "Not available on this server.")
+          : (entry.incompatibleReason ?? "Недоступно на этом сервере.")
       }
       onToggle={(next) => void toggle(next)}
     />
@@ -1180,7 +1180,7 @@ function PluginsStepContainer({
       step="plugins"
       width={redesign ? "wide" : "default"}
       {...stepCopy(redesign, "plugins")}
-      secondaryLabel={redesign ? undefined : "Skip"}
+      secondaryLabel={redesign ? undefined : "Пропустить"}
       onPrimary={() => {
         if (!(entries ?? []).some(isShownEnabled)) onSkip();
         else onContinue();

@@ -363,7 +363,7 @@ vi.mock("@/components/plugin/PluginPanelRightPanelHost", () => ({
             {isPanelOpen ? (
               <button
                 type="button"
-                aria-label="Hide right panel"
+                aria-label="Скрыть правую панель"
                 onClick={() => setIsPanelOpen(false)}
               />
             ) : null}
@@ -1790,7 +1790,7 @@ describe("SplitThreadArea", () => {
         ?.getAttribute("aria-expanded"),
     ).toBe("true");
 
-    fireEvent.click(screen.getByRole("button", { name: "Hide right panel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть правую панель" }));
     expect(
       screen
         .getByTestId("split-workspace-panel-toggle")
@@ -1828,7 +1828,7 @@ describe("SplitThreadArea", () => {
     });
 
     const showPanel = await screen.findByRole("button", {
-      name: "Show right panel",
+      name: "Показать правую панель",
     });
     expect(showPanel.hasAttribute("disabled")).toBe(false);
     fireEvent.click(showPanel);
@@ -1836,7 +1836,7 @@ describe("SplitThreadArea", () => {
     expect(await screen.findByTestId("hosted-new-thread-panel")).toBeTruthy();
     expect(
       screen
-        .getByRole("button", { name: "Hide right panel" })
+        .getByRole("button", { name: "Скрыть правую панель" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
   });
@@ -1880,7 +1880,7 @@ describe("SplitThreadArea", () => {
       .querySelector("button");
     expect(pluginToggle?.hasAttribute("disabled")).toBe(false);
     expect(
-      pluginPane.querySelector('button[aria-label*="Maximize pane"]'),
+      pluginPane.querySelector('button[aria-label*="Развернуть панель"]'),
     ).not.toBeNull();
 
     fireEvent.click(pluginToggle!);
@@ -1939,10 +1939,10 @@ describe("SplitThreadArea", () => {
     });
 
     await screen.findByTestId("hosted-plugin-app-panel");
-    fireEvent.click(screen.getByRole("button", { name: "Show right panel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать правую панель" }));
     await within(screen.getByTestId("hosted-plugin-app-panel")).findByRole(
       "button",
-      { name: "Hide right panel" },
+      { name: "Скрыть правую панель" },
     );
 
     fireEvent.pointerDown(screen.getByTestId("pane-thr-a"));
@@ -1951,7 +1951,7 @@ describe("SplitThreadArea", () => {
       expect(screen.queryByTestId("hosted-plugin-app-panel")).toBeNull(),
     );
     expect(
-      screen.getByRole("button", { name: "Hide right panel" }),
+      screen.getByRole("button", { name: "Скрыть правую панель" }),
     ).toBeTruthy();
   });
 
@@ -1965,13 +1965,13 @@ describe("SplitThreadArea", () => {
     });
 
     await screen.findByTestId("hosted-plugin-app-panel");
-    const close = screen.getByRole("button", { name: "Close pane" });
+    const close = screen.getByRole("button", { name: "Закрыть панель" });
     expect(close.nextElementSibling?.tagName).toBe("SPAN");
 
-    fireEvent.click(screen.getByRole("button", { name: "Show right panel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать правую панель" }));
     await waitFor(() =>
       expect(
-        screen.getByRole("button", { name: "Close pane" }).nextElementSibling,
+        screen.getByRole("button", { name: "Закрыть панель" }).nextElementSibling,
       ).toBeNull(),
     );
     expect(
@@ -1980,7 +1980,7 @@ describe("SplitThreadArea", () => {
     expect(
       within(screen.getByTestId("hosted-plugin-app-panel")).getByRole(
         "button",
-        { name: "Hide right panel" },
+        { name: "Скрыть правую панель" },
       ),
     ).toBeTruthy();
   });
@@ -2048,10 +2048,10 @@ describe("SplitThreadArea", () => {
     ).toBeTruthy();
     expect(screen.getByTestId("split-workspace-panel-toggle")).toBeTruthy();
     expect(
-      screen.getAllByRole("button", { name: /Maximize pane/ }),
+      screen.getAllByRole("button", { name: /Развернуть панель/ }),
     ).toHaveLength(2);
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Close pane" })[0]!);
+    fireEvent.click(screen.getAllByRole("button", { name: "Закрыть панель" })[0]!);
 
     await waitFor(() =>
       expect(screen.queryByText("Automations content")).toBeNull(),
@@ -2062,12 +2062,12 @@ describe("SplitThreadArea", () => {
     expect(
       screen.getByRole("button", { name: "Collapse notes sidebar" }),
     ).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Close pane" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Закрыть панель" })).toBeTruthy();
     expect(screen.queryByTestId("split-workspace-panel-toggle")).toBeNull();
     const remainingHost = screen.getByTestId("plugin-browser-host");
     expect(remainingHost.dataset.flushPageInsets).toBe("true");
 
-    fireEvent.click(screen.getByRole("button", { name: "Close pane" }));
+    fireEvent.click(screen.getByRole("button", { name: "Закрыть панель" }));
     await waitFor(() =>
       expect(screen.getByTestId("location").textContent).toBe("/"),
     );
@@ -2767,7 +2767,7 @@ describe("SplitThreadArea", () => {
       );
     }
 
-    expect(screen.getAllByRole("button", { name: /Full Screen/ })).toHaveLength(
+    expect(screen.getAllByRole("button", { name: /На весь экран/ })).toHaveLength(
       4,
     );
   });
@@ -2842,7 +2842,7 @@ describe("SplitThreadArea", () => {
     const toggle = await screen.findByRole("button", {
       name: "Toggle docs sidebar",
     });
-    const close = screen.getByRole("button", { name: "Close pane" });
+    const close = screen.getByRole("button", { name: "Закрыть панель" });
     const closeIcon = close.querySelector('[data-icon="ClosePluginPane"]');
     expect(closeIcon).not.toBeNull();
     expect(closeIcon?.querySelectorAll("path")).toHaveLength(1);
@@ -2893,17 +2893,17 @@ describe("SplitThreadArea", () => {
 
     await screen.findByText("Docs panel");
     expect(screen.getByTestId("split-workspace-panel-toggle")).toBeTruthy();
-    const [pluginClose] = screen.getAllByRole("button", { name: "Close pane" });
+    const [pluginClose] = screen.getAllByRole("button", { name: "Закрыть панель" });
     const reserve = pluginClose?.parentElement?.nextElementSibling;
     expect(reserve?.tagName).toBe("SPAN");
     expect(reserve?.getAttribute("aria-hidden")).toBe("true");
 
     fireEvent.click(
-      screen.getAllByRole("button", { name: /Maximize pane/ })[0]!,
+      screen.getAllByRole("button", { name: /Развернуть панель/ })[0]!,
     );
     await waitFor(() =>
       expect(
-        screen.getAllByRole("button", { name: "Close pane" })[0]?.parentElement
+        screen.getAllByRole("button", { name: "Закрыть панель" })[0]?.parentElement
           ?.nextElementSibling,
       ).toBeNull(),
     );
@@ -2919,14 +2919,14 @@ describe("SplitThreadArea", () => {
     });
 
     const pluginClose = await screen.findByRole("button", {
-      name: "Close pane",
+      name: "Закрыть панель",
     });
     expect(pluginClose.nextElementSibling).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Hide right panel" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скрыть правую панель" }));
     await waitFor(() =>
       expect(
-        screen.getByRole("button", { name: "Close pane" }).nextElementSibling
+        screen.getByRole("button", { name: "Закрыть панель" }).nextElementSibling
           ?.tagName,
       ).toBe("SPAN"),
     );
@@ -2973,7 +2973,7 @@ describe("SplitThreadArea", () => {
     });
 
     const breadcrumb = await screen.findByRole("navigation", {
-      name: "Breadcrumb",
+      name: "Навигационная цепочка",
     });
     expect(breadcrumb.textContent).toContain("Installed");
     expect(breadcrumb.textContent).toContain("Weekly review");
@@ -3037,7 +3037,7 @@ describe("SplitThreadArea", () => {
       path: "/plugins/docs/docs",
       routeAwareContent: true,
     });
-    fireEvent.click(await screen.findByRole("button", { name: "Close pane" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Закрыть панель" }));
 
     await waitFor(() =>
       expect(screen.getByTestId("location").textContent).toBe("/"),
@@ -3046,7 +3046,7 @@ describe("SplitThreadArea", () => {
     expect(listPanes(store.get(splitLayoutAtom)!.root)[0]?.content).toEqual(
       newThreadContent,
     );
-    expect(screen.queryByRole("button", { name: "Close pane" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Закрыть панель" })).toBeNull();
   });
 
   it("shows close on a compact plugin page", async () => {
@@ -3056,7 +3056,7 @@ describe("SplitThreadArea", () => {
       path: "/plugins/docs/docs",
       routeAwareContent: true,
     });
-    fireEvent.click(await screen.findByRole("button", { name: "Close pane" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Закрыть панель" }));
 
     await waitFor(() =>
       expect(screen.getByTestId("location").textContent).toBe("/"),

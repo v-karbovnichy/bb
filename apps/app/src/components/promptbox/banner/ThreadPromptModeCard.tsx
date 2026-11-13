@@ -18,15 +18,15 @@ export function ThreadPromptModeCard({
 
   return (
     <CollapsibleStackCard
-      label="Plan"
-      title="Plan"
+      label="План"
+      title="План"
       icon="ListTodo"
       isActive
       {...(onExitPlanMode
         ? {
             dismiss: {
-              label: "Exit plan mode",
-              failureMessage: "Failed to exit Plan mode.",
+              label: "Выйти из режима планирования",
+              failureMessage: "Не удалось выйти из режима планирования.",
               onDismiss: onExitPlanMode,
             },
           }
@@ -37,7 +37,7 @@ export function ThreadPromptModeCard({
           className="whitespace-pre-wrap text-xs leading-relaxed text-foreground/90"
           title={promptText}
         >
-          {hasPrompt ? promptText : "No prompt text."}
+          {hasPrompt ? promptText : "Текст запроса отсутствует."}
         </p>
       </div>
     </CollapsibleStackCard>

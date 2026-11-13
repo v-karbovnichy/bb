@@ -95,23 +95,23 @@ export function registerRpcAndCli(
     if (context.threadId) {
       const thread = await bb.sdk.threads.get({ threadId: context.threadId });
       if (!thread.environmentId)
-        throw new Error("The current thread has no machine workspace");
+        throw new Error("У текущего чата нет рабочего пространства на машине");
       const environment = await bb.sdk.environments.get({
         environmentId: thread.environmentId,
       });
       if (!environment.hostId)
-        throw new Error("The current thread has no machine workspace");
+        throw new Error("У текущего чата нет рабочего пространства на машине");
       hostId = environment.hostId;
     }
     if (!path.isAbsolute(file) && !context.cwd)
-      throw new Error("A relative --file requires the CLI working directory");
+      throw new Error("Для относительного пути --file требуется рабочий каталог CLI");
     const result = await bb.sdk.files.read({
       hostId,
       path: path.resolve(context.cwd ?? "/", file),
       signal: context.signal,
     });
     if (result.contentEncoding !== "utf8")
-      throw new Error("Dockerfile must be UTF-8 text");
+      throw new Error("Dockerfile должен быть текстом в кодировке UTF-8");
     return dockerfileSchema.parse(result.content);
   }
   async function guarded(
@@ -127,22 +127,22 @@ export function registerRpcAndCli(
   const jsonOption = {
     json: {
       type: "boolean",
-      description: "Emit the raw result as JSON instead of readable text",
+      description: "Вывести исходный результат в JSON вместо обычного текста",
     },
   } as const;
   bb.cli.register(
     defineCli({
       name: "modal",
-      summary: "Configure, build and debug Modal images",
+      summary: "Настройка, сборка и отладка образов Modal",
       description:
-        "Debug sandboxes are ephemeral: they run the saved image for 30 minutes and carry no machine secrets.",
+        "Отладочные песочницы временные: они запускают сохранённый образ на 30 минут и не содержат секретов машины.",
       commands: {
         "machine inspect": cliCommand({
-          summary: "Inspect Modal compute and the last saved snapshot",
+          summary: "Показать вычислительные ресурсы Modal и последний сохранённый снимок",
           positionals: [
             {
               name: "host-id",
-              description: "BB host whose Modal machine is inspected",
+              description: "Хост BB, чью машину Modal нужно проверить",
               required: true,
             },
           ],
@@ -162,7 +162,7 @@ export function registerRpcAndCli(
           },
         }),
         "image build": cliCommand({
-          summary: "Build or reuse the saved image",
+          summary: "Собрать или повторно использовать сохранённый образ",
           options: jsonOption,
           run(input, context) {
             return guarded(async () => {
@@ -177,7 +177,7 @@ export function registerRpcAndCli(
           },
         }),
         "sandbox run": cliCommand({
-          summary: "Run the saved image in a 30-minute debug sandbox",
+          summary: "Запустить сохранённый образ в отладочной песочнице на 30 минут",
           options: jsonOption,
           run(input, context) {
             return guarded(async () => {
@@ -193,13 +193,13 @@ export function registerRpcAndCli(
           },
         }),
         "sandbox exec": cliCommand({
-          summary: "Execute a command in a debug sandbox",
+          summary: "Выполнить команду в отладочной песочнице",
           description:
-            "Everything after `--` is the command; it is never parsed as options.",
+            "Всё после `--` считается командой и не разбирается как параметры.",
           positionals: [
             {
               name: "sandbox-id",
-              description: "Debug sandbox started by bb modal sandbox run",
+              description: "Отладочная песочница, запущенная командой bb modal sandbox run",
               required: true,
             },
           ],
@@ -209,10 +209,10 @@ export function registerRpcAndCli(
             return guarded(async () => {
               if (input.passthrough.length === 0) {
                 throw new PluginCliError(
-                  "bb modal sandbox exec requires a command after --",
+                  "Для bb modal sandbox exec укажите команду после --",
                   {
                     code: "missing_command",
-                    hint: "Write bb modal sandbox exec <sandbox-id> -- bash -lc 'echo hi'.",
+                    hint: "Пример: bb modal sandbox exec <sandbox-id> -- bash -lc 'echo hi'.",
                   },
                 );
               }
@@ -234,11 +234,11 @@ export function registerRpcAndCli(
           },
         }),
         "sandbox stop": cliCommand({
-          summary: "Stop a debug sandbox",
+          summary: "Остановить отладочную песочницу",
           positionals: [
             {
               name: "sandbox-id",
-              description: "Debug sandbox started by bb modal sandbox run",
+              description: "Отладочная песочница, запущенная командой bb modal sandbox run",
               required: true,
             },
           ],
@@ -254,13 +254,13 @@ export function registerRpcAndCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify(result)
-                  : `Stopped ${result.sandboxId}`,
+                  : `Остановлена песочница ${result.sandboxId}`,
               };
             });
           },
         }),
         "image show": cliCommand({
-          summary: "Show the Dockerfile used for new machines",
+          summary: "Показать Dockerfile для новых машин",
           options: jsonOption,
           run(input) {
             return guarded(async () => {
@@ -275,7 +275,7 @@ export function registerRpcAndCli(
           },
         }),
         "image set": cliCommand({
-          summary: "Save a Dockerfile for future machines",
+          summary: "Сохранить Dockerfile для будущих машин",
           options: {
             file: {
               type: "string",
@@ -283,7 +283,7 @@ export function registerRpcAndCli(
               placeholder: "PATH",
               aliases: ["dockerfile", "path"],
               description:
-                "Dockerfile to save; a relative path resolves from the CLI working directory on the thread's host",
+                "Dockerfile для сохранения; относительный путь определяется от рабочего каталога CLI на хосте чата",
             },
             ...jsonOption,
           },
@@ -296,13 +296,13 @@ export function registerRpcAndCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify(result)
-                  : "Saved the Dockerfile for future machines.",
+                  : "Dockerfile сохранён для будущих машин.",
               };
             });
           },
         }),
         "image reset": cliCommand({
-          summary: "Restore the bundled Dockerfile",
+          summary: "Восстановить встроенный Dockerfile",
           options: jsonOption,
           run(input) {
             return guarded(async () => {
@@ -311,13 +311,13 @@ export function registerRpcAndCli(
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify(result)
-                  : "Restored the bundled Dockerfile for future machines.",
+                  : "Встроенный Dockerfile восстановлен для будущих машин.",
               };
             });
           },
         }),
         "account inspect": cliCommand({
-          summary: "Test the configured Modal account",
+          summary: "Проверить настроенную учётную запись Modal",
           options: jsonOption,
           run(input) {
             return guarded(async () => {

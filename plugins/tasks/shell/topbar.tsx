@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const REFRESH_TASKS_LABEL = "Refresh tasks";
+const REFRESH_TASKS_LABEL = "Обновить задачи";
 
 interface PagerPosition {
   index: number;
@@ -73,7 +73,7 @@ function TaskPager({
         variant="ghost"
         size="icon"
         className="size-6 max-md:pointer-coarse:size-9"
-        aria-label="Previous task"
+        aria-label="Предыдущая задача"
         disabled={position.prevKey === null}
         onClick={() => step(position.prevKey)}
       >
@@ -83,7 +83,7 @@ function TaskPager({
         variant="ghost"
         size="icon"
         className="size-6 max-md:pointer-coarse:size-9"
-        aria-label="Next task"
+        aria-label="Следующая задача"
         disabled={position.nextKey === null}
         onClick={() => step(position.nextKey)}
       >
@@ -117,8 +117,8 @@ function ViewToggle({
   );
   return (
     <div className="flex items-center rounded-md bg-muted p-0.5">
-      {segment("list", "List")}
-      {segment("board", "Board")}
+      {segment("list", "Список")}
+      {segment("board", "Доска")}
     </div>
   );
 }
@@ -215,12 +215,12 @@ export function TasksTopbar({
     switch (route.kind) {
       case "all":
         return (
-          <span className="whitespace-nowrap font-semibold">All tasks</span>
+          <span className="whitespace-nowrap font-semibold">Все задачи</span>
         );
       case "active":
         return (
           <span className="flex items-center gap-2">
-            <span className="whitespace-nowrap font-semibold">Active</span>
+            <span className="whitespace-nowrap font-semibold">Активные</span>
             <span className="hidden text-xs font-normal text-muted-foreground @md:inline">
               agents working now
             </span>
@@ -229,7 +229,7 @@ export function TasksTopbar({
       case "manage":
         return (
           <span className="flex items-center gap-2">
-            <span className="whitespace-nowrap font-semibold">Manage</span>
+            <span className="whitespace-nowrap font-semibold">Управление</span>
             <span className="hidden text-xs font-normal text-muted-foreground @md:inline">
               labels, presets, folders
             </span>
@@ -246,7 +246,7 @@ export function TasksTopbar({
               />
             ) : null}
             <span className="truncate font-semibold">
-              {project?.name ?? "Project"}
+              {project?.name ?? "Проект"}
             </span>
           </span>
         );
@@ -257,7 +257,7 @@ export function TasksTopbar({
               variant="ghost"
               size="icon"
               className="size-6 shrink-0 max-md:pointer-coarse:size-9"
-              aria-label="Back (Esc)"
+              aria-label="Назад (Esc)"
               onClick={onBack}
             >
               <Icon name="ChevronLeft" className="size-4" />
@@ -322,11 +322,11 @@ export function TasksTopbar({
         <Button
           size="sm"
           className="h-7 gap-1.5 max-md:pointer-coarse:h-9"
-          aria-label="New task"
+          aria-label="Новая задача"
           onClick={onNewTask}
         >
           <Icon name="Plus" className="size-3.5" />
-          <span className="hidden @lg:inline">New task</span>
+          <span className="hidden @lg:inline">Новая задача</span>
         </Button>
       ) : null}
     </header>

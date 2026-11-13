@@ -68,13 +68,13 @@ function CompactBeforeSendToggle({
             )}
           >
             <Icon name="CircleArrowShrink" aria-hidden />
-            {compactFirst ? `Compact ${tokensLabel}` : "Keep history"}
+            {compactFirst ? `Сжать ${tokensLabel}` : "Сохранить историю"}
           </Button>
         </TooltipTrigger>
         <TooltipContent side="top">
           {compactFirst
-            ? `The prompt cache expired. The next send compacts ${tokensLabel} tokens first. Click to keep full history`
-            : `The next send keeps all ${tokensLabel} tokens. Click to compact first`}
+            ? `Кеш запроса устарел. Перед следующей отправкой будет сжато ${tokensLabel} токенов. Нажмите, чтобы сохранить полную историю`
+            : `Следующая отправка сохранит все ${tokensLabel} токенов. Нажмите, чтобы сначала сжать историю`}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -89,7 +89,7 @@ function CompactBeforeSendPicker({
   const tokensLabel = formatCompactTokenCount(tokens);
   return (
     <OptionPicker<CompactBeforeSendChoice>
-      label="Prompt cache expired"
+      label="Кеш запроса устарел"
       notice={
         <div className="mx-1 mb-1.5 flex items-start gap-2 rounded-md border border-warning/20 bg-warning/5 px-2.5 py-2 text-xs leading-snug text-warning-text">
           <Icon
@@ -97,7 +97,7 @@ function CompactBeforeSendPicker({
             className="mt-px size-3.5 shrink-0"
             aria-hidden
           />
-          <span>{`This thread sat idle past its prompt cache, so your next message re-processes all ${tokensLabel} tokens, which is slower and costs more.`}</span>
+          <span>{`Кеш запроса этого чата устарел после простоя. Следующее сообщение повторно обработает все ${tokensLabel} токенов, что займёт больше времени и повысит стоимость.`}</span>
         </div>
       }
       value={compactFirst ? "compact" : "keep"}
@@ -106,12 +106,12 @@ function CompactBeforeSendPicker({
       options={[
         {
           value: "compact",
-          label: "Compact first",
-          description: "Summarize the history, then send.",
+          label: "Сначала сжать",
+          description: "Сначала кратко изложить историю, затем отправить.",
         },
         {
           value: "keep",
-          label: "Keep full history",
+          label: "Сохранить полную историю",
           description: `Send with all ${tokensLabel} tokens.`,
         },
       ]}

@@ -78,7 +78,7 @@ it("reuses the named image without starting another build", async () => {
   const input = request();
   expect(await ensureModalImage(credentials, input)).toBe("im-existing");
   expect(input.report.log).toHaveBeenCalledWith(
-    "Reusing the Image 2 Modal image",
+    "Повторно используется образ Modal «Image 2»",
   );
   expect(vendor.build).not.toHaveBeenCalled();
   expect(vendor.app).not.toHaveBeenCalled();

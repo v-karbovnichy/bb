@@ -30,15 +30,15 @@ import {
 } from "../preferences/atoms.js";
 
 const SIDEBAR_ORGANIZE_OPTIONS = [
-  { label: "By project", mode: "project" },
-  { label: "By machine", mode: "machine" },
-  { label: "Custom", mode: "chronological" },
+  { label: "По проектам", mode: "project" },
+  { label: "По компьютерам", mode: "machine" },
+  { label: "Вручную", mode: "chronological" },
 ] as const;
 
 const SIDEBAR_SORT_OPTIONS = [
-  { label: "Updated at", sort: "updated", direction: "descending" },
-  { label: "Created at", sort: "created", direction: "descending" },
-  { label: "Alphabetical", sort: "alpha", direction: "ascending" },
+  { label: "По дате обновления", sort: "updated", direction: "descending" },
+  { label: "По дате создания", sort: "created", direction: "descending" },
+  { label: "По алфавиту", sort: "alpha", direction: "ascending" },
 ] as const;
 
 type SidebarViewPage = "organize" | "sort" | "filter";
@@ -68,7 +68,7 @@ export function SidebarHeaderMenuContents({
           }}
         >
           <Icon name="ChevronLeft" />
-          Back
+          Назад
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <SidebarViewItems page={page} />
@@ -82,14 +82,14 @@ export function SidebarHeaderMenuContents({
         onSelect={() => creation.onNewSection?.(anchorSectionId)}
       >
         <Icon name="SectionAdd" />
-        New section
+        Новый раздел
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       {(
         [
-          { page: "organize", label: "Organize", icon: "Layers" },
-          { page: "sort", label: "Sort by", icon: "ArrowUpDown" },
-          { page: "filter", label: "Filter", icon: "SlidersHorizontal" },
+          { page: "organize", label: "Упорядочить", icon: "Layers" },
+          { page: "sort", label: "Сортировать по", icon: "ArrowUpDown" },
+          { page: "filter", label: "Фильтр", icon: "SlidersHorizontal" },
         ] as const
       ).map((item) =>
         compact ? (
@@ -162,7 +162,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
   const selectedSort = sort === "none" ? "updated" : sort;
   if (page === "filter") {
     return (
-      <DropdownMenuGroup aria-label="Filter">
+      <DropdownMenuGroup aria-label="Фильтр">
         {(["active", "archived"] as const).map((lifecycle) => {
           const checked = lifecycles.includes(lifecycle);
           const required = checked && lifecycles.length === 1;
@@ -171,7 +171,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
               key={lifecycle}
               role="menuitemcheckbox"
               aria-checked={checked}
-              title={required ? "Keep at least one filter selected" : undefined}
+              title={required ? "Выберите хотя бы один фильтр" : undefined}
               onSelect={(event) => {
                 event.preventDefault();
                 if (required) return;
@@ -182,7 +182,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
                 );
               }}
             >
-              {lifecycle === "active" ? "Active" : "Archived"}
+              {lifecycle === "active" ? "Активные" : "Архивные"}
               <span className="ml-auto inline-flex size-4 items-center justify-center">
                 {checked && <Icon name="Check" className="size-4" />}
               </span>
@@ -198,7 +198,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
               setShowEmptyProjects(!showEmptyProjects);
             }}
           >
-            Empty projects
+            Пустые проекты
             <span className="ml-auto inline-flex size-4 items-center justify-center">
               {showEmptyProjects && <Icon name="Check" className="size-4" />}
             </span>
@@ -210,8 +210,8 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
   if (page === "organize") {
     return (
       <>
-        <DropdownMenuGroup aria-label="Sections">
-          <DropdownMenuLabel>Sections</DropdownMenuLabel>
+        <DropdownMenuGroup aria-label="Разделы">
+          <DropdownMenuLabel>Разделы</DropdownMenuLabel>
           {SIDEBAR_ORGANIZE_OPTIONS.map((option) => (
             <DropdownMenuItem
               key={option.mode}
@@ -232,8 +232,8 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
           ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup aria-label="Groups">
-          <DropdownMenuLabel>Groups</DropdownMenuLabel>
+        <DropdownMenuGroup aria-label="Группы">
+          <DropdownMenuLabel>Группы</DropdownMenuLabel>
           <DropdownMenuItem
             role="menuitemcheckbox"
             aria-checked={groupByEnvironment}
@@ -243,7 +243,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
               if (!groupByEnvironment) setGroupByReadStatus(false);
             }}
           >
-            By environment
+            По средам
             <span className="ml-auto inline-flex size-4 shrink-0 items-center justify-center">
               {groupByEnvironment && <Icon name="Check" className="size-4" />}
             </span>
@@ -256,15 +256,15 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
               setGroupByReadStatus(!groupByReadStatus);
             }}
           >
-            By read status
+            По статусу прочтения
             <span className="ml-auto inline-flex size-4 shrink-0 items-center justify-center">
               {groupByReadStatus && <Icon name="Check" className="size-4" />}
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup aria-label="Rows">
-          <DropdownMenuLabel>Rows</DropdownMenuLabel>
+        <DropdownMenuGroup aria-label="Строки">
+          <DropdownMenuLabel>Строки</DropdownMenuLabel>
           <DropdownMenuItem
             role="menuitemcheckbox"
             aria-checked={showProviderIcons}
@@ -273,7 +273,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
               setShowProviderIcons(!showProviderIcons);
             }}
           >
-            Provider icons
+            Значки провайдеров
             <span className="ml-auto inline-flex size-4 shrink-0 items-center justify-center">
               {showProviderIcons && <Icon name="Check" className="size-4" />}
             </span>
@@ -287,7 +287,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
                 setShowRowMetadata(!showRowMetadata);
               }}
             >
-              Metadata
+              Метаданные
               <span className="ml-auto inline-flex size-4 shrink-0 items-center justify-center">
                 {showRowMetadata && <Icon name="Check" className="size-4" />}
               </span>
@@ -298,7 +298,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
     );
   }
   return (
-    <DropdownMenuGroup aria-label="Sort">
+    <DropdownMenuGroup aria-label="Сортировка">
       {SIDEBAR_SORT_OPTIONS.map((option) => {
         const selected = selectedSort === option.sort;
         const direction =
@@ -308,6 +308,10 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
             ? "descending"
             : "ascending"
           : option.direction;
+        const directionLabel =
+          direction === "ascending" ? "по возрастанию" : "по убыванию";
+        const nextDirectionLabel =
+          nextDirection === "ascending" ? "по возрастанию" : "по убыванию";
         return (
           <DropdownMenuItem
             key={option.sort}
@@ -315,7 +319,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
             aria-checked={selected}
             aria-label={
               selected
-                ? `${option.label}, ${direction}. Sort ${nextDirection}`
+                ? `${option.label}, ${directionLabel}. Сортировать ${nextDirectionLabel}`
                 : option.label
             }
             onSelect={(event) => {
@@ -327,7 +331,7 @@ function SidebarViewItems({ page }: { page: SidebarViewPage }) {
             {option.label}
             {selected && (
               <span className="sr-only">
-                , {direction}. Sort {nextDirection}
+                , {directionLabel}. Сортировать {nextDirectionLabel}
               </span>
             )}
             <span className="ml-auto inline-flex size-4 shrink-0 items-center justify-center">

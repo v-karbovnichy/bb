@@ -64,7 +64,7 @@ export function ProjectActionsMenuItems({
           void navigate(getSettingsProjectRoutePath(project.id));
         }}
       >
-        Project settings
+        Настройки проекта
       </ActionMenuItem>
       <ActionMenuItem
         surface={surface}
@@ -74,7 +74,7 @@ export function ProjectActionsMenuItems({
           else requestRename(project);
         }}
       >
-        Rename
+        Переименовать
       </ActionMenuItem>
       {showAddLocalPath ? (
         <ActionMenuItem
@@ -84,7 +84,7 @@ export function ProjectActionsMenuItems({
             requestAddLocalPath(project);
           }}
         >
-          Add local path
+          Добавить локальный путь
         </ActionMenuItem>
       ) : null}
       {extraActions?.(surface)}
@@ -97,7 +97,7 @@ export function ProjectActionsMenuItems({
           requestDelete(project);
         }}
       >
-        Remove
+        Удалить
       </ActionMenuItem>
     </>
   );
@@ -122,7 +122,7 @@ export function ProjectActionsMenu({
             triggerClassName,
             "data-[state=open]:bg-state-active data-[state=open]:text-foreground",
           )}
-          aria-label={`${project.name} actions`}
+          aria-label={`Действия с проектом ${project.name}`}
           onClick={(event) => {
             event.stopPropagation();
           }}

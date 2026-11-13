@@ -15,19 +15,19 @@ import {
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 const THREAD_ID_POSITIONAL = {
   name: "thread-id",
-  description: "Thread whose pending retry to act on; defaults to this thread",
+  description: "Чат, для которого нужно обработать ожидающую повторную попытку; по умолчанию текущий чат",
 } as const;
 
 function textQueuedRetry(queued: QueuedRetry): string {
   const retry =
     queued.sendAt === null
-      ? "pending"
-      : `retrying ${new Date(queued.sendAt).toISOString()}`;
+      ? "ожидает"
+      : `повторная попытка ${new Date(queued.sendAt).toISOString()}`;
   return `${queued.threadId}\t${queued.id}\t${retry}`;
 }
 
@@ -39,7 +39,7 @@ function requiredThreadId(
   const threadId = requested ?? context.threadId;
   if (threadId === undefined) {
     throw new PluginCliError(
-      `A thread id is required: bb provider-retry ${command} <thread-id>`,
+      `Требуется ID чата: bb provider-retry ${command} <thread-id>`,
       { code: "missing_thread_id", exitCode: 2 },
     );
   }
@@ -55,10 +55,10 @@ async function act(
   const queued = await findQueuedRetry(bb, threadId);
   if (queued === null) {
     throw new PluginCliError(
-      `No pending provider retry exists for ${threadId}.`,
+      `Для чата ${threadId} нет ожидающей повторной попытки провайдера.`,
       {
         code: "no_pending_retry",
-        hint: "Run `bb provider-retry status` for the threads with a pending retry.",
+        hint: "Запустите `bb provider-retry status`, чтобы увидеть чаты с ожидающей повторной попыткой.",
       },
     );
   }
@@ -84,8 +84,8 @@ async function act(
     exitCode: 0,
     stdout:
       command === "cancel"
-        ? `Cancelled provider retry for ${threadId}.\n`
-        : `Retrying ${threadId} now.\n`,
+        ? `Повторная попытка провайдера для чата ${threadId} отменена.\n`
+        : `Повторная попытка для чата ${threadId} запущена.\n`,
   };
 }
 
@@ -93,18 +93,18 @@ export function registerProviderRetryCli(bb: BbPluginApi): void {
   bb.cli.register(
     defineCli({
       name: "provider-retry",
-      summary: "Manage pending automatic provider retries",
+      summary: "Управлять ожидающими автоматическими повторными попытками провайдеров",
       description:
-        "A pending retry is an ordinary durable queued row: cancel deletes it, retry sends it now instead of waiting for its window.",
+        "Ожидающая повторная попытка хранится в обычной постоянной очереди: cancel удаляет её, а retry отправляет сразу, не дожидаясь запланированного времени.",
       usageErrorExitCode: 2,
       commands: {
         status: cliCommand({
-          summary: "Show pending automatic provider retries",
+          summary: "Показать ожидающие автоматические повторные попытки провайдеров",
           positionals: [
             {
               name: "thread-id",
               description:
-                "Thread to scope the listing to; defaults to this thread, and lists every thread outside one",
+                "Чат для фильтрации списка; по умолчанию текущий чат, а вне чата показываются все",
             },
           ],
           options: { json: JSON_OPTION },
@@ -125,13 +125,13 @@ export function registerProviderRetryCli(bb: BbPluginApi): void {
               exitCode: 0,
               stdout:
                 queued.length === 0
-                  ? "No provider retries are pending.\n"
+                  ? "Ожидающих повторных попыток провайдеров нет.\n"
                   : `${queued.map(textQueuedRetry).join("\n")}\n`,
             };
           },
         }),
         explain: cliCommand({
-          summary: "Explain the last automatic retry decision for a thread",
+          summary: "Объяснить последнее решение об автоматической повторной попытке для чата",
           positionals: [THREAD_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           async run(input, context) {
@@ -149,17 +149,17 @@ export function registerProviderRetryCli(bb: BbPluginApi): void {
             if (diagnostic === null)
               return {
                 exitCode: 0,
-                stdout: `No automatic retry decision recorded for ${threadId}.\n`,
+                stdout: `Для чата ${threadId} нет записанного решения об автоматической повторной попытке.\n`,
               };
             const { decision, availability, consent } = diagnostic;
             return {
               exitCode: 0,
-              stdout: `${threadId}: ${decision.kind === "retry" ? `Scheduled for ${new Date(decision.sendAt).toISOString()}` : "Skipped"}: ${decision.reason}${availability.kind === "unavailable" ? ` (${availability.reason})` : ""}${consent?.answer.kind === "decline" ? ` (${consent.pluginId}: ${consent.answer.reason})` : ""}.\n`,
+              stdout: `${threadId}: ${decision.kind === "retry" ? `Запланировано на ${new Date(decision.sendAt).toISOString()}` : "Пропущено"}: ${decision.reason}${availability.kind === "unavailable" ? ` (${availability.reason})` : ""}${consent?.answer.kind === "decline" ? ` (${consent.pluginId}: ${consent.answer.reason})` : ""}.\n`,
             };
           },
         }),
         cancel: cliCommand({
-          summary: "Cancel a pending automatic provider retry",
+          summary: "Отменить ожидающую автоматическую повторную попытку провайдера",
           positionals: [THREAD_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           run: (input, context) =>
@@ -175,7 +175,7 @@ export function registerProviderRetryCli(bb: BbPluginApi): void {
             ),
         }),
         retry: cliCommand({
-          summary: "Send a pending provider retry now instead of waiting",
+          summary: "Отправить ожидающую повторную попытку провайдера сейчас",
           positionals: [THREAD_ID_POSITIONAL],
           options: { json: JSON_OPTION },
           run: (input, context) =>

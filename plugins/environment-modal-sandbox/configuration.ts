@@ -2,27 +2,27 @@ export const SETTING_DESCRIPTORS = {
   tokenId: {
     type: "string",
     secret: true,
-    label: "Modal token id",
+    label: "ID токена Modal",
     description:
-      "The token id half of a Modal API token (modal token new writes one to ~/.modal.toml).",
+      "Часть ID токена API Modal (команда modal token new записывает токен в ~/.modal.toml).",
   },
   tokenSecret: {
     type: "string",
-    label: "Modal token secret",
+    label: "Секрет токена Modal",
     secret: true,
-    description: "The token secret half of the same Modal API token.",
+    description: "Секретная часть того же токена API Modal.",
   },
   appName: {
     type: "string",
-    label: "Modal app name",
-    description: "The Modal app the sandboxes are created in.",
+    label: "Имя приложения Modal",
+    description: "Приложение Modal, в котором создаются песочницы.",
     default: "bb-sandboxes",
   },
   idleMinutes: {
     type: "number",
-    label: "Hibernate after idle (minutes)",
+    label: "Останавливать после простоя (минуты)",
     description:
-      "Snapshot and stop an idle sandbox after this long. Use 0 to keep it running until Modal's 24-hour sandbox limit.",
+      "Сохранять снимок и останавливать песочницу после указанного простоя. Значение 0 оставляет её работающей до 24-часового лимита Modal.",
     default: 15,
   },
 } as const;
@@ -58,12 +58,12 @@ export function resolveSettings(raw: RawSettings): SettingsResolution {
   if (missing.length > 0) {
     return {
       ok: false,
-      message: `Set ${missing.join(" and ")} in the plugin's settings.`,
+      message: `Укажите ${missing.join(" и ")} в настройках плагина.`,
     };
   }
   const appName = raw.appName.trim();
   if (appName.length === 0) {
-    return { ok: false, message: "The app name must not be blank." };
+    return { ok: false, message: "Имя приложения не может быть пустым." };
   }
   if (
     !Number.isInteger(raw.idleMinutes) ||
@@ -72,7 +72,7 @@ export function resolveSettings(raw: RawSettings): SettingsResolution {
   ) {
     return {
       ok: false,
-      message: `idleMinutes must be a whole number between 0 and ${MAX_IDLE_MINUTES}, not ${raw.idleMinutes}.`,
+      message: `idleMinutes должен быть целым числом от 0 до ${MAX_IDLE_MINUTES}, получено: ${raw.idleMinutes}.`,
     };
   }
   return {

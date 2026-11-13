@@ -29,7 +29,7 @@ export function ResourceSidebar({
   return (
     <SectionSidebar
       backTo={backTo}
-      title={workspace === "plugins" ? "Plugins" : "Skills"}
+      title={workspace === "plugins" ? "Плагины" : "Навыки"}
       isResizing={isResizing}
       onResizeMouseDown={onResizeMouseDown}
       testIdPrefix={workspace}

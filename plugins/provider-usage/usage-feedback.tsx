@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 import type { UsageMachine, UsageProvider } from "./usage-schema.js";
 
 export const usageFeedbackMessages = {
-  loading: "Loading usage…",
-  noSources: "No usage sources available.",
-  loadFailed: "Couldn’t load usage.",
-  refreshFailed: "Couldn’t refresh. Showing last update.",
-  unavailable: "Usage unavailable.",
+  loading: "Загрузка данных об использовании…",
+  noSources: "Источники данных об использовании недоступны.",
+  loadFailed: "Не удалось загрузить данные об использовании.",
+  refreshFailed: "Не удалось обновить данные. Показаны последние сохранённые данные.",
+  unavailable: "Данные об использовании недоступны.",
 } as const;
 
 export function hasReportedUsage(providers: readonly UsageProvider[]): boolean {
@@ -16,8 +16,8 @@ export function hasReportedUsage(providers: readonly UsageProvider[]): boolean {
 
 export function emptyUsageMessage(machine: UsageMachine): string {
   return machine.id.startsWith("source:")
-    ? "No accounts report usage yet. Configure accounts in the source plugin’s settings."
-    : "No providers report usage limits on this machine.";
+    ? "Аккаунты пока не передают данные об использовании. Настройте их в параметрах исходного плагина."
+    : "Провайдеры не передают данные о лимитах на этой машине.";
 }
 
 export function offlineUsageMessage(
@@ -25,8 +25,8 @@ export function offlineUsageMessage(
   hasUsage: boolean,
 ): string {
   return hasUsage
-    ? `${machine.displayName} is offline. Showing last update.`
-    : `${machine.displayName} is offline. Usage will refresh when it reconnects.`;
+    ? `${machine.displayName} не в сети. Показаны последние сохранённые данные.`
+    : `${machine.displayName} не в сети. Данные обновятся после подключения.`;
 }
 
 export function UsageFeedback({

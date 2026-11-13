@@ -36,9 +36,9 @@ const NETWORK_WARNING_INTERVAL_MS = 60 * 60 * 1_000;
 const LAST_OUTCOME_KEY = "last-send-outcome";
 const DELIVERED_THREAD_KEY_PREFIX = "delivered-thread:";
 const FALLBACK_BODIES: Record<PushNotificationKind, string> = {
-  "pending-interaction": "Waiting for your input",
-  "thread-error": "The thread hit an error",
-  "turn-finished": "Finished and waiting for you",
+  "pending-interaction": "Ожидается ваш ответ",
+  "thread-error": "В чате произошла ошибка",
+  "turn-finished": "Ответ готов",
 };
 const PUSH_KIND_PRIORITY: readonly PushNotificationKind[] = [
   "pending-interaction",
@@ -218,30 +218,30 @@ function threadDisplayTitle(thread: ThreadResponse): string {
   if (title) return title;
   const fallback = thread.titleFallback?.trim();
   if (fallback) return fallback;
-  return `Thread ${thread.id.slice(0, 8)}`;
+  return `Чат ${thread.id.slice(0, 8)}`;
 }
 
 function describePendingInteraction(interaction: PendingInteraction): string {
   const payload = interaction.payload;
   if (payload.kind === "user_question") {
     const prompt = firstLine(payload.questions[0]?.prompt ?? "");
-    return prompt || "The agent has a question for you";
+    return prompt || "У агента есть к вам вопрос";
   }
   if (payload.kind === "approval") {
     const subject = payload.subject;
     if (subject.kind === "command") {
-      return `Approve command: ${firstLine(subject.command)}`;
+      return `Подтвердите команду: ${firstLine(subject.command)}`;
     }
-    if (subject.kind === "file_change") return "Approve file changes";
+    if (subject.kind === "file_change") return "Подтвердите изменения файлов";
     if (subject.kind === "permission_grant") {
       return subject.toolName
-        ? `Grant permissions to ${subject.toolName}`
-        : "Grant additional permissions";
+        ? `Предоставьте разрешения для ${subject.toolName}`
+        : "Предоставьте дополнительные разрешения";
     }
-    return "Review the plan before the agent continues";
+    return "Просмотрите план, прежде чем агент продолжит";
   }
   if ("title" in payload) return payload.title;
-  return "Waiting for your input";
+  return "Ожидается ваш ответ";
 }
 
 function pickKind(
@@ -524,7 +524,7 @@ export function createPushSender(args: CreatePushSenderArgs): PushSender {
     if (!running) {
       throw new SendNotificationError(
         "sender_stopped",
-        "Push notifications are not running",
+        "Push-уведомления не работают",
       );
     }
     let thread: OutgoingNotification["thread"] = null;
@@ -534,7 +534,7 @@ export function createPushSender(args: CreatePushSenderArgs): PushSender {
       if (found === null || found.deletedAt !== null) {
         throw new SendNotificationError(
           "thread_not_found",
-          `Thread not found: ${threadId}`,
+          `Чат не найден: ${threadId}`,
         );
       }
       thread = { id: found.id, projectId: found.projectId };

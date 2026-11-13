@@ -125,7 +125,7 @@ export function ParentSelectorRow({
   }
 
   return (
-    <DetailRow icon="UserRound" label="Parent">
+    <DetailRow icon="UserRound" label="Родительский чат">
       {parentThreadId ? (
         <div
           className={cn(
@@ -144,7 +144,7 @@ export function ParentSelectorRow({
             )}
           >
             <ThreadTitle
-              title={selectedParentOptionLabel ?? "Parent thread"}
+              title={selectedParentOptionLabel ?? "Родительский чат"}
               tooltip
             />
           </Link>
@@ -157,7 +157,7 @@ export function ParentSelectorRow({
             onClick={() => {
               onAssignParent(null);
             }}
-            aria-label="Clear parent thread"
+            aria-label="Убрать родительский чат"
           >
             <Icon name="X" />
           </Button>
@@ -189,13 +189,13 @@ export function ParentNotificationsRow({
   thread,
 }: ParentNotificationsRowProps) {
   const updateThread = useUpdateThread({
-    errorMessage: "Failed to change parent notifications.",
+    errorMessage: "Не удалось изменить уведомления родительского чата.",
   });
   if (thread.parentThreadId === null) return null;
   return (
-    <DetailRow icon="Megaphone02" label="Notify parent">
+    <DetailRow icon="Megaphone02" label="Уведомлять родительский чат">
       <OptionPicker
-        label="Notify parent"
+        label="Уведомлять родительский чат"
         value={thread.parentNotifications}
         options={PARENT_NOTIFICATIONS_OPTIONS}
         className="-mx-1 h-5 rounded-sm font-normal text-foreground hover:bg-state-hover data-[state=open]:bg-state-hover"
@@ -274,10 +274,10 @@ export function EnvironmentRow({
                 provider={providerLookup.provider}
                 className={DETAIL_ROW_ICON_CLASS}
               />
-              <span className="min-w-0 truncate">Environment</span>
+              <span className="min-w-0 truncate">Окружение</span>
             </span>
           ) : (
-            "Environment"
+            "Окружение"
           )
         }
         icon={
@@ -295,7 +295,7 @@ export function EnvironmentRow({
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  aria-label="New thread in environment"
+                  aria-label="Новый чат в окружении"
                   onClick={createThreadInEnvironment}
                   className="inline-flex shrink-0 items-center justify-center rounded-md p-0.5 text-subtle-foreground transition-colors hover:bg-state-hover hover:text-foreground"
                 >
@@ -305,7 +305,7 @@ export function EnvironmentRow({
                   />
                 </button>
               </TooltipTrigger>
-              <TooltipContent>New thread in environment</TooltipContent>
+              <TooltipContent>Новый чат в окружении</TooltipContent>
             </Tooltip>
           ) : null}
         </span>
@@ -319,7 +319,7 @@ export function EnvironmentRow({
                 machineProvider={machineProvider}
                 className={DETAIL_ROW_ICON_CLASS}
               />
-              <span className="min-w-0 truncate">Machine</span>
+              <span className="min-w-0 truncate">Компьютер</span>
             </span>
           }
         >
@@ -327,16 +327,16 @@ export function EnvironmentRow({
             className="flex min-w-0 items-center gap-1"
             title={`${machineIdentity.name} (${
               environment.hostLifecycle !== "active"
-                ? "unavailable"
+                ? "недоступен"
                 : machineIdentity.connected
-                  ? "connected"
-                  : "offline"
+                  ? "подключён"
+                  : "не в сети"
             })`}
           >
             <span className="min-w-0 truncate">{displayHost.name}</span>
             {machineIdentity.connected ||
             environment.hostLifecycle !== "active" ? null : (
-              <span className="shrink-0 text-muted-foreground">(offline)</span>
+              <span className="shrink-0 text-muted-foreground">(не в сети)</span>
             )}
           </span>
         </DetailRow>
@@ -350,7 +350,7 @@ export function ProjectRow({ projectId }: { projectId: string }) {
   if (!projectName) return null;
 
   return (
-    <DetailRow icon="Folder" label="Project">
+    <DetailRow icon="Folder" label="Проект">
       <span className="block min-w-0 truncate" title={projectName}>
         {projectName}
       </span>
@@ -365,11 +365,11 @@ export function EnvironmentProvisioningFailureRow({
 }) {
   if (!failed) return null;
   return (
-    <DetailRow icon="AlertTriangle" label="Environment">
+    <DetailRow icon="AlertTriangle" label="Окружение">
       <span className="flex min-w-0 items-center gap-1">
-        <span className="min-w-0 truncate">Not created</span>
+        <span className="min-w-0 truncate">Не создано</span>
         <span className="shrink-0 text-muted-foreground">
-          · provisioning failed
+          · не удалось создать
         </span>
       </span>
     </DetailRow>
@@ -404,14 +404,14 @@ function WorkspacePathValue({ path }: { path: string }) {
   );
 
   return (
-    <DetailRow icon="FolderOpen" label="Directory">
+    <DetailRow icon="FolderOpen" label="Папка">
       <div ref={containerRef} className="min-w-0">
         <CopyableInlineLabel
           text={path}
-          label="Copy directory"
+          label="Скопировать путь к папке"
           title={path}
-          successMessage="Directory copied"
-          errorMessage="Failed to copy directory"
+          successMessage="Путь к папке скопирован"
+          errorMessage="Не удалось скопировать путь к папке"
         >
           <span className="text-muted-foreground">{fitted}</span>
         </CopyableInlineLabel>
@@ -433,7 +433,7 @@ export function ArchivedRow({ thread }: ArchivedRowProps) {
   }, [thread.id, unarchiveThread]);
   if (thread.archivedAt == null) return null;
   return (
-    <DetailRow icon="Archive" label="Archived">
+    <DetailRow icon="Archive" label="В архиве">
       <span className="block truncate">
         <ThreadUnarchiveButton
           isPending={isPending}

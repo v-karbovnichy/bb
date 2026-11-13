@@ -45,7 +45,7 @@ export function useThreadSelectionMenu(
                 key: "clear-selection",
                 group: SELECTION_GROUP,
                 action: {
-                  label: "Clear selection",
+                  label: "Снять выделение",
                   icon: "X",
                   run: () => store.clear(),
                 },

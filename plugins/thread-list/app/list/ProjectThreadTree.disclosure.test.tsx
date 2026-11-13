@@ -47,6 +47,6 @@ describe("ProjectThreadTree", () => {
       },
     );
 
-    expect(screen.getByText("Threads unavailable")).not.toBeNull();
+    expect(screen.getByText("Чаты недоступны")).not.toBeNull();
   });
 });

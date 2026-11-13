@@ -18,20 +18,20 @@ export function MicrophonePreferencesPopoverContent({
 }) {
   return (
     <PopoverContent
-      aria-label="Voice preferences"
-      mobileTitle="Voice preferences"
+      aria-label="Настройки голосового ввода"
+      mobileTitle="Настройки голосового ввода"
       sideOffset={8}
       className="w-80 rounded-xl p-4 shadow-lg"
       {...props}
     >
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-sm font-semibold">Microphone</h2>
+          <h2 className="text-sm font-semibold">Микрофон</h2>
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Close voice preferences"
+            aria-label="Закрыть настройки голосового ввода"
             onClick={onClose}
           >
             <Icon name="X" className="size-4" />

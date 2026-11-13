@@ -922,8 +922,8 @@ const ConversationRowContent = memo(function ConversationRowContent({
               window.location.origin,
             ).toString(),
             {
-              successMessage: "Message link copied",
-              errorMessage: "Failed to copy message link",
+              successMessage: "Ссылка на сообщение скопирована",
+              errorMessage: "Не удалось скопировать ссылку на сообщение",
             },
           );
         };
@@ -1065,13 +1065,13 @@ function TimelineUnreadDivider() {
   return (
     <div
       role="separator"
-      aria-label="New messages"
+      aria-label="Новые сообщения"
       className={cn(
         "flex items-center gap-2 px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-timeline-accent",
       )}
       data-testid="thread-unread-divider"
     >
-      <span className="shrink-0">New</span>
+      <span className="shrink-0">Новые</span>
       <span className="h-px min-w-0 flex-1 bg-timeline-accent" aria-hidden />
     </div>
   );
@@ -1135,7 +1135,7 @@ function TimelineExpandableBody(props: TimelineExpandableBodyProps) {
     return (
       <TimelineDetailLoadError
         horizontalPadding="flush"
-        label="Failed to load details."
+        label="Не удалось загрузить подробности."
         onRetry={deferred.retry}
       />
     );
@@ -1327,7 +1327,7 @@ function TimelineDetailLoadError({
         className="h-7 cursor-pointer border-destructive px-2 text-destructive hover:text-destructive"
       >
         <Icon name="RotateCcw" />
-        Retry
+        Повторить
       </Button>
     </div>
   );
@@ -1346,7 +1346,7 @@ function LoadEarlierTimelineDetailRow({
       onClick={onClick}
       summaryClassName={PAST_ROW_DIM_CLASS_NAME}
     >
-      {isLoading ? "Loading earlier activity..." : "Load earlier activity"}
+      {isLoading ? "Загрузка предыдущих действий..." : "Загрузить предыдущие действия"}
     </TimelineActionRowHeader>
   );
 }
@@ -1393,13 +1393,13 @@ function LazyTurnRowBody({
       ) : detail.isError ? (
         <TimelineDetailLoadError
           horizontalPadding="default"
-          label="Failed to load turn details."
+          label="Не удалось загрузить подробности хода."
           onRetry={detail.retry}
         />
       ) : (
         <TimelineStaticRowHeader>
           <span className={PAST_ROW_DIM_CLASS_NAME}>
-            Loading turn details...
+            Загрузка подробностей хода...
           </span>
         </TimelineStaticRowHeader>
       )}
@@ -1447,7 +1447,7 @@ function DeferredDelegationChildRows({
     return (
       <TimelineDetailLoadError
         horizontalPadding="default"
-        label="Failed to load subagent activity."
+        label="Не удалось загрузить действия субагента."
         onRetry={detail.retry}
       />
     );
@@ -1456,7 +1456,7 @@ function DeferredDelegationChildRows({
     return (
       <TimelineStaticRowHeader>
         <span className={PAST_ROW_DIM_CLASS_NAME}>
-          Loading subagent activity...
+          Загрузка действий субагента...
         </span>
       </TimelineStaticRowHeader>
     );

@@ -111,14 +111,14 @@ function QueuedMessageSendTimeForm({
       onDone();
       appToast.success(
         sendAt === null
-          ? "Send time removed"
-          : `Sending ${formatScheduleTime(sendAt, Date.now())}`,
+          ? "Время отправки удалено"
+          : `Отправка ${formatScheduleTime(sendAt, Date.now())}`,
       );
     } catch (saveError: unknown) {
       setError(
         getMutationErrorMessage({
           error: saveError,
-          fallbackMessage: "Failed to change when the queued message sends",
+          fallbackMessage: "Не удалось изменить время отправки сообщения из очереди",
           lifecycleOperation: "update_queued_message",
         }),
       );
@@ -144,9 +144,9 @@ function QueuedMessageSendTimeForm({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Change send time</DialogTitle>
+        <DialogTitle>Изменить время отправки</DialogTitle>
         <DialogDescription>
-          Choose when this message should send.
+          Выберите время отправки этого сообщения.
         </DialogDescription>
       </DialogHeader>
       <form className="flex flex-col gap-4 text-sm" onSubmit={handleSubmit}>
@@ -173,7 +173,7 @@ function QueuedMessageSendTimeForm({
             type="button"
             variant="ghost"
           >
-            Remove send time
+            Убрать время отправки
           </Button>
           <Button
             disabled={busy}
@@ -181,10 +181,10 @@ function QueuedMessageSendTimeForm({
             type="button"
             variant="outline"
           >
-            Cancel
+            Отмена
           </Button>
           <Button disabled={busy || !preview.ok} type="submit">
-            {busy ? "Saving…" : "Save"}
+            {busy ? "Сохранение…" : "Сохранить"}
           </Button>
         </div>
       </form>

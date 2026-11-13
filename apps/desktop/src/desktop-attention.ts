@@ -64,7 +64,7 @@ export function registerDesktopAttentionIpc(
         pendingCount > 0
           ? `${pendingCount} ${pendingCount === 1 ? "thread needs" : "threads need"} your input`
           : hasUnread
-            ? "Unread threads"
+            ? "Непрочитанные чаты"
             : "";
       for (const window of windows())
         window.setOverlayIcon(overlay, description);

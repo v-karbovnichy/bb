@@ -98,7 +98,7 @@ describe("task attachments", () => {
 
       expect(response.status).toBe(413);
       await expect(response.json()).resolves.toEqual({
-        error: "attachment exceeds the 25 MB limit",
+        error: "Вложение превышает лимит 25 МБ",
       });
       expect(store.listAttachmentsForTask(task.id)).toEqual([]);
     } finally {

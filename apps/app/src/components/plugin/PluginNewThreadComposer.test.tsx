@@ -1183,7 +1183,7 @@ describe("PluginNewThreadComposer seeding", () => {
     });
     await waitFor(() => {
       expect(latestPromptBoxProps().disabledReason).toBe(
-        "Enter a prompt or attach a file.",
+        "Введите запрос или прикрепите файл.",
       );
     });
     const host = latestPromptBoxProps().pluginComposerHost;
@@ -2250,7 +2250,7 @@ describe("PluginNewThreadComposer seeding", () => {
     expect(latestPromptBoxProps().attachments.pendingUploads).toHaveLength(0);
     expect(latestPromptBoxProps().attachments.items).toHaveLength(1);
     expect(latestPromptBoxProps().attachments.error).toBe(
-      "Could not reach the server. Check that it is running and try again.",
+      "Не удалось связаться с сервером. Проверьте, что он запущен, и повторите попытку.",
     );
   });
 

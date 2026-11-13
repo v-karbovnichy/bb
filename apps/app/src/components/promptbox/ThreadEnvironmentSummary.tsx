@@ -91,7 +91,7 @@ export const ThreadEnvironmentSummary = memo(function ThreadEnvironmentSummary({
     <div className="flex min-w-0 max-w-full items-center gap-2 pr-1.5">
       {projectName ? (
         <OptionDisplay
-          label="Project"
+          label="Проект"
           value={projectName}
           compactValue={projectName}
           leading={<Icon name="Folder" className="size-4 shrink-0" />}
@@ -133,7 +133,7 @@ export const ThreadEnvironmentSummary = memo(function ThreadEnvironmentSummary({
             />
           ) : null}
           <OptionDisplay
-            label="Environment"
+            label="Окружение"
             value={environmentLabel}
             compactValue={environmentCompactLabel}
             className="h-6 min-w-0 shrink px-0"
@@ -150,10 +150,10 @@ export const ThreadEnvironmentSummary = memo(function ThreadEnvironmentSummary({
               onClick={() => {
                 void copyToClipboardWithToast(checkoutCopyValue, {
                   successMessage:
-                    environmentCheckout.copySuccessMessage ?? "Value copied",
+                    environmentCheckout.copySuccessMessage ?? "Значение скопировано",
                   errorMessage:
                     environmentCheckout.copyErrorMessage ??
-                    "Failed to copy value",
+                    "Не удалось скопировать значение",
                 });
               }}
             >
@@ -178,7 +178,7 @@ export const ThreadEnvironmentSummary = memo(function ThreadEnvironmentSummary({
           <TooltipTrigger asChild>
             <button
               type="button"
-              aria-label="New thread in this environment"
+              aria-label="Новый чат в этом окружении"
               onClick={onCreateNewThreadInEnvironment}
               className={cn(
                 "-ml-1 inline-flex cursor-pointer shrink-0 items-center justify-center rounded-md px-1 py-0.5 transition-colors hover:bg-state-hover",
@@ -188,7 +188,7 @@ export const ThreadEnvironmentSummary = memo(function ThreadEnvironmentSummary({
               <Icon name="MessageSquarePlus" className="size-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent>New thread in this environment</TooltipContent>
+          <TooltipContent>Новый чат в этом окружении</TooltipContent>
         </Tooltip>
       ) : null}
     </div>

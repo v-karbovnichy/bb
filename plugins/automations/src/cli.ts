@@ -50,30 +50,31 @@ const DURATION_PATTERN =
   /^(\d+)\s*(s|sec|secs|second|seconds|m|min|mins|minute|minutes|h|hr|hrs|hour|hours|d|day|days)$/iu;
 const DATE_ONLY_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 
-const DESCRIPTION = `Automations run agent prompts or server-side scripts on a schedule.
+const DESCRIPTION = `Автоматизации выполняют запросы агентов или серверные скрипты по расписанию.
 
-Scripts run on the bb server host. New standard-project scripts use the
-project source on that host when one exists; Personal and projects without a
-server-host source run in the plugin's shared script storage directory.
-Existing scripts without a saved policy also run there. Select
-automation-storage, project, or an absolute server-host path with
---working-directory. An unavailable selected directory fails the run.`;
+Скрипты запускаются на хосте сервера bb. Новые скрипты обычных проектов
+используют исходный каталог проекта на этом хосте, если он доступен. Скрипты
+личных проектов и проектов без такого каталога запускаются из общей папки
+хранения скриптов плагина. Там же запускаются существующие скрипты без
+сохранённых настроек папки. Укажите automation-storage, project или абсолютный
+путь на хосте сервера через --working-directory. Если выбранная папка
+недоступна, запуск завершится ошибкой.`;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести машиночитаемый JSON",
 } as const;
 
 const PROJECT_OPTION = {
   type: "string",
   placeholder: "id",
   description:
-    "Required. Project that owns the automation; `bb project list --include-personal --json` lists ids",
+    "Обязательно. Проект автоматизации; команда `bb project list --include-personal --json` показывает идентификаторы",
 } as const;
 
 const AUTOMATION_ID_POSITIONAL = {
   name: "automationId",
-  description: "Automation id from `bb automation list`",
+  description: "Идентификатор автоматизации из `bb automation list`",
   required: true,
 } as const;
 
@@ -82,24 +83,24 @@ const SCHEDULE_OPTIONS = {
     type: "string",
     placeholder: "expression",
     description:
-      "Five-field cron expression, at most 100 characters; requires --timezone",
+      "Выражение cron из пяти полей, до 100 символов; требует --timezone",
   },
   timezone: {
     type: "string",
     placeholder: "iana-timezone",
     description:
-      "IANA timezone for --cron, for example America/New_York; only used with --cron",
+      "Часовой пояс IANA для --cron, например America/New_York; используется только с --cron",
   },
   at: {
     type: "string",
     placeholder: "datetime",
     description:
-      "One-shot run time in the future, preferably ISO 8601 (2026-01-31T09:00:00Z)",
+      "Время разового запуска в будущем, желательно в формате ISO 8601 (2026-01-31T09:00:00Z)",
   },
   in: {
     type: "string",
     placeholder: "duration",
-    description: "One-shot delay from now: 30s, 5m, 2h, or 1d",
+    description: "Задержка разового запуска от текущего времени: 30s, 5m, 2h или 1d",
   },
 } as const;
 
@@ -107,60 +108,60 @@ const AGENT_OPTIONS = {
   prompt: {
     type: "string",
     placeholder: "text",
-    description: "Prompt the agent runs when the automation is due",
+    description: "Запрос, который агент выполнит при срабатывании автоматизации",
   },
   provider: {
     type: "string",
     placeholder: "id",
-    description: "Provider id, for example claude-code or codex",
+    description: "Идентификатор провайдера, например claude-code или codex",
   },
   model: {
     type: "string",
     placeholder: "model",
-    description: "Model id the provider accepts",
+    description: "Идентификатор модели, поддерживаемый провайдером",
   },
   reasoning: {
     type: "string",
     placeholder: "level",
     description:
-      "Reasoning level id the model lists, for example low, medium, or high; new automations default to medium",
+      "Идентификатор уровня рассуждений модели, например low, medium или high; по умолчанию medium",
   },
   "service-tier": {
     type: "string",
     placeholder: "tier",
     description:
-      "Service tier id the provider lists for the model, such as default or fast",
+      "Идентификатор уровня сервиса модели, например default или fast",
   },
   "clear-service-tier": {
     type: "boolean",
-    description: "Leave the automation without a service tier",
+    description: "Не задавать уровень сервиса автоматизации",
   },
   "permission-mode": {
     type: "enum",
     values: permissionModeSchema.options,
     description:
-      "Permission mode; defaults to the provider's best of auto then full",
+      "Режим разрешений; по умолчанию лучший доступный у провайдера: сначала auto, затем full",
   },
   "target-thread": {
     type: "string",
     placeholder: "thread-id",
-    description: "Re-prompt this existing thread instead of spawning one",
+    description: "Отправить запрос в существующий чат вместо создания нового",
   },
   environment: {
     type: "string",
     placeholder: "id-or-path",
     description:
-      "Existing environment id, or a workspace path on the calling thread's machine, else the primary host",
+      "Идентификатор существующего окружения или путь к рабочему пространству на машине чата; иначе используется основной хост",
   },
   "new-environment": {
     type: "enum",
     values: ["worktree"],
-    description: "Create a fresh environment of this kind for each run",
+    description: "Создавать новое окружение этого типа для каждого запуска",
   },
   "base-branch": {
     type: "string",
     placeholder: "branch",
-    description: "Base branch for --new-environment worktree",
+    description: "Базовая ветка для рабочего дерева --new-environment",
   },
 } as const;
 
@@ -168,44 +169,44 @@ const SCRIPT_OPTIONS = {
   script: {
     type: "string",
     placeholder: "inline",
-    description: `Inline script body, at most ${AUTOMATION_SCRIPT_MAX_LENGTH} characters`,
+    description: `Текст скрипта, до ${AUTOMATION_SCRIPT_MAX_LENGTH} символов`,
   },
   "script-file": {
     type: "string",
     placeholder: "path",
     description:
-      "Copy the script from this file; relative paths resolve against the invoking directory",
+      "Скопировать скрипт из файла; относительные пути отсчитываются от текущей папки вызова",
   },
   host: {
     type: "string",
     placeholder: "name-or-id",
     description:
-      "Host holding --script-file; defaults to the thread's environment host, else the server host",
+      "Хост файла --script-file; по умолчанию хост окружения чата, иначе хост сервера",
   },
   interpreter: {
     type: "enum",
     values: automationScriptInterpreterSchema.options,
     description:
-      "Interpreter for the script; a new script infers it from the --script-file extension when omitted, and an update keeps the current one",
+      "Интерпретатор скрипта; для нового скрипта определяется по расширению --script-file, при обновлении сохраняется текущий",
   },
   timeout: {
     type: "duration",
     defaultUnit: "ms",
     min: 1,
     max: AUTOMATION_SCRIPT_TIMEOUT_MAX_MS,
-    description: `Run timeout; a bare number is milliseconds (default ${AUTOMATION_SCRIPT_TIMEOUT_DEFAULT_MS}, max ${AUTOMATION_SCRIPT_TIMEOUT_MAX_MS})`,
+    description: `Максимальное время выполнения; число без единиц считается миллисекундами (по умолчанию ${AUTOMATION_SCRIPT_TIMEOUT_DEFAULT_MS}, максимум ${AUTOMATION_SCRIPT_TIMEOUT_MAX_MS})`,
   },
   "env-json": {
     type: "string",
     placeholder: "json",
     description:
-      'Script environment variables as a JSON object of string values, for example {"CHANNEL":"qa"}',
+      'Переменные окружения скрипта в виде JSON-объекта строк, например {"CHANNEL":"qa"}',
   },
   "working-directory": {
     type: "string",
     placeholder: "automation-storage|project|path",
     description:
-      "Where the script runs: automation-storage, project, or an absolute path on the bb server host",
+      "Папка запуска скрипта: automation-storage, project или абсолютный путь на хосте сервера bb",
   },
 } as const;
 
@@ -276,19 +277,19 @@ function requireProjectId(
 ): string {
   if (value !== undefined && value !== "") return value;
   const known = ctx.projectId;
-  throw new PluginCliError("missing required option --project", {
+  throw new PluginCliError("отсутствует обязательный параметр --project", {
     code: "missing_required",
     hint:
       known === undefined
-        ? "Pass --project <id>; `bb project list --include-personal --json` lists project ids."
-        : `This thread's project is ${known}; re-run with --project ${known}`,
+        ? "Укажите --project <id>; команда `bb project list --include-personal --json` показывает идентификаторы проектов."
+        : `Проект этого чата: ${known}; повторите команду с --project ${known}`,
   });
 }
 
 function requireOptionValue(name: string, value: string): string {
   if (value === "") {
     throw cliError(
-      `Missing required option --${name} <value>.`,
+      `Отсутствует обязательный параметр --${name} <value>.`,
       "missing_required",
     );
   }
@@ -298,19 +299,19 @@ function requireOptionValue(name: string, value: string): string {
 function parseRunAt(value: string): number {
   if (DATE_ONLY_PATTERN.test(value.trim())) {
     throw cliError(
-      "--at needs a time of day, such as 2026-08-25T09:00; a date alone is ambiguous about its time zone.",
+      "Для --at требуется время суток, например 2026-08-25T09:00; одна дата не определяет часовой пояс.",
       "invalid_value",
     );
   }
   const runAt = Date.parse(value);
   if (!Number.isFinite(runAt)) {
     throw cliError(
-      "--at must be a valid date/time, preferably ISO 8601.",
+      "Значение --at должно быть корректной датой и временем, желательно в формате ISO 8601.",
       "invalid_value",
     );
   }
   if (runAt <= Date.now()) {
-    throw cliError("--at must be in the future.", "invalid_value");
+    throw cliError("Значение --at должно быть в будущем.", "invalid_value");
   }
   return runAt;
 }
@@ -319,13 +320,13 @@ function parseRunIn(value: string): number {
   const match = DURATION_PATTERN.exec(value.trim());
   if (!match) {
     throw cliError(
-      "--in must be a duration like 30s, 5m, 2h, or 1d.",
+      "Значение --in должно быть длительностью, например 30s, 5m, 2h или 1d.",
       "invalid_value",
     );
   }
   const amount = Number.parseInt(match[1] ?? "", 10);
   if (amount <= 0) {
-    throw cliError("--in must be greater than zero.", "invalid_value");
+    throw cliError("Значение --in должно быть больше нуля.", "invalid_value");
   }
   const unit = (match[2] ?? "").toLowerCase();
   const multiplier = unit.startsWith("s")
@@ -347,18 +348,18 @@ function buildTrigger(
   ).length;
   if (triggerFlags !== 1) {
     throw cliError(
-      "Provide exactly one schedule flag: --cron, --at, or --in.",
+      "Укажите ровно один параметр расписания: --cron, --at или --in.",
       "missing_required",
     );
   }
   if (cron !== undefined) {
     if (!timezone)
-      throw cliError("--cron requires --timezone.", "missing_required");
+      throw cliError("Для --cron требуется --timezone.", "missing_required");
     return { triggerType: "schedule", cron, timezone };
   }
   if (timezone !== undefined) {
     throw cliError(
-      "--timezone is only used with --cron.",
+      "--timezone используется только с --cron.",
       "unexpected_argument",
     );
   }
@@ -367,7 +368,7 @@ function buildTrigger(
     return { triggerType: "once", runAt: parseRunIn(runIn) };
   }
   throw cliError(
-    "Provide exactly one schedule flag: --cron, --at, or --in.",
+    "Укажите ровно один параметр расписания: --cron, --at или --in.",
     "missing_required",
   );
 }
@@ -381,7 +382,7 @@ function parseScriptWorkingDirectory(
   }
   if (isAbsolute(value)) return { type: "path", path: value };
   throw cliError(
-    "Invalid --working-directory. Expected automation-storage, project, or an absolute path on the bb server host.",
+    "Недопустимое значение --working-directory. Ожидается automation-storage, project или абсолютный путь на хосте сервера bb.",
     "invalid_value",
   );
 }
@@ -389,7 +390,7 @@ function parseScriptWorkingDirectory(
 function validateAgentTargetOptions(options: AgentOptionValues): void {
   if (options["clear-service-tier"] && options["service-tier"] !== undefined) {
     throw cliError(
-      "Cannot combine --service-tier and --clear-service-tier.",
+      "Нельзя одновременно указать --service-tier и --clear-service-tier.",
       "unexpected_argument",
     );
   }
@@ -405,7 +406,7 @@ function validateAgentTargetOptions(options: AgentOptionValues): void {
   );
   if (provided.length > 1) {
     throw cliError(
-      "Cannot combine target options: --target-thread, --environment, and --new-environment.",
+      "Нельзя одновременно указывать параметры цели --target-thread, --environment и --new-environment.",
       "unexpected_argument",
     );
   }
@@ -414,7 +415,7 @@ function validateAgentTargetOptions(options: AgentOptionValues): void {
     options["new-environment"] === undefined
   ) {
     throw cliError(
-      "--base-branch requires --new-environment worktree.",
+      "Для --base-branch требуется --new-environment worktree.",
       "missing_required",
     );
   }
@@ -429,14 +430,14 @@ function parseScriptEnv(
     decoded = JSON.parse(value);
   } catch {
     throw cliError(
-      "--env-json must be a JSON object of string values.",
+      "--env-json должен быть JSON-объектом со строковыми значениями.",
       "invalid_value",
     );
   }
   const parsed = z.record(z.string(), z.string()).safeParse(decoded);
   if (!parsed.success) {
     throw cliError(
-      "--env-json must be a JSON object of string values.",
+      "--env-json должен быть JSON-объектом со строковыми значениями.",
       "invalid_value",
     );
   }
@@ -464,7 +465,7 @@ async function resolveAgentHostId(
   if (threadHostId !== null) return threadHostId;
   const { primaryHostId } = await bb.sdk.system.config();
   if (primaryHostId === null) {
-    throw cliError("No primary host is available.", "no_connected_host");
+    throw cliError("Основной хост недоступен.", "no_connected_host");
   }
   return primaryHostId;
 }
@@ -479,7 +480,7 @@ async function buildAgentEnvironment(
   const baseBranch = options["base-branch"]?.trim();
   if (environment && newEnvironment) {
     throw cliError(
-      "Cannot combine --environment with --new-environment.",
+      "Нельзя одновременно указать --environment и --new-environment.",
       "unexpected_argument",
     );
   }
@@ -537,7 +538,7 @@ async function resolveScriptFileHostId(
   if (override !== undefined) {
     const query = override.trim();
     if (query.length === 0) {
-      throw cliError("--host requires a name or id.", "invalid_value");
+      throw cliError("Для --host требуется название или идентификатор.", "invalid_value");
     }
     const hosts = scriptFileHostListSchema.parse(await bb.sdk.hosts.list());
     const idMatch = hosts.find((host) => host.id === query);
@@ -548,14 +549,14 @@ async function resolveScriptFileHostId(
     if (nameMatches.length === 1) return nameMatches[0]!.id;
     if (nameMatches.length > 1) {
       throw cliError(
-        `Host name "${query}" is ambiguous; pass one of these ids: ${nameMatches
+        `Имя хоста «${query}» неоднозначно; укажите один из идентификаторов: ${nameMatches
           .map((host) => host.id)
           .join(", ")}`,
         "invalid_value",
       );
     }
     throw cliError(
-      `Unknown host "${query}"; run \`bb machine list\` to list hosts.`,
+      `Неизвестный хост «${query}»; список хостов: \`bb machine list\`.`,
       "invalid_value",
     );
   }
@@ -563,7 +564,7 @@ async function resolveScriptFileHostId(
   const hostId = await readThreadHostId(bb, ctx.threadId);
   if (hostId === null) {
     throw cliError(
-      `Thread ${ctx.threadId} has no environment, so the --script-file host cannot be resolved; pass --host <name-or-id>.`,
+      `У чата ${ctx.threadId} нет окружения, поэтому хост --script-file определить нельзя; укажите --host <name-or-id>.`,
       "invalid_value",
     );
   }
@@ -586,20 +587,20 @@ async function loadScriptFileSource(
   const hostOverride = options.host;
   if (scriptFile === undefined) {
     if (hostOverride !== undefined) {
-      throw cliError("--host requires --script-file.", "missing_required");
+      throw cliError("Для --host требуется --script-file.", "missing_required");
     }
     return undefined;
   }
   const path = resolveHostPath({ rootPath: ctx.cwd ?? "", path: scriptFile });
   if (path === null) {
     throw cliError(
-      "Invalid --script-file path; relative paths need the invoking CLI cwd.",
+      "Недопустимый путь --script-file; для относительного пути нужна текущая папка вызова CLI.",
       "invalid_value",
     );
   }
   const fileName = getHostPathBasename(path);
   if (!fileName) {
-    throw cliError(`--script-file must name a file: ${path}`, "invalid_value");
+    throw cliError(`--script-file должен указывать на файл: ${path}`, "invalid_value");
   }
   const hostId = await resolveScriptFileHostId(bb, ctx, hostOverride);
   const file = await bb.sdk.files.read({
@@ -607,7 +608,7 @@ async function loadScriptFileSource(
     path,
   });
   if (file.contentEncoding !== "utf8") {
-    throw cliError(`--script-file is not UTF-8 text: ${path}`, "invalid_value");
+    throw cliError(`--script-file не содержит текст UTF-8: ${path}`, "invalid_value");
   }
   return { path, fileName, hostId, content: file.content };
 }
@@ -629,7 +630,7 @@ async function buildExecution(
   const hasScript = script !== undefined || scriptFile !== undefined;
   if (hasAgent && hasScript) {
     throw cliError(
-      "Provide either agent flags (--prompt) or script flags (--script/--script-file), not both.",
+      "Укажите параметры агента (--prompt) или скрипта (--script/--script-file), но не оба набора.",
       "unexpected_argument",
     );
   }
@@ -641,13 +642,13 @@ async function buildExecution(
       options["working-directory"] !== undefined)
   ) {
     throw cliError(
-      "Agent automations do not accept --interpreter, --timeout, --env-json, or --working-directory.",
+      "Автоматизации агента не принимают --interpreter, --timeout, --env-json и --working-directory.",
       "unexpected_argument",
     );
   }
   if (!hasAgent && !hasScript) {
     throw cliError(
-      "Provide an execution mode: agent (--prompt --provider --model) or script (--script-file <path> or --script <inline>).",
+      "Укажите режим выполнения: агент (--prompt --provider --model) или скрипт (--script-file <path> либо --script <inline>).",
       "missing_required",
     );
   }
@@ -656,7 +657,7 @@ async function buildExecution(
     const model = options.model;
     if (!provider || !model) {
       throw cliError(
-        "Agent automations require --provider and --model alongside --prompt.",
+        "Для автоматизации агента вместе с --prompt нужны --provider и --model.",
         "missing_required",
       );
     }
@@ -697,13 +698,13 @@ async function buildExecution(
     options["base-branch"] !== undefined
   ) {
     throw cliError(
-      "Script automations do not accept agent execution flags.",
+      "Автоматизации скрипта не принимают параметры выполнения агента.",
       "unexpected_argument",
     );
   }
   if (script !== undefined && scriptFile !== undefined) {
     throw cliError(
-      "Provide exactly one of --script or --script-file.",
+      "Укажите ровно один параметр: --script или --script-file.",
       "unexpected_argument",
     );
   }
@@ -716,7 +717,7 @@ async function buildExecution(
       : parseScriptWorkingDirectory(workingDirectoryOption);
   const scriptSource = await loadScriptFileSource(bb, options, ctx);
   const content = scriptSource ? scriptSource.content : script;
-  if (!content) throw cliError("Missing script content.", "invalid_value");
+  if (!content) throw cliError("Содержимое скрипта отсутствует.", "invalid_value");
   const interpreter =
     options.interpreter ??
     (scriptSource ? interpreterForPath(scriptSource.path) : undefined);
@@ -767,7 +768,7 @@ async function buildScriptExecutionUpdate(
 ): Promise<{ update: ScriptExecutionUpdate; scriptSource?: ScriptFileSource }> {
   if (options.script !== undefined && options["script-file"] !== undefined) {
     throw cliError(
-      "Provide exactly one of --script or --script-file.",
+      "Укажите ровно один параметр: --script или --script-file.",
       "unexpected_argument",
     );
   }
@@ -782,7 +783,7 @@ async function buildScriptExecutionUpdate(
     update.script = options.script;
   }
   if (update.script === "") {
-    throw cliError("Missing script content.", "invalid_value");
+    throw cliError("Содержимое скрипта отсутствует.", "invalid_value");
   }
   if (options.interpreter !== undefined) {
     update.interpreter = options.interpreter;
@@ -879,7 +880,7 @@ async function buildUpdateRequest(
   } else if (hasScriptOptions) {
     if (hasAgentOptions(options)) {
       throw cliError(
-        "Cannot combine agent execution flags with script flags.",
+        "Нельзя одновременно указывать параметры агента и скрипта.",
         "unexpected_argument",
       );
     }
@@ -907,7 +908,7 @@ async function buildUpdateRequest(
     request.script === undefined
   ) {
     throw cliError(
-      "No changes requested. Provide --name, schedule flags, a complete agent/script execution, or partial agent/script update flags.",
+      "Изменения не указаны. Передайте --name, параметры расписания, полный набор параметров агента или скрипта либо параметры частичного обновления.",
       "missing_required",
     );
   }
@@ -915,12 +916,12 @@ async function buildUpdateRequest(
 }
 
 function formatTimestamp(value: number | null): string {
-  return value === null ? "-" : new Date(value).toLocaleString();
+  return value === null ? "-" : new Date(value).toLocaleString("ru-RU");
 }
 
 function formatAutomationTrigger(automation: AutomationResponse): string {
   if (automation.trigger.triggerType === "once") {
-    return `once at ${formatTimestamp(automation.trigger.runAt)}`;
+    return `однократно в ${formatTimestamp(automation.trigger.runAt)}`;
   }
   return `${automation.trigger.cron} (${automation.trigger.timezone})`;
 }
@@ -936,37 +937,37 @@ function printAutomation(
   const lines = [
     "",
     `  ID:        ${automation.id}`,
-    `  Name:      ${automation.name}`,
-    ...(status === undefined ? [] : [`  Status:    ${status}`]),
-    `  Enabled:   ${automation.enabled ? "yes" : "no"}`,
-    `  Mode:      ${automation.execution.mode}`,
-    `  Schedule:  ${formatAutomationTrigger(automation)}`,
-    `  Next run:  ${formatTimestamp(automation.nextRunAt)}`,
-    `  Last run:  ${formatTimestamp(automation.lastRunAt)}`,
-    `  Runs:      ${automation.runCount}`,
-    `  Origin:    ${automation.origin}`,
+    `  Название:  ${automation.name}`,
+    ...(status === undefined ? [] : [`  Статус:   ${status}`]),
+    `  Включено:  ${automation.enabled ? "да" : "нет"}`,
+    `  Режим:     ${automation.execution.mode}`,
+    `  Расписание: ${formatAutomationTrigger(automation)}`,
+    `  Следующий запуск: ${formatTimestamp(automation.nextRunAt)}`,
+    `  Последний запуск: ${formatTimestamp(automation.lastRunAt)}`,
+    `  Запусков:  ${automation.runCount}`,
+    `  Источник:  ${automation.origin}`,
   ];
   if (
     automation.execution.mode === "script" &&
     automation.execution.storedScriptPath !== undefined
   ) {
-    lines.push(`  Script:    ${automation.execution.storedScriptPath}`);
+    lines.push(`  Скрипт:    ${automation.execution.storedScriptPath}`);
   }
   if (automation.execution.mode === "script") {
     lines.push(
-      `  Working dir: ${automation.execution.resolvedWorkingDirectory ?? "unavailable"}`,
+      `  Рабочая папка: ${automation.execution.resolvedWorkingDirectory ?? "недоступна"}`,
     );
   }
   if (automation.execution.mode === "agent") {
     lines.push(
-      `  Provider:  ${automation.execution.providerId}`,
-      `  Model:     ${automation.execution.model}`,
-      `  Reasoning: ${automation.execution.reasoningLevel}`,
-      `  Tier:      ${automation.execution.serviceTier ?? "-"}`,
-      `  Permission: ${automation.execution.permissionMode}`,
+      `  Провайдер: ${automation.execution.providerId}`,
+      `  Модель:    ${automation.execution.model}`,
+      `  Рассуждения: ${automation.execution.reasoningLevel}`,
+      `  Уровень сервиса: ${automation.execution.serviceTier ?? "-"}`,
+      `  Разрешения: ${automation.execution.permissionMode}`,
     );
   }
-  if (automation.lastError) lines.push(`  Error:     ${automation.lastError}`);
+  if (automation.lastError) lines.push(`  Ошибка:    ${automation.lastError}`);
   lines.push("");
   return `${lines.join("\n")}\n`;
 }
@@ -1007,10 +1008,10 @@ function printScriptFileSnapshotNote(
     return "";
   }
   return [
-    `Copied ${source.path}${source.hostId !== undefined ? ` (host ${source.hostId})` : ""}`,
-    `    to ${automation.execution.storedScriptPath}`,
-    "The automation runs this stored copy, a snapshot of the source file.",
-    "Edits to the source file do not apply until you run:",
+    `Скопировано из ${source.path}${source.hostId !== undefined ? ` (хост ${source.hostId})` : ""}`,
+    `    в ${automation.execution.storedScriptPath}`,
+    "Автоматизация запускает эту сохранённую копию исходного файла.",
+    "Изменения исходного файла применятся после выполнения команды:",
     `  ${refreshScriptFileCommand(automation, source)}`,
     "",
   ].join("\n");
@@ -1030,14 +1031,14 @@ function table(head: string[], rows: string[][]): string {
 
 function printAutomationProblem(automation: AutomationReadProblem): string {
   if (automation.problem === "missing-agent-prompt") {
-    return printAutomation(automation, "Prompt required");
+    return printAutomation(automation, "Нужен запрос");
   }
   return (
     [
       "",
       `  ID:        ${automation.id}`,
-      `  Name:      ${automation.name}`,
-      "  Status:    Invalid data",
+      `  Название:  ${automation.name}`,
+      "  Статус:   Некорректные данные",
       "",
     ].join("\n") + "\n"
   );
@@ -1045,15 +1046,15 @@ function printAutomationProblem(automation: AutomationReadProblem): string {
 
 function printAutomationTable(automations: AutomationReadResult[]): string {
   return table(
-    ["ID", "Name", "Status", "On", "Schedule", "Next run", "Runs", "Origin"],
+    ["ID", "Название", "Статус", "Вкл.", "Расписание", "Следующий запуск", "Запуски", "Источник"],
     automations.map((automation) =>
       "problem" in automation
         ? automation.problem === "missing-agent-prompt"
           ? [
               automation.id,
               automation.name,
-              "Prompt required",
-              automation.enabled ? "yes" : "no",
+              "Нужен запрос",
+              automation.enabled ? "да" : "нет",
               formatAutomationTrigger(automation),
               formatTimestamp(automation.nextRunAt),
               String(automation.runCount),
@@ -1062,7 +1063,7 @@ function printAutomationTable(automations: AutomationReadResult[]): string {
           : [
               automation.id,
               automation.name,
-              "Invalid data",
+              "Некорректные данные",
               "-",
               "-",
               "-",
@@ -1073,7 +1074,7 @@ function printAutomationTable(automations: AutomationReadResult[]): string {
             automation.id,
             automation.name,
             "-",
-            automation.enabled ? "yes" : "no",
+            automation.enabled ? "да" : "нет",
             formatAutomationTrigger(automation),
             formatTimestamp(automation.nextRunAt),
             String(automation.runCount),
@@ -1085,12 +1086,12 @@ function printAutomationTable(automations: AutomationReadResult[]): string {
 
 function printRunTable(runs: AutomationRunResponse[]): string {
   return table(
-    ["ID", "Status", "Started", "Thread/Exit", "Detail"],
+    ["ID", "Статус", "Начало", "Чат/код выхода", "Подробности"],
     runs.map((run) => [
       run.id,
       run.status,
       formatTimestamp(run.startedAt),
-      run.threadId ?? (run.exitCode === null ? "-" : `exit ${run.exitCode}`),
+      run.threadId ?? (run.exitCode === null ? "-" : `код выхода ${run.exitCode}`),
       run.skipReason ?? run.error ?? "-",
     ]),
   );
@@ -1104,27 +1105,27 @@ export function registerAutomationCli(args: {
   bb.cli.register(
     defineCli({
       name: "automation",
-      summary: "Inspect and manage automations (scheduled agent/script runs)",
+      summary: "Просмотр и управление автоматизациями (запуски агентов и скриптов по расписанию)",
       description: DESCRIPTION,
       root: cliCommand({
-        summary: "Show the automation commands",
+        summary: "Показать команды автоматизаций",
         run: (input) => ({ exitCode: 0, stdout: input.help }),
       }),
       commands: {
         list: cliCommand({
-          summary: "List automations for a project or a target thread",
+          summary: "Список автоматизаций проекта или целевого чата",
           options: {
             project: {
               type: "string",
               placeholder: "id",
               description:
-                "Project whose automations to list; required unless --target-thread is given",
+                "Проект для вывода автоматизаций; обязателен без --target-thread",
             },
             "target-thread": {
               type: "string",
               placeholder: "thread-id",
               description:
-                "List automations in any project that re-prompt this thread",
+                "Показать автоматизации любого проекта, отправляющие запросы в этот чат",
             },
             json: JSON_OPTION,
           },
@@ -1151,26 +1152,26 @@ export function registerAutomationCli(args: {
                 stdout: input.options.json
                   ? jsonOutput(result)
                   : result.length === 0
-                    ? "No automations found\n"
+                    ? "Автоматизации не найдены\n"
                     : printAutomationTable(result),
               };
             }),
         }),
         create: cliCommand({
-          summary: "Create an automation",
+          summary: "Создать автоматизацию",
           description:
-            "Pick exactly one schedule flag and one execution mode: agent (--prompt --provider --model) or script (--script or --script-file).",
+            "Выберите ровно один параметр расписания и один режим выполнения: агент (--prompt --provider --model) или скрипт (--script либо --script-file).",
           options: {
             project: PROJECT_OPTION,
             name: {
               type: "string",
               placeholder: "name",
               required: true,
-              description: "Display name, at most 200 characters",
+              description: "Отображаемое название, до 200 символов",
             },
             disabled: {
               type: "boolean",
-              description: "Create the automation paused",
+              description: "Создать приостановленную автоматизацию",
             },
             ...SCHEDULE_OPTIONS,
             ...AGENT_OPTIONS,
@@ -1204,12 +1205,12 @@ export function registerAutomationCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput(created)
-                  : `Automation created: ${created.id}\n${printAutomation(created)}${printScriptFileSnapshotNote(created, scriptSource)}`,
+                  : `Автоматизация создана: ${created.id}\n${printAutomation(created)}${printScriptFileSnapshotNote(created, scriptSource)}`,
               };
             }),
         }),
         show: cliCommand({
-          summary: "Show automation details",
+          summary: "Показать сведения об автоматизации",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: { project: PROJECT_OPTION, json: JSON_OPTION },
           run: (input, ctx) =>
@@ -1229,16 +1230,16 @@ export function registerAutomationCli(args: {
             }),
         }),
         update: cliCommand({
-          summary: "Update automation configuration",
+          summary: "Изменить настройки автоматизации",
           description:
-            "Patch an existing agent or script with any subset of its flags; omitted settings keep their values. --prompt --provider --model together replace the execution with a new agent, and script flags on an agent automation replace it with a script (--script/--script-file required).",
+            "Измените существующего агента или скрипт любым набором параметров; пропущенные настройки сохраняются. --prompt --provider --model вместе заменяют выполнение новым агентом, а параметры скрипта заменяют агента скриптом (требуется --script или --script-file).",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: {
             project: PROJECT_OPTION,
             name: {
               type: "string",
               placeholder: "name",
-              description: "Replacement display name, at most 200 characters",
+              description: "Новое отображаемое название, до 200 символов",
             },
             ...SCHEDULE_OPTIONS,
             ...AGENT_OPTIONS,
@@ -1264,12 +1265,12 @@ export function registerAutomationCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput(updated)
-                  : `Automation ${updated.id} updated\n${printAutomation(updated)}${printScriptFileSnapshotNote(updated, scriptSource)}`,
+                  : `Автоматизация ${updated.id} обновлена\n${printAutomation(updated)}${printScriptFileSnapshotNote(updated, scriptSource)}`,
               };
             }),
         }),
         pause: cliCommand({
-          summary: "Pause an automation",
+          summary: "Приостановить автоматизацию",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: { project: PROJECT_OPTION, json: JSON_OPTION },
           run: (input, ctx) =>
@@ -1282,12 +1283,12 @@ export function registerAutomationCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput(updated)
-                  : `Automation ${updated.id} paused\n`,
+                  : `Автоматизация ${updated.id} приостановлена\n`,
               };
             }),
         }),
         resume: cliCommand({
-          summary: "Resume an automation",
+          summary: "Возобновить автоматизацию",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: { project: PROJECT_OPTION, json: JSON_OPTION },
           run: (input, ctx) =>
@@ -1300,12 +1301,12 @@ export function registerAutomationCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput(updated)
-                  : `Automation ${updated.id} resumed\n`,
+                  : `Автоматизация ${updated.id} возобновлена\n`,
               };
             }),
         }),
         run: cliCommand({
-          summary: "Run an automation now",
+          summary: "Запустить автоматизацию сейчас",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: {
             project: PROJECT_OPTION,
@@ -1313,7 +1314,7 @@ export function registerAutomationCli(args: {
               type: "string",
               placeholder: "key",
               description:
-                "Reuse the run started by an earlier call with this key, at most 200 characters",
+                "Повторно использовать запуск с этим ключом из предыдущего вызова, до 200 символов",
             },
             json: JSON_OPTION,
           },
@@ -1326,18 +1327,18 @@ export function registerAutomationCli(args: {
                 ...(idempotencyKey ? { idempotencyKey } : {}),
               });
               const threadLine = result.run.threadId
-                ? `Thread: ${result.run.threadId}\n`
+                ? `Чат: ${result.run.threadId}\n`
                 : "";
               return {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput(result)
-                  : `Run started: ${result.run.id}\n${threadLine}`,
+                  : `Запуск начат: ${result.run.id}\n${threadLine}`,
               };
             }),
         }),
         runs: cliCommand({
-          summary: "List automation runs",
+          summary: "Показать запуски автоматизации",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: {
             project: PROJECT_OPTION,
@@ -1346,13 +1347,13 @@ export function registerAutomationCli(args: {
               min: 1,
               max: AUTOMATION_RUNS_LIMIT_MAX,
               default: AUTOMATION_RUNS_LIMIT_DEFAULT,
-              description: "How many recent runs to read",
+              description: "Сколько последних запусков показать",
             },
             output: {
               type: "string",
               placeholder: "runId",
               description:
-                "Print only this run's captured output; it must be inside --limit",
+                "Вывести только сохранённый вывод этого запуска; он должен входить в --limit",
             },
             json: JSON_OPTION,
           },
@@ -1370,7 +1371,7 @@ export function registerAutomationCli(args: {
                 );
                 if (!run) {
                   throw cliError(
-                    `Run ${outputRunId} not found in returned runs. Increase --limit if it is older.`,
+                    `Запуск ${outputRunId} не найден среди результатов. Если он старше, увеличьте --limit.`,
                     "not_found",
                   );
                 }
@@ -1386,19 +1387,19 @@ export function registerAutomationCli(args: {
                 stdout: input.options.json
                   ? jsonOutput(result)
                   : result.runs.length === 0
-                    ? "No runs found\n"
+                    ? "Запуски не найдены\n"
                     : printRunTable(result.runs),
               };
             }),
         }),
         delete: cliCommand({
-          summary: "Delete an automation",
+          summary: "Удалить автоматизацию",
           positionals: [AUTOMATION_ID_POSITIONAL],
           options: {
             project: PROJECT_OPTION,
             yes: {
               type: "boolean",
-              description: "Required. Confirms the automation is deleted",
+              description: "Обязательно. Подтверждает удаление автоматизации",
             },
             json: JSON_OPTION,
           },
@@ -1406,7 +1407,7 @@ export function registerAutomationCli(args: {
             attempt(async () => {
               if (!input.options.yes) {
                 throw cliError(
-                  "Deletion requires --yes when run through the plugin CLI.",
+                  "Для удаления через CLI плагина требуется --yes.",
                   "missing_required",
                 );
               }
@@ -1417,7 +1418,7 @@ export function registerAutomationCli(args: {
                 exitCode: 0,
                 stdout: input.options.json
                   ? jsonOutput({ ok: true, id: automationId })
-                  : `Automation ${automationId} deleted\n`,
+                  : `Автоматизация ${automationId} удалена\n`,
               };
             }),
         }),

@@ -171,12 +171,12 @@ function ProjectMachineSetupDialogContent({
     }
 
     if (folderPath === null) {
-      setValidationMessage("Choose a folder.");
+      setValidationMessage("Выберите папку.");
       return;
     }
     if (isHostPathMissing(folderExistence, folderPath)) {
       setValidationMessage(
-        `That folder no longer exists on ${target.hostName}.`,
+        `Этой папки больше нет на ${target.hostName}.`,
       );
       return;
     }
@@ -189,7 +189,7 @@ function ProjectMachineSetupDialogContent({
   const errorMessage = addSource.isError
     ? getMutationErrorMessage({
         error: addSource.error,
-        fallbackMessage: `Couldn't set up ${target.projectName} on ${target.hostName}.`,
+        fallbackMessage: `Не удалось настроить ${target.projectName} на ${target.hostName}.`,
       })
     : null;
   const isTargetNotEmptyError =
@@ -202,7 +202,7 @@ function ProjectMachineSetupDialogContent({
   const cloneDestination: ReactNode = isEditingClonePath ? (
     <div className="flex items-center gap-1">
       <Input
-        aria-label="Clone destination"
+        aria-label="Папка для клонирования"
         className="h-7 flex-1 text-xs"
         value={clonePathDraft}
         disabled={pending}
@@ -224,7 +224,7 @@ function ProjectMachineSetupDialogContent({
         variant="ghost"
         size="icon"
         className="size-7 shrink-0"
-        aria-label="Use this destination"
+        aria-label="Использовать эту папку"
         disabled={pending}
         onClick={commitClonePathEdit}
       >
@@ -233,7 +233,7 @@ function ProjectMachineSetupDialogContent({
     </div>
   ) : (
     <p className="break-all text-xs text-muted-foreground">
-      into <span className="text-foreground">{clonePath ?? "…"}</span>{" "}
+      в <span className="text-foreground">{clonePath ?? "…"}</span>{" "}
       <button
         type="button"
         className="text-primary hover:underline disabled:opacity-50"
@@ -243,7 +243,7 @@ function ProjectMachineSetupDialogContent({
           setIsEditingClonePath(true);
         }}
       >
-        change
+        изменить
       </button>
     </p>
   );
@@ -252,26 +252,26 @@ function ProjectMachineSetupDialogContent({
     <>
       <DialogHeader>
         <DialogTitle>
-          Set up {target.projectName} on {target.hostName}
+          Настроить {target.projectName} на {target.hostName}
         </DialogTitle>
         <DialogDescription>
           {hasRemote
-            ? `${target.hostName} doesn't have this project yet. Pick how to get it there — this happens once.`
-            : `${target.hostName} doesn't have this project yet. Point at the project folder on ${target.hostName} — this happens once.`}
+            ? `На ${target.hostName} ещё нет этого проекта. Выберите способ его добавления — это потребуется только один раз.`
+            : `На ${target.hostName} ещё нет этого проекта. Укажите папку проекта на этой машине — это потребуется только один раз.`}
         </DialogDescription>
       </DialogHeader>
       <form className="space-y-4" onSubmit={handleSubmit}>
         {hasRemote ? (
           <div
             role="radiogroup"
-            aria-label="Setup method"
+            aria-label="Способ настройки"
             className="flex flex-col gap-2"
           >
             <SetupOptionCard
               selected={option === "clone"}
               disabled={pending}
               onSelect={() => selectOption("clone")}
-              title="Clone from the project remote"
+              title="Клонировать из удалённого репозитория проекта"
             >
               <p className="break-all text-xs text-muted-foreground">
                 {target.gitRemoteUrl}
@@ -282,11 +282,10 @@ function ProjectMachineSetupDialogContent({
               selected={option === "folder"}
               disabled={pending}
               onSelect={() => selectOption("folder")}
-              title={`Use an existing folder on ${target.hostName}`}
+              title={`Использовать существующую папку на ${target.hostName}`}
             >
               <p className="text-xs text-muted-foreground">
-                Browse {target.hostName}'s files and point at a checkout you
-                already have.
+                Просмотрите файлы на {target.hostName} и выберите существующее рабочее дерево.
               </p>
             </SetupOptionCard>
           </div>
@@ -305,7 +304,7 @@ function ProjectMachineSetupDialogContent({
         {pending && option === "clone" ? (
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Icon name="Spinner" className="size-4 shrink-0 animate-spin" />
-            Cloning onto {target.hostName}… This can take a while.
+            Клонирование на {target.hostName}… Это может занять некоторое время.
           </p>
         ) : null}
         {validationMessage ? (
@@ -318,8 +317,7 @@ function ProjectMachineSetupDialogContent({
             </p>
             {isTargetNotEmptyError ? (
               <p className="text-sm text-muted-foreground">
-                Pick a different destination, or use the existing-folder option
-                to point at what's already there.
+                Выберите другую папку или укажите существующую с помощью соответствующего варианта.
               </p>
             ) : null}
           </div>
@@ -331,10 +329,10 @@ function ProjectMachineSetupDialogContent({
             disabled={pending}
             onClick={() => onOpenChange(false)}
           >
-            Cancel
+            Отмена
           </Button>
           <Button type="submit" disabled={submitDisabled}>
-            {option === "clone" ? "Clone & continue" : "Use folder & continue"}
+            {option === "clone" ? "Клонировать и продолжить" : "Использовать папку и продолжить"}
           </Button>
         </DialogFooter>
       </form>

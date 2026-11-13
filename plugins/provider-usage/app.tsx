@@ -140,12 +140,12 @@ function refreshUsage({
         },
       );
       if (!response.ok)
-        throw new Error(`Usage request returned HTTP ${response.status}.`);
+        throw new Error(`Запрос данных об использовании вернул HTTP ${response.status}.`);
       const body: unknown = await response.json();
       const parsed = usageRpcSuccessSchema.safeParse(body);
       if (!parsed.success) {
         throw new Error(
-          rpcErrorMessage(body) ?? "Provider usage could not be loaded.",
+          rpcErrorMessage(body) ?? "Не удалось загрузить данные об использовании провайдера.",
         );
       }
       updateStore({
@@ -160,7 +160,7 @@ function refreshUsage({
       console.warn("Provider usage refresh failed", cause);
       updateStore({
         ...storeSnapshot,
-        error: "Couldn’t refresh usage.",
+        error: "Не удалось обновить данные об использовании.",
       });
     } finally {
       activeRefreshCount -= 1;
@@ -176,20 +176,20 @@ function formatResetCountdown(resetsAt: string | null): string | null {
   if (resetsAt === null) return null;
   const remaining = new Date(resetsAt).getTime() - Date.now();
   if (!Number.isFinite(remaining)) return null;
-  if (remaining <= 0) return "now";
+  if (remaining <= 0) return "сейчас";
   const minutes = Math.ceil(remaining / 60_000);
-  if (minutes < 60) return `${minutes}m`;
+  if (minutes < 60) return `${minutes} мин`;
   const hours = Math.floor(minutes / 60);
   if (hours < 24)
-    return minutes % 60 === 0 ? `${hours}h` : `${hours}h ${minutes % 60}m`;
+    return minutes % 60 === 0 ? `${hours} ч` : `${hours} ч ${minutes % 60} мин`;
   const days = Math.floor(hours / 24);
-  return hours % 24 === 0 ? `${days}d` : `${days}d ${hours % 24}h`;
+  return hours % 24 === 0 ? `${days} д` : `${days} д ${hours % 24} ч`;
 }
 function shortWindowLabel(label: string): string {
   return label
-    .replace(/^Five-hour limit$|^5 hours$/u, "5h")
-    .replace(/^Weekly limit$|^Weekly/u, "7d")
-    .replace(/^Daily limit$/u, "1d");
+    .replace(/^Five-hour limit$|^5 hours$/u, "5 ч")
+    .replace(/^Weekly limit$|^Weekly/u, "7 д")
+    .replace(/^Daily limit$/u, "1 д");
 }
 
 function usageToneTextClass(usedPercent: number): string {
@@ -257,7 +257,7 @@ function UsageNotice({
           className="shrink-0 rounded-sm text-sidebar-foreground underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
           onClick={onRetry}
         >
-          Retry
+          Повторить
         </button>
       ) : null}
     </div>
@@ -273,7 +273,7 @@ function UsageWindow({ window }: { window: UsageWindowValue }) {
   const countdown = formatResetCountdown(window.resetsAt);
   const value =
     window.cost === null
-      ? Math.round(window.usedPercent) + "% used"
+      ? "Использовано " + Math.round(window.usedPercent) + "%"
       : formatUsdCents(window.cost.usedUsdCents, true) +
         " / " +
         formatUsdCents(window.cost.limitUsdCents, false);
@@ -281,8 +281,8 @@ function UsageWindow({ window }: { window: UsageWindowValue }) {
     <button
       type="button"
       className="col-span-full grid grid-cols-subgrid rounded-sm text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
-      title={`${window.label} · ${reset ?? "Reset time not reported"}`}
-      aria-label={`${window.label}: ${value}. ${reset ?? "Reset time not reported"}`}
+      title={`${window.label} · ${reset ?? "Время сброса не указано"}`}
+      aria-label={`${window.label}: ${value}. ${reset ?? "Время сброса не указано"}`}
       aria-expanded={showReset}
       onClick={() => setShowReset((shown) => !shown)}
     >
@@ -318,7 +318,7 @@ function UsageWindow({ window }: { window: UsageWindowValue }) {
       </span>
       {showReset ? (
         <span className="col-span-full pb-1 text-2xs text-subtle-foreground">
-          {reset ?? "Reset time not reported."}
+          {reset ?? "Время сброса не указано."}
           {window.cost === null ? "" : ` · ${value}`}
         </span>
       ) : null}
@@ -330,13 +330,13 @@ function accountStatusMessage(account: UsageProvider): string | null {
   const usage = account.usage;
   switch (usage?.status) {
     case undefined:
-      return "Usage not reported.";
+      return "Данные об использовании не предоставлены.";
     case "ok":
       return usage.windows.length === 0
-        ? "No usage limits reported for this plan."
+        ? "Для этого тарифа лимиты не указаны."
         : null;
     case "not_installed":
-      return "Not installed on this machine.";
+      return "Не установлено на этой машине.";
     case "unauthenticated":
       return account.signInHint;
     case "expired":
@@ -454,8 +454,8 @@ function MachineSelector({
           size="sm"
           aria-label={
             activeMachine === null
-              ? "Usage machine"
-              : "Usage machine: " + activeMachine.displayName
+              ? "Машина для данных об использовании"
+              : "Машина для данных об использовании: " + activeMachine.displayName
           }
           disabled={machines.length === 0}
           className={cn(
@@ -466,13 +466,13 @@ function MachineSelector({
           )}
         >
           <span className="block min-w-0 flex-1 truncate">
-            {activeMachine?.displayName ?? "Usage"}
+            {activeMachine?.displayName ?? "Использование"}
           </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        mobileTitle="Usage source"
+        mobileTitle="Источник данных об использовании"
         className="max-w-72"
       >
         {machines.map((machine) => {
@@ -733,20 +733,20 @@ export function ProviderUsageStatusContent({
       >
         {providers.length < 2 ? (
           <span className="px-1.5 text-2xs font-medium text-sidebar-foreground">
-            Usage
+            Использование
           </span>
         ) : (
           <div
             role="tablist"
-            aria-label="Usage provider"
+            aria-label="Провайдер данных об использовании"
             className="flex min-w-0 shrink items-center gap-0.5 overflow-x-auto"
           >
             {showAllTab ? (
               <button
                 type="button"
                 role="tab"
-                title="All accounts"
-                aria-label="All accounts"
+                title="Все аккаунты"
+                aria-label="Все аккаунты"
                 aria-selected={isAllTab}
                 aria-controls={panelId}
                 tabIndex={isAllTab ? 0 : -1}
@@ -760,7 +760,7 @@ export function ProviderUsageStatusContent({
                 onKeyDown={(event) => handleTabKeyDown(event, 0)}
               >
                 <span aria-hidden="true" className="text-2xs font-medium">
-                  All
+                  Все
                 </span>
               </button>
             ) : null}
@@ -781,7 +781,7 @@ export function ProviderUsageStatusContent({
                   title={
                     tone === null
                       ? provider.displayName
-                      : `${provider.displayName}: an account usage window is at least ${tone === "critical" ? "95" : "80"}% used.`
+                      : `${provider.displayName}: использование одного из лимитов аккаунта достигло ${tone === "critical" ? "95" : "80"}%.`
                   }
                   aria-label={provider.displayName}
                   aria-selected={isActive}
@@ -835,7 +835,7 @@ export function ProviderUsageStatusContent({
         </div>
         <button
           type="button"
-          aria-label="Reload provider usage"
+          aria-label="Обновить данные об использовании провайдера"
           disabled={snapshot.isRefreshing}
           className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring disabled:opacity-50"
           onClick={reload}
@@ -850,7 +850,7 @@ export function ProviderUsageStatusContent({
         </button>
         <button
           type="button"
-          aria-label="Collapse provider usage"
+          aria-label="Свернуть данные об использовании провайдера"
           className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
           onClick={dismiss}
         >
@@ -862,15 +862,15 @@ export function ProviderUsageStatusContent({
         role="tabpanel"
         aria-label={
           activeMachine === null
-            ? "Provider usage"
+            ? "Использование провайдера"
             : isAllTab
-              ? activeMachine.displayName + " usage for all accounts"
+              ? activeMachine.displayName + ": использование всех аккаунтов"
               : activeProvider === null
-                ? "Provider usage"
+                ? "Использование провайдера"
                 : activeMachine.displayName +
                   " " +
                   activeProvider.displayName +
-                  " usage"
+                  ": использование"
         }
         className="min-h-0 overflow-y-auto p-2.5"
       >
@@ -945,7 +945,7 @@ export default definePluginApp((app) => {
   app.experimental_sidebarFooter.register({
     kind: "disclosure",
     id: "usage",
-    label: "Provider usage",
+    label: "Использование провайдеров",
     icon: "ChartColumn",
     component: ProviderUsageStatus,
   });

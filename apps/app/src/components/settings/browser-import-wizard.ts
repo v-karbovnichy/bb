@@ -146,15 +146,15 @@ export function recordFromOutcome(
 }
 
 export function formatCookieCount(count: number): string {
-  return `${count.toLocaleString()} ${count === 1 ? "cookie" : "cookies"}`;
+  return `Файлов cookie: ${count.toLocaleString()}`;
 }
 
 export function formatSkippedDomains(domains: readonly string[]): string {
   if (domains.length === 0) return "";
   if (domains.length === 1) return domains[0];
   if (domains.length <= 3)
-    return `${domains.slice(0, -1).join(", ")} and ${domains[domains.length - 1]}`;
-  return `${domains.slice(0, 3).join(", ")} and ${domains.length - 3} more`;
+    return `${domains.slice(0, -1).join(", ")} и ${domains[domains.length - 1]}`;
+  return `${domains.slice(0, 3).join(", ")} и ещё ${domains.length - 3}`;
 }
 
 export function listedSources(
@@ -195,67 +195,67 @@ export function presentSourceRow(
   record: BrowserImportRecord | undefined,
 ): SourceRowPresentation {
   const profileCount = source.profiles.length;
-  const profileLabel = `${profileCount} ${profileCount === 1 ? "profile" : "profiles"}`;
+  const profileLabel = `Профилей: ${profileCount}`;
   const cookies = totalCookies(source);
   switch (source.unavailable) {
     case "browserRunning":
       return {
-        status: `Running · quit ${source.name} to import`,
+        status: `Запущен · закройте ${source.name} для импорта`,
         tone: "attention",
         details: [],
         action: "recheck",
-        actionLabel: "Recheck",
+        actionLabel: "Проверить снова",
       };
     case "needsFullDiskAccess":
       return {
-        status: "Needs Full Disk Access",
+        status: "Нужен полный доступ к диску",
         tone: "attention",
         details: [],
         action: "grant",
-        actionLabel: "Grant access…",
+        actionLabel: "Предоставить доступ…",
       };
     case "needsKeychainApproval":
       return {
-        status: "Needs Keychain access",
+        status: "Нужен доступ к связке ключей",
         tone: "attention",
         details: [],
         action: "import",
-        actionLabel: "Import…",
+        actionLabel: "Импортировать…",
       };
     case "keychainItemMissing":
       return {
-        status: "No encryption key in Keychain",
+        status: "Нет ключа шифрования в связке ключей",
         tone: "idle",
         details: [],
         action: "recheck",
-        actionLabel: "Recheck",
+        actionLabel: "Проверить снова",
       };
     case undefined:
       break;
     default:
       return {
-        status: "Unavailable",
+        status: "Недоступно",
         tone: "idle",
         details: [],
         action: "none",
-        actionLabel: "Import…",
+        actionLabel: "Импортировать…",
       };
   }
   if (profileCount === 0 || cookies === 0) {
     return {
-      status: "No cookies yet",
+      status: "Пока нет файлов cookie",
       tone: "idle",
       details: profileCount === 0 ? [] : [profileLabel],
       action: "none",
-      actionLabel: "Import…",
+      actionLabel: "Импортировать…",
     };
   }
   const details = record
     ? [
-        `${record.profileName} · ${formatCookieCount(record.imported)} imported`,
+        `${record.profileName} · импортировано: ${formatCookieCount(record.imported)}`,
         ...(record.skipped > 0
           ? [
-              `${record.skipped.toLocaleString()} skipped${
+              `Пропущено: ${record.skipped.toLocaleString()}${
                 record.skippedDomains.length > 0
                   ? ` (${formatSkippedDomains(record.skippedDomains)})`
                   : ""
@@ -267,10 +267,10 @@ export function presentSourceRow(
       ? [profileLabel]
       : [profileLabel, formatCookieCount(cookies)];
   return {
-    status: "Ready",
+    status: "Готово",
     tone: "ready",
     details,
     action: "import",
-    actionLabel: "Import…",
+    actionLabel: "Импортировать…",
   };
 }

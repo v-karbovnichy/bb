@@ -3,12 +3,12 @@ import { Icon } from "@bb/shared-ui/icon";
 
 const STATUS_CONTENT = {
   success: {
-    title: "Authentication completed",
-    message: "You can close this window.",
+    title: "Авторизация завершена",
+    message: "Можно закрыть это окно.",
   },
   error: {
-    title: "Authentication failed",
-    message: "Something went wrong. Please close this window and try again.",
+    title: "Не удалось авторизоваться",
+    message: "Произошла ошибка. Закройте это окно и попробуйте ещё раз.",
   },
 } as const;
 

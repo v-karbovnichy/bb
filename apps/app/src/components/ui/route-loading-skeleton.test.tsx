@@ -12,7 +12,7 @@ afterEach(() => {
 
 function renderSkeleton(isBoundedPane: boolean) {
   render(<RouteLoadingSkeleton isBoundedPane={isBoundedPane} />);
-  const skeleton = screen.getByRole("status", { name: "Loading" });
+  const skeleton = screen.getByRole("status", { name: "Загрузка" });
   const header = skeleton.firstElementChild;
   if (header === null) throw new Error("Skeleton header row is missing");
   return { skeleton: skeleton.classList, header: header.classList };

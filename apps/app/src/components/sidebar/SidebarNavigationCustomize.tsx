@@ -43,7 +43,7 @@ export function SidebarNavigationCustomize({
     >
       <SidebarVisibilityCustomize
         title={title}
-        listLabel="Sidebar navigation"
+        listLabel="Навигация боковой панели"
         variant="compact"
         items={items}
         visibleIds={arrangement.visibleKeys}
@@ -66,7 +66,7 @@ export function SidebarNavigationCustomizePopoverContent({
   focusReturnRef: RefObject<HTMLElement | null>;
   onClose: () => void;
 }) {
-  const title = "Customize navigation";
+  const title = "Настроить навигацию";
   return (
     <PopoverContent
       side="right"

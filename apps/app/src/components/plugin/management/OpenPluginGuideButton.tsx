@@ -51,7 +51,7 @@ export function OpenPluginGuideButton() {
             candidate.official,
         );
         if (entry === undefined) {
-          throw new Error("Plugin Guide is unavailable in the catalog.");
+          throw new Error("Plugin Guide недоступен в каталоге.");
         }
         return entry;
       }
@@ -62,7 +62,7 @@ export function OpenPluginGuideButton() {
       return null;
     },
     onError: (error) => {
-      appToast.error("Could not open Plugin Guide", {
+      appToast.error("Не удалось открыть Plugin Guide", {
         description: pluginAdminErrorMessage(error),
       });
     },
@@ -91,7 +91,7 @@ export function OpenPluginGuideButton() {
           className={cn("size-4", open.isPending && "animate-spin")}
           aria-hidden
         />
-        <span className="underline underline-offset-4">Plugin Guide</span>
+        <span className="underline underline-offset-4">Руководство по плагинам</span>
       </Button>
       <AddPluginDialog
         open={installTarget !== null}

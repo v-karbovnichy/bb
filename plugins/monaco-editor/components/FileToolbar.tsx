@@ -37,7 +37,7 @@ export function FileToolbar({
         />
         <CopyablePath path={path} />
         <ToolbarButton
-          label={isRefreshing ? "Reloading file" : "Reload from disk"}
+          label={isRefreshing ? "Перезагрузка файла" : "Загрузить с диска"}
           onClick={onRefresh}
           disabled={isRefreshing}
         >
@@ -46,17 +46,17 @@ export function FileToolbar({
       </div>
       <SaveDot indicator={indicator} />
       <ToolbarButton
-        label={indicator === "saving" ? "Saving…" : "Save"}
+        label={indicator === "saving" ? "Сохранение…" : "Сохранить"}
         onClick={onSave}
         disabled={saveDisabled}
         unavailableReason={
-          saveConflict ? "Resolve the file conflict below" : undefined
+          saveConflict ? "Разрешите конфликт файла ниже" : undefined
         }
       >
         <SaveIcon />
       </ToolbarButton>
       <ToolbarButton
-        label={isFilesOpen ? "Hide files" : "Show in files"}
+        label={isFilesOpen ? "Скрыть файлы" : "Показать среди файлов"}
         onClick={onToggleFiles}
         pressed={isFilesOpen}
       >
@@ -72,10 +72,10 @@ function SaveDot({ indicator }: { indicator: SaveIndicator }) {
   }
   const label =
     indicator === "saving"
-      ? "Saving…"
+      ? "Сохранение…"
       : indicator === "error"
-        ? "Could not save — unsaved changes"
-        : "Unsaved changes";
+        ? "Не удалось сохранить — есть несохранённые изменения"
+        : "Несохранённые изменения";
   return (
     <span
       className="flex size-4 shrink-0 items-center justify-center"
@@ -109,13 +109,13 @@ function CopyablePath({ path }: { path: string }) {
   const copy = useCallback(() => {
     void experimental_copyToClipboard({ text: path }).then((copiedPath) => {
       if (!copiedPath) {
-        toast.error("Failed to copy file path");
+        toast.error("Не удалось скопировать путь к файлу");
         return;
       }
       setCopied(true);
       if (timerRef.current !== null) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopied(false), 1500);
-      toast.success("File path copied");
+      toast.success("Путь к файлу скопирован");
     });
   }, [path]);
 
@@ -123,8 +123,8 @@ function CopyablePath({ path }: { path: string }) {
     <button
       type="button"
       onClick={copy}
-      title={copied ? "Copied" : "Copy file path"}
-      aria-label="Copy file path"
+      title={copied ? "Скопировано" : "Скопировать путь к файлу"}
+      aria-label="Скопировать путь к файлу"
       className={cn(
         "min-w-0 cursor-pointer truncate rounded-sm text-left font-mono text-sm",
         "font-medium leading-5 text-file-accent underline-offset-2",

@@ -75,12 +75,12 @@ afterEach(() => {
 
 describe("reasoning disclosure lifecycle", () => {
   it.each([
-    { isThinking: false, details: undefined, label: "Working..." },
-    { isThinking: true, details: undefined, label: "Thinking…" },
+    { isThinking: false, details: undefined, label: "Работает..." },
+    { isThinking: true, details: undefined, label: "Думает…" },
     {
       isThinking: true,
       details: "Compare both render paths.",
-      label: "Thinking…",
+      label: "Думает…",
     },
   ])(
     "keeps the $label header height stable",
@@ -101,10 +101,10 @@ describe("reasoning disclosure lifecycle", () => {
       const { container, rerender } = render(
         <Fixture phase="live" nested={nested} />,
       );
-      fireEvent.click(screen.getByRole("button", { name: "Thinking…" }));
+      fireEvent.click(screen.getByRole("button", { name: "Думает…" }));
       expect(
         screen
-          .getByRole("button", { name: "Thinking…" })
+          .getByRole("button", { name: "Думает…" })
           .getAttribute("aria-expanded"),
       ).toBe("true");
       expect(container.querySelector('[data-icon="AiBrain01"]')).toBeNull();
@@ -132,11 +132,11 @@ describe("reasoning disclosure lifecycle", () => {
     expect(container.querySelector('[data-icon="AiBrain01"]')).toBeNull();
     expect(screen.queryByRole("button")).toBeNull();
     rerender(<Fixture phase="live" />);
-    fireEvent.click(screen.getByRole("button", { name: "Thinking…" }));
+    fireEvent.click(screen.getByRole("button", { name: "Думает…" }));
     rerender(<Fixture phase="live" id="next-reasoning" />);
     expect(
       screen
-        .getByRole("button", { name: "Thinking…" })
+        .getByRole("button", { name: "Думает…" })
         .getAttribute("aria-expanded"),
     ).toBe("false");
   });

@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Retry turns after transient provider errors and when subscription limits reset.",
+  "description": "Повторяйте ответы после временных ошибок провайдера и сброса лимитов подписки.",
   "engines": {
     "bb": ">=0.0",
     "bbPluginSdk": ">=0.6.107"
   },
   "bb": {
     "name": "Provider retry",
-    "description": "Retry turns after transient provider errors and when subscription limits reset.",
+    "description": "Повторяйте ответы после временных ошибок провайдера и сброса лимитов подписки.",
     "branding": {
       "icon": "ArrowReloadHorizontal"
     },

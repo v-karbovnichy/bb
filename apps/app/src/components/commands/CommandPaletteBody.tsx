@@ -96,9 +96,9 @@ export function CommandPaletteBody({
             .filter((server) => !server.active)
             .map((server) => ({
               id: `server:${server.id}`,
-              title: `Switch to ${server.name}`,
+              title: `Переключиться на ${server.name}`,
               bucket: "Actions",
-              group: "Servers",
+              group: "Серверы",
               shortcut: null,
               run: () => serverChoices.switchTo(server.id),
             })),
@@ -207,7 +207,7 @@ export function CommandPaletteBody({
       inputDescription={COMMAND_PALETTE_INPUT.description}
       inputLabel={COMMAND_PALETTE_INPUT.label}
       listId={listId}
-      listLabel="Commands"
+      listLabel="Команды"
       listRef={listRef}
       onInputChange={(value) => {
         onQueryChange(value);
@@ -220,7 +220,7 @@ export function CommandPaletteBody({
     >
       {!isGroupedRoot && visibleEntries.length === 0 ? (
         <p className="px-3 py-4 text-center text-sm text-muted-foreground">
-          No matching commands
+          Подходящих команд не найдено
         </p>
       ) : isGroupedRoot ? (
         rootGroups.map((group) => {
@@ -293,7 +293,7 @@ function PaletteRow({
   onSelect: () => void;
 }) {
   const metadataGroup =
-    entry.action.group === "Browser" || entry.action.id.startsWith("plugin:")
+    entry.action.id.startsWith("app:browser.") || entry.action.id.startsWith("plugin:")
       ? entry.action.group
       : null;
   const title = isDrillIn ? `${entry.action.title}…` : entry.action.title;
@@ -326,7 +326,7 @@ function PaletteRow({
             <PaletteShortcut>{shortcut.label}</PaletteShortcut>
           )}
           {isDrillIn ? (
-            <span className="sr-only">Opens a search view</span>
+            <span className="sr-only">Открывает окно поиска</span>
           ) : null}
         </span>
       ) : null}

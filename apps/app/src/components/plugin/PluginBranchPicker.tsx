@@ -20,7 +20,7 @@ export function PluginBranchPicker({
   });
   const enabled = hostId !== null && projectId !== null;
   const prefix = label === undefined ? "" : `${label} `;
-  const emptyLabel = placeholder ?? "Select branch";
+  const emptyLabel = placeholder ?? "Выбрать ветку";
   const triggerLabel = value === null ? emptyLabel : `${prefix}${value}`;
   const handleOpenChange = useCallback(
     (open: boolean) => {

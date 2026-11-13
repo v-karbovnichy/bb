@@ -59,15 +59,15 @@ interface StatusView {
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести JSON для машинной обработки",
 } as const;
 
 function formatSubscriptions(
   subscriptions: readonly PushSubscriptionSummary[],
 ): string {
-  if (subscriptions.length === 0) return "No push devices registered";
+  if (subscriptions.length === 0) return "Нет зарегистрированных push-устройств";
   return [
-    "ID\tDevice\tPlatform\tLast seen\tToken suffix",
+    "ID\tУстройство\tПлатформа\tПоследняя активность\tОкончание токена",
     ...subscriptions.map((subscription) =>
       [
         subscription.id,
@@ -81,24 +81,24 @@ function formatSubscriptions(
 }
 
 function formatLastOutcome(outcome: LastSendOutcome): string {
-  if (outcome.status === "never") return "Never";
+  if (outcome.status === "never") return "Никогда";
   if (outcome.status === "sent") {
-    return `Sent ${outcome.sentCount} at ${new Date(outcome.at).toISOString()}`;
+    return `Отправлено ${outcome.sentCount} в ${new Date(outcome.at).toISOString()}`;
   }
-  return `Failed at ${new Date(outcome.at).toISOString()}: ${outcome.reason}`;
+  return `Ошибка в ${new Date(outcome.at).toISOString()}: ${outcome.reason}`;
 }
 
 function formatStatus(status: StatusView): string {
   return [
-    `Enabled: ${status.enabled}`,
-    `Mobile: ${status.mobileEnabled}`,
-    `Web: ${status.webEnabled}`,
-    `Desktop: ${status.desktopEnabled}`,
-    `Default level: ${status.defaultLevel}`,
-    `Child thread level: ${status.childLevel}`,
-    `Subscriptions: ${status.subscriptionCount}`,
-    `Relay URL: ${status.relayUrl}`,
-    `Last send: ${formatLastOutcome(status.lastSendOutcome)}`,
+    `Включено: ${status.enabled}`,
+    `Мобильные: ${status.mobileEnabled}`,
+    `Браузер: ${status.webEnabled}`,
+    `Компьютер: ${status.desktopEnabled}`,
+    `Уровень по умолчанию: ${status.defaultLevel}`,
+    `Уровень дочерних чатов: ${status.childLevel}`,
+    `Подписки: ${status.subscriptionCount}`,
+    `URL ретранслятора: ${status.relayUrl}`,
+    `Последняя отправка: ${formatLastOutcome(status.lastSendOutcome)}`,
   ].join("\n");
 }
 
@@ -106,11 +106,11 @@ function formatThreadNotifications(
   threadId: string,
   row: ThreadNotifications,
 ): string {
-  return `Notifications for ${threadId}: ${row.effective} (${describeNotificationSource(row)})`;
+  return `Уведомления для ${threadId}: ${row.effective} (${describeNotificationSource(row)})`;
 }
 
 function formatSent(channels: readonly DeliveryChannel[]): string {
-  return `Sent to ${channels.join(", ")}`;
+  return `Отправлено в ${channels.join(", ")}`;
 }
 
 function waitForAbort(signal: AbortSignal): Promise<void> {
@@ -129,30 +129,30 @@ export function createPushNotificationsPlugin(
     const settings = bb.settings.define({
       mobileEnabled: {
         type: "boolean",
-        label: "Mobile notifications",
+        label: "Мобильные уведомления",
         description:
-          "Send push messages to your registered phones and tablets.",
+          "Отправлять push-уведомления на зарегистрированные телефоны и планшеты.",
         default: true,
       },
       webEnabled: {
         type: "boolean",
-        label: "Web notifications",
+        label: "Уведомления в браузере",
         description:
-          "Show system notifications while bb is open in a browser. Each browser needs notification permission.",
+          "Показывать системные уведомления, пока bb открыт в браузере. В каждом браузере нужно разрешение.",
         default: true,
       },
       desktopEnabled: {
         type: "boolean",
-        label: "Desktop notifications",
+        label: "Уведомления на компьютере",
         description:
-          "Show system notifications while the bb desktop app is running.",
+          "Показывать системные уведомления, пока работает приложение bb для компьютера.",
         default: true,
       },
       defaultLevel: {
         type: "select",
-        label: "Default notifications",
+        label: "Уведомления по умолчанию",
         description:
-          "For threads you haven't set. Needs input only skips finished turns.",
+          "Для чатов без отдельной настройки. Режим «Требуется ответ» пропускает завершённые ходы.",
         options: [...notificationLevelSchema.options],
         experimental_optionLabels: {
           all: NOTIFICATION_LEVEL_LABELS.all,
@@ -164,9 +164,9 @@ export function createPushNotificationsPlugin(
       },
       childLevel: {
         type: "select",
-        label: "Child thread notifications",
+        label: "Уведомления дочерних чатов",
         description:
-          "For child threads you haven't set. A thread's level also limits its child threads.",
+          "Для дочерних чатов без отдельной настройки. Уровень родительского чата также ограничивает дочерние.",
         options: [...ownNotificationLevelSchema.options],
         experimental_optionLabels: {
           inherit: NOTIFICATION_LEVEL_LABELS.inherit,
@@ -179,8 +179,8 @@ export function createPushNotificationsPlugin(
       },
       expoPushUrl: {
         type: "string",
-        label: "Expo push relay URL",
-        description: "The Expo push relay endpoint used for mobile delivery.",
+        label: "URL ретранслятора Expo push",
+        description: "Адрес ретранслятора Expo push для мобильных уведомлений.",
         default: DEFAULT_EXPO_PUSH_URL,
         experimental_schema: z.string().url(),
       },
@@ -250,12 +250,12 @@ export function createPushNotificationsPlugin(
     async function sendTest(channel: "web" | "desktop") {
       const config = await settings.get();
       if (!(channel === "web" ? config.webEnabled : config.desktopEnabled)) {
-        throw new Error(`${channel} notifications are disabled`);
+        throw new Error(`Уведомления ${channel} отключены`);
       }
       bb.realtime.publish(CLIENT_NOTIFICATION_CHANNEL, {
         id: randomUUID(),
-        title: "bb notifications are working",
-        body: "You’ll be notified when a thread needs your attention.",
+        title: "Уведомления bb работают",
+        body: "Вы получите уведомление, когда чату потребуется ваше внимание.",
         threadId: null,
         channels: [channel],
       } satisfies ClientNotification);
@@ -285,7 +285,7 @@ export function createPushNotificationsPlugin(
       "pushSubscriptions.add": (input) => subscriptions.add(input),
       "pushSubscriptions.remove": async ({ id }) => {
         if (!(await subscriptions.remove(id))) {
-          throw new Error(`Push subscription not found: ${id}`);
+          throw new Error(`Push-подписка не найдена: ${id}`);
         }
         return { ok: true as const };
       },
@@ -308,17 +308,17 @@ export function createPushNotificationsPlugin(
     bb.cli.register(
       defineCli({
         name: "push-notifications",
-        summary: "Manage mobile, web, and desktop notifications",
+        summary: "Управление мобильными уведомлениями, уведомлениями в браузере и на компьютере",
         description:
-          "Mobile devices receive Expo push messages; web and desktop clients receive system notifications while they are open.",
+          "Мобильные устройства получают push-сообщения Expo; браузер и приложение для компьютера показывают системные уведомления, пока открыты.",
         commands: {
           test: cliCommand({
             summary:
-              "Send a test to connected web or desktop clients with permission",
+              "Отправить тестовое уведомление подключённым клиентам браузера или компьютера с разрешением",
             positionals: [
               {
                 name: "channel",
-                description: "Client type to notify: web or desktop",
+                description: "Тип клиента для уведомления: web или desktop",
                 required: true,
               },
             ],
@@ -328,9 +328,9 @@ export function createPushNotificationsPlugin(
                 input.positionals.channel,
               );
               if (!channel.success) {
-                throw new PluginCliError("Use web or desktop", {
+                throw new PluginCliError("Используйте web или desktop", {
                   code: "invalid_channel",
-                  hint: "Mobile devices are tested from the phone itself; this command only reaches web and desktop clients.",
+                  hint: "Мобильные устройства тестируются с телефона; эта команда доступна только для браузера и компьютера.",
                 });
               }
               try {
@@ -340,7 +340,7 @@ export function createPushNotificationsPlugin(
                   error instanceof Error ? error.message : String(error),
                   {
                     code: "channel_disabled",
-                    hint: `Turn it on with \`bb plugin config push-notifications set ${channel.data}Enabled true\`.`,
+                    hint: `Включите командой \`bb plugin config push-notifications set ${channel.data}Enabled true\`.`,
                   },
                 );
               }
@@ -348,29 +348,29 @@ export function createPushNotificationsPlugin(
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify({ ok: true, channel: channel.data })
-                  : `Test sent to connected ${channel.data} clients with notification permission`,
+                  : `Тестовое уведомление отправлено подключённым клиентам ${channel.data} с разрешением`,
               };
             },
           }),
           send: cliCommand({
-            summary: "Send a notification to every enabled channel",
-            description: `Uses the same delivery as thread notifications: connected web and desktop clients with permission, and every registered mobile device. The title is cut to ${NOTIFICATION_TITLE_MAX_LENGTH} characters and the body to ${NOTIFICATION_BODY_MAX_LENGTH}. With --thread, a click opens that thread; otherwise it opens bb.`,
+            summary: "Отправить уведомление во все включённые каналы",
+            description: `Доставка как у уведомлений чатов: подключённые клиенты браузера и компьютера с разрешением и все зарегистрированные мобильные устройства. Название ограничено ${NOTIFICATION_TITLE_MAX_LENGTH} символами, текст — ${NOTIFICATION_BODY_MAX_LENGTH}. С --thread нажатие открывает указанный чат, иначе bb.`,
             options: {
               title: {
                 type: "string",
                 required: true,
                 placeholder: "text",
-                description: "Notification title",
+                description: "Название уведомления",
               },
               body: {
                 type: "string",
                 placeholder: "text",
-                description: "Notification text under the title",
+                description: "Текст уведомления под названием",
               },
               thread: {
                 type: "string",
                 placeholder: "thread-id",
-                description: "Thread to open when the notification is clicked",
+                description: "Чат, который откроется при нажатии на уведомление",
               },
               json: JSON_OPTION,
             },
@@ -403,16 +403,16 @@ export function createPushNotificationsPlugin(
                     ? { code: error.code }
                     : {
                         code: error.code,
-                        hint: "Check the push-sender service in `bb plugin list`.",
+                        hint: "Проверьте службу push-sender командой `bb plugin list`.",
                       },
                 );
               }
               if (channels.length === 0) {
                 throw new PluginCliError(
-                  "No channel received the notification",
+                  "Ни один канал не получил уведомление",
                   {
                     code: "not_delivered",
-                    hint: "Run `bb push-notifications status` to see which channels are on, how many devices are registered, and the last mobile send.",
+                    hint: "Выполните `bb push-notifications status`, чтобы увидеть включённые каналы, число устройств и последнюю мобильную отправку.",
                   },
                 );
               }
@@ -425,7 +425,7 @@ export function createPushNotificationsPlugin(
             },
           }),
           list: cliCommand({
-            summary: "List registered push devices",
+            summary: "Показать зарегистрированные push-устройства",
             options: { json: JSON_OPTION },
             async run(input) {
               const rows = await subscriptions.listSummaries();
@@ -438,28 +438,28 @@ export function createPushNotificationsPlugin(
             },
           }),
           add: cliCommand({
-            summary: "Register or refresh an Expo push device",
+            summary: "Зарегистрировать или обновить push-устройство Expo",
             options: {
               token: {
                 type: "string",
                 required: true,
                 placeholder: "expo-push-token",
                 aliases: ["expo-token", "push-token", "expo-push-token"],
-                description: `Expo push token the device reported, at most ${EXPO_PUSH_TOKEN_MAX_LENGTH} characters`,
+                description: `Push-токен Expo, предоставленный устройством, до ${EXPO_PUSH_TOKEN_MAX_LENGTH} символов`,
               },
               platform: {
                 type: "enum",
                 required: true,
                 values: ["ios", "android"],
                 aliases: ["os"],
-                description: "Device operating system",
+                description: "Операционная система устройства",
               },
               label: {
                 type: "string",
                 required: true,
                 placeholder: "device-label",
                 aliases: ["device-label", "device", "name"],
-                description: `Name shown for the device, at most ${DEVICE_LABEL_MAX_LENGTH} characters`,
+                description: `Отображаемое имя устройства, до ${DEVICE_LABEL_MAX_LENGTH} символов`,
               },
               json: JSON_OPTION,
             },
@@ -480,17 +480,17 @@ export function createPushNotificationsPlugin(
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify(result)
-                  : `${result.created ? "Registered" : "Refreshed"} push device ${result.id}`,
+                  : `${result.created ? "Зарегистрировано" : "Обновлено"} push-устройство ${result.id}`,
               };
             },
           }),
           remove: cliCommand({
-            summary: "Remove a registered push device",
+            summary: "Удалить зарегистрированное push-устройство",
             positionals: [
               {
                 name: "id",
                 description:
-                  "Subscription id, as `bb push-notifications list` prints it",
+                  "ID подписки из вывода `bb push-notifications list`",
                 required: true,
               },
             ],
@@ -498,27 +498,27 @@ export function createPushNotificationsPlugin(
             async run(input) {
               const id = input.positionals.id;
               if (!(await subscriptions.remove(id))) {
-                throw new PluginCliError(`Push subscription not found: ${id}`, {
+                throw new PluginCliError(`Push-подписка не найдена: ${id}`, {
                   code: "subscription_not_found",
-                  hint: "Run `bb push-notifications list` for the registered ids.",
+                  hint: "Выполните `bb push-notifications list`, чтобы увидеть зарегистрированные ID.",
                 });
               }
               return {
                 exitCode: 0,
                 stdout: input.options.json
                   ? JSON.stringify({ id, removed: true })
-                  : `Removed push device ${id}`,
+                  : `Push-устройство ${id} удалено`,
               };
             },
           }),
           thread: cliCommand({
-            summary: "Show or set a thread's notification level",
+            summary: "Показать или задать уровень уведомлений чата",
             description:
-              "Without --level, prints the resolved level and where it comes from. A thread uses its own level, else childLevel if it has a parent, else defaultLevel; every ancestor's own level caps it.",
+              "Без --level показывает итоговый уровень и его источник. Чат использует свой уровень, иначе childLevel при наличии родителя или defaultLevel; уровень каждого предка ограничивает его.",
             positionals: [
               {
                 name: "thread",
-                description: "Thread id",
+                description: "ID чата",
                 required: true,
               },
             ],
@@ -527,7 +527,7 @@ export function createPushNotificationsPlugin(
                 type: "enum",
                 values: ownNotificationLevelSchema.options,
                 description:
-                  "Set the thread's own level; inherit clears it so the parent or default applies",
+                  "Задать уровень чата; inherit сбрасывает его и применяет уровень родителя или значение по умолчанию",
               },
               json: JSON_OPTION,
             },
@@ -554,7 +554,7 @@ export function createPushNotificationsPlugin(
             },
           }),
           status: cliCommand({
-            summary: "Show push delivery status",
+            summary: "Показать состояние доставки push-уведомлений",
             options: { json: JSON_OPTION },
             async run(input) {
               const view = await status();

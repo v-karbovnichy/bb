@@ -184,12 +184,12 @@ function browserPageLoadErrorTitle(args: {
   url: string;
 }): string {
   if (isLocalOnlyUrl(args.url)) {
-    return "Server not reachable";
+    return "Сервер недоступен";
   }
   if (args.errorText.includes("ERR_BLOCKED_BY_CLIENT")) {
-    return "Page blocked";
+    return "Страница заблокирована";
   }
-  return "Page unavailable";
+  return "Страница недоступна";
 }
 
 function BrowserChrome({
@@ -217,7 +217,7 @@ function BrowserChrome({
   return (
     <div
       role="region"
-      aria-label="Browser navigation"
+      aria-label="Навигация по браузеру"
       tabIndex={-1}
       className={cn(
         "relative h-11 shrink-0 overflow-hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring max-md:pointer-coarse:h-[52px]",
@@ -231,19 +231,19 @@ function BrowserChrome({
       >
         <BrowserChromeIconButton
           icon="ChevronLeft"
-          label="Go back"
+          label="Назад"
           disabled={!(state?.canGoBack ?? false)}
           onClick={onBack}
         />
         <BrowserChromeIconButton
           icon="ChevronRight"
-          label="Go forward"
+          label="Вперёд"
           disabled={!(state?.canGoForward ?? false)}
           onClick={onForward}
         />
         <BrowserChromeIconButton
           icon={isLoading ? "X" : "RotateCcw"}
-          label={isLoading ? "Stop loading" : "Reload"}
+          label={isLoading ? "Остановить загрузку" : "Обновить"}
           shortcut={isLoading ? null : reloadShortcut}
           onClick={onReloadOrStop}
         />
@@ -256,7 +256,7 @@ function BrowserChrome({
                   COARSE_POINTER_COMPACT_ICON_SIZE_SHRINK_CLASS,
                   "text-success",
                 )}
-                aria-label="Secure connection"
+                aria-label="Защищённое соединение"
               />
             ) : security === "insecure" ? (
               <Icon
@@ -265,7 +265,7 @@ function BrowserChrome({
                   COARSE_POINTER_COMPACT_ICON_SIZE_SHRINK_CLASS,
                   "text-warning",
                 )}
-                aria-label="Connection not secure"
+                aria-label="Незащищённое соединение"
               />
             ) : (
               <Icon
@@ -286,8 +286,8 @@ function BrowserChrome({
               onKeyDown={onAddressKeyDown}
               aria-label={
                 locationShortcut
-                  ? `Address and search bar (${locationShortcut.label})`
-                  : "Address and search bar"
+                  ? `Адресная и поисковая строка (${locationShortcut.label})`
+                  : "Адресная и поисковая строка"
               }
               aria-keyshortcuts={locationShortcut?.ariaKeyshortcuts}
               className={cn(
@@ -300,7 +300,7 @@ function BrowserChrome({
         {pluginActions}
         <BrowserChromeIconButton
           icon="ExternalLink"
-          label="Open in external browser"
+          label="Открыть во внешнем браузере"
           disabled={currentUrl.length === 0}
           onClick={onOpenExternal}
         />
@@ -321,7 +321,7 @@ function BrowserUnavailable() {
         <Icon name="Globe" className="size-6" aria-hidden />
       </span>
       <div className="text-sm font-medium text-foreground">
-        Browser tabs need the desktop app
+        Для вкладок браузера нужно настольное приложение
       </div>
       <p
         className={cn(
@@ -329,8 +329,8 @@ function BrowserUnavailable() {
           COARSE_POINTER_TEXT_SM_CLASS,
         )}
       >
-        The in-app web browser runs in the bb desktop app. Open this thread
-        there to browse the web.
+        Встроенный браузер работает в настольном приложении bb. Откройте там
+        этот чат для просмотра сайтов.
       </p>
     </div>
   );
@@ -345,8 +345,8 @@ function BrowserPageLoadError({
   const host = getBrowserUrlHost(url);
   const title = browserPageLoadErrorTitle({ errorText, url });
   const message = isLocalOnlyUrl(url)
-    ? `The browser could not reach ${host || "this local server"}. Start the server, then reload.`
-    : "The browser could not load this page. Try reloading or opening it externally.";
+    ? `Браузеру не удалось связаться с ${host || "локальным сервером"}. Запустите сервер и обновите страницу.`
+    : "Браузеру не удалось загрузить страницу. Попробуйте обновить её или открыть во внешнем браузере.";
 
   return (
     <div className="flex h-full flex-col items-center justify-center px-6 text-center">
@@ -372,7 +372,7 @@ function BrowserPageLoadError({
             className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground transition-colors hover:bg-state-hover"
           >
             <Icon name="RotateCcw" className="size-3.5" aria-hidden />
-            Reload
+            Обновить
           </button>
           <button
             type="button"
@@ -380,7 +380,7 @@ function BrowserPageLoadError({
             className="inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-state-hover hover:text-foreground"
           >
             <Icon name="ExternalLink" className="size-3.5" aria-hidden />
-            Open externally
+            Открыть во внешнем браузере
           </button>
         </div>
         <p className="max-w-full truncate pt-1 font-mono text-[11px] text-subtle-foreground">
@@ -992,14 +992,14 @@ export function BrowserTabContent({
           className="flex shrink-0 items-center gap-3 border-b border-border bg-surface-recessed px-3 py-2 text-xs"
         >
           <span className="min-w-0 flex-1 truncate">
-            {control.controllerLabel} is controlling this tab
+            {control.controllerLabel} управляет этой вкладкой
           </span>
           <button
             type="button"
             className="rounded px-2 py-1 hover:bg-state-hover"
             onClick={() => desktopBrowser.releaseControl?.(tabId)}
           >
-            Stop
+            Остановить
           </button>
           <button
             type="button"
@@ -1009,7 +1009,7 @@ export function BrowserTabContent({
               desktopBrowser.focus?.(tabId);
             }}
           >
-            Take over
+            Перехватить управление
           </button>
         </div>
       ) : null}

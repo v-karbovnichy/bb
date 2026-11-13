@@ -104,7 +104,7 @@ export function OnboardingLayout({
       {onBack ? (
         <Button variant="ghost" size="sm" onClick={onBack}>
           <Icon name="ArrowLeft" aria-hidden />
-          Back
+          Назад
         </Button>
       ) : null}
       {centered ? null : (
@@ -156,7 +156,7 @@ export function OnboardingLayout({
           className="h-5 w-6 shrink-0 select-none object-contain dark:invert"
         />
         <nav
-          aria-label="Setup steps"
+          aria-label="Шаги настройки"
           className="col-start-2 row-start-1 flex min-w-0 items-center justify-center gap-1"
         >
           {ONBOARDING_STEPS.map((entry, index) => {
@@ -170,7 +170,7 @@ export function OnboardingLayout({
                 type="button"
                 disabled={!passed}
                 aria-current={active ? "step" : undefined}
-                aria-label={skipped ? `${entry.label} (skipped)` : entry.label}
+                aria-label={skipped ? `${entry.label} (пропущено)` : entry.label}
                 onClick={() => onSelectStep(entry.id)}
                 className={cn(
                   "flex shrink-0 items-center gap-1.5 rounded-full px-1 py-1 text-xs font-medium transition-colors @xl/onboarding:px-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
@@ -218,8 +218,8 @@ export function OnboardingLayout({
             )}
             onClick={onSkipAll}
           >
-            <span className="@xl/onboarding:hidden">Skip</span>
-            <span className="hidden @xl/onboarding:inline">Skip setup</span>
+            <span className="@xl/onboarding:hidden">Пропустить</span>
+            <span className="hidden @xl/onboarding:inline">Пропустить настройку</span>
           </Button>
         ) : (
           <span aria-hidden className="col-start-3 row-start-1 w-6" />
@@ -305,12 +305,12 @@ export interface OnboardingAgent {
 }
 
 const AGENT_STATUS_COPY = {
-  checking: "Checking…",
-  startingSignIn: "Starting sign in…",
-  signedIn: "Signed in",
-  signInFailed: "Sign-in didn't finish · try again",
-  updateNeeded: "Update needed",
-  unknown: "Couldn't check this agent",
+  checking: "Проверка…",
+  startingSignIn: "Начинаем вход…",
+  signedIn: "Вход выполнен",
+  signInFailed: "Не удалось войти · попробуйте ещё раз",
+  updateNeeded: "Требуется обновление",
+  unknown: "Не удалось проверить агента",
 } as const;
 
 function installActionLabel(
@@ -320,14 +320,14 @@ function installActionLabel(
   >,
 ): string {
   return state.status === "installFailed"
-    ? "Retry"
+    ? "Повторить"
     : state.status === "update"
-      ? "Update"
-      : "Install";
+      ? "Обновить"
+      : "Установить";
 }
 
 function terminalToggleLabel(terminalVisible: boolean): string {
-  return terminalVisible ? "Hide terminal" : "Show terminal";
+  return terminalVisible ? "Скрыть терминал" : "Показать терминал";
 }
 
 function agentSubline(state: AgentSetupState): string {
@@ -340,16 +340,16 @@ function agentSubline(state: AgentSetupState): string {
       return state.reason === "failed"
         ? AGENT_STATUS_COPY.signInFailed
         : state.reason === "expired"
-          ? "Installed · your session expired"
-          : "Installed · not signed in";
+          ? "Установлен · срок действия сеанса истёк"
+          : "Установлен · вход не выполнен";
     case "signingIn":
-      return "Finish signing in below";
+      return "Завершите вход ниже";
     case "install":
-      return "Not installed";
+      return "Не установлен";
     case "update":
       return state.detail ?? AGENT_STATUS_COPY.updateNeeded;
     case "installing":
-      return "Installing…";
+      return "Установка…";
     case "installFailed":
       return state.message;
     case "unknown":
@@ -369,7 +369,7 @@ function quietAgentSubline(
     case "signIn":
       if (state.reason !== "failed") return null;
       return setup === "connect"
-        ? "Connecting didn't finish · try again"
+        ? "Не удалось подключиться · попробуйте ещё раз"
         : AGENT_STATUS_COPY.signInFailed;
     case "update":
       return state.detail ?? AGENT_STATUS_COPY.updateNeeded;
@@ -379,7 +379,7 @@ function quietAgentSubline(
       return state.message ?? AGENT_STATUS_COPY.unknown;
     case "signingIn":
       return setup === "connect"
-        ? "Choose a provider and sign in below."
+        ? "Выберите провайдера и войдите ниже."
         : AGENT_STATUS_COPY.startingSignIn;
     case "install":
     case "installing":
@@ -482,7 +482,7 @@ function AgentRow({
   const inProgress =
     state.status === "checking" ||
     (state.status === "signingIn" && hasQuietSubtitle);
-  const signInLabel = "Sign in";
+  const signInLabel = "Войти";
   return (
     <li className="px-3 py-3" data-agent-id={agent.id}>
       <div
@@ -518,7 +518,7 @@ function AgentRow({
                 </span>
               ) : (
                 <ExpandableText
-                  expandLabel="Show details"
+                  expandLabel="Показать подробности"
                   className={cn(
                     "min-w-0 text-xs text-muted-foreground",
                     quiet &&
@@ -546,12 +546,12 @@ function AgentRow({
             quiet ? (
               <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Icon name="CircleCheck" aria-hidden className="size-3.5" />
-                Ready
+                Готов
               </span>
             ) : (
               <span className="flex items-center gap-1.5 text-xs font-medium text-success">
                 <Icon name="CircleCheck" aria-hidden className="size-4" />
-                Ready
+                Готов
               </span>
             )
           ) : null}
@@ -580,7 +580,7 @@ function AgentRow({
               variant="ghost"
               onClick={() => onViewInstallLog(agent.id)}
             >
-              View log
+              Посмотреть журнал
             </Button>
           ) : null}
           {quiet &&
@@ -594,10 +594,10 @@ function AgentRow({
               label={installActionLabel(state)}
               busyLabel={
                 agent.installQueued === true
-                  ? "Waiting…"
+                  ? "Ожидание…"
                   : state.status === "installing" && state.update
-                    ? "Updating…"
-                    : "Installing…"
+                    ? "Обновление…"
+                    : "Установка…"
               }
               busy={state.status === "installing"}
               onClick={() => onInstall(agent.id)}
@@ -620,8 +620,8 @@ function AgentRow({
           {state.status === "signingIn" ? (
             quiet ? (
               <RowDismissButton
-                label={`Cancel signing in to ${agent.name}`}
-                tooltip="Cancel"
+                label={`Отменить вход в ${agent.name}`}
+                tooltip="Отмена"
                 onClick={() => onCancelSignIn(agent.id)}
               />
             ) : (
@@ -630,7 +630,7 @@ function AgentRow({
                 variant="ghost"
                 onClick={() => onCancelSignIn(agent.id)}
               >
-                Cancel
+                Отмена
               </Button>
             )
           ) : null}
@@ -683,8 +683,8 @@ export function AgentStep({
         <Icon name="Laptop" aria-hidden className="size-3.5" />
         <span className="min-w-0 flex-1 truncate">
           {machineName === null
-            ? "Waiting for this computer to connect…"
-            : `On ${machineName}`}
+            ? "Ожидание подключения этого компьютера…"
+            : `На компьютере ${machineName}`}
         </span>
         {quiet || machineName === null ? null : (
           <button
@@ -697,7 +697,7 @@ export function AgentStep({
               aria-hidden
               className="size-3.5"
             />
-            Check again
+            Проверить ещё раз
           </button>
         )}
       </div>
@@ -708,7 +708,7 @@ export function AgentStep({
               {loadFailedMessage}
             </span>
             <Button size="sm" variant="outline" onClick={onRecheck}>
-              Retry
+              Повторить
             </Button>
           </li>
         </ul>
@@ -736,8 +736,8 @@ export function AgentStep({
       )}
       <p className="text-xs text-muted-foreground">
         {quiet
-          ? "Don't see your agent? bb picks up other ACP agents once you have them installed."
-          : "Don't see your agent? bb picks up other ACP agents, such as opencode, once they are installed."}
+          ? "Не видите своего агента? bb обнаружит другие ACP-агенты после их установки."
+          : "Не видите своего агента? bb обнаружит другие ACP-агенты, например opencode, после их установки."}
       </p>
     </div>
   );
@@ -783,7 +783,7 @@ export function AgentSignInGuide({
         {url === null ? (
           terminalVisible ? (
             <p className="text-xs text-muted-foreground">
-              Sign in to {agentName} in the terminal below.
+              Войдите в {agentName} в терминале ниже.
             </p>
           ) : (
             <p className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -792,29 +792,29 @@ export function AgentSignInGuide({
                 aria-hidden
                 className="size-3.5 animate-spin"
               />
-              Starting {agentName} sign-in…
+              Начинаем вход в {agentName}…
             </p>
           )
         ) : (
           <>
             <p className="text-xs text-muted-foreground">
               {userCode !== null
-                ? `Open the ${agentName} sign-in page and enter this code.`
+                ? `Откройте страницу входа ${agentName} и введите этот код.`
                 : acceptsPastedCode
-                  ? `Sign in on the ${agentName} page, then paste the code it shows you.`
-                  : `Finish signing in on the ${agentName} page.`}
+                  ? `Войдите на странице ${agentName}, затем вставьте показанный код.`
+                  : `Завершите вход на странице ${agentName}.`}
             </p>
             {userCode === null ? null : (
               <CodeDisplay
                 code={userCode}
-                label={`${agentName} sign-in code`}
-                copyLabel="Copy sign-in code"
+                label={`Код входа в ${agentName}`}
+                copyLabel="Скопировать код входа"
                 onCopy={onCopy}
               />
             )}
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={() => onOpenUrl(url)}>
-                Open sign-in page
+                Открыть страницу входа
                 <Icon name="ExternalLink" aria-hidden />
               </Button>
               <Button
@@ -824,12 +824,12 @@ export function AgentSignInGuide({
                 onClick={() => onCopy(url)}
               >
                 <Icon name="Copy" aria-hidden />
-                Copy link
+                Скопировать ссылку
               </Button>
             </div>
             {acceptsPastedCode && userCode === null ? (
               <PasteCodeForm
-                label={`${agentName} authorization code`}
+                label={`Код авторизации ${agentName}`}
                 value={code}
                 onChange={onCodeChange}
                 onSubmit={onSubmitCode}
@@ -845,8 +845,8 @@ export function AgentSignInGuide({
         <Icon name="Spinner" aria-hidden className="size-3.5 animate-spin" />
         <span className="min-w-0 flex-1">
           {codeSubmitted
-            ? "Finishing sign-in…"
-            : "bb continues on its own as soon as you're signed in."}
+            ? "Завершаем вход…"
+            : "После входа bb продолжит работу автоматически."}
         </span>
         {alternateLabel === null ? null : (
           <button
@@ -931,7 +931,7 @@ export function ProjectsStep({
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Icon name="Spinner" aria-hidden className="size-3.5 animate-spin" />
-          Looking for git repos you've touched recently…
+          Поиск Git-репозиториев, с которыми вы недавно работали…
         </div>
         <ul className={ONBOARDING_LIST_CLASS}>
           {[0, 1, 2, 3].map((index) => (
@@ -959,15 +959,15 @@ export function ProjectsStep({
         <p className="text-sm text-muted-foreground">
           {status.kind === "error"
             ? status.message
-            : "bb didn't find a git repo you've worked in over the last 30 days."}
+            : "bb не нашёл Git-репозитории, с которыми вы работали за последние 30 дней."}
         </p>
         <div className="flex items-center gap-2">
           <Button size="sm" variant="outline" onClick={onRetry}>
-            {status.kind === "error" ? "Try again" : "Scan again"}
+            {status.kind === "error" ? "Попробовать ещё раз" : "Повторить поиск"}
           </Button>
           <Button size="sm" variant="outline" onClick={onAddFolder}>
             <Icon name="FolderPlus" aria-hidden />
-            Choose a folder
+            Выбрать папку
           </Button>
         </div>
       </div>
@@ -984,21 +984,21 @@ export function ProjectsStep({
       {selection === "header" ? null : (
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <span className="min-w-0 flex-1">
-            {selectedIds.size} of {selectableCount} selected
+            Выбрано {selectedIds.size} из {selectableCount}
           </span>
           <button
             type="button"
             className="hover:text-foreground"
             onClick={onSelectAll}
           >
-            Select all
+            Выбрать всё
           </button>
           <button
             type="button"
             className="hover:text-foreground"
             onClick={onSelectNone}
           >
-            Select none
+            Снять выделение
           </button>
         </div>
       )}
@@ -1014,8 +1014,8 @@ export function ProjectsStep({
               <SelectAllCheckbox
                 aria-label={
                   allSelected
-                    ? "Clear project selection"
-                    : "Select all projects"
+                    ? "Снять выделение проектов"
+                    : "Выбрать все проекты"
                 }
                 checked={
                   allSelected
@@ -1029,10 +1029,10 @@ export function ProjectsStep({
                   allSelected ? onSelectNone() : onSelectAll()
                 }
               />
-              Select all
+              Выбрать всё
             </label>
             <span className="shrink-0 px-3 text-right tabular-nums">
-              Last active
+              Последняя активность
             </span>
           </li>
         ) : null}
@@ -1067,7 +1067,7 @@ export function ProjectsStep({
                 </span>
               </span>
               <span className="shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-                {repo.added ? "Already added" : repo.lastActive}
+                {repo.added ? "Уже добавлен" : repo.lastActive}
               </span>
             </label>
           </li>
@@ -1075,7 +1075,7 @@ export function ProjectsStep({
       </ul>
       {status.truncated ? (
         <p className="text-xs text-muted-foreground">
-          The scan ran out of time, so some repos may be missing.
+          Время поиска истекло, поэтому некоторые репозитории могли не попасть в список.
         </p>
       ) : null}
       <button
@@ -1084,7 +1084,7 @@ export function ProjectsStep({
         className="flex items-center gap-2 self-start rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-state-hover hover:text-foreground"
       >
         <Icon name="FolderPlus" aria-hidden className="size-3.5" />
-        Add a folder that isn't listed
+        Добавить папку, которой нет в списке
       </button>
     </div>
   );
@@ -1114,8 +1114,7 @@ export function OnboardingPluginGrid({
       {showHelp ? (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
           <Icon name="Puzzle" aria-hidden className="size-3.5 shrink-0" />
-          Want something that isn't here? Ask an agent to build a plugin at any
-          time.
+          Не нашли нужную возможность? Попросите агента создать плагин.
         </p>
       ) : null}
     </div>
@@ -1198,11 +1197,11 @@ export function OnboardingPluginCard({
             checked={enabled}
             disabled={disabled}
             onCheckedChange={onToggle}
-            aria-label={`Enable ${name}`}
+            aria-label={`Включить ${name}`}
           />
         </label>
       }
-      openLabel={`${enabled ? "Turn off" : "Turn on"} ${name}`}
+      openLabel={`${enabled ? "Выключить" : "Включить"} ${name}`}
       onOpen={() => {
         if (!disabled) onToggle(!enabled);
       }}
@@ -1223,7 +1222,7 @@ function CopyableLine({
       <Button
         variant="ghost"
         size="sm"
-        aria-label="Copy address"
+        aria-label="Скопировать адрес"
         onClick={() => onCopy(value)}
       >
         <Icon name="Copy" aria-hidden />
@@ -1296,21 +1295,21 @@ export function DevicesStep({
     <ul className={ONBOARDING_LIST_CLASS}>
       <DeviceRow
         icon="ComputerCloud"
-        title="Open bb from any browser"
+        title="Открывайте bb в любом браузере"
         description={
           connect.status === "unavailable"
-            ? "bb connect is turned off on this server. Enable its plugin to get a private getbb.app address."
-            : "bb connect gives this bb a private getbb.app address that only you can open."
+            ? "bb connect отключён на этом сервере. Включите плагин, чтобы получить личный адрес getbb.app."
+            : "bb connect создаёт для этого сервера bb личный адрес getbb.app, доступный только вам."
         }
         action={
           connect.status === "on" ? (
             <span className="flex items-center gap-1.5 text-xs font-medium text-success">
               <Icon name="CircleCheck" aria-hidden className="size-4" />
-              On
+              Включено
             </span>
           ) : connect.status === "off" ? (
             <Button size="sm" variant="outline" onClick={onToggleConnectSetup}>
-              {connectSetupOpen ? "Hide" : "Set up"}
+              {connectSetupOpen ? "Скрыть" : "Настроить"}
             </Button>
           ) : null
         }
@@ -1326,22 +1325,22 @@ export function DevicesStep({
       </DeviceRow>
       <DeviceRow
         icon="Laptop"
-        title="Add another machine"
+        title="Добавить компьютер"
         description={
           otherMachineCount > 0
-            ? `${otherMachineCount} other ${otherMachineCount === 1 ? "machine is" : "machines are"} already connected. Add more to run agents on a server, a desktop, or a cloud box.`
-            : "Run agents on a server, a desktop, or a cloud box and steer them all from here."
+            ? `Уже подключено компьютеров: ${otherMachineCount}. Добавьте ещё для запуска агентов на сервере, настольном или облачном компьютере.`
+            : "Запускайте агентов на сервере, настольном или облачном компьютере и управляйте ими отсюда."
         }
         action={
           <Button size="sm" variant="outline" onClick={onAddMachine}>
-            Add machine
+            Добавить компьютер
           </Button>
         }
       />
       <DeviceRow
         icon="Smartphone"
-        title="Get the mobile app"
-        description="Get a push when a thread needs you."
+        title="Установить мобильное приложение"
+        description="Получайте уведомления, когда чату потребуется ваше участие."
         action={
           <span className="flex items-center gap-2">
             <Button size="sm" variant="outline" asChild>
@@ -1371,7 +1370,7 @@ export function AgentInstallErrorDetails({ log }: { log: string }) {
         hasBody={false}
         toggles={
           <DisclosureToggle expanded={open} onToggle={() => setOpen(!open)}>
-            {open ? "Hide details" : "Show details"}
+            {open ? "Скрыть подробности" : "Показать подробности"}
           </DisclosureToggle>
         }
         expanded={
@@ -1402,9 +1401,9 @@ export function AgentSignInInstruction({
   const acceptsPastedCode = view.guide?.acceptsPastedCode ?? false;
   if (url === null) {
     return view.terminalVisible ? (
-      <>Sign in to {agentName} in the terminal below.</>
+      <>Войдите в {agentName} в терминале ниже.</>
     ) : (
-      <>Sign in to {agentName} in the terminal.</>
+      <>Войдите в {agentName} в терминале.</>
     );
   }
   const siteName = signInSiteName(url);
@@ -1416,17 +1415,17 @@ export function AgentSignInInstruction({
         return true;
       }}
     >
-      {siteName ?? "your browser"}
+      {siteName ?? "вашем браузере"}
     </InlineTextLink>
   );
-  const place = siteName === null ? <>in {link}</> : <>on {link}</>;
+  const place = siteName === null ? <>в {link}</> : <>на {link}</>;
   if (userCode !== null) {
-    return <>Enter this code {place}.</>;
+    return <>Введите этот код {place}.</>;
   }
   if (acceptsPastedCode) {
-    return <>Sign in {place}, then paste the code it shows you.</>;
+    return <>Войдите {place}, затем вставьте показанный код.</>;
   }
-  return <>Sign in {place}.</>;
+  return <>Войдите {place}.</>;
 }
 
 interface AgentSignInPanelProps {
@@ -1463,13 +1462,13 @@ export function AgentSignInPanel({
       ? {
           kind: "code",
           code: userCode,
-          label: `${agentName} sign-in code`,
+          label: `Код входа в ${agentName}`,
           onCopyCode: onCopy,
         }
       : url !== null && acceptsPastedCode
         ? {
             kind: "paste",
-            label: `${agentName} authorization code`,
+            label: `Код авторизации ${agentName}`,
             value: code,
             onChange: onCodeChange,
             onSubmit: onSubmitCode,
@@ -1479,7 +1478,7 @@ export function AgentSignInPanel({
   return (
     <div className="mt-3">
       <SignInPanel
-        status={!connect && codeSubmitted ? "Finishing sign-in…" : undefined}
+        status={!connect && codeSubmitted ? "Завершаем вход…" : undefined}
         variant={variant}
         toggles={
           <DisclosureToggle
@@ -1516,22 +1515,22 @@ export function RedesignedDevicesStep({
   return (
     <div className="flex flex-col gap-3">
       {connectSection === null ? null : (
-        <SetupOptionGroup label="Where you use bb" labelHidden={!showMachines}>
+        <SetupOptionGroup label="Где вы используете bb" labelHidden={!showMachines}>
           {connectSection}
         </SetupOptionGroup>
       )}
       {showMachines ? (
-        <SetupOptionGroup label="Where agents run">
+        <SetupOptionGroup label="Где работают агенты">
           <SetupOptionRow
             icon="Laptop"
-            title="Add another machine"
-            description={`${hostName === null ? "This computer" : `This computer, ${hostName},`} is your bb server. Add laptops or cloud machines that connect to it and run agents. Manage machines anytime in Settings > Machines.`}
+            title="Добавить компьютер"
+            description={`${hostName === null ? "Этот компьютер" : `Этот компьютер (${hostName})`} — ваш сервер bb. Добавьте ноутбуки или облачные машины для запуска агентов. Управлять ими можно в разделе «Настройки → Компьютеры».`}
             actionStaysInline={open}
             action={
               open ? (
                 <RowDismissButton
-                  label="Close adding a machine"
-                  tooltip="Close"
+                  label="Закрыть добавление компьютера"
+                  tooltip="Закрыть"
                   onClick={onCloseAddMachine}
                 />
               ) : (
@@ -1541,7 +1540,7 @@ export function RedesignedDevicesStep({
                   variant="outline"
                   onClick={onAddMachine}
                 >
-                  Add a machine
+                  Добавить компьютер
                 </Button>
               )
             }

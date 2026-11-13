@@ -18,5 +18,5 @@ export function localhostLinkRewriteDescription(
     return null;
   }
 
-  return `When enabled, localhost URLs are rewritten to use the same host or IP address you use to open BB. For example: ${EXAMPLE_HREF} → ${rewrittenHref}`;
+  return `Если включено, ссылки localhost преобразуются с использованием хоста или IP-адреса, через который вы открыли bb. Например: ${EXAMPLE_HREF} → ${rewrittenHref}`;
 }

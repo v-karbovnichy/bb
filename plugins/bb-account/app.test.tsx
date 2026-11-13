@@ -83,14 +83,14 @@ describe("bb account settings section", () => {
     );
 
     await slot.findByText("Sawyer Hood");
-    slot.getByText("@sawyerhood on GitHub");
+    slot.getByText("@sawyerhood в GitHub");
     slot.getByText("sawyer");
     slot.getByText("sawyer-desktop");
     slot.getByText(/sawyer-desktop\.getbb\.app/);
 
-    fireEvent.click(slot.getByRole("button", { name: "Sign out" }));
-    await slot.findByText("Sign out of your bb account?");
-    const confirm = slot.getAllByRole("button", { name: "Sign out" }).at(-1)!;
+    fireEvent.click(slot.getByRole("button", { name: "Выйти" }));
+    await slot.findByText("Выйти из аккаунта bb?");
+    const confirm = slot.getAllByRole("button", { name: "Выйти" }).at(-1)!;
     fireEvent.click(confirm);
 
     await waitFor(() =>
@@ -98,8 +98,8 @@ describe("bb account settings section", () => {
         true,
       ),
     );
-    await slot.findByRole("button", { name: "Sign in" });
-    expect(slot.queryByText(/didn't confirm/)).toBeNull();
+    await slot.findByRole("button", { name: "Войти" });
+    expect(slot.queryByText(/не подтвердил/)).toBeNull();
   });
 
   it("says so when getbb.app didn't confirm the sign-out", async () => {
@@ -123,15 +123,15 @@ describe("bb account settings section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Sign out" }));
-    await slot.findByText("Sign out of your bb account?");
-    fireEvent.click(slot.getAllByRole("button", { name: "Sign out" }).at(-1)!);
+    fireEvent.click(await slot.findByRole("button", { name: "Выйти" }));
+    await slot.findByText("Выйти из аккаунта bb?");
+    fireEvent.click(slot.getAllByRole("button", { name: "Выйти" }).at(-1)!);
 
-    await slot.findByText(/didn't confirm it revoked this server/);
+    await slot.findByText(/не подтвердил отзыв доступа у этого сервера/);
     expect(
-      slot.getByRole("link", { name: "your dashboard" }).getAttribute("href"),
+      slot.getByRole("link", { name: "панель управления" }).getAttribute("href"),
     ).toBe("https://getbb.app/dashboard");
-    slot.getByRole("button", { name: "Sign in" });
+    slot.getByRole("button", { name: "Войти" });
   });
 
   it("shows a paired bb whose account hasn't loaded as pending, not signed out", async () => {
@@ -148,9 +148,9 @@ describe("bb account settings section", () => {
       },
     );
 
-    await slot.findByText(/hasn't loaded your account yet/);
-    slot.getByRole("button", { name: "Sign out" });
-    expect(slot.queryByRole("button", { name: "Sign in" })).toBeNull();
+    await slot.findByText(/данные аккаунта ещё не загружены/);
+    slot.getByRole("button", { name: "Выйти" });
+    expect(slot.queryByRole("button", { name: "Войти" })).toBeNull();
   });
 
   it("starts a browser sign-in, shows the code, and closes once approved", async () => {
@@ -167,7 +167,7 @@ describe("bb account settings section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Sign in" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Войти" }));
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
         method: "login.start",
@@ -181,11 +181,11 @@ describe("bb account settings section", () => {
 
     await slot.findByText("K7QP-2M4X");
     const link = slot.getByRole("link", {
-      name: /Open getbb\.app/,
+      name: /Открыть getbb\.app/,
     }) as HTMLAnchorElement;
     expect(link.href).toBe("https://getbb.app/link?code=K7QP-2M4X");
     expect(link.target).toBe("_blank");
-    slot.getByText(/Waiting for you to approve it/);
+    slot.getByText(/Ожидаем подтверждения/);
 
     await slot.emitRealtime(ACCOUNT_REALTIME_CHANNEL, {
       status: signedIn,
@@ -220,7 +220,7 @@ describe("bb account settings section", () => {
         },
       },
     );
-    const signIn = await slot.findByRole("button", { name: "Sign in" });
+    const signIn = await slot.findByRole("button", { name: "Войти" });
     vi.useFakeTimers();
     await act(async () => fireEvent.click(signIn));
     await slot.emitRealtime(ACCOUNT_REALTIME_CHANNEL, {
@@ -254,7 +254,7 @@ describe("bb account settings section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Sign in" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Войти" }));
     await waitFor(() => expect(started).toBe(1));
     await slot.emitRealtime(ACCOUNT_REALTIME_CHANNEL, {
       status: signedOut,
@@ -265,7 +265,7 @@ describe("bb account settings section", () => {
     });
 
     await slot.findByText("Sign-in was denied on getbb.app.");
-    fireEvent.click(slot.getByRole("button", { name: "Get a new code" }));
+    fireEvent.click(slot.getByRole("button", { name: "Получить новый код" }));
     await waitFor(() => expect(started).toBe(2));
   });
 
@@ -282,13 +282,13 @@ describe("bb account settings section", () => {
       },
     );
 
-    fireEvent.click(await slot.findByRole("button", { name: "Sign in" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Войти" }));
     await slot.emitRealtime(ACCOUNT_REALTIME_CHANNEL, {
       status: signedOut,
       login: pendingLogin(),
     });
     await slot.findByText("K7QP-2M4X");
-    fireEvent.click(slot.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(slot.getByRole("button", { name: "Отмена" }));
 
     await waitFor(() =>
       expect(slot.rpcCalls).toContainEqual({
@@ -315,14 +315,14 @@ describe("bb account settings section", () => {
     );
 
     fireEvent.click(
-      await slot.findByRole("button", { name: "Have a pairing code?" }),
+      await slot.findByRole("button", { name: "Есть код привязки?" }),
     );
-    fireEvent.change(slot.getByLabelText("Pairing code"), {
+    fireEvent.change(slot.getByLabelText("Код привязки"), {
       target: { value: " k7qp2m4x " },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Pair" }));
+    fireEvent.click(slot.getByRole("button", { name: "Привязать" }));
 
-    await slot.findByText(/That code has expired\./);
+    await slot.findByText(/Срок действия кода истёк\./);
     expect(attempts).toBe(1);
     expect(slot.rpcCalls).toContainEqual({
       method: "redeemCode",

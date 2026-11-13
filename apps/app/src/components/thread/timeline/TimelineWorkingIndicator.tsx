@@ -18,7 +18,7 @@ export function TimelineWorkingIndicator({
   details,
   reasoningId,
 }: TimelineWorkingIndicatorProps) {
-  const resolvedLabel = label ?? (isThinking ? "Thinking…" : "Working...");
+  const resolvedLabel = label ?? (isThinking ? "Думает…" : "Работает...");
   const hasDetails = (details?.trim().length ?? 0) > 0;
 
   if (isThinking || hasDetails) {

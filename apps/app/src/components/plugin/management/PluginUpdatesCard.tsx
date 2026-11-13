@@ -51,7 +51,7 @@ export function PluginDetailReleaseControl({
       applyPluginUpdateJob({ queryClient, job });
     },
     onError: (error) => {
-      appToast.error("Plugin update failed", {
+      appToast.error("Не удалось обновить плагин", {
         description: `${plugin.name ?? plugin.id} — ${pluginAdminErrorMessage(error)}`,
         action: notificationAction(plugin.id, "installed"),
       });
@@ -69,11 +69,11 @@ export function PluginDetailReleaseControl({
           variant="outline"
           size="sm"
           className="h-6 px-2 text-xs"
-          aria-label={`Review the update of ${plugin.name ?? plugin.id} to ${rangeUpgrade.candidate.label}`}
+          aria-label={`Проверить обновление ${plugin.name ?? plugin.id} до ${rangeUpgrade.candidate.label}`}
           onClick={() => setDetailsOpen(true)}
         >
           <Icon name={UPDATE_ACTION_ICON} className="size-3.5" aria-hidden />
-          Review
+          Проверить
         </Button>
         <UpdatePluginDialog
           plugin={plugin}
@@ -93,7 +93,7 @@ export function PluginDetailReleaseControl({
         className="h-6 px-2 text-xs"
         disabled={retry.isPending}
         aria-busy={retry.isPending}
-        aria-label={`Retry update to ${availableVersion}`}
+        aria-label={`Повторить обновление до ${availableVersion}`}
         onClick={() => retry.mutate()}
       >
         {retry.isPending ? (
@@ -101,7 +101,7 @@ export function PluginDetailReleaseControl({
         ) : (
           <Icon name="RotateCcw" className="size-3.5" aria-hidden />
         )}
-        Retry
+        Повторить
       </Button>
     );
   }
@@ -113,11 +113,11 @@ export function PluginDetailReleaseControl({
         variant="outline"
         size="sm"
         className="h-6 px-2 text-xs"
-        aria-label={`Update ${plugin.name ?? plugin.id} to ${availableVersion}`}
+        aria-label={`Обновить ${plugin.name ?? plugin.id} до ${availableVersion}`}
         onClick={() => setDetailsOpen(true)}
       >
         <Icon name={UPDATE_ACTION_ICON} className="size-3.5" aria-hidden />
-        Update
+        Обновить
       </Button>
       <UpdatePluginDialog
         plugin={plugin}
@@ -131,12 +131,12 @@ export function PluginDetailReleaseControl({
 function PluginRangeUpgradeStatus({ plugin }: { plugin: PluginListItem }) {
   const rangeUpgrade = plugin.updateState.rangeUpgrade;
   if (rangeUpgrade === null) return null;
-  const outside = `${rangeUpgrade.candidate.label} is available outside the version range ${rangeUpgrade.currentRange} this plugin follows.`;
+  const outside = `Версия ${rangeUpgrade.candidate.label} доступна за пределами диапазона ${rangeUpgrade.currentRange}, которому следует этот плагин.`;
   const runsHere = rangeUpgrade.reasons.length === 0;
   return (
     <div
       role="status"
-      aria-label="Update outside the version range"
+      aria-label="Обновление за пределами диапазона версий"
       className="flex min-w-0 items-start gap-2.5"
     >
       <Icon
@@ -149,15 +149,15 @@ function PluginRangeUpgradeStatus({ plugin }: { plugin: PluginListItem }) {
         {runsHere
           ? [
               rangeUpgrade.basis === "catalog"
-                ? `The marketplace now lists ${rangeUpgrade.range}.`
+                ? `Теперь в каталоге указан диапазон ${rangeUpgrade.range}.`
                 : null,
               rangeUpgrade.breaking
-                ? "It may include breaking changes, so bb won’t install it until you review it."
-                : "Review it to change the range and update.",
+                ? "Обновление может содержать несовместимые изменения. bb установит его после вашей проверки."
+                : "Проверьте обновление, чтобы изменить диапазон версий и установить его.",
             ]
               .filter((part) => part !== null)
               .join(" ")
-          : `${sentence(rangeUpgrade.reasons[0] ?? "it isn’t compatible with this bb")} ${plugin.version} remains installed.`}
+          : `${sentence(rangeUpgrade.reasons[0] ?? "она несовместима с этой версией bb")} Версия ${plugin.version} остаётся установленной.`}
       </p>
     </div>
   );
@@ -179,7 +179,7 @@ export function PluginDetailReleaseStatus({
       <div className="flex min-w-0 flex-col gap-2">
         <div
           role="status"
-          aria-label="Update failed"
+          aria-label="Ошибка обновления"
           className="flex min-w-0 items-start gap-2.5"
         >
           <Icon
@@ -188,8 +188,8 @@ export function PluginDetailReleaseStatus({
             aria-hidden
           />
           <p className="min-w-0 text-xs leading-relaxed text-muted-foreground">
-            bb couldn&rsquo;t activate {failure.label}. It restored{" "}
-            {plugin.version} and its data.
+            bb не удалось запустить {failure.label}. Восстановлена версия{" "}
+            {plugin.version} и её данные.
           </p>
         </div>
         {plugin.updateState.availableLabel === null ? (
@@ -206,7 +206,7 @@ export function PluginDetailReleaseStatus({
     return (
       <div
         role="status"
-        aria-label="Update needs attention"
+        aria-label="Обновление требует внимания"
         className="flex min-w-0 items-start gap-2.5"
       >
         <Icon
@@ -227,7 +227,7 @@ export function PluginDetailReleaseStatus({
         <span className="font-mono text-xs text-foreground">
           {plugin.updateState.availableLabel}
         </span>
-        <span className="text-xs text-muted-foreground">Available</span>
+        <span className="text-xs text-muted-foreground">Доступно</span>
       </div>
     );
   }
@@ -240,7 +240,7 @@ export function PluginDetailReleaseStatus({
   return (
     <div
       role="status"
-      aria-label="Update blocked"
+      aria-label="Обновление заблокировано"
       className="flex min-w-0 items-start gap-2.5"
     >
       <Icon
@@ -251,14 +251,14 @@ export function PluginDetailReleaseStatus({
       <div className="min-w-0">
         <p className="text-xs leading-relaxed text-muted-foreground">
           {blockedReasons[0] === undefined
-            ? `${blockedVersion} isn’t compatible with this bb.`
+            ? `Версия ${blockedVersion} несовместима с этой версией bb.`
             : sentence(blockedReasons[0])}{" "}
-          {plugin.version} remains installed. Keep using it and check again when
-          a compatible plugin version is available.
+          Версия {plugin.version} остаётся установленной. Продолжайте использовать
+          её и проверьте наличие совместимого обновления позже.
         </p>
         {blockedReasons.length > 1 ? (
           <div className="mt-1.5">
-            <DetailsDisclosure summary="Other requirements">
+            <DetailsDisclosure summary="Другие требования">
               <ul className="space-y-1 text-foreground">
                 {blockedReasons.slice(1).map((reason) => (
                   <li key={reason}>{sentence(reason)}</li>

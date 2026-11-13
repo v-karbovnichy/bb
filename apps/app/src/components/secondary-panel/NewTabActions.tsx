@@ -69,7 +69,7 @@ interface NewTabActionRowProps {
   dragHandle?: ReactNode;
 }
 
-const ACTIONS_SECTION_LABEL = "Actions";
+const ACTIONS_SECTION_LABEL = "Действия";
 const NEW_TAB_ACTION_DRAG_HANDLE_CLASS =
   "relative cursor-grab touch-none opacity-0 transition-opacity focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:cursor-grabbing group-hover:opacity-100 [@media(hover:none)]:opacity-100";
 const OPEN_BROWSER_ACTION_ID = "file-search-result-open-browser";
@@ -102,7 +102,7 @@ export function useNewTabActions({
     actions.push({
       id: OPEN_BROWSER_ACTION_ID,
       icon: actionIcon("Globe"),
-      label: "Open browser",
+      label: "Открыть браузер",
       disabled: false,
       shortcut: null,
       trailing: null,
@@ -113,7 +113,7 @@ export function useNewTabActions({
     actions.push({
       id: START_TERMINAL_ACTION_ID,
       icon: actionIcon("Terminal"),
-      label: "Start terminal",
+      label: "Открыть терминал",
       disabled: startTerminalDisabled,
       shortcut: terminalShortcut,
       trailing: startTerminalTrailing ?? null,
@@ -278,7 +278,7 @@ function SortableNewTabActionRow({ action }: SortableNewTabActionRowProps) {
           <button
             type="button"
             ref={setActivatorNodeRef}
-            aria-label={`Reorder ${action.label}`}
+            aria-label={`Изменить порядок: ${action.label}`}
             className={cn(
               LAUNCHER_ROW_ICON_CLASS,
               NEW_TAB_ACTION_DRAG_HANDLE_CLASS,

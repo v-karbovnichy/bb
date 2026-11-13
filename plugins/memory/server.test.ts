@@ -292,8 +292,8 @@ describe("bb-plugin-memory", () => {
     const host = await loadPlugin();
     const help = await host.harness.runCli(["add", "--help"]);
     expect(help.exitCode).toBe(0);
-    expect(help.stdout).toContain("at most 400 characters");
-    expect(help.stdout).toContain("at most 16000 characters");
+    expect(help.stdout).toContain("до 400 символов");
+    expect(help.stdout).toContain("до 16000 символов");
     expect(help.stdout).toContain("--tag <TAG>");
   });
 

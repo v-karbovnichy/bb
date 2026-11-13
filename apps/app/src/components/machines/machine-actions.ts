@@ -40,13 +40,13 @@ export interface MachineActionsArgs {
 
 export function machineActions(args: MachineActionsArgs): MachineAction[] {
   const actions: MachineAction[] = [
-    { id: "rename", label: "Rename", icon: "Edit", onSelect: args.onRename },
+    { id: "rename", label: "Переименовать", icon: "Edit", onSelect: args.onRename },
   ];
 
   if (canReconnectMachine(args.host))
     actions.push({
       id: "reconnect",
-      label: "Reconnect",
+      label: "Подключить повторно",
       icon: "RotateCcw",
       onSelect: args.onReconnect,
     });
@@ -57,8 +57,8 @@ export function machineActions(args: MachineActionsArgs): MachineAction[] {
       id: "retry-update",
       label:
         (args.retryUpdatePending ?? false)
-          ? "Retrying update…"
-          : "Retry update",
+          ? "Повторное обновление…"
+          : "Повторить обновление",
       icon: RETRY_ACTION_ICON,
       disabled: args.retryUpdatePending ?? false,
       onSelect: onRetryUpdate,
@@ -85,7 +85,7 @@ export function machineActions(args: MachineActionsArgs): MachineAction[] {
   if (args.canMoveServerHere)
     actions.push({
       id: "move-server",
-      label: "Move server here",
+      label: "Перенести сервер сюда",
       icon: "MoveTo",
       onSelect: args.onMoveServerHere,
     });
@@ -94,7 +94,7 @@ export function machineActions(args: MachineActionsArgs): MachineAction[] {
   if (onRemove !== undefined)
     actions.push({
       id: "remove",
-      label: "Remove machine",
+      label: "Удалить машину",
       icon: "Trash2",
       tone: "destructive",
       ...(args.isPrimary

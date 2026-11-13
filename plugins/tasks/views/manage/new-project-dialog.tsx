@@ -86,12 +86,12 @@ export function NewProjectDialog({
   const prefixError = useMemo(() => {
     if (prefix === "") return null;
     if (!PROJECT_PREFIX_PATTERN.test(prefix)) {
-      return "Use 1–10 uppercase letters and digits, starting with a letter.";
+      return "Используйте от 1 до 10 заглавных латинских букв и цифр; начните с буквы.";
     }
     const clash = (projects.data ?? []).find(
       (project) => project.prefix.toUpperCase() === prefix.toUpperCase(),
     );
-    return clash ? `Already used by ${clash.name}.` : null;
+    return clash ? `Уже используется проектом «${clash.name}».` : null;
   }, [prefix, projects.data]);
 
   const canSubmit =
@@ -103,7 +103,7 @@ export function NewProjectDialog({
   const folderList = folders.data ?? [];
   const folderName = (id: string) => {
     const folder = folderList.find((entry) => entry.id === id);
-    if (!folder) return "Folder";
+    if (!folder) return "Папка";
     const parent = folder.parentFolderId
       ? folderList.find((entry) => entry.id === folder.parentFolderId)
       : null;
@@ -160,17 +160,17 @@ export function NewProjectDialog({
         }}
       >
         <DialogHeader>
-          <DialogTitle>New project</DialogTitle>
+          <DialogTitle>Новый проект</DialogTitle>
           <DialogDescription>
-            Projects group tasks under a shared key prefix.
+            Проекты объединяют задачи общим префиксом ключа.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Field label="Name">
+          <Field label="Название">
             <Input
               autoFocus
               value={name}
-              placeholder="e.g. Tasks Plugin"
+              placeholder="например, плагин задач"
               onChange={(event) => {
                 setName(event.target.value);
                 if (!prefixTouched) setPrefix(derivePrefix(event.target.value));
@@ -179,10 +179,10 @@ export function NewProjectDialog({
             />
           </Field>
           <Field
-            label="Prefix"
+            label="Префикс"
             hint={
               prefixError ??
-              "Task keys use this prefix, e.g. TSK-12. Uppercase, unique."
+              "Ключи задач используют этот префикс, например TSK-12. Заглавные латинские буквы; значение должно быть уникальным."
             }
           >
             <Input
@@ -200,10 +200,10 @@ export function NewProjectDialog({
               }
             />
           </Field>
-          <Field label="Color">
+          <Field label="Цвет">
             <ColorSwatchPicker value={color} onChange={setColor} />
           </Field>
-          <Field label="Folder">
+          <Field label="Папка">
             <Select
               value={newFolderMode ? NEW_FOLDER : (folderId ?? NO_FOLDER)}
               onValueChange={(value) => {
@@ -215,24 +215,24 @@ export function NewProjectDialog({
                 setFolderId(value === NO_FOLDER ? null : value);
               }}
             >
-              <SelectTrigger aria-label="Folder" className="h-8">
+              <SelectTrigger aria-label="Папка" className="h-8">
                 <SelectValue>
                   {newFolderMode
-                    ? "New folder…"
+                    ? "Новая папка…"
                     : folderId
                       ? folderName(folderId)
-                      : "No folder"}
+                      : "Без папки"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={NO_FOLDER}>No folder</SelectItem>
+                <SelectItem value={NO_FOLDER}>Без папки</SelectItem>
                 {folderList.map((folder) => (
                   <SelectItem key={folder.id} value={folder.id}>
                     {folderName(folder.id)}
                   </SelectItem>
                 ))}
                 <SelectSeparator />
-                <SelectItem value={NEW_FOLDER}>New folder…</SelectItem>
+                <SelectItem value={NEW_FOLDER}>Новая папка…</SelectItem>
               </SelectContent>
             </Select>
             {newFolderMode ? (
@@ -240,7 +240,7 @@ export function NewProjectDialog({
                 <Input
                   autoFocus
                   value={newFolderName}
-                  placeholder="Folder name"
+                  placeholder="Название папки"
                   onChange={(event) => setNewFolderName(event.target.value)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
@@ -258,14 +258,14 @@ export function NewProjectDialog({
                   onClick={() => void createFolderInline()}
                 >
                   <Icon name="FolderPlus" className="size-3.5" />
-                  Create
+                  Создать
                 </Button>
               </div>
             ) : null}
           </Field>
           <Field
-            label="Linked bb project"
-            hint="Optional. Linking a bb project enables dispatching to agents."
+            label="Связанный проект bb"
+            hint="Необязательно. Связь с проектом bb позволяет назначать задачи агентам."
           >
             <BbProjectLinkPicker
               value={linkedBbProjectId}
@@ -281,10 +281,10 @@ export function NewProjectDialog({
         ) : null}
         <DialogFooter>
           <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
-            Cancel
+            Отмена
           </Button>
           <Button size="sm" disabled={!canSubmit} onClick={() => void submit()}>
-            Create project
+            Создать проект
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -14,14 +14,14 @@ export function machineLifecycleAction(
   machineProvider: SystemMachineProvider | null,
 ): MachineLifecycleAction | null {
   if (machineProvider?.supportsSuspend && host.lifecycle.phase === "active")
-    return { icon: "Pause", label: "Suspend", kind: "suspend" };
+    return { icon: "Pause", label: "Приостановить", kind: "suspend" };
   if (machineProvider?.supportsSuspend && host.lifecycle.phase === "suspended")
-    return { icon: "Play", label: "Resume", kind: "resume" };
+    return { icon: "Play", label: "Возобновить", kind: "resume" };
   if (
     host.lifecycle.phase === "removing" &&
     host.lifecycle.teardown?.status === "failed"
   )
-    return { icon: "RotateCcw", label: "Retry cleanup", kind: "retry-cleanup" };
+    return { icon: "RotateCcw", label: "Повторить очистку", kind: "retry-cleanup" };
   return null;
 }
 

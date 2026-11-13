@@ -53,7 +53,7 @@ export function usePanelTabPresenter({
           return {
             contentFillsRegion: false,
             isPinned: false,
-            label: label.length > 0 ? label : "Browser",
+            label: label.length > 0 ? label : "Браузер",
             leadingVisual: (
               <BrowserTabIcon
                 tabId={tab.id}
@@ -68,7 +68,7 @@ export function usePanelTabPresenter({
           return {
             contentFillsRegion: false,
             isPinned: false,
-            label: session?.title ?? "Terminal",
+            label: session?.title ?? "Терминал",
             leadingVisual: (
               <Icon
                 name="Terminal"
@@ -108,7 +108,7 @@ export function usePanelTabPresenter({
           return {
             contentFillsRegion: false,
             isPinned: false,
-            label: "New tab",
+            label: "Новая вкладка",
             leadingVisual: (
               <Icon
                 name="NewTab"

@@ -119,7 +119,7 @@ describe("project view preference", () => {
 
   it("restores the remembered view when the URL names none", async () => {
     const listed = openProject(`${PROJECT_ID}?view=list`);
-    fireEvent.click(await listed.findByRole("button", { name: "Board" }));
+    fireEvent.click(await listed.findByRole("button", { name: "Доска" }));
     expect(listed.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -128,14 +128,14 @@ describe("project view preference", () => {
     listed.lifecycle.unmount();
 
     const reopened = openProject(PROJECT_ID);
-    const boardSegment = await reopened.findByRole("button", { name: "Board" });
+    const boardSegment = await reopened.findByRole("button", { name: "Доска" });
     expect(boardSegment.getAttribute("aria-pressed")).toBe("true");
-    await reopened.findByText("In Review");
+    await reopened.findByText("На проверке");
   });
 
   it("keeps per-project choices apart and defaults unseen projects to the last one used", async () => {
     const slot = openProject(`${PROJECT_ID}?view=list`);
-    fireEvent.click(await slot.findByRole("button", { name: "Board" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Доска" }));
     slot.lifecycle.unmount();
 
     expect(loadViewMode(PROJECT_ID)).toBe("board");
@@ -146,7 +146,7 @@ describe("project view preference", () => {
       { subPath: `${OTHER_PROJECT_ID}?view=list` },
       { rpc: seededRpc() },
     );
-    fireEvent.click(await other.findByRole("button", { name: "List" }));
+    fireEvent.click(await other.findByRole("button", { name: "Список" }));
     expect(loadViewMode(OTHER_PROJECT_ID)).toBe("list");
     expect(loadViewMode(PROJECT_ID)).toBe("board");
   });
@@ -170,7 +170,7 @@ describe("project view preference", () => {
       throw new DOMException("Storage is disabled", "SecurityError");
     });
     const slot = openProject(`${PROJECT_ID}?view=list`);
-    fireEvent.click(await slot.findByRole("button", { name: "Board" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Доска" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -236,7 +236,7 @@ describe("task pager", () => {
       },
     );
     await slot.findByText("2 / 4");
-    fireEvent.click(slot.getByRole("button", { name: "Next task" }));
+    fireEvent.click(slot.getByRole("button", { name: "Следующая задача" }));
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -313,7 +313,7 @@ describe("tasks app shell", () => {
     await slot.findByText("Recovered list title");
 
     title = "Manually refreshed list title";
-    fireEvent.click(slot.getByRole("button", { name: "Refresh tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Обновить задачи" }));
     await slot.findByText("Manually refreshed list title");
   });
 
@@ -352,14 +352,14 @@ describe("tasks app shell", () => {
         }),
       },
     );
-    await page.findByRole("button", { name: "Refresh tasks" });
+    await page.findByRole("button", { name: "Обновить задачи" });
     await page.findByText("Tasks Plugin");
     const initialTaskCalls = listTaskCalls;
     const initialProjectCalls = listProjectCalls;
 
     holdProjects = true;
     const refresh = page.getByRole("button", {
-      name: "Refresh tasks",
+      name: "Обновить задачи",
     }) as HTMLButtonElement;
     fireEvent.click(refresh);
 
@@ -422,7 +422,7 @@ describe("tasks app shell", () => {
     expect(baselineCalls).toBeGreaterThan(0);
 
     const refresh = slot.getByRole("button", {
-      name: "Refresh tasks",
+      name: "Обновить задачи",
     }) as HTMLButtonElement;
     const idleClassName = refresh.className;
     expect(idleClassName).toMatch(/size-7/);
@@ -456,14 +456,14 @@ describe("tasks app shell", () => {
       expect(
         (
           slot.getByRole("button", {
-            name: "Refresh tasks",
+            name: "Обновить задачи",
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(false);
     });
 
     title = "Flight title C";
-    fireEvent.click(slot.getByRole("button", { name: "Refresh tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Обновить задачи" }));
     await waitFor(() =>
       expect(listTasksCalls).toBeGreaterThan(callsWhilePending),
     );
@@ -471,7 +471,7 @@ describe("tasks app shell", () => {
     await slot.findByText("Flight title C");
     await waitFor(() => {
       const button = slot.getByRole("button", {
-        name: "Refresh tasks",
+        name: "Обновить задачи",
       }) as HTMLButtonElement;
       expect(button.disabled).toBe(false);
       expect(button.getAttribute("aria-busy")).not.toBe("true");
@@ -506,13 +506,13 @@ describe("tasks app shell", () => {
     await slot.findByText("Stable title");
 
     shouldFail = true;
-    fireEvent.click(slot.getByRole("button", { name: "Refresh tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Обновить задачи" }));
     await waitFor(() => expect(slot.getByText("Stable title")).toBeDefined());
     await waitFor(() => {
       expect(
         (
           slot.getByRole("button", {
-            name: "Refresh tasks",
+            name: "Обновить задачи",
           }) as HTMLButtonElement
         ).disabled,
       ).toBe(false);
@@ -521,7 +521,7 @@ describe("tasks app shell", () => {
 
     shouldFail = false;
     title = "Recovered after failure";
-    fireEvent.click(slot.getByRole("button", { name: "Refresh tasks" }));
+    fireEvent.click(slot.getByRole("button", { name: "Обновить задачи" }));
     await slot.findByText("Recovered after failure");
   });
 
@@ -547,20 +547,20 @@ describe("tasks app shell", () => {
         }),
       },
     );
-    await slot.findByRole("textbox", { name: "Task title" });
-    expect(slot.getByRole("textbox", { name: "Task title" }).textContent).toBe(
+    await slot.findByRole("textbox", { name: "Название задачи" });
+    expect(slot.getByRole("textbox", { name: "Название задачи" }).textContent).toBe(
       "Stale detail title",
     );
 
     title = "Recovered detail title";
     await slot.behavior.setRealtimeConnectionState("reconnecting");
-    expect(slot.getByRole("textbox", { name: "Task title" }).textContent).toBe(
+    expect(slot.getByRole("textbox", { name: "Название задачи" }).textContent).toBe(
       "Stale detail title",
     );
     await slot.behavior.setRealtimeConnectionState("connected");
     await waitFor(() =>
       expect(
-        slot.getByRole("textbox", { name: "Task title" }).textContent,
+        slot.getByRole("textbox", { name: "Название задачи" }).textContent,
       ).toBe("Recovered detail title"),
     );
   });
@@ -594,9 +594,9 @@ describe("tasks app shell", () => {
           }),
         },
       );
-      expect(slot.queryByText("No projects yet")).toBeNull();
+      expect(slot.queryByText("Проектов пока нет")).toBeNull();
       projects.resolve({ projects: [] });
-      await slot.findByText("No projects yet");
+      await slot.findByText("Проектов пока нет");
     });
 
     it("paints the last-known empty state before listProjects resolves", () => {
@@ -614,7 +614,7 @@ describe("tasks app shell", () => {
           }),
         },
       );
-      expect(slot.getByText("No projects yet")).toBeTruthy();
+      expect(slot.getByText("Проектов пока нет")).toBeTruthy();
     });
 
     it("paints last-known projects before listProjects resolves and never flashes empty", async () => {
@@ -630,10 +630,10 @@ describe("tasks app shell", () => {
       );
       const page = renderSlot(app.navPanels[0]!, { subPath: "" }, { rpc });
       expect(panel.getByText(project.name)).toBeTruthy();
-      expect(page.queryByText("No projects yet")).toBeNull();
+      expect(page.queryByText("Проектов пока нет")).toBeNull();
       projects.resolve({ projects: [project] });
       await waitFor(() => expect(panel.getByText(project.name)).toBeTruthy());
-      expect(page.queryByText("No projects yet")).toBeNull();
+      expect(page.queryByText("Проектов пока нет")).toBeNull();
     });
 
     it("ignores a malformed snapshot and loads normally", async () => {
@@ -647,8 +647,8 @@ describe("tasks app shell", () => {
         { subPath: "" },
         { rpc: emptyRpc },
       );
-      expect(slot.queryByText("No projects yet")).toBeNull();
-      await slot.findByText("No projects yet");
+      expect(slot.queryByText("Проектов пока нет")).toBeNull();
+      await slot.findByText("Проектов пока нет");
     });
 
     it("prunes snapshots written under an older storage version", async () => {
@@ -764,9 +764,9 @@ describe("tasks app shell", () => {
     await slot.findByText("Scope truth");
 
     slot.lifecycle.rerender(<Panel subPath="active" />);
-    await slot.findByText("Couldn't load tasks");
+    await slot.findByText("Не удалось загрузить задачи");
     expect(slot.queryByText("Scope truth")).toBeNull();
-    expect(slot.queryByText("No agents working right now")).toBeNull();
+    expect(slot.queryByText("Сейчас нет работающих агентов")).toBeNull();
   });
 
   it("shows the empty state and opens the New project dialog", async () => {
@@ -777,9 +777,9 @@ describe("tasks app shell", () => {
         rpc: emptyRpc,
       },
     );
-    await slot.findByText("No projects yet");
-    fireEvent.click(slot.getByRole("button", { name: /New project/ }));
-    await slot.findByText("Projects group tasks under a shared key prefix.");
+    await slot.findByText("Проектов пока нет");
+    fireEvent.click(slot.getByRole("button", { name: /Новый проект/ }));
+    await slot.findByText("Проекты объединяют задачи общим префиксом ключа.");
   });
 
   it("does not paint another scope's empty state while its own rows load", async () => {
@@ -810,13 +810,13 @@ describe("tasks app shell", () => {
     });
     const Panel = app.navPanels[0]!.component;
     const slot = renderSlot(app.navPanels[0]!, { subPath: "active" }, { rpc });
-    await slot.findByText("No agents working right now");
+    await slot.findByText("Сейчас нет работающих агентов");
 
     deferAll = true;
     slot.lifecycle.rerender(<Panel subPath="all" />);
     await waitFor(() => expect(pendingAll.length).toBeGreaterThan(0));
-    expect(slot.queryByText("No tasks yet")).toBeNull();
-    expect(slot.queryByText("No agents working right now")).toBeNull();
+    expect(slot.queryByText("Задач пока нет")).toBeNull();
+    expect(slot.queryByText("Сейчас нет работающих агентов")).toBeNull();
     act(() => {
       for (const release of pendingAll.splice(0)) release();
     });
@@ -829,8 +829,8 @@ describe("tasks app shell", () => {
       { subPath: `${PROJECT_ID}?view=board` },
       { rpc: seededRpc() },
     );
-    await boardSlot.findByText("Backlog");
-    await boardSlot.findByText("In Review");
+    await boardSlot.findByText("В очереди");
+    await boardSlot.findByText("На проверке");
     expect(boardSlot.getByText("Tasks Plugin")).toBeDefined();
     expect(boardSlot.queryByRole("button", { name: /sidebar/i })).toBeNull();
     cleanup();
@@ -840,7 +840,7 @@ describe("tasks app shell", () => {
       { subPath: "task/TSK-4" },
       { rpc: seededRpc() },
     );
-    await taskSlot.findByText(/Task TSK-4 was not found/);
+    await taskSlot.findByText(/Задача TSK-4 не найдена/);
     fireEvent.keyDown(window, { key: "Escape" });
     expect(taskSlot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
@@ -863,7 +863,7 @@ describe("tasks app shell", () => {
         }),
       },
     );
-    await slot.findByRole("textbox", { name: "Task title" });
+    await slot.findByRole("textbox", { name: "Название задачи" });
     expect(slot.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -880,8 +880,8 @@ describe("tasks app shell", () => {
       },
     );
     await slot.findByText("Tasks Plugin");
-    expect(slot.getByRole("button", { name: /^All tasks/ })).toBeDefined();
-    expect(slot.getByRole("button", { name: "Manage" })).toBeDefined();
+    expect(slot.getByRole("button", { name: /^Все задачи/ })).toBeDefined();
+    expect(slot.getByRole("button", { name: "Управление" })).toBeDefined();
 
     fireEvent.click(slot.getByTitle("Tasks Plugin"));
     expect(slot.navigateCalls).toContainEqual({
@@ -905,12 +905,12 @@ describe("tasks app shell", () => {
         }),
       },
     );
-    await slot.findByRole("button", { name: "New project" });
+    await slot.findByRole("button", { name: "Новый проект" });
     expect(bbProjectCalls).toBe(0);
 
-    fireEvent.click(slot.getByRole("button", { name: "New project" }));
+    fireEvent.click(slot.getByRole("button", { name: "Новый проект" }));
 
-    await slot.findByText("Projects group tasks under a shared key prefix.");
+    await slot.findByText("Проекты объединяют задачи общим префиксом ключа.");
     expect(bbProjectCalls).toBeGreaterThan(0);
   });
 
@@ -922,8 +922,8 @@ describe("tasks app shell", () => {
         rpc: seededRpc(),
       },
     );
-    await panel.findByRole("button", { name: "Manage" });
-    fireEvent.click(panel.getByRole("button", { name: "Manage" }));
+    await panel.findByRole("button", { name: "Управление" });
+    fireEvent.click(panel.getByRole("button", { name: "Управление" }));
     expect(panel.navigateCalls).toContainEqual({
       method: "toPluginPanel",
       path: "tasks",
@@ -938,7 +938,7 @@ describe("tasks app shell", () => {
         rpc: seededRpc({ listLabels: () => ({ labels: [] }) }),
       },
     );
-    await slot.findByText("Labels, agent presets, and folders.");
+    await slot.findByText("Метки, пресеты агентов и папки.");
   });
 
   it("opens quick-create on bare 'c' but not from editable targets or dialogs", async () => {
@@ -949,7 +949,7 @@ describe("tasks app shell", () => {
         rpc: seededRpc(),
       },
     );
-    await slot.findByText("All tasks");
+    await slot.findByText("Все задачи");
     fireEvent.keyDown(window, { key: "c" });
     await slot.findByRole("dialog");
     fireEvent.keyDown(window, { key: "c" });
@@ -994,7 +994,7 @@ describe("tasks app shell", () => {
     );
     await slot.findByText("Worktree env");
     expect(slot.getByText("Default env")).toBeDefined();
-    expect(slot.getAllByLabelText("Spawns a new worktree")).toHaveLength(1);
+    expect(slot.getAllByLabelText("Создаёт новое рабочее дерево")).toHaveLength(1);
   });
 
   it("refetches sidebar data only for matching invalidations", async () => {

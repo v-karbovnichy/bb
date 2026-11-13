@@ -39,8 +39,8 @@
   "mac": {
     "category": "public.app-category.developer-tools",
     "extendInfo": {
-      "NSAppleEventsUsageDescription": "bb lets agents you run control other apps on this Mac, such as Computer Use.",
-      "NSMicrophoneUsageDescription": "bb uses your microphone for voice input and sites you allow in the in-app browser."
+      "NSAppleEventsUsageDescription": "bb позволяет запущенным вами агентам управлять другими приложениями на Mac, например через Computer Use.",
+      "NSMicrophoneUsageDescription": "bb использует микрофон для голосового ввода и сайтов, которым вы разрешили доступ во встроенном браузере."
     },
     "minimumSystemVersion": "13.0.0",
     "entitlements": "build/entitlements.mac.plist",

@@ -330,12 +330,12 @@ describe("ConversationMessageContent long user messages", () => {
 
     expect(screen.queryByText(hiddenTail)).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
 
     expect(screen.getByText(hiddenTail)).not.toBeNull();
     expect(screen.queryByText("[truncated]")).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Show less" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать меньше" }));
 
     expect(screen.queryByText(hiddenTail)).toBeNull();
   });
@@ -347,7 +347,7 @@ describe("ConversationMessageContent long user messages", () => {
     expect(screen.queryByRole("link", { name: "Should stay code" })).toBeNull();
     expect(container.querySelector("code")?.textContent).toContain(rawThreadId);
 
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
 
     expect(screen.queryByRole("link", { name: "Should stay code" })).toBeNull();
     expect(container.querySelector("code")?.textContent).toContain(rawThreadId);
@@ -362,7 +362,7 @@ describe("ConversationMessageContent long user messages", () => {
     expect(container.querySelector("code")).toBeNull();
     expect(container.textContent).toContain(`\`${rawThreadId}`);
 
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
 
     expect(screen.queryByRole("link", { name: "Should stay code" })).toBeNull();
     expect(container.querySelector("code")?.textContent).toBe(
@@ -379,7 +379,7 @@ describe("ConversationMessageContent long user messages", () => {
 
     const longText = `hello \`world ${"tail ".repeat(USER_MESSAGE_CHAR_CAP)}`;
     const longView = renderLongUserMessage(longText);
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
 
     expect(longView.container.querySelector("code")).toBeNull();
     expect(longView.container.textContent).toContain("hello `world");
@@ -395,7 +395,7 @@ describe("ConversationMessageContent long user messages", () => {
     expect(screen.queryByRole("link", { name: "Should stay code" })).toBeNull();
     expect(container.textContent).not.toContain(rawThreadId);
 
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
 
     expect(screen.queryByRole("link", { name: "Should stay code" })).toBeNull();
     expect(container.textContent).toContain(`${rawThreadId}/path`);
@@ -529,7 +529,7 @@ describe("ConversationMessageContent automation messages", () => {
 
     expect(container.textContent).not.toContain("[bb automation due:");
     expect(
-      screen.getByRole("link", { name: "Automation" }).getAttribute("href"),
+      screen.getByRole("link", { name: "Автоматизация" }).getAttribute("href"),
     ).toBe("/plugins/automations/automations/proj_automation/auto_zto0dtbcxme");
     expect(container.querySelector("time")?.getAttribute("dateTime")).toBe(
       new Date(0).toISOString(),
@@ -537,7 +537,7 @@ describe("ConversationMessageContent automation messages", () => {
     expect(screen.getByText("Weekday unread digest.")).toBeTruthy();
     expect(container.textContent).not.toContain("AUTOMATION_PROMPT_TAIL");
 
-    fireEvent.click(screen.getByRole("button", { name: /Automation/u }));
+    fireEvent.click(screen.getByRole("button", { name: /Автоматизация/u }));
 
     expect(container.textContent).toContain("AUTOMATION_PROMPT_TAIL");
     expect(container.textContent).not.toContain("[bb automation due:");
@@ -622,7 +622,7 @@ describe("user message overflow", () => {
           </RouteNavigationProvider>
         </MemoryRouter>,
       );
-      expect(screen.queryByRole("button", { name: "Show more" }) !== null).toBe(
+      expect(screen.queryByRole("button", { name: "Показать больше" }) !== null).toBe(
         expandable,
       );
     },

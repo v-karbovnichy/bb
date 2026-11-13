@@ -134,10 +134,10 @@ describe("connect-next plugin wiring", () => {
     ).toBe(true);
     const text = await host.harness.runCli(["status"]);
     expect(text.stdout).toContain(
-      "machine Sawyer Air (host-air)  sawyer-air  connected",
+      "машина Sawyer Air (host-air)  sawyer-air  подключено",
     );
     expect(text.stdout).toContain(
-      "share 3000  http://sawyer-air--3000.next.bb.localhost:5000  active",
+      "порт 3000  http://sawyer-air--3000.next.bb.localhost:5000  active",
     );
 
     await host.harness.runCli(["off"]);
@@ -165,7 +165,7 @@ describe("connect-next plugin wiring", () => {
     });
     await host.harness.runCli(["off"]);
     const text = await host.harness.runCli(["status"]);
-    expect(text.stdout).toContain("connect next is off");
+    expect(text.stdout).toContain("connect next выключен");
     expect(text.stdout).toContain("https://sawyer.next.getbb.app");
   });
 
@@ -335,7 +335,7 @@ describe("connect-next plugin wiring", () => {
     descriptions.push(manifest.description, manifest.bb.description);
     expect(descriptions).toHaveLength(3);
     for (const description of descriptions) {
-      expect(description).toContain("next.<your bb account's domain>");
+      expect(description).toContain("next.<домен вашего аккаунта bb>");
       expect(description).not.toContain("getbb.app");
     }
   });

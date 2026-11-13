@@ -113,10 +113,19 @@ function parseServiceTierOption(raw: unknown): ModelServiceTier | null {
   if (typeof record.id !== "string" || record.id.length === 0) {
     return null;
   }
+  const id = mapCodexServiceTierToBb(record.id);
+  const label =
+    typeof record.name === "string" && record.name.length > 0
+      ? id === BB_FAST_SERVICE_TIER
+        ? "Быстрый"
+        : id === "ultrafast"
+          ? "Очень быстрый"
+          : record.name
+      : undefined;
   return {
-    id: mapCodexServiceTierToBb(record.id),
-    ...(typeof record.name === "string" && record.name.length > 0
-      ? { label: record.name }
+    id,
+    ...(typeof label === "string" && label.length > 0
+      ? { label }
       : {}),
     ...(typeof record.description === "string" && record.description.length > 0
       ? { description: record.description }

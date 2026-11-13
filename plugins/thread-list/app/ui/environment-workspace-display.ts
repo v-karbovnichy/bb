@@ -9,7 +9,7 @@ export type EnvironmentWorkspaceDisplayProviderLookup =
       environmentProviderId: string | null;
     };
 
-export const UNNAMED_ENVIRONMENT_LABEL = "Environment";
+export const UNNAMED_ENVIRONMENT_LABEL = "Среда";
 
 const PERSISTENT_HOST_ICON_NAME: IconName = "Laptop";
 

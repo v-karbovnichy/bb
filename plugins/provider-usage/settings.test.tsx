@@ -156,9 +156,9 @@ describe("loadUsage", () => {
     await loadUsage(getUsage, null, true, target);
     expect(state).toEqual({ machines: measured, error: true });
     const html = renderContent({ machines: state.machines, error: true });
-    expect(html).toContain("Showing last update");
+    expect(html).toContain("Показаны последние сохранённые данные");
     expect(html).toContain("first@example.com");
-    expect(html).toContain("42% used");
+    expect(html).toContain("Использовано 42%");
   });
 
   it("reports a transport failure without keeping the raw error", async () => {
@@ -173,7 +173,7 @@ describe("loadUsage", () => {
     );
     expect(state).toEqual({ machines: [], error: true });
     const html = renderContent({ error: true });
-    expect(html).toContain("Couldn’t load usage.");
+    expect(html).toContain("Не удалось загрузить данные об использовании.");
     expect(html).not.toContain("Retry usage refresh");
   });
 });
@@ -194,11 +194,11 @@ describe("UsageSettingsContent", () => {
     expect(html).toContain("first@example.com");
     expect(html).toContain("second@example.com");
     expect(html).not.toContain("local@example.com");
-    expect(html.match(/Resets in/g)).toHaveLength(3);
+    expect(html.match(/Сброс через/g)).toHaveLength(3);
   });
 
   it("renders loading before any source is known", () => {
-    expect(renderContent({ loading: true })).toContain("Loading usage…");
+    expect(renderContent({ loading: true })).toContain("Загрузка данных об использовании…");
   });
 
   it("shows pending measurements without inventing usage, then reports an unavailable account gracefully", () => {
@@ -207,8 +207,8 @@ describe("UsageSettingsContent", () => {
       machines: [machine("source:pool", [resource])],
       loading: true,
     });
-    expect(pending).toContain("Loading usage…");
-    expect(pending).not.toContain("0% used");
+    expect(pending).toContain("Загрузка данных об использовании…");
+    expect(pending).not.toContain("Использовано 0%");
     const failed = renderContent({
       machines: [
         {
@@ -217,9 +217,9 @@ describe("UsageSettingsContent", () => {
         },
       ],
     });
-    expect(failed).toContain("Couldn’t load usage.");
-    expect(failed).toContain("Usage unavailable.");
-    expect(failed).not.toContain("Showing the last");
+    expect(failed).toContain("Не удалось загрузить данные об использовании.");
+    expect(failed).toContain("Данные об использовании недоступны.");
+    expect(failed).not.toContain("Показаны последние");
   });
 
   it("keeps authentication and plans without limits distinct from loading and errors", () => {
@@ -239,7 +239,7 @@ describe("UsageSettingsContent", () => {
     });
     expect(html).toContain("Sign in again.");
     expect(html).toContain("Session expired.");
-    expect(html).toContain("No usage limits reported for this plan.");
-    expect(html).not.toContain("0% used");
+    expect(html).toContain("Для этого тарифа лимиты не указаны.");
+    expect(html).not.toContain("Использовано 0%");
   });
 });

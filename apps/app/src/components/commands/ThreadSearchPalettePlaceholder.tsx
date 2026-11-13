@@ -7,15 +7,15 @@ import { PaletteModeChip } from "./PaletteModeChip";
 import { PALETTE_INPUT_CLASS, PaletteInputBand } from "./PaletteInputBand";
 
 export const THREAD_SEARCH_INPUT = {
-  label: "Search threads",
-  placeholder: "Search title, project, or message…",
+  label: "Поиск чатов",
+  placeholder: "Поиск по названию, проекту или сообщению…",
 };
 
 export function threadSearchModeChip(onExit: () => void, isCompact: boolean) {
   return {
     icon: "Search" as const,
-    label: "Threads",
-    clearLabel: "Return to commands",
+    label: "Чаты",
+    clearLabel: "Вернуться к командам",
     onClear: onExit,
     hideShortcut: isCompact,
   };
@@ -74,9 +74,9 @@ export function ThreadSearchPalettePlaceholder({
         className="min-h-0 overflow-hidden rounded-b-[inherit] bg-background p-1"
         id={listId}
         role="listbox"
-        aria-label="Threads"
+        aria-label="Чаты"
       >
-        <ListLoadingPlaceholder label="Loading threads" />
+        <ListLoadingPlaceholder label="Загрузка чатов" />
       </div>
     </TooltipProvider>
   );

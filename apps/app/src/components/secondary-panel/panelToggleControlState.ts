@@ -13,12 +13,12 @@ interface PanelToggleActionPresentation {
 
 const PANEL_TOGGLE_ACTION_PRESENTATION = {
   "enter-full-screen": {
-    label: "Full Screen",
+    label: "Полный экран",
     iconName: "Maximize2",
     isFullScreen: false,
   },
   "exit-full-screen": {
-    label: "Exit Full Screen",
+    label: "Выйти из полноэкранного режима",
     iconName: "Minimize2",
     isFullScreen: true,
   },

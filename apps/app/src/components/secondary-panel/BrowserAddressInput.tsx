@@ -25,7 +25,7 @@ export function BrowserAddressInput({
   return (
     <input
       type="text"
-      placeholder="Enter a URL"
+      placeholder="Введите URL"
       autoComplete="off"
       spellCheck={false}
       {...props}

@@ -35,10 +35,10 @@ it("keeps Done, Escape and compact Back usable through a held import, failure an
     onDone,
   };
   const view = render(<SidebarVisibilityCustomize {...props} variant="card" />);
-  const done = screen.getByRole("button", { name: "Done" });
+  const done = screen.getByRole("button", { name: "Готово" });
   expect(document.activeElement).toBe(done);
   expect(
-    screen.getByRole("status", { name: "Loading sidebar customization" }),
+    screen.getByRole("status", { name: "Загрузка настройки боковой панели" }),
   ).toBeDefined();
   fireEvent.keyDown(done, { key: "Escape" });
   fireEvent.click(done);
@@ -54,7 +54,7 @@ it("keeps Done, Escape and compact Back usable through a held import, failure an
     download.reject(new Error("module initialization failed"));
   });
   expect(await screen.findByRole("alert")).toBeDefined();
-  const back = screen.getByRole("button", { name: "Done" });
+  const back = screen.getByRole("button", { name: "Готово" });
   expect(document.activeElement).toBe(back);
   fireEvent.click(back);
   expect(onDone).toHaveBeenCalledTimes(3);
@@ -62,9 +62,9 @@ it("keeps Done, Escape and compact Back usable through a held import, failure an
   vi.doMock("./SidebarVisibilityCustomize", (importOriginal) =>
     importOriginal(),
   );
-  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  fireEvent.click(screen.getByRole("button", { name: "Повторить" }));
   fireEvent.click(
-    await screen.findByRole("checkbox", { name: "Show Review in sidebar" }),
+    await screen.findByRole("checkbox", { name: "Показывать Review в боковой панели" }),
   );
   expect(props.onVisibleChange).toHaveBeenCalledWith("section:review", true);
   expect(screen.queryByRole("alert")).toBeNull();

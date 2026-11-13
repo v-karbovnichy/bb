@@ -81,7 +81,7 @@ function BrowserRow({
             </span>
             {record ? (
               <SettingsBadge>
-                imported {formatRelativeTime({ timestamp: record.at, now })}
+                импортировано {formatRelativeTime({ timestamp: record.at, now })}
               </SettingsBadge>
             ) : null}
           </div>
@@ -104,7 +104,7 @@ function BrowserRow({
             {presentation.details.map((detail) => (
               <ExpandableText
                 key={detail}
-                expandLabel="Show details"
+                expandLabel="Показать подробности"
                 className="min-w-0"
               >
                 {detail}
@@ -160,7 +160,7 @@ export function BrowserSettingsSectionContent({
           message:
             error instanceof Error
               ? error.message
-              : "Could not check installed browsers.",
+              : "Не удалось проверить установленные браузеры.",
         }),
       );
   }, [desktopBrowser]);
@@ -189,8 +189,8 @@ export function BrowserSettingsSectionContent({
     });
     appToast.success(
       outcome.imported > 0
-        ? `Imported ${formatCookieCount(outcome.imported)} from ${source.name}`
-        : `No cookies were imported from ${source.name}`,
+        ? `Импортировано из ${source.name} · ${formatCookieCount(outcome.imported)}`
+        : `Из ${source.name} не импортировано файлов cookie`,
     );
   };
 
@@ -219,7 +219,7 @@ export function BrowserSettingsSectionContent({
           );
       })
       .catch(() => {
-        appToast.error(`Could not read ${source.name}'s cookies.`);
+        appToast.error(`Не удалось прочитать файлы cookie браузера ${source.name}.`);
       })
       .finally(() => {
         setPendingSourceIds((current) => {
@@ -237,8 +237,8 @@ export function BrowserSettingsSectionContent({
   return (
     <>
       <SettingsSection
-        title="Browsers"
-        description="Bring signed-in sessions from a browser on this machine into the BB browser, so previews and agent tabs open already logged in."
+        title="Браузеры"
+        description="Перенесите сеансы входа из браузера на этой машине во встроенный браузер BB, чтобы предпросмотр и вкладки агента открывались уже с выполненным входом."
         action={
           supported ? (
             <Button
@@ -247,22 +247,22 @@ export function BrowserSettingsSectionContent({
               onClick={refresh}
               disabled={state.status === "loading"}
             >
-              Refresh
+              Обновить
             </Button>
           ) : undefined
         }
       >
         {!supported ? (
           <p className="text-sm text-subtle-foreground">
-            Only available in the BB desktop app.
+            Доступно только в приложении BB для компьютера.
           </p>
         ) : state.status === "loading" ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">Загрузка…</p>
         ) : state.status === "error" ? (
           <p className="text-sm text-destructive-text">{state.message}</p>
         ) : listed.length === 0 ? (
           <p className="text-sm text-subtle-foreground">
-            No supported browsers were found on this machine.
+            На этой машине не найдены поддерживаемые браузеры.
           </p>
         ) : (
           <SettingsRowList>
@@ -287,7 +287,7 @@ export function BrowserSettingsSectionContent({
       </SettingsSection>
       {supported ? (
         <p className="mt-4 text-xs text-subtle-foreground/75">
-          Also from the CLI: <code>bb browser import-sources</code> and{" "}
+          Также через CLI: <code>bb browser import-sources</code> и{" "}
           <code>bb browser import-cookies</code>.
         </p>
       ) : null}

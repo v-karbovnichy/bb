@@ -259,8 +259,8 @@ function SidebarTriggerOverlay({
   const shortcut = useAppCommandShortcut("sidebar.toggle");
   const triggerProps = {
     "aria-label": shortcut
-      ? `Toggle sidebar (${shortcut.label})`
-      : "Toggle sidebar",
+      ? `Показать или скрыть боковую панель (${shortcut.label})`
+      : "Показать или скрыть боковую панель",
     "aria-keyshortcuts": shortcut?.ariaKeyshortcuts,
   };
   if (isFramed) {
@@ -338,9 +338,9 @@ function SidebarTriggerOverlay({
 
 const routeTitles: Record<string, { title: string }> = {
   "/": { title: "bb" },
-  "/settings": { title: "Settings" },
-  "/automations": { title: "Automations" },
-  "/skills": { title: "Skills" },
+  "/settings": { title: "Настройки" },
+  "/automations": { title: "Автоматизации" },
+  "/skills": { title: "Навыки" },
 };
 
 function resolveRouteTitle(pathname: string): { title: string } | undefined {
@@ -395,7 +395,7 @@ function AppHeader({
           className="size-4 shrink-0 text-muted-foreground"
         />
       }
-      title={resourceSection === "plugins" ? "Plugins" : "Skills"}
+      title={resourceSection === "plugins" ? "Плагины" : "Навыки"}
       value={pageTitle}
     />
   ) : headerBreadcrumbs ? (
@@ -435,7 +435,7 @@ function AppHeader({
           "inline-flex items-center justify-center transition-colors",
           "text-muted-foreground hover:bg-state-hover hover:text-foreground",
         )}
-        aria-label="Project settings"
+        aria-label="Настройки проекта"
       >
         <Icon name="Settings" />
       </Link>
@@ -640,8 +640,8 @@ function AppLayoutContent({ children }: AppLayoutProps) {
         titleMentionResources,
       )
     : threadId
-      ? `Thread ${threadId.slice(0, 8)}`
-      : "Thread";
+      ? `Чат ${threadId.slice(0, 8)}`
+      : "Чат";
   const resourceWorkspaceHeaderMeta =
     resolvePluginsWorkspaceHeaderMeta(location.pathname, location.search) ??
     resolveSkillsWorkspaceHeaderMeta(location.pathname);
@@ -658,11 +658,11 @@ function AppLayoutContent({ children }: AppLayoutProps) {
             ? {
                 title: "",
                 breadcrumbs: [
-                  { label: "Threads", to: getRootComposeRoutePath() },
+                  { label: "Чаты", to: getRootComposeRoutePath() },
                   ...(archivedSectionName
                     ? [{ label: archivedSectionName }]
                     : []),
-                  { label: "Archived" },
+                  { label: "Архив" },
                 ],
               }
             : {
@@ -672,7 +672,7 @@ function AppLayoutContent({ children }: AppLayoutProps) {
                     label: projectLabel ?? projectId,
                     to: getLegacyProjectComposeRoutePath(projectId),
                   },
-                  { label: "Archived" },
+                  { label: "Архив" },
                 ],
               }
           : projectId
@@ -701,7 +701,7 @@ function AppLayoutContent({ children }: AppLayoutProps) {
       if (isProjectlessProjectId(projectId)) {
         return archivedSectionName
           ? `${archivedSectionName} · Archived`
-          : "Threads · Archived";
+          : "Чаты · Архив";
       }
       return `${projectLabel ?? projectId} · Archived`;
     }

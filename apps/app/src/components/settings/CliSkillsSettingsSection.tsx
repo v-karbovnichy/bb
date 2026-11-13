@@ -16,7 +16,7 @@ import { useInstallCliSkills } from "@/hooks/mutations/settings-mutations";
 import { selectHosts, useHosts } from "@/hooks/queries/host-queries";
 import { useCliSkillsStatus } from "@/hooks/queries/system-queries";
 
-const CLI_SKILLS_SETTING_LABEL = "bb CLI skills";
+const CLI_SKILLS_SETTING_LABEL = "Навыки CLI bb";
 
 interface CliSkillsSettingsSectionContentProps {
   hasConnectedMachine: boolean;
@@ -27,8 +27,8 @@ interface CliSkillsSettingsSectionContentProps {
 
 function installDescription(hasConnectedMachine: boolean): string {
   return hasConnectedMachine
-    ? "Install them into ~/.agents/skills and ~/.claude/skills so agents outside bb can use the bb CLI."
-    : "Connect a machine to install them into ~/.agents/skills and ~/.claude/skills.";
+    ? "Установите их в ~/.agents/skills и ~/.claude/skills, чтобы агенты вне bb могли пользоваться CLI bb."
+    : "Подключите машину, чтобы установить их в ~/.agents/skills и ~/.claude/skills.";
 }
 
 export function summarizeMachineStatuses(
@@ -39,15 +39,15 @@ export function summarizeMachineStatuses(
   const installed = known.filter((status) => status === "installed").length;
   if (installed === known.length) {
     return known.length > 1
-      ? `Installed on ${known.length} machines`
-      : "Installed";
+      ? `Установлено на машинах (${known.length})`
+      : "Установлено";
   }
   if (installed > 0) {
-    return `Installed on ${installed} of ${known.length} machines`;
+    return `Установлено на ${installed} из ${known.length} машин`;
   }
   return known.some((status) => status === "outdated")
-    ? "Out of date"
-    : "Not installed";
+    ? "Устарели"
+    : "Не установлены";
 }
 
 export function CliSkillsSettingsSectionContent({
@@ -57,7 +57,7 @@ export function CliSkillsSettingsSectionContent({
   statusBadge,
 }: CliSkillsSettingsSectionContentProps) {
   return (
-    <SettingsSection title="Skills">
+    <SettingsSection title="Навыки">
       <SettingsWithControl
         controlPlacement="trailing"
         label={CLI_SKILLS_SETTING_LABEL}
@@ -70,9 +70,9 @@ export function CliSkillsSettingsSectionContent({
           size="sm"
           disabled={!hasConnectedMachine || pending}
           onClick={onOpenPicker}
-          aria-label={`Install ${CLI_SKILLS_SETTING_LABEL}`}
+          aria-label={`Установить ${CLI_SKILLS_SETTING_LABEL}`}
         >
-          {pending ? "Installing…" : "Install"}
+          {pending ? "Установка…" : "Установить"}
         </Button>
       </SettingsWithControl>
     </SettingsSection>
@@ -84,7 +84,7 @@ function reportInstallResults(result: SystemInstallCliSkillsResponse): void {
   const failed = result.results.filter((entry) => !entry.ok);
   if (installed.length > 0) {
     appToast.success(
-      `Installed the bb CLI skills on ${installed
+      `Навыки CLI bb установлены на ${installed
         .map((entry) => entry.hostName)
         .join(", ")}`,
     );

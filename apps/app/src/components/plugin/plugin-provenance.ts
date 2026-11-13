@@ -21,6 +21,6 @@ export function pluginSourceFilterOptions(
     .sort((left, right) => left.localeCompare(right))
     .map((label) => ({ id: `publisher:${label}`, label }));
   if (hasDirectInstall)
-    options.push({ id: DIRECT_INSTALL_FILTER_ID, label: "Direct install" });
+    options.push({ id: DIRECT_INSTALL_FILTER_ID, label: "Прямая установка" });
   return options;
 }

@@ -55,9 +55,9 @@ function formatAttachmentCountLabel(
   fileCount: number,
 ): string {
   const totalCount = imageCount + fileCount;
-  if (totalCount === 0) return "Message";
+  if (totalCount === 0) return "Сообщение";
   if (totalCount === 1) {
-    return imageCount === 1 ? "Image attachment" : "File attachment";
+    return imageCount === 1 ? "Изображение во вложении" : "Файл во вложении";
   }
   return `${totalCount} attachments`;
 }
@@ -71,7 +71,7 @@ function toTocLabel({
 }): string {
   const textLabel = toPreviewLabel(text);
   if (textLabel) return textLabel;
-  if (!attachments) return "Message";
+  if (!attachments) return "Сообщение";
   return formatAttachmentCountLabel(
     attachments.webImages + attachments.localImages,
     attachments.localFiles,
@@ -100,7 +100,7 @@ function outlineItemToTocItem(item: ThreadConversationOutlineItem): TocItem {
       item.preview ||
       (summary
         ? formatAttachmentCountLabel(summary.imageCount, summary.fileCount)
-        : "Message"),
+        : "Сообщение"),
     role: item.role,
   };
 }
@@ -250,7 +250,7 @@ function TocItemPreview({
           senderThreadMetadataById.get(source.senderThreadId)?.title ?? null
         }
       />
-      <span className="line-clamp-2 min-w-0">{body || "Message"}</span>
+      <span className="line-clamp-2 min-w-0">{body || "Сообщение"}</span>
     </span>
   );
 }
@@ -723,7 +723,7 @@ export function ThreadTableOfContents({
       >
         <button
           type="button"
-          aria-label="Thread table of contents"
+          aria-label="Содержание чата"
           aria-expanded={open}
           aria-controls={`thread-toc-panel-${threadId}`}
           onClick={() => setOpen(true)}
@@ -753,13 +753,13 @@ export function ThreadTableOfContents({
               <div className="flex items-center gap-1 pb-1">
                 {hasAgentMessages ? (
                   <TocPanelTab
-                    label="Agent messages"
+                    label="Сообщения агента"
                     active={activeTab === "agent"}
                     onSelect={() => setTab("agent")}
                   />
                 ) : null}
                 <TocPanelTab
-                  label="Your messages"
+                  label="Ваши сообщения"
                   active={activeTab === "user"}
                   onSelect={() => setTab("user")}
                 />

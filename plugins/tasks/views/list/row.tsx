@@ -28,7 +28,7 @@ function ActiveChip({ threads }: { threads: readonly TaskThread[] }) {
         aria-hidden
         className="size-1.5 shrink-0 animate-pulse rounded-full bg-success"
       />
-      Active
+      Активные
     </span>
   );
 }
@@ -137,7 +137,7 @@ export const TaskRow = memo(function TaskRow({
       >
         <button
           type="button"
-          aria-label={`Open ${task.key}: ${task.title}`}
+          aria-label={`Открыть ${task.key}: ${task.title}`}
           onClick={() => onOpen(task.key)}
           onKeyDown={(event) => {
             if (!isBareKey(event)) return;

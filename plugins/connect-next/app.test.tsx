@@ -59,7 +59,7 @@ describe("connect next settings section", () => {
         },
       },
     );
-    await slot.findByText("Shared ports");
+    await slot.findByText("Открытые порты");
     expect(
       slot.getByRole("link", { name: "https://sawyer--5173.next.getbb.app" }),
     ).toBeTruthy();
@@ -75,7 +75,7 @@ describe("connect next settings section", () => {
       {},
       { openUrl: () => true, rpc: { status: () => status() } },
     );
-    await slot.findByText("Off");
+    await slot.findByText("Выключено");
     slot.getByText("bb connect-next on");
     slot.getByText("https://sawyer.next.getbb.app");
 
@@ -83,13 +83,13 @@ describe("connect next settings section", () => {
       CONNECT_NEXT_REALTIME_CHANNEL,
       status({ enabled: true, state: "connecting" }),
     );
-    await slot.findByText("Connecting…");
+    await slot.findByText("Подключение…");
 
     await slot.emitRealtime(
       CONNECT_NEXT_REALTIME_CHANNEL,
       status({ enabled: true, state: "connected" }),
     );
-    await slot.findByText("Connected");
+    await slot.findByText("Подключено");
     expect(
       slot.getByRole("link", { name: "https://sawyer.next.getbb.app" }),
     ).toBeTruthy();
@@ -144,16 +144,16 @@ describe("connect next settings section", () => {
       slot.getByRole("link", { name: "https://laptop--3000.next.getbb.app" }),
     ).toBeTruthy();
     slot.getByRole("list", {
-      name: "Shared ports from laptop on the next address",
+      name: "Открытые порты машины laptop по новому адресу",
     });
     slot.getByText("box");
-    slot.getByText("Credential refused");
+    slot.getByText("Учётные данные отклонены");
     slot.getByText("bb connect refused this server credential");
   });
 
   it("names no fixed domain and shows the address derived from the account", async () => {
     expect(app.settingsSections[0]!.description).toContain(
-      "next.<your bb account's domain>",
+      "next.<домен вашего аккаунта bb>",
     );
     expect(app.settingsSections[0]!.description).not.toContain("getbb.app");
     const slot = renderSlot(
@@ -172,7 +172,7 @@ describe("connect next settings section", () => {
         },
       },
     );
-    await slot.findByText("Connected");
+    await slot.findByText("Подключено");
     expect(
       slot.getByRole("link", { name: "https://sawyer.next.vibecodethis.site" }),
     ).toBeTruthy();
@@ -195,7 +195,7 @@ describe("connect next settings section", () => {
         },
       },
     );
-    await slot.findByText("The gate refused this bb's credential");
+    await slot.findByText("Шлюз отклонил учётные данные bb");
     slot.getByText("bb connect refused this server credential");
   });
 });

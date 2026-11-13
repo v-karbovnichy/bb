@@ -13,7 +13,7 @@ describe("codex presentation", () => {
     expect(
       commandPresentation("/bin/bash -lc \"sed -n '1,200p' math.js\""),
     ).toEqual({
-      label: { pending: "Running command", completed: "Ran command" },
+      label: { pending: "Выполнение команды", completed: "Команда выполнена" },
       icon: { glyph: "Terminal" },
       title: "sed -n '1,200p' math.js",
     });
@@ -27,7 +27,7 @@ describe("codex presentation", () => {
 
   it("pluralizes file edits and names the files, not their directories", () => {
     expect(fileChangePresentation(["/repo/src/a.ts"])).toEqual({
-      label: { pending: "Editing file", completed: "Edited file" },
+      label: { pending: "Изменение файла", completed: "Файл изменён" },
       icon: { glyph: "EditFile" },
       title: "a.ts",
     });
@@ -38,7 +38,7 @@ describe("codex presentation", () => {
         "/repo/src/a.ts",
       ]),
     ).toEqual({
-      label: { pending: "Editing files", completed: "Edited files" },
+      label: { pending: "Изменение файлов", completed: "Файлы изменены" },
       icon: { glyph: "EditFile" },
       title: "a.ts, b.ts",
     });
@@ -53,7 +53,7 @@ describe("codex presentation", () => {
         args: { title: "Inspect Discord Bugs tab", code: "1+1" },
       }),
     ).toEqual({
-      label: { pending: "Running JavaScript", completed: "Ran JavaScript" },
+      label: { pending: "Выполнение JavaScript", completed: "JavaScript выполнен" },
       icon: { glyph: "Code" },
       title: "Inspect Discord Bugs tab",
     });
@@ -67,7 +67,7 @@ describe("codex presentation", () => {
     expect(
       mcpToolPresentation({ server: "node_repl", tool: "js_reset", args: {} })
         .label.completed,
-    ).toBe("Reset JavaScript session");
+    ).toBe("Сеанс JavaScript сброшен");
     expect(
       mcpToolPresentation({
         server: "codex_apps",
@@ -86,7 +86,7 @@ describe("codex presentation", () => {
 
   it("labels each collab verb and headlines the prompt", () => {
     expect(collabAgentPresentation({ tool: "wait", prompt: null })).toEqual({
-      label: { pending: "Waiting for agents", completed: "Waited for agents" },
+      label: { pending: "Ожидание агентов", completed: "Ожидание агентов завершено" },
       icon: { glyph: "UserRound" },
     });
     expect(
@@ -95,15 +95,15 @@ describe("codex presentation", () => {
         prompt: "Review the PR\nin depth",
       }),
     ).toEqual({
-      label: { pending: "Spawning agent", completed: "Spawned agent" },
+      label: { pending: "Запуск агента", completed: "Агент запущен" },
       icon: { glyph: "UserRound" },
       title: "Review the PR",
     });
     expect(
       collabAgentPresentation({ tool: "futureVerb", prompt: null }).label,
     ).toEqual({
-      pending: "Running futureVerb",
-      completed: "Ran futureVerb",
+      pending: "Выполнение futureVerb",
+      completed: "Выполнено futureVerb",
     });
   });
 });

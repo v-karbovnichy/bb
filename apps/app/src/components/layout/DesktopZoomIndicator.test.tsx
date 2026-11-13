@@ -40,7 +40,7 @@ describe("DesktopZoomIndicator", () => {
   it("stays unrendered until a zoom change", () => {
     setup();
 
-    expect(screen.queryByRole("toolbar", { name: "Zoom" })).toBeNull();
+    expect(screen.queryByRole("toolbar", { name: "Масштаб" })).toBeNull();
   });
 
   it("shows the changed percentage and dispatches zoom commands", () => {
@@ -48,9 +48,9 @@ describe("DesktopZoomIndicator", () => {
     act(() => emitZoomChange(1.25));
 
     expect(screen.getByText("125%")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Zoom out" }));
-    fireEvent.click(screen.getByRole("button", { name: "Zoom in" }));
-    fireEvent.click(screen.getByRole("button", { name: "Reset zoom" }));
+    fireEvent.click(screen.getByRole("button", { name: "Уменьшить масштаб" }));
+    fireEvent.click(screen.getByRole("button", { name: "Увеличить масштаб" }));
+    fireEvent.click(screen.getByRole("button", { name: "Сбросить масштаб" }));
     expect(zoom.mock.calls).toEqual([["out"], ["in"], ["reset"]]);
   });
 
@@ -60,15 +60,15 @@ describe("DesktopZoomIndicator", () => {
       screen.getByRole("button", { name }).hasAttribute("disabled");
 
     act(() => emitZoomChange(0.5));
-    expect([isDisabled("Zoom out"), isDisabled("Zoom in")]).toEqual([
-      true,
-      false,
-    ]);
+    expect([
+      isDisabled("Уменьшить масштаб"),
+      isDisabled("Увеличить масштаб"),
+    ]).toEqual([true, false]);
     act(() => emitZoomChange(3));
-    expect([isDisabled("Zoom out"), isDisabled("Zoom in")]).toEqual([
-      false,
-      true,
-    ]);
+    expect([
+      isDisabled("Уменьшить масштаб"),
+      isDisabled("Увеличить масштаб"),
+    ]).toEqual([false, true]);
   });
 
   it("disables Reset at 100 percent", () => {
@@ -77,7 +77,7 @@ describe("DesktopZoomIndicator", () => {
 
     expect(
       screen
-        .getByRole("button", { name: "Reset zoom" })
+        .getByRole("button", { name: "Сбросить масштаб" })
         .hasAttribute("disabled"),
     ).toBe(true);
   });
@@ -86,7 +86,7 @@ describe("DesktopZoomIndicator", () => {
     vi.useFakeTimers();
     const { emitZoomChange } = setup();
     act(() => emitZoomChange(1.25));
-    const toolbar = screen.getByRole("toolbar", { name: "Zoom" });
+    const toolbar = screen.getByRole("toolbar", { name: "Масштаб" });
     expect(toolbar.className).not.toMatch(/animate-in|opacity-0/);
 
     act(() => {
@@ -100,19 +100,19 @@ describe("DesktopZoomIndicator", () => {
     act(() => {
       vi.advanceTimersByTime(2150);
     });
-    expect(screen.queryByRole("toolbar", { name: "Zoom" })).toBeNull();
+    expect(screen.queryByRole("toolbar", { name: "Масштаб" })).toBeNull();
   });
 
   it("stays visible while hovered", () => {
     vi.useFakeTimers();
     const { emitZoomChange } = setup();
     act(() => emitZoomChange(1.25));
-    fireEvent.pointerEnter(screen.getByRole("toolbar", { name: "Zoom" }));
+    fireEvent.pointerEnter(screen.getByRole("toolbar", { name: "Масштаб" }));
     act(() => {
       vi.advanceTimersByTime(2500);
     });
 
-    expect(screen.getByRole("toolbar", { name: "Zoom" })).toBeTruthy();
+    expect(screen.getByRole("toolbar", { name: "Масштаб" })).toBeTruthy();
   });
 
   it("renders nothing without zoom notifications and unsubscribes", () => {

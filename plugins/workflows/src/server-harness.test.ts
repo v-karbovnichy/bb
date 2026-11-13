@@ -218,7 +218,7 @@ describe("workflows plugin", () => {
           threadId: "other-thread",
           runId: started.runId,
         }),
-      ).rejects.toThrow(/not available in this thread/i);
+      ).rejects.toThrow(/недоступен в данном чате/i);
       await expect(
         harness.callRpc("workflowRunView", {
           threadId: "thread-test",

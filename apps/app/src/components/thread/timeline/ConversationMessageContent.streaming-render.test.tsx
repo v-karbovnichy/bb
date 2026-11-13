@@ -234,7 +234,7 @@ describe("assistant streaming Markdown rendering", () => {
     expect(view.container.querySelector("strong")?.textContent).toBe(
       "Original source",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Copy message" }));
+    fireEvent.click(screen.getByRole("button", { name: "Скопировать сообщение" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith(source));
   });
 });

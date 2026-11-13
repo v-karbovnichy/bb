@@ -55,8 +55,8 @@ export function PluginRowSignalView({
       : null;
     const updateDescription =
       readableVersion === null
-        ? "Update available"
-        : `Update to ${readableVersion}`;
+        ? "Доступно обновление"
+        : `Обновить до ${readableVersion}`;
     return (
       <TooltipProvider delayDuration={250}>
         <Tooltip>

@@ -246,8 +246,8 @@ describe("applyServerMove", () => {
     });
     expect(stores.notices).toEqual([
       {
-        detail: "bb now opens there. This computer stays connected.",
-        message: "Your bb server moved to Studio desktop",
+        detail: "Теперь bb открывается там. Этот компьютер остаётся подключённым.",
+        message: "Ваш сервер bb перенесён на Studio desktop",
       },
     ]);
 

@@ -138,13 +138,13 @@ function validateFieldValue(
 ): string | null {
   switch (field.kind) {
     case "string": {
-      if (typeof value !== "string") return "Enter a text value.";
+      if (typeof value !== "string") return "Введите текст.";
       const length = [...value].length;
       if (field.minLength !== null && length < field.minLength) {
-        return `Enter at least ${field.minLength} characters.`;
+        return `Введите не менее ${field.minLength} символов.`;
       }
       if (field.maxLength !== null && length > field.maxLength) {
-        return `Enter at most ${field.maxLength} characters.`;
+        return `Введите не более ${field.maxLength} символов.`;
       }
       if (field.format !== null) {
         const formats = {
@@ -154,7 +154,7 @@ function validateFieldValue(
           "date-time": z.iso.datetime({ offset: true }),
         };
         if (!formats[field.format].safeParse(value).success) {
-          return `Enter a valid ${field.format} value.`;
+          return `Введите корректное значение формата ${field.format}.`;
         }
       }
       return null;
@@ -162,22 +162,22 @@ function validateFieldValue(
     case "number":
     case "integer":
       if (typeof value !== "number" || !Number.isFinite(value)) {
-        return "Enter a finite number.";
+        return "Введите конечное число.";
       }
       if (field.kind === "integer" && !Number.isInteger(value))
-        return "Enter a whole number.";
+        return "Введите целое число.";
       if (field.minimum !== null && value < field.minimum)
-        return `Enter a value of at least ${field.minimum}.`;
+        return `Введите значение не меньше ${field.minimum}.`;
       if (field.maximum !== null && value > field.maximum)
-        return `Enter a value of at most ${field.maximum}.`;
+        return `Введите значение не больше ${field.maximum}.`;
       return null;
     case "boolean":
-      return typeof value === "boolean" ? null : "Choose Yes or No.";
+      return typeof value === "boolean" ? null : "Выберите «Да» или «Нет».";
     case "enum":
       return typeof value === "string" &&
         field.options.some((option) => option.value === value)
         ? null
-        : "Choose one of the offered options.";
+        : "Выберите один из предложенных вариантов.";
     case "multi_enum":
       if (
         !Array.isArray(value) ||
@@ -185,14 +185,14 @@ function validateFieldValue(
           (entry) => !field.options.some((option) => option.value === entry),
         )
       ) {
-        return "Choose from the offered options.";
+        return "Выберите из предложенных вариантов.";
       }
       if (new Set(value).size !== value.length)
-        return "Choose each option only once.";
+        return "Каждый вариант можно выбрать только один раз.";
       if (field.minItems !== null && value.length < field.minItems)
-        return `Choose at least ${field.minItems} options.`;
+        return `Выберите не менее ${field.minItems} вариантов.`;
       if (field.maxItems !== null && value.length > field.maxItems)
-        return `Choose at most ${field.maxItems} options.`;
+        return `Выберите не более ${field.maxItems} вариантов.`;
       return null;
   }
 }
@@ -222,17 +222,17 @@ export function validateCodexMcpFormContent(
       formError:
         fieldErrors.length === issues.length
           ? null
-          : "Form values must contain only the requested fields and supported values.",
+          : "Форма должна содержать только запрошенные поля и допустимые значения.",
     };
   }
   const errors = new Map<string, string>();
   const names = new Set(fields.map((field) => field.name));
   const formError = Object.keys(parsed.data).some((name) => !names.has(name))
-    ? "The response contains fields that were not requested."
+    ? "Ответ содержит незапрошенные поля."
     : null;
   for (const field of fields) {
     if (!Object.hasOwn(parsed.data, field.name)) {
-      if (field.required) errors.set(field.name, "This field is required.");
+      if (field.required) errors.set(field.name, "Обязательное поле.");
       continue;
     }
     const error = validateFieldValue(field, parsed.data[field.name]);
@@ -254,7 +254,7 @@ export function normalizeCodexMcpForm(schema: unknown): CodexMcpFormField[] {
     ([name, field]): CodexMcpFormField => {
       const base = {
         name,
-        title: field.title ?? (name || "Value"),
+        title: field.title ?? (name || "Значение"),
         description: field.description ?? null,
         required: required.has(name),
       };

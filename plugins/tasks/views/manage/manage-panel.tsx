@@ -76,7 +76,7 @@ function LabelEditorRow({
     <div className="flex flex-wrap items-center gap-2">
       <Input
         value={name}
-        placeholder="Label name"
+        placeholder="Название метки"
         onChange={(event) => setName(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === "Enter" && name.trim() !== "") {
@@ -98,7 +98,7 @@ function LabelEditorRow({
       </Button>
       {onCancel ? (
         <Button size="sm" variant="ghost" className="h-7" onClick={onCancel}>
-          Cancel
+          Отмена
         </Button>
       ) : null}
     </div>
@@ -137,7 +137,7 @@ function LabelsSection() {
   if (projectList.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        Create a project first — labels are project-scoped.
+        Сначала создайте проект: метки принадлежат проекту.
       </p>
     );
   }
@@ -151,8 +151,8 @@ function LabelsSection() {
           setEditingId(null);
         }}
       >
-        <SelectTrigger aria-label="Project" className="h-8 w-56">
-          <SelectValue placeholder="Project" />
+        <SelectTrigger aria-label="Проект" className="h-8 w-56">
+          <SelectValue placeholder="Проект" />
         </SelectTrigger>
         <SelectContent>
           {projectList.map((project) => (
@@ -176,7 +176,7 @@ function LabelsSection() {
               <LabelEditorRow
                 initialName={label.name}
                 initialColor={label.color}
-                submitLabel="Save"
+                submitLabel="Сохранить"
                 onCancel={() => setEditingId(null)}
                 onSubmit={(name, color) =>
                   run(async () => {
@@ -204,7 +204,7 @@ function LabelsSection() {
                     "size-6 text-muted-foreground opacity-0 group-hover:opacity-100",
                     HOVER_REVEAL_NO_HOVER_VISIBLE_CLASS,
                   )}
-                  aria-label={`Edit label ${label.name}`}
+                  aria-label={`Изменить метку ${label.name}`}
                   onClick={() => setEditingId(label.id)}
                 >
                   <Icon name="Edit" className="size-3.5" />
@@ -216,7 +216,7 @@ function LabelsSection() {
                     "size-6 text-muted-foreground opacity-0 hover:text-destructive group-hover:opacity-100",
                     HOVER_REVEAL_NO_HOVER_VISIBLE_CLASS,
                   )}
-                  aria-label={`Delete label ${label.name}`}
+                  aria-label={`Удалить метку ${label.name}`}
                   onClick={() => void askDelete(label)}
                 >
                   <Icon name="Trash2" className="size-3.5" />
@@ -227,14 +227,14 @@ function LabelsSection() {
         ))}
         {(labels.data ?? []).length === 0 ? (
           <p className="px-3 py-2 text-sm text-muted-foreground">
-            No labels yet.
+            Меток пока нет.
           </p>
         ) : null}
       </div>
       <LabelEditorRow
         initialName=""
         initialColor={DEFAULT_COLOR}
-        submitLabel="Add label"
+        submitLabel="Добавить метку"
         onSubmit={(name, color) =>
           run(async () => {
             if (!projectId) return;
@@ -256,13 +256,13 @@ function LabelsSection() {
       >
         {confirmDelete ? (
           <ConfirmDeleteDialogContent
-            title={`Delete label “${confirmDelete.label.name}”?`}
+            title={`Удалить метку «${confirmDelete.label.name}»?`}
             description={
               confirmDelete.usedBy > 0
-                ? `Used by ${confirmDelete.usedBy} task${confirmDelete.usedBy > 1 ? "s" : ""} — removing it detaches them.`
-                : "This label isn't used by any tasks."
+                ? `Метка используется в задачах (${confirmDelete.usedBy}). При удалении она будет откреплена от них.`
+                : "Эта метка не используется в задачах."
             }
-            confirmLabel="Delete label"
+            confirmLabel="Удалить метку"
             pending={false}
             size="sm"
             onCancel={() => setConfirmDelete(null)}
@@ -297,7 +297,7 @@ function PresetsSection() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Presets available when dispatching a task to an agent.
+          Пресеты для назначения задачи агенту.
         </p>
         <Button
           size="sm"
@@ -305,21 +305,21 @@ function PresetsSection() {
           onClick={() => setDialog({ key: Date.now(), editing: null })}
         >
           <Icon name="Plus" className="size-3.5" />
-          New preset
+          Новый пресет
         </Button>
       </div>
       <div className="overflow-x-auto rounded-md border border-border">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-border-hairline text-xs text-muted-foreground">
-              <th className="px-3 py-2 font-medium">Name</th>
-              <th className="px-3 py-2 font-medium">Provider</th>
-              <th className="px-3 py-2 font-medium">Model</th>
-              <th className="px-3 py-2 font-medium">Reasoning</th>
-              <th className="px-3 py-2 font-medium">Tier</th>
-              <th className="px-3 py-2 font-medium">Permissions</th>
-              <th className="px-3 py-2 font-medium">Environment</th>
-              <th className="px-3 py-2 font-medium">Instructions</th>
+              <th className="px-3 py-2 font-medium">Название</th>
+              <th className="px-3 py-2 font-medium">Провайдер</th>
+              <th className="px-3 py-2 font-medium">Модель</th>
+              <th className="px-3 py-2 font-medium">Уровень рассуждений</th>
+              <th className="px-3 py-2 font-medium">Уровень сервиса</th>
+              <th className="px-3 py-2 font-medium">Разрешения</th>
+              <th className="px-3 py-2 font-medium">Окружение</th>
+              <th className="px-3 py-2 font-medium">Инструкции</th>
               <th className="px-3 py-2" />
             </tr>
           </thead>
@@ -370,7 +370,7 @@ function PresetsSection() {
                       size="icon"
                       variant="ghost"
                       className="size-6 text-muted-foreground"
-                      aria-label={`Edit preset ${preset.name}`}
+                      aria-label={`Изменить пресет ${preset.name}`}
                       onClick={() =>
                         setDialog({ key: Date.now(), editing: preset })
                       }
@@ -381,7 +381,7 @@ function PresetsSection() {
                       size="icon"
                       variant="ghost"
                       className="size-6 text-muted-foreground hover:text-destructive"
-                      aria-label={`Delete preset ${preset.name}`}
+                      aria-label={`Удалить пресет ${preset.name}`}
                       onClick={() => {
                         setError(null);
                         rpc
@@ -403,7 +403,7 @@ function PresetsSection() {
                   colSpan={8}
                   className="px-3 py-3 text-sm text-muted-foreground"
                 >
-                  No presets yet.
+                  Пресетов пока нет.
                 </td>
               </tr>
             ) : null}
@@ -454,7 +454,7 @@ function FolderRow({
 
   return (
     <div className="flex items-center gap-2 px-3 py-2">
-      <Icon name="Folder" className="size-3.5 shrink-0 text-muted-foreground" />
+      <Icon name="Папка" className="size-3.5 shrink-0 text-muted-foreground" />
       {renaming ? (
         <>
           <Input
@@ -477,7 +477,7 @@ function FolderRow({
             disabled={draftName.trim() === ""}
             onClick={rename}
           >
-            Save
+            Сохранить
           </Button>
           <Button
             size="sm"
@@ -485,7 +485,7 @@ function FolderRow({
             className="h-7"
             onClick={() => setRenaming(false)}
           >
-            Cancel
+            Отмена
           </Button>
         </>
       ) : (
@@ -498,13 +498,13 @@ function FolderRow({
             }
           >
             <SelectTrigger
-              aria-label={`Parent of ${folder.name}`}
+              aria-label={`Родительская папка для ${folder.name}`}
               className="h-7 w-40 text-xs text-muted-foreground"
             >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={ROOT_PARENT}>Top level</SelectItem>
+              <SelectItem value={ROOT_PARENT}>Верхний уровень</SelectItem>
               {parentOptions.map((parent) => (
                 <SelectItem key={parent.id} value={parent.id}>
                   {parent.name}
@@ -516,7 +516,7 @@ function FolderRow({
             size="icon"
             variant="ghost"
             className="size-6 text-muted-foreground"
-            aria-label={`Rename folder ${folder.name}`}
+            aria-label={`Переименовать папку ${folder.name}`}
             onClick={() => {
               setDraftName(folder.name);
               setRenaming(true);
@@ -528,7 +528,7 @@ function FolderRow({
             size="icon"
             variant="ghost"
             className="size-6 text-muted-foreground hover:text-destructive"
-            aria-label={`Delete folder ${folder.name}`}
+            aria-label={`Удалить папку ${folder.name}`}
             onClick={onDelete}
           >
             <Icon name="Trash2" className="size-3.5" />
@@ -562,8 +562,8 @@ function FoldersSection() {
   function describeDeleteImpact(folder: Folder): string {
     if (!impactReady) {
       return impactError !== null
-        ? `Could not load the folder's contents: ${impactError}`
-        : "Checking what the folder contains…";
+        ? `Не удалось загрузить содержимое папки: ${impactError}`
+        : "Проверка содержимого папки…";
     }
     const projectCount = (projects.data ?? []).filter(
       (project) => project.folderId === folder.id,
@@ -573,22 +573,22 @@ function FoldersSection() {
     ).length;
     const moved = [
       projectCount > 0
-        ? `${projectCount} project${projectCount > 1 ? "s" : ""}`
+        ? `проектов: ${projectCount}`
         : null,
       subfolderCount > 0
-        ? `${subfolderCount} subfolder${subfolderCount > 1 ? "s" : ""}`
+        ? `вложенных папок: ${subfolderCount}`
         : null,
     ].filter((part) => part !== null);
     return moved.length === 0
-      ? "The folder is empty."
-      : `${moved.join(" and ")} move to the top level. No tasks are deleted.`;
+      ? "Папка пуста."
+      : `На верхний уровень будут перемещены ${moved.join(", ")}. Задачи не удалятся.`;
   }
 
   return (
     <div className="space-y-3">
       {folderList.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No folders yet — create one from the New project dialog.
+          Папок пока нет. Создайте папку в окне «Новый проект».
         </p>
       ) : (
         <div className="divide-y divide-border-hairline rounded-md border border-border">
@@ -632,9 +632,9 @@ function FoldersSection() {
       >
         {confirmDelete ? (
           <ConfirmDeleteDialogContent
-            title={`Delete folder “${confirmDelete.name}”?`}
+            title={`Удалить папку «${confirmDelete.name}»?`}
             description={describeDeleteImpact(confirmDelete)}
-            confirmLabel="Delete folder"
+            confirmLabel="Удалить папку"
             pending={false}
             confirmDisabled={!impactReady}
             size="sm"
@@ -649,7 +649,7 @@ function FoldersSection() {
                   folders.refresh();
                   projects.refresh();
                   throw new Error(
-                    `Folder “${confirmDelete.name}” was already deleted.`,
+                    `Папка «${confirmDelete.name}» уже удалена.`,
                   );
                 }
               });
@@ -665,16 +665,16 @@ export function ManagePanel() {
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-auto p-4">
       <header className="space-y-1">
-        <h2 className="text-base font-semibold">Manage</h2>
+        <h2 className="text-base font-semibold">Управление</h2>
         <p className="text-sm text-muted-foreground">
-          Labels, agent presets, and folders.
+          Метки, пресеты агентов и папки.
         </p>
       </header>
       <Tabs defaultValue="labels">
         <TabsList>
-          <TabsTrigger value="labels">Labels</TabsTrigger>
-          <TabsTrigger value="presets">Presets</TabsTrigger>
-          <TabsTrigger value="folders">Folders</TabsTrigger>
+          <TabsTrigger value="labels">Метки</TabsTrigger>
+          <TabsTrigger value="presets">Пресеты</TabsTrigger>
+          <TabsTrigger value="folders">Папки</TabsTrigger>
         </TabsList>
         <TabsContent value="labels" className="pt-3">
           <LabelsSection />

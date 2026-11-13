@@ -57,7 +57,7 @@ const renderWithRouter = (
 
 function selectMessageMenuItem(name: string) {
   fireEvent.pointerDown(
-    screen.getByRole("button", { name: "Message actions" }),
+    screen.getByRole("button", { name: "Действия с сообщением" }),
   );
   fireEvent.click(screen.getByRole("menuitem", { name }));
 }
@@ -304,16 +304,16 @@ describe("ThreadTimelineRows actions", () => {
     );
 
     expect(
-      earlierMessage?.querySelector('[aria-label="Message actions"]'),
+      earlierMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      latestMessage?.querySelector('[aria-label="Message actions"]'),
+      latestMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      earlierMessage?.querySelector('[aria-label="Copy message"]'),
+      earlierMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).toBeNull();
     expect(
-      latestMessage?.querySelector('[aria-label="Copy message"]'),
+      latestMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).not.toBeNull();
   });
 
@@ -346,16 +346,16 @@ describe("ThreadTimelineRows actions", () => {
     );
 
     expect(
-      earlierMessage?.querySelector('[aria-label="Message actions"]'),
+      earlierMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      latestMessage?.querySelector('[aria-label="Message actions"]'),
+      latestMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      earlierMessage?.querySelector('[aria-label="Copy message"]'),
+      earlierMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).toBeNull();
     expect(
-      latestMessage?.querySelector('[aria-label="Copy message"]'),
+      latestMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).not.toBeNull();
   });
 
@@ -365,7 +365,7 @@ describe("ThreadTimelineRows actions", () => {
       <EditActionAvailabilityHarness onEditMessage={onEditMessage} />,
     );
     const editButtons = screen.getAllByRole("button", {
-      name: "Edit message",
+      name: "Редактировать сообщение",
     });
     expect(editButtons).toHaveLength(2);
     fireEvent.click(editButtons[0]!);
@@ -393,7 +393,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    expect(markup).not.toContain('aria-label="Edit message"');
+    expect(markup).not.toContain('aria-label="Редактировать сообщение"');
   });
 
   it("does not offer edit for one bubble in a grouped request", () => {
@@ -415,7 +415,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    expect(markup).not.toContain('aria-label="Edit message"');
+    expect(markup).not.toContain('aria-label="Редактировать сообщение"');
   });
 
   it("offers edit for an attachment-only request without requiring add-to-chat", () => {
@@ -449,7 +449,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Edit message" }));
+    fireEvent.click(screen.getByRole("button", { name: "Редактировать сообщение" }));
     expect(onEditMessage).toHaveBeenCalledWith({
       messageId: expect.any(String),
       expectedRequestSequence: 11,
@@ -501,13 +501,13 @@ describe("ThreadTimelineRows actions", () => {
       '[data-timeline-row-id="remote_image_only_message"]',
     );
     expect(
-      actionableMessage?.querySelector('[aria-label="Message actions"]'),
+      actionableMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      actionableMessage?.querySelector('[aria-label="Copy message"]'),
+      actionableMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).not.toBeNull();
     expect(
-      remoteImageOnlyMessage?.querySelector('[aria-label="Copy message"]'),
+      remoteImageOnlyMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).not.toBeNull();
   });
 
@@ -546,13 +546,13 @@ describe("ThreadTimelineRows actions", () => {
       '[data-timeline-row-id="local_attachment_only_message"]',
     );
     expect(
-      copyableMessage?.querySelector('[aria-label="Message actions"]'),
+      copyableMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
     expect(
-      copyableMessage?.querySelector('[aria-label="Copy message"]'),
+      copyableMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).not.toBeNull();
     expect(
-      attachmentOnlyMessage?.querySelector('[aria-label="Message actions"]'),
+      attachmentOnlyMessage?.querySelector('[aria-label="Действия с сообщением"]'),
     ).not.toBeNull();
   });
 
@@ -580,7 +580,7 @@ describe("ThreadTimelineRows actions", () => {
 
     expect(markup).toContain("Worked for");
     expect(markup).toContain("Archived assistant response.");
-    expect(markup).not.toContain('aria-label="Copy message"');
+    expect(markup).not.toContain('aria-label="Скопировать сообщение"');
   });
 
   it("keeps assistant message actions visible inside pending turn rows", () => {
@@ -607,8 +607,8 @@ describe("ThreadTimelineRows actions", () => {
 
     expect(markup).toContain("Working");
     expect(markup).toContain("Streaming assistant response.");
-    expect(markup).toContain('aria-label="Copy message"');
-    expect(markup).toContain('aria-label="Message actions"');
+    expect(markup).toContain('aria-label="Скопировать сообщение"');
+    expect(markup).toContain('aria-label="Действия с сообщением"');
     expect(markup).toContain("[@media(hover:none)]:opacity-100");
   });
 
@@ -643,7 +643,7 @@ describe("ThreadTimelineRows actions", () => {
     expect(markup).toContain("Top-level agent response.");
     expect(markup).toContain("Nested subagent progress.");
     expect(markup).toContain("Nested final answer.");
-    expect(markup.match(/aria-label="Copy message"/g)).toHaveLength(1);
+    expect(markup.match(/aria-label="Скопировать сообщение"/g)).toHaveLength(1);
   });
 
   it("passes agent message text to add-to-chat", () => {
@@ -661,7 +661,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    selectMessageMenuItem("Add to chat");
+    selectMessageMenuItem("Добавить в чат");
     expect(onMessageAddToChat).toHaveBeenCalledWith(
       "Quote this agent response.",
     );
@@ -691,7 +691,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    selectMessageMenuItem("Add to chat");
+    selectMessageMenuItem("Добавить в чат");
     expect(onMessageAddToChat).toHaveBeenCalledWith(
       "Quote this agent response.",
       [
@@ -724,7 +724,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    selectMessageMenuItem("Add to chat");
+    selectMessageMenuItem("Добавить в чат");
     expect(onSelectionAddToChat).toHaveBeenCalledWith(
       "Quote this user prompt.",
     );
@@ -754,7 +754,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    selectMessageMenuItem("Add to chat");
+    selectMessageMenuItem("Добавить в чат");
     expect(onSelectionAddToChat).toHaveBeenCalledWith(
       "Quote this user prompt.",
       [
@@ -796,7 +796,7 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    selectMessageMenuItem("Add to chat");
+    selectMessageMenuItem("Добавить в чат");
     expect(onSelectionAddToChat).toHaveBeenCalledWith("", [
       {
         type: "localFile",
@@ -819,8 +819,8 @@ describe("ThreadTimelineRows actions", () => {
       />,
     );
 
-    expect(markup).toContain('aria-label="Copy message"');
-    expect(markup).not.toContain('aria-label="Add to chat"');
+    expect(markup).toContain('aria-label="Скопировать сообщение"');
+    expect(markup).not.toContain('aria-label="Добавить в чат"');
   });
 
   it.each([
@@ -872,7 +872,7 @@ describe("ThreadTimelineRows actions", () => {
       selection.addRange(range);
       fireEvent(document, new Event("selectionchange"));
       fireEvent.click(
-        await screen.findByRole("button", { name: "Add to chat" }),
+        await screen.findByRole("button", { name: "Добавить в чат" }),
       );
       expect(onSelectionAddToChat).toHaveBeenCalledWith(expected);
       expect(selection.rangeCount).toBe(0);
@@ -923,7 +923,7 @@ describe("ThreadTimelineRows actions", () => {
     mockWindowSelection({ node: laterTextNode!, text: "later answer" });
     fireEvent(document, new Event("selectionchange"));
     await flushSelectionFrames();
-    await screen.findByRole("button", { name: "Add to chat" });
+    await screen.findByRole("button", { name: "Добавить в чат" });
 
     const earlierTextNode = screen.getByText(
       "Select this earlier answer.",
@@ -932,7 +932,7 @@ describe("ThreadTimelineRows actions", () => {
     mockWindowSelection({ node: earlierTextNode!, text: "earlier answer" });
     fireEvent(document, new Event("selectionchange"));
     await flushSelectionFrames();
-    fireEvent.click(await screen.findByRole("button", { name: "Add to chat" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Добавить в чат" }));
 
     expect(onSelectionAddToChat).toHaveBeenLastCalledWith("earlier answer");
   });
@@ -972,7 +972,7 @@ describe("ThreadTimelineRows actions", () => {
     });
 
     const addToChat = await screen.findByRole("button", {
-      name: "Add to chat",
+      name: "Добавить в чат",
     });
     fireEvent.click(addToChat);
     expect(onSelectionAddToChat).toHaveBeenCalledWith("chat actions");
@@ -1011,7 +1011,7 @@ describe("ThreadTimelineRows actions", () => {
     fireEvent(document, new Event("selectionchange"));
 
     await waitFor(() =>
-      expect(screen.getByRole("button", { name: "Add to chat" })).toBeTruthy(),
+      expect(screen.getByRole("button", { name: "Добавить в чат" })).toBeTruthy(),
     );
   });
 
@@ -1614,7 +1614,7 @@ describe("ThreadTimelineRows actions", () => {
       ).firstChild;
       mockWindowSelection({ node: textNode!, text: "embedded answer" });
       fireEvent(document, new Event("selectionchange"));
-      const add = await screen.findByRole("button", { name: "Add to chat" });
+      const add = await screen.findByRole("button", { name: "Добавить в чат" });
       expect(
         screen.queryByRole("button", { name: "Summarize selection" }),
       ).toBeNull();
@@ -1839,24 +1839,24 @@ describe("ThreadTimelineRows shared message column width", () => {
       '[data-timeline-row-id="earlier_agent_message"]',
     );
     const trigger = earlierMessage?.querySelector<HTMLButtonElement>(
-      '[aria-label="Message actions"]',
+      '[aria-label="Действия с сообщением"]',
     );
     if (!trigger) throw new Error("Missing overflow trigger");
     fireEvent.click(trigger);
 
-    await screen.findByRole("dialog", { name: "Message actions" });
+    await screen.findByRole("dialog", { name: "Действия с сообщением" });
     expect(document.body.querySelector('[data-side="top"]')).toBeNull();
     expect(
-      earlierMessage?.querySelector('[aria-label="Copy message"]'),
+      earlierMessage?.querySelector('[aria-label="Скопировать сообщение"]'),
     ).toBeNull();
     expect(
-      earlierMessage?.querySelector('[aria-label="Fork into new thread"]'),
+      earlierMessage?.querySelector('[aria-label="Ответвить в новый чат"]'),
     ).toBeNull();
     expect(
-      await screen.findByRole("menuitem", { name: "Copy message" }),
+      await screen.findByRole("menuitem", { name: "Скопировать сообщение" }),
     ).toBeTruthy();
     expect(
-      screen.getByRole("menuitem", { name: "Fork into new thread" }),
+      screen.getByRole("menuitem", { name: "Ответвить в новый чат" }),
     ).toBeTruthy();
   });
 
@@ -1919,7 +1919,7 @@ describe("ThreadTimelineRows shared message column width", () => {
     if (!earlierMessage) throw new Error("Missing earlier assistant row");
     const clickTrigger = () => {
       const trigger = earlierMessage.querySelector<HTMLButtonElement>(
-        '[aria-label="Message actions"]',
+        '[aria-label="Действия с сообщением"]',
       );
       if (!trigger) throw new Error("Missing overflow trigger");
       fireEvent.click(trigger);
@@ -1927,13 +1927,13 @@ describe("ThreadTimelineRows shared message column width", () => {
 
     reportListWidth(132);
     clickTrigger();
-    await screen.findByRole("dialog", { name: "Message actions" });
+    await screen.findByRole("dialog", { name: "Действия с сообщением" });
     expect(document.body.querySelector('[data-side="top"]')).toBeNull();
     expect(
-      earlierMessage.querySelector('[aria-label="Copy message"]'),
+      earlierMessage.querySelector('[aria-label="Скопировать сообщение"]'),
     ).toBeNull();
     expect(
-      earlierMessage.querySelector('[aria-label="Fork into new thread"]'),
+      earlierMessage.querySelector('[aria-label="Ответвить в новый чат"]'),
     ).toBeNull();
   });
 });

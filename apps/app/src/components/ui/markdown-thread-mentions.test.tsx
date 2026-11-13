@@ -588,7 +588,7 @@ describe("MarkdownPreview thread mentions", () => {
       [],
     );
 
-    expect(await screen.findByText("Unavailable thread")).not.toBeNull();
+    expect(await screen.findByText("Недоступный чат")).not.toBeNull();
     expect(sdk.threads.resolveMentions).toHaveBeenCalledTimes(1);
   });
 

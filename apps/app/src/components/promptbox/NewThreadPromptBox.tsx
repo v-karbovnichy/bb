@@ -149,8 +149,8 @@ interface NewThreadPromptBoxUIProps {
 
 function getNewThreadPromptPlaceholder(isProjectless: boolean): string {
   return isProjectless
-    ? "Ask anything."
-    : "Ask anything. @ to mention files, folders, or sections";
+    ? "Спросите о чём угодно."
+    : "Спросите о чём угодно. @ — для упоминания файлов, папок и разделов";
 }
 
 export const NewThreadPromptBoxUI = memo(function NewThreadPromptBoxUI({
@@ -289,10 +289,10 @@ const DefaultNewThreadComposer = memo(function DefaultNewThreadComposer({
       activePromptMode: null,
     });
   const submitTitle = isSubmitting
-    ? "Submitting..."
+    ? "Отправка..."
     : execution.model.isLoading
-      ? "Loading models..."
-      : "Submit (Enter)";
+      ? "Загрузка моделей..."
+      : "Отправить (Enter)";
 
   return (
     <div

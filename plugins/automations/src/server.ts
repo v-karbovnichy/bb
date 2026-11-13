@@ -56,7 +56,7 @@ export default async function plugin(bb: BbPluginApi) {
     {
       experimental_discoverable: true,
       experimental_description:
-        "Declines provider retries of recurring automation runs, which run again on their schedule.",
+        "Отклоняет повторные попытки провайдера для повторяющихся автоматизаций, которые снова запустятся по расписанию.",
     },
   );
   registerAutomationCli({ bb, service });

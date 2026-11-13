@@ -655,7 +655,7 @@ it("warns about sustained silence without stopping and clears the warning as soo
   act(() => {
     vi.advanceTimersByTime(200);
   });
-  expect(result.current.microphoneWarning).toContain("No audio detected");
+  expect(result.current.microphoneWarning).toContain("Звук не обнаружен");
   expect(result.current.state).toBe("recording");
   audio.amplitude = 0.02;
   act(() => {

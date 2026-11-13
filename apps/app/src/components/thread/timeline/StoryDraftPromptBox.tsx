@@ -90,7 +90,7 @@ export function StoryDraftPromptBox({
       onChange={draft.onChange}
       onSubmit={noop}
       surface="thread"
-      placeholder="Add to chat inserts a quote here"
+      placeholder="При добавлении в чат здесь появится цитата"
       typeahead={typeahead}
       mentionMenuPlacement="bottom"
       attachments={attachments}

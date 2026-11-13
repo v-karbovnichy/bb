@@ -101,7 +101,7 @@ export function usePendingTerminals(): PendingTerminals {
           setStart(terminalId, {
             error: getMutationErrorMessage({
               error,
-              fallbackMessage: "Failed to start terminal.",
+              fallbackMessage: "Не удалось запустить терминал.",
               lifecycleOperation: "open_terminal",
             }),
             request: { ...request, target },

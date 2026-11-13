@@ -17,12 +17,12 @@ import {
 import { useHostDaemon } from "./useHostDaemon";
 import { useWorkspaceOpenTargets } from "./useWorkspaceOpenTargets";
 
-const LOCAL_OPEN_FAILURE_TITLE = "Failed to open file locally";
+const LOCAL_OPEN_FAILURE_TITLE = "Не удалось открыть файл на этом компьютере";
 const LOCAL_DAEMON_UNAVAILABLE_OPEN_DESCRIPTION =
-  "Local host daemon is unavailable.";
-const LOCAL_NO_FILE_OPEN_TARGETS_DESCRIPTION = "No local app can open files.";
+  "Локальная служба компьютера недоступна.";
+const LOCAL_NO_FILE_OPEN_TARGETS_DESCRIPTION = "Нет локального приложения для открытия файлов.";
 const LOCAL_NO_DIRECTORY_OPEN_TARGETS_DESCRIPTION =
-  "No local app can open directories.";
+  "Нет локального приложения для открытия папок.";
 
 interface UseLocalOpenTargetsArgs {
   enabled: boolean;

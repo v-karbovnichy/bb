@@ -363,7 +363,7 @@ function UserConversationMessage({
       ? {
           sourceKind: "agent" as const,
           sourceName: senderIsPluginSideChat
-            ? "side chat"
+            ? "дополнительного чата"
             : (senderThreadTitle ?? "Agent"),
           sourceProjectId: senderThreadProjectId,
           sourceThreadId: senderThreadId,
@@ -380,7 +380,7 @@ function UserConversationMessage({
         : automationDue !== null
           ? {
               sourceKind: "automation" as const,
-              sourceName: "Automation",
+              sourceName: "Автоматизация",
               sourceProjectId: null,
               sourceThreadId: null,
               sourceIsPluginSideChat: false,
@@ -448,7 +448,7 @@ function UserConversationMessage({
                 mutePrefixLength={mutePrefixLength || undefined}
               />
             ) : (
-              <p className="text-muted-foreground">Sent attachments</p>
+              <p className="text-muted-foreground">Отправленные вложения</p>
             )}
             <ConversationAttachments
               align="end"

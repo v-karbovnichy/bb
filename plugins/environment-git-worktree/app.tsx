@@ -41,10 +41,10 @@ import { GIT_WORKTREE_ENVIRONMENT_PROVIDER_ID } from "./provider-id.js";
 import type { WorktreeInputs, worktreeRpcContract } from "./server.js";
 
 const DEFAULT_INPUTS: WorktreeInputs = { branch: { kind: "default" } };
-const NEW_WORKTREE_LABEL = "New worktree";
-const BRANCH_FROM_PREFIX = "Branch from:";
-const REUSE_PREFIX = "Reuse:";
-const EXISTING_WORKTREE_LABEL = "Existing worktree";
+const NEW_WORKTREE_LABEL = "Новое рабочее дерево";
+const BRANCH_FROM_PREFIX = "Создать от ветки:";
+const REUSE_PREFIX = "Использовать:";
+const EXISTING_WORKTREE_LABEL = "Существующее рабочее дерево";
 const NEW_WORKTREE_ROW_VALUE = "intent:new";
 const EXISTING_WORKTREE_ROW_VALUE = "intent:existing";
 const DEFAULT_BRANCH_ROW_VALUE = "default-branch";
@@ -274,7 +274,7 @@ function WorktreeInputsControl({
           variant="ghost"
           size="sm"
           disabled={projectId === null}
-          aria-label="Worktree"
+          aria-label="Рабочее дерево"
           role="combobox"
           aria-expanded={open}
           className={cn(
@@ -317,7 +317,7 @@ function WorktreeInputsControl({
         align="start"
         sideOffset={6}
         collisionPadding={16}
-        mobileTitle="Work in:"
+        mobileTitle="Работать в:"
         autoFocusRef={inputRef}
         className={cn(BRANCH_PICKER_CONTENT_CLASS_NAME, "md:w-72")}
       >
@@ -330,10 +330,10 @@ function WorktreeInputsControl({
             query={query}
             onQueryChange={setQuery}
             ariaLabel={
-              intent === "new" ? "Search branches" : "Search worktrees"
+              intent === "new" ? "Поиск веток" : "Поиск рабочих деревьев"
             }
             placeholder={
-              intent === "new" ? "Search branches" : "Search worktrees"
+              intent === "new" ? "Поиск веток" : "Поиск рабочих деревьев"
             }
           />
           <div
@@ -341,12 +341,12 @@ function WorktreeInputsControl({
             className="min-h-0 max-h-[60vh] overflow-y-auto overscroll-contain px-1 pb-1 pt-0 md:h-80"
             onWheel={(event) => event.stopPropagation()}
           >
-            <BranchPickerSectionHeader label="Work in:" sticky={false} />
+            <BranchPickerSectionHeader label="Работать в:" sticky={false} />
             <BranchPickerRow
               value={NEW_WORKTREE_ROW_VALUE}
               icon="Plus"
               selected={intent === "new"}
-              title="Create a worktree for this thread"
+              title="Создать рабочее дерево для этого чата"
               onSelect={() => {
                 setIntent("new");
                 setQuery("");
@@ -361,7 +361,7 @@ function WorktreeInputsControl({
               icon="FolderGit"
               disabled={projectId === null || hostId === null}
               selected={intent === "existing"}
-              title="Use a worktree you already have"
+              title="Использовать существующее рабочее дерево"
               onSelect={() => {
                 setIntent("existing");
                 setQuery("");
@@ -375,12 +375,12 @@ function WorktreeInputsControl({
             <div className="my-1 h-px bg-border/60" />
             {intent === "new" ? (
               <>
-                <BranchPickerSectionHeader label="Branch from:" />
+                <BranchPickerSectionHeader label="Создать от ветки:" />
                 <BranchPickerRow
                   value={DEFAULT_BRANCH_ROW_VALUE}
                   icon="GitMerge"
                   selected={existingPath === null && branchName === null}
-                  title="Use the repository's default branch"
+                  title="Использовать ветку репозитория по умолчанию"
                   onSelect={() => submit(DEFAULT_INPUTS)}
                 >
                   <span className="min-w-0 flex-1 truncate">
@@ -404,25 +404,25 @@ function WorktreeInputsControl({
                 {branchOptions.length === 0 ? (
                   <p className="px-2 py-3 text-center text-xs text-muted-foreground">
                     {branchState.isLoading
-                      ? "Loading branches..."
-                      : "No branches found."}
+                      ? "Загрузка веток..."
+                      : "Ветки не найдены."}
                   </p>
                 ) : null}
               </>
             ) : (
               <>
-                <BranchPickerSectionHeader label="Existing worktree:" />
+                <BranchPickerSectionHeader label="Существующее рабочее дерево:" />
                 {worktreeOptions.length === 0 ? (
                   <p className="px-2 py-3 text-center text-xs text-muted-foreground">
                     {scopedWorktreeResult?.loading
-                      ? "Loading worktrees..."
+                      ? "Загрузка рабочих деревьев..."
                       : scopedWorktreeResult?.error
-                        ? "Could not load worktrees. Select Existing worktree to retry."
+                        ? "Не удалось загрузить рабочие деревья. Выберите «Существующее рабочее дерево», чтобы повторить попытку."
                         : scopedWorktreeResult === null
-                          ? "Select Existing worktree to load worktrees."
+                          ? "Выберите «Существующее рабочее дерево», чтобы загрузить список."
                           : worktrees.length === 0
-                            ? "No existing worktrees found."
-                            : "No matching worktrees found."}
+                            ? "Существующие рабочие деревья не найдены."
+                            : "Подходящие рабочие деревья не найдены."}
                   </p>
                 ) : null}
                 {worktreeOptions.map((worktree) => (
@@ -442,7 +442,7 @@ function WorktreeInputsControl({
                         <bdi dir="ltr">{worktree.path}</bdi>
                       </span>
                       <span className="min-w-0 truncate text-xs text-muted-foreground">
-                        {worktree.branch ?? "Detached HEAD"}
+                        {worktree.branch ?? "Отсоединённый HEAD"}
                         {worktree.locked ? " · locked" : ""}
                         {worktree.prunable ? " · prunable" : ""}
                       </span>

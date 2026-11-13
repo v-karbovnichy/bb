@@ -27,10 +27,10 @@ function SettingsPage() {
 
   return (
     <>
-      <button onClick={() => void openSearchResult("Theme")}>
+      <button onClick={() => void openSearchResult("Тема")}>
         Open Theme result
       </button>
-      <button onClick={() => void openSearchResult("Microphone")}>
+      <button onClick={() => void openSearchResult("Микрофон")}>
         Open Microphone result
       </button>
       <button onClick={() => void navigate("/settings/appearance")}>
@@ -38,9 +38,9 @@ function SettingsPage() {
       </button>
       <button onClick={() => void navigate(-1)}>Back</button>
       <button onClick={() => setLateRowVisible(true)}>Load microphones</button>
-      <SettingsWithControl label="Theme">theme control</SettingsWithControl>
+      <SettingsWithControl label="Тема">theme control</SettingsWithControl>
       {lateRowVisible ? (
-        <SettingsWithControl label="Microphone">
+        <SettingsWithControl label="Микрофон">
           mic control
         </SettingsWithControl>
       ) : null}
@@ -87,9 +87,9 @@ describe("useRevealSettingsSearchTarget", () => {
   it("scrolls to the setting a search result names and flashes it", () => {
     click("Open Theme result");
 
-    expect(scrollIntoView.mock.contexts).toEqual([row("Theme")]);
+    expect(scrollIntoView.mock.contexts).toEqual([row("Тема")]);
     expect(scrollIntoView).toHaveBeenCalledWith({ block: "center" });
-    expect(row("Theme").classList.contains(FLASH_CLASS)).toBe(true);
+    expect(row("Тема").classList.contains(FLASH_CLASS)).toBe(true);
   });
 
   it("waits for a setting that renders after its data loads", async () => {
@@ -98,21 +98,21 @@ describe("useRevealSettingsSearchTarget", () => {
 
     click("Load microphones");
     await vi.waitFor(() => {
-      expect(scrollIntoView.mock.contexts).toEqual([row("Microphone")]);
+      expect(scrollIntoView.mock.contexts).toEqual([row("Микрофон")]);
     });
-    expect(row("Microphone").classList.contains(FLASH_CLASS)).toBe(true);
-    expect(row("Theme").classList.contains(FLASH_CLASS)).toBe(false);
+    expect(row("Микрофон").classList.contains(FLASH_CLASS)).toBe(true);
+    expect(row("Тема").classList.contains(FLASH_CLASS)).toBe(false);
   });
 
   it("leaves the page alone when going back to a search result", () => {
     click("Open Theme result");
     click("Leave");
     scrollIntoView.mockClear();
-    row("Theme").classList.remove(FLASH_CLASS);
+    row("Тема").classList.remove(FLASH_CLASS);
 
     click("Back");
 
     expect(scrollIntoView).not.toHaveBeenCalled();
-    expect(row("Theme").classList.contains(FLASH_CLASS)).toBe(false);
+    expect(row("Тема").classList.contains(FLASH_CLASS)).toBe(false);
   });
 });

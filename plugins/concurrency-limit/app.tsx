@@ -30,6 +30,20 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+function processorCount(count: number): string {
+  const lastTwo = count % 100;
+  const last = count % 10;
+  const noun =
+    lastTwo >= 11 && lastTwo <= 14
+      ? "процессоров"
+      : last === 1
+        ? "процессор"
+        : last >= 2 && last <= 4
+          ? "процессора"
+          : "процессоров";
+  return `${count} ${noun}`;
+}
+
 function draftsFor(view: ConfigurationView): Record<string, string> {
   const drafts: Record<string, string> = {
     [GLOBAL_FIELD]: view.globalLimit === null ? "" : String(view.globalLimit),
@@ -138,32 +152,33 @@ function ConcurrencyLimitSettings() {
         }
         role={error === null ? "status" : "alert"}
       >
-        {error ?? "Loading limits…"}
+        {error ?? "Загрузка ограничений…"}
       </p>
     );
   }
 
   const disabled = saveState === "saving";
-  const validationMessage = `Use a whole number from 0 to ${MAX_LIMIT_VALUE}, or leave blank.`;
+  const validationMessage = `Введите целое число от 0 до ${MAX_LIMIT_VALUE} или оставьте поле пустым.`;
 
   return (
     <div className="w-full space-y-5">
       <div className="flex items-start justify-between gap-6 pr-2">
         <div className="min-w-0">
-          <h3 className="text-sm font-medium text-foreground">Overall limit</h3>
+          <h3 className="text-sm font-medium text-foreground">Общий лимит</h3>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            Leave blank for no overall limit. Use 0 to pause new work.
+            Оставьте поле пустым, чтобы снять общий лимит. Значение 0
+            приостановит новые задачи.
           </p>
         </div>
         <Input
-          aria-label="Overall thread limit"
+          aria-label="Общий лимит чатов"
           aria-invalid={invalidField === GLOBAL_FIELD}
           className="w-28 shrink-0"
           disabled={disabled}
           inputMode="numeric"
           max={MAX_LIMIT_VALUE}
           min={0}
-          placeholder="Unlimited"
+          placeholder="Без ограничений"
           step={1}
           type="number"
           value={drafts[GLOBAL_FIELD] ?? ""}
@@ -176,15 +191,15 @@ function ConcurrencyLimitSettings() {
       </div>
 
       <div className="border-t border-border/60 pt-4">
-        <h3 className="text-sm font-medium text-foreground">Host limits</h3>
+        <h3 className="text-sm font-medium text-foreground">Лимиты компьютеров</h3>
         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-          Auto allows one thread per available processor.
+          Автоматический режим разрешает один чат на каждый доступный процессор.
         </p>
 
         <div className="ml-2 mt-2 border-l border-border/60 pl-2">
           {view.hosts.length === 0 ? (
             <p className="px-2 py-2 text-sm text-muted-foreground">
-              No hosts available.
+              Доступных компьютеров нет.
             </p>
           ) : (
             <div className="space-y-1">
@@ -200,22 +215,22 @@ function ConcurrencyLimitSettings() {
                     <div className="text-xs text-muted-foreground">
                       {host.status === "disconnected"
                         ? host.availableParallelism === null
-                          ? "Offline"
-                          : `${host.availableParallelism} processors · Offline`
+                          ? "Не в сети"
+                          : `${processorCount(host.availableParallelism)} · Не в сети`
                         : host.availableParallelism === null
-                          ? "Detecting processors…"
-                          : `${host.availableParallelism} processors`}
+                          ? "Определение процессоров…"
+                          : processorCount(host.availableParallelism)}
                     </div>
                   </div>
                   <Input
-                    aria-label={`${host.name} thread limit`}
+                    aria-label={`Лимит чатов: ${host.name}`}
                     aria-invalid={invalidField === host.id}
                     className="w-28 shrink-0"
                     disabled={disabled}
                     inputMode="numeric"
                     max={MAX_LIMIT_VALUE}
                     min={0}
-                    placeholder={`Auto (${host.automaticLimit})`}
+                    placeholder={`Авто (${host.automaticLimit})`}
                     step={1}
                     type="number"
                     value={drafts[host.id] ?? ""}
@@ -245,7 +260,7 @@ function ConcurrencyLimitSettings() {
           </span>
         ) : (
           <span className="text-xs text-muted-foreground" role="status">
-            {saveState === "saving" ? "Saving…" : "Saved"}
+            {saveState === "saving" ? "Сохранение…" : "Сохранено"}
           </span>
         )}
       </div>

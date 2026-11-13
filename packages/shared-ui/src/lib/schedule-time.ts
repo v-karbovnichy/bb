@@ -41,23 +41,23 @@ export function isSchedulePresetId(value: string): value is SchedulePresetId {
 
 export function listSchedulePresets(now: number): SchedulePreset[] {
   const candidates: SchedulePreset[] = [
-    { id: "in-5-minutes", label: "In 5 minutes", at: now + 5 * MINUTE_MS },
-    { id: "in-10-minutes", label: "In 10 minutes", at: now + 10 * MINUTE_MS },
+    { id: "in-5-minutes", label: "Через 5 минут", at: now + 5 * MINUTE_MS },
+    { id: "in-10-minutes", label: "Через 10 минут", at: now + 10 * MINUTE_MS },
     {
       id: "in-30-minutes",
-      label: "In 30 minutes",
+      label: "Через 30 минут",
       at: now + 30 * MINUTE_MS,
     },
-    { id: "in-1-hour", label: "In 1 hour", at: now + HOUR_MS },
-    { id: "in-2-hours", label: "In 2 hours", at: now + 2 * HOUR_MS },
+    { id: "in-1-hour", label: "Через 1 час", at: now + HOUR_MS },
+    { id: "in-2-hours", label: "Через 2 часа", at: now + 2 * HOUR_MS },
     {
       id: "this-evening",
-      label: "This evening",
+      label: "Сегодня вечером",
       at: atLocalTime(now, 0, EVENING_HOUR, 0),
     },
     {
       id: "tomorrow-morning",
-      label: "Tomorrow morning",
+      label: "Завтра утром",
       at: atLocalTime(now, 1, MORNING_HOUR, 0),
     },
   ];
@@ -124,7 +124,7 @@ export function resolveScheduleOption(
     (candidate) => candidate.id === optionId,
   );
   return preset === undefined
-    ? { ok: false, message: "That option has passed. Choose another time." }
+    ? { ok: false, message: "Это время уже прошло. Выберите другое." }
     : { ok: true, at: preset.at };
 }
 
@@ -145,10 +145,10 @@ export function parseCustomScheduleTime(
   now: number,
 ): ScheduleTimeParse {
   const dateMatch = DATE_INPUT_PATTERN.exec(fields.date);
-  if (dateMatch === null) return { ok: false, message: "Choose a date." };
+  if (dateMatch === null) return { ok: false, message: "Выберите дату." };
 
   const timeMatch = TIME_INPUT_PATTERN.exec(fields.time);
-  if (timeMatch === null) return { ok: false, message: "Choose a time." };
+  if (timeMatch === null) return { ok: false, message: "Выберите время." };
 
   const year = Number.parseInt(dateMatch[1], 10);
   const month = Number.parseInt(dateMatch[2], 10);
@@ -164,13 +164,13 @@ export function parseCustomScheduleTime(
     scheduled.getHours() !== hour ||
     scheduled.getMinutes() !== minute
   ) {
-    return { ok: false, message: "Choose a real date and time." };
+    return { ok: false, message: "Укажите существующие дату и время." };
   }
 
   const at = scheduled.getTime();
-  if (at <= now) return { ok: false, message: "Choose a future time." };
+  if (at <= now) return { ok: false, message: "Выберите время в будущем." };
   if (at > now + MAX_SCHEDULE_AHEAD_MS) {
-    return { ok: false, message: "Pick a time within the next year." };
+    return { ok: false, message: "Выберите время в пределах следующего года." };
   }
   return { ok: true, at };
 }
@@ -181,9 +181,9 @@ export function formatScheduleTime(at: number, now: number): string {
     minute: "2-digit",
   });
   const days = calendarDaysBetween(now, at);
-  if (days === 0) return `today at ${time}`;
-  if (days === 1) return `tomorrow at ${time}`;
-  if (days === -1) return `yesterday at ${time}`;
+  if (days === 0) return `сегодня в ${time}`;
+  if (days === 1) return `завтра в ${time}`;
+  if (days === -1) return `вчера в ${time}`;
   const date = new Date(at).toLocaleDateString([], {
     month: "short",
     day: "numeric",
@@ -192,7 +192,7 @@ export function formatScheduleTime(at: number, now: number): string {
         ? undefined
         : "numeric",
   });
-  return `${date} at ${time}`;
+  return `${date} в ${time}`;
 }
 
 export function formatScheduleTimeZone(at: number): string {
@@ -203,8 +203,8 @@ export function formatScheduleTimeZone(at: number): string {
     .formatToParts(new Date(at))
     .find((part) => part.type === "timeZoneName")?.value;
   return timeZoneName === undefined || timeZoneName === timeZone
-    ? `Local time · ${timeZone}`
-    : `Local time · ${timeZone} (${timeZoneName})`;
+    ? `Местное время · ${timeZone}`
+    : `Местное время · ${timeZone} (${timeZoneName})`;
 }
 
 function calendarDaysBetween(now: number, at: number): number {

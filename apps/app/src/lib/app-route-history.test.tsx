@@ -150,7 +150,7 @@ async function clickAndExpectPath(label: string, path: string) {
 }
 
 async function expectSidebarButtonState(
-  label: "Go back" | "Go forward",
+  label: "Назад" | "Вперёд",
   disabled: boolean,
 ) {
   await waitFor(() => {
@@ -175,26 +175,26 @@ describe("useRouteStateHistoryNavigation", () => {
       </MemoryRouter>,
     );
 
-    await expectSidebarButtonState("Go back", true);
-    await expectSidebarButtonState("Go forward", true);
+    await expectSidebarButtonState("Назад", true);
+    await expectSidebarButtonState("Вперёд", true);
 
     await clickAndExpectPath("/skills", "/skills");
 
-    await expectSidebarButtonState("Go back", false);
-    await expectSidebarButtonState("Go forward", true);
+    await expectSidebarButtonState("Назад", false);
+    await expectSidebarButtonState("Вперёд", true);
 
     await clickAndExpectPath(TOOL_SKILL_DETAIL_ROUTE, TOOL_SKILL_DETAIL_ROUTE);
-    await clickAndExpectPath("Go back", "/skills");
+    await clickAndExpectPath("Назад", "/skills");
 
-    await expectSidebarButtonState("Go forward", false);
+    await expectSidebarButtonState("Вперёд", false);
 
     fireEvent.click(screen.getByRole("button", { name: "toggle-controls" }));
-    expect(screen.queryByRole("button", { name: "Go back" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Назад" })).toBeNull();
     await clickAndExpectPath("go-home", "/");
     fireEvent.click(screen.getByRole("button", { name: "toggle-controls" }));
 
-    await expectSidebarButtonState("Go back", false);
-    await clickAndExpectPath("Go back", "/skills");
+    await expectSidebarButtonState("Назад", false);
+    await clickAndExpectPath("Назад", "/skills");
   });
 
   it("redirects remounted automation edit routes without duplicate history entries", async () => {

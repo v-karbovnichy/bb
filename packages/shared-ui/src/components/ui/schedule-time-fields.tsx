@@ -51,7 +51,7 @@ export function ScheduleTimeFields({
   return (
     <>
       <div className="flex flex-col gap-2">
-        <Label htmlFor={whenId}>When</Label>
+        <Label htmlFor={whenId}>Когда</Label>
         <Select
           disabled={disabled}
           onValueChange={(value) => {
@@ -59,7 +59,7 @@ export function ScheduleTimeFields({
           }}
           value={optionId}
         >
-          <SelectTrigger aria-label="When to send" id={whenId}>
+          <SelectTrigger aria-label="Когда отправить" id={whenId}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -69,7 +69,7 @@ export function ScheduleTimeFields({
               </SelectItem>
             ))}
             <SelectItem value={CUSTOM_SCHEDULE_OPTION_ID}>
-              Custom date and time
+              Указать дату и время
             </SelectItem>
           </SelectContent>
         </Select>
@@ -78,7 +78,7 @@ export function ScheduleTimeFields({
       {optionId === CUSTOM_SCHEDULE_OPTION_ID ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <Label htmlFor={customDateId}>Date</Label>
+            <Label htmlFor={customDateId}>Дата</Label>
             <Input
               disabled={disabled}
               id={customDateId}
@@ -92,7 +92,7 @@ export function ScheduleTimeFields({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor={customTimeId}>Time</Label>
+            <Label htmlFor={customTimeId}>Время</Label>
             <Input
               disabled={disabled}
               id={customTimeId}
@@ -109,7 +109,7 @@ export function ScheduleTimeFields({
       {preview.ok ? (
         <div aria-live="polite" className="rounded-md bg-muted/50 px-3 py-2">
           <p className="font-medium">
-            Sends {formatScheduleTime(preview.at, now)}
+            Отправка: {formatScheduleTime(preview.at, now)}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             {formatScheduleTimeZone(preview.at)}

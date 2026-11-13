@@ -39,13 +39,13 @@ export function pluginInstallCountPresentation(
   if (badge === null) return undefined;
   if (badge.kind === "builtin") {
     return {
-      display: "Built in",
-      accessibleLabel: "Built in",
+      display: "Встроенный",
+      accessibleLabel: "Встроенный",
       tone: "builtin",
     };
   }
   if (badge.kind === "new") {
-    return { display: "New", accessibleLabel: "New", tone: "new" };
+    return { display: "Новый", accessibleLabel: "Новый", tone: "new" };
   }
   return countPresentation(badge.installs);
 }
@@ -53,7 +53,7 @@ export function pluginInstallCountPresentation(
 function countPresentation(installs: number): PluginInstallCountPresentation {
   return {
     display: PLUGIN_INSTALL_COUNT_FORMATTER.format(installs),
-    accessibleLabel: `${installs.toLocaleString()} ${installs === 1 ? "install" : "installs"}`,
+    accessibleLabel: `Установок: ${installs.toLocaleString()}`,
     tone: "count",
   };
 }
@@ -328,8 +328,7 @@ export function FullTrustWarning() {
     >
       <Icon name="Lock" className="mt-0.5 size-3 shrink-0" />
       <span>
-        Plugins run as full-trust code with access to your computer. Only
-        install from sources you trust.
+        Плагины выполняются с полным доступом к вашему компьютеру. Устанавливайте их только из доверенных источников.
       </span>
     </p>
   );
@@ -349,8 +348,8 @@ export function RollbackNote({
     >
       <Icon name="RotateCcw" className="mt-0.5 size-3.5 shrink-0" />
       <span>
-        Your plugin data is snapshotted first — if {toVersion} fails to start,
-        bb restores {fromVersion} and its data automatically.
+        Сначала создаётся снимок данных плагина. Если версия {toVersion} не
+        запустится, bb автоматически восстановит версию {fromVersion} и её данные.
       </span>
     </div>
   );

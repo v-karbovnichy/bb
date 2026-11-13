@@ -226,39 +226,39 @@ interface ExperimentsSettingsSectionProps {
 }
 
 const THEME_PREFERENCE_OPTIONS: ReadonlyArray<ThemePreferenceOption> = [
-  { label: "System", value: "system" },
-  { label: "Light", value: "light" },
-  { label: "Dark", value: "dark" },
+  { label: "Системная", value: "system" },
+  { label: "Светлая", value: "light" },
+  { label: "Тёмная", value: "dark" },
 ];
 
 const THEME_PREFERENCE_LABELS: Record<ThemePreference, string> = {
-  dark: "Dark",
-  light: "Light",
-  system: "System",
+  dark: "Тёмная",
+  light: "Светлая",
+  system: "Системная",
 };
 
 const FAVICON_COLOR_OPTIONS: ReadonlyArray<FaviconColorOption> = [
-  { label: "Default", value: "default" },
-  { label: "Red", value: "red" },
-  { label: "Orange", value: "orange" },
-  { label: "Yellow", value: "yellow" },
-  { label: "Green", value: "green" },
-  { label: "Teal", value: "teal" },
-  { label: "Blue", value: "blue" },
-  { label: "Purple", value: "purple" },
-  { label: "Pink", value: "pink" },
+  { label: "По умолчанию", value: "default" },
+  { label: "Красный", value: "red" },
+  { label: "Оранжевый", value: "orange" },
+  { label: "Жёлтый", value: "yellow" },
+  { label: "Зелёный", value: "green" },
+  { label: "Бирюзовый", value: "teal" },
+  { label: "Синий", value: "blue" },
+  { label: "Фиолетовый", value: "purple" },
+  { label: "Розовый", value: "pink" },
 ];
 
 const FAVICON_COLOR_LABELS: Record<FaviconColorPreference, string> = {
-  blue: "Blue",
-  default: "Default",
-  green: "Green",
-  orange: "Orange",
-  pink: "Pink",
-  purple: "Purple",
-  red: "Red",
-  teal: "Teal",
-  yellow: "Yellow",
+  blue: "Синий",
+  default: "По умолчанию",
+  green: "Зелёный",
+  orange: "Оранжевый",
+  pink: "Розовый",
+  purple: "Фиолетовый",
+  red: "Красный",
+  teal: "Бирюзовый",
+  yellow: "Жёлтый",
 };
 
 const SETTINGS_DROPDOWN_TRIGGER_CLASS =
@@ -269,7 +269,7 @@ const SETTINGS_DROPDOWN_CONTENT_CLASS =
 const CREATE_CUSTOM_PALETTE_PROMPT =
   "Create a custom bb palette. First run `bb theme dir` to find the custom theme directory. Ask me for the palette name and visual direction, then create `<theme-dir>/<name>/theme.css` with light and dark theme variables compatible with bb's theme tokens.";
 const PALETTE_SETTING_DESCRIPTION =
-  "Palettes change bb's colors, including syntax colors in diffs and file previews. Choose a built-in palette or create one from a prompt.";
+  "Палитры меняют цвета bb, включая подсветку синтаксиса в изменениях и предпросмотре файлов. Выберите встроенную палитру или создайте новую по запросу.";
 
 interface PaletteMenuItemProps {
   active: boolean;
@@ -327,8 +327,8 @@ function FaviconColorSettingsControl({
 }: FaviconColorSettingsControlProps) {
   return (
     <SettingsWithControl
-      label="Favicon color"
-      description="Tint browser tabs to tell instances apart."
+      label="Цвет значка вкладки"
+      description="Окрасьте вкладки браузера, чтобы различать экземпляры приложения."
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -336,7 +336,7 @@ function FaviconColorSettingsControl({
             variant="outline"
             size="sm"
             className={SETTINGS_DROPDOWN_TRIGGER_CLASS}
-            aria-label="Favicon color"
+            aria-label="Цвет значка вкладки"
             disabled={disabled}
           >
             <span className="flex min-w-0 items-center gap-2">
@@ -380,14 +380,14 @@ function FaviconColorSettingsControl({
 
 const DIRECTORY_TARGET_PREFERENCE: LocalOpenTargetPreferenceDefinition = {
   capability: "openDirectory",
-  emptyDescription: "No local app can open directories.",
-  label: "Directory default",
+  emptyDescription: "Нет локальных приложений для открытия папок.",
+  label: "Приложение для папок по умолчанию",
 };
 
 const FILE_TARGET_PREFERENCE: LocalOpenTargetPreferenceDefinition = {
   capability: "openFile",
-  emptyDescription: "No local app can open files.",
-  label: "File default",
+  emptyDescription: "Нет локальных приложений для открытия файлов.",
+  label: "Приложение для файлов по умолчанию",
 };
 
 function LocalOpenTargetPreferenceControl({
@@ -422,7 +422,7 @@ function LocalOpenTargetPreferenceControl({
     resolvedTarget?.label ??
     (preferredTargetId
       ? getWorkspaceOpenTargetFallbackLabel(preferredTargetId)
-      : "Unavailable");
+      : "Недоступно");
 
   return (
     <SettingsWithControl label={definition.label}>
@@ -510,7 +510,7 @@ export function LocalOpenTargetSettingsSection({
     } catch (error) {
       showMutationErrorToast({
         error,
-        fallbackMessage: "Failed to connect to bb on this device",
+        fallbackMessage: "Не удалось подключиться к bb на этом устройстве",
       });
     } finally {
       setAccessRequestPending(false);
@@ -521,24 +521,24 @@ export function LocalOpenTargetSettingsSection({
     const accessDenied = accessState === "denied";
     const accessAvailable = accessState === "available";
     const descriptionText = accessDenied
-      ? "Your browser blocked access to bb on this device. Allow local network access for this site in browser settings, then reload bb."
+      ? "Браузер заблокировал доступ к bb на этом устройстве. Разрешите сайту доступ к локальной сети в настройках браузера и перезагрузите bb."
       : accessAvailable
-        ? "bb couldn’t connect to its local editor helper. Make sure the bb desktop app or CLI is running on this device, then retry. If it is already running, a remote browser origin may need to be configured."
-        : "Connect this browser to bb on this device so it can discover installed editors. bb only contacts the local helper after you choose Enable; your browser may ask for local network access.";
+        ? "bb не удалось подключиться к локальному помощнику редактора. Убедитесь, что приложение bb или CLI запущены на этом устройстве, затем повторите попытку. Если они уже запущены, возможно, нужно настроить удалённый адрес браузера."
+        : "Подключите браузер к bb на этом устройстве, чтобы найти установленные редакторы. bb свяжется с локальным помощником только после нажатия «Включить». Браузер может запросить доступ к локальной сети.";
     const buttonLabel = accessRequestPending
       ? accessAvailable
-        ? "Retrying…"
-        : "Enabling…"
+        ? "Повторная попытка…"
+        : "Включение…"
       : accessDenied
-        ? "Blocked"
+        ? "Заблокировано"
         : accessAvailable
-          ? "Retry"
-          : "Enable";
+          ? "Повторить"
+          : "Включить";
 
     return (
-      <SettingsSection title="File preferences">
+      <SettingsSection title="Настройки файлов">
         <SettingsWithControl
-          label="Local editor integration"
+          label="Интеграция с локальным редактором"
           description={
             <>
               {descriptionText}{" "}
@@ -552,7 +552,7 @@ export function LocalOpenTargetSettingsSection({
                   openUrlInExternalBrowser(LOCAL_EDITOR_INTEGRATION_DOCS_URL);
                 }}
               >
-                Setup guide
+                Руководство по настройке
                 <Icon
                   name="ExternalLink"
                   className="size-3 shrink-0"
@@ -577,7 +577,7 @@ export function LocalOpenTargetSettingsSection({
   }
 
   return (
-    <SettingsSection title="File preferences">
+    <SettingsSection title="Настройки файлов">
       <div className="space-y-5">
         <LocalOpenTargetPreferenceControl
           definition={DIRECTORY_TARGET_PREFERENCE}
@@ -596,28 +596,28 @@ export function LocalOpenTargetSettingsSection({
   );
 }
 
-const IN_APP_BROWSER_LINK_SETTING_LABEL = "Open links in the in-app browser";
-const REWRITE_LOCALHOST_LINKS_SETTING_LABEL = "Rewrite localhost links";
+const IN_APP_BROWSER_LINK_SETTING_LABEL = "Открывать ссылки во встроенном браузере";
+const REWRITE_LOCALHOST_LINKS_SETTING_LABEL = "Преобразовывать ссылки localhost";
 const NAVIGATE_TO_THREAD_AFTER_CREATE_SETTING_LABEL =
-  "Navigate to threads on creation";
-const DIAGNOSTIC_EVENTS_SETTING_LABEL = "Show diagnostic events";
-const FOLLOW_UP_BEHAVIOR_SETTING_LABEL = "Default thread followup behavior";
+  "Переходить к новым чатам";
+const DIAGNOSTIC_EVENTS_SETTING_LABEL = "Показывать диагностические события";
+const FOLLOW_UP_BEHAVIOR_SETTING_LABEL = "Действие Enter в работающем чате";
 const FOLLOW_UP_BEHAVIOR_OPTIONS = [
   {
     steerOnEnter: false,
-    label: "Queue",
+    label: "В очередь",
     description:
-      "Enter adds a follow-up. It runs when the agent stops. Command+Enter (Ctrl+Enter on Windows and Linux) steers the run.",
+      "Enter добавляет следующее сообщение в очередь. Оно отправится, когда агент остановится. Command+Enter (Ctrl+Enter в Windows и Linux) направляет текущий запуск.",
   },
   {
     steerOnEnter: true,
-    label: "Steer",
+    label: "Направить",
     description:
-      "Enter steers the run now. Command+Enter (Ctrl+Enter on Windows and Linux) adds a follow-up for later.",
+      "Enter направляет текущий запуск. Command+Enter (Ctrl+Enter в Windows и Linux) добавляет следующее сообщение в очередь.",
   },
 ] as const;
-const STREAMER_MODE_SETTING_LABEL = "Streamer mode";
-const MANAGED_BRANCH_PREFIX_SETTING_LABEL = "New branch prefix";
+const STREAMER_MODE_SETTING_LABEL = "Режим трансляции";
+const MANAGED_BRANCH_PREFIX_SETTING_LABEL = "Префикс новой ветки";
 const MANAGED_BRANCH_PREFIX_EXAMPLE_SLUG = "fix-login-flow-thr_ab12cd34ef";
 
 interface ManagedBranchPrefixSettingProps {
@@ -654,10 +654,10 @@ function ManagedBranchPrefixSetting({
       label={MANAGED_BRANCH_PREFIX_SETTING_LABEL}
       description={
         valid ? (
-          `bb puts this in front of every branch it creates for a worktree, such as ${draft}${MANAGED_BRANCH_PREFIX_EXAMPLE_SLUG}. Leave it empty for no prefix.`
+          `bb добавляет этот префикс к каждой ветке, создаваемой для рабочей копии, например ${draft}${MANAGED_BRANCH_PREFIX_EXAMPLE_SLUG}. Оставьте поле пустым, чтобы не использовать префикс.`
         ) : (
           <span className="text-destructive" role="alert">
-            This prefix cannot start a valid git branch name.
+            С этим префиксом нельзя создать допустимое имя ветки Git.
           </span>
         )
       }
@@ -668,7 +668,7 @@ function ManagedBranchPrefixSetting({
         aria-label={MANAGED_BRANCH_PREFIX_SETTING_LABEL}
         aria-invalid={!valid}
         disabled={disabled}
-        placeholder="No prefix"
+        placeholder="Без префикса"
         className={cn(
           "h-8 font-mono text-xs",
           !valid && "border-destructive focus-visible:ring-destructive",
@@ -715,16 +715,16 @@ export function AppearanceSettingsSection({
   };
   return (
     <div className="space-y-6">
-      <SettingsSection title="Appearance">
+      <SettingsSection title="Внешний вид">
         <div className="space-y-5">
-          <SettingsWithControl label="Theme">
+          <SettingsWithControl label="Тема">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
                   className={SETTINGS_DROPDOWN_TRIGGER_CLASS}
-                  aria-label="Theme"
+                  aria-label="Тема"
                 >
                   {THEME_PREFERENCE_LABELS[themePreference]}
                   <Icon
@@ -758,7 +758,7 @@ export function AppearanceSettingsSection({
           </SettingsWithControl>
 
           <SettingsWithControl
-            label="Palette"
+            label="Палитра"
             description={PALETTE_SETTING_DESCRIPTION}
           >
             <DropdownMenu
@@ -780,7 +780,7 @@ export function AppearanceSettingsSection({
                   variant="outline"
                   size="sm"
                   className={SETTINGS_DROPDOWN_TRIGGER_CLASS}
-                  aria-label="Palette"
+                  aria-label="Палитра"
                   disabled={appearanceDisabled}
                 >
                   <span className="min-w-0 truncate">
@@ -838,7 +838,7 @@ export function AppearanceSettingsSection({
                     name="Plus"
                     className={COARSE_POINTER_ICON_SIZE_CLASS}
                   />
-                  Create
+                  Создать
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -852,7 +852,7 @@ export function AppearanceSettingsSection({
           <SplitDimmingSetting />
         </div>
       </SettingsSection>
-      <SettingsSection title="Interface">
+      <SettingsSection title="Интерфейс">
         <div className="space-y-5">
           <SidebarNavigationProviderSetting />
           <SidebarThreadListSetting />
@@ -892,7 +892,7 @@ export function GeneralSettingsSection({
   );
   return (
     <>
-      <SettingsSection title="Threads & editing">
+      <SettingsSection title="Чаты и редактирование">
         <div className="space-y-5">
           <SettingsWithControl
             label={NAVIGATE_TO_THREAD_AFTER_CREATE_SETTING_LABEL}
@@ -906,7 +906,7 @@ export function GeneralSettingsSection({
 
           <SettingsWithControl
             label={FOLLOW_UP_BEHAVIOR_SETTING_LABEL}
-            description="What Enter does in the prompt box while the thread runs."
+            description="Что делает Enter в поле ввода, пока чат работает."
           >
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -917,7 +917,7 @@ export function GeneralSettingsSection({
                   disabled={generalSettingsDisabled}
                   aria-label={FOLLOW_UP_BEHAVIOR_SETTING_LABEL}
                 >
-                  {steerActiveThreadOnEnter ? "Steer" : "Queue"}
+                  {steerActiveThreadOnEnter ? "Направить" : "В очередь"}
                   <Icon
                     name="ChevronDown"
                     className="size-3.5 text-muted-foreground"
@@ -958,44 +958,44 @@ export function GeneralSettingsSection({
           </SettingsWithControl>
 
           <SettingsWithControl
-            label="Thread archive confirmation"
-            description="Ask before archiving a thread with unarchived child threads."
+            label="Подтверждать архивацию чата"
+            description="Запрашивать подтверждение перед архивацией чата с неархивированными дочерними чатами."
           >
             <Switch
               checked={confirmThreadArchive}
               disabled={generalSettingsDisabled}
               onCheckedChange={onConfirmThreadArchiveChange}
-              aria-label="Thread archive confirmation"
+              aria-label="Подтверждать архивацию чата"
             />
           </SettingsWithControl>
 
           <SettingsWithControl
-            label="Show messages from before a context clear"
-            description="Earlier messages stay in the thread for you to read. The agent doesn't see them."
+            label="Показывать сообщения до очистки контекста"
+            description="Предыдущие сообщения остаются в чате и доступны для чтения. Агент их не видит."
           >
             <Switch
               checked={keepHistoryAfterContextClear}
               disabled={generalSettingsDisabled}
               onCheckedChange={onKeepHistoryAfterContextClearChange}
-              aria-label="Show messages from before a context clear"
+              aria-label="Показывать сообщения до очистки контекста"
             />
           </SettingsWithControl>
 
           <SettingsWithControl
-            label="Summarize shell commands"
-            description="Show short summaries for commands that read, list, or search files. Turn off to show command text and let you expand each command to view its output."
+            label="Кратко показывать команды оболочки"
+            description="Показывать краткие описания команд чтения, списка и поиска файлов. Отключите, чтобы видеть текст команды и раскрывать её вывод."
           >
             <Switch
               checked={summarizeShellCommands}
               disabled={generalSettingsDisabled}
               onCheckedChange={onSummarizeShellCommandsChange}
-              aria-label="Summarize shell commands"
+              aria-label="Кратко показывать команды оболочки"
             />
           </SettingsWithControl>
 
           <SettingsWithControl
-            label="Setup guide"
-            description="Walk through connecting an agent, adding projects, plugins, and devices again."
+            label="Руководство по настройке"
+            description="Повторно пройти настройку агента, проектов, плагинов и устройств."
           >
             <Button
               type="button"
@@ -1004,17 +1004,17 @@ export function GeneralSettingsSection({
               disabled={generalSettingsDisabled}
               onClick={onReplaySetupGuide}
             >
-              Show setup guide
+              Показать руководство по настройке
             </Button>
           </SettingsWithControl>
         </div>
       </SettingsSection>
-      <SettingsSection title="Links">
+      <SettingsSection title="Ссылки">
         <div className="space-y-5">
           {desktopBrowserAvailable ? (
             <SettingsWithControl
               label={IN_APP_BROWSER_LINK_SETTING_LABEL}
-              description="Open web links inside bb."
+              description="Открывать веб-ссылки внутри bb."
             >
               <Switch
                 checked={openLinksInAppBrowser}
@@ -1043,16 +1043,16 @@ export function GeneralSettingsSection({
           <ApplicationLinkApprovalsSettings />
         </div>
       </SettingsSection>
-      <SettingsSection title="Terminals">
+      <SettingsSection title="Терминалы">
         <SettingsWithControl
-          label="Copy on select"
-          description="Automatically copy selected terminal text and show a notification. Does not affect text elsewhere in the app. Linux middle-click paste uses the primary selection independently."
+          label="Копировать при выделении"
+          description="Автоматически копировать выделенный текст терминала и показывать уведомление. На текст в других частях приложения это не влияет. В Linux вставка средней кнопкой мыши отдельно использует основное выделение."
         >
           <Switch
             checked={terminalCopyOnSelect}
             disabled={generalSettingsDisabled}
             onCheckedChange={onTerminalCopyOnSelectChange}
-            aria-label="Copy on select"
+            aria-label="Копировать при выделении"
           />
         </SettingsWithControl>
       </SettingsSection>
@@ -1079,11 +1079,11 @@ export function PrivacySettingsSection({
   onTelemetryEnabledChange,
 }: PrivacySettingsSectionProps) {
   return (
-    <SettingsSection title="Privacy & diagnostics">
+    <SettingsSection title="Конфиденциальность и диагностика">
       <div className="space-y-5">
         <SettingsWithControl
           label={STREAMER_MODE_SETTING_LABEL}
-          description="Hide the custom models from config.json in every model picker, so a screen share does not show them."
+          description="Скрывать пользовательские модели из config.json во всех списках моделей, чтобы они не были видны при демонстрации экрана."
         >
           <Switch
             checked={streamerMode}
@@ -1094,20 +1094,20 @@ export function PrivacySettingsSection({
         </SettingsWithControl>
 
         <SettingsWithControl
-          label="Share anonymous usage data"
-          description="Send anonymous usage data, such as app starts, setup progress and feature use, to help improve bb. Turning this off takes effect immediately for this server."
+          label="Отправлять анонимные данные об использовании"
+          description="Отправлять анонимные данные о запуске приложения, ходе настройки и использовании функций для улучшения bb. Отключение вступает в силу на этом сервере сразу."
         >
           <Switch
             checked={telemetryEnabled}
             disabled={disabled}
             onCheckedChange={onTelemetryEnabledChange}
-            aria-label="Share anonymous usage data"
+            aria-label="Отправлять анонимные данные об использовании"
           />
         </SettingsWithControl>
 
         <SettingsWithControl
           label={DIAGNOSTIC_EVENTS_SETTING_LABEL}
-          description="Show provider environment resolution and unhandled provider events for troubleshooting."
+          description="Показывать определение окружения провайдера и необработанные события провайдера для диагностики."
         >
           <Switch
             checked={enabled}
@@ -1126,64 +1126,64 @@ const EXPERIMENT_DEFINITIONS: Record<
   { label: string; description: string }
 > = {
   agentCpuPriority: {
-    label: "Lower agent CPU priority",
+    label: "Понизить приоритет CPU для агентов",
     description:
-      "Keep bb responsive when agents saturate the CPU. Agent processes, setup and teardown scripts, and the builds and tests they launch run at a lower CPU priority; on macOS the bb server and machine daemon also get app-level scheduling. Terminals keep normal priority. Turning it on or off takes effect after restarting bb, including restarts for updates.",
+      "Сохраняет отзывчивость bb, когда агенты загружают CPU. Процессы агентов, сценарии подготовки и завершения, а также запущенные ими сборки и тесты получают пониженный приоритет CPU; в macOS для сервера bb и демона машины также применяется планирование на уровне приложения. Терминалы сохраняют обычный приоритет. Изменение вступает в силу после перезапуска bb, в том числе при обновлении.",
   },
   compactExpiredCache: {
-    label: "Compact before resuming expired sessions",
+    label: "Сжимать контекст перед продолжением сеансов с истёкшим кешем",
     description:
-      "When an idle thread holds at least 100k tokens and its prompt cache has expired, the composer offers to compact before your next send. Works with supported providers (e.g. Claude Code, Pi).",
+      "Если в неактивном чате накопилось не меньше 100 тысяч токенов и срок действия кеша запроса истёк, перед отправкой следующего сообщения появится предложение сжать контекст. Работает с поддерживаемыми провайдерами, например Claude Code и Pi.",
   },
   dismissReadNotifications: {
-    label: "Clear notifications once a thread is read",
+    label: "Убирать уведомления после прочтения чата",
     description:
-      "When you read a thread on any device, remove its notifications from your phones and tablets and from open bb windows and tabs. Phones need an app version that supports it.",
+      "После прочтения чата на любом устройстве убирать его уведомления с телефонов и планшетов, а также из открытых окон и вкладок bb. На телефонах нужна версия приложения с поддержкой этой функции.",
   },
   performanceDiagnostics: {
-    label: "Server performance diagnostics",
+    label: "Диагностика производительности сервера",
     description:
-      "Collect CPU profiles and detailed performance logs while the server was launched with --perf-diagnostics. Turning this off stops collection; saved profiles remain.",
+      "Собирать профили CPU и подробные журналы производительности, когда сервер запущен с --perf-diagnostics. При выключении сбор прекращается; сохранённые профили остаются.",
   },
   pluginUpdates: {
-    label: "Plugin updates",
+    label: "Обновления плагинов",
     description:
-      "List plugins with updates on the Updates page, update them one by one or all at once, and count them in the sidebar updates badge.",
+      "Показывать плагины с обновлениями на странице «Обновления», обновлять их по отдельности или все сразу и учитывать их в счётчике обновлений боковой панели.",
   },
   resumeThreadsAfterRestart: {
-    label: "Resume interrupted threads after a restart",
+    label: "Продолжать прерванные чаты после перезапуска",
     description:
-      "When an update, crash or restart cuts off a running thread or stops a background command a thread is waiting on, bb resumes the thread a few seconds after it comes back and tells the agent what was cut off. Messages you queued meanwhile send after it.",
+      "Если обновление, сбой или перезапуск прерывает работающий чат либо фоновую команду, которую он ожидает, bb продолжит чат через несколько секунд после запуска и сообщит агенту, что было прервано. Сообщения, добавленные за это время в очередь, отправятся после этого.",
   },
   serverMove: {
-    label: "Server move",
+    label: "Перенос сервера",
     description:
-      "Move the bb server to another machine from Settings → Machines, and export or import server data with bb server.",
+      "Перенесите сервер bb на другую машину через «Настройки» → «Машины» или экспортируйте и импортируйте данные сервера командой bb server.",
   },
   skipFocusedThreadNotifications: {
-    label: "Skip notifications for the thread you're viewing",
+    label: "Не уведомлять об открытом чате",
     description:
-      "Don't show a system notification for a thread that is open in a visible, focused bb window or tab. Other threads, and the same thread in a window you're not using, still notify.",
+      "Не показывать системное уведомление для чата, открытого в видимом активном окне или вкладке bb. Уведомления для других чатов и для этого же чата в неактивном окне сохраняются.",
   },
   threadContextCard: {
-    label: "Thread context card",
+    label: "Карточка контекста чата",
     description:
-      "Show a thread's changes, pull request, and parent and child threads in a card at the upper-right of each thread pane instead of above the composer. A header button opens or pins it; wide panes keep it beside the transcript.",
+      "Показывать изменения чата, pull request, а также родительские и дочерние чаты в карточке в правом верхнем углу панели вместо области над полем ввода. Кнопка в заголовке открывает или закрепляет карточку; в широких панелях она остаётся рядом с перепиской.",
   },
   threadRowMetadata: {
-    label: "Thread row metadata",
+    label: "Метаданные в строках чатов",
     description:
-      "Add Metadata to the built-in thread list's Organize → Rows menu. When it is checked, plugins can show details such as a thread's pull request on a second line under its title.",
+      "Добавить пункт «Метаданные» в меню «Упорядочить» → «Строки» встроенного списка чатов. Когда он включён, плагины могут показывать детали, например pull request чата, второй строкой под названием.",
   },
   updateWhenIdle: {
-    label: "Update when idle",
+    label: "Обновлять при бездействии",
     description:
-      "Adds a Restart and update bb automatically switch to the Updates page. While it is on, bb checks for updates every hour and restarts into a new version once no thread is running, waiting again if a thread starts before it restarts. Skip this version keeps a version from installing until a newer one appears. bb updates app apply --when-idle waits for threads once from the CLI.",
+      "Добавляет на страницу «Обновления» переключатель автоматического перезапуска и обновления bb. Когда он включён, bb проверяет обновления каждый час и перезапускается с новой версией, когда ни один чат не работает. Если чат запустится до перезапуска, bb снова дождётся его завершения. «Пропустить эту версию» откладывает установку до появления новой версии. Команда bb updates app apply --when-idle однократно ожидает завершения чатов из CLI.",
   },
   walCheckpointWorker: {
-    label: "Background database checkpoints",
+    label: "Фоновая запись изменений базы данных",
     description:
-      "Copy recent writes into bb's database files on a background thread instead of during a save, so heavy writing doesn't pause the server. Applies immediately.",
+      "Переносить последние записи в файлы базы данных bb в фоновом потоке вместо записи при сохранении, чтобы интенсивная запись не приостанавливала сервер. Применяется сразу.",
   },
 };
 export function visibleExperimentKeys(
@@ -1196,7 +1196,7 @@ export function visibleExperimentKeys(
   );
 }
 
-const EARLY_ADOPTER_LABEL = "Early adopter";
+const EARLY_ADOPTER_LABEL = "Ранний доступ";
 
 export function ExperimentsSettingsSection({
   performanceDiagnosticsAvailable,
@@ -1209,8 +1209,8 @@ export function ExperimentsSettingsSection({
   return (
     <>
       <SettingsSection
-        title="Experiments"
-        description="Early features that are off by default. Opt in to try them."
+        title="Эксперименты"
+        description="Новые функции, выключенные по умолчанию. Включите их, чтобы попробовать."
         banner={
           <section
             data-settings-anchor={EARLY_ADOPTER_LABEL}
@@ -1229,9 +1229,10 @@ export function ExperimentsSettingsSection({
                 Become an early adopter
               </h3>
               <p className="mt-0.5 text-xs leading-snug text-subtle-foreground">
-                Get new experiments turned on by default sooner and help us try
-                out features before they reach everyone. Turn this off anytime;
-                experiments you switch yourself keep your choice.
+                Получайте новые эксперименты включёнными по умолчанию раньше
+                других и помогайте проверять функции до их общего выпуска.
+                Эту настройку можно отключить в любой момент; выбор для
+                экспериментов, которые вы переключили вручную, сохранится.
               </p>
             </div>
             <Switch

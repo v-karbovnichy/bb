@@ -411,7 +411,7 @@ describe("ThreadTableOfContents", () => {
     );
     openTocPanel();
 
-    expect(await screen.findByText("Your messages")).not.toBeNull();
+    expect(await screen.findByText("Ваши сообщения")).not.toBeNull();
     expect(screen.queryByText("Old message 1")).toBeNull();
     expect(
       screen.getByText("Loaded after client-side navigation 10"),
@@ -451,7 +451,7 @@ describe("ThreadTableOfContents", () => {
     openTocPanel();
     expect(lastOutlineOptions("assistant")).toEqual({ enabled: false });
 
-    fireEvent.click(screen.getByText("Agent messages"));
+    fireEvent.click(screen.getByText("Сообщения агента"));
     expect(lastOutlineOptions("assistant")).toEqual({ enabled: true });
     expect(screen.getByText("Agent answer")).not.toBeNull();
   });
@@ -512,7 +512,7 @@ describe("ThreadTableOfContents", () => {
     try {
       const view = render(<TocHost timelineRows={rows} />);
       openTocPanel();
-      fireEvent.click(screen.getByText("Agent messages"));
+      fireEvent.click(screen.getByText("Сообщения агента"));
       await waitFor(() => {
         expect(scrollTo).toHaveBeenCalled();
       });
@@ -568,7 +568,7 @@ describe("ThreadTableOfContents", () => {
     ];
     const view = render(<TocHost hostWidth={1_200} timelineRows={rows} />);
     const rail = screen.getByRole("button", {
-      name: "Thread table of contents",
+      name: "Содержание чата",
     });
     const wrapper = rail.parentElement!;
     expect(wrapper.hasAttribute("inert")).toBe(false);
@@ -591,7 +591,7 @@ describe("ThreadTableOfContents", () => {
   it("shows after timeline rows arrive following an empty initial render", async () => {
     const view = render(<TocHost timelineRows={[]} />);
 
-    expect(screen.queryByText("Your messages")).toBeNull();
+    expect(screen.queryByText("Ваши сообщения")).toBeNull();
 
     view.rerender(
       <TocHost
@@ -604,7 +604,7 @@ describe("ThreadTableOfContents", () => {
     );
     openTocPanel();
 
-    expect(await screen.findByText("Your messages")).not.toBeNull();
+    expect(await screen.findByText("Ваши сообщения")).not.toBeNull();
     expect(
       screen.getByText("Loaded after client-side navigation 1"),
     ).not.toBeNull();
@@ -617,7 +617,7 @@ describe("ThreadTableOfContents", () => {
       />,
     );
 
-    expect(screen.queryByText("Your messages")).toBeNull();
+    expect(screen.queryByText("Ваши сообщения")).toBeNull();
 
     view.rerender(
       <TocHost
@@ -630,7 +630,7 @@ describe("ThreadTableOfContents", () => {
     );
     openTocPanel();
 
-    expect(screen.queryByText("Your messages")).not.toBeNull();
+    expect(screen.queryByText("Ваши сообщения")).not.toBeNull();
   });
 
   it("measures fresh geometry only after scrolling settles", () => {
@@ -704,10 +704,10 @@ describe("ThreadTableOfContents", () => {
     );
 
     const trigger = screen.getByRole("button", {
-      name: "Thread table of contents",
+      name: "Содержание чата",
     });
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
-    expect(screen.queryByText("Your messages")).toBeNull();
+    expect(screen.queryByText("Ваши сообщения")).toBeNull();
 
     const toc = document.querySelector<HTMLElement>("[data-thread-toc]");
     if (!toc) throw new Error("Expected the thread table of contents.");
@@ -721,7 +721,7 @@ describe("ThreadTableOfContents", () => {
     act(() => trigger.focus());
     fireEvent.click(trigger);
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
-    expect(screen.getByText("Your messages")).not.toBeNull();
+    expect(screen.getByText("Ваши сообщения")).not.toBeNull();
 
     const firstMessage = screen.getByRole("button", {
       name: "Loaded after client-side navigation 1",
@@ -730,7 +730,7 @@ describe("ThreadTableOfContents", () => {
     fireEvent.mouseLeave(toc);
 
     expect(document.activeElement).toBe(firstMessage);
-    expect(screen.getByText("Your messages")).not.toBeNull();
+    expect(screen.getByText("Ваши сообщения")).not.toBeNull();
   });
 
   it("tracks overflow when an initially closed panel opens and reopens", () => {
@@ -742,7 +742,7 @@ describe("ThreadTableOfContents", () => {
       />,
     );
     const trigger = screen.getByRole("button", {
-      name: "Thread table of contents",
+      name: "Содержание чата",
     });
     const toc = document.querySelector<HTMLElement>("[data-thread-toc]");
     if (!toc) throw new Error("Expected the thread table of contents.");
@@ -824,8 +824,8 @@ describe("ThreadTableOfContents", () => {
 
     expect(await screen.findByText("First question")).not.toBeNull();
     expect(screen.getByText("Second question")).not.toBeNull();
-    expect(screen.getByText("Image attachment")).not.toBeNull();
-    expect(screen.getByText("Agent messages")).not.toBeNull();
+    expect(screen.getByText("Изображение во вложении")).not.toBeNull();
+    expect(screen.getByText("Сообщения агента")).not.toBeNull();
   });
 
   it("merges live timeline messages into the cached full outline", async () => {
@@ -1350,7 +1350,7 @@ describe("ThreadTableOfContents timeline item cache", () => {
         normalizer: (text) => text,
       }),
     ).not.toBeNull();
-    expect(screen.getByText("Image attachment")).not.toBeNull();
+    expect(screen.getByText("Изображение во вложении")).not.toBeNull();
   });
 
   it("re-measures the active item 120 ms after an update that only changes work rows", () => {

@@ -225,7 +225,7 @@ describe("provider usage footer disclosure", () => {
     expect(item).toMatchObject({
       kind: "disclosure",
       id: "usage",
-      label: "Provider usage",
+      label: "Использование провайдеров",
       icon: "ChartColumn",
     });
     if (item?.kind !== "disclosure") throw new Error("missing disclosure");
@@ -257,11 +257,11 @@ describe("provider usage footer disclosure", () => {
       },
     );
     expect(
-      slot.getByRole("button", { name: "Usage machine: Account Pooler" }),
+      slot.getByRole("button", { name: "Машина для данных об использовании: Account Pooler" }),
     ).toBeTruthy();
     expect(
       slot
-        .getByRole("tab", { name: "All accounts" })
+        .getByRole("tab", { name: "Все аккаунты" })
         .getAttribute("aria-selected"),
     ).toBe("true");
     expect(
@@ -285,12 +285,12 @@ describe("provider usage footer disclosure", () => {
       ),
     );
     fireEvent.pointerDown(
-      slot.getByRole("button", { name: "Usage machine: Account Pooler" }),
+      slot.getByRole("button", { name: "Машина для данных об использовании: Account Pooler" }),
       { button: 0 },
     );
     fireEvent.click(slot.getByRole("menuitemradio", { name: "M5" }));
     const machinePicker = slot.getByRole("button", {
-      name: "Usage machine: M5",
+      name: "Машина для данных об использовании: M5",
     });
     expect(
       slot.getByRole("heading", { name: "codex@example.com" }),
@@ -302,14 +302,14 @@ describe("provider usage footer disclosure", () => {
 
     fireEvent.pointerDown(machinePicker, { button: 0 });
     fireEvent.click(slot.getByRole("menuitemradio", { name: "M4" }));
-    const allTab = slot.getByRole("tab", { name: "All accounts" });
+    const allTab = slot.getByRole("tab", { name: "Все аккаунты" });
     const claudeTab = slot.getByRole("tab", { name: "Claude Code" });
     const codexTab = slot.getByRole("tab", { name: "Codex" });
     fireEvent.keyDown(allTab, { key: "ArrowRight" });
     expect(claudeTab.getAttribute("aria-selected")).toBe("true");
     expect(
       slot
-        .getByRole("button", { name: "Usage machine: M4" })
+        .getByRole("button", { name: "Машина для данных об использовании: M4" })
         .closest('[data-provider-usage-header=""]'),
     ).toBe(claudeTab.closest('[data-provider-usage-header=""]'));
     expect(
@@ -332,21 +332,21 @@ describe("provider usage footer disclosure", () => {
     expect(claudeTab.getAttribute("aria-selected")).toBe("true");
 
     fireEvent.pointerDown(
-      slot.getByRole("button", { name: "Usage machine: M4" }),
+      slot.getByRole("button", { name: "Машина для данных об использовании: M4" }),
       { button: 0 },
     );
     fireEvent.click(slot.getByRole("menuitemradio", { name: "Intel" }));
     expect(
       slot.getByText(
-        "Intel is offline. Usage will refresh when it reconnects.",
+        "Intel не в сети. Данные обновятся после подключения.",
       ),
     ).toBeTruthy();
     fireEvent.click(
-      slot.getByRole("button", { name: "Collapse provider usage" }),
+      slot.getByRole("button", { name: "Свернуть данные об использовании провайдера" }),
     );
     expect(dismiss).toHaveBeenCalledOnce();
     const reloadButton = slot.getByRole("button", {
-      name: "Reload provider usage",
+      name: "Обновить данные об использовании провайдера",
     }) as HTMLButtonElement;
     await waitFor(() => expect(reloadButton.disabled).toBe(false));
     const callsBeforeManualRefresh = fetchMock.mock.calls.length;
@@ -386,7 +386,7 @@ describe("provider usage footer disclosure", () => {
 
     now.mockRestore();
     fireEvent.pointerDown(
-      slot.getByRole("button", { name: "Usage machine: Intel" }),
+      slot.getByRole("button", { name: "Машина для данных об использовании: Intel" }),
       { button: 0 },
     );
     fireEvent.click(
@@ -410,15 +410,15 @@ describe("provider usage footer disclosure", () => {
     expect(slot.getAllByText("team@example.com")).toHaveLength(1);
     expect(slot.getAllByText("personal@example.com")).toHaveLength(1);
     expect(slot.getByText("46%")).toBeTruthy();
-    expect(slot.getByText("2d 3h")).toBeTruthy();
+    expect(slot.getByText("2 д 3 ч")).toBeTruthy();
     expect(
       slot.getAllByRole("heading").map((heading) => heading.textContent),
     ).toEqual(["team@example.com", "personal@example.com"]);
     const windowButton = slot.getByRole("button", {
-      name: "Weekly limit: 46% used. Reset time not reported",
+      name: "Weekly limit: Использовано 46%. Время сброса не указано",
     });
     fireEvent.click(windowButton);
-    expect(slot.getByText("Reset time not reported.")).toBeTruthy();
+    expect(slot.getByText("Время сброса не указано.")).toBeTruthy();
     expect(slot.getByText("82%")).toBeTruthy();
     fireEvent.click(slot.getByRole("tab", { name: "Claude Code" }));
     expect(slot.getByText("claude-team@example.com")).toBeTruthy();
@@ -434,17 +434,17 @@ describe("provider usage footer disclosure", () => {
       await waitFor(() =>
         expect(
           slot
-            .getByRole("button", { name: "Reload provider usage" })
+            .getByRole("button", { name: "Обновить данные об использовании провайдера" })
             .hasAttribute("disabled"),
         ).toBe(false),
       );
       fetchMock.mockResolvedValueOnce(failure());
       fireEvent.click(
-        slot.getByRole("button", { name: "Reload provider usage" }),
+        slot.getByRole("button", { name: "Обновить данные об использовании провайдера" }),
       );
       await waitFor(() =>
         expect(
-          slot.getByText("Couldn’t refresh. Showing last update."),
+          slot.getByText("Не удалось обновить данные. Показаны последние сохранённые данные."),
         ).toBeTruthy(),
       );
       expect(slot.getByText("claude-team@example.com")).toBeTruthy();
@@ -452,11 +452,11 @@ describe("provider usage footer disclosure", () => {
         slot.queryByText(/Unexpected token|bb connect|invalid JSON/i),
       ).toBeNull();
       fireEvent.click(
-        slot.getByRole("button", { name: "Reload provider usage" }),
+        slot.getByRole("button", { name: "Обновить данные об использовании провайдера" }),
       );
       await waitFor(() =>
         expect(
-          slot.queryByText("Couldn’t refresh. Showing last update."),
+          slot.queryByText("Не удалось обновить данные. Показаны последние сохранённые данные."),
         ).toBeNull(),
       );
     }
@@ -466,14 +466,14 @@ describe("provider usage footer disclosure", () => {
 });
 
 it.each([
-  ["empty", "No accounts report usage yet."],
+  ["empty", "Аккаунты пока не передают данные об использовании. Настройте их в параметрах исходного плагина."],
   ["expired", "Sign in again in the source plugin’s settings."],
   [
     "unauthenticated",
     "Sign in to this account in the source plugin’s settings.",
   ],
-  ["no-limits", "No usage limits reported for this plan."],
-  ["source-error", "Couldn’t refresh. Showing last update."],
+  ["no-limits", "Для этого тарифа лимиты не указаны."],
+  ["source-error", "Не удалось обновить данные. Показаны последние сохранённые данные."],
 ] as const)("renders the %s shared-source state", async (state, expected) => {
   const usage: UsageProvider["usage"] =
     state === "expired" || state === "unauthenticated"
@@ -630,11 +630,11 @@ it("keeps a measured refresh when an older snapshot response arrives late", asyn
   await waitFor(() =>
     expect(
       slot
-        .getByRole("button", { name: "Reload provider usage" })
+        .getByRole("button", { name: "Обновить данные об использовании провайдера" })
         .hasAttribute("disabled"),
     ).toBe(false),
   );
-  expect(slot.queryByText("Usage not reported.")).toBeNull();
+  expect(slot.queryByText("Данные об использовании не предоставлены.")).toBeNull();
   expect(slot.getByText("37%")).toBeTruthy();
   await mounted.lifecycle.dispose();
 });

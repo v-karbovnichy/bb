@@ -55,7 +55,7 @@ export function RouteLoadingSkeleton({
       )}
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label="Загрузка"
       data-testid="route-loading-skeleton"
     >
       {!isRootCompose ? (

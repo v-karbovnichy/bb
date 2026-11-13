@@ -3,16 +3,16 @@ import { cn } from "@/lib/utils";
 import { errorMessage } from "../../shared/errors.js";
 
 const COLOR_PALETTE = [
-  { value: "slateblue", label: "Indigo" },
-  { value: "steelblue", label: "Blue" },
-  { value: "lightseagreen", label: "Teal" },
-  { value: "mediumseagreen", label: "Green" },
-  { value: "goldenrod", label: "Yellow" },
-  { value: "sandybrown", label: "Orange" },
-  { value: "indianred", label: "Red" },
-  { value: "palevioletred", label: "Pink" },
-  { value: "mediumpurple", label: "Purple" },
-  { value: "slategray", label: "Gray" },
+  { value: "slateblue", label: "Индиго" },
+  { value: "steelblue", label: "Синий" },
+  { value: "lightseagreen", label: "Бирюзовый" },
+  { value: "mediumseagreen", label: "Зелёный" },
+  { value: "goldenrod", label: "Жёлтый" },
+  { value: "sandybrown", label: "Оранжевый" },
+  { value: "indianred", label: "Красный" },
+  { value: "palevioletred", label: "Розовый" },
+  { value: "mediumpurple", label: "Фиолетовый" },
+  { value: "slategray", label: "Серый" },
 ] as const;
 
 export const DEFAULT_COLOR = COLOR_PALETTE[0].value;
@@ -33,7 +33,7 @@ export function derivePrefix(name: string): string {
 export function describeCreateProjectError(error: unknown): string {
   const message = errorMessage(error);
   if (message.includes("UNIQUE") && message.includes("prefix")) {
-    return "That prefix is already used by another project.";
+    return "Этот префикс уже используется другим проектом.";
   }
   return message;
 }
@@ -48,7 +48,7 @@ export function ColorSwatchPicker({
   return (
     <div
       role="radiogroup"
-      aria-label="Color"
+      aria-label="Цвет"
       className="flex flex-wrap gap-1.5"
     >
       {COLOR_PALETTE.map((swatch) => (

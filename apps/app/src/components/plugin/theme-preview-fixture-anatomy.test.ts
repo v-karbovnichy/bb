@@ -172,9 +172,9 @@ const VIEW_FIXTURE_ANCHORS: Record<string, readonly FixtureAnchor[]> = {
     {
       file: "apps/app/src/components/thread/toc/ThreadTableOfContents.tsx",
       mustContain: [
-        'aria-label="Thread table of contents"',
-        'label="Agent messages"',
-        'label="Your messages"',
+        'aria-label="Содержание чата"',
+        'label="Сообщения агента"',
+        'label="Ваши сообщения"',
       ],
       classLists: [["bg-popover"]],
       because:
@@ -194,7 +194,7 @@ const VIEW_FIXTURE_ANCHORS: Record<string, readonly FixtureAnchor[]> = {
     {
       file: "plugins/github-pr-status/ui/PullRequestInfoRow.tsx",
       mustContain: [
-        '<DetailRow icon="GitPullRequestArrow" label="Pull request">',
+        '<DetailRow icon="GitPullRequestArrow" label="Пул-реквест">',
       ],
       because:
         "The GitHub PR Status plugin draws the Info panel's pull-request row.",
@@ -223,7 +223,7 @@ const VIEW_FIXTURE_ANCHORS: Record<string, readonly FixtureAnchor[]> = {
     },
     {
       file: "apps/app/src/components/promptbox/NewThreadPromptBox.tsx",
-      mustContain: ['"Ask anything."'],
+      mustContain: ['"Спросите о чём угодно."'],
       because:
         "The empty composer uses the current new-thread prompt language.",
     },
@@ -252,7 +252,7 @@ const VIEW_FIXTURE_ANCHORS: Record<string, readonly FixtureAnchor[]> = {
     {
       file: "apps/app/src/components/settings/settings-sections.ts",
       mustContain: [
-        '{ icon: "Palette", id: "appearance", label: "Appearance" }',
+        '{ icon: "Palette", id: "appearance", label: "Внешний вид" }',
       ],
       because:
         "The settings navigation keeps Appearance as a first-class BB settings destination.",
@@ -260,11 +260,11 @@ const VIEW_FIXTURE_ANCHORS: Record<string, readonly FixtureAnchor[]> = {
     {
       file: "apps/app/src/views/SettingsView.tsx",
       mustContain: [
-        '<SettingsSection title="Appearance">',
-        '<SettingsWithControl label="Theme">',
-        'label="Palette"',
-        "Palettes change bb's colors, including syntax colors in diffs and file previews.",
-        'label="Favicon color"',
+        '<SettingsSection title="Внешний вид">',
+        '<SettingsWithControl label="Тема">',
+        'label="Палитра"',
+        "Палитры меняют цвета bb, включая подсветку синтаксиса в изменениях и предпросмотре файлов.",
+        'label="Цвет значка вкладки"',
         "<SplitDimmingSetting />",
       ],
       because:

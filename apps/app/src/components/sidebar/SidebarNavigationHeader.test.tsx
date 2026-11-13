@@ -135,8 +135,8 @@ describe("SidebarNavigationHeader", () => {
     expect(screen.queryByTestId("header-fixture")).toBeNull();
     expect(getNotifications()).toEqual([
       expect.objectContaining({
-        title: "Sidebar header plugin crashed",
-        description: "Garden icons (garden) stopped working.",
+        title: "Плагин заголовка боковой панели завершился с ошибкой",
+        description: "Сбой в работе Garden icons (garden).",
       }),
     ]);
   });
@@ -152,7 +152,7 @@ describe("SidebarNavigationHeader", () => {
     expect(getNotifications()).toEqual([
       expect.objectContaining({
         description:
-          "Garden icons (garden) stopped working, so bb drew the Rail header instead.",
+          "Сбой в работе Garden icons (garden). Вместо него bb показал заголовок Rail.",
       }),
     ]);
   });

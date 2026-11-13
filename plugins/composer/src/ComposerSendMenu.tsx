@@ -17,9 +17,9 @@ import {
 } from "@get-bb/plugin-sdk/app";
 
 const MODIFIER_LABELS: Record<ExperimentalComposerAction["kind"], string> = {
-  send: "Send",
-  queue: "Queue",
-  steer: "Steer",
+  send: "Отправить",
+  queue: "В очередь",
+  steer: "Уточнить",
 };
 
 export function ComposerSendMenu({
@@ -76,7 +76,7 @@ export function ComposerSendMenu({
     if (!canSubmit) return children;
     return (
       <CompactLongPressMenu
-        label="Send options"
+        label="Параметры отправки"
         onOpenChange={handleOpenChange}
         items={items}
       >
@@ -114,7 +114,7 @@ export function ComposerSendMenu({
             type="button"
             size="sm"
             variant="ghost"
-            aria-label="Send options"
+            aria-label="Параметры отправки"
             disabled={!canSubmit}
             aria-hidden={hasInput ? undefined : true}
             className={cn(
@@ -128,7 +128,7 @@ export function ComposerSendMenu({
             />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" side="top" mobileTitle="Send options">
+        <DropdownMenuContent align="end" side="top" mobileTitle="Параметры отправки">
           {items}
         </DropdownMenuContent>
       </DropdownMenu>

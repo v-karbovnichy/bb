@@ -52,8 +52,8 @@ describe("buildMachineThreadGroups", () => {
     ).toEqual([
       { key: "host_a", label: "Laptop", threadIds: ["thr_4"] },
       { key: "host_b", label: "Desktop", threadIds: ["thr_1", "thr_5"] },
-      { key: "host_gone", label: "Unknown machine", threadIds: ["thr_3"] },
-      { key: NO_MACHINE_GROUP_KEY, label: "No machine", threadIds: ["thr_2"] },
+      { key: "host_gone", label: "Неизвестный компьютер", threadIds: ["thr_3"] },
+      { key: NO_MACHINE_GROUP_KEY, label: "Без компьютера", threadIds: ["thr_2"] },
     ]);
   });
 

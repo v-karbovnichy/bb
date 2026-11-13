@@ -187,7 +187,7 @@ describe("worktree resource operations", () => {
       await fixture.restore(restoreContext(fixture.context, null)),
     ).toMatchObject({
       status: "failed",
-      message: expect.stringContaining("no branch"),
+      message: expect.stringContaining("не была выбрана ветка"),
     });
     expect(fixture.harness.experimental_hostRpcCalls).toHaveLength(0);
   });
@@ -390,7 +390,7 @@ describe("adopting an existing worktree", () => {
     const result = await fixture.provider.create(fixture.context);
     expect(result.status).toBe("failed");
     expect(result).toMatchObject({
-      message: expect.stringContaining("already in use"),
+      message: expect.stringContaining("уже используется"),
     });
   });
 

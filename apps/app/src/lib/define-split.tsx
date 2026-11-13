@@ -22,7 +22,7 @@ export function SplitLoadFailure({ retry }: FailureProps) {
     <p role="alert" className="p-3 text-sm text-destructive">
       Could not load.{" "}
       <button type="button" className="underline" onClick={retry}>
-        Try again
+        Повторить
       </button>
     </p>
   );

@@ -175,7 +175,7 @@ const DropdownMenuContent = React.forwardRef<
         <ResponsiveDrawerShell
           open={open}
           onOpenChange={onOpenChange}
-          srLabel={mobileTitle ?? "Menu"}
+          srLabel={mobileTitle ?? "Меню"}
           onEscapeKeyDown={props.onEscapeKeyDown}
           onPointerDownOutside={props.onPointerDownOutside}
           onInteractOutside={props.onInteractOutside}

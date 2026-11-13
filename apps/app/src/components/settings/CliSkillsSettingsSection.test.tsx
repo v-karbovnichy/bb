@@ -12,7 +12,7 @@ afterEach(() => {
 });
 
 function installButton(): HTMLButtonElement {
-  const button = screen.getByRole("button", { name: "Install bb CLI skills" });
+  const button = screen.getByRole("button", { name: "Установить Навыки CLI bb" });
   if (!(button instanceof HTMLButtonElement)) {
     throw new Error("Install control is not a button");
   }
@@ -46,7 +46,7 @@ describe("CliSkillsSettingsSectionContent", () => {
     expect(installButton().disabled).toBe(true);
     expect(
       screen.getByText(
-        "Connect a machine to install them into ~/.agents/skills and ~/.claude/skills.",
+        "Подключите машину, чтобы установить их в ~/.agents/skills и ~/.claude/skills.",
       ),
     ).toBeDefined();
   });
@@ -57,34 +57,34 @@ describe("CliSkillsSettingsSectionContent", () => {
         hasConnectedMachine={true}
         onOpenPicker={() => undefined}
         pending={true}
-        statusBadge="Installed"
+        statusBadge="Установлено"
       />,
     );
 
     expect(installButton().disabled).toBe(true);
-    expect(installButton().textContent).toBe("Installing…");
+    expect(installButton().textContent).toBe("Установка…");
   });
 });
 
 describe("summarizeMachineStatuses", () => {
   it("reports a single machine plainly", () => {
-    expect(summarizeMachineStatuses(["installed"])).toBe("Installed");
-    expect(summarizeMachineStatuses(["outdated"])).toBe("Out of date");
-    expect(summarizeMachineStatuses(["missing"])).toBe("Not installed");
+    expect(summarizeMachineStatuses(["installed"])).toBe("Установлено");
+    expect(summarizeMachineStatuses(["outdated"])).toBe("Устарели");
+    expect(summarizeMachineStatuses(["missing"])).toBe("Не установлены");
   });
 
   it("counts a mixed fleet instead of claiming either extreme", () => {
     expect(summarizeMachineStatuses(["installed", "outdated", "missing"])).toBe(
-      "Installed on 1 of 3 machines",
+      "Установлено на 1 из 3 машин",
     );
     expect(summarizeMachineStatuses(["installed", "installed"])).toBe(
-      "Installed on 2 machines",
+      "Установлено на машинах (2)",
     );
   });
 
   it("ignores machines it could not ask, and shows nothing if that is all of them", () => {
     expect(summarizeMachineStatuses(["installed", "unknown"])).toBe(
-      "Installed",
+      "Установлено",
     );
     expect(summarizeMachineStatuses(["unknown", "unknown"])).toBe(null);
     expect(summarizeMachineStatuses([])).toBe(null);

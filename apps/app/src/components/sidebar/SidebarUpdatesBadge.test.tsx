@@ -334,7 +334,7 @@ describe("SidebarUpdatesBadge", () => {
     });
 
     expect(screen.getAllByRole("link")).toHaveLength(1);
-    const button = screen.getByRole("link", { name: "3 updates available" });
+    const button = screen.getByRole("link", { name: "Доступно обновлений: 3" });
     expect(button.getAttribute("href")).toBe("/settings/updates");
     expect(button.querySelector('[data-icon="Download"]')).toBeTruthy();
   });
@@ -359,19 +359,23 @@ describe("SidebarUpdatesBadge", () => {
     });
 
     const card = await openCard();
-    const bb = within(card).getByRole("region", { name: "bb update" });
+    const bb = within(card).getByRole("region", { name: "Обновление bb" });
     expect(bb.textContent).toContain("bb 0.49.0");
-    expect(bb.textContent).toContain("from 0.48.2");
-    expect(bb.textContent).toContain("Installs itself when you're idle");
+    expect(bb.textContent).toContain("с версии 0.48.2");
+    expect(bb.textContent).toContain(
+      "Установится автоматически, когда вы не работаете",
+    );
     expect(rowStates(card)).toEqual([
       ["Codex1.0.0 → 1.1.0", "available"],
       ["linear1.0.0 → 1.2.0", "available"],
     ]);
     expect(
-      within(card).getByRole("button", { name: "Update all" }),
+      within(card).getByRole("button", { name: "Обновить все" }),
     ).toBeTruthy();
     expect(
-      within(card).getByRole("link", { name: "Details" }).getAttribute("href"),
+      within(card)
+        .getByRole("link", { name: "Подробнее" })
+        .getAttribute("href"),
     ).toBe("/settings/updates");
   });
 
@@ -380,12 +384,12 @@ describe("SidebarUpdatesBadge", () => {
     renderBadge({ appUpdateAvailable: true });
 
     const card = await openCard();
-    expect(card.textContent).toContain("Installs when bb restarts");
-    expect(within(card).queryByRole("button", { name: "Update all" })).toBe(
+    expect(card.textContent).toContain("Установится при перезапуске bb");
+    expect(within(card).queryByRole("button", { name: "Обновить все" })).toBe(
       null,
     );
     expect(updateButton().getAttribute("aria-label")).toBe(
-      "1 update available",
+      "Доступно 1 обновление",
     );
   });
 
@@ -394,7 +398,9 @@ describe("SidebarUpdatesBadge", () => {
     renderBadge({ appUpdateAvailable: true });
 
     const card = await openCard();
-    fireEvent.click(within(card).getByRole("button", { name: "Restart now" }));
+    fireEvent.click(
+      within(card).getByRole("button", { name: "Перезапустить сейчас" }),
+    );
     expect(applyAppUpdateMock).not.toHaveBeenCalled();
     const dialog = await screen.findByRole("dialog");
     expect(dialog.textContent).toContain("2 threads are running.");
@@ -412,7 +418,9 @@ describe("SidebarUpdatesBadge", () => {
     renderBadge({ desktopUpdateReady: true });
 
     const card = await openCard();
-    fireEvent.click(within(card).getByRole("button", { name: "Restart now" }));
+    fireEvent.click(
+      within(card).getByRole("button", { name: "Перезапустить сейчас" }),
+    );
     expect(desktopState.installUpdate).toHaveBeenCalledTimes(1);
     expect(applyAppUpdateMock).not.toHaveBeenCalled();
   });
@@ -437,7 +445,7 @@ describe("SidebarUpdatesBadge", () => {
     });
 
     const card = await openCard();
-    fireEvent.click(within(card).getByRole("button", { name: "Update 2" }));
+    fireEvent.click(within(card).getByRole("button", { name: "Обновить: 2" }));
 
     expect(runner.startInstall).toHaveBeenCalledTimes(1);
     expect(runner.startInstall).toHaveBeenCalledWith({
@@ -479,14 +487,14 @@ describe("SidebarUpdatesBadge", () => {
     expect(onNavigate).not.toHaveBeenCalled();
     expect(within(card).getByText("bb 0.49.0")).toBeTruthy();
 
-    fireEvent.click(within(card).getByRole("button", { name: "Update all" }));
+    fireEvent.click(within(card).getByRole("button", { name: "Обновить все" }));
     expect(runner.startInstall).toHaveBeenCalledWith({
       hostId: "host-1",
       issue: codex,
     });
     expect(updateButton().getAttribute("aria-expanded")).toBe("true");
 
-    fireEvent.click(within(card).getByRole("link", { name: "Details" }));
+    fireEvent.click(within(card).getByRole("link", { name: "Подробнее" }));
     expect(screen.getByTestId("location").textContent).toBe(
       "/settings/updates",
     );
@@ -516,7 +524,7 @@ describe("SidebarUpdatesBadge", () => {
     });
 
     const button = updateButton();
-    expect(button.getAttribute("aria-label")).toBe("Updating");
+    expect(button.getAttribute("aria-label")).toBe("Обновление");
     const spinner = button.querySelector('[data-icon="Loading"]');
     expect(spinner?.classList.contains("animate-spin")).toBe(true);
     const card = await openCard();
@@ -524,14 +532,14 @@ describe("SidebarUpdatesBadge", () => {
       "updating",
       "updating",
     ]);
-    const busy = within(card).getByRole("button", { name: "Updating…" });
+    const busy = within(card).getByRole("button", { name: "Обновление…" });
     expect(busy.hasAttribute("disabled")).toBe(true);
 
     runner.runningJobKey = null;
     pluginJobsState.jobs = [];
     result.rerender(<BadgeHarness />);
     expect(button.querySelector('[data-icon="Download"]')).toBeTruthy();
-    expect(button.getAttribute("aria-label")).toBe("2 updates available");
+    expect(button.getAttribute("aria-label")).toBe("Доступно обновлений: 2");
   });
 
   it("keeps a failed update quietly in the list so it can be tried again", async () => {
@@ -575,11 +583,11 @@ describe("SidebarUpdatesBadge", () => {
     expect(updateButton().querySelector('[data-icon="Download"]')).toBeTruthy();
     const card = await openCard();
     expect(rowStates(card)).toEqual([
-      ["Claude CodeFailed · try again", "failed"],
+      ["Claude CodeОшибка · повторите попытку", "failed"],
       ["Codex1.0.0 → 1.1.0", "available"],
-      ["linearFailed · try again", "failed"],
+      ["linearОшибка · повторите попытку", "failed"],
     ]);
-    fireEvent.click(within(card).getByRole("button", { name: "Update all" }));
+    fireEvent.click(within(card).getByRole("button", { name: "Обновить все" }));
     expect(runner.startInstall).toHaveBeenCalledTimes(2);
     expect(startPluginUpdateMock).toHaveBeenCalledWith("linear");
   });
@@ -604,7 +612,7 @@ describe("SidebarUpdatesBadge", () => {
     renderBadge({ machines: [machine({ issues: [claude] })] });
 
     const card = await openCard();
-    fireEvent.click(within(card).getByRole("button", { name: "Try again" }));
+    fireEvent.click(within(card).getByRole("button", { name: "Повторить" }));
     expect(runner.startInstall).toHaveBeenCalledWith({
       hostId: "host-1",
       issue: claude,
@@ -622,12 +630,12 @@ describe("SidebarUpdatesBadge", () => {
     });
     renderBadge({ appUpdateAvailable: true });
 
-    expect(updateButton().getAttribute("aria-label")).toBe("Updating");
+    expect(updateButton().getAttribute("aria-label")).toBe("Обновление");
     const card = await openCard();
-    expect(card.textContent).toContain("Restarting into the update…");
-    expect(within(card).queryByRole("button", { name: "Restart now" })).toBe(
-      null,
-    );
+    expect(card.textContent).toContain("Перезапуск для обновления…");
+    expect(
+      within(card).queryByRole("button", { name: "Перезапустить сейчас" }),
+    ).toBe(null);
   });
 
   it("leaves out missing CLIs and names machines when a CLI is stale on several", async () => {

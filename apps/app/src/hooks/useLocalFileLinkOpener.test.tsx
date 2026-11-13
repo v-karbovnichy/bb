@@ -83,7 +83,7 @@ describe("useLocalFileLinkOpener", () => {
     ).toBe(true);
 
     expect(mocks.toastError).toHaveBeenCalledWith(
-      "Failed to open file locally",
+      "Не удалось открыть файл на этом компьютере",
       expect.objectContaining({ description: expect.any(String) }),
     );
     expect(openFilePreview).not.toHaveBeenCalled();

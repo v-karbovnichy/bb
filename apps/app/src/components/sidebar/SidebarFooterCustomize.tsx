@@ -71,7 +71,7 @@ export function SidebarFooterCustomize({ onDone }: { onDone: () => void }) {
         className="relative flex items-center gap-1 overflow-hidden bg-sidebar-accent px-3 py-2"
       >
         <ul
-          aria-label="Footer icons"
+          aria-label="Значки нижней панели"
           className="flex min-w-0 flex-1 items-center justify-between gap-1"
           onClickCapture={footerDnd.onClickCapture}
         >
@@ -112,9 +112,9 @@ export function SidebarFooterCustomize({ onDone }: { onDone: () => void }) {
       </div>
       {preferences.more.length > 0 && (
         <>
-          <ZoneLabel label="More menu" />
+          <ZoneLabel label="Меню «Ещё»" />
           <ul
-            aria-label="More menu items"
+            aria-label="Элементы меню «Ещё»"
             className="space-y-0.5 px-2"
             onClickCapture={moreDnd.onClickCapture}
           >
@@ -169,7 +169,7 @@ function FooterIconTile({
             ref={dragBindings.setActivatorNodeRef}
             {...dragBindings.attributes}
             {...dragBindings.listeners}
-            aria-label={`Reorder ${item.label}`}
+            aria-label={`Изменить порядок: ${item.label}`}
             data-footer-icon={item.key}
             className={cn(
               SIDEBAR_FOOTER_ACTION_CLASS,
@@ -184,7 +184,7 @@ function FooterIconTile({
       </Tooltip>
       <button
         type="button"
-        aria-label={`Remove ${item.label} from footer`}
+        aria-label={`Убрать ${item.label} с нижней панели`}
         data-footer-placement-toggle={item.key}
         className={cn(BADGE_CLASS, "absolute -top-1.5 right-0")}
         onPointerDown={(event) => event.stopPropagation()}
@@ -223,7 +223,7 @@ function MoreMenuRow({
         ref={dragBindings.setActivatorNodeRef}
         {...dragBindings.attributes}
         {...dragBindings.listeners}
-        aria-label={`Reorder ${item.label}`}
+        aria-label={`Изменить порядок: ${item.label}`}
         className="flex size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded-sm text-subtle-foreground/60 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:cursor-grabbing"
       >
         <Icon name="DragDropVertical" className="size-4" />
@@ -233,7 +233,7 @@ function MoreMenuRow({
       <span className="relative flex size-6 shrink-0 items-center justify-center">
         <button
           type="button"
-          aria-label={`Add ${item.label} to footer`}
+          aria-label={`Добавить ${item.label} на нижнюю панель`}
           data-footer-placement-toggle={item.key}
           disabled={addDisabled}
           className={cn(BADGE_CLASS, "relative")}

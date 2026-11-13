@@ -1963,7 +1963,7 @@ describe("connect plugin", () => {
     ]);
     expect(cliRemoval).toMatchObject({
       exitCode: 0,
-      stdout: "Stopped sharing port 4000 on removed host (host-deleted)\n",
+      stdout: "Порт 4000 на removed host (host-deleted) закрыт\n",
     });
     expect(await bb.storage.kv.get(SHARES_KV_KEY)).toEqual({
       [`${SERVER_HOST_ID}:8000`]: {
@@ -2493,7 +2493,7 @@ describe("connect CLI", () => {
     ]);
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain(
-      "Paired as sawyer — reachable at http://sawyer.localhost:59324",
+      "Привязан как sawyer — доступен по адресу http://sawyer.localhost:59324",
     );
     expect(account.redemptions).toEqual([
       { code: "ABCD", baseUrl: "https://getbb.app" },
@@ -2541,7 +2541,7 @@ describe("connect CLI", () => {
       "https://sawyer.getbb.app",
     ]);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("that code has expired");
+    expect(result.stderr).toContain("срок действия кода истёк");
   });
 
   it("explains a saved pairing without a profile and still turns remote access on", async () => {
@@ -2553,7 +2553,7 @@ describe("connect CLI", () => {
     const result = await harness.runCli(["--code", "ABCD"]);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain(
-      "saved the pairing, but getbb.app didn't return your account yet",
+      "сохранил привязку, но getbb.app пока не вернул данные аккаунта",
     );
     expect(result.stderr).not.toContain("profile_unavailable\n");
     const status = await harness.runCli(["status", "--json"]);
@@ -2565,7 +2565,7 @@ describe("connect CLI", () => {
     account.available = false;
     const result = await harness.runCli(["--code", "ABCD"]);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("bb account plugin isn't running");
+    expect(result.stderr).toContain("плагин аккаунта bb не работает");
   });
 
   it("`bb connect off` keeps the account signed in and `on` restores remote access", async () => {
@@ -2573,21 +2573,21 @@ describe("connect CLI", () => {
     const { harness } = current;
     const before = await harness.runCli(["status"]);
     expect(before.exitCode).toBe(0);
-    expect(before.stdout).toContain("Not signed in to a bb account");
+    expect(before.stdout).toContain("Вход в аккаунт bb не выполнен");
 
     await signIn(current);
     const off = await harness.runCli(["off"]);
     expect(off.exitCode).toBe(0);
-    expect(off.stdout).toContain("Remote access is off");
+    expect(off.stdout).toContain("Удалённый доступ выключен");
     expect(off.stdout).toContain("bb account logout");
     expect(account.status.state).toBe("signed-in");
     const offStatus = await harness.runCli(["status"]);
-    expect(offStatus.stdout).toContain("sawyer  https://sawyer.getbb.app  off");
+    expect(offStatus.stdout).toContain("sawyer  https://sawyer.getbb.app  выключено");
 
     const on = await harness.runCli(["on"]);
     expect(on.exitCode).toBe(0);
     expect(on.stdout).toContain(
-      "Remote access is on — reachable at https://sawyer.getbb.app",
+      "Удалённый доступ включён — bb доступен по адресу https://sawyer.getbb.app",
     );
     const json = await harness.runCli(["status", "--json"]);
     expect(JSON.parse(json.stdout ?? "")).toMatchObject({ enabled: true });
@@ -2612,7 +2612,7 @@ describe("connect CLI", () => {
     for (const argv of [["expose", "8000"], ["servers"], ["machine-code"]]) {
       const result = await harness.runCli(argv);
       expect(result.exitCode, argv.join(" ")).toBe(1);
-      expect(result.stderr).toContain("isn't signed in to a bb account");
+      expect(result.stderr).toContain("не вошёл в аккаунт");
     }
     expect(account.fetches).toEqual([]);
   });
@@ -2640,8 +2640,8 @@ describe("connect CLI", () => {
     expect(table.stdout).toContain("desktop");
     expect(table.stdout).toContain("http://sawyer.localhost:59342");
     expect(table.stdout).toContain("http://sawyer-desktop.localhost:59342");
-    expect(table.stdout).toContain("yes");
-    expect(table.stdout).toContain("no");
+    expect(table.stdout).toContain("да");
+    expect(table.stdout).toContain("нет");
 
     const json = await current.harness.runCli(["servers", "--json"]);
     expect(json.exitCode).toBe(0);
@@ -2671,11 +2671,11 @@ describe("connect CLI", () => {
     const before = Date.now();
     const text = await current.harness.runCli(["machine-code"]);
     expect(text.exitCode).toBe(0);
-    expect(text.stdout).toContain("Code:       K7QP-2M4X");
-    expect(text.stdout).toContain("Server:     https://sawyer.getbb.app");
-    expect(text.stdout).toContain("Apex:       https://getbb.app");
-    expect(text.stdout).toContain("in about 10 min");
-    expect(text.stdout).toContain("Settings → Mobile → Add mobile device");
+    expect(text.stdout).toContain("Код:        K7QP-2M4X");
+    expect(text.stdout).toContain("Сервер:     https://sawyer.getbb.app");
+    expect(text.stdout).toContain("Основной домен: https://getbb.app");
+    expect(text.stdout).toContain("примерно через 10 мин");
+    expect(text.stdout).toContain("Настройки» → «Мобильное приложение» → «Добавить устройство");
 
     const json = await current.harness.runCli(["machine-code", "--json"]);
     expect(json.exitCode).toBe(0);
@@ -2698,7 +2698,7 @@ describe("connect CLI", () => {
     await signIn(current);
     const result = await current.harness.runCli(["machine-code"]);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("machine limit");
+    expect(result.stderr).toContain("лимит машин");
     expect(result.stderr).toContain("https://getbb.app/dashboard");
     expect(result.stderr).not.toContain("machine_limit");
   });
@@ -2722,19 +2722,19 @@ describe("connect CLI", () => {
     expect(shares.stdout).toContain(shareUrl);
 
     const status = await harness.runCli(["status"]);
-    expect(status.stdout).toContain("shares:");
+    expect(status.stdout).toContain("открытые порты:");
     expect(status.stdout).toContain("8000");
 
     const unexpose = await harness.runCli(["unexpose", "8000"]);
     expect(unexpose.exitCode).toBe(0);
-    expect(unexpose.stdout).toContain("Stopped sharing port 8000");
+    expect(unexpose.stdout).toContain("Порт 8000");
 
     const again = await harness.runCli(["unexpose", "8000"]);
     expect(again.exitCode).toBe(0);
-    expect(again.stdout).toContain("was not shared");
+    expect(again.stdout).toContain("не был открыт");
 
     const empty = await harness.runCli(["shares"]);
-    expect(empty.stdout).toContain("No shared ports");
+    expect(empty.stdout).toContain("Нет открытых портов");
   });
 
   it("resolves the thread host, honors --host, and defaults no-context calls to the server host", async () => {
@@ -2808,7 +2808,7 @@ describe("connect CLI", () => {
       threadId: "thread-air",
     });
     expect(removed.stdout).toContain(
-      `Stopped sharing port 3000 on ${REMOTE_HOST_NAME} (${REMOTE_HOST_ID})`,
+      `Порт 3000 на ${REMOTE_HOST_NAME} (${REMOTE_HOST_ID})`,
     );
     expect(current.harness.sharedPortDeclarations).toEqual([
       { hostId: REMOTE_HOST_ID, ports: [] },

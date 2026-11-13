@@ -13,19 +13,19 @@ afterEach(cleanup);
 
 describe("resource page title identity", () => {
   it.each([
-    { path: "/skills", title: "Skills", icon: "Zap", leaf: "Browse" },
+    { path: "/skills", title: "Навыки", icon: "Zap", leaf: "Обзор" },
     {
       path: "/skills?view=library",
-      title: "Skills",
+      title: "Навыки",
       icon: "Zap",
-      leaf: "My skills",
+      leaf: "Мои навыки",
     },
-    { path: "/plugins", title: "Plugins", icon: "Plug02", leaf: "Browse" },
+    { path: "/plugins", title: "Плагины", icon: "Plug02", leaf: "Обзор" },
     {
       path: "/plugins?view=installed",
-      title: "Plugins",
+      title: "Плагины",
       icon: "Plug02",
-      leaf: "Installed",
+      leaf: "Установленные",
     },
   ] as const)(
     "keeps $path identity fixed and collection text passive",

@@ -1,9 +1,9 @@
 import { lifecycleApiErrorSchema } from "@bb/server-contract";
 
-export const COMMIT_FAILED_TITLE = "Commit failed";
-const FALLBACK_MESSAGE = "Failed to start git action";
+export const COMMIT_FAILED_TITLE = "Не удалось создать коммит";
+const FALLBACK_MESSAGE = "Не удалось запустить действие Git";
 const NETWORK_TRANSPORT_ERROR_MESSAGE =
-  "Could not reach the server. Check that it is running and try again.";
+  "Не удалось связаться с сервером. Проверьте, что он запущен, и повторите попытку.";
 const HTTP_STATUS_PREFIX_PATTERN = /^HTTP \d{3}:\s*/u;
 
 function normalize(message: string): string | null {
@@ -30,23 +30,23 @@ function lifecycleBody(body: unknown): string | null {
       switch (error.details.environmentStatus) {
         case "creating":
         case "provisioning":
-          return "Workspace is still starting.";
+          return "Рабочая копия ещё запускается.";
         case "ready":
-          return "Workspace is unavailable.";
+          return "Рабочая копия недоступна.";
         case "error":
-          return "Workspace setup failed.";
+          return "Не удалось настроить рабочую копию.";
         case "destroyed":
-          return "Workspace no longer exists.";
+          return "Рабочая копия больше не существует.";
       }
       return null;
     case "host_unavailable":
       switch (error.details.reason) {
         case "suspended":
-          return "Host is paused.";
+          return "Хост приостановлен.";
         case "disconnected":
-          return "Host is offline.";
+          return "Хост не в сети.";
         case "destroyed":
-          return "Host was removed.";
+          return "Хост удалён.";
       }
       return null;
     default:

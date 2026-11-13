@@ -51,7 +51,7 @@ it("requests full command output while the terminal renderer is still downloadin
     </MemoryRouter>,
   );
 
-  await screen.findByRole("status", { name: "Loading" });
+  await screen.findByRole("status", { name: "Загрузка" });
   await waitFor(() => {
     expect(sdk.threads.timelineTurnSummaryDetails).toHaveBeenCalledTimes(1);
   });

@@ -400,7 +400,7 @@ describe("GitHub PR Status server", () => {
       }),
     ).rejects.toMatchObject({
       code: "conflict",
-      message: expect.stringContaining("Sandbox isn't available"),
+      message: expect.stringContaining("Sandbox недоступна"),
     });
     expect(fake.harness.experimental_hostRpcCalls).toEqual([]);
   });
@@ -412,14 +412,14 @@ describe("GitHub PR Status server", () => {
       fake.harness.callRpc("markReady", { environmentId: "env-1" }),
     ).rejects.toMatchObject({
       code: "conflict",
-      message: "Pull request is not a draft",
+      message: "Пул-реквест не является черновиком",
     });
     await expect(
       fake.harness.callRpc("merge", {
         environmentId: "env-1",
         method: "rebase",
       }),
-    ).resolves.toEqual({ message: "Pull request merge started" });
+    ).resolves.toEqual({ message: "Объединение пул-реквеста начато" });
     expect(
       fake.harness.experimental_hostRpcCalls.filter(
         (call) => call.method === "act",
@@ -538,7 +538,7 @@ describe("GitHub PR Status server", () => {
     workspace.branchName = "bb/pr";
     await expect(
       fake.harness.callRpc("markReady", { environmentId: "env-1" }),
-    ).rejects.toMatchObject({ message: "Pull request is not a draft" });
+    ).rejects.toMatchObject({ message: "Пул-реквест не является черновиком" });
 
     await fake.harness.callRpc("merge", {
       environmentId: "env-1",

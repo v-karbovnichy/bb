@@ -6,7 +6,7 @@ import {
   type WorkspaceScripts,
 } from "./settings.js";
 
-const RUN_TERMINAL_TITLE = "Run";
+const RUN_TERMINAL_TITLE = "Запустить";
 
 function decodeContent(content: string, encoding: "base64" | "utf8"): string {
   if (encoding === "utf8") return content;
@@ -53,14 +53,14 @@ export async function runWorkspaceScript(
   const { sdk } = getAppBridge();
   const thread = await sdk.threads.get({ threadId });
   if (thread.environmentId === null) {
-    toast.error("This thread has no workspace to run in.");
+    toast.error("У этого чата нет рабочей области для запуска.");
     return;
   }
   const environment = await sdk.environments.get({
     environmentId: thread.environmentId,
   });
   if (environment.path === null) {
-    toast.error("This workspace has no checkout to run in.");
+    toast.error("В этой рабочей области нет копии репозитория для запуска.");
     return;
   }
   const scripts = await readWorkspaceScripts(

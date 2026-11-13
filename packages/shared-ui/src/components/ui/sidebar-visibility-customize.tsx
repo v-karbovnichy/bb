@@ -168,7 +168,7 @@ function SidebarCustomizeItem({
         ref={dragBindings.setActivatorNodeRef}
         {...dragBindings.attributes}
         {...dragBindings.listeners}
-        aria-label={`Reorder ${item.title}`}
+        aria-label={`Изменить порядок: ${item.title}`}
         className={cn(
           "relative z-10 flex size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded-sm text-subtle-foreground/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:cursor-grabbing",
           COARSE_POINTER_ROW_ACTION_SIZE_CLASS,
@@ -219,7 +219,7 @@ function SidebarCustomizeItem({
         <Checkbox
           id={checkboxId}
           checked={checked}
-          aria-label={`Show ${item.title} in sidebar`}
+          aria-label={`Показывать ${item.title} в боковой панели`}
           onCheckedChange={(nextChecked) =>
             onCheckedChange(nextChecked === true)
           }

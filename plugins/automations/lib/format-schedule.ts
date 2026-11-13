@@ -1,9 +1,9 @@
-import { toString as cronstrueToString } from "cronstrue";
+import cronstrue from "cronstrue/i18n";
 import type { AutomationTrigger } from "../src/rpc-types";
 
 export const PERSONAL_PROJECT_ID = "proj_personal";
 
-const SCHEDULE_RUN_FORMATTER = new Intl.DateTimeFormat(undefined, {
+const SCHEDULE_RUN_FORMATTER = new Intl.DateTimeFormat("ru-RU", {
   month: "short",
   day: "numeric",
   hour: "numeric",
@@ -43,50 +43,21 @@ type OneShotLifecycle =
   | "failed"
   | "skipped";
 
-const DAY_ABBREVIATION: Record<string, string> = {
-  Sunday: "Sun",
-  Monday: "Mon",
-  Tuesday: "Tue",
-  Wednesday: "Wed",
-  Thursday: "Thu",
-  Friday: "Fri",
-  Saturday: "Sat",
-};
-
 function formatCronCadence(cron: string): string {
-  let text: string;
   try {
-    text = cronstrueToString(cron, { verbose: false });
+    return cronstrue.toString(cron, {
+      locale: "ru",
+      verbose: false,
+      use24HourTimeFormat: true,
+    });
   } catch {
-    return "Custom schedule";
+    return "Пользовательское расписание";
   }
-  return text
-    .replace(/^At /, "")
-    .replace(
-      /\b0?(\d{1,2}):(\d{2})\s*(AM|PM)\b/g,
-      (_all, hour, minute, meridiem) =>
-        minute === "00" ? `${hour}${meridiem}` : `${hour}:${minute}${meridiem}`,
-    )
-    .replace(
-      /\b(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\b/g,
-      (day) => DAY_ABBREVIATION[day] ?? day,
-    )
-    .replace(
-      /\bbetween (\d{1,2}(?::\d{2})?[AP]M) and (\d{1,2}(?::\d{2})?[AP]M)\b/g,
-      "$1-$2",
-    )
-    .replace(/ through /g, "-")
-    .replace(/,? only on /g, " ")
-    .replace(/,? and /g, ", ")
-    .replace(/\bminutes?\b/g, "min")
-    .replace(/\bseconds?\b/g, "sec")
-    .replace(/([AP]M),(?!\s+\d{1,2}(?::\d{2})?[AP]M\b)\s+/g, "$1 ")
-    .trim();
 }
 
 export function formatAutomationTrigger(trigger: AutomationTrigger): string {
   if (trigger.triggerType === "once") {
-    return "One time";
+    return "Однократно";
   }
   return formatCronCadence(trigger.cron);
 }
@@ -137,19 +108,19 @@ export function formatScheduleStatusLabel({
       lastRunStatus,
       now,
     });
-    if (oneShotLifecycle === "running") return "Running";
-    if (oneShotLifecycle === "failed") return "Failed";
-    if (oneShotLifecycle === "skipped") return "Skipped";
-    if (oneShotLifecycle === "completed") return "Completed";
-    if (oneShotLifecycle === "expired") return "Expired — edit to reschedule";
+    if (oneShotLifecycle === "running") return "Выполняется";
+    if (oneShotLifecycle === "failed") return "Ошибка";
+    if (oneShotLifecycle === "skipped") return "Пропущено";
+    if (oneShotLifecycle === "completed") return "Завершено";
+    if (oneShotLifecycle === "expired") return "Срок истёк — измените расписание";
   }
   if (!enabled) {
-    return "Paused";
+    return "Приостановлено";
   }
   if (nextRunAt === null) {
-    return "Not scheduled";
+    return "Не запланировано";
   }
-  return `Next ${formatScheduleRunTime(nextRunAt)}`;
+  return `Следующий запуск: ${formatScheduleRunTime(nextRunAt)}`;
 }
 
 export function formatOverviewScheduleMetadata(
@@ -157,15 +128,15 @@ export function formatOverviewScheduleMetadata(
 ): OverviewScheduleMetadata | null {
   const label = formatScheduleStatusLabel(args);
   if (
-    label === "Failed" ||
-    label === "Paused" ||
-    label === "Completed" ||
-    label === "Expired — edit to reschedule"
+    label === "Ошибка" ||
+    label === "Приостановлено" ||
+    label === "Завершено" ||
+    label === "Срок истёк — измените расписание"
   ) {
     return null;
   }
-  if (label.startsWith("Next ")) {
-    return { isNextRun: true, text: label.slice("Next ".length) };
+  if (label.startsWith("Следующий запуск: ")) {
+    return { isNextRun: true, text: label.slice("Следующий запуск: ".length) };
   }
   return { isNextRun: false, text: label };
 }
@@ -174,7 +145,7 @@ export function formatDetailScheduleStatusLabel(
   args: FormatScheduleStatusLabelArgs,
 ): string | null {
   const label = formatScheduleStatusLabel(args);
-  return label === "Paused" || label === "Completed" ? null : label;
+  return label === "Приостановлено" || label === "Завершено" ? null : label;
 }
 
 export function matchesAutomationStatusFilters(

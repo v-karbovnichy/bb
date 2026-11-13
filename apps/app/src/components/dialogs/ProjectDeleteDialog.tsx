@@ -47,9 +47,9 @@ export function ProjectDeleteDialogContent({
 }: ProjectDeleteDialogContentProps) {
   return (
     <ConfirmDeleteDialogContent
-      title="Remove project?"
-      description={`Remove "${target.name}" and all of its threads? This cannot be undone.`}
-      confirmLabel="Remove project"
+      title="Удалить проект?"
+      description={`Удалить «${target.name}» и все его чаты? Это действие нельзя отменить.`}
+      confirmLabel="Удалить проект"
       pending={pending}
       onConfirm={() => onDelete(target.id)}
     />

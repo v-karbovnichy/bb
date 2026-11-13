@@ -81,7 +81,7 @@ function SortChip({
       <DropdownMenuTrigger asChild>
         <button type="button" className={chipTriggerClass(active)}>
           <Icon name="Sort" className="size-3" />
-          Sort
+          Сортировка
           {active ? (
             <span className="font-medium">{SORT_LABELS[sort]}</span>
           ) : null}
@@ -90,7 +90,7 @@ function SortChip({
       <DropdownMenuContent
         align="end"
         className="min-w-44"
-        mobileTitle="Sort tasks"
+        mobileTitle="Сортировать задачи"
       >
         {TASK_SORTS.map((option) => (
           <DropdownMenuCheckboxItem
@@ -151,7 +151,7 @@ export function ListFilterBar({
       <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto">
         <FilterChip
           icon="Circle"
-          label="Status"
+          label="Статус"
           selectedNames={filters.statuses.map(
             (status) => STATUS_LABELS[status],
           )}
@@ -177,7 +177,7 @@ export function ListFilterBar({
         </FilterChip>
         <FilterChip
           icon="ArrowUpDown"
-          label="Priority"
+          label="Приоритет"
           selectedNames={filters.priorities.map(
             (priority) => PRIORITY_LABELS[priority],
           )}
@@ -208,7 +208,7 @@ export function ListFilterBar({
         {showLabelChip ? (
           <FilterChip
             icon="ListTodo"
-            label="Label"
+            label="Метка"
             selectedNames={filters.labelNames}
           >
             {labelOptions.map((option) => (
@@ -276,7 +276,7 @@ export function ListFilterBar({
             className="flex h-6 shrink-0 items-center gap-1 rounded-md border border-dashed border-border px-2.5 text-xs text-muted-foreground hover:border-input hover:text-foreground max-md:pointer-coarse:h-8"
           >
             <Icon name="X" className="size-3" />
-            Clear
+            Очистить
           </button>
         ) : null}
       </div>

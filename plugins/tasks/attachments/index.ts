@@ -74,7 +74,7 @@ class AttachmentCleanupError extends Error {
     readonly attachment: Attachment,
     readonly cleanupCause: unknown,
   ) {
-    super(`Failed to remove attachment blob: ${attachment.fileName}`);
+    super(`Не удалось удалить файл вложения: ${attachment.fileName}`);
     this.name = "AttachmentCleanupError";
   }
 }
@@ -98,7 +98,7 @@ function pluginDataDirectory(bb: BbPluginApi): string {
     .all()
     .find((database) => database.name === "main");
   if (!main?.file) {
-    throw new Error("Tasks attachment storage requires a file-backed database");
+    throw new Error("Для хранения вложений задач нужна файловая база данных");
   }
   return dirname(main.file);
 }
@@ -120,7 +120,7 @@ function pathInside(root: string, blobPath: string): string {
     absolutePath !== absoluteRoot &&
     !absolutePath.startsWith(`${absoluteRoot}${sep}`)
   ) {
-    throw new Error("Attachment blob path escapes the plugin data directory");
+    throw new Error("Путь вложения выходит за пределы папки данных плагина");
   }
   return absolutePath;
 }
@@ -148,7 +148,7 @@ export async function removeAttachmentBlobs(
     return [result.reason];
   });
   if (failures.length > 0) {
-    throw new AggregateError(failures, "Failed to remove attachment blobs");
+    throw new AggregateError(failures, "Не удалось удалить файлы вложений");
   }
 }
 
@@ -200,7 +200,7 @@ function sanitizeFileName(fileName: string): string {
 function normalizeMime(mime: string): string {
   const normalized = mime.split(";", 1)[0]?.trim().toLowerCase() ?? "";
   if (!MIME_PATTERN.test(normalized)) {
-    throw new AttachmentRequestError(400, "mime must be a valid MIME type");
+    throw new AttachmentRequestError(400, "mime должен быть корректным MIME-типом");
   }
   return normalized;
 }
@@ -270,7 +270,7 @@ function normalizeOwner(
   }
   if (normalizedTaskId) return { taskId: normalizedTaskId };
   if (normalizedCommentId) return { commentId: normalizedCommentId };
-  throw new Error("unreachable attachment owner state");
+  throw new Error("Недопустимое состояние владельца вложения");
 }
 
 function attachmentParameters(context: PluginHttpContext): {
@@ -286,7 +286,7 @@ function attachmentParameters(context: PluginHttpContext): {
   const requestedFileName =
     query.fileName ?? context.req.header("x-file-name") ?? "";
   if (!requestedFileName.trim()) {
-    throw new AttachmentRequestError(400, "fileName is required");
+    throw new AttachmentRequestError(400, "Требуется fileName");
   }
   const requestedMime =
     query.mime ??
@@ -306,7 +306,7 @@ async function readRequestBody(request: Request): Promise<Uint8Array> {
     Number.isFinite(declaredLength) &&
     declaredLength > MAX_ATTACHMENT_SIZE_BYTES
   ) {
-    throw new AttachmentRequestError(413, "attachment exceeds the 25 MB limit");
+    throw new AttachmentRequestError(413, "Вложение превышает лимит 25 МБ");
   }
   if (!request.body) return new Uint8Array();
 
@@ -322,7 +322,7 @@ async function readRequestBody(request: Request): Promise<Uint8Array> {
         await reader.cancel();
         throw new AttachmentRequestError(
           413,
-          "attachment exceeds the 25 MB limit",
+          "Вложение превышает лимит 25 МБ",
         );
       }
       chunks.push(value);
@@ -349,7 +349,7 @@ async function persistAttachment(
   writeBlob: (path: string) => Promise<void>,
 ): Promise<Attachment> {
   if (sizeBytes > MAX_ATTACHMENT_SIZE_BYTES) {
-    throw new AttachmentRequestError(413, "attachment exceeds the 25 MB limit");
+    throw new AttachmentRequestError(413, "Вложение превышает лимит 25 МБ");
   }
   const safeFileName = sanitizeFileName(fileName);
   const safeMime = normalizeMime(mime);
@@ -397,7 +397,7 @@ export async function readAttachmentContent(
   attachmentId: string,
 ): Promise<{ attachment: Attachment; content: Buffer }> {
   const attachment = store.getAttachment(attachmentId);
-  if (!attachment) throw new Error(`Attachment not found: ${attachmentId}`);
+  if (!attachment) throw new Error(`Вложение не найдено: ${attachmentId}`);
   const sourcePath = pathInside(requireStoreRoot(store), attachment.blobPath);
   return { attachment, content: await readFile(sourcePath) };
 }
@@ -528,13 +528,13 @@ export function registerAttachments(
       ? store.getAttachment(attachmentId)
       : undefined;
     if (!attachment)
-      return context.json({ error: "attachment not found" }, 404);
+      return context.json({ error: "вложение не найдено" }, 404);
 
     const absolutePath = pathInside(root, attachment.blobPath);
     try {
       await stat(absolutePath);
     } catch {
-      return context.json({ error: "attachment not found" }, 404);
+      return context.json({ error: "вложение не найдено" }, 404);
     }
     const disposition = isInlineRasterMime(attachment.mime)
       ? "inline"
@@ -563,7 +563,7 @@ export function registerAttachments(
           })
         : null;
       if (!attachment)
-        return context.json({ error: "attachment not found" }, 404);
+        return context.json({ error: "вложение не найдено" }, 404);
       return context.json({ deleted: true });
     } catch (error) {
       return errorResponse(context, error);

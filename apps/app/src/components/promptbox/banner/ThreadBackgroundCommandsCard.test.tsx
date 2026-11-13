@@ -116,7 +116,7 @@ describe("ThreadBackgroundCommandsCard", () => {
       </CompactViewportOverrideProvider>,
     );
 
-    const card = screen.getByRole("region", { name: "Background commands" });
+    const card = screen.getByRole("region", { name: "Фоновые команды" });
     expect(screen.queryByRole("button")).toBeNull();
 
     reportCardWidth(card, 320);
@@ -189,9 +189,9 @@ describe("ThreadBackgroundCommandsCard", () => {
     );
 
     const item = screen.getByLabelText(
-      `Background agent: ${description} · Model haiku`,
+      `Фоновый агент: ${description} · Model haiku`,
     );
-    expect(item.textContent).toContain("Running background agent:");
+    expect(item.textContent).toContain("Работает фоновый агент:");
     expect(item.textContent).toContain(description);
     expect(screen.getByTitle("Model: haiku").textContent).toBe("haiku");
     expect(screen.queryByRole("button")).toBeNull();

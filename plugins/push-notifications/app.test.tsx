@@ -111,10 +111,10 @@ describe("device notification settings", () => {
     );
     expect(requestPermission).not.toHaveBeenCalled();
     fireEvent.click(
-      await view.findByRole("button", { name: "Allow notifications" }),
+      await view.findByRole("button", { name: "Разрешить уведомления" }),
     );
     fireEvent.click(
-      await view.findByRole("button", { name: "Send test notification" }),
+      await view.findByRole("button", { name: "Отправить тестовое уведомление" }),
     );
     await waitFor(() =>
       expect(view.inspection.rpcCalls).toEqual([
@@ -132,7 +132,7 @@ describe("device notification settings", () => {
       {},
       { settings: { webEnabled: true } },
     );
-    expect(await view.findByText(/Notifications are blocked/)).toBeTruthy();
+    expect(await view.findByText(/Уведомления заблокированы/)).toBeTruthy();
     expect(view.queryByRole("button")).toBeNull();
     expect(requestPermission).not.toHaveBeenCalled();
   });
@@ -289,12 +289,12 @@ describe("thread notifications action", () => {
       ["thr_a", "thr_b", "thr_c", "thr_d"],
     );
     const shared = [{ id: "thr_a" }, { id: "thr_b" }];
-    await waitFor(() => expect(bulkItem(shared)?.detail).toBe("Muted"));
+    await waitFor(() => expect(bulkItem(shared)?.detail).toBe("Без уведомлений"));
     expect(
       bulkItem(shared)?.choices?.items.find((choice) => choice.selected)?.id,
     ).toBe("muted");
     const mixed = bulkItem([{ id: "thr_a" }, { id: "thr_c" }]);
-    expect(mixed?.detail).toBe("Mixed");
+    expect(mixed?.detail).toBe("Разные");
     expect(mixed?.icon).toBe("BellDot");
     expect(mixed?.choices?.items.some((choice) => choice.selected)).toBe(false);
     expect(
@@ -335,39 +335,39 @@ describe("thread notifications action", () => {
     );
     await waitFor(() => expect(summary()?.selected).toBe("muted"));
     expect(summary()).toEqual({
-      detail: "Muted",
+      detail: "Без уведомлений",
       icon: "push-notifications/off",
       hint: null,
       selected: "muted",
     });
     expect(summary({ id: "thr_child", parentThreadId: "thr_top" })).toEqual({
-      detail: "Muted",
+      detail: "Без уведомлений",
       icon: "push-notifications/off",
-      hint: "Limited by a parent thread",
+      hint: "Ограничено родительским чатом",
       selected: "inherit",
     });
     expect(
       summary({ id: "thr_grandchild", parentThreadId: "thr_child" }),
     ).toEqual({
-      detail: "Muted",
+      detail: "Без уведомлений",
       icon: "push-notifications/off",
-      hint: "Limited by an ancestor thread",
+      hint: "Ограничено вышестоящим чатом",
       selected: "inherit",
     });
     expect(summary({ id: "thr_other", parentThreadId: "thr_top" })).toEqual({
-      detail: "Needs input only",
+      detail: "Только когда требуется ответ",
       icon: "BellDot",
       hint: null,
       selected: "inherit",
     });
     expect(summary({ id: "thr_new" })).toEqual({
-      detail: "All activity",
+      detail: "Все события",
       icon: "push-notifications/ringing",
       hint: null,
       selected: "inherit",
     });
     expect(summary({ id: "thr_unshown" })).toEqual({
-      detail: "All activity",
+      detail: "Все события",
       icon: "push-notifications/ringing",
       hint: null,
       selected: "inherit",
@@ -403,7 +403,7 @@ describe("thread notifications action", () => {
     ]);
     await waitFor(() => expect(summary()?.selected).toBe("inherit"));
     const child = { id: "thr_child", parentThreadId: "thr_top" };
-    expect(summary(child)?.detail).toBe("Needs input only");
+    expect(summary(child)?.detail).toBe("Только когда требуется ответ");
 
     restore({
       thr_top: { own: "muted", ancestorCap: null },
@@ -417,8 +417,8 @@ describe("thread notifications action", () => {
       "thread:thr_child",
     ]);
     expect(summary(child)).toMatchObject({
-      detail: "Muted",
-      hint: "Limited by a parent thread",
+      detail: "Без уведомлений",
+      hint: "Ограничено родительским чатом",
     });
     expect(summary()?.selected).toBe("muted");
   });

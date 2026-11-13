@@ -42,35 +42,35 @@ it("follows access availability through setup, readiness, revocation, and recove
   );
   const rendered = render(view());
   expect(
-    screen.getByRole("link", { name: "Set up Relay" }).getAttribute("href"),
+    screen.getByRole("link", { name: "Настроить Relay" }).getAttribute("href"),
   ).toBe("/settings/plugins/relay-plugin");
-  expect(screen.queryByText("Ready")).toBeNull();
+  expect(screen.queryByText("Готово")).toBeNull();
   const provider = state.config.serverAccess.providers[0]!;
   provider.availability = {
     status: "available",
     serverUrl: "https://relay.example.com",
   };
   rendered.rerender(view());
-  expect(screen.getByText("Ready")).toBeTruthy();
+  expect(screen.getByText("Готово")).toBeTruthy();
   expect(screen.getByText("https://relay.example.com")).toBeTruthy();
   provider.availability = {
     status: "unavailable",
     message: "Credential revoked",
   };
   rendered.rerender(view());
-  expect(screen.getByText("Unavailable")).toBeTruthy();
+  expect(screen.getByText("Недоступно")).toBeTruthy();
   expect(screen.getByText("Credential revoked")).toBeTruthy();
-  expect(screen.queryByText("Ready")).toBeNull();
+  expect(screen.queryByText("Готово")).toBeNull();
   provider.availability = { status: "available" };
   rendered.rerender(view());
-  expect(screen.getByText("Ready")).toBeTruthy();
-  expect(screen.getByText("Ready to connect devices.")).toBeTruthy();
+  expect(screen.getByText("Готово")).toBeTruthy();
+  expect(screen.getByText("Можно подключать устройства.")).toBeTruthy();
   state.config.serverAccess.providers = [];
   rendered.rerender(view());
   expect(
     screen.getByText(
-      "This connection method is not installed. Choose another method above.",
+      "Этот способ подключения не установлен. Выберите другой способ выше.",
     ),
   ).toBeTruthy();
-  expect(screen.queryByText("Ready")).toBeNull();
+  expect(screen.queryByText("Готово")).toBeNull();
 });

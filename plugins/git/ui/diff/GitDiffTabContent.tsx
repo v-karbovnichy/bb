@@ -24,7 +24,7 @@ export function GitDiffMessageSlot({ children }: { children: ReactNode }) {
 export function GitDiffLoadingSkeleton() {
   return (
     <GitDiffMessageSlot>
-      <div className="space-y-2 pt-2" role="status" aria-label="Loading diff">
+      <div className="space-y-2 pt-2" role="status" aria-label="Загрузка изменений">
         {Array.from({ length: GIT_DIFF_SKELETON_FILE_COUNT }).map(
           (_, index) => (
             <div
@@ -51,7 +51,7 @@ function GitDiffUnavailableNotice({ message }: { message: string }) {
   return (
     <GitDiffMessageSlot>
       <div className="rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground">Workspace unavailable</p>
+        <p className="font-medium text-foreground">Рабочая копия недоступна</p>
         <p className="mt-1 leading-5">{message}</p>
       </div>
     </GitDiffMessageSlot>
@@ -71,7 +71,7 @@ function GitDiffNotApplicableNotice({ message }: { message: string }) {
 export function GitDiffEmptyNotice() {
   return (
     <GitDiffMessageSlot>
-      <EmptyStatePanel className="rounded-lg">No diff to display.</EmptyStatePanel>
+      <EmptyStatePanel className="rounded-lg">Нет изменений для отображения.</EmptyStatePanel>
     </GitDiffMessageSlot>
   );
 }
@@ -139,7 +139,7 @@ export function GitDiffTabContent({
     return (
       <GitDiffMessageSlot>
         <div className="rounded-lg border border-surface-destructive-border bg-surface-destructive px-3 py-2 text-xs text-destructive">
-          <p>{error.message || "Failed to load git diff"}</p>
+          <p>{error.message || "Не удалось загрузить изменения Git"}</p>
         </div>
       </GitDiffMessageSlot>
     );

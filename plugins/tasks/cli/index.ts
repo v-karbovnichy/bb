@@ -60,21 +60,21 @@ const PRESET_ENVIRONMENTS = ["project-default", "worktree"] as const;
 
 const JSON_OPTION = {
   type: "boolean",
-  description: "Emit machine-readable JSON",
+  description: "Вывести машиночитаемый JSON",
 } as const;
 
 const MACHINE_OPTION = {
   type: "string",
   placeholder: "id-or-name",
   description:
-    "Enrolled machine that owns the file paths; defaults to the invoking thread's machine, otherwise the server's",
+    "Зарегистрированная машина, на которой находятся файлы; по умолчанию машина вызвавшего чата, иначе сервер",
 } as const;
 
 const PROJECT_OPTION = {
   type: "string",
   placeholder: "prefix-or-id",
   description:
-    "Tracker project prefix or id such as ABC, never a bb project id (proj_...); run bb tasks project list",
+    "Префикс или идентификатор проекта задач, например ABC; не идентификатор проекта bb (proj_...). Используйте bb tasks project list",
 } as const;
 
 const REQUIRED_PROJECT_OPTION = {
@@ -84,7 +84,7 @@ const REQUIRED_PROJECT_OPTION = {
 
 const KEY_POSITIONAL = {
   name: "key-or-id",
-  description: "Task key such as ABC-12 (case-insensitive) or its ULID",
+  description: "Ключ задачи, например ABC-12 (без учёта регистра), или её ULID",
   required: true,
 } as const;
 
@@ -110,16 +110,16 @@ function friendlyError(error: unknown): string {
   if (error instanceof z.ZodError) {
     const issue = error.issues[0];
     const path = issue?.path.length ? `${issue.path.join(".")}: ` : "";
-    return `${path}${issue?.message ?? "invalid input"}`;
+    return `${path}${issue?.message ?? "некорректный ввод"}`;
   }
   const message = errorMessage(error);
   if (message.includes("UNIQUE constraint failed: projects.prefix")) {
-    return "project prefix is already in use";
+    return "префикс проекта уже используется";
   }
   if (
     message.includes("UNIQUE constraint failed: labels.project_id, labels.name")
   ) {
-    return "label name is already in use in this project";
+    return "название метки уже используется в этом проекте";
   }
   return message;
 }
@@ -195,7 +195,7 @@ async function readAttachmentSource(
     return (await readClientFile(bb, hostId, path)).bytes;
   } catch (error) {
     if (isMissingClientFileError(error)) {
-      throw new CliError(`attachment source is not a file: ${path}`, {
+      throw new CliError(`источник вложения не является файлом: ${path}`, {
         code: "attachment_source_missing",
       });
     }
@@ -220,7 +220,7 @@ async function writeClientFile(
 
 function resolveClientPath(rootPath: string, path: string): string {
   const resolved = resolveHostPath({ rootPath, path });
-  if (resolved === null) throw new CliError(`Invalid host path: ${path}`);
+  if (resolved === null) throw new CliError(`Некорректный путь хоста: ${path}`);
   return resolved;
 }
 
@@ -240,12 +240,12 @@ async function readTextOption(
   try {
     const { text } = await readClientFile(bb, hostId, path);
     if (text === null) {
-      throw new CliError(`could not read ${file}: file is not UTF-8 text`);
+      throw new CliError(`не удалось прочитать ${file}: файл не содержит текст UTF-8`);
     }
     return text;
   } catch (error) {
     if (error instanceof PluginCliError) throw error;
-    throw new CliError(`could not read ${file}: ${errorMessage(error)}`);
+    throw new CliError(`не удалось прочитать ${file}: ${errorMessage(error)}`);
   }
 }
 
@@ -258,7 +258,7 @@ function derivePrefix(name: string, projects: readonly Project[]): string {
     new Set(projects.map((project) => project.prefix)),
   );
   if (prefix === null) {
-    throw new CliError(`could not derive a unique prefix from ${name}`);
+    throw new CliError(`не удалось получить уникальный префикс из ${name}`);
   }
   return prefix;
 }
@@ -295,7 +295,7 @@ async function resolveProject(
   );
   if (!project) {
     const trimmed = address.trim();
-    throw new CliError(`project not found: ${address}`, {
+    throw new CliError(`проект не найден: ${address}`, {
       code: "project_not_found",
       ...(BB_PROJECT_ID_PATTERN.test(trimmed)
         ? { hint: bbProjectIdHint(trimmed, projects) }
@@ -313,7 +313,7 @@ async function defaultProject(
   if (!ctx.projectId) {
     if (required) {
       throw new CliError(
-        "missing --project and no BB project context is available",
+        "Не указан --project и нет контекста проекта BB",
         { code: "missing_required" },
       );
     }
@@ -324,13 +324,13 @@ async function defaultProject(
   );
   if (matches.length === 0) {
     throw new CliError(
-      `no tracker project is linked to BB project ${ctx.projectId}; pass --project or link one with bb tasks project update`,
+      `С проектом BB ${ctx.projectId} не связан ни один проект задач; укажите --project или создайте связь через bb tasks project update`,
       { code: "project_not_linked" },
     );
   }
   if (matches.length > 1) {
     throw new CliError(
-      `multiple tracker projects are linked to BB project ${ctx.projectId}; pass --project explicitly`,
+      `С проектом BB ${ctx.projectId} связаны несколько проектов задач; укажите --project явно`,
       { code: "project_ambiguous" },
     );
   }
@@ -360,11 +360,11 @@ async function requiredProject(
       )
     : [];
   const suggestion = linked.length === 1 ? linked[0] : undefined;
-  throw new CliError("missing required option --project", {
+  throw new CliError("отсутствует обязательный параметр --project", {
     code: "missing_required",
     hint: suggestion
-      ? `this thread's bb project ${ctx.projectId} is linked to tracker project ${suggestion.prefix}; re-run with --project ${suggestion.prefix}`
-      : "pass a tracker project prefix or id; run bb tasks project list to see them",
+      ? `Проект bb этого чата ${ctx.projectId} связан с проектом задач ${suggestion.prefix}; повторите команду с --project ${suggestion.prefix}`
+      : "Укажите префикс или идентификатор проекта задач; список доступен через bb tasks project list",
   });
 }
 
@@ -382,12 +382,12 @@ async function resolveFolder(
     (folder) => folder.name.toLowerCase() === address.trim().toLowerCase(),
   );
   if (byName.length === 0) {
-    throw new CliError(`folder not found: ${address}`, {
+    throw new CliError(`папка не найдена: ${address}`, {
       code: "folder_not_found",
     });
   }
   if (byName.length > 1) {
-    throw new CliError(`folder name is ambiguous; use its id: ${address}`, {
+    throw new CliError(`название папки неоднозначно; укажите её идентификатор: ${address}`, {
       code: "folder_ambiguous",
     });
   }
@@ -419,7 +419,7 @@ async function resolveTask(
 }
 
 function taskNotFound(address: string): CliError {
-  return new CliError(`task not found: ${address}`, { code: "task_not_found" });
+  return new CliError(`задача не найдена: ${address}`, { code: "task_not_found" });
 }
 
 async function listAllTasks(
@@ -452,12 +452,12 @@ function resolvePreset(presets: readonly Preset[], address: string): Preset {
       preset.name.toLowerCase() === normalized,
   );
   if (matches.length === 0) {
-    throw new CliError(`preset not found: ${address}`, {
+    throw new CliError(`пресет не найден: ${address}`, {
       code: "preset_not_found",
     });
   }
   if (matches.length > 1) {
-    throw new CliError(`preset name is ambiguous; use its id: ${address}`, {
+    throw new CliError(`название пресета неоднозначно; укажите его идентификатор: ${address}`, {
       code: "preset_ambiguous",
     });
   }
@@ -516,7 +516,7 @@ function presetServiceTier(
 ): string | null | undefined {
   if (clear && value !== undefined) {
     throw new CliError(
-      "Cannot combine --service-tier and --clear-service-tier.",
+      "Нельзя одновременно указать --service-tier и --clear-service-tier.",
     );
   }
   return clear ? null : value;
@@ -536,12 +536,12 @@ async function resolveMachineId(
       machine.name.toLocaleLowerCase() === normalized,
   );
   if (matches.length === 0) {
-    throw new CliError(`machine not found: ${address}`, {
+    throw new CliError(`машина не найдена: ${address}`, {
       code: "machine_not_found",
     });
   }
   if (matches.length > 1) {
-    throw new CliError(`machine name is ambiguous; use its id: ${address}`, {
+    throw new CliError(`название машины неоднозначно; укажите её идентификатор: ${address}`, {
       code: "machine_ambiguous",
     });
   }
@@ -555,10 +555,10 @@ function validatePresetTargetOptions(input: {
 }): void {
   if (input.environmentKind === "new-worktree") return;
   if (input.baseBranch !== undefined) {
-    throw new CliError("--base-branch requires --environment worktree");
+    throw new CliError("для --base-branch требуется --environment worktree");
   }
   if (input.machine !== undefined) {
-    throw new CliError("--machine requires --environment worktree");
+    throw new CliError("для --machine требуется --environment worktree");
   }
 }
 
@@ -581,7 +581,7 @@ function resolveLabel(labels: readonly Label[], address: string): Label {
       candidate.name.toLowerCase() === address.trim().toLowerCase(),
   );
   if (!label) {
-    throw new CliError(`label not found: ${address}`, {
+    throw new CliError(`метка не найдена: ${address}`, {
       code: "label_not_found",
     });
   }
@@ -596,7 +596,7 @@ function projectTable(
     folders.map((folder) => [folder.id, folder.name]),
   );
   return table(
-    ["PREFIX", "NAME", "FOLDER", "BB PROJECT", "ID"],
+    ["PREFIX", "НАЗВАНИЕ", "ПАПКА", "ПРОЕКТ BB", "ID"],
     projects.map((project) => [
       project.prefix,
       project.name,
@@ -606,7 +606,7 @@ function projectTable(
       project.linkedBbProjectId ?? "-",
       project.id,
     ]),
-    "No projects.",
+    "Проектов нет.",
   );
 }
 
@@ -633,7 +633,7 @@ function resolveInvokingThreadId(
 ): string {
   const threadId = thread ?? process.env.BB_THREAD_ID ?? ctx.threadId;
   if (!threadId) {
-    throw new CliError("missing --thread and BB_THREAD_ID is not set", {
+    throw new CliError("Не указан --thread и не задан BB_THREAD_ID", {
       code: "missing_required",
     });
   }
@@ -650,7 +650,7 @@ function groupCommand(
     summary,
     hidden: true,
     description: [
-      "Subcommands:",
+      "Подкоманды:",
       ...subcommands.map(
         ([name, text]) => `  bb tasks ${group} ${name.padEnd(width)}  ${text}`,
       ),
@@ -658,7 +658,7 @@ function groupCommand(
     positionals: [
       {
         name: "subcommand",
-        description: `One of: ${subcommands.map(([name]) => name).join(", ")}`,
+        description: `Одно из значений: ${subcommands.map(([name]) => name).join(", ")}`,
         variadic: true,
       },
     ],
@@ -666,7 +666,7 @@ function groupCommand(
     run(input) {
       const [subcommand] = input.positionals.subcommand;
       if (subcommand === undefined) return { exitCode: 1, stdout: input.help };
-      throw new CliError(`unknown command: ${group} ${subcommand}`, {
+      throw new CliError(`Неизвестная команда: ${group} ${subcommand}`, {
         code: "unknown_command",
         hint: `run bb tasks ${group} --help for its subcommands`,
       });
@@ -684,14 +684,14 @@ export function registerTasksCli(
     defineCli({
       name: "tasks",
       summary:
-        "Create and manage task-tracker projects, tasks, labels, and comments",
+        "Создавайте проекты задач, задачи, метки и комментарии и управляйте ими",
       description:
-        "Tasks are addressed by key (ABC-12) or ULID. --project takes a tracker project prefix or id, never a bb project id (proj_...).",
+        "Задачи указываются ключом (ABC-12) или ULID. Параметр --project принимает префикс или идентификатор проекта задач, но не идентификатор проекта bb (proj_...).",
       commands: {
         status: cliCommand({
-          summary: "Show the Tasks plugin name and version",
+          summary: "Показать название и версию плагина задач",
           description:
-            "Plugin health only. To filter tasks by workflow status run bb tasks list --status <status>; to change one run bb tasks update <key-or-id> --status <status>.",
+            "Только состояние плагина. Для фильтрации задач по статусу используйте bb tasks list --status <status>; для изменения статуса — bb tasks update <key-or-id> --status <status>.",
           options: { json: JSON_OPTION },
           run(input) {
             return {
@@ -705,49 +705,49 @@ export function registerTasksCli(
 
         project: groupCommand(
           "project",
-          "Create, list, show, or update tracker projects",
+          "Создать, показать или изменить проекты задач",
           [
-            ["create", "Create a tracker project"],
-            ["list", "List tracker projects"],
-            ["show", "Show one tracker project"],
-            ["update", "Rename, recolor, refile, or relink a project"],
+            ["create", "Создать проект для отслеживания задач"],
+            ["list", "Показать проекты задач"],
+            ["show", "Показать проект задач"],
+            ["update", "Переименовать проект, изменить его цвет, папку или связь"],
           ],
         ),
         "project create": cliCommand({
-          summary: "Create a tracker project",
+          summary: "Создать проект для отслеживания задач",
           options: {
             name: {
               type: "string",
               required: true,
-              description: "Human-readable project name",
+              description: "Понятное название проекта",
             },
             prefix: {
               type: "string",
               placeholder: "PREFIX",
               description:
-                "Task key prefix: uppercase letters and digits, starts with a letter, at most 10 characters (derived from --name when omitted)",
+                "Префикс ключа задачи: до 10 заглавных латинских букв и цифр, начинается с буквы (если не указан, берётся из --name)",
             },
             folder: {
               type: "string",
               placeholder: "id-or-name",
-              description: "Folder that holds the project",
+              description: "Папка проекта",
             },
             "link-bb-project": {
               type: "string",
               placeholder: "proj_id",
               aliases: ["bb-project", "link-project"],
               description:
-                "bb project id (proj_...) whose threads track this tracker project",
+                "Идентификатор проекта bb (proj_...), чьи чаты отслеживают этот проект задач",
             },
             color: {
               type: "string",
               default: DEFAULT_PROJECT_COLOR,
-              description: "Accent color name",
+              description: "Название акцентного цвета",
             },
             json: JSON_OPTION,
           },
           unexpectedPositionalHint:
-            "the project name belongs in --name <name>.",
+            "Название проекта указывается через --name <name>.",
           run(input) {
             return guard(async () => {
               const name = input.options.name;
@@ -771,12 +771,12 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify(result)
-                : `Created project ${result.project.prefix}  ${result.project.name}`;
+                : `Проект создан: ${result.project.prefix}  ${result.project.name}`;
             });
           },
         }),
         "project list": cliCommand({
-          summary: "List tracker projects",
+          summary: "Показать проекты задач",
           options: { json: JSON_OPTION },
           run(input) {
             return guard(async () => {
@@ -793,11 +793,11 @@ export function registerTasksCli(
           },
         }),
         "project show": cliCommand({
-          summary: "Show one tracker project",
+          summary: "Показать проект задач",
           positionals: [
             {
               name: "prefix-or-id",
-              description: "Tracker project prefix such as ABC, or its ULID",
+              description: "Префикс проекта, например ABC, или его ULID",
               required: true,
             },
           ],
@@ -815,53 +815,53 @@ export function registerTasksCli(
                 return JSON.stringify({ project, folder });
               }
               return detail([
-                ["Project", `${project.prefix} — ${project.name}`],
+                ["Проект", `${project.prefix} — ${project.name}`],
                 ["ID", project.id],
-                ["Color", project.color],
-                ["Folder", folder?.name ?? "-"],
-                ["BB project", project.linkedBbProjectId ?? "-"],
-                ["Next task", `${project.prefix}-${project.nextTaskNumber}`],
-                ["Created", project.createdAt],
+                ["Цвет", project.color],
+                ["Папка", folder?.name ?? "-"],
+                ["Проект BB", project.linkedBbProjectId ?? "-"],
+                ["Следующая задача", `${project.prefix}-${project.nextTaskNumber}`],
+                ["Создано", project.createdAt],
               ]);
             });
           },
         }),
         "project update": cliCommand({
-          summary: "Rename, recolor, refile, or relink a tracker project",
+          summary: "Переименовать проект, изменить цвет, папку или связь",
           positionals: [
             {
               name: "prefix-or-id",
-              description: "Tracker project prefix such as ABC, or its ULID",
+              description: "Префикс проекта, например ABC, или его ULID",
               required: true,
             },
           ],
           options: {
-            name: { type: "string", description: "New project name" },
-            color: { type: "string", description: "New accent color name" },
+            name: { type: "string", description: "Новое название проекта" },
+            color: { type: "string", description: "Новое название акцентного цвета" },
             folder: {
               type: "string",
               placeholder: "id-or-name",
-              description: "Folder that holds the project",
+              description: "Папка проекта",
             },
             "no-folder": {
               type: "boolean",
-              description: "Move the project to the top level",
+              description: "Переместить проект на верхний уровень",
             },
             "link-bb-project": {
               type: "string",
               placeholder: "proj_id",
               aliases: ["bb-project", "link-project"],
-              description: "bb project id (proj_...) to link",
+              description: "Идентификатор проекта bb (proj_...) для связи",
             },
             "unlink-bb-project": {
               type: "boolean",
-              description: "Remove the bb project link",
+              description: "Удалить связь с проектом bb",
             },
             "rename-prefix": {
               type: "string",
               placeholder: "PREFIX",
               description:
-                "New task key prefix; existing task keys are rewritten",
+                "Новый префикс ключей задач; существующие ключи будут переписаны",
             },
             json: JSON_OPTION,
           },
@@ -898,7 +898,7 @@ export function registerTasksCli(
                 changes.folderId === undefined &&
                 changes.linkedBbProjectId === undefined
               ) {
-                throw new CliError("no project changes were provided", {
+                throw new CliError("изменения проекта не указаны", {
                   code: "no_changes",
                 });
               }
@@ -925,7 +925,7 @@ export function registerTasksCli(
                 store.projectPrefixExists(renameInput.prefix, project.id)
               ) {
                 throw new CliError(
-                  `Project prefix is already in use: ${renameInput.prefix}`,
+                  `Префикс проекта уже используется: ${renameInput.prefix}`,
                 );
               }
               const updated = store.transaction(() =>
@@ -940,37 +940,37 @@ export function registerTasksCli(
               invalidateProjectTasks(bb, updated.id);
               return input.options.json
                 ? JSON.stringify({ project: updated })
-                : `Updated project ${updated.prefix}  ${updated.name}`;
+                : `Проект обновлён: ${updated.prefix}  ${updated.name}`;
             });
           },
         }),
 
         folder: groupCommand(
           "folder",
-          "Create, list, update, or delete project folders",
+          "Создать, показать, изменить или удалить папки проектов",
           [
-            ["create", "Create a folder"],
-            ["list", "List folders"],
-            ["update", "Rename or move a folder"],
-            ["delete", "Delete a folder, keeping its contents"],
+            ["create", "Создать папку"],
+            ["list", "Показать папки"],
+            ["update", "Переименовать или переместить папку"],
+            ["delete", "Удалить папку, сохранив её содержимое"],
           ],
         ),
         "folder create": cliCommand({
-          summary: "Create a project folder",
+          summary: "Создать папку проекта",
           options: {
             name: {
               type: "string",
               required: true,
-              description: "Folder name",
+              description: "Название папки",
             },
             parent: {
               type: "string",
               placeholder: "id-or-name",
-              description: "Parent folder id or name",
+              description: "Идентификатор или название родительской папки",
             },
             json: JSON_OPTION,
           },
-          unexpectedPositionalHint: "the folder name belongs in --name <name>.",
+          unexpectedPositionalHint: "Название папки указывается через --name <name>.",
           run(input) {
             return guard(async () => {
               const parentAddress = input.options.parent;
@@ -987,12 +987,12 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify(result)
-                : `Created folder ${result.folder.name}  ${result.folder.id}`;
+                : `Папка создана: ${result.folder.name}  ${result.folder.id}`;
             });
           },
         }),
         "folder list": cliCommand({
-          summary: "List project folders",
+          summary: "Показать папки проектов",
           options: { json: JSON_OPTION },
           run(input) {
             return guard(async () => {
@@ -1007,7 +1007,7 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify(result)
                 : table(
-                    ["NAME", "PARENT", "ID"],
+                    ["НАЗВАНИЕ", "РОДИТЕЛЬ", "ID"],
                     result.folders.map((folder) => [
                       folder.name,
                       folder.parentFolderId
@@ -1016,30 +1016,30 @@ export function registerTasksCli(
                         : "-",
                       folder.id,
                     ]),
-                    "No folders.",
+                    "Папок нет.",
                   );
             });
           },
         }),
         "folder update": cliCommand({
-          summary: "Rename or move a project folder",
+          summary: "Переименовать или переместить папку проекта",
           positionals: [
             {
               name: "id-or-name",
-              description: "Folder id or its unique name",
+              description: "Идентификатор папки или её уникальное название",
               required: true,
             },
           ],
           options: {
-            name: { type: "string", description: "New folder name" },
+            name: { type: "string", description: "Новое название папки" },
             parent: {
               type: "string",
               placeholder: "id-or-name",
-              description: "New parent folder id or name",
+              description: "Идентификатор или название новой родительской папки",
             },
             "no-parent": {
               type: "boolean",
-              description: "Move the folder to the top level",
+              description: "Переместить папку на верхний уровень",
             },
             json: JSON_OPTION,
           },
@@ -1060,7 +1060,7 @@ export function registerTasksCli(
                 parentAddress === undefined &&
                 !noParent
               ) {
-                throw new CliError("no folder changes were provided", {
+                throw new CliError("изменения папки не указаны", {
                   code: "no_changes",
                 });
               }
@@ -1090,18 +1090,18 @@ export function registerTasksCli(
               invalidateFolders(bb, { projectsMoved: false });
               return input.options.json
                 ? JSON.stringify({ folder: updated })
-                : `Updated folder ${updated.name}  ${updated.id}`;
+                : `Папка обновлена: ${updated.name}  ${updated.id}`;
             });
           },
         }),
         "folder delete": cliCommand({
-          summary: "Delete a folder and unfile its contents",
+          summary: "Удалить папку и переместить её содержимое на верхний уровень",
           description:
-            "Deleting a folder moves its projects and subfolders to the top level. No tasks are deleted.",
+            "При удалении папки её проекты и вложенные папки перемещаются на верхний уровень. Задачи не удаляются.",
           positionals: [
             {
               name: "id-or-name",
-              description: "Folder id or its unique name",
+              description: "Идентификатор папки или её уникальное название",
               required: true,
             },
           ],
@@ -1119,7 +1119,7 @@ export function registerTasksCli(
               );
               if (!result.deleted) {
                 throw new CliError(
-                  `folder not found: ${address} (it was deleted by another client)`,
+                  `Папка не найдена: ${address} (удалена другим клиентом)`,
                   { code: "folder_not_found" },
                 );
               }
@@ -1130,49 +1130,49 @@ export function registerTasksCli(
               const folderCount = result.movedFolderIds.length;
               const moved = [
                 projectCount > 0
-                  ? `${projectCount} project${projectCount > 1 ? "s" : ""}`
+                  ? `проектов: ${projectCount}`
                   : null,
                 folderCount > 0
-                  ? `${folderCount} subfolder${folderCount > 1 ? "s" : ""}`
+                  ? `вложенных папок: ${folderCount}`
                   : null,
               ].filter((part) => part !== null);
               return moved.length === 0
-                ? `Deleted folder ${folder.name}`
-                : `Deleted folder ${folder.name}; ${moved.join(" and ")} moved to the top level. No tasks were deleted.`;
+                ? `Папка удалена: ${folder.name}`
+                : `Папка удалена: ${folder.name}; на верхний уровень перемещены ${moved.join(", ")}. Задачи не удалены.`;
             });
           },
         }),
 
         create: cliCommand({
-          summary: "Create a task",
+          summary: "Создать задачу",
           unexpectedPositionalHint:
-            "the task title belongs in --title <title>.",
+            "Название задачи указывается через --title <title>.",
           options: {
             project: PROJECT_OPTION,
             title: {
               type: "string",
               required: true,
               aliases: ["name", "subject"],
-              description: "Task title",
+              description: "Название задачи",
             },
             description: {
               type: "string",
               placeholder: "markdown",
               aliases: ["body", "details", "text", "content"],
               description:
-                "Markdown description; use --description-file for long text",
+                "Описание в Markdown; для длинного текста используйте --description-file",
             },
             "description-file": {
               type: "string",
               placeholder: "path",
               description:
-                "Read the description from this UTF-8 file on the invoking machine",
+                "Прочитать описание из этого файла UTF-8 на машине вызова",
             },
             priority: {
               type: "enum",
               values: TASK_PRIORITIES,
               default: "none",
-              description: "Task priority",
+              description: "Приоритет задачи",
             },
             label: {
               type: "string",
@@ -1181,19 +1181,19 @@ export function registerTasksCli(
               placeholder: "name",
               aliases: ["labels"],
               description:
-                "Existing label name; repeat the flag or pass a comma-separated list",
+                "Название существующей метки; повторите параметр или разделите значения запятыми",
             },
             due: {
               type: "string",
               placeholder: "YYYY-MM-DD",
               aliases: ["due-date"],
-              description: "Due date as a calendar date, YYYY-MM-DD",
+              description: "Срок в виде календарной даты YYYY-MM-DD",
             },
             parent: {
               type: "string",
               placeholder: "key-or-id",
               description:
-                "Parent task key or id; tasks support at most one level of sub-tasks",
+                "Ключ или идентификатор родительской задачи; поддерживается не более одного уровня подзадач",
             },
             attach: {
               type: "string",
@@ -1201,7 +1201,7 @@ export function registerTasksCli(
               placeholder: "path",
               aliases: ["file", "attachment"],
               description:
-                "File to attach, repeatable; read from the invoking machine, at most 25 MB each",
+                "Файл для вложения; параметр можно повторять. Читается с машины вызова, до 25 МБ на файл",
             },
             machine: MACHINE_OPTION,
             json: JSON_OPTION,
@@ -1222,7 +1222,7 @@ export function registerTasksCli(
                 attachPaths.length > 0 || descriptionFile !== undefined;
               if (input.options.machine !== undefined && !usesClientFiles) {
                 throw new CliError(
-                  "--machine requires --attach or --description-file",
+                  "Для --machine требуется --attach или --description-file",
                 );
               }
               const clientHostId = usesClientFiles
@@ -1246,7 +1246,7 @@ export function registerTasksCli(
                 input.options.project,
                 true,
               );
-              if (!project) throw new CliError("project is required");
+              if (!project) throw new CliError("требуется проект");
               const labels = await projectLabels(domain, project.id);
               const labelIds = input.options.label.map(
                 (name) => resolveLabel(labels, name).id,
@@ -1301,32 +1301,32 @@ export function registerTasksCli(
               const stdout = input.options.json
                 ? JSON.stringify({ task, attachments, failedAttachments })
                 : [
-                    `Created ${task.key}  ${task.title}`,
+                    `Задача создана: ${task.key}  ${task.title}`,
                     ...attachments.map(
                       (attachment) =>
-                        `Attached ${attachment.fileName}  ${attachment.id}`,
+                        `Прикреплено: ${attachment.fileName}  ${attachment.id}`,
                     ),
                     ...failedAttachments.map(
                       (entry) =>
-                        `Failed to attach ${entry.path}: ${entry.error}`,
+                        `Не удалось прикрепить ${entry.path}: ${entry.error}`,
                     ),
                     ...failedAttachments.map(
                       (entry) =>
-                        `Retry with: bb tasks attachment add ${task.key} --file ${entry.path}`,
+                        `Повторите командой: bb tasks attachment add ${task.key} --file ${entry.path}`,
                     ),
                   ].join("\n");
               if (failedAttachments.length === 0) return stdout;
               return {
                 exitCode: 1,
                 stdout,
-                stderr: `created ${task.key}, but ${failedAttachments.length} of ${attachPaths.length} attachments failed; see stdout for per-file recovery commands`,
+                stderr: `Задача ${task.key} создана, но не удалось загрузить вложения (${failedAttachments.length} из ${attachPaths.length}); команды для повторной попытки приведены в stdout`,
               };
             });
           },
         }),
 
         list: cliCommand({
-          summary: "List and filter tasks",
+          summary: "Показать и отфильтровать задачи",
           options: {
             project: PROJECT_OPTION,
             status: {
@@ -1336,7 +1336,7 @@ export function registerTasksCli(
               split: ",",
               aliases: ["statuses", "state"],
               description:
-                "Keep only these workflow statuses; repeat the flag or pass a comma-separated list",
+                "Оставить только задачи с этими статусами; повторите параметр или разделите значения запятыми",
             },
             priority: {
               type: "enum",
@@ -1345,7 +1345,7 @@ export function registerTasksCli(
               split: ",",
               aliases: ["priorities"],
               description:
-                "Keep only these priorities; repeat the flag or pass a comma-separated list",
+                "Оставить только задачи с этими приоритетами; повторите параметр или разделите значения запятыми",
             },
             label: {
               type: "string",
@@ -1354,36 +1354,36 @@ export function registerTasksCli(
               placeholder: "name",
               aliases: ["labels"],
               description:
-                "Keep only tasks carrying these label names; repeat or comma-separate",
+                "Оставить только задачи с этими метками; повторите параметр или разделите значения запятыми",
             },
             active: {
               type: "boolean",
-              description: "Keep only tasks with a live agent thread",
+              description: "Показывать только задачи с активным чатом агента",
             },
             search: {
               type: "string",
               placeholder: "query",
               aliases: ["query", "q"],
-              description: "Match title and description text",
+              description: "Поиск по названию и описанию",
             },
             sort: {
               type: "enum",
               values: TASK_SORTS,
               default: "manual",
-              description: "Row order",
+              description: "Порядок строк",
             },
             limit: {
               type: "integer",
               min: 1,
               max: TASKS_PAGE_MAX_LIMIT,
               default: TASKS_PAGE_DEFAULT_LIMIT,
-              description: "Rows per page",
+              description: "Строк на странице",
             },
             cursor: {
               type: "string",
               placeholder: "opaque",
               description:
-                "Continue from a previous page's nextCursor with identical filters",
+                "Продолжить с nextCursor предыдущей страницы при тех же фильтрах",
             },
             json: JSON_OPTION,
           },
@@ -1403,13 +1403,13 @@ export function registerTasksCli(
                     label.name.toLowerCase() === name.trim().toLowerCase(),
                 );
                 if (matches.length === 0) {
-                  throw new CliError(`label not found: ${name}`, {
+                  throw new CliError(`метка не найдена: ${name}`, {
                     code: "label_not_found",
                   });
                 }
                 if (matches.length > 1 && !project) {
                   throw new CliError(
-                    `label name exists in multiple projects; pass --project: ${name}`,
+                    `Метка «${name}» есть в нескольких проектах; укажите --project`,
                     { code: "label_ambiguous" },
                   );
                 }
@@ -1466,13 +1466,13 @@ export function registerTasksCli(
               }
               const output = table(
                 [
-                  "KEY",
-                  "STATUS",
-                  "PRIORITY",
-                  "DUE",
-                  "TITLE",
-                  "LABELS",
-                  "AGENTS",
+                  "КЛЮЧ",
+                  "СТАТУС",
+                  "ПРИОРИТЕТ",
+                  "СРОК",
+                  "НАЗВАНИЕ",
+                  "МЕТКИ",
+                  "АГЕНТЫ",
                 ],
                 tasks.map((task) => [
                   task.key,
@@ -1483,17 +1483,17 @@ export function registerTasksCli(
                   task.labels.join(", ") || "-",
                   task.agentsWorking,
                 ]),
-                "No tasks.",
+                "Задач нет.",
               );
               return result.nextCursor === null
                 ? output
-                : `${output}\n\nMore results are available. Re-run with the same filters and add: --limit ${limit} --cursor ${result.nextCursor}`;
+                : `${output}\n\nДоступны дополнительные результаты. Повторите запрос с теми же фильтрами и добавьте: --limit ${limit} --cursor ${result.nextCursor}`;
             });
           },
         }),
 
         show: cliCommand({
-          summary: "Show full task details",
+          summary: "Показать все сведения о задаче",
           aliases: ["get"],
           suggestFor: ["view", "read", "info", "detail", "details", "describe"],
           positionals: [KEY_POSITIONAL],
@@ -1560,66 +1560,66 @@ export function registerTasksCli(
               }
               return [
                 detail([
-                  ["Task", `${task.key} — ${task.title}`],
+                  ["Задача", `${task.key} — ${task.title}`],
                   ["ID", task.id],
-                  ["Project", `${project.prefix} — ${project.name}`],
-                  ["Status", task.status],
-                  ["Priority", task.priority],
-                  ["Due", task.dueDate ?? "-"],
-                  ["Parent", task.parentTaskId ?? "-"],
+                  ["Проект", `${project.prefix} — ${project.name}`],
+                  ["Статус", task.status],
+                  ["Приоритет", task.priority],
+                  ["Срок", task.dueDate ?? "-"],
+                  ["Родительская задача", task.parentTaskId ?? "-"],
                   [
-                    "Labels",
+                    "Метки",
                     labels.map((label) => label.name).join(", ") || "-",
                   ],
-                  ["Created", task.createdAt],
-                  ["Updated", task.updatedAt],
+                  ["Создано", task.createdAt],
+                  ["Обновлено", task.updatedAt],
                 ]),
-                `Description\n${task.description || "(none)"}`,
-                `Sub-tasks\n${table(
-                  ["KEY", "STATUS", "PRIORITY", "TITLE"],
+                `Описание\n${task.description || "(нет)"}`,
+                `Подзадачи\n${table(
+                  ["КЛЮЧ", "СТАТУС", "ПРИОРИТЕТ", "НАЗВАНИЕ"],
                   subtasks.map((subtask) => [
                     subtask.key,
                     subtask.status,
                     subtask.priority,
                     subtask.title,
                   ]),
-                  "(none)",
+                  "(нет)",
                 )}`,
-                `Attachments\n${table(
-                  ["ID", "NAME", "SIZE"],
+                `Вложения\n${table(
+                  ["ID", "НАЗВАНИЕ", "РАЗМЕР"],
                   attachments.map((attachment) => [
                     attachment.id,
                     attachment.fileName,
                     bytes(attachment.sizeBytes),
                   ]),
-                  "(none)",
+                  "(нет)",
                 )}`,
-                `Attached threads\n${table(
-                  ["THREAD", "STATUS", "PRESET", "TITLE"],
+                `Прикреплённые чаты\n${table(
+                  ["ЧАТ", "СТАТУС", "ПРЕСЕТ", "НАЗВАНИЕ"],
                   taskThreads.map((thread) => [
                     thread.threadId,
                     thread.liveStatus,
                     thread.presetName,
                     thread.title,
                   ]),
-                  "(none)",
+                  "(нет)",
                 )}`,
-                `Pull requests\n${table(
-                  ["PR", "STATE", "TITLE", "URL"],
+                `Запросы на слияние\n${table(
+                  ["PR", "СОСТОЯНИЕ", "НАЗВАНИЕ", "URL"],
                   pullRequests.map((pullRequest) => [
                     `#${pullRequest.number}`,
                     pullRequest.state,
                     pullRequest.title,
                     pullRequest.url,
                   ]),
-                  "(none)",
+                  "(нет)",
                 )}${
                   unavailableThreadIds.length > 0
-                    ? `\nPR lookup unavailable for: ${unavailableThreadIds.join(", ")}`
+                    ? `\nПроверка запросов на слияние недоступна для: ${unavailableThreadIds.join(", ")}`
                     : ""
                 }`,
-                `Comments\n${table(
-                  ["TIME", "KIND", "AUTHOR", "PROVIDER", "BODY"],
+                `Комментарии\n${table(
+                  ["ВРЕМЯ", "ТИП", "АВТОР", "ПРОВАЙДЕР", "ТЕКСТ"],
                   comments.map((comment) => [
                     comment.createdAt,
                     comment.kind,
@@ -1627,7 +1627,7 @@ export function registerTasksCli(
                     comment.provider?.name ?? "-",
                     comment.body,
                   ]),
-                  "(none)",
+                  "(нет)",
                 )}`,
               ].join("\n\n");
             });
@@ -1635,7 +1635,7 @@ export function registerTasksCli(
         }),
 
         update: cliCommand({
-          summary: "Update task fields and labels",
+          summary: "Изменить поля и метки задачи",
           positionals: [KEY_POSITIONAL],
           options: {
             status: {
@@ -1643,47 +1643,47 @@ export function registerTasksCli(
               values: TASK_STATUSES,
               aliases: ["state"],
               description:
-                "New workflow status; in_review when implementation needs review, done when the criteria are met",
+                "Новый статус: in_review, когда требуется проверка; done, когда критерии выполнены",
             },
             priority: {
               type: "enum",
               values: TASK_PRIORITIES,
-              description: "New priority",
+              description: "Новый приоритет",
             },
             title: {
               type: "string",
               aliases: ["name", "subject"],
-              description: "New title",
+              description: "Новое название",
             },
             description: {
               type: "string",
               placeholder: "markdown",
               aliases: ["body", "details", "text", "content"],
               description:
-                "Replacement markdown description; use --description-file for long text",
+                "Новое описание в Markdown; для длинного текста используйте --description-file",
             },
             "description-file": {
               type: "string",
               placeholder: "path",
               description:
-                "Read the replacement description from this UTF-8 file on the invoking machine",
+                "Прочитать новое описание из этого файла UTF-8 на машине вызова",
             },
             due: {
               type: "string",
               placeholder: "YYYY-MM-DD",
               aliases: ["due-date"],
-              description: "New due date as a calendar date, YYYY-MM-DD",
+              description: "Новый срок в виде календарной даты YYYY-MM-DD",
             },
-            "no-due": { type: "boolean", description: "Clear the due date" },
+            "no-due": { type: "boolean", description: "Очистить срок" },
             parent: {
               type: "string",
               placeholder: "key-or-id",
               description:
-                "New parent task key or id; tasks support at most one level of sub-tasks",
+                "Ключ или идентификатор новой родительской задачи; поддерживается не более одного уровня подзадач",
             },
             "no-parent": {
               type: "boolean",
-              description: "Promote the task to the top level",
+              description: "Переместить задачу на верхний уровень",
             },
             "add-label": {
               type: "string",
@@ -1691,14 +1691,14 @@ export function registerTasksCli(
               split: ",",
               placeholder: "name",
               description:
-                "Existing label name to add; repeat or comma-separate",
+                "Название существующей метки для добавления; повторите параметр или разделите значения запятыми",
             },
             "remove-label": {
               type: "string",
               repeatable: true,
               split: ",",
               placeholder: "name",
-              description: "Label name to remove; repeat or comma-separate",
+              description: "Название метки для удаления; повторите параметр или разделите значения запятыми",
             },
             machine: MACHINE_OPTION,
             json: JSON_OPTION,
@@ -1769,7 +1769,7 @@ export function registerTasksCli(
                 !noParent &&
                 !labelsChanged
               ) {
-                throw new CliError("no task changes were provided", {
+                throw new CliError("изменения задачи не указаны", {
                   code: "no_changes",
                 });
               }
@@ -1794,15 +1794,15 @@ export function registerTasksCli(
               const updated = unwrapTask(result);
               return input.options.json
                 ? JSON.stringify({ task: updated })
-                : `Updated ${updated.key}  ${updated.title}`;
+                : `Задача обновлена: ${updated.key}  ${updated.title}`;
             });
           },
         }),
 
         move: cliCommand({
-          summary: "Move a task and its sub-tasks to another project",
+          summary: "Переместить задачу и её подзадачи в другой проект",
           description:
-            "Moved tasks get new keys in the target project; their old keys keep resolving. Labels are matched by name in the target project and created there when missing. A sub-task moved on its own is detached from its parent.",
+            "Перемещённые задачи получают новые ключи в целевом проекте; старые ключи продолжают работать. Метки сопоставляются по названию и при необходимости создаются. Отдельно перемещённая подзадача открепляется от родителя.",
           positionals: [KEY_POSITIONAL],
           options: {
             project: REQUIRED_PROJECT_OPTION,
@@ -1834,13 +1834,13 @@ export function registerTasksCli(
               }
               return moved.key === task.key
                 ? `${task.key} is already in ${project.prefix}`
-                : `Moved ${task.key} to ${moved.key}  ${moved.title}`;
+                : `Задача ${task.key} перемещена: ${moved.key}  ${moved.title}`;
             });
           },
         }),
 
         comment: cliCommand({
-          summary: "Add a markdown comment to a task",
+          summary: "Добавить к задаче комментарий в Markdown",
           positionals: [KEY_POSITIONAL],
           options: {
             body: {
@@ -1848,24 +1848,24 @@ export function registerTasksCli(
               placeholder: "markdown",
               aliases: ["message", "text", "content"],
               description:
-                "Comment markdown; use --body-file for long text (exactly one of the two)",
+                "Текст комментария в Markdown; для длинного текста используйте --body-file (ровно один из этих параметров)",
             },
             "body-file": {
               type: "string",
               placeholder: "path",
               description:
-                "Read the comment from this UTF-8 file on the invoking machine",
+                "Прочитать комментарий из файла UTF-8 на машине вызова",
             },
             author: {
               type: "string",
               placeholder: "name",
               description:
-                "Display name for the comment; defaults to the invoking thread or cli",
+                "Отображаемое имя автора комментария; по умолчанию вызвавший чат или cli",
             },
             notify: {
               type: "boolean",
               description:
-                "Deliver the comment to the thread that wrote the task's latest agent reply",
+                "Отправить комментарий в чат, из которого пришёл последний ответ агента по задаче",
             },
             machine: MACHINE_OPTION,
             json: JSON_OPTION,
@@ -1898,12 +1898,12 @@ export function registerTasksCli(
                 bodyFile,
               );
               if (body === undefined) {
-                throw new CliError("missing required --body or --body-file", {
+                throw new CliError("требуется --body или --body-file", {
                   code: "missing_required",
                 });
               }
               if (!body.trim()) {
-                throw new CliError("comment body must not be blank");
+                throw new CliError("текст комментария не может быть пустым");
               }
               const comment = await createComment(bb, store, {
                 taskId: task.id,
@@ -1917,29 +1917,29 @@ export function registerTasksCli(
               });
               return input.options.json
                 ? JSON.stringify({ comment })
-                : `Commented on ${task.key}  ${comment.id}`;
+                : `Комментарий к ${task.key} добавлен: ${comment.id}`;
             });
           },
         }),
 
-        label: groupCommand("label", "Create, list, or delete project labels", [
-          ["create", "Create a label in a project"],
-          ["list", "List a project's labels"],
-          ["delete", "Delete a label"],
+        label: groupCommand("label", "Создать, показать или удалить метки проекта", [
+          ["create", "Создать метку проекта"],
+          ["list", "Показать метки проекта"],
+          ["delete", "Удалить метку"],
         ]),
         "label create": cliCommand({
-          summary: "Create a project label",
+          summary: "Создать метку проекта",
           options: {
             project: REQUIRED_PROJECT_OPTION,
-            name: { type: "string", required: true, description: "Label name" },
+            name: { type: "string", required: true, description: "Название метки" },
             color: {
               type: "string",
               default: DEFAULT_LABEL_COLOR,
-              description: "Label color name",
+              description: "Название цвета метки",
             },
             json: JSON_OPTION,
           },
-          unexpectedPositionalHint: "the label name belongs in --name <name>.",
+          unexpectedPositionalHint: "Название метки указывается через --name <name>.",
           run(input, ctx) {
             return guard(async () => {
               const project = await requiredProject(
@@ -1958,12 +1958,12 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify(result)
-                : `Created label ${result.label.name}  ${result.label.id}`;
+                : `Метка создана: ${result.label.name}  ${result.label.id}`;
             });
           },
         }),
         "label list": cliCommand({
-          summary: "List a project's labels",
+          summary: "Показать метки проекта",
           options: { project: REQUIRED_PROJECT_OPTION, json: JSON_OPTION },
           run(input, ctx) {
             return guard(async () => {
@@ -1976,19 +1976,19 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify({ labels })
                 : table(
-                    ["NAME", "COLOR", "ID"],
+                    ["НАЗВАНИЕ", "ЦВЕТ", "ID"],
                     labels.map((label) => [label.name, label.color, label.id]),
-                    "No labels.",
+                    "Меток нет.",
                   );
             });
           },
         }),
         "label delete": cliCommand({
-          summary: "Delete a project label",
+          summary: "Удалить метку проекта",
           positionals: [
             {
               name: "name-or-id",
-              description: "Label name or its ULID",
+              description: "Название метки или её ULID",
               required: true,
             },
           ],
@@ -2013,30 +2013,30 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify({ ...result, label })
-                : `Deleted label ${label.name}`;
+                : `Метка удалена: ${label.name}`;
             });
           },
         }),
 
         attachment: groupCommand(
           "attachment",
-          "Add, download, list, or remove task attachments",
+          "Добавить, скачать, показать или удалить вложения задачи",
           [
-            ["add", "Attach a file to a task or comment"],
-            ["get", "Download an attachment to a path"],
-            ["list", "List a task's attachments"],
-            ["remove", "Remove an attachment"],
+            ["add", "Прикрепить файл к задаче или комментарию"],
+            ["get", "Скачать вложение по указанному пути"],
+            ["list", "Показать вложения задачи"],
+            ["remove", "Удалить вложение"],
           ],
         ),
         "attachment add": cliCommand({
-          summary: "Attach a file to a task or comment",
+          summary: "Прикрепить файл к задаче или комментарию",
           description:
-            "File paths are read from the invoking machine: the thread's machine inside an agent thread, otherwise the server's.",
+            "Файлы читаются с машины вызова: из машины чата агента либо с сервера.",
           positionals: [
             {
               name: "key-or-comment-id",
               description:
-                "Task key such as ABC-12, a task ULID, or a comment ULID",
+                "Ключ задачи, например ABC-12, ULID задачи или ULID комментария",
               required: true,
             },
           ],
@@ -2046,11 +2046,11 @@ export function registerTasksCli(
               required: true,
               placeholder: "path",
               aliases: ["path", "attach"],
-              description: "Source file to upload, at most 25 MB",
+              description: "Исходный файл для загрузки, до 25 МБ",
             },
             name: {
               type: "string",
-              description: "Stored file name; defaults to the source basename",
+              description: "Название сохранённого файла; по умолчанию имя исходного файла",
             },
             machine: MACHINE_OPTION,
             json: JSON_OPTION,
@@ -2067,7 +2067,7 @@ export function registerTasksCli(
                 ? store.tasks.getComment(normalizedOwner)
                 : undefined;
               if (ULID_PATTERN.test(normalizedOwner) && !comment) {
-                throw new CliError(`comment not found: ${ownerAddress}`, {
+                throw new CliError(`комментарий не найден: ${ownerAddress}`, {
                   code: "comment_not_found",
                 });
               }
@@ -2100,18 +2100,18 @@ export function registerTasksCli(
                     attachment,
                     url: attachmentDownloadUrl(attachment.id),
                   })
-                : `Added attachment ${attachment.fileName}  ${attachment.id}`;
+                : `Вложение добавлено: ${attachment.fileName}  ${attachment.id}`;
             });
           },
         }),
         "attachment get": cliCommand({
-          summary: "Download an attachment to a path",
+          summary: "Скачать вложение по указанному пути",
           description:
-            "The file is written on the invoking machine: the thread's machine inside an agent thread, otherwise the server's.",
+            "Файл записывается на машину вызова: на машину чата агента либо на сервер.",
           positionals: [
             {
               name: "attachment-id",
-              description: "Attachment ULID from bb tasks attachment list",
+              description: "ULID вложения из bb tasks attachment list",
               required: true,
             },
           ],
@@ -2123,7 +2123,7 @@ export function registerTasksCli(
               short: "o",
               aliases: ["output", "to"],
               description:
-                "Destination path; missing parent directories are created",
+                "Путь назначения; недостающие родительские папки будут созданы",
             },
             machine: MACHINE_OPTION,
             json: JSON_OPTION,
@@ -2147,12 +2147,12 @@ export function registerTasksCli(
               await writeClientFile(bb, clientHostId, outPath, content);
               return input.options.json
                 ? JSON.stringify({ attachment, out: outPath })
-                : `Saved ${attachment.fileName}  ${outPath}`;
+                : `Файл сохранён: ${attachment.fileName}  ${outPath}`;
             });
           },
         }),
         "attachment list": cliCommand({
-          summary: "List a task's attachments",
+          summary: "Показать вложения задачи",
           positionals: [KEY_POSITIONAL],
           options: { json: JSON_OPTION },
           run(input) {
@@ -2176,24 +2176,24 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify({ task, attachments })
                 : table(
-                    ["ID", "NAME", "TYPE", "SIZE"],
+                    ["ID", "НАЗВАНИЕ", "ТИП", "РАЗМЕР"],
                     attachments.map((attachment) => [
                       attachment.id,
                       attachment.fileName,
                       attachment.mime,
                       bytes(attachment.sizeBytes),
                     ]),
-                    "No attachments.",
+                    "Вложений нет.",
                   );
             });
           },
         }),
         "attachment remove": cliCommand({
-          summary: "Remove an attachment",
+          summary: "Удалить вложение",
           positionals: [
             {
               name: "attachment-id",
-              description: "Attachment ULID from bb tasks attachment list",
+              description: "ULID вложения из bb tasks attachment list",
               required: true,
             },
           ],
@@ -2201,7 +2201,7 @@ export function registerTasksCli(
             "remove-references": {
               type: "boolean",
               description:
-                "Also strip the attachment's links from the task description",
+                "Также удалить ссылки на вложение из описания задачи",
             },
             json: JSON_OPTION,
           },
@@ -2219,7 +2219,7 @@ export function registerTasksCli(
               );
               if (!result.ok) throw new CliError(result.error.message);
               if (!result.deleted) {
-                throw new CliError(`attachment not found: ${attachmentId}`, {
+                throw new CliError(`вложение не найдено: ${attachmentId}`, {
                   code: "attachment_not_found",
                 });
               }
@@ -2228,24 +2228,24 @@ export function registerTasksCli(
                     deleted: true,
                     attachment: result.attachment,
                   })
-                : `Removed attachment ${result.attachment.fileName}  ${result.attachment.id}`;
+                : `Вложение удалено: ${result.attachment.fileName}  ${result.attachment.id}`;
             });
           },
         }),
 
         preset: groupCommand(
           "preset",
-          "List, show, create, update, or delete dispatch presets",
+          "Показать, создать, изменить или удалить пресеты запуска",
           [
-            ["list", "List dispatch presets"],
-            ["show", "Show one preset"],
-            ["create", "Create a preset"],
-            ["update", "Update a preset"],
-            ["delete", "Delete a preset"],
+            ["list", "Показать пресеты запуска"],
+            ["show", "Показать пресет"],
+            ["create", "Создать пресет"],
+            ["update", "Изменить пресет"],
+            ["delete", "Удалить пресет"],
           ],
         ),
         "preset list": cliCommand({
-          summary: "List dispatch presets",
+          summary: "Показать пресеты запуска",
           options: { json: JSON_OPTION },
           run(input) {
             return guard(async () => {
@@ -2254,16 +2254,16 @@ export function registerTasksCli(
                 ? JSON.stringify({ presets })
                 : table(
                     [
-                      "NAME",
-                      "PROVIDER",
-                      "MODEL",
-                      "REASONING",
-                      "SERVICE TIER",
-                      "PERMISSION",
-                      "ENVIRONMENT",
-                      "BASE BRANCH",
-                      "MACHINE",
-                      "BUILTIN",
+                      "НАЗВАНИЕ",
+                      "ПРОВАЙДЕР",
+                      "МОДЕЛЬ",
+                      "РАССУЖДЕНИЯ",
+                      "УРОВЕНЬ СЕРВИСА",
+                      "РАЗРЕШЕНИЯ",
+                      "ОКРУЖЕНИЕ",
+                      "БАЗОВАЯ ВЕТКА",
+                      "МАШИНА",
+                      "ВСТРОЕННЫЙ",
                       "ID",
                     ],
                     presets.map((preset) => [
@@ -2279,17 +2279,17 @@ export function registerTasksCli(
                       preset.builtin ? "yes" : "no",
                       preset.id,
                     ]),
-                    "No presets.",
+                    "Пресетов нет.",
                   );
             });
           },
         }),
         "preset show": cliCommand({
-          summary: "Show one dispatch preset",
+          summary: "Показать пресет запуска",
           positionals: [
             {
               name: "name-or-id",
-              description: "Preset name (case-insensitive) or its ULID",
+              description: "Название пресета (без учёта регистра) или его ULID",
               required: true,
             },
           ],
@@ -2303,85 +2303,85 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify({ preset })
                 : detail([
-                    ["Name", preset.name],
-                    ["Provider", preset.providerId],
-                    ["Model", preset.modelId],
-                    ["Reasoning", preset.reasoningLevel],
-                    ["Service tier", preset.serviceTier ?? "-"],
-                    ["Permission", preset.permissionMode],
-                    ["Environment", presetEnvironmentLabel(preset)],
-                    ["Base branch", preset.baseBranch ?? "-"],
-                    ["Machine", preset.machineId ?? "-"],
-                    ["Instructions", preset.instructions || "-"],
-                    ["Built in", preset.builtin ? "yes" : "no"],
+                    ["Название", preset.name],
+                    ["Провайдер", preset.providerId],
+                    ["Модель", preset.modelId],
+                    ["Рассуждения", preset.reasoningLevel],
+                    ["Уровень сервиса", preset.serviceTier ?? "-"],
+                    ["Разрешения", preset.permissionMode],
+                    ["Окружение", presetEnvironmentLabel(preset)],
+                    ["Базовая ветка", preset.baseBranch ?? "-"],
+                    ["Машина", preset.machineId ?? "-"],
+                    ["Инструкции", preset.instructions || "-"],
+                    ["Встроенный", preset.builtin ? "yes" : "no"],
                     ["ID", preset.id],
                   ]);
             });
           },
         }),
         "preset create": cliCommand({
-          summary: "Create a dispatch preset",
+          summary: "Создать пресет запуска",
           options: {
             name: {
               type: "string",
               required: true,
-              description: "Preset name shown in dispatch menus",
+              description: "Название пресета в меню запуска",
             },
             provider: {
               type: "string",
               required: true,
               placeholder: "id",
-              description: "Provider id such as codex or claude-code",
+              description: "Идентификатор провайдера, например codex или claude-code",
             },
             model: {
               type: "string",
               required: true,
               placeholder: "id",
-              description: "Model id as the provider spells it",
+              description: "Идентификатор модели в формате провайдера",
             },
             reasoning: {
               type: "string",
               required: true,
               placeholder: "level",
-              description: "Reasoning level id the model lists",
+              description: "Идентификатор уровня рассуждений модели",
             },
             permission: {
               type: "enum",
               values: PRESET_PERMISSION_MODES,
               required: true,
-              description: "Permission mode for the dispatched thread",
+              description: "Режим разрешений запущенного чата",
             },
             "service-tier": {
               type: "string",
               placeholder: "tier",
               description:
-                "Service tier id the provider lists for the model, such as default or fast",
+                "Идентификатор уровня сервиса модели, например default или fast",
             },
             "clear-service-tier": {
               type: "boolean",
-              description: "Leave the preset without a service tier",
+              description: "Не задавать уровень сервиса пресета",
             },
             environment: {
               type: "enum",
               values: PRESET_ENVIRONMENTS,
               default: "project-default",
               description:
-                "Where the thread runs; --base-branch and --machine require worktree",
+                "Где выполняется чат; для --base-branch и --machine требуется worktree",
             },
             "base-branch": {
               type: "string",
               placeholder: "branch",
-              description: "Branch new worktrees start from",
+              description: "Базовая ветка новых рабочих деревьев",
             },
             machine: {
               type: "string",
               placeholder: "id-or-name",
-              description: "Enrolled machine that hosts the worktree",
+              description: "Зарегистрированная машина для рабочего дерева",
             },
             instructions: {
               type: "string",
               placeholder: "text",
-              description: "Extra instructions prepended to every dispatch",
+              description: "Дополнительные инструкции перед каждым запуском",
             },
             json: JSON_OPTION,
           },
@@ -2423,71 +2423,71 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify(result)
-                : `Created preset ${result.preset.name}  ${result.preset.id}`;
+                : `Пресет создан: ${result.preset.name}  ${result.preset.id}`;
             });
           },
         }),
         "preset update": cliCommand({
-          summary: "Update a dispatch preset",
+          summary: "Изменить пресет запуска",
           positionals: [
             {
               name: "name-or-id",
-              description: "Preset name (case-insensitive) or its ULID",
+              description: "Название пресета (без учёта регистра) или его ULID",
               required: true,
             },
           ],
           options: {
-            name: { type: "string", description: "New preset name" },
+            name: { type: "string", description: "Новое название пресета" },
             provider: {
               type: "string",
               placeholder: "id",
-              description: "Provider id such as codex or claude-code",
+              description: "Идентификатор провайдера, например codex или claude-code",
             },
             model: {
               type: "string",
               placeholder: "id",
-              description: "Model id as the provider spells it",
+              description: "Идентификатор модели в формате провайдера",
             },
             reasoning: {
               type: "string",
               placeholder: "level",
-              description: "Reasoning level id the model lists",
+              description: "Идентификатор уровня рассуждений модели",
             },
             permission: {
               type: "enum",
               values: PRESET_PERMISSION_MODES,
-              description: "Permission mode for the dispatched thread",
+              description: "Режим разрешений запущенного чата",
             },
             "service-tier": {
               type: "string",
               placeholder: "tier",
               description:
-                "Service tier id the provider lists for the model, such as default or fast",
+                "Идентификатор уровня сервиса модели, например default или fast",
             },
             "clear-service-tier": {
               type: "boolean",
-              description: "Leave the preset without a service tier",
+              description: "Не задавать уровень сервиса пресета",
             },
             environment: {
               type: "enum",
               values: PRESET_ENVIRONMENTS,
               description:
-                "Where the thread runs; switching to project-default clears --base-branch and --machine",
+                "Где выполняется чат; при выборе project-default значения --base-branch и --machine очищаются",
             },
             "base-branch": {
               type: "string",
               placeholder: "branch",
-              description: "Branch new worktrees start from",
+              description: "Базовая ветка новых рабочих деревьев",
             },
             machine: {
               type: "string",
               placeholder: "id-or-name",
-              description: "Enrolled machine that hosts the worktree",
+              description: "Зарегистрированная машина для рабочего дерева",
             },
             instructions: {
               type: "string",
               placeholder: "text",
-              description: "Extra instructions prepended to every dispatch",
+              description: "Дополнительные инструкции перед каждым запуском",
             },
             json: JSON_OPTION,
           },
@@ -2544,16 +2544,16 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify(result)
-                : `Updated preset ${result.preset.name}  ${result.preset.id}`;
+                : `Пресет обновлён: ${result.preset.name}  ${result.preset.id}`;
             });
           },
         }),
         "preset delete": cliCommand({
-          summary: "Delete a dispatch preset",
+          summary: "Удалить пресет запуска",
           positionals: [
             {
               name: "name-or-id",
-              description: "Preset name (case-insensitive) or its ULID",
+              description: "Название пресета (без учёта регистра) или его ULID",
               required: true,
             },
           ],
@@ -2573,13 +2573,13 @@ export function registerTasksCli(
               );
               return input.options.json
                 ? JSON.stringify({ ...result, preset })
-                : `Deleted preset ${preset.name}`;
+                : `Пресет удалён: ${preset.name}`;
             });
           },
         }),
 
         dispatch: cliCommand({
-          summary: "Dispatch a task to a new agent thread",
+          summary: "Назначить задачу новому чату агента",
           aliases: ["delegate"],
           suggestFor: ["start", "run", "spawn"],
           positionals: [KEY_POSITIONAL],
@@ -2589,13 +2589,13 @@ export function registerTasksCli(
               required: true,
               placeholder: "name-or-id",
               description:
-                "Dispatch preset name or id; run bb tasks preset list to see them",
+                "Название или идентификатор пресета; список доступен через bb tasks preset list",
             },
             instructions: {
               type: "string",
               placeholder: "text",
               aliases: ["extra-instructions"],
-              description: "Extra instructions for this dispatch only",
+              description: "Дополнительные инструкции только для этого запуска",
             },
             json: JSON_OPTION,
           },
@@ -2626,7 +2626,7 @@ export function registerTasksCli(
         }),
 
         attach: cliCommand({
-          summary: "Attach an existing agent thread to a task",
+          summary: "Прикрепить существующий чат агента к задаче",
           positionals: [KEY_POSITIONAL],
           options: {
             thread: {
@@ -2634,7 +2634,7 @@ export function registerTasksCli(
               placeholder: "thread-id",
               aliases: ["thread-id"],
               description:
-                "Thread to attach; defaults to BB_THREAD_ID or the invoking thread",
+                "Чат для прикрепления; по умолчанию BB_THREAD_ID или вызвавший чат",
             },
             json: JSON_OPTION,
           },
@@ -2659,13 +2659,13 @@ export function registerTasksCli(
                 );
               return input.options.json
                 ? JSON.stringify({ task, ...result })
-                : `Attached ${result.threadId} to ${task.key}`;
+                : `Чат ${result.threadId} прикреплён к ${task.key}`;
             });
           },
         }),
 
         detach: cliCommand({
-          summary: "Detach an agent thread from a task",
+          summary: "Открепить чат агента от задачи",
           positionals: [KEY_POSITIONAL],
           options: {
             thread: {
@@ -2673,7 +2673,7 @@ export function registerTasksCli(
               placeholder: "thread-id",
               aliases: ["thread-id"],
               description:
-                "Thread to detach; defaults to BB_THREAD_ID or the invoking thread",
+                "Чат для открепления; по умолчанию BB_THREAD_ID или вызвавший чат",
             },
             json: JSON_OPTION,
           },
@@ -2698,13 +2698,13 @@ export function registerTasksCli(
                 );
               return input.options.json
                 ? JSON.stringify({ task, ...result })
-                : `Detached ${result.threadId} from ${task.key}`;
+                : `Чат ${result.threadId} откреплён от ${task.key}`;
             });
           },
         }),
 
         threads: cliCommand({
-          summary: "List agent threads attached to a task",
+          summary: "Показать чаты агентов, прикреплённые к задаче",
           positionals: [KEY_POSITIONAL],
           options: { json: JSON_OPTION },
           run(input) {
@@ -2723,14 +2723,14 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify({ task, taskThreads: result.taskThreads })
                 : table(
-                    ["THREAD", "STATUS", "PRESET", "TITLE"],
+                    ["ЧАТ", "СТАТУС", "ПРЕСЕТ", "НАЗВАНИЕ"],
                     result.taskThreads.map((thread) => [
                       thread.threadId,
                       thread.liveStatus,
                       thread.presetName,
                       thread.title,
                     ]),
-                    "No attached threads.",
+                    "Прикреплённых чатов нет.",
                   );
             });
           },
@@ -2738,11 +2738,11 @@ export function registerTasksCli(
 
         "seed-demo": cliCommand({
           summary:
-            "Create sample folders, projects, labels, tasks, and comments",
+            "Создать примеры папок, проектов, меток, задач и комментариев",
           options: {
             yes: {
               type: "boolean",
-              description: "Confirm writing sample data into this workspace",
+              description: "Подтвердить запись примеров в это рабочее пространство",
             },
             json: JSON_OPTION,
           },
@@ -2750,7 +2750,7 @@ export function registerTasksCli(
             return guard(async () => {
               if (!input.options.yes) {
                 throw new CliError(
-                  "seed-demo creates sample data; re-run with --yes",
+                  "seed-demo создаёт примерные данные; повторите команду с --yes",
                   { code: "confirmation_required" },
                 );
               }
@@ -2758,12 +2758,12 @@ export function registerTasksCli(
               return input.options.json
                 ? JSON.stringify(result)
                 : detail([
-                    ["Folders", result.foldersCreated],
-                    ["Projects", result.projectsCreated],
-                    ["Labels", result.labelsCreated],
-                    ["Tasks", result.tasksCreated],
-                    ["Comments", result.commentsCreated],
-                    ["BB project", result.linkedBbProjectId ?? "-"],
+                    ["Папки", result.foldersCreated],
+                    ["Проекты", result.projectsCreated],
+                    ["Метки", result.labelsCreated],
+                    ["Задачи", result.tasksCreated],
+                    ["Комментарии", result.commentsCreated],
+                    ["Проект BB", result.linkedBbProjectId ?? "-"],
                   ]);
             });
           },

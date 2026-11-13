@@ -127,14 +127,18 @@ export function InlineRenameEditor({
         }}
       />
       {isPending && (
-        <span role="status" aria-label="Saving name" className="sr-only">
-          Saving name
+        <span
+          role="status"
+          aria-label="Сохранение названия"
+          className="sr-only"
+        >
+          Сохранение названия
         </span>
       )}
       {session.onClear && session.name && (
         <button
           type="button"
-          aria-label="Clear custom name"
+          aria-label="Удалить пользовательское название"
           disabled={isPending || session.cannotRetry}
           className={cn(
             SIDEBAR_CONTROL_BUTTON_CLASS,

@@ -800,7 +800,7 @@ describe("FollowUpPromptBox", () => {
       props.execution.handoff = handoff;
       const { rerender } = render(<FollowUpPromptBox {...props} />);
       const editor = screen.getByLabelText("Follow-up prompt");
-      expect(screen.queryByRole("button", { name: "Exit handoff" })).toBeNull();
+      expect(screen.queryByRole("button", { name: "Отменить передачу" })).toBeNull();
 
       rerender(
         <FollowUpPromptBox
@@ -812,14 +812,14 @@ describe("FollowUpPromptBox", () => {
         />,
       );
       expect(screen.getByLabelText("Follow-up prompt")).toBe(editor);
-      expect(screen.getByText("Handoff to new thread")).not.toBeNull();
-      const exit = screen.getByRole("button", { name: "Exit handoff" });
+      expect(screen.getByText("Передать в новый чат")).not.toBeNull();
+      const exit = screen.getByRole("button", { name: "Отменить передачу" });
       expect(exit.textContent).toBe("");
       fireEvent.click(exit);
       expect(handoff.onExit).toHaveBeenCalledOnce();
 
       rerender(<FollowUpPromptBox {...props} />);
-      expect(screen.queryByRole("button", { name: "Exit handoff" })).toBeNull();
+      expect(screen.queryByRole("button", { name: "Отменить передачу" })).toBeNull();
       expect(screen.getByLabelText("Follow-up prompt")).toBe(editor);
     },
   );

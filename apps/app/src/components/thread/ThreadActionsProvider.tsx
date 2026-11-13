@@ -95,7 +95,17 @@ interface DeleteDialogRequest extends ThreadDeleteDialogTarget {
 }
 
 function describeThreadCount(count: number): string {
-  return count === 1 ? "1 thread" : `${count} threads`;
+  const lastTwo = count % 100;
+  const last = count % 10;
+  const noun =
+    lastTwo >= 11 && lastTwo <= 14
+      ? "чатов"
+      : last === 1
+        ? "чат"
+        : last >= 2 && last <= 4
+          ? "чата"
+          : "чатов";
+  return `${count} ${noun}`;
 }
 
 const ARCHIVE_UNDO_TOAST_DURATION_MS = 10_000;
@@ -189,7 +199,7 @@ export function ThreadActionsProvider({
         kind: "thread",
         id: thread.id,
         name: getThreadDisplayTitle(thread),
-        label: "Thread name",
+        label: "Название чата",
         onSave: (title) => renameThreadAsync(thread.id, title),
         ownerKey: "thread-actions",
         presentation: "dialog",
@@ -224,7 +234,7 @@ export function ThreadActionsProvider({
         if (controller.signal.aborted) return null;
         showMutationErrorToast({
           error,
-          fallbackMessage: "Failed to check thread state",
+          fallbackMessage: "Не удалось проверить состояние чата",
         });
         return null;
       }
@@ -343,8 +353,8 @@ export function ThreadActionsProvider({
       if (destination !== null) viewedRouteRef.current = destination;
       appToast.success(
         singleThread !== null || archivedThreadIds.length === 1
-          ? "Thread archived"
-          : "Threads archived",
+          ? "Чат архивирован"
+          : "Чаты архивированы",
         {
           description: singleThread ? (
             <ArchivedThreadToastDescription
@@ -361,10 +371,10 @@ export function ThreadActionsProvider({
               }}
             />
           ) : (
-            `Archived ${describeThreadCount(archivedThreadIds.length)}`
+            `Архивировано ${describeThreadCount(archivedThreadIds.length)}`
           ),
           cancel: {
-            label: "Undo",
+            label: "Отменить",
             onClick: () => {
               void (async () => {
                 try {
@@ -378,7 +388,7 @@ export function ThreadActionsProvider({
                 } catch (error) {
                   showMutationErrorToast({
                     error,
-                    fallbackMessage: "Failed to restore archived threads",
+                    fallbackMessage: "Не удалось восстановить архивные чаты",
                   });
                 }
               })();
@@ -405,7 +415,7 @@ export function ThreadActionsProvider({
       } catch (error) {
         showMutationErrorToast({
           error,
-          fallbackMessage: "Failed to archive environment threads",
+          fallbackMessage: "Не удалось архивировать чаты окружения",
         });
         throw error;
       }
@@ -425,7 +435,7 @@ export function ThreadActionsProvider({
       if (failure !== undefined) {
         showMutationErrorToast({
           error: failure.reason,
-          fallbackMessage: "Failed to archive some threads",
+          fallbackMessage: "Не удалось архивировать некоторые чаты",
           lifecycleOperation: "archive_thread",
         });
       }
@@ -511,7 +521,7 @@ export function ThreadActionsProvider({
             onError: (error) => {
               showMutationErrorToast({
                 error,
-                fallbackMessage: "Failed to mark thread unread",
+                fallbackMessage: "Не удалось пометить чат как непрочитанный",
               });
             },
           },
@@ -524,7 +534,7 @@ export function ThreadActionsProvider({
           onError: (error) => {
             showMutationErrorToast({
               error,
-              fallbackMessage: "Failed to mark thread read",
+              fallbackMessage: "Не удалось пометить чат как прочитанный",
             });
           },
         },
@@ -575,7 +585,7 @@ export function ThreadActionsProvider({
       (error: unknown) =>
         showMutationErrorToast({
           error,
-          fallbackMessage: "Failed to rename thread.",
+          fallbackMessage: "Не удалось переименовать чат.",
         }),
     );
   };

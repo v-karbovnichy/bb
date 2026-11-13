@@ -138,18 +138,18 @@ describe("system summary overflow", () => {
     measureSummary(60);
     renderRow(row);
     expect(preview()?.classList.contains("line-clamp-2")).toBe(true);
-    fireEvent.click(screen.getByRole("button", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать больше" }));
     expect(preview()?.classList.contains("line-clamp-2")).toBe(false);
     expect(
       screen
-        .getByRole("button", { name: "Show less" })
+        .getByRole("button", { name: "Показать меньше" })
         .getAttribute("aria-expanded"),
     ).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Show less" }));
+    fireEvent.click(screen.getByRole("button", { name: "Показать меньше" }));
     expect(preview()?.classList.contains("line-clamp-2")).toBe(true);
     expect(
       screen
-        .getByRole("button", { name: "Show more" })
+        .getByRole("button", { name: "Показать больше" })
         .getAttribute("aria-expanded"),
     ).toBe("false");
   });
@@ -165,7 +165,7 @@ describe("system summary overflow", () => {
       }),
     );
     expect(screen.getByText(/at reconnect/).textContent).toContain(detail);
-    expect(screen.queryByRole("button", { name: "Show more" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Показать больше" })).toBeNull();
   });
 });
 

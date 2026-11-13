@@ -135,56 +135,56 @@ interface BubbleAction {
 const BUBBLE_ACTIONS: BubbleAction[] = [
   {
     id: "bold",
-    label: "Bold",
+    label: "Полужирный",
     icon: TextBoldIcon,
     isActive: (editor) => editor.isActive("bold"),
     run: (chain) => chain.toggleBold(),
   },
   {
     id: "italic",
-    label: "Italic",
+    label: "Курсив",
     icon: TextItalicIcon,
     isActive: (editor) => editor.isActive("italic"),
     run: (chain) => chain.toggleItalic(),
   },
   {
     id: "code",
-    label: "Inline code",
+    label: "Строчный код",
     icon: CodeIcon,
     isActive: (editor) => editor.isActive("code"),
     run: (chain) => chain.toggleCode(),
   },
   {
     id: "heading",
-    label: "Heading",
+    label: "Заголовок",
     icon: Heading02Icon,
     isActive: (editor) => editor.isActive("heading", { level: 2 }),
     run: (chain) => chain.toggleHeading({ level: 2 }),
   },
   {
     id: "bulletList",
-    label: "Bullet list",
+    label: "Маркированный список",
     icon: LeftToRightListBulletIcon,
     isActive: (editor) => editor.isActive("bulletList"),
     run: (chain) => chain.toggleBulletList(),
   },
   {
     id: "taskList",
-    label: "Checklist",
+    label: "Список задач",
     icon: CheckListIcon,
     isActive: (editor) => editor.isActive("taskList"),
     run: (chain) => chain.toggleTaskList(),
   },
   {
     id: "codeBlock",
-    label: "Code block",
+    label: "Блок кода",
     icon: SourceCodeIcon,
     isActive: (editor) => editor.isActive("codeBlock"),
     run: (chain) => chain.toggleCodeBlock(),
   },
   {
     id: "blockquote",
-    label: "Quote",
+    label: "Цитата",
     icon: LeftToRightBlockQuoteIcon,
     isActive: (editor) => editor.isActive("blockquote"),
     run: (chain) => chain.toggleBlockquote(),
@@ -541,7 +541,7 @@ export function TasksEditor({
         <div
           ref={bubbleRef}
           role="toolbar"
-          aria-label="Formatting"
+          aria-label="Форматирование"
           style={{ visibility: "hidden" }}
           className="flex items-center gap-0.5 rounded-lg border border-border bg-popover p-0.5 text-popover-foreground shadow-md"
         >
@@ -575,7 +575,7 @@ export function TasksEditor({
       {mention && mention.items.length > 0 ? (
         <div
           role="listbox"
-          aria-label="Mention a task or thread"
+          aria-label="Упомянуть задачу или чат"
           className="fixed z-50 max-h-64 w-72 overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
           style={
             mentionRect
@@ -585,13 +585,13 @@ export function TasksEditor({
         >
           {taskItems.length > 0 ? (
             <div className="px-2 pb-0.5 pt-1 text-2xs font-semibold text-muted-foreground">
-              Tasks
+              Задачи
             </div>
           ) : null}
           {taskItems.map(mentionRow)}
           {threadItems.length > 0 ? (
             <div className="px-2 pb-0.5 pt-1 text-2xs font-semibold text-muted-foreground">
-              Threads
+              Чаты
             </div>
           ) : null}
           {threadItems.map(mentionRow)}

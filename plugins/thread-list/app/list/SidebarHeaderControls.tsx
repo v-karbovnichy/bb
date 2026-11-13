@@ -58,7 +58,7 @@ export function SidebarHeaderControls({
       primaryAction={
         showNewThread ? (
           <SidebarControlButton
-            label={`New thread in ${label}`}
+            label={`Новый чат в ${label}`}
             icon="MessageSquarePlus"
             onClick={() => onNewThread?.()}
             disabled={!onNewThread}
@@ -72,7 +72,7 @@ export function SidebarHeaderControls({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label={`${label} actions`}
+            aria-label={`Действия: ${label}`}
             data-sidebar-rename-anchor=""
             className={SIDEBAR_CONTROL_BUTTON_CLASS}
           >
@@ -89,12 +89,12 @@ export function SidebarHeaderControls({
           onCloseAutoFocus={onCloseAutoFocus}
           mobileTitle={
             page === "organize"
-              ? "Organize"
+              ? "Упорядочить"
               : page === "sort"
-                ? "Sort by"
+                ? "Сортировать по"
                 : page === "filter"
-                  ? "Filter"
-                  : `${label} actions`
+                  ? "Фильтр"
+                  : `Действия: ${label}`
           }
         >
           <SidebarHeaderMenuContents
@@ -124,7 +124,7 @@ export function SidebarSectionMenuItems({
       {onRename && (
         <DropdownMenuItem onSelect={onRename}>
           <Icon name="Edit" />
-          Rename
+          Переименовать
         </DropdownMenuItem>
       )}
       <ThreadListVisibilityMenuItems />
@@ -133,7 +133,7 @@ export function SidebarSectionMenuItems({
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive" onSelect={onRemove}>
             <Icon name="Trash2" />
-            Remove
+            Удалить
           </DropdownMenuItem>
         </>
       )}

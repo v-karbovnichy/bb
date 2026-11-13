@@ -18,7 +18,7 @@ export function CollapsibleStackCard({
   return (
     <CollapsibleActiveStackCard
       cardAriaLabel={label}
-      controlsAriaLabel={`${label} controls`}
+      controlsAriaLabel={`Управление: ${label}`}
       toggleId={`${id}-toggle`}
       bodyId={`${id}-body`}
       toggleAriaLabel={label}

@@ -8,13 +8,13 @@ function SettingsSidebarPlaceholder({
   ...props
 }: RouteSidebarProps & { retry?: () => void }) {
   return (
-    <SectionSidebar title="Settings" testIdPrefix="settings" {...props}>
+    <SectionSidebar title="Настройки" testIdPrefix="settings" {...props}>
       {retry ? (
         <SplitLoadFailure retry={retry} />
       ) : (
         <div
           role="status"
-          aria-label="Loading settings navigation"
+          aria-label="Загрузка навигации настроек"
           className="space-y-3 p-3"
         >
           <Skeleton className="h-8 w-full" />

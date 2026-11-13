@@ -819,7 +819,7 @@ describe("Account Pool plugin", () => {
       "account",
       "list",
     ]);
-    expect(accountTable.stdout).toContain("Provider");
+    expect(accountTable.stdout).toContain("Провайдер");
     expect(accountTable.stdout).toContain("codex");
     expect(accountTable.stdout).toContain("7d=48% 2100-01-01T02:00:00.000Z");
     expect(accountTable.stdout).not.toContain("5h=");
@@ -858,8 +858,8 @@ describe("Account Pool plugin", () => {
         hostId: "host-one",
       }),
     ).resolves.toEqual({
-      label: "Proxied",
-      statusMessage: "Credentials are provided by the Account Pooler hub.",
+      label: "Через прокси",
+      statusMessage: "Учётные данные предоставляет центр пула аккаунтов.",
     });
     const httpResponse = await host.harness.behavior.fetchHttp(
       "POST",
@@ -1287,7 +1287,7 @@ describe("Account Pool plugin", () => {
     expect(help.stdout).toContain("--login");
     expect(help.stdout).toContain("account login-complete");
     expect(help.stdout).toContain("--api-key-stdin");
-    expect(help.stdout).toContain("Unsafe: exposes the key");
+    expect(help.stdout).toContain("Ключ будет виден в аргументах процесса");
     const loginCompleteHelp = await fixture.host.harness.behavior.runCli([
       "account",
       "login-complete",
@@ -1501,7 +1501,7 @@ describe("Account Pool plugin", () => {
     });
     expect(bypassWithoutThread.exitCode).toBe(1);
     expect(bypassWithoutThread.stderr).toContain(
-      "This thread is thread-seven; re-run with bb pool bypass thread-seven",
+      "Текущий чат: thread-seven; повторите команду bb pool bypass thread-seven",
     );
   });
 
@@ -1620,12 +1620,12 @@ describe("Account Pool plugin", () => {
       "--login",
     ]);
     expect(cliStarted.exitCode).toBe(0);
-    expect(cliStarted.stdout).toContain("Open this URL to sign in to Claude:");
+    expect(cliStarted.stdout).toContain("Откройте эту ссылку для входа в Claude:");
     expect(cliStarted.stdout).toContain("account login-complete");
     expect(cliStarted.stdout).toContain("--code-stdin");
-    const sessionId = cliStarted.stdout.match(/Session ID: ([0-9a-f-]+)/u)?.[1];
+    const sessionId = cliStarted.stdout.match(/ID сессии: ([0-9a-f-]+)/u)?.[1];
     const authorizeUrl = cliStarted.stdout.match(
-      /Open this URL to sign in to Claude:\n([^\n]+)/u,
+      /Откройте эту ссылку для входа в Claude:\n([^\n]+)/u,
     )?.[1];
     if (sessionId === undefined || authorizeUrl === undefined) {
       throw new Error("CLI login start did not return its session and URL.");
@@ -1642,7 +1642,7 @@ describe("Account Pool plugin", () => {
     ]);
     expect(cliCompleted).toMatchObject({
       exitCode: 0,
-      stdout: expect.stringContaining("Signed in Logged-in Claude"),
+      stdout: expect.stringContaining("Выполнен вход в Logged-in Claude"),
     });
     expect(tokenBodies).toHaveLength(2);
     expect(tokenBodies[1]).toMatchObject({ code: "cli-code", state: cliState });
@@ -1760,11 +1760,11 @@ describe("Account Pool plugin", () => {
     ]);
     expect(cliStarted).toMatchObject({
       exitCode: 0,
-      stdout: expect.stringContaining("Open this URL to sign in to Codex:"),
+      stdout: expect.stringContaining("Откройте эту ссылку для входа в Codex:"),
     });
-    expect(cliStarted.stdout).toContain("Enter this code: ABCD-1234");
+    expect(cliStarted.stdout).toContain("Введите код: ABCD-1234");
     expect(cliStarted.stdout).toContain("account login-poll --session");
-    const sessionId = cliStarted.stdout.match(/Session ID: ([0-9a-f-]+)/u)?.[1];
+    const sessionId = cliStarted.stdout.match(/ID сессии: ([0-9a-f-]+)/u)?.[1];
     if (sessionId === undefined) {
       throw new Error("Codex CLI login start omitted its session ID.");
     }
@@ -1776,7 +1776,7 @@ describe("Account Pool plugin", () => {
     ]);
     expect(cliCompleted).toMatchObject({
       exitCode: 0,
-      stdout: expect.stringContaining("Signed in codex@example.com"),
+      stdout: expect.stringContaining("Выполнен вход в codex@example.com"),
     });
     const cancelledStart = await host.harness.behavior.runCli([
       "account",
@@ -1786,7 +1786,7 @@ describe("Account Pool plugin", () => {
       "--login",
     ]);
     const cancelledSessionId = cancelledStart.stdout.match(
-      /Session ID: ([0-9a-f-]+)/u,
+      /ID сессии: ([0-9a-f-]+)/u,
     )?.[1];
     if (cancelledSessionId === undefined) {
       throw new Error("Codex CLI login start omitted its session ID.");
@@ -1885,8 +1885,8 @@ describe("Account Pool plugin", () => {
         hostId: "host-one",
       }),
     ).resolves.toEqual({
-      label: "Proxied",
-      statusMessage: "Credentials are provided by the Account Pooler hub.",
+      label: "Через прокси",
+      statusMessage: "Учётные данные предоставляет центр пула аккаунтов.",
     });
     const secondToken = await resolveToken(
       fixture.host,

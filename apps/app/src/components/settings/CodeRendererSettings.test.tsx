@@ -34,8 +34,8 @@ describe("CodeRendererSettings", () => {
       </JotaiProvider>,
     );
 
-    expect(screen.queryByRole("button", { name: "Source code" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Diffs" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Исходный код" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Изменения" })).toBeNull();
   });
 
   it("pins BB's diff renderer without touching the source-code choice", async () => {
@@ -55,11 +55,11 @@ describe("CodeRendererSettings", () => {
       </JotaiProvider>,
     );
 
-    const diffTrigger = screen.getByRole("button", { name: "Diffs" });
-    expect(diffTrigger.textContent).toContain("Automatic");
+    const diffTrigger = screen.getByRole("button", { name: "Изменения" });
+    expect(diffTrigger.textContent).toContain("Автоматически");
 
     fireEvent.pointerDown(diffTrigger, { button: 0 });
-    fireEvent.click(await screen.findByRole("menuitem", { name: /built-in/u }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: /встроенный/u }));
 
     expect(store.get(diffRendererProviderAtom)).toBe(
       BUILT_IN_REPLACEMENT_PROVIDER,
@@ -94,23 +94,23 @@ describe("CodeRendererSettings", () => {
       </JotaiProvider>,
     );
 
-    const trigger = screen.getByRole("button", { name: "Diffs" });
-    expect(trigger.textContent).toContain("Automatic");
+    const trigger = screen.getByRole("button", { name: "Изменения" });
+    expect(trigger.textContent).toContain("Автоматически");
     fireEvent.pointerDown(trigger, { button: 0 });
     expect(
-      screen.getByRole("menuitem", { name: /Chooses Inkwell diffs/u }),
+      screen.getByRole("menuitem", { name: /Выбирает Inkwell diffs/u }),
     ).toBeTruthy();
     const items = screen
       .getAllByRole("menuitem")
       .map((item) => item.textContent ?? "");
     expect(items).toHaveLength(4);
-    expect(items[3]).toContain("bb (built-in)");
-    expect(items.some((text) => text.includes("From the inkwell plugin"))).toBe(
+    expect(items[3]).toContain("bb (встроенный)");
+    expect(items.some((text) => text.includes("Из плагина inkwell"))).toBe(
       true,
     );
     expect(
       items.some((text) => text.includes("Side-by-side with word highlights.")),
     ).toBe(true);
-    expect(items.some((text) => text.includes("zed plugin."))).toBe(true);
+    expect(items.some((text) => text.includes("Плагин zed."))).toBe(true);
   });
 });

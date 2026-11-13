@@ -147,12 +147,12 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     expect(screen.queryByText(ephemeralHost.name)).toBeNull();
     expect(
-      screen.getByRole("option", { name: "No host connected" }),
+      screen.getByRole("option", { name: "Нет подключённого компьютера" }),
     ).toBeTruthy();
     expect(
       screen.queryByRole("option", { name: /Project checkout/u }),
@@ -179,7 +179,7 @@ describe("EnvironmentPickerUI", () => {
       };
       const { rerender } = render(<EnvironmentPickerUI {...props} isLoading />);
       const trigger = screen.getByRole("button", {
-        name: "Environment",
+        name: "Окружение",
       });
       expect(trigger.getAttribute("aria-busy")).toBe("true");
       expect(
@@ -188,9 +188,9 @@ describe("EnvironmentPickerUI", () => {
       expect(trigger.textContent).not.toContain("Loading environments…");
       fireEvent.click(trigger, { button: 0 });
       expect(
-        screen.getByRole("status", { name: "Loading environments" }),
+        screen.getByRole("status", { name: "Загрузка окружений" }),
       ).toBeTruthy();
-      expect(screen.queryByText("Not set up for this project")).toBeNull();
+      expect(screen.queryByText("Не настроено для этого проекта")).toBeNull();
       expect(screen.queryByRole("option")).toBeNull();
 
       rerender(
@@ -202,7 +202,7 @@ describe("EnvironmentPickerUI", () => {
       ).toBeNull();
       expect(
         screen
-          .getByRole("button", { name: "Environment" })
+          .getByRole("button", { name: "Окружение" })
           .getAttribute("aria-busy"),
       ).toBe("false");
       fireEvent.click(
@@ -235,7 +235,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    const trigger = screen.getByRole("button", { name: "Environment" });
+    const trigger = screen.getByRole("button", { name: "Окружение" });
     expect(trigger.dataset.promptboxShrinkableControl).toBe("");
     expect(
       trigger.querySelector<HTMLElement>("[data-promptbox-compact-label]")
@@ -271,7 +271,7 @@ describe("EnvironmentPickerUI", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     expect(
@@ -313,7 +313,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     expect(
@@ -344,7 +344,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -379,7 +379,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -420,7 +420,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -449,7 +449,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     const disabledItem = screen.getByRole("option", {
@@ -494,7 +494,7 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     const item = screen.getByRole("option", { name: /Optional sandbox/u });
@@ -525,10 +525,10 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
-    const item = screen.getByRole("option", { name: /Reuse existing/u });
+    const item = screen.getByRole("option", { name: /Использовать существующее/u });
     expect(item.getAttribute("aria-disabled")).toBe("false");
     fireEvent.click(item);
     expect(onSelectReuse).toHaveBeenCalledTimes(1);
@@ -549,12 +549,12 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     expect(
       screen
-        .getByRole("option", { name: /Reuse existing/u })
+        .getByRole("option", { name: /Использовать существующее/u })
         .getAttribute("aria-current"),
     ).toBe("true");
   });
@@ -573,10 +573,10 @@ describe("EnvironmentPickerUI", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
-    expect(screen.queryByText("Reuse existing")).toBeNull();
+    expect(screen.queryByText("Использовать существующее")).toBeNull();
   });
 });
 
@@ -648,7 +648,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
   }
@@ -671,9 +671,9 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }));
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }));
     expect(
-      screen.queryByRole("combobox", { name: "Search machines" }),
+      screen.queryByRole("combobox", { name: "Поиск компьютеров" }),
     ).toBeNull();
 
     result.rerender(
@@ -694,7 +694,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
       />,
     );
     expect(
-      screen.getByRole("combobox", { name: "Search machines" }),
+      screen.getByRole("combobox", { name: "Поиск компьютеров" }),
     ).toBeTruthy();
   });
 
@@ -709,7 +709,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
       hosts: manyHosts,
       providers: [checkoutProvider, modalComposition],
     });
-    const search = screen.getByRole("combobox", { name: "Search machines" });
+    const search = screen.getByRole("combobox", { name: "Поиск компьютеров" });
 
     fireEvent.change(search, { target: { value: "OMS" } });
     expect(screen.queryByRole("option", { name: "Mac Studio" })).toBeNull();
@@ -727,7 +727,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
     expect(screen.getByRole("option", { name: "Travel laptop" })).toBeTruthy();
 
     fireEvent.change(search, { target: { value: "missing" } });
-    expect(screen.getByText("No machines found")).toBeTruthy();
+    expect(screen.getByText("Компьютеры не найдены")).toBeTruthy();
     expect(screen.getByRole("option", { name: /Modal Sandbox/u })).toBeTruthy();
   });
 
@@ -736,9 +736,9 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
     const onSelectHost = vi.fn();
     renderMachineMenu({ onSelectProvider, onSelectHost });
 
-    expect(screen.getByText("Machines")).toBeTruthy();
+    expect(screen.getByText("Компьютеры")).toBeTruthy();
     expect(screen.getByText("MacBook Pro")).toBeTruthy();
-    expect(screen.getByText("this machine")).toBeTruthy();
+    expect(screen.getByText("Этот компьютер")).toBeTruthy();
     expect(screen.getByText("Mac Studio")).toBeTruthy();
     expect(screen.getByText("On MacBook Pro")).toBeTruthy();
     const machineList = document.querySelector<HTMLElement>(
@@ -797,7 +797,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
     expect(localMachine.getAttribute("aria-selected")).toBe("true");
     expect(screen.getByText("On MacBook Pro")).toBeTruthy();
 
-    const trigger = screen.getByRole("button", { name: "Environment" });
+    const trigger = screen.getByRole("button", { name: "Окружение" });
     fireEvent.click(trigger);
     fireEvent.click(trigger);
 
@@ -932,7 +932,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -986,7 +986,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -1002,7 +1002,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
     renderMachineMenu();
 
     fireEvent.click(screen.getByRole("option", { name: "dev-vm" }));
-    expect(screen.getByText(/last seen 2h ago/u)).toBeTruthy();
+    expect(screen.getByText(/был в сети 2 ч назад/u)).toBeTruthy();
     const checkoutItems = screen.getAllByRole("option", {
       name: /Project checkout/u,
     });
@@ -1029,7 +1029,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -1038,7 +1038,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         `Needs update · daemon protocol ${HOST_DAEMON_PROTOCOL_VERSION - 1} · server protocol ${HOST_DAEMON_PROTOCOL_VERSION}`,
       ),
     ).toBeTruthy();
-    expect(screen.queryByText(/last seen 2h ago/u)).toBeNull();
+    expect(screen.queryByText(/был в сети 2 ч назад/u)).toBeNull();
   });
 
   it("disables options on an offline machine that has a source", () => {
@@ -1060,7 +1060,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -1096,7 +1096,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
           modal={false}
         />,
       );
-      fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+      fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
         button: 0,
       });
 
@@ -1125,13 +1125,13 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
-    expect(screen.queryByText("Not set up for this project")).toBeNull();
+    expect(screen.queryByText("Не настроено для этого проекта")).toBeNull();
     fireEvent.click(screen.getByRole("option", { name: "dev-vm" }));
-    fireEvent.click(screen.getByRole("option", { name: /Set up on dev-vm…/u }));
+    fireEvent.click(screen.getByRole("option", { name: /Настроить на dev-vm…/u }));
     expect(onRequestMachineSetup).toHaveBeenCalledWith(onlineVm);
   });
 
@@ -1168,14 +1168,14 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
     expect(
       screen.getAllByRole("option", { name: /Host sandbox/u }),
     ).toHaveLength(2);
-    fireEvent.click(screen.getByRole("option", { name: /Set up on dev-vm…/u }));
+    fireEvent.click(screen.getByRole("option", { name: /Настроить на dev-vm…/u }));
     expect(onRequestMachineSetup).toHaveBeenCalledWith(onlineVm);
   });
 
@@ -1195,14 +1195,14 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
     fireEvent.click(screen.getByRole("option", { name: "dev-vm" }));
     expect(screen.queryByText(/Set up on dev-vm/u)).toBeNull();
     const placeholder = screen.getByRole("option", {
-      name: "Not set up for this project",
+      name: "Не настроено для этого проекта",
     });
     expect(placeholder.getAttribute("aria-disabled")).toBe("true");
   });
@@ -1242,7 +1242,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 
@@ -1253,7 +1253,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
     fireEvent.click(providerItems[1]!);
     expect(onSelectProvider).toHaveBeenCalledWith(branchProvider, studio.id);
 
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
     const sandboxItems = screen.getAllByRole("option", {
@@ -1287,8 +1287,8 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
       />,
     );
 
-    expect(screen.getByText("Mac Studio · Host is offline")).toBeTruthy();
-    expect(screen.getByText("Offline")).toBeTruthy();
+    expect(screen.getByText("Mac Studio · Компьютер не в сети")).toBeTruthy();
+    expect(screen.getByText("Не в сети")).toBeTruthy();
     expect(screen.queryByText(/New branch workspace/u)).toBeNull();
   });
 
@@ -1310,7 +1310,7 @@ describe("EnvironmentPickerUI multi-machine menu", () => {
         modal={false}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Environment" }), {
+    fireEvent.click(screen.getByRole("button", { name: "Окружение" }), {
       button: 0,
     });
 

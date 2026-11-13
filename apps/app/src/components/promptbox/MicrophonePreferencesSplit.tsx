@@ -12,7 +12,7 @@ export const MicrophonePreferencesSplit = defineSplit<{
     ),
   loading: () => (
     <PickerLoadingRows
-      label="Loading microphones"
+      label="Загрузка микрофонов"
       rowDataAttribute="data-microphone-loading-row"
     />
   ),

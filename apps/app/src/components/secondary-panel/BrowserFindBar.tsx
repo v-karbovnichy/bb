@@ -114,7 +114,7 @@ export function BrowserFindBar({
     <div
       data-testid="browser-find-bar"
       role="search"
-      aria-label="Find in page"
+      aria-label="Найти на странице"
       className={cn(
         "flex h-9 shrink-0 items-center gap-1 border-b border-border/70 py-1 pl-2 pr-2",
         SECONDARY_PANEL_TOP_CHROME_BACKGROUND_CLASS,
@@ -127,9 +127,9 @@ export function BrowserFindBar({
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Find in page"
+          placeholder="Найти на странице"
           aria-label={
-            shortcut ? `Find in page (${shortcut.label})` : "Find in page"
+            shortcut ? `Найти на странице (${shortcut.label})` : "Найти на странице"
           }
           aria-keyshortcuts={shortcut?.ariaKeyshortcuts}
           autoComplete="off"
@@ -156,19 +156,19 @@ export function BrowserFindBar({
       </div>
       <BrowserChromeIconButton
         icon="ChevronUp"
-        label="Previous match"
+        label="Предыдущее совпадение"
         disabled={!hasMatches}
         onClick={onFindPrevious}
       />
       <BrowserChromeIconButton
         icon="ChevronDown"
-        label="Next match"
+        label="Следующее совпадение"
         disabled={!hasMatches}
         onClick={onFindNext}
       />
       <BrowserChromeIconButton
         icon="X"
-        label="Close find bar"
+        label="Закрыть поиск"
         onClick={onClose}
       />
     </div>

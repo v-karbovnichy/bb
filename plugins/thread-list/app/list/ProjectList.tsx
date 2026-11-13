@@ -336,7 +336,7 @@ function getSectionMutationErrorMessage(
   fallbackMessage: string,
 ): string {
   if (getErrorCode(error) === "section_name_conflict") {
-    return "Section name already exists.";
+    return "Раздел с таким названием уже существует.";
   }
   return getMutationErrorMessage({ error, fallbackMessage });
 }
@@ -344,7 +344,7 @@ function getSectionMutationErrorMessage(
 export function ProjectListNavigationLoadingState() {
   return (
     <div
-      aria-label="Loading sidebar navigation"
+      aria-label="Загрузка боковой панели"
       className="space-y-1.5 px-2 pt-1"
     >
       <ProjectListNavigationLoadingRow textWidthClassName="w-2/3" />
@@ -712,7 +712,7 @@ function ProjectModeSections({
   const visibilityGroups: ThreadListVisibilityGroup[] = [
     {
       id: "threads",
-      title: "Threads",
+      title: "Чаты",
       threads: personalThreads,
       onNewThread:
         personalProjectId === null
@@ -773,7 +773,7 @@ function ProjectModeSections({
       groups={visibilityGroups}
       order={persistedOrder}
       onOrderChange={onOrderChange}
-      label="Projects"
+      label="Проекты"
       selectedThreadId={selectedThreadId}
     >
       <ReorderableSidebarSectionOrderList order={order} threadDnd={threadDnd}>
@@ -976,7 +976,7 @@ function MachineSidebarSection({
     id: hostId,
     ownerKey: `machine:${hostId}`,
     name: props.label,
-    label: "Machine name",
+    label: "Название компьютера",
     maxLength: 100,
     onSave: (name) => sdk.hosts.update({ hostId, name }),
   });
@@ -1176,7 +1176,7 @@ export function MachineModeSections({
   const visibilityGroups: ThreadListVisibilityGroup[] = [
     {
       id: "threads",
-      title: "Threads",
+      title: "Чаты",
       threads: nonPinnedThreads,
       onNewThread: onCreateThread,
       renderContent: (close: () => void) => (
@@ -1229,7 +1229,7 @@ export function MachineModeSections({
       groups={visibilityGroups}
       order={persistedOrder}
       onOrderChange={onOrderChange}
-      label="Machines"
+      label="Компьютеры"
       selectedThreadId={selectedThreadId}
     >
       <ReorderableSidebarSectionOrderList order={order} threadDnd={threadDnd}>
@@ -1344,7 +1344,7 @@ function ProjectListComponent({
           toast.error(
             getMutationErrorMessage({
               error,
-              fallbackMessage: "Failed to reorder pinned thread.",
+              fallbackMessage: "Не удалось изменить порядок закреплённого чата.",
             }),
           );
         })
@@ -1452,7 +1452,7 @@ function ProjectListComponent({
         })
         .catch((error: unknown) =>
           setSectionCreateErrorMessage(
-            getSectionMutationErrorMessage(error, "Failed to create section."),
+            getSectionMutationErrorMessage(error, "Не удалось создать раздел."),
           ),
         )
         .finally(() => setIsCreateThreadSectionPending(false));
@@ -1477,7 +1477,7 @@ function ProjectListComponent({
       .then(() => sectionDeleteDialog.onClose())
       .catch((error: unknown) => {
         toast.error(
-          getSectionMutationErrorMessage(error, "Failed to remove section."),
+          getSectionMutationErrorMessage(error, "Не удалось удалить раздел."),
         );
       })
       .finally(() => setIsDeleteThreadSectionPending(false));
@@ -1656,14 +1656,14 @@ function ProjectListComponent({
   );
   const pinnedSection: BuiltInSidebarSectionOptions = {
     collapsedThreads: pinnedSectionThreads,
-    label: "Pinned",
+    label: "Закреплённые",
     content: pinnedSectionContent,
-    actions: renderSectionDisplayOptions("pinned", "Pinned"),
+    actions: renderSectionDisplayOptions("pinned", "Закреплённые"),
     actionsOpen: isSectionDisplayOptionsOpen("pinned"),
   };
   const threadsSection = {
-    label: "Threads",
-    actions: renderSectionDisplayOptions("threads", "Threads"),
+    label: "Чаты",
+    actions: renderSectionDisplayOptions("threads", "Чаты"),
     actionsOpen: isSectionDisplayOptionsOpen("threads"),
   } satisfies Omit<BuiltInSidebarSectionOptions, "content">;
   const sectionCreateDialog = (
@@ -1682,9 +1682,9 @@ function ProjectListComponent({
     >
       {sectionDeleteDialog.target ? (
         <ConfirmDeleteDialogContent
-          title="Remove section?"
-          description="Threads in this section will move back to Threads."
-          confirmLabel="Remove section"
+          title="Удалить раздел?"
+          description="Чаты из этого раздела вернутся в раздел «Чаты»."
+          confirmLabel="Удалить раздел"
           pending={isDeleteThreadSectionPending}
           onConfirm={handleConfirmRemoveThreadSection}
           onCancel={sectionDeleteDialog.onClose}
@@ -1806,8 +1806,8 @@ function ProjectListComponent({
             {status === "ready" && archived.status !== "ready" && (
               <div role="status">
                 {archived.status === "error"
-                  ? "Archived threads unavailable"
-                  : "Loading archived threads…"}
+                  ? "Архивные чаты недоступны"
+                  : "Загрузка архивных чатов…"}
               </div>
             )}
             {archived.hasNextPage && (
@@ -1816,13 +1816,13 @@ function ProjectListComponent({
                 size="sm"
                 disabled={archived.isFetchingNextPage}
                 onClick={() => void archived.fetchNextPage()}
-                aria-label="Load more archived threads"
+                aria-label="Загрузить ещё архивные чаты"
               >
                 {archived.isFetchingNextPage
-                  ? "Loading…"
+                  ? "Загрузка…"
                   : archived.isFetchNextPageError
-                    ? "Retry loading"
-                    : "Show more"}
+                    ? "Повторить загрузку"
+                    : "Показать ещё"}
               </Button>
             )}
           </>

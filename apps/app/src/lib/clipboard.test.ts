@@ -271,7 +271,7 @@ describe("copyToClipboardWithToast", () => {
     ).resolves.toBe(false);
 
     expect(writeText).not.toHaveBeenCalled();
-    expect(toastMocks.error).toHaveBeenCalledWith("Failed to copy");
+    expect(toastMocks.error).toHaveBeenCalledWith("Не удалось скопировать");
   });
   it("writes message text and an attached PNG as one clipboard item", async () => {
     const clipboardData: Record<string, Blob | Promise<Blob>>[] = [];
@@ -368,7 +368,7 @@ describe("copyToClipboardWithToast", () => {
 
     await expect(
       copyToClipboardWithToast("A photo", {
-        errorMessage: "Failed to copy",
+        errorMessage: "Не удалось скопировать",
         imageUrl: "/attachments/photo.png",
       }),
     ).resolves.toBe(true);

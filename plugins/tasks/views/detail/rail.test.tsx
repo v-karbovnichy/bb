@@ -101,11 +101,11 @@ describe("project rail control", () => {
       railProps(null, (projectId) => moves.push(projectId)),
       { rpc: { listBbProjects: () => ({ bbProjects: [] }) } },
     );
-    fireEvent.click(slot.getByRole("button", { name: "Move to project" }));
+    fireEvent.click(slot.getByRole("button", { name: "Переместить в проект" }));
     fireEvent.click(await slot.findByRole("option", { name: /Tasks Plugin/ }));
     expect(moves).toEqual([]);
 
-    fireEvent.click(slot.getByRole("button", { name: "Move to project" }));
+    fireEvent.click(slot.getByRole("button", { name: "Переместить в проект" }));
     fireEvent.click(await slot.findByRole("option", { name: /Home/ }));
     expect(moves).toEqual([HOME_PROJECT.id]);
   });
@@ -130,10 +130,10 @@ describe("dispatch target rail control", () => {
         },
       },
     });
-    fireEvent.click(slot.getByRole("button", { name: "Edit dispatch target" }));
-    fireEvent.click(await slot.findByLabelText("Linked bb project"));
+    fireEvent.click(slot.getByRole("button", { name: "Изменить цель запуска" }));
+    fireEvent.click(await slot.findByLabelText("Связанный проект bb"));
     fireEvent.click(await slot.findByRole("option", { name: "bb monorepo" }));
-    fireEvent.click(slot.getByRole("button", { name: "Save" }));
+    fireEvent.click(slot.getByRole("button", { name: "Сохранить" }));
     await waitFor(() => expect(updateCalls).toHaveLength(1));
     expect(updateCalls[0]).toEqual({
       projectId: PROJECT_ID,
@@ -164,12 +164,12 @@ describe("dispatch target rail control", () => {
       },
     );
     const trigger = slot.getByRole("button", {
-      name: "Edit dispatch target",
+      name: "Изменить цель запуска",
     });
     await slot.findByText("bb monorepo");
 
     fireEvent.click(trigger);
-    fireEvent.click(await slot.findByRole("button", { name: "Unlink" }));
+    fireEvent.click(await slot.findByRole("button", { name: "Отвязать" }));
     await waitFor(() => expect(updateCalls).toHaveLength(1));
     expect(updateCalls[0]).toEqual({
       projectId: PROJECT_ID,
